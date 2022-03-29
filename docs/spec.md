@@ -195,7 +195,7 @@ Document Profile Document のためのプロパティです。
 下記の `type` プロパティの文字列によって同定できるオブジェクトの集合です。
 
 - `visibleText`
-- `textContent`
+- `text`
 - `html`
 
 ### `visibleText` 型
