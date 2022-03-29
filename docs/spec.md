@@ -10,10 +10,14 @@
 
 ## Originator Profile データモデル
 
-![op-model](assets/op-model.dio.png)
-
 メディア・広告などに関わる組織の身元を表明し検証可能にするためのモデルです。
 Originator Profile Document によって記述します。
+
+![op-model](assets/op-model.dio.png)
+
+- 認証機構の識別子は、Originator Profile の発行者を表す一義的な識別子です。
+- 組織の身元は、法的な責任を負う企業や公的機関の身元(たとえば、名称や連絡先など)を表明するオブジェクトです。
+- 署名と鍵は、認証機構によって付与され、Originator Profile を検証するために使用されるデータです。
 
 ### Originator Profile Document
 
@@ -34,12 +38,18 @@ JSON Web Token (JWT) として署名され、それらの集合を JSON-LD に�
 }
 ```
 
-## Document Profile データモデル
+`profile` プロパティの JWT をデコードして、組織の身元を取得します。
 
-![dp-model](assets/dp-model.dio.png)
+## Document Profile データモデル
 
 メディア・広告などの出版物を検証可能にするためのモデルです。
 Document Profile Document によって記述します。
+
+![dp-model](assets/dp-model.dio.png)
+
+- 組織の識別子は、Document Profile の発行者を表す一義的な識別子です。
+- 出版物は、組織の主要な出版物を表明するオブジェクトです。
+- 署名と鍵は、組織とその組織の Originator Profile によって与えられ、Document Profile を検証するために使用されるデータです。
 
 ### Document Profile Document
 
@@ -61,6 +71,8 @@ JSON Web Token (JWT) として署名され、それらの集合を JSON-LD に�
 }
 ```
 
+`profile` プロパティの JWT をデコードして、組織の身元をまたは出版物を取得します。
+
 ### `profile`
 
 複数の組織の身元またはその組織の主要な出版物を表明するためのプロパティです。
@@ -69,7 +81,7 @@ JSON Web Token (JWT) として署名され、それらの集合を JSON-LD に�
 ### `main`
 
 主要な組織の身元またはその組織の主要な出版物を表明するためのプロパティです。
-必ず `sub` クレームの文字列でなければなりません。
+必ず `profile` プロパティの JWT をデコードして得られる `sub` クレームの文字列のいずれかでなければなりません。
 
 ### JWT
 
@@ -89,7 +101,7 @@ Document Profile Document ならば、必ずその組織の Originator Profile D
 
 ### `op` (Originator Profile) クレーム
 
-組織の身元の詳細と認証機構によって報告されたその組織の資格情報を表すためのクレームです。
+組織の身元の詳細と認証機構によって報告されたその組織の資格情報を表すためのオブジェクトです。
 クレーム名は IANA JSON Web トークンクレームレジストリに登録されていないので、耐衝突性を持つ名前空間を含むことに注意してください。
 
 例:
@@ -155,7 +167,7 @@ Document Profile Document のためのプロパティです。
 
 ### `dp` (Document Profile) クレーム
 
-組織の出版物の詳細を表します。
+出版物の詳細を表します。
 クレーム名は IANA JSON Web トークンクレームレジストリに登録されていないので、耐衝突性を持つ名前空間を含むことに注意してください。
 
 例:
