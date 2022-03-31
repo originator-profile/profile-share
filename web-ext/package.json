@@ -44,7 +44,7 @@
     "webextension"
   ],
   "license": "MIT",
-  "main": "/src/main.ts",
+  "main": "src/main.ts",
   "repository": "git@github.com:webdino/profile.git",
   "scripts": {
     "build": "run-s build:{vite,web-ext}",
