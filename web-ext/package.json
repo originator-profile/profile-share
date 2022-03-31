@@ -1,0 +1,62 @@
+{
+  "name": "profile-web-ext",
+  "description": "Profile Web Extensions",
+  "version": "1.0.0",
+  "author": "Kimiaki Kuno <knokmki612@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/webdino/profile/issues"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "1.0.1",
+    "@types/jest": "27.4.1",
+    "@types/react": "^17.0.41",
+    "@types/react-dom": "^17.0.14",
+    "@types/webextension-polyfill": "^0.8.2",
+    "@typescript-eslint/eslint-plugin": "5.16.0",
+    "@typescript-eslint/parser": "5.16.0",
+    "@vitejs/plugin-react": "^1.2.0",
+    "eslint": "8.11.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-jest": "26.1.2",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "eslint-plugin-tsc": "2.0.0",
+    "jest": "27.5.1",
+    "npm-run-all": "4.1.5",
+    "prettier": "2.6.0",
+    "rollup-plugin-copy": "^3.4.0",
+    "ts-jest": "27.1.3",
+    "typescript": "4.6.2",
+    "vite": "^2.8.6",
+    "web-ext": "^6.7.0",
+    "webextension-polyfill": "^0.8.0"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "homepage": "https://github.com/webdino/profile#readme",
+  "keywords": [
+    "webextension"
+  ],
+  "license": "MIT",
+  "main": "/src/main.ts",
+  "repository": "git@github.com:webdino/profile.git",
+  "scripts": {
+    "build": "run-s build:{vite,web-ext}",
+    "build:vite": "vite build",
+    "build:web-ext": "web-ext --source-dir dist build",
+    "dev": "vite",
+    "dev:web-ext": "web-ext --source-dir dist run",
+    "format": "run-s format:*",
+    "format:eslint": "eslint --fix .",
+    "format:prettier": "prettier --write .",
+    "lint": "eslint .",
+    "serve": "run-s build:vite dev:web-ext",
+    "test": "jest --passWithNoTests"
+  }
+}
