@@ -3,7 +3,6 @@ parser: "@typescript-eslint/parser"
 plugins:
   - react
   - "@typescript-eslint"
-  - jest
   - tsc
 settings:
   react:
@@ -11,7 +10,6 @@ settings:
 extends:
   - eslint:recommended
   - plugin:@typescript-eslint/recommended
-  - plugin:jest/recommended
   - plugin:jsx-a11y/recommended
   - plugin:react-hooks/recommended
   - plugin:react/recommended
@@ -21,7 +19,3 @@ rules:
     - error
     - configFile: "tsconfig.json"
   "react/react-in-jsx-scope": "off"
-overrides:
-  - files: [jest.config.js]
-    env:
-      commonjs: true
