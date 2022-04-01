@@ -2,20 +2,26 @@ version: 2.1
 orbs:
   node: circleci/node@5.0.1
 jobs:
-  dummy:
+  test:
     docker:
       - image: "cimg/base:stable"
     steps:
       - checkout
       - node/install:
           install-yarn: true
-      - run: node -v
-      - run: npm -v
-      - run: yarn -v
+      - restore_cache:
+          name: Restore Yarn cache
+          keys: ['yarn-v1-{{ checksum "yarn.lock" }}']
+      - run:
+          name: Install dependencies
+          command: "yarn install --frozen-lockfile --cache-folder ~/.cache/yarn"
+      - save_cache:
+          name: Save Yarn cache
+          key: 'yarn-v1-{{ checksum "yarn.lock" }}'
+          paths: ["~/.cache/yarn"]
+      - run: yarn lint
+      - run: yarn test
 workflows:
-  dummy:
+  test:
     jobs:
-      - dummy:
-          filters:
-            branches:
-              only: dummy
+      - test
