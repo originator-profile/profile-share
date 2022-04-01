@@ -1,0 +1,27 @@
+root: true
+parser: "@typescript-eslint/parser"
+plugins:
+  - react
+  - "@typescript-eslint"
+  - jest
+  - tsc
+settings:
+  react:
+    version: detect
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:jest/recommended
+  - plugin:jsx-a11y/recommended
+  - plugin:react-hooks/recommended
+  - plugin:react/recommended
+  - prettier
+rules:
+  "tsc/config":
+    - error
+    - configFile: "tsconfig.json"
+  "react/react-in-jsx-scope": "off"
+overrides:
+  - files: [jest.config.js]
+    env:
+      commonjs: true
