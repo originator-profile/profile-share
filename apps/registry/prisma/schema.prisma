@@ -5,7 +5,7 @@ datasource db {
 
 generator erd {
   provider = "prisma-erd-generator"
-  output   = "../../../docs/registry/assets/schema.svg"
+  output   = "../../../docs/registry/assets/erd.md"
 }
 
 /// OP 文書
