@@ -1,0 +1,5 @@
+*.log
+.turbo
+node_modules
+dist
+/apps/web-ext/web-ext-artifacts
