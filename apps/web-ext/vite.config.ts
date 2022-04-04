@@ -2,6 +2,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import copy from "rollup-plugin-copy";
 
+const isDev = process.env.NODE_ENV === "development";
+
 export default defineConfig({
   plugins: [
     react(),
@@ -11,7 +13,8 @@ export default defineConfig({
     }),
   ],
   build: {
-    sourcemap: process.env.NODE_ENV === "development",
+    watch: isDev ? {} : undefined,
+    sourcemap: isDev,
     target: "es2015",
   },
 });
