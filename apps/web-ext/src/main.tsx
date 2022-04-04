@@ -5,9 +5,8 @@ import App from "./App";
 
 // NOTE: @types/react-dom が v18 対応したら取り除いて
 // @ts-expect-error TS2339: Property 'createRoot' does not exist
-ReactDOM.createRoot(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );
