@@ -44,7 +44,7 @@
   "repository": "git@github.com:webdino/profile.git",
   "scripts": {
     "build": "vite build",
-    "dev": "vite",
+    "dev": "NODE_ENV=development vite build --mode development",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "packaging": "web-ext build --source-dir dist --overwrite-dest",
