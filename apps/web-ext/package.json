@@ -25,7 +25,6 @@
     "eslint-plugin-react-hooks": "^4.4.0",
     "eslint-plugin-tsc": "2.0.0",
     "npm-run-all": "4.1.5",
-    "prettier": "2.6.1",
     "rollup-plugin-copy": "^3.4.0",
     "typescript": "4.6.3",
     "vite": "^2.9.0",
@@ -46,14 +45,12 @@
   "scripts": {
     "build": "run-s build:{vite,web-ext}",
     "build:vite": "vite build",
-    "build:web-ext": "web-ext --source-dir dist build",
-    "dev": "vite",
-    "dev:web-ext": "web-ext --source-dir dist run",
-    "format": "run-s format:*",
-    "format:eslint": "eslint --fix .",
-    "format:prettier": "prettier --write .",
+    "build:web-ext": "web-ext build --source-dir dist --overwrite-dest",
+    "dev": "NODE_ENV=development vite build --mode development",
     "lint": "eslint .",
-    "serve": "run-s build:vite dev:web-ext",
+    "lint:fix": "eslint --fix .",
+    "start:chromium": "web-ext run --source-dir dist --target=chromium",
+    "start:firefox": "web-ext run --source-dir dist --target=firefox-desktop",
     "test": "vitest --passWithNoTests"
   }
 }

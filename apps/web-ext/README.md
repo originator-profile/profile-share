@@ -2,14 +2,15 @@
 
 ## 使い方
 
-- `yarn serve` Vite でビルドし[web-ext run](https://extensionworkshop.com/documentation/develop/web-ext-command-reference/#web-ext-run)します
-- `yarn build` Vite でビルドし[web-ext build](https://extensionworkshop.com/documentation/develop/web-ext-command-reference/#web-ext-build)します
-
-## できていること/できていないこと
-
-- [x] Vite による TypeScript+React のビルド
-- [x] web-ext との連携
-- [x] 動作する Web Extensions の記述
+- `yarn build`: 拡張機能をビルドしたのちパッケージングします
+- `yarn build:vite`: `dist` を出力先として拡張機能を vite でビルドします
+- `yarn build:web-ext`: `dist` をソースとして拡張機能を[パッケージング](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/#packaging-your-extension)します
+- `yarn dev`: `dist` を出力先として拡張機能を vite で差分ビルドします
+- `yarn lint`: コードリントします
+- `yarn lint:fix`: fixable なリントエラーを修正します
+- `yarn start:firefox`: `dist` をソースとして Firefox で拡張機能をプレビューします
+- `yarn start:chromium`: `dist` をソースとして Chromium で拡張機能をプレビューします
+- `yarn test`: ユニットテストします
 
 ## ドキュメント
 
