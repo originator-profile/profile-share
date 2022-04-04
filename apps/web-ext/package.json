@@ -49,7 +49,7 @@
     "format": "prettier --write .",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "packaging": "web-ext build --source-dir dist",
+    "packaging": "web-ext build --source-dir dist --overwrite-dest",
     "start:chromium": "web-ext run --source-dir dist --target=chromium",
     "start:firefox": "web-ext run --source-dir dist --target=firefox-desktop",
     "test": "vitest --passWithNoTests"
