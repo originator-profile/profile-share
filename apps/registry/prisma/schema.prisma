@@ -26,37 +26,39 @@ model Op {
 
 /// 会員
 model Account {
-  id              Int           @id
+  id               Int                @id
   /// ウェブサイトのURL
-  url             String        @unique
+  url              String             @unique
   /// 会員種別
-  role            Role
+  role             Role
   /// 法人名
-  name            String
+  name             String
   /// 説明 (ウェブメディアそれを運用する法人、認定機関、業界団体等であることの記述)
-  description     String
+  description      String
+  /// 事業種目
+  businessCategory BusinessCategory[]
   /// メールアドレス
-  email           String
+  email            String
   /// 電話番号
-  phoneNumber     String
+  phoneNumber      String
   /// 郵便番号
-  postalCode      String
+  postalCode       String
   /// 国
-  addressCountry  String
+  addressCountry   String
   /// 都道府県
-  addressRegion   String
+  addressRegion    String
   /// 市区町村
-  addressLocality String
+  addressLocality  String
   /// 番地・ビル名
-  addressStreet   String
+  addressStreet    String
   /// ロゴ画像のURL
-  logo            String
+  logo             String
   /// 発行履歴
-  issue           Op[]
+  issue            Op[]
   /// 公開履歴
-  publication     Publication[]
+  publication      Publication[]
   /// 公開鍵
-  key             Key[]
+  key              Key[]
 }
 
 /// 会員種別
@@ -65,6 +67,15 @@ enum Role {
   GROUP
   /// 認証機構
   CERTIFIER
+}
+
+/// 事業種目
+model BusinessCategory {
+  id      Int       @id
+  /// 事業種目
+  value   String    @unique
+  /// 会員
+  account Account[]
 }
 
 /// 公開

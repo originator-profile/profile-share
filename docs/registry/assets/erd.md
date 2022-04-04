@@ -31,6 +31,12 @@ CERTIFIER CERTIFIER
     }
   
 
+  BusinessCategory {
+      Int id
+    String value
+    }
+  
+
   Publication {
       DateTime publishedAt
     }
@@ -43,6 +49,8 @@ CERTIFIER CERTIFIER
   
     Op o{--|| Account : "certifier"
     Account o|--|| Role : "enum:role"
+    Account o{--}o BusinessCategory : ""
+    BusinessCategory o{--}o Account : ""
     Publication o|--|| Op : "op"
     Publication o{--|| Account : "account"
     Key o{--|| Account : "account"
