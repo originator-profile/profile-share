@@ -4,7 +4,6 @@
 
 - `yarn build`: `dist` を出力先として拡張機能を vite でビルドします
 - `yarn dev`: vite で開発サーバーを起動します（現状使い途はありません）
-- `yarn format`: コード整形します
 - `yarn lint`: コードリントします
 - `yarn lint:fix`: fixable なリントエラーを修正します
 - `yarn packaging`: `dist` をソースとして拡張機能を[パッケージング](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/#packaging-your-extension)します
