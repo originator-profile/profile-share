@@ -43,11 +43,12 @@
   "main": "src/main.ts",
   "repository": "git@github.com:webdino/profile.git",
   "scripts": {
-    "build": "vite build",
+    "build": "run-s build:{vite,web-ext}",
+    "build:vite": "vite build",
+    "build:web-ext": "web-ext build --source-dir dist --overwrite-dest",
     "dev": "NODE_ENV=development vite build --mode development",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "packaging": "web-ext build --source-dir dist --overwrite-dest",
     "start:chromium": "web-ext run --source-dir dist --target=chromium",
     "start:firefox": "web-ext run --source-dir dist --target=firefox-desktop",
     "test": "vitest --passWithNoTests"
