@@ -51,8 +51,8 @@ model Account {
   addressLocality  String
   /// 番地・ビル名
   addressStreet    String
-  /// ロゴ画像のURL
-  logo             String
+  /// ロゴ画像
+  logo             Logo[]
   /// 発行履歴
   issue            Op[]
   /// 公開履歴
@@ -76,6 +76,18 @@ model BusinessCategory {
   value   String    @unique
   /// 会員
   account Account[]
+}
+
+/// ロゴ画像
+model Logo {
+  id        Int     @id
+  /// ロゴ画像 URL
+  url       String  @unique
+  /// 主なロゴ画像か否か (true: 主なロゴ画像、それ以外: ロゴ画像の候補)
+  isMain    Boolean @default(false)
+  /// 会員
+  account   Account @relation(fields: [accountId], references: [id])
+  accountId Int
 }
 
 /// 公開

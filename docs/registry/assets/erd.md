@@ -27,13 +27,19 @@ CERTIFIER CERTIFIER
     String addressRegion
     String addressLocality
     String addressStreet
-    String logo
     }
   
 
   BusinessCategory {
       Int id
     String value
+    }
+  
+
+  Logo {
+      Int id
+    String url
+    Boolean isMain
     }
   
 
@@ -51,6 +57,7 @@ CERTIFIER CERTIFIER
     Account o|--|| Role : "enum:role"
     Account o{--}o BusinessCategory : ""
     BusinessCategory o{--}o Account : ""
+    Logo o{--|| Account : "account"
     Publication o|--|| Op : "op"
     Publication o{--|| Account : "account"
     Key o{--|| Account : "account"
