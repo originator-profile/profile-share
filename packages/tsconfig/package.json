@@ -1,0 +1,8 @@
+{
+  "name": "@webdino/profile-tsconfig",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@tsconfig/recommended": "^1.0.1"
+  }
+}

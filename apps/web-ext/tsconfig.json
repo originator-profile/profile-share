@@ -1,11 +1,1 @@
-{
-  "extends": "@tsconfig/recommended/tsconfig.json",
-  "compilerOptions": {
-    "isolatedModules": true,
-    "jsx": "react-jsx",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "target": "esnext",
-    "allowJs": true
-  }
-}
+{ "extends": "@webdino/profile-tsconfig/tsconfig.json" }
