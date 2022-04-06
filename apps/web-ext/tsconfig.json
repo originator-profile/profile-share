@@ -1,1 +1,6 @@
-{ "extends": "@webdino/profile-tsconfig/tsconfig.json" }
+{
+  "extends": "@webdino/profile-tsconfig/tsconfig.json",
+  "compilerOptions": {
+    "jsxImportSource": "@emotion/react"
+  }
+}
