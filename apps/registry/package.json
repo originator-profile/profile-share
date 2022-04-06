@@ -1,0 +1,13 @@
+{
+  "name": "@webdino/profile-registry",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "prisma generate",
+    "dev": "prisma generate --watch"
+  },
+  "devDependencies": {
+    "prisma": "^3.11.1",
+    "prisma-erd-generator": "^0.10.1"
+  }
+}

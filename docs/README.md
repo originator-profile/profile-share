@@ -1,3 +1,4 @@
 # ドキュメント
 
-[仕様](spec.md)
+- [仕様](spec.md)
+- [Profile Registry](registry/README.md)
