@@ -6,7 +6,9 @@ const isDev = process.env.NODE_ENV === "development";
 
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      jsxImportSource: "@emotion/react",
+    }),
     copy({
       hook: "writeBundle",
       targets: [{ src: "manifest.json", dest: "dist" }],
