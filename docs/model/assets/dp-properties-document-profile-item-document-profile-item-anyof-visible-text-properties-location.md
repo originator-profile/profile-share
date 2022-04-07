@@ -1,7 +1,7 @@
 # Location Schema
 
 ```txt
-dp-location#/properties/item/items/anyOf/0/properties/location
+dp-visible-text-location#/properties/item/items/anyOf/0/properties/location
 ```
 
 対象の要素の場所を特定する CSS セレクター

@@ -24,7 +24,11 @@
 
 *   [Originator Profile Holder](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder.md "資格情報を保有する組織") – `op-holder#/properties/item/items/anyOf/0`
 
-*   [Proof](./dp-properties-document-profile-item-document-profile-item-anyof-visible-text-properties-proof.md "対象のテキストへの署名") – `dp-proof#/properties/item/items/anyOf/0/properties/proof`
+*   [Proof](./dp-properties-document-profile-item-document-profile-item-anyof-visible-text-properties-proof.md "対象のテキストへの署名") – `dp-visible-text-proof#/properties/item/items/anyOf/0/properties/proof`
+
+*   [Proof](./dp-properties-document-profile-item-document-profile-item-anyof-text-properties-proof.md "対象のテキストへの署名") – `dp-text-proof#/properties/item/items/anyOf/1/properties/proof`
+
+*   [Proof](./dp-properties-document-profile-item-document-profile-item-anyof-html-properties-proof.md "対象のテキストへの署名") – `dp-html-proof#/properties/item/items/anyOf/2/properties/proof`
 
 *   [Text](./dp-properties-document-profile-item-document-profile-item-anyof-text.md "対象の要素の子孫のテキストとそのテキストへの署名") – `dp-text#/properties/item/items/anyOf/1`
 

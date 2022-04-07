@@ -23,7 +23,10 @@ const OpCertifier = {
         "ウェブメディアそれを運用する法人、認定機関、業界団体等であることの記述",
       type: "string",
     },
-    businessCategory: BusinessCategory,
+    businessCategory: {
+      ...BusinessCategory,
+      $id: "op-certifier-business-category",
+    },
     email: {
       title: "メールアドレス",
       type: "string",
@@ -52,7 +55,10 @@ const OpCertifier = {
       title: "番地・ビル名",
       type: "string",
     },
-    logo: Logo,
+    logo: {
+      ...Logo,
+      $id: "op-certifier-logo",
+    },
   },
   required: ["type"],
   additionalProperties: false,

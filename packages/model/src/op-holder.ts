@@ -23,7 +23,10 @@ const OpHolder = {
         "ウェブメディアそれを運用する法人、認定機関、業界団体等であることの記述",
       type: "string",
     },
-    businessCategory: BusinessCategory,
+    businessCategory: {
+      ...BusinessCategory,
+      $id: "op-holder-business-category",
+    },
     email: {
       title: "メールアドレス",
       type: "string",
@@ -52,7 +55,10 @@ const OpHolder = {
       title: "番地・ビル名",
       type: "string",
     },
-    logo: Logo,
+    logo: {
+      ...Logo,
+      $id: "op-holder-logo",
+    },
   },
   required: ["type"],
   additionalProperties: false,

@@ -16,12 +16,12 @@ dp-text#/properties/item/items/anyOf/1
 
 # 1 Properties
 
-| Property              | Type          | Required | Nullable       | Defined by                                                                                                                                                                       |
-| :-------------------- | :------------ | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [type](#type)         | Not specified | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-text-properties-type.md "dp-text#/properties/item/items/anyOf/1/properties/type")             |
-| [url](#url)           | `string`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-text-properties-url.md "dp-url#/properties/item/items/anyOf/1/properties/url")                |
-| [location](#location) | `string`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-text-properties-location.md "dp-location#/properties/item/items/anyOf/1/properties/location") |
-| [proof](#proof)       | `object`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-text-properties-proof.md "dp-proof#/properties/item/items/anyOf/1/properties/proof")          |
+| Property              | Type          | Required | Nullable       | Defined by                                                                                                                                                                            |
+| :-------------------- | :------------ | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [type](#type)         | Not specified | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-text-properties-type.md "dp-text#/properties/item/items/anyOf/1/properties/type")                  |
+| [url](#url)           | `string`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-text-properties-url.md "dp-text-url#/properties/item/items/anyOf/1/properties/url")                |
+| [location](#location) | `string`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-text-properties-location.md "dp-text-location#/properties/item/items/anyOf/1/properties/location") |
+| [proof](#proof)       | `object`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-text-properties-proof.md "dp-text-proof#/properties/item/items/anyOf/1/properties/proof")          |
 
 ## type
 
@@ -61,7 +61,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-text-properties-url.md "dp-url#/properties/item/items/anyOf/1/properties/url")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-text-properties-url.md "dp-text-url#/properties/item/items/anyOf/1/properties/url")
 
 ### url Type
 
@@ -79,7 +79,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-text-properties-location.md "dp-location#/properties/item/items/anyOf/1/properties/location")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-text-properties-location.md "dp-text-location#/properties/item/items/anyOf/1/properties/location")
 
 ### location Type
 
@@ -97,7 +97,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-text-properties-proof.md "dp-proof#/properties/item/items/anyOf/1/properties/proof")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-text-properties-proof.md "dp-text-proof#/properties/item/items/anyOf/1/properties/proof")
 
 ### proof Type
 
