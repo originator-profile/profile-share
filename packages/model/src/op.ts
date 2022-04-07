@@ -1,6 +1,6 @@
 import { FromSchema } from "json-schema-to-ts";
 import OpItem from "./op-item";
-import Jwk from "./jwk";
+import Jwks from "./jwks";
 
 const Op = {
   $id: "op",
@@ -33,11 +33,7 @@ const Op = {
       type: "array",
       items: OpItem,
     },
-    jwks: {
-      title: Jwk.title,
-      type: "array",
-      items: Jwk,
-    },
+    jwks: Jwks,
   },
   required: ["issuer", "subject", "issuedAt", "expiredAt", "item"],
   additionalProperties: false,
