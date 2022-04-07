@@ -1,7 +1,7 @@
 # Detached JSON Web Signature Schema
 
 ```txt
-dp-visible-text-proof#/properties/item/items/anyOf/0/properties/proof/properties/jws
+dp-text-proof#/properties/item/items/anyOf/1/properties/proof/properties/jws
 ```
 
 
@@ -12,4 +12,4 @@ dp-visible-text-proof#/properties/item/items/anyOf/0/properties/proof/properties
 
 ## jws Type
 
-`string` ([Detached JSON Web Signature](dp-properties-document-profile-item-document-profile-item-anyof-visible-text-properties-proof-properties-detached-json-web-signature.md))
+`string` ([Detached JSON Web Signature](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-text-properties-proof-properties-detached-json-web-signature.md))

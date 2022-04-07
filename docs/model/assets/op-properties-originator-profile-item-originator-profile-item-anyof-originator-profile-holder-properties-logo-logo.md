@@ -1,7 +1,7 @@
 # Logo Schema
 
 ```txt
-logo#/properties/item/items/anyOf/0/properties/logo/items
+op-holder-logo#/properties/item/items/anyOf/0/properties/logo/items
 ```
 
 
@@ -16,10 +16,10 @@ logo#/properties/item/items/anyOf/0/properties/logo/items
 
 # items Properties
 
-| Property          | Type      | Required | Nullable       | Defined by                                                                                                                                                                                                                                     |
-| :---------------- | :-------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [url](#url)       | `string`  | Required | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo-logo-properties-ロゴ画像-url.md "logo#/properties/item/items/anyOf/0/properties/logo/items/properties/url")     |
-| [isMain](#ismain) | `boolean` | Required | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo-logo-properties-主なロゴ画像か否か.md "logo#/properties/item/items/anyOf/0/properties/logo/items/properties/isMain") |
+| Property          | Type      | Required | Nullable       | Defined by                                                                                                                                                                                                                                               |
+| :---------------- | :-------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [url](#url)       | `string`  | Required | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo-logo-properties-ロゴ画像-url.md "op-holder-logo#/properties/item/items/anyOf/0/properties/logo/items/properties/url")     |
+| [isMain](#ismain) | `boolean` | Required | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo-logo-properties-主なロゴ画像か否か.md "op-holder-logo#/properties/item/items/anyOf/0/properties/logo/items/properties/isMain") |
 
 ## url
 
@@ -33,7 +33,7 @@ logo#/properties/item/items/anyOf/0/properties/logo/items
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo-logo-properties-ロゴ画像-url.md "logo#/properties/item/items/anyOf/0/properties/logo/items/properties/url")
+*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo-logo-properties-ロゴ画像-url.md "op-holder-logo#/properties/item/items/anyOf/0/properties/logo/items/properties/url")
 
 ### url Type
 
@@ -51,7 +51,7 @@ true: 主なロゴ画像、それ以外: ロゴ画像の候補
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo-logo-properties-主なロゴ画像か否か.md "logo#/properties/item/items/anyOf/0/properties/logo/items/properties/isMain")
+*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo-logo-properties-主なロゴ画像か否か.md "op-holder-logo#/properties/item/items/anyOf/0/properties/logo/items/properties/isMain")
 
 ### isMain Type
 

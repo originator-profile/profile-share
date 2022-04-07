@@ -16,8 +16,8 @@ merged type ([Document Profile Item](dp-properties-document-profile-item-documen
 
 any of
 
-*   [Visible Text](dp-properties-document-profile-item-document-profile-item-anyof-visible-text.md "check type definition")
+*   [Document Profile Visible Text](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text.md "check type definition")
 
-*   [Text](dp-properties-document-profile-item-document-profile-item-anyof-text.md "check type definition")
+*   [Document Profile Text](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-text.md "check type definition")
 
-*   [HTML](dp-properties-document-profile-item-document-profile-item-anyof-html.md "check type definition")
+*   [Document Profile HTML](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html.md "check type definition")

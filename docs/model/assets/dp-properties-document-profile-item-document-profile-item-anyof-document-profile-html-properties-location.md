@@ -1,7 +1,7 @@
 # Location Schema
 
 ```txt
-dp-text-location#/properties/item/items/anyOf/1/properties/location
+dp-html-location#/properties/item/items/anyOf/2/properties/location
 ```
 
 対象の要素の場所を特定する CSS セレクター
@@ -12,4 +12,4 @@ dp-text-location#/properties/item/items/anyOf/1/properties/location
 
 ## location Type
 
-`string` ([Location](dp-properties-document-profile-item-document-profile-item-anyof-text-properties-location.md))
+`string` ([Location](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-location.md))

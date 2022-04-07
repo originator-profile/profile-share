@@ -1,15 +1,15 @@
-# Location Schema
+# Detached JSON Web Signature Schema
 
 ```txt
-dp-html-location#/properties/item/items/anyOf/2/properties/location
+dp-html-proof#/properties/item/items/anyOf/2/properties/proof/properties/jws
 ```
 
-対象の要素の場所を特定する CSS セレクター
+
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [dp.schema.json\*](dp.schema.json "open original schema") |
 
-## location Type
+## jws Type
 
-`string` ([Location](dp-properties-document-profile-item-document-profile-item-anyof-html-properties-location.md))
+`string` ([Detached JSON Web Signature](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-proof-properties-detached-json-web-signature.md))

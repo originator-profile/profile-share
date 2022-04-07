@@ -1,7 +1,7 @@
 # URL Schema
 
 ```txt
-dp-visible-text-url#/properties/item/items/anyOf/0/properties/url
+dp-html-url#/properties/item/items/anyOf/2/properties/url
 ```
 
 対象の要素が存在するページの URL
@@ -12,4 +12,4 @@ dp-visible-text-url#/properties/item/items/anyOf/0/properties/url
 
 ## url Type
 
-`string` ([URL](dp-properties-document-profile-item-document-profile-item-anyof-visible-text-properties-url.md))
+`string` ([URL](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-url.md))

@@ -1,7 +1,7 @@
 # Logo Schema
 
 ```txt
-logo#/properties/item/items/anyOf/0/properties/logo
+op-holder-logo#/properties/item/items/anyOf/0/properties/logo
 ```
 
 

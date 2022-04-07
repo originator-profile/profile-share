@@ -16,21 +16,21 @@ op-holder#/properties/item/items/anyOf/0
 
 # 0 Properties
 
-| Property                              | Type          | Required | Nullable       | Defined by                                                                                                                                                                                                                         |
-| :------------------------------------ | :------------ | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [type](#type)                         | Not specified | Required | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-type.md "op-holder#/properties/item/items/anyOf/0/properties/type")                                  |
-| [url](#url)                           | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-ウェブサイトのurl.md "op-holder#/properties/item/items/anyOf/0/properties/url")                             |
-| [name](#name)                         | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-法人名.md "op-holder#/properties/item/items/anyOf/0/properties/name")                                   |
-| [description](#description)           | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-説明.md "op-holder#/properties/item/items/anyOf/0/properties/description")                             |
-| [businessCategory](#businesscategory) | `array`       | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-business-category.md "business-category#/properties/item/items/anyOf/0/properties/businessCategory") |
-| [email](#email)                       | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-メールアドレス.md "op-holder#/properties/item/items/anyOf/0/properties/email")                              |
-| [phoneNumber](#phonenumber)           | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-電話番号.md "op-holder#/properties/item/items/anyOf/0/properties/phoneNumber")                           |
-| [postalCode](#postalcode)             | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-郵便番号.md "op-holder#/properties/item/items/anyOf/0/properties/postalCode")                            |
-| [addressCountry](#addresscountry)     | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-国.md "op-holder#/properties/item/items/anyOf/0/properties/addressCountry")                           |
-| [addressRegion](#addressregion)       | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-都道府県.md "op-holder#/properties/item/items/anyOf/0/properties/addressRegion")                         |
-| [addressLocality](#addresslocality)   | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-市区町村.md "op-holder#/properties/item/items/anyOf/0/properties/addressLocality")                       |
-| [addressStreet](#addressstreet)       | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-番地ビル名.md "op-holder#/properties/item/items/anyOf/0/properties/addressStreet")                        |
-| [logo](#logo)                         | `array`       | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo.md "logo#/properties/item/items/anyOf/0/properties/logo")                                       |
+| Property                              | Type          | Required | Nullable       | Defined by                                                                                                                                                                                                                                   |
+| :------------------------------------ | :------------ | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [type](#type)                         | Not specified | Required | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-type.md "op-holder#/properties/item/items/anyOf/0/properties/type")                                            |
+| [url](#url)                           | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-ウェブサイトのurl.md "op-holder#/properties/item/items/anyOf/0/properties/url")                                       |
+| [name](#name)                         | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-法人名.md "op-holder#/properties/item/items/anyOf/0/properties/name")                                             |
+| [description](#description)           | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-説明.md "op-holder#/properties/item/items/anyOf/0/properties/description")                                       |
+| [businessCategory](#businesscategory) | `array`       | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-business-category.md "op-holder-business-category#/properties/item/items/anyOf/0/properties/businessCategory") |
+| [email](#email)                       | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-メールアドレス.md "op-holder#/properties/item/items/anyOf/0/properties/email")                                        |
+| [phoneNumber](#phonenumber)           | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-電話番号.md "op-holder#/properties/item/items/anyOf/0/properties/phoneNumber")                                     |
+| [postalCode](#postalcode)             | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-郵便番号.md "op-holder#/properties/item/items/anyOf/0/properties/postalCode")                                      |
+| [addressCountry](#addresscountry)     | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-国.md "op-holder#/properties/item/items/anyOf/0/properties/addressCountry")                                     |
+| [addressRegion](#addressregion)       | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-都道府県.md "op-holder#/properties/item/items/anyOf/0/properties/addressRegion")                                   |
+| [addressLocality](#addresslocality)   | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-市区町村.md "op-holder#/properties/item/items/anyOf/0/properties/addressLocality")                                 |
+| [addressStreet](#addressstreet)       | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-番地ビル名.md "op-holder#/properties/item/items/anyOf/0/properties/addressStreet")                                  |
+| [logo](#logo)                         | `array`       | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo.md "op-holder-logo#/properties/item/items/anyOf/0/properties/logo")                                       |
 
 ## type
 
@@ -124,7 +124,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-business-category.md "business-category#/properties/item/items/anyOf/0/properties/businessCategory")
+*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-business-category.md "op-holder-business-category#/properties/item/items/anyOf/0/properties/businessCategory")
 
 ### businessCategory Type
 
@@ -268,7 +268,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo.md "logo#/properties/item/items/anyOf/0/properties/logo")
+*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo.md "op-holder-logo#/properties/item/items/anyOf/0/properties/logo")
 
 ### logo Type
 

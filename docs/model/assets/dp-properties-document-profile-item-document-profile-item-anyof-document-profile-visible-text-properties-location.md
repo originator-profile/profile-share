@@ -1,15 +1,15 @@
-# URL Schema
+# Location Schema
 
 ```txt
-dp-text-url#/properties/item/items/anyOf/1/properties/url
+dp-visible-text-location#/properties/item/items/anyOf/0/properties/location
 ```
 
-対象の要素が存在するページの URL
+対象の要素の場所を特定する CSS セレクター
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [dp.schema.json\*](dp.schema.json "open original schema") |
 
-## url Type
+## location Type
 
-`string` ([URL](dp-properties-document-profile-item-document-profile-item-anyof-text-properties-url.md))
+`string` ([Location](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-location.md))

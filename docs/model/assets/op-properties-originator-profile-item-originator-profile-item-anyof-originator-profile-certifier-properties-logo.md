@@ -1,7 +1,7 @@
-# 事業種目 Schema
+# Logo Schema
 
 ```txt
-op-holder-business-category#/properties/item/items/anyOf/0/properties/businessCategory/items
+op-certifier-logo#/properties/item/items/anyOf/2/properties/logo
 ```
 
 
@@ -10,6 +10,6 @@ op-holder-business-category#/properties/item/items/anyOf/0/properties/businessCa
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [op.schema.json\*](op.schema.json "open original schema") |
 
-## items Type
+## logo Type
 
-`string` ([事業種目](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-business-category-事業種目.md))
+`object[]` ([Logo](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-logo-logo.md))

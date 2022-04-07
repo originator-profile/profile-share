@@ -16,21 +16,21 @@ op-certifier#/properties/item/items/anyOf/2
 
 # 2 Properties
 
-| Property                              | Type          | Required | Nullable       | Defined by                                                                                                                                                                                                                            |
-| :------------------------------------ | :------------ | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [type](#type)                         | Not specified | Required | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-type.md "op-certifier#/properties/item/items/anyOf/2/properties/type")                               |
-| [url](#url)                           | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-ウェブサイトのurl.md "op-certifier#/properties/item/items/anyOf/2/properties/url")                          |
-| [name](#name)                         | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-法人名.md "op-certifier#/properties/item/items/anyOf/2/properties/name")                                |
-| [description](#description)           | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-説明.md "op-certifier#/properties/item/items/anyOf/2/properties/description")                          |
-| [businessCategory](#businesscategory) | `array`       | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-business-category.md "business-category#/properties/item/items/anyOf/2/properties/businessCategory") |
-| [email](#email)                       | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-メールアドレス.md "op-certifier#/properties/item/items/anyOf/2/properties/email")                           |
-| [phoneNumber](#phonenumber)           | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-電話番号.md "op-certifier#/properties/item/items/anyOf/2/properties/phoneNumber")                        |
-| [postalCode](#postalcode)             | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-郵便番号.md "op-certifier#/properties/item/items/anyOf/2/properties/postalCode")                         |
-| [addressCountry](#addresscountry)     | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-国.md "op-certifier#/properties/item/items/anyOf/2/properties/addressCountry")                        |
-| [addressRegion](#addressregion)       | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-都道府県.md "op-certifier#/properties/item/items/anyOf/2/properties/addressRegion")                      |
-| [addressLocality](#addresslocality)   | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-市区町村.md "op-certifier#/properties/item/items/anyOf/2/properties/addressLocality")                    |
-| [addressStreet](#addressstreet)       | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-番地ビル名.md "op-certifier#/properties/item/items/anyOf/2/properties/addressStreet")                     |
-| [logo](#logo)                         | `array`       | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-logo.md "logo#/properties/item/items/anyOf/2/properties/logo")                                       |
+| Property                              | Type          | Required | Nullable       | Defined by                                                                                                                                                                                                                                         |
+| :------------------------------------ | :------------ | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [type](#type)                         | Not specified | Required | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-type.md "op-certifier#/properties/item/items/anyOf/2/properties/type")                                            |
+| [url](#url)                           | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-ウェブサイトのurl.md "op-certifier#/properties/item/items/anyOf/2/properties/url")                                       |
+| [name](#name)                         | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-法人名.md "op-certifier#/properties/item/items/anyOf/2/properties/name")                                             |
+| [description](#description)           | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-説明.md "op-certifier#/properties/item/items/anyOf/2/properties/description")                                       |
+| [businessCategory](#businesscategory) | `array`       | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-business-category.md "op-certifier-business-category#/properties/item/items/anyOf/2/properties/businessCategory") |
+| [email](#email)                       | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-メールアドレス.md "op-certifier#/properties/item/items/anyOf/2/properties/email")                                        |
+| [phoneNumber](#phonenumber)           | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-電話番号.md "op-certifier#/properties/item/items/anyOf/2/properties/phoneNumber")                                     |
+| [postalCode](#postalcode)             | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-郵便番号.md "op-certifier#/properties/item/items/anyOf/2/properties/postalCode")                                      |
+| [addressCountry](#addresscountry)     | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-国.md "op-certifier#/properties/item/items/anyOf/2/properties/addressCountry")                                     |
+| [addressRegion](#addressregion)       | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-都道府県.md "op-certifier#/properties/item/items/anyOf/2/properties/addressRegion")                                   |
+| [addressLocality](#addresslocality)   | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-市区町村.md "op-certifier#/properties/item/items/anyOf/2/properties/addressLocality")                                 |
+| [addressStreet](#addressstreet)       | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-番地ビル名.md "op-certifier#/properties/item/items/anyOf/2/properties/addressStreet")                                  |
+| [logo](#logo)                         | `array`       | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-logo.md "op-certifier-logo#/properties/item/items/anyOf/2/properties/logo")                                       |
 
 ## type
 
@@ -124,7 +124,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-business-category.md "business-category#/properties/item/items/anyOf/2/properties/businessCategory")
+*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-business-category.md "op-certifier-business-category#/properties/item/items/anyOf/2/properties/businessCategory")
 
 ### businessCategory Type
 
@@ -268,7 +268,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-logo.md "logo#/properties/item/items/anyOf/2/properties/logo")
+*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-logo.md "op-certifier-logo#/properties/item/items/anyOf/2/properties/logo")
 
 ### logo Type
 

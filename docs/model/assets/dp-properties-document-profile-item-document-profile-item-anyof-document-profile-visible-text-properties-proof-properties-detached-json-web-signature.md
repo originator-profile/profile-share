@@ -1,15 +1,15 @@
-# URL Schema
+# Detached JSON Web Signature Schema
 
 ```txt
-dp-html-url#/properties/item/items/anyOf/2/properties/url
+dp-visible-text-proof#/properties/item/items/anyOf/0/properties/proof/properties/jws
 ```
 
-対象の要素が存在するページの URL
+
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [dp.schema.json\*](dp.schema.json "open original schema") |
 
-## url Type
+## jws Type
 
-`string` ([URL](dp-properties-document-profile-item-document-profile-item-anyof-html-properties-url.md))
+`string` ([Detached JSON Web Signature](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-proof-properties-detached-json-web-signature.md))

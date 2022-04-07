@@ -1,7 +1,7 @@
 # 主なロゴ画像か否か Schema
 
 ```txt
-logo#/properties/item/items/anyOf/0/properties/logo/items/properties/isMain
+op-holder-logo#/properties/item/items/anyOf/0/properties/logo/items/properties/isMain
 ```
 
 true: 主なロゴ画像、それ以外: ロゴ画像の候補

@@ -1,7 +1,7 @@
 # ロゴ画像 URL Schema
 
 ```txt
-logo#/properties/item/items/anyOf/0/properties/logo/items/properties/url
+op-holder-logo#/properties/item/items/anyOf/0/properties/logo/items/properties/url
 ```
 
 
