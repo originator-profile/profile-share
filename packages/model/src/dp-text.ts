@@ -10,9 +10,18 @@ const DpText = {
   type: "object",
   properties: {
     type: { const: "text" },
-    url: DpUrl,
-    location: DpLocation,
-    proof: DpProof,
+    url: {
+      ...DpUrl,
+      $id: "dp-text-url",
+    },
+    location: {
+      ...DpLocation,
+      $id: "dp-text-location",
+    },
+    proof: {
+      ...DpProof,
+      $id: "dp-text-proof",
+    },
   },
   required: ["type", "url", "location", "proof"],
   additionalProperties: false,

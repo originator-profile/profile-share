@@ -11,9 +11,18 @@ const DpVisibleText = {
   type: "object",
   properties: {
     type: { const: "visible-text" },
-    url: DpUrl,
-    location: DpLocation,
-    proof: DpProof,
+    url: {
+      ...DpUrl,
+      $id: "dp-visible-text-url",
+    },
+    location: {
+      ...DpLocation,
+      $id: "dp-visible-text-location",
+    },
+    proof: {
+      ...DpProof,
+      $id: "dp-visible-text-proof",
+    },
   },
   required: ["type", "url", "location", "proof"],
   additionalProperties: false,

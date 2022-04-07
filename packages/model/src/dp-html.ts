@@ -10,9 +10,18 @@ const DpHtml = {
   type: "object",
   properties: {
     type: { const: "html" },
-    url: DpUrl,
-    location: DpLocation,
-    proof: DpProof,
+    url: {
+      ...DpUrl,
+      $id: "dp-html-url",
+    },
+    location: {
+      ...DpLocation,
+      $id: "dp-html-location",
+    },
+    proof: {
+      ...DpProof,
+      $id: "dp-html-proof",
+    },
   },
   required: ["type", "url", "location", "proof"],
   additionalProperties: false,
