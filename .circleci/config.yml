@@ -21,7 +21,38 @@ jobs:
           paths: ["~/.cache/yarn"]
       - run: yarn lint
       - run: yarn test
+  format:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - checkout
+      - node/install:
+          install-yarn: true
+      - restore_cache:
+          name: Restore Yarn cache
+          keys: ['yarn-v1-{{ checksum "yarn.lock" }}']
+      - run:
+          name: Install dependencies
+          command: "yarn install --frozen-lockfile --cache-folder ~/.cache/yarn"
+      - save_cache:
+          name: Save Yarn cache
+          key: 'yarn-v1-{{ checksum "yarn.lock" }}'
+          paths: ["~/.cache/yarn"]
+      - add_ssh_keys:
+          fingerprints: ["dd:f4:c2:d0:4f:dc:64:85:73:8f:2c:b9:5d:1c:63:9c"]
+      - run: yarn format
+      - run:
+          name: Commit
+          command: |
+            git config user.name bot
+            git config user.email bot@webdino.org
+            if git commit -am 'bot: format'; then
+              git push origin HEAD:"$CIRCLE_BRANCH"
+            fi
 workflows:
   test:
     jobs:
       - test
+  format:
+    jobs:
+      - format
