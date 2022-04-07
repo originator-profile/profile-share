@@ -5,7 +5,7 @@ import DpProof from "./dp-proof";
 
 const DpText = {
   $id: "dp-text",
-  title: "Text",
+  title: "Document Profile Text",
   description: "対象の要素の子孫のテキストとそのテキストへの署名",
   type: "object",
   properties: {

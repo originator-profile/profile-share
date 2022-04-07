@@ -5,7 +5,7 @@ import DpProof from "./dp-proof";
 
 const DpHtml = {
   $id: "dp-html",
-  title: "HTML",
+  title: "Document Profile HTML",
   description: "対象の要素とその子孫を含む部分の HTML とその HTML への署名",
   type: "object",
   properties: {

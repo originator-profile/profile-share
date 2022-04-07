@@ -5,7 +5,7 @@ import DpProof from "./dp-proof";
 
 const DpVisibleText = {
   $id: "dp-visible-text",
-  title: "Visible Text",
+  title: "Document Profile Visible Text",
   description:
     "対象の要素のその子孫のレンダリングされたテキストとそのテキストへの署名",
   type: "object",
