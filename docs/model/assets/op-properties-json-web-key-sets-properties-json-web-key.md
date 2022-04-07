@@ -1,7 +1,7 @@
-# Untitled string in Originator Profile Schema
+# JSON Web Key Schema
 
 ```txt
-jwk#/properties/jwks/items/properties/kty
+jwks#/properties/jwks/properties/keys
 ```
 
 
@@ -10,6 +10,6 @@ jwk#/properties/jwks/items/properties/kty
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [op.schema.json\*](op.schema.json "open original schema") |
 
-## kty Type
+## keys Type
 
-`string`
+`object[]` ([JSON Web Key](op-properties-json-web-key-sets-properties-json-web-key-json-web-key.md))

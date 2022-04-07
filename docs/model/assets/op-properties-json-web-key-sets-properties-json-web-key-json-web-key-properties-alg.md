@@ -1,7 +1,7 @@
 # Untitled string in Originator Profile Schema
 
 ```txt
-jwk#/properties/jwks/items/properties/kid
+jwk#/properties/jwks/properties/keys/items/properties/alg
 ```
 
 
@@ -10,6 +10,6 @@ jwk#/properties/jwks/items/properties/kid
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [op.schema.json\*](op.schema.json "open original schema") |
 
-## kid Type
+## alg Type
 
 `string`

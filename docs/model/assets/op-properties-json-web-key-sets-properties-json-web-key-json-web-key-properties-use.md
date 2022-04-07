@@ -1,7 +1,7 @@
 # Untitled string in Originator Profile Schema
 
 ```txt
-jwk#/properties/jwks/items/properties/use
+jwk#/properties/jwks/properties/keys/items/properties/use
 ```
 
 
