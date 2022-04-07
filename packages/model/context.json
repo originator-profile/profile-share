@@ -1,0 +1,22 @@
+{
+  "@context": {
+    "op": "https://github.com/webdino/profile#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "main": {
+      "@id": "op:main",
+      "@type": "xsd:string"
+    },
+    "profile": {
+      "@id": "op:profile",
+      "@type": "xsd:string"
+    },
+    "publisher": {
+      "@id": "op:publisher",
+      "@type": "xsd:string"
+    },
+    "advertiser": {
+      "@id": "op:advertiser",
+      "@type": "xsd:string"
+    }
+  }
+}

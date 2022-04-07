@@ -12,6 +12,7 @@ module.exports = {
   settings: {
     react: { version: "detect" },
   },
+  ignorePatterns: "dist",
   rules: {
     "tsc/config": ["error", { configFile: "tsconfig.json" }],
     "react/react-in-jsx-scope": "off",
