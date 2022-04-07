@@ -1,0 +1,43 @@
+# README
+
+## Top-level Schemas
+
+*   [Document Profile](./dp.md) – `dp`
+
+*   [Originator Profile](./op.md) – `op`
+
+## Other Schemas
+
+### Objects
+
+*   [HTML](./dp-properties-document-profile-item-document-profile-item-anyof-html.md "対象の要素とその子孫を含む部分の HTML とその HTML への署名") – `dp-html#/properties/item/items/anyOf/2`
+
+*   [JSON Web Key](./op-properties-json-web-key-json-web-key.md) – `jwk#/properties/jwks/items`
+
+*   [Logo](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo-logo.md) – `logo#/properties/item/items/anyOf/0/properties/logo/items`
+
+*   [Originator Profile Certifier](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier.md "資格情報を発行する認証機構") – `op-certifier#/properties/item/items/anyOf/2`
+
+*   [Originator Profile Credential](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-credential.md "認証機構の報告書などの資格情報") – `op-credential#/properties/item/items/anyOf/1`
+
+*   [Originator Profile Holder](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder.md "資格情報を保有する組織") – `op-holder#/properties/item/items/anyOf/0`
+
+*   [Proof](./dp-properties-document-profile-item-document-profile-item-anyof-visible-text-properties-proof.md "対象のテキストへの署名") – `dp-proof#/properties/item/items/anyOf/0/properties/proof`
+
+*   [Text](./dp-properties-document-profile-item-document-profile-item-anyof-text.md "対象の要素の子孫のテキストとそのテキストへの署名") – `dp-text#/properties/item/items/anyOf/1`
+
+*   [Visible Text](./dp-properties-document-profile-item-document-profile-item-anyof-visible-text.md "対象の要素のその子孫のレンダリングされたテキストとそのテキストへの署名") – `dp-visible-text#/properties/item/items/anyOf/0`
+
+### Arrays
+
+*   [Business Category](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-business-category.md) – `business-category#/properties/item/items/anyOf/0/properties/businessCategory`
+
+*   [Document Profile Item](./dp-properties-document-profile-item.md) – `dp#/properties/item`
+
+*   [JSON Web Key](./op-properties-json-web-key.md) – `op#/properties/jwks`
+
+*   [Logo](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo.md) – `logo#/properties/item/items/anyOf/0/properties/logo`
+
+*   [Originator Profile Item](./op-properties-originator-profile-item.md) – `op#/properties/item`
+
+*   [Untitled array in Originator Profile](./op-properties-json-web-key-json-web-key-properties-x5c.md) – `jwk#/properties/jwks/items/properties/x5c`
