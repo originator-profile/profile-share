@@ -4,4 +4,4 @@ module.exports = {
     extend: {},
   },
   plugins: [...require("@jumpu-ui/tailwindcss")],
-}
+};
