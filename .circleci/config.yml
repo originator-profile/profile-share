@@ -4,11 +4,9 @@ orbs:
 jobs:
   test:
     docker:
-      - image: "cimg/base:stable"
+      - image: "cimg/node:lts"
     steps:
       - checkout
-      - node/install:
-          install-yarn: true
       - restore_cache:
           name: Restore Yarn cache
           keys: ['yarn-v1-{{ checksum "yarn.lock" }}']
@@ -23,11 +21,9 @@ jobs:
       - run: yarn test
   format:
     docker:
-      - image: "cimg/base:stable"
+      - image: "cimg/node:lts"
     steps:
       - checkout
-      - node/install:
-          install-yarn: true
       - restore_cache:
           name: Restore Yarn cache
           keys: ['yarn-v1-{{ checksum "yarn.lock" }}']
