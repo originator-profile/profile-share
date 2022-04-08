@@ -1,0 +1,26 @@
+{
+  "name": "@webdino/profile-model-docs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "run-s build:schema build:docs",
+    "build:schema": "node -r esbuild-register scripts/schema-gen.ts",
+    "build:docs": "run-s build:docs:clean build:docs:gen",
+    "build:docs:clean": "rimraf ../../docs/model/assets",
+    "build:docs:gen": "jsonschema2md --input dist --out ../../docs/model/assets --schema-out ../../docs/model/assets",
+    "test": "markdown-link-check ../../docs/model/assets/*.md",
+    "lint": "eslint --fix ."
+  },
+  "devDependencies": {
+    "@adobe/jsonschema2md": "^7.0.0",
+    "@types/rimraf": "^3.0.2",
+    "@webdino/profile-model": "*",
+    "@webdino/profile-tsconfig": "*",
+    "esbuild-register": "^3.3.2",
+    "eslint": "^8.12.0",
+    "eslint-config-webdino-profile": "*",
+    "markdown-link-check": "^3.10.0",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2"
+  }
+}
