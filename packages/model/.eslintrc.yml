@@ -1,0 +1,4 @@
+extends: webdino-profile
+plugins: [filenames]
+rules:
+  filenames/match-exported: [error, kebab]
