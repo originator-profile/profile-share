@@ -9,105 +9,116 @@ generator erd {
 }
 
 /// OP 文書
-model Op {
-  id          Int          @id
+model ops {
+  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   /// 認証機構
-  certifier   Account      @relation(fields: [certifierId], references: [id])
-  certifierId Int
+  certifier   accounts      @relation(fields: [certifierId], references: [id])
+  certifierId String        @db.Uuid
   /// 発行日
   issuedAt    DateTime
   /// 有効期限
   expiredAt   DateTime
   /// JWT
-  jwt         String       @unique
+  jwt         String        @unique
   /// 公開
-  publication Publication?
+  publication publications?
 }
 
 /// 会員
-model Account {
-  id               Int                @id
+model accounts {
+  id                 String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   /// ウェブサイトのURL
-  url              String             @unique
+  url                String                      @unique
   /// 会員種別
-  role             Role
+  role               roles                       @relation(fields: [roleValue], references: [value])
+  roleValue          String                      @default("group")
   /// 法人名
-  name             String
+  name               String
   /// 説明 (ウェブメディアそれを運用する法人、認定機関、業界団体等であることの記述)
-  description      String
+  description        String
   /// 事業種目
-  businessCategory BusinessCategory[]
+  businessCategories accountBusinessCategories[]
   /// メールアドレス
-  email            String
+  email              String
   /// 電話番号
-  phoneNumber      String
+  phoneNumber        String
   /// 郵便番号
-  postalCode       String
+  postalCode         String
   /// 国
-  addressCountry   String
+  addressCountry     String
   /// 都道府県
-  addressRegion    String
+  addressRegion      String
   /// 市区町村
-  addressLocality  String
+  addressLocality    String
   /// 番地・ビル名
-  addressStreet    String
+  addressStreet      String
   /// ロゴ画像
-  logo             Logo[]
+  logos              logos[]
   /// 発行履歴
-  issue            Op[]
+  issues             ops[]
   /// 公開履歴
-  publication      Publication[]
+  publications       publications[]
   /// 公開鍵
-  key              Key[]
+  keys               keys[]
 }
 
 /// 会員種別
-enum Role {
-  /// 組織
-  GROUP
-  /// 認証機構
-  CERTIFIER
+model roles {
+  /// "group": 組織、"certifier": 認証機構
+  value    String     @id
+  /// 会員
+  accounts accounts[]
 }
 
 /// 事業種目
-model BusinessCategory {
-  id      Int       @id
+model businessCategories {
   /// 事業種目
-  value   String    @unique
+  value    String                      @id
   /// 会員
-  account Account[]
+  accounts accountBusinessCategories[]
+}
+
+/// 会員・事業種目リレーション
+model accountBusinessCategories {
+  /// 会員
+  account               accounts           @relation(fields: [accountId], references: [id])
+  accountId             String             @db.Uuid
+  /// 事業種目
+  businessCategory      businessCategories @relation(fields: [businessCategoryValue], references: [value])
+  businessCategoryValue String
+
+  @@id([accountId, businessCategoryValue])
 }
 
 /// ロゴ画像
-model Logo {
-  id        Int     @id
+model logos {
   /// ロゴ画像 URL
-  url       String  @unique
+  url       String   @id
   /// 主なロゴ画像か否か (true: 主なロゴ画像、それ以外: ロゴ画像の候補)
-  isMain    Boolean @default(false)
+  isMain    Boolean  @default(false)
   /// 会員
-  account   Account @relation(fields: [accountId], references: [id])
-  accountId Int
+  account   accounts @relation(fields: [accountId], references: [id])
+  accountId String   @db.Uuid
 }
 
 /// 公開
-model Publication {
+model publications {
   /// OP 文書
-  op          Op       @relation(fields: [opId], references: [id])
-  opId        Int      @id
+  op          ops      @relation(fields: [opId], references: [id])
+  opId        String   @id @db.Uuid
   /// 会員
-  account     Account  @relation(fields: [accountId], references: [id])
-  accountId   Int
+  account     accounts @relation(fields: [accountId], references: [id])
+  accountId   String   @db.Uuid
   /// 公開日
-  publishedAt DateTime
+  publishedAt DateTime @default(now())
 }
 
 /// 公開鍵
-model Key {
-  id        Int     @id
+model keys {
+  id        Int      @id @default(autoincrement())
   /// 会員
-  account   Account @relation(fields: [accountId], references: [id])
-  accountId Int
+  account   accounts @relation(fields: [accountId], references: [id])
+  accountId String   @db.Uuid
   /// JWK
   jwk       Json
 }
