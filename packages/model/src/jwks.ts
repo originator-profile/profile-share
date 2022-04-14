@@ -13,7 +13,7 @@ const Jwks = {
     },
   },
   required: ["keys"],
-  additionalProperties: false,
+  additionalProperties: true,
 } as const;
 
 type Jwks = FromSchema<typeof Jwks>;
