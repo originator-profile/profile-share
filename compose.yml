@@ -22,6 +22,6 @@ services:
     ports: ["5432:5432"]
     volumes:
       - postgres_data_v14:/var/lib/postgresql/data
-      - ./packages/registry-db/prisma/migrations:/docker-entrypoint-initdb.d
+      - ./packages/registry-db/prisma/migrations:/docker-entrypoint-initdb.d:z
 volumes:
   postgres_data_v14:
