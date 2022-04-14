@@ -1,0 +1,6 @@
+{
+  "extends": "@webdino/profile-tsconfig/tsconfig.json",
+  "compilerOptions": {
+    "resolveJsonModule": true
+  }
+}

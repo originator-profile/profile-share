@@ -7,6 +7,10 @@
     "dev": {
       "cache": false
     },
+    "e2e": {
+      "dependsOn": ["build"],
+      "outputs": []
+    },
     "test": {
       "dependsOn": ["build"],
       "outputs": []
