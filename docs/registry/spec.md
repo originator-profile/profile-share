@@ -1,5 +1,9 @@
 # Profile Registry 仕様
 
+## API ドキュメント
+
+API に関する詳細は、[API ドキュメント](assets/api.md)を参照してください。
+
 ## 署名
 
 Originator Profile は、認証機構の報告書をもとに CLI アプリケーションによって署名し、作成します。

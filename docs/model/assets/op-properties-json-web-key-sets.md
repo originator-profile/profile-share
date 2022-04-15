@@ -8,7 +8,7 @@ jwks#/properties/jwks
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                |
 | :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [op.schema.json\*](op.schema.json "open original schema") |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Allowed               | none                | [op.schema.json\*](op.schema.json "open original schema") |
 
 ## jwks Type
 
@@ -16,9 +16,10 @@ jwks#/properties/jwks
 
 # jwks Properties
 
-| Property      | Type    | Required | Nullable       | Defined by                                                                                                               |
-| :------------ | :------ | :------- | :------------- | :----------------------------------------------------------------------------------------------------------------------- |
-| [keys](#keys) | `array` | Required | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key.md "jwks#/properties/jwks/properties/keys") |
+| Property              | Type    | Required | Nullable       | Defined by                                                                                                               |
+| :-------------------- | :------ | :------- | :------------- | :----------------------------------------------------------------------------------------------------------------------- |
+| [keys](#keys)         | `array` | Required | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key.md "jwks#/properties/jwks/properties/keys") |
+| Additional Properties | Any     | Optional | can be null    |                                                                                                                          |
 
 ## keys
 
@@ -37,3 +38,7 @@ jwks#/properties/jwks
 ### keys Type
 
 `object[]` ([JSON Web Key](op-properties-json-web-key-sets-properties-json-web-key-json-web-key.md))
+
+## Additional Properties
+
+Additional properties are allowed and do not have to follow a specific schema

@@ -1,0 +1,128 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "../../../docs/registry/assets/erd.md"
+}
+
+/// OP 文書
+model ops {
+  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  /// 認証機構
+  certifier   accounts      @relation(fields: [certifierId], references: [id])
+  certifierId String        @db.Uuid
+  /// 発行日
+  issuedAt    DateTime
+  /// 有効期限
+  expiredAt   DateTime
+  /// JWT
+  jwt         String        @unique
+  /// 公開
+  publication publications?
+}
+
+/// 会員
+model accounts {
+  id                 String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  /// ウェブサイトのURL
+  url                String                      @unique
+  /// 会員種別
+  role               roles                       @relation(fields: [roleValue], references: [value])
+  roleValue          String                      @default("group")
+  /// 法人名
+  name               String
+  /// 説明 (ウェブメディアそれを運用する法人、認定機関、業界団体等であることの記述)
+  description        String
+  /// 事業種目
+  businessCategories accountBusinessCategories[]
+  /// メールアドレス
+  email              String
+  /// 電話番号
+  phoneNumber        String
+  /// 郵便番号
+  postalCode         String
+  /// 国
+  addressCountry     String
+  /// 都道府県
+  addressRegion      String
+  /// 市区町村
+  addressLocality    String
+  /// 番地・ビル名
+  addressStreet      String
+  /// ロゴ画像
+  logos              logos[]
+  /// 発行履歴
+  issues             ops[]
+  /// 公開履歴
+  publications       publications[]
+  /// 公開鍵
+  keys               keys[]
+}
+
+/// 会員種別
+model roles {
+  /// "group": 組織、"certifier": 認証機構
+  value    String     @id
+  /// 会員
+  accounts accounts[]
+}
+
+/// 事業種目
+model businessCategories {
+  /// 事業種目
+  value    String                      @id
+  /// 会員
+  accounts accountBusinessCategories[]
+}
+
+/// 会員・事業種目リレーション
+model accountBusinessCategories {
+  /// 会員
+  account               accounts           @relation(fields: [accountId], references: [id])
+  accountId             String             @db.Uuid
+  /// 事業種目
+  businessCategory      businessCategories @relation(fields: [businessCategoryValue], references: [value])
+  businessCategoryValue String
+
+  @@id([accountId, businessCategoryValue])
+}
+
+/// ロゴ画像
+model logos {
+  /// ロゴ画像 URL
+  url       String   @id
+  /// 主なロゴ画像か否か (true: 主なロゴ画像、それ以外: ロゴ画像の候補)
+  isMain    Boolean  @default(false)
+  /// 会員
+  account   accounts @relation(fields: [accountId], references: [id])
+  accountId String   @db.Uuid
+}
+
+/// 公開
+model publications {
+  /// OP 文書
+  op          ops      @relation(fields: [opId], references: [id])
+  opId        String   @id @db.Uuid
+  /// 会員
+  account     accounts @relation(fields: [accountId], references: [id])
+  accountId   String   @db.Uuid
+  /// 公開日
+  publishedAt DateTime @default(now())
+}
+
+/// 公開鍵
+model keys {
+  id        Int      @id @default(autoincrement())
+  /// 会員
+  account   accounts @relation(fields: [accountId], references: [id])
+  accountId String   @db.Uuid
+  /// JWK
+  jwk       Json
+}

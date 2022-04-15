@@ -1,4 +1,5 @@
 *.log
+.env
 .turbo
 node_modules
 dist

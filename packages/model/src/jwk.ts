@@ -37,7 +37,7 @@ const Jwk = {
     },
   },
   required: ["kty"],
-  additionalProperties: false,
+  additionalProperties: true,
 } as const;
 
 type Jwk = FromSchema<typeof Jwk>;

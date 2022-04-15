@@ -1,23 +1,17 @@
 ```mermaid
 erDiagram
 
-        Role {
-            GROUP GROUP
-CERTIFIER CERTIFIER
-        }
-    
-  Op {
-      Int id
+  ops {
+      String id
     DateTime issuedAt
     DateTime expiredAt
     String jwt
     }
   
 
-  Account {
-      Int id
+  accounts {
+      String id
     String url
-    Role role
     String name
     String description
     String email
@@ -30,35 +24,43 @@ CERTIFIER CERTIFIER
     }
   
 
-  BusinessCategory {
-      Int id
-    String value
+  roles {
+      String value
     }
   
 
-  Logo {
-      Int id
-    String url
+  businessCategories {
+      String value
+    }
+  
+
+  accountBusinessCategories {
+  
+    }
+  
+
+  logos {
+      String url
     Boolean isMain
     }
   
 
-  Publication {
+  publications {
       DateTime publishedAt
     }
   
 
-  Key {
+  keys {
       Int id
     Json jwk
     }
   
-    Op o{--|| Account : "certifier"
-    Account o|--|| Role : "enum:role"
-    Account o{--}o BusinessCategory : ""
-    BusinessCategory o{--}o Account : ""
-    Logo o{--|| Account : "account"
-    Publication o|--|| Op : "op"
-    Publication o{--|| Account : "account"
-    Key o{--|| Account : "account"
+    ops o{--|| accounts : "certifier"
+    accounts o{--|| roles : "role"
+    accountBusinessCategories o{--|| accounts : "account"
+    accountBusinessCategories o{--|| businessCategories : "businessCategory"
+    logos o{--|| accounts : "account"
+    publications o|--|| ops : "op"
+    publications o{--|| accounts : "account"
+    keys o{--|| accounts : "account"
 ```
