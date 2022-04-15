@@ -1,9 +1,10 @@
 services:
   api:
+    image: webdino/profile
     build:
       context: "."
       args:
-        NODE_IMAGE: node:16.14-alpine
+        NODE_VERSION: 16.14-alpine
     healthcheck:
       test: "wget -qO /dev/null http://localhost:8080/"
     environment:

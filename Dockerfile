@@ -1,13 +1,15 @@
-ARG NODE_IMAGE
-FROM ${NODE_IMAGE} as builder
+ARG NODE_VERSION
+FROM node:${NODE_VERSION} as builder
 WORKDIR /app
 COPY . .
-RUN yarn install --frozen-lockfile
-RUN yarn build
+RUN yarn install --frozen-lockfile \
+  && yarn build \
+  && yarn workspace @webdino/profile-registry pack \
+  && mv apps/registry/webdino-profile-registry-v*.tgz profile-registry.tgz
 
-FROM ${NODE_IMAGE}
+FROM node:${NODE_VERSION}
 WORKDIR /app
-COPY --from=builder /app/apps/registry/dist .
+COPY --from=builder /app/profile-registry.tgz ./
+RUN npm install profile-registry.tgz
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-RUN npm install @prisma/client
-CMD ["index.js"]
+CMD ["npx", "profile-registry", "start"]
