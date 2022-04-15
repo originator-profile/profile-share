@@ -2,6 +2,88 @@
 
 Originator Profile の管理を行うシステムです。
 
+- [Usage](#usage)
+- [Commands](#commands)
+- [Dependencies](#dependencies)
+
+## Usage
+
+<!-- prettier-ignore-start -->
+<!-- usage -->
+```sh-session
+$ npm install -g @webdino/profile-registry
+$ profile-registry COMMAND
+running command...
+$ profile-registry (--version)
+@webdino/profile-registry/0.0.0 linux-x64 node-v16.14.2
+$ profile-registry --help [COMMAND]
+USAGE
+  $ profile-registry COMMAND
+...
+```
+<!-- usagestop -->
+<!-- prettier-ignore-end -->
+
+## Commands
+
+<!-- prettier-ignore-start -->
+<!-- commands -->
+* [`profile-registry help [COMMAND]`](#profile-registry-help-command)
+* [`profile-registry openapi-gen [OUTPUT]`](#profile-registry-openapi-gen-output)
+* [`profile-registry start`](#profile-registry-start)
+
+## `profile-registry help [COMMAND]`
+
+Display help for profile-registry.
+
+```
+USAGE
+  $ profile-registry help [COMMAND] [-n]
+
+ARGUMENTS
+  COMMAND  Command to show help for.
+
+FLAGS
+  -n, --nested-commands  Include all nested commands in the output.
+
+DESCRIPTION
+  Display help for profile-registry.
+```
+
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.12/src/commands/help.ts)_
+
+## `profile-registry openapi-gen [OUTPUT]`
+
+OpenAPI ドキュメント生成
+
+```
+USAGE
+  $ profile-registry openapi-gen [OUTPUT]
+
+ARGUMENTS
+  OUTPUT  [default: dist/openapi.json] 出力先ファイル ("-": 標準出力)
+
+DESCRIPTION
+  OpenAPI ドキュメント生成
+```
+
+## `profile-registry start`
+
+API サーバーの起動
+
+```
+USAGE
+  $ profile-registry start [-p <value>]
+
+FLAGS
+  -p, --port=<value>  [default: 8080] Listen port
+
+DESCRIPTION
+  API サーバーの起動
+```
+<!-- commandsstop -->
+<!-- prettier-ignore-end -->
+
 ## Dependencies
 
 - 開発用サーバーを起動するには、[Docker](https://www.docker.com/get-started) と [Compose v2](https://docs.docker.com/compose/cli-command/) がインストールされ、Docker が起動している必要があります
