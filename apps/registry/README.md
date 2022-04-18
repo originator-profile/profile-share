@@ -105,12 +105,14 @@ API サーバーの起動
 
 ```
 USAGE
-  $ profile-registry start [--schema <value>] [--seed] [-p <value>]
+  $ profile-registry start [--schema <value>] [--seed] [-p <value>] [--basic-auth-token <value>]
 
 FLAGS
-  -p, --port=<value>  [default: 8080] Listen port
-  --schema=<value>    [default: node_modules/@webdino/profile-registry/dist/prisma/schema.prisma] Prisma schema file
-  --seed              Seed database
+  -p, --port=<value>          [default: 8080] Listen port
+  --basic-auth-token=<value>  Basic 認証用のトークン (デフォルト: 無効)
+  --schema=<value>            [default: node_modules/@webdino/profile-registry/dist/prisma/schema.prisma] Prisma schema
+                              file
+  --seed                      Seed database
 
 DESCRIPTION
   API サーバーの起動

@@ -9,7 +9,7 @@ declare module "fastify" {
 }
 
 /** RouteHandlerMethod から RouteGeneric への型の変換 */
-type FromHandler<
+export type FromHandler<
   Handler,
   Params = unknown
 > = Handler extends RouteHandlerMethod<never, never, never, infer RouteGeneric>

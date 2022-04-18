@@ -14,6 +14,10 @@ export default class Start extends Command {
       env: "PORT",
       default: "8080",
     }),
+    "basic-auth-token": Flags.string({
+      description: "Basic 認証用のトークン (デフォルト: 無効)",
+      env: "BASIC_AUTH_TOKEN",
+    }),
   };
 
   async run(): Promise<void> {
@@ -25,6 +29,7 @@ export default class Start extends Command {
       isDev,
       prisma,
       routes: path.resolve(__dirname, "../../routes"),
+      basicAuthToken: flags["basic-auth-token"],
     });
     await start(server, flags.port);
   }

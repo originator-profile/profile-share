@@ -8,23 +8,21 @@ Profile Registry API Documentation.
 
 <h1 id="profile-registry-api-default">Default</h1>
 
-## getIndex
+## frontend
 
-<a id="opIdgetIndex"></a>
+<a id="opIdfrontend"></a>
 
 > Code samples
 
 ```shell
 # You can also use wget
-curl -X GET /
+curl -X GET /{wildcard}
 
 ```
 
-`GET /`
+`GET {wildcard}`
 
-print routes
-
-<h3 id="getindex-responses">Responses</h3>
+<h3 id="frontend-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|

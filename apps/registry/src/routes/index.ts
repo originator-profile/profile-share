@@ -1,4 +1,6 @@
 import { FastifyInstance } from "fastify";
+import path from "node:path";
+import serveHandler from "serve-handler";
 import context from "@webdino/profile-model/context.json";
 import { FromHandler } from "../types";
 import getIssuerKeys from "./get-issuer-keys";
@@ -6,14 +8,14 @@ import getIssuerProfiles from "./get-issuer-profiles";
 
 async function index(fastify: FastifyInstance): Promise<void> {
   fastify.get(
-    "/",
-    {
-      schema: {
-        operationId: "getIndex",
-        description: "print routes",
-      },
-    },
-    async () => fastify.printRoutes()
+    "*",
+    { schema: { operationId: "frontend" } },
+    async (req, res) => {
+      await serveHandler(req.raw, res.raw, {
+        public: path.resolve(__dirname, "../public"),
+        directoryListing: false,
+      });
+    }
   );
   fastify.get(
     "/context",
