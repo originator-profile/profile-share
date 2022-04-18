@@ -1,6 +1,6 @@
 import util from "node:util";
 import { Prisma, PrismaClient } from "@prisma/client";
-import { webcrypto as crypto } from "node:crypto";
+import crypto from "node:crypto";
 import {
   generateKeyPair,
   exportJWK,
@@ -14,20 +14,25 @@ import addFormats from "ajv-formats";
 import Jwk from "@webdino/profile-model/src/jwk";
 import Op from "@webdino/profile-model/src/op";
 
-const sleep = util.promisify(setTimeout);
-// @ts-expect-error assert
-const issuerUuid: string = process.env.ISSUER_UUID ?? crypto.randomUUID();
+export async function waitForDb(prisma: PrismaClient): Promise<void> {
+  const sleep = util.promisify(setTimeout);
 
-async function seed(): Promise<void> {
+  for (;;) {
+    try {
+      await prisma.$connect();
+      break;
+    } catch {
+      console.log("Waiting for database to be ready...");
+      await sleep(1_000);
+    }
+  }
+}
+
+export async function seed(): Promise<void> {
+  const issuerUuid: string = process.env.ISSUER_UUID ?? crypto.randomUUID();
   const prisma: PrismaClient = new PrismaClient();
 
-  try {
-    await prisma.$connect();
-  } catch {
-    console.log("Waiting for database to be ready...");
-    await sleep(1_000);
-    return seed();
-  }
+  await waitForDb(prisma);
 
   const issuerExists = await prisma.accounts.findUnique({
     where: { id: issuerUuid },
@@ -125,4 +130,4 @@ ${pkcs8}`);
   }
 }
 
-seed();
+if (require.main === module) seed();

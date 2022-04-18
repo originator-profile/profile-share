@@ -11,9 +11,6 @@ services:
       DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@db/postgres
       ISSUER_UUID: ${ISSUER_UUID}
     ports: ["8080:8080"]
-    depends_on:
-      db:
-        condition: service_healthy
   db:
     image: postgres:14.2-alpine
     healthcheck:
@@ -23,6 +20,5 @@ services:
     ports: ["5432:5432"]
     volumes:
       - postgres_data_v14:/var/lib/postgresql/data
-      - ./packages/registry-db/prisma/migrations:/docker-entrypoint-initdb.d:z
 volumes:
   postgres_data_v14:
