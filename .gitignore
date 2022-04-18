@@ -3,4 +3,5 @@
 .turbo
 node_modules
 dist
+/apps/registry/oclif.manifest.json
 /apps/web-ext/web-ext-artifacts

@@ -1,6 +1,8 @@
 {
   "extends": "@webdino/profile-tsconfig/tsconfig.json",
   "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
     "types": ["./src/types.d.ts"],
     "resolveJsonModule": true
   }

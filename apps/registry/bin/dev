@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+require("esbuild-register");
+const oclif = require("@oclif/core");
+
+process.env.NODE_ENV = "development";
+process.env.TS_NODE_DEV = "true";
+oclif.settings.debug = true;
+oclif.run().then(oclif.flush).catch(oclif.Errors.handle);
