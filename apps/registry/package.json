@@ -10,16 +10,18 @@
     "oclif.manifest.json"
   ],
   "scripts": {
-    "build": "tsup src --clean --onSuccess 'run-s build:{cli,api} docs'",
+    "build": "run-s build:{ts,db,cli,api} docs",
+    "build:ts": "tsup src --clean",
+    "build:db": "shx cp -r ../../packages/registry-db/prisma dist/",
     "build:cli": "oclif manifest",
     "build:api": "bin/run openapi-gen",
-    "dev": "dotenv -e $PWD/.env.development run-p dev:*",
+    "dev": "dotenv -e $PWD/.env.development run-p dev:{db,build}",
     "dev:db": "run-p dev:db:*",
-    "dev:db:init": "docker compose --env-file .env.development up db",
+    "dev:db:up": "docker compose --env-file .env.development up db",
     "dev:db:gen": "yarn workspace @webdino/profile-registry-db dev",
-    "dev:db:seed": "yarn workspace @webdino/profile-registry-db seed",
-    "dev:start": "bin/dev start",
-    "dev:build": "tsup src --watch --onSuccess 'run-s build:{cli,api} docs'",
+    "dev:build": "tsup src --watch --onSuccess 'run-p dev:{docs,start}'",
+    "dev:docs": "run-s build:{cli,api} docs",
+    "dev:start": "npm start -- --seed --schema=../../packages/registry-db/prisma/schema.prisma",
     "docs": "run-p docs:*",
     "docs:cli": "oclif readme",
     "docs:api": "widdershins dist/openapi.json --omitHeader --language_tabs shell:Shell --outfile ../../docs/registry/assets/api.md",
@@ -33,7 +35,8 @@
   "dependencies": {
     "@oclif/core": "^1",
     "@oclif/plugin-help": "^5",
-    "@prisma/client": "^3.12.0"
+    "@prisma/client": "^3.12.0",
+    "prisma": "^3.12.0"
   },
   "devDependencies": {
     "@types/jsonld": "^1.5.6",

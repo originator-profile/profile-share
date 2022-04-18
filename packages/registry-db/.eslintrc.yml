@@ -1,1 +1,5 @@
 extends: webdino-profile
+overrides:
+  - files: prisma/seed.ts
+    rules:
+      no-await-in-loop: "off"

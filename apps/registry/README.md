@@ -28,9 +28,41 @@ USAGE
 
 <!-- prettier-ignore-start -->
 <!-- commands -->
+* [`profile-registry db:init`](#profile-registry-dbinit)
+* [`profile-registry db:prisma`](#profile-registry-dbprisma)
 * [`profile-registry help [COMMAND]`](#profile-registry-help-command)
 * [`profile-registry openapi-gen [OUTPUT]`](#profile-registry-openapi-gen-output)
 * [`profile-registry start`](#profile-registry-start)
+
+## `profile-registry db:init`
+
+データベースの初期化
+
+```
+USAGE
+  $ profile-registry db:init [--schema <value>] [--seed]
+
+FLAGS
+  --schema=<value>  [default: node_modules/@webdino/profile-registry/dist/prisma/schema.prisma] Prisma schema file
+  --seed            Seed database
+
+DESCRIPTION
+  データベースの初期化
+```
+
+## `profile-registry db:prisma`
+
+Prisma CLI
+
+```
+USAGE
+  $ profile-registry db:prisma
+
+DESCRIPTION
+  Prisma CLI
+
+  see: https://www.prisma.io/docs/reference/api-reference/command-reference
+```
 
 ## `profile-registry help [COMMAND]`
 
@@ -73,10 +105,12 @@ API サーバーの起動
 
 ```
 USAGE
-  $ profile-registry start [-p <value>]
+  $ profile-registry start [--schema <value>] [--seed] [-p <value>]
 
 FLAGS
   -p, --port=<value>  [default: 8080] Listen port
+  --schema=<value>    [default: node_modules/@webdino/profile-registry/dist/prisma/schema.prisma] Prisma schema file
+  --seed              Seed database
 
 DESCRIPTION
   API サーバーの起動
