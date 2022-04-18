@@ -20,7 +20,7 @@ jwk#/properties/jwks/properties/keys/items
 | :-------------------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [kty](#kty)           | `string` | Required | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-kty.md "jwk#/properties/jwks/properties/keys/items/properties/kty")          |
 | [use](#use)           | `string` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-use.md "jwk#/properties/jwks/properties/keys/items/properties/use")          |
-| [key\_ops](#key_ops)  | `string` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-key_ops.md "jwk#/properties/jwks/properties/keys/items/properties/key_ops")  |
+| [key\_ops](#key_ops)  | `array`  | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-key_ops.md "jwk#/properties/jwks/properties/keys/items/properties/key_ops")  |
 | [alg](#alg)           | `string` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-alg.md "jwk#/properties/jwks/properties/keys/items/properties/alg")          |
 | [kid](#kid)           | `string` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-kid.md "jwk#/properties/jwks/properties/keys/items/properties/kid")          |
 | [x5u](#x5u)           | `string` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5u.md "jwk#/properties/jwks/properties/keys/items/properties/x5u")          |
@@ -73,7 +73,7 @@ jwk#/properties/jwks/properties/keys/items
 
 *   is optional
 
-*   Type: `string`
+*   Type: `string[]`
 
 *   cannot be null
 
@@ -81,7 +81,7 @@ jwk#/properties/jwks/properties/keys/items
 
 ### key\_ops Type
 
-`string`
+`string[]`
 
 ## alg
 

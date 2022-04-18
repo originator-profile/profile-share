@@ -120,7 +120,9 @@ curl -X GET /.well-known/jwks.json \
     {
       "kty": "string",
       "use": "string",
-      "key_ops": "string",
+      "key_ops": [
+        "string"
+      ],
       "alg": "string",
       "kid": "string",
       "x5u": "string",
@@ -154,7 +156,7 @@ Status Code **200**
 |»» JSON Web Key|object|false|none|none|
 |»»» kty|string|true|none|none|
 |»»» use|string|false|none|none|
-|»»» key_ops|string|false|none|none|
+|»»» key_ops|[string]|false|none|none|
 |»»» alg|string|false|none|none|
 |»»» kid|string|false|none|none|
 |»»» x5u|string|false|none|none|
@@ -273,7 +275,9 @@ curl -X GET /account/{id}/keys \
     {
       "kty": "string",
       "use": "string",
-      "key_ops": "string",
+      "key_ops": [
+        "string"
+      ],
       "alg": "string",
       "kid": "string",
       "x5u": "string",
@@ -307,7 +311,7 @@ Status Code **200**
 |»» JSON Web Key|object|false|none|none|
 |»»» kty|string|true|none|none|
 |»»» use|string|false|none|none|
-|»»» key_ops|string|false|none|none|
+|»»» key_ops|[string]|false|none|none|
 |»»» alg|string|false|none|none|
 |»»» kid|string|false|none|none|
 |»»» x5u|string|false|none|none|

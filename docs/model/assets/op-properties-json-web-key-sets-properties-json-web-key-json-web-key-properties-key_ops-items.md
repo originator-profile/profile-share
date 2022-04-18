@@ -1,7 +1,7 @@
-# Untitled array in Originator Profile Schema
+# Untitled string in Originator Profile Schema
 
 ```txt
-jwk#/properties/jwks/properties/keys/items/properties/key_ops
+jwk#/properties/jwks/properties/keys/items/properties/key_ops/items
 ```
 
 
@@ -10,6 +10,6 @@ jwk#/properties/jwks/properties/keys/items/properties/key_ops
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [op.schema.json\*](op.schema.json "open original schema") |
 
-## key\_ops Type
+## items Type
 
-`string[]`
+`string`

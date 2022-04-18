@@ -1,7 +1,8 @@
 import { Command, Flags } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
-import { waitForDb, seed } from "@webdino/profile-registry-db/prisma/seed";
+import { waitForDb } from "../../seed";
 import { DbPrisma } from "./prisma";
+import { DbSeed } from "./seed";
 
 export class DbInit extends Command {
   static description = "データベースの初期化";
@@ -23,8 +24,6 @@ export class DbInit extends Command {
     await waitForDb(prisma);
     await prisma.$disconnect();
     await DbPrisma.run(["migrate", "deploy", `--schema=${flags.schema}`]);
-    if (flags.seed) {
-      await seed();
-    }
+    if (flags.seed) await DbSeed.run();
   }
 }

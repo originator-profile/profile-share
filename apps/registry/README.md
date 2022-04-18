@@ -32,6 +32,7 @@ USAGE
 <!-- commands -->
 * [`profile-registry db:init`](#profile-registry-dbinit)
 * [`profile-registry db:prisma`](#profile-registry-dbprisma)
+* [`profile-registry db:seed`](#profile-registry-dbseed)
 * [`profile-registry help [COMMAND]`](#profile-registry-help-command)
 * [`profile-registry openapi-gen [OUTPUT]`](#profile-registry-openapi-gen-output)
 * [`profile-registry start`](#profile-registry-start)
@@ -64,6 +65,18 @@ DESCRIPTION
   Prisma CLI
 
   see: https://www.prisma.io/docs/reference/api-reference/command-reference
+```
+
+## `profile-registry db:seed`
+
+Seed database
+
+```
+USAGE
+  $ profile-registry db:seed
+
+DESCRIPTION
+  Seed database
 ```
 
 ## `profile-registry help [COMMAND]`

@@ -2,7 +2,3 @@ extends: webdino-profile
 plugins: [filenames]
 rules:
   filenames/match-exported: [error, kebab]
-overrides:
-  - files: src/seed.ts
-    rules:
-      no-await-in-loop: "off"
