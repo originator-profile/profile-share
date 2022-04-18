@@ -11,6 +11,15 @@ export default defineConfig({
   ],
   build: {
     watch: isDev ? {} : undefined,
+    rollupOptions: {
+      input: {
+        index: "index.html",
+        background: "src/background.ts",
+      },
+      output: {
+        entryFileNames: "[name].js",
+      },
+    },
     sourcemap: isDev,
     target: "es2015",
   },
