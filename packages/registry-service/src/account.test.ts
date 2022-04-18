@@ -53,6 +53,8 @@ describe("AccountService", () => {
     const account: AccountService = AccountService({ config, prisma });
     // @ts-expect-error assert
     const data: JsonLdDocument = await account.getProfiles(crypto.randomUUID());
-    await expand(data);
+    const op = await expand(data);
+    expect(`${config.JSONLD_CONTEXT}#main` in op[0]).toBe(true);
+    expect(`${config.JSONLD_CONTEXT}#profile` in op[0]).toBe(true);
   });
 });

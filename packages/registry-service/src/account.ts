@@ -43,7 +43,7 @@ export const AccountService = ({ config, prisma }: Options) => ({
     const profiles: JsonLdDocument = {
       "@context": config.JSONLD_CONTEXT,
       main: data.map((publication) => publication.account.url),
-      profiles: ops.map((op) => op.jwt),
+      profile: ops.map((op) => op.jwt),
     };
     return profiles;
   },
