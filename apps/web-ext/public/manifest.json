@@ -1,7 +1,7 @@
 {
-  "description": "Web Extensions Sample",
+  "description": "Profile Web Extension",
   "manifest_version": 2,
-  "name": "Web Extensions Sample",
+  "name": "Profile Web Extension",
   "version": "1.0.0",
   "homepage_url": "https://github.com/tuqulore/web-ext-sample",
   "icons": {
@@ -9,7 +9,7 @@
   },
   "browser_action": {
     "default_icon": "icons/48x48.png",
-    "default_title": "Web Extensions Sample"
+    "default_title": "Profile Web Extension"
   },
   "background": {
     "scripts": ["background.js"]

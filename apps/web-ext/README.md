@@ -1,4 +1,6 @@
-# Web Extensions Sample
+# Profile Web Extension
+
+Web ブラウザーで Originator Profile の閲覧と検証を行うアプリです。
 
 ## 使い方
 
