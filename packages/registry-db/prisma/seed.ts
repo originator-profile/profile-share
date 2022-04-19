@@ -73,7 +73,7 @@ export async function seed(): Promise<void> {
       issuedAt: issuedAt.toISOString(),
       expiredAt: expiredAt.toISOString(),
       issuer: "http://localhost:8080",
-      subject: "http://sub.localhost:8080",
+      subject: "http://localhost:8080",
       item: [
         {
           type: "certifier",
@@ -85,7 +85,6 @@ export async function seed(): Promise<void> {
         {
           type: "holder",
           ...issuer,
-          url: "http://sub.localhost:8080",
         },
       ],
       jwks: { keys: [publicJwk as Jwk] },

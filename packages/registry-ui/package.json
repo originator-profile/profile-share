@@ -1,0 +1,21 @@
+{
+  "name": "@webdino/profile-registry-ui",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "lint": "eslint --fix ."
+  },
+  "devDependencies": {
+    "@exampledev/new.css": "^1.1.3",
+    "@webdino/profile-tsconfig": "*",
+    "babel-preset-solid": "^1.3.13",
+    "eslint": "^8.13.0",
+    "eslint-config-webdino-profile": "*",
+    "eslint-plugin-filenames": "^1.3.2",
+    "jose": "^4.6.1",
+    "jsonld": "^5.2.0",
+    "vite": "^2.9.5",
+    "vite-plugin-solid": "^2.2.6"
+  }
+}
