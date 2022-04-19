@@ -12,7 +12,8 @@
     "e2e": "turbo run e2e",
     "test": "turbo run test",
     "lint": "turbo run lint",
-    "format": "prettier --ignore-path .gitignore --write . '!docs/**/assets'"
+    "format": "prettier --ignore-path .gitignore --write . '!docs/**/assets'",
+    "start": "profile-registry start"
   },
   "devDependencies": {
     "prettier": "^2.5.1",
