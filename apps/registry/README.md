@@ -2,29 +2,37 @@
 
 Originator Profile の管理を行うシステムです。
 
+デモ: https://oprdev.herokuapp.com/
+
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/webdino/profile)
 
+- [Dependencies](#dependencies)
 - [Usage](#usage)
 - [Commands](#commands)
-- [Dependencies](#dependencies)
+
+## Dependencies
+
+- 開発環境を構築するためには、[Node.js](https://nodejs.org/) が必要です。
+- 開発用サーバーを起動するには、[Docker](https://www.docker.com/get-started) と [Compose v2](https://docs.docker.com/compose/cli-command/) がインストールされ、起動できる環境が必要です。
 
 ## Usage
 
-<!-- prettier-ignore-start -->
-<!-- usage -->
 ```sh-session
-$ npm install -g @webdino/profile-registry
-$ profile-registry COMMAND
-running command...
-$ profile-registry (--version)
-@webdino/profile-registry/0.0.0 linux-x64 node-v16.14.2
-$ profile-registry --help [COMMAND]
-USAGE
-  $ profile-registry COMMAND
-...
+$ corepack yarn install
+$ corepack yarn workspace @webdino/profile-registry run
+スクリプトの実行...
+$ corepack yarn workspace @webdino/profile-registry dev
+http://localhost:8080 での開発用サーバーの起動...
 ```
-<!-- usagestop -->
-<!-- prettier-ignore-end -->
+
+その他
+
+```
+$ bin/dev COMMAND
+running command...
+```
+
+以降、`bin/dev` は `profile-registry` と表記します。
 
 ## Commands
 
@@ -205,7 +213,3 @@ DESCRIPTION
 ```
 <!-- commandsstop -->
 <!-- prettier-ignore-end -->
-
-## Dependencies
-
-- 開発用サーバーを起動するには、[Docker](https://www.docker.com/get-started) と [Compose v2](https://docs.docker.com/compose/cli-command/) がインストールされ、Docker が起動している必要があります
