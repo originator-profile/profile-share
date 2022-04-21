@@ -1,5 +1,10 @@
+import { Routes, Route } from "react-router-dom";
 import { InlineIcon } from "@iconify/react";
 import { Disclosure } from "@headlessui/react";
+import Holders from "./pages/Holders";
+import Holder from "./pages/Holder";
+import Credential from "./pages/Credential";
+import TechnicalInformation from "./pages/TechnicalInformation";
 
 function App(): React.ReactElement {
   return (
@@ -16,6 +21,15 @@ function App(): React.ReactElement {
           </Disclosure.Panel>
         </div>
       </Disclosure>
+      <Routes>
+        <Route path="/index.html" element={<Holders />} />
+        <Route path="/holder" element={<Holder />} />
+        <Route path="/credential" element={<Credential />} />
+        <Route
+          path="/technical-information"
+          element={<TechnicalInformation />}
+        />
+      </Routes>
     </div>
   );
 }
