@@ -1,21 +1,24 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { JsonLdDocument } from "jsonld";
-import { NotFoundError } from "http-errors-enhanced";
+import { BadRequestError, NotFoundError } from "http-errors-enhanced";
 import Jwk from "@webdino/profile-model/src/jwk";
 import Jwks from "@webdino/profile-model/src/jwks";
 import Config from "./config";
+import { ValidatorService } from "./validator";
 
 type Options = {
   config: Config;
   prisma: PrismaClient;
+  validator: ValidatorService;
 };
 
 type AccountId = string;
+type OpId = string;
 
-export const AccountService = ({ config, prisma }: Options) => ({
+export const AccountService = ({ config, prisma, validator }: Options) => ({
   /**
    * JWKS の取得
-   * @param {AccountId} id
+   * @param id 会員 ID
    */
   async getKeys(id: AccountId): Promise<Jwks | Error> {
     const data = await prisma.keys
@@ -29,7 +32,7 @@ export const AccountService = ({ config, prisma }: Options) => ({
   },
   /**
    * Originator Profile Document の取得
-   * @param {AccountId} id
+   * @param id 会員 ID
    */
   async getProfiles(id: AccountId): Promise<JsonLdDocument | Error> {
     const data = await prisma.accounts
@@ -46,6 +49,39 @@ export const AccountService = ({ config, prisma }: Options) => ({
       profile: ops.map((op) => op.jwt),
     };
     return profiles;
+  },
+  /**
+   * 公開鍵の登録
+   * @param id 会員 ID
+   * @param input 公開鍵 (JWK)
+   */
+  async registerKey(id: AccountId, input: Jwk): Promise<Jwks | Error> {
+    const jwk = validator.jwkValidate(input);
+    if (jwk instanceof Error) return jwk;
+    const data = await prisma.keys
+      .create({ data: { accountId: id, jwk: jwk as Prisma.InputJsonValue } })
+      .catch((e: Error) => e);
+    if (!data) return new BadRequestError();
+    if (data instanceof Error) return data;
+
+    const jwks: Jwks = { keys: [data.jwk as Jwk] };
+    return jwks;
+  },
+  /**
+   * OP の公開
+   * @param id 会員 ID
+   * @param opId OP ID
+   * @return 公開した OP (JWT)
+   */
+  async publishProfile(id: AccountId, opId: OpId): Promise<string | Error> {
+    const data = await prisma.publications
+      .create({ data: { accountId: id, opId }, include: { op: true } })
+      .catch((e: Error) => e);
+    if (!data) return new BadRequestError();
+    if (data instanceof Error) return data;
+
+    const jwt = data.op.jwt;
+    return jwt;
   },
 });
 

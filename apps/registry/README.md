@@ -30,11 +30,68 @@ USAGE
 
 <!-- prettier-ignore-start -->
 <!-- commands -->
+* [`profile-registry account:register`](#profile-registry-accountregister)
+* [`profile-registry account:register-key`](#profile-registry-accountregister-key)
+* [`profile-registry cert:issue`](#profile-registry-certissue)
 * [`profile-registry db:init`](#profile-registry-dbinit)
 * [`profile-registry db:prisma`](#profile-registry-dbprisma)
+* [`profile-registry db:seed`](#profile-registry-dbseed)
 * [`profile-registry help [COMMAND]`](#profile-registry-help-command)
+* [`profile-registry key-gen`](#profile-registry-key-gen)
 * [`profile-registry openapi-gen [OUTPUT]`](#profile-registry-openapi-gen-output)
 * [`profile-registry start`](#profile-registry-start)
+
+## `profile-registry account:register`
+
+アカウントの登録
+
+```
+USAGE
+  $ profile-registry account:register -i <value>
+
+FLAGS
+  -i, --input=<value>  (required) [default: account.example.json] Prisma.accountsCreateManyInput (JSON) file
+
+DESCRIPTION
+  アカウントの登録
+```
+
+## `profile-registry account:register-key`
+
+公開鍵の登録
+
+```
+USAGE
+  $ profile-registry account:register-key -k <value> --id <value>
+
+FLAGS
+  -k, --key=<value>  (required) JWK 公開鍵ファイル
+  --id=<value>       (required) 会員 (UUID)
+
+DESCRIPTION
+  公開鍵の登録
+```
+
+## `profile-registry cert:issue`
+
+OP の発行
+
+```
+USAGE
+  $ profile-registry cert:issue -i <value> --certifier <value> --holder <value> [--credential <value>]
+    [--issued-at <value>] [--expired-at <value>]
+
+FLAGS
+  -i, --identity=<value>  (required) PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル
+  --certifier=<value>     (required) 認証機構 (UUID)
+  --credential=<value>    認証機構の報告書 JSON ファイル
+  --expired-at=<value>    有効期限 (ISO 8601)
+  --holder=<value>        (required) 発行対象の会員 (UUID)
+  --issued-at=<value>     発行日時 (ISO 8601)
+
+DESCRIPTION
+  OP の発行
+```
 
 ## `profile-registry db:init`
 
@@ -66,6 +123,18 @@ DESCRIPTION
   see: https://www.prisma.io/docs/reference/api-reference/command-reference
 ```
 
+## `profile-registry db:seed`
+
+Seed database
+
+```
+USAGE
+  $ profile-registry db:seed
+
+DESCRIPTION
+  Seed database
+```
+
 ## `profile-registry help [COMMAND]`
 
 Display help for profile-registry.
@@ -85,6 +154,21 @@ DESCRIPTION
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.12/src/commands/help.ts)_
+
+## `profile-registry key-gen`
+
+鍵ペアの生成
+
+```
+USAGE
+  $ profile-registry key-gen -o <value>
+
+FLAGS
+  -o, --output=<value>  (required) 秘密鍵の保存先
+
+DESCRIPTION
+  鍵ペアの生成
+```
 
 ## `profile-registry openapi-gen [OUTPUT]`
 

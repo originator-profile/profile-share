@@ -1,12 +1,13 @@
 import { test, expect, describe, afterEach } from "vitest";
 import { mock, mockDeep, mockClear } from "vitest-mock-extended";
 import { PrismaClient } from "@prisma/client";
-import { webcrypto as crypto } from "node:crypto";
+import crypto from "node:crypto";
 import Ajv from "ajv";
 import { expand, JsonLdDocument } from "jsonld";
 import Jwks from "@webdino/profile-model/src/jwks";
 import Config from "./config";
 import { AccountService } from "./account";
+import { ValidatorService } from "./validator";
 
 const config: Config = {
   PORT: "8080",
@@ -14,13 +15,12 @@ const config: Config = {
   JSONLD_CONTEXT: "https://github.com/webdino/profile",
 };
 
-// @ts-expect-error assert
 const accountId: string = crypto.randomUUID();
-// @ts-expect-error assert
 const opId: string = crypto.randomUUID();
 
 describe("AccountService", () => {
   const prisma = mockDeep<PrismaClient>();
+  const validator = ValidatorService();
 
   afterEach(() => {
     mockClear(prisma);
@@ -32,7 +32,11 @@ describe("AccountService", () => {
     ]);
 
     const ajv = new Ajv();
-    const account: AccountService = AccountService({ config, prisma });
+    const account: AccountService = AccountService({
+      config,
+      prisma,
+      validator,
+    });
     // @ts-expect-error assert
     const data: Jwks = await account.getKeys(crypto.randomUUID());
     const valid = ajv.validate(Jwks, data);
@@ -50,11 +54,45 @@ describe("AccountService", () => {
       { op: { id: opId, jwt: "jwt" }, account: { url: "url" } },
     ]);
 
-    const account: AccountService = AccountService({ config, prisma });
+    const account: AccountService = AccountService({
+      config,
+      prisma,
+      validator,
+    });
     // @ts-expect-error assert
     const data: JsonLdDocument = await account.getProfiles(crypto.randomUUID());
     const op = await expand(data);
     expect(`${config.JSONLD_CONTEXT}#main` in op[0]).toBe(true);
     expect(`${config.JSONLD_CONTEXT}#profile` in op[0]).toBe(true);
+  });
+
+  test("registerKey() calls prisma.keys.create()", async () => {
+    const jwk = { kid: "1", kty: "RSA", n: "1", e: "1" };
+    prisma.keys.create.mockResolvedValue({ id: 1, accountId, jwk });
+    const account: AccountService = AccountService({
+      config,
+      prisma,
+      validator,
+    });
+    const data = await account.registerKey(accountId, jwk);
+    expect(prisma.keys.create.call.length).toBe(1);
+    expect(data).toMatchObject({ keys: [jwk] });
+  });
+
+  test("publishProfile() calls prisma.publications.create()", async () => {
+    prisma.publications.create.mockResolvedValue({
+      accountId,
+      opId,
+      publishedAt: new Date(),
+      // @ts-expect-error assert
+      op: { id: opId, jwt: "jwt" },
+    });
+    const account: AccountService = AccountService({
+      config,
+      prisma,
+      validator,
+    });
+    await account.publishProfile(accountId, opId);
+    expect(prisma.publications.create.call.length).toBe(1);
   });
 });

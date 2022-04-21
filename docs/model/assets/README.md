@@ -52,4 +52,6 @@
 
 *   [Originator Profile Item](./op-properties-originator-profile-item.md) – `op#/properties/item`
 
+*   [Untitled array in Originator Profile](./op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-key_ops.md) – `jwk#/properties/jwks/properties/keys/items/properties/key_ops`
+
 *   [Untitled array in Originator Profile](./op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5c.md) – `jwk#/properties/jwks/properties/keys/items/properties/x5c`
