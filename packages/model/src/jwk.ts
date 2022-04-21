@@ -12,7 +12,8 @@ const Jwk = {
       type: "string",
     },
     key_ops: {
-      type: "string",
+      type: "array",
+      items: { type: "string" },
     },
     alg: {
       type: "string",
