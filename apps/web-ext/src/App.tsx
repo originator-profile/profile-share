@@ -22,7 +22,7 @@ function App(): React.ReactElement {
         </div>
       </Disclosure>
       <Routes>
-        <Route path="/index.html" element={<Holders />} />
+        <Route path="/" element={<Holders />} />
         <Route path="/holder" element={<Holder />} />
         <Route path="/credential" element={<Credential />} />
         <Route

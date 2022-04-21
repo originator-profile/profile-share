@@ -6,7 +6,7 @@ function Holder(): React.ReactElement {
       <h1>保有者の詳細</h1>
       <ul>
         <li>
-          <Link to="/index.html">保有者の一覧</Link>
+          <Link to="/">保有者の一覧</Link>
         </li>
         <li>
           <Link to="/credential">資格情報</Link>
