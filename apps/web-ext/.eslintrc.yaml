@@ -1,5 +1,7 @@
 extends: webdino-profile
 overrides:
-  - files: [postcss.config.js, tailwind.config.js]
+  - files: [postcss.config.js, tailwind.config.js, esbuild.*.js]
     env:
-      commonjs: true
+      node: true
+    rules:
+      "@typescript-eslint/no-var-requires": "off"

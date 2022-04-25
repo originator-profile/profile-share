@@ -5,9 +5,9 @@ Web ブラウザーで Originator Profile の閲覧と検証を行うアプリ�
 ## 使い方
 
 - `yarn build`: 拡張機能をビルドしたのちパッケージングします
-- `yarn build:vite`: `dist` を出力先として拡張機能を vite でビルドします
+- `yarn build:esbuild`: `dist` を出力先として拡張機能を esbuild でビルドします
 - `yarn build:web-ext`: `dist` をソースとして拡張機能を[パッケージング](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/#packaging-your-extension)します
-- `yarn dev`: `dist` を出力先として拡張機能を vite で差分ビルドします
+- `yarn dev`: `dist` を出力先として拡張機能を esbuild で差分ビルドします
 - `yarn lint`: コードリントします
 - `yarn lint:fix`: fixable なリントエラーを修正します
 - `yarn start:firefox`: `dist` をソースとして Firefox で拡張機能をプレビューします
