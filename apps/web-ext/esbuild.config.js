@@ -6,9 +6,9 @@ module.exports = {
   bundle: true,
   minify: true,
   sourcemap: process.env.NODE_ENV === "development",
-  inject: ['src/react-shim.ts'],
+  inject: ["src/react-shim.ts"],
   plugins: [
     require("esbuild-copy-static-files")({ src: "public", dest: "dist" }),
-    require("./esbuild.postcss")
+    require("./esbuild.postcss"),
   ],
 };
