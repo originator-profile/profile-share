@@ -19,5 +19,6 @@
       "matches": ["http://*/*", "https://*/*"],
       "js": ["contentScript.js"]
     }
-  ]
+  ],
+  "permissions": ["activeTab"]
 }
