@@ -28,10 +28,7 @@ async function verifyOp() {
   return verifies;
 }
 
-function handleMessage(
-  _request: unknown,
-  _sender: browser.Runtime.MessageSender
-) {
+function handleMessage() {
   return verifyOp().then((result) => result);
 }
 
