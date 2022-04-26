@@ -12,7 +12,7 @@ async function verifyOp() {
     .then((res) => res.json())
     .catch((e) => e);
   const [op] = await expand(data);
-  if (op) return;
+  if (!op) return;
   // @ts-expect-error assert
   const profile: string[] = op[`${context}profile`].map(
     (o: { "@value": string }) => o["@value"]
@@ -33,4 +33,3 @@ function handleMessage() {
 }
 
 browser.runtime.onMessage.addListener(handleMessage);
-console.log(browser.runtime.onMessage.hasListener(handleMessage));
