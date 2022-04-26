@@ -5963,6 +5963,11 @@ jose@^4.6.1:
   resolved "https://registry.yarnpkg.com/jose/-/jose-4.6.1.tgz#241472ff928c79b2e2e2fe4c1056b3085384ec42"
   integrity sha512-EFnufEivlIB6j7+JwaenYQzdUDs/McajDr9WnhT6EI0WxbexnfuZimpWX1GnobF6OnQsUFmWFXUXdWyZHWdQow==
 
+jotai@^1.6.4:
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/jotai/-/jotai-1.6.4.tgz#4d9904362c53c4293d32e21fb358d3de34b82912"
+  integrity sha512-XC0ExLhdE6FEBdIjKTe6kMlHaAUV/QiwN7vZond76gNr/WdcdonJOEW79+5t8u38sR41bJXi26B1dRi7cCRz9A==
+
 joycon@^3.0.1, joycon@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/joycon/-/joycon-3.1.1.tgz#bce8596d6ae808f8b68168f5fc69280996894f03"

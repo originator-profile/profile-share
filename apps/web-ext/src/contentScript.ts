@@ -1,7 +1,8 @@
 import { createRemoteJWKSet, jwtVerify } from "jose";
 import { expand } from "jsonld";
+import browser from "webextension-polyfill";
 
-async function main() {
+async function verifyOp() {
   const context = "https://github.com/webdino/profile#";
   const issuer = document.location.origin;
   const jwksEndpoint = new URL(`${issuer}/.well-known/jwks.json`);
@@ -11,6 +12,7 @@ async function main() {
     .then((res) => res.json())
     .catch((e) => e);
   const [op] = await expand(data);
+  if (op) return;
   // @ts-expect-error assert
   const profile: string[] = op[`${context}profile`].map(
     (o: { "@value": string }) => o["@value"]
@@ -23,7 +25,15 @@ async function main() {
         .catch((e) => e)
     )
   );
-  alert(JSON.stringify(verifies, null, 2));
+  return verifies;
 }
 
-main();
+function handleMessage(
+  _request: unknown,
+  _sender: browser.Runtime.MessageSender
+) {
+  return verifyOp().then((result) => result);
+}
+
+browser.runtime.onMessage.addListener(handleMessage);
+console.log(browser.runtime.onMessage.hasListener(handleMessage));
