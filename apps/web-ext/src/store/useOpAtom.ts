@@ -9,7 +9,12 @@ function useOpsAtom() {
   const [ops, setOps] = useAtom(opsAtom);
   useEffect(() => {
     (async () => {
-      const response = await browser.runtime.sendMessage({});
+      // TODO: 拡張機能を呼び出したアクティブタブであることを保証する
+      const tabs = await browser.tabs.query({
+        active: true,
+        currentWindow: false,
+      });
+      const response = await browser.tabs.sendMessage(tabs[0].id ?? NaN, {});
       setOps(response);
     })();
   }, [setOps]);
