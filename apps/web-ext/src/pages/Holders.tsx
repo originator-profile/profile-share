@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import useOpAtom from "../store/useOpAtom";
+import useOpsAtom from "../store/useOpsAtom";
 
 function Holders(): React.ReactElement {
-  const [op] = useOpAtom();
+  const [ops] = useOpsAtom();
   return (
     <>
       <h1>保有者の一覧</h1>
@@ -11,7 +11,7 @@ function Holders(): React.ReactElement {
           <Link to="/holder">保有者の詳細</Link>
         </li>
       </ul>
-      <p>{JSON.stringify(op)}</p>
+      <p>{JSON.stringify(ops)}</p>
     </>
   );
 }
