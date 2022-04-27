@@ -5,3 +5,9 @@ overrides:
       node: true
     rules:
       "@typescript-eslint/no-var-requires": "off"
+  - files: "*.tsx"
+    rules:
+      filenames/match-exported: ["error", "pascal"]
+  - files: src/store/useOpsAtom.ts
+    rules:
+      filenames/match-exported: "off"
