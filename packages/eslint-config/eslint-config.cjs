@@ -8,13 +8,14 @@ module.exports = {
     "plugin:react/recommended",
     "prettier",
   ],
-  plugins: ["tsc"],
+  plugins: ["tsc", "filenames"],
   settings: {
     react: { version: "detect" },
   },
   ignorePatterns: "dist",
   rules: {
     "tsc/config": ["error", { configFile: "tsconfig.json" }],
+    "filenames/match-exported": ["error", "kebab"],
     "react/react-in-jsx-scope": "off",
 
     // Possible Problems
