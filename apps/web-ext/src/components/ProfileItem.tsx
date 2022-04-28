@@ -16,7 +16,10 @@ function ProfileItem({ op }: Props): React.ReactElement {
   const logo = holder.logo?.find(({ isMain }) => isMain);
   return (
     <div className="border-gray-300 border-b">
-      {logo && <img src={logo.url} alt={`${holder.name}のロゴ`} />}
+      <img
+        src={logo?.url ?? "/assets/placeholder-logo-main.png"}
+        alt={`${holder.name}のロゴ`}
+      />
       <div className="px-3 pb-4">
         <p>{holder.name}</p>
         <p className="jumpu-tag bg-gray-100">コンテンツを出版しています</p>
