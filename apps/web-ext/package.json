@@ -58,8 +58,8 @@
     "dev": "NODE_ENV=development node esbuild.dev.js",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "start:chromium": "web-ext run --source-dir dist --target=chromium",
-    "start:firefox": "web-ext run --source-dir dist --target=firefox-desktop",
+    "start:chromium": "web-ext run --source-dir dist --target=chromium --no-reload",
+    "start:firefox": "web-ext run --source-dir dist --target=firefox-desktop --no-reload",
     "test": "vitest --passWithNoTests"
   }
 }
