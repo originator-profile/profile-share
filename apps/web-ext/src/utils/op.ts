@@ -14,8 +14,8 @@ export const toOp = ({
 }: JwtOpPayload): Op => ({
   issuer: iss,
   subject: sub,
-  issuedAt: iat.toString(),
-  expiredAt: exp.toString(),
+  issuedAt: new Date(iat).toISOString(),
+  expiredAt: new Date(exp).toISOString(),
   item,
   jwks,
 });
