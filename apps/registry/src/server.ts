@@ -1,11 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import fastify, { FastifyInstance } from "fastify";
-import autoload from "fastify-autoload";
-import basicAuth from "fastify-basic-auth";
-import cors from "fastify-cors";
-import env from "fastify-env";
+import autoload from "@fastify/autoload";
+import basicAuth from "@fastify/basic-auth";
+import cors from "@fastify/cors";
+import env from "@fastify/env";
+import swagger, { FastifyDynamicSwaggerOptions } from "@fastify/swagger";
 import httpErrorsEnhanced from "fastify-http-errors-enhanced";
-import swagger, { FastifyDynamicSwaggerOptions } from "fastify-swagger";
 import crypto from "node:crypto";
 import { UnauthorizedError } from "http-errors-enhanced";
 import { Config, Services } from "@webdino/profile-registry-service";

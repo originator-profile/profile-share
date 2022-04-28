@@ -13,11 +13,17 @@
     "test": "turbo run test",
     "lint": "turbo run lint",
     "format": "prettier --ignore-path .gitignore --write . '!docs/**/assets'",
+    "update": "run-s update:{npm,dedupe}",
+    "update:npm": "npm-check-updates --deep --upgrade",
+    "update:dedupe": "yarn-deduplicate",
     "start": "profile-registry start"
   },
   "devDependencies": {
-    "prettier": "^2.5.1",
-    "turbo": "latest"
+    "npm-check-updates": "^12.5.9",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.6.2",
+    "turbo": "latest",
+    "yarn-deduplicate": "^5.0.0"
   },
   "engines": {
     "node": ">=14.19.0"
