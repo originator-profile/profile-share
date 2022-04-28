@@ -55,7 +55,7 @@ model accounts {
   /// 市区町村
   addressLocality    String
   /// 番地・ビル名
-  addressStreet      String
+  streetAddress      String
   /// ロゴ画像
   logos              logos[]
   /// 発行履歴
