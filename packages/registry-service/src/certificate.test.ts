@@ -51,6 +51,12 @@ describe("CertificateService", () => {
       addressRegion: "東京都",
       addressLocality: "中央区",
       streetAddress: "日本橋富沢町 10-13 WORK EDITION NIHONBASHI 3F",
+      contactTitle: "お問い合わせ",
+      contactUrl: "https://www.webdino.org/contact/",
+      privacyPolicyTitle: "個人情報保護方針",
+      privacyPolicyUrl: "https://www.webdino.org/privacy/",
+      publishingPrincipleTitle: "編集ガイドライン",
+      publishingPrincipleUrl: "https://www.webdino.org/publishing-principle/",
     };
     // @ts-expect-error assert
     prisma.accounts.findUnique.mockImplementation(async (input) => ({

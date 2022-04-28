@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import crypto from "node:crypto";
 import { Services } from "@webdino/profile-registry-service";
 import { generateKey } from "@webdino/profile-sign";
+import exampleAccount from "./account.example.json";
 
 export async function waitForDb(prisma: PrismaClient): Promise<void> {
   const sleep = util.promisify(setTimeout);
@@ -36,20 +37,7 @@ export async function seed(): Promise<void> {
   });
   if (!issuerExists) {
     await prisma.accounts.create({
-      data: {
-        id: issuerUuid,
-        url: "http://localhost:8080",
-        roleValue: "certifier",
-        name: "WebDINO Japan OPR",
-        description: "Profile Registry (Demo)",
-        email: "example@webdino.org",
-        phoneNumber: "0123456789",
-        postalCode: "123-4567",
-        addressCountry: "JP",
-        addressRegion: "東京都",
-        addressLocality: "中央区",
-        streetAddress: "日本橋富沢町 10-13 WORK EDITION NIHONBASHI 3F",
-      },
+      data: { id: issuerUuid, ...exampleAccount },
     });
   }
   console.log(`UUID: ${issuerUuid}`);
