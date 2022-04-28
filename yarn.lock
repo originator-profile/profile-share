@@ -489,6 +489,51 @@
   dependencies:
     ajv "^6.12.6"
 
+"@fastify/autoload@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@fastify/autoload/-/autoload-4.0.0.tgz#1fdf393613513f54a989f1b0ee8b3e1d7b956253"
+  integrity sha512-mne+IEjcMa1UsypjjyXq5WMj0rTM7JTv6mxBD2o/wq9o/v6Eeyo1bCCnRAglbw/vc9IjQp5CxMg/n5lJmXR8sQ==
+  dependencies:
+    pkg-up "^3.1.0"
+    semver "^7.3.5"
+
+"@fastify/basic-auth@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@fastify/basic-auth/-/basic-auth-3.0.0.tgz#614a8989b55d8585c3fd4b32efbfd554fec0a877"
+  integrity sha512-nkJiXdnPJcgfebQxo/FmFTbsJ1hPwmoq4L2WZakoYUEofDYcdyOkAmAC3ZVKTunmx+tKBrjHgyxQJ8PpUw6o/g==
+  dependencies:
+    basic-auth "^2.0.1"
+    fastify-plugin "^3.0.0"
+    http-errors "^2.0.0"
+
+"@fastify/cors@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@fastify/cors/-/cors-7.0.0.tgz#c67c5a5909498b696bb19578e903f36037ac6f32"
+  integrity sha512-nlo6ScwagBNJacAZD3KX90xjWLIoV0vN9QqoX1wUE9ZeZMdvkVkMZCGlxEtr00NshV0X5wDge4w5rwox7rRzSg==
+  dependencies:
+    fastify-plugin "^3.0.0"
+    vary "^1.1.2"
+
+"@fastify/env@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@fastify/env/-/env-3.0.0.tgz#3895c591b723b8c09f7382426718b477904cd58c"
+  integrity sha512-WRX4Mnt175P2YdgFYHMsTXff1xi3iNW7DeRnKJwFSlzGKWJDEP7ZL7eQCmUeqmCuznZrmITlgznu/+FR4cNDPA==
+  dependencies:
+    env-schema "^4.0.0"
+    fastify-plugin "^3.0.0"
+
+"@fastify/swagger@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@fastify/swagger/-/swagger-6.0.0.tgz#3de2bce61791f2fab83fbcbd28b844127253ff62"
+  integrity sha512-t8Bjxf3zY3B6YwASah/pUS4Xbq+Wa5Ol4ho0Y5HhQRR/fHPlF4xDxPExXVoT9rn7/NzjCwFkVo79kKUpds8hwA==
+  dependencies:
+    fastify-plugin "^3.0.0"
+    fastify-static "^4.0.0"
+    js-yaml "^4.0.0"
+    json-schema-resolver "^1.3.0"
+    openapi-types "^10.0.0"
+    rfdc "^1.3.0"
+
 "@gar/promisify@^1.0.1", "@gar/promisify@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
@@ -3429,6 +3474,11 @@ delegates@^1.0.0:
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
   integrity sha1-hMbhWbgZBP3KWaDvRM2HDTElD5o=
 
+depd@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/depd/-/depd-2.0.0.tgz#b696163cc757560d09cf22cc8fad1571b79e76df"
+  integrity sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==
+
 depd@^1.1.2, depd@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
@@ -3569,20 +3619,10 @@ dotenv-cli@^5.1.0:
     dotenv-expand "^8.0.1"
     minimist "^1.2.5"
 
-dotenv-expand@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-5.1.0.tgz#3fbaf020bfd794884072ea26b1e9791d45a629f0"
-  integrity sha512-YXQl1DSa4/PQyRfgrv6aoNjhasp/p4qs9FjJ4q4cQk+8m4r6k4ZSiEyytKG8f8W9gi8WsQtIObNmKd+tMzNTmA==
-
-dotenv-expand@^8.0.1:
+dotenv-expand@^8.0.1, dotenv-expand@^8.0.3:
   version "8.0.3"
   resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-8.0.3.tgz#29016757455bcc748469c83a19b36aaf2b83dd6e"
   integrity sha512-SErOMvge0ZUyWd5B0NXMQlDkN+8r+HhVUsxgOO7IoPDOdDRD2JjExpN6y3KnFR66jsJMwSn1pqIivhU5rcJiNg==
-
-dotenv@^11.0.0:
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-11.0.0.tgz#ee37feddf8ada6d348a79e198312d4a8abfd1c1e"
-  integrity sha512-Fp/b504Y5W+e+FpCxTFMUZ7ZEQkQYF0rx+KZtmwixJxGQbLHrhCwo3FjZgNC8vIfrSi29PABNbMoCGD9YoiXbQ==
 
 dotenv@^16.0.0:
   version "16.0.0"
@@ -3697,14 +3737,14 @@ env-paths@^2.2.0:
   resolved "https://registry.yarnpkg.com/env-paths/-/env-paths-2.2.1.tgz#420399d416ce1fbe9bc0a07c62fa68d67fd0f8f2"
   integrity sha512-+h1lkLKhZMTYjog1VEpJNG7NZJWcuc2DDk/qsqSTRRCOXiLjeQ1d1/udrUGhqMxUgAlwKNZ0cf2uqan5GLuS2A==
 
-env-schema@^3.0.1:
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/env-schema/-/env-schema-3.5.2.tgz#c7aec9bef4256d1fd621f4ad275c6bdc472003be"
-  integrity sha512-mSCYvxQLrJ3Z641CpCSvU2UIFPjDNqZ9yUfqWdx2FMXfccWtYrJEa+pR9mc3YyINvmnlXdbmD5fBx1NSlipMfw==
+env-schema@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/env-schema/-/env-schema-4.0.0.tgz#bb51550af5bcd715502c056c44a16dc7b3a91237"
+  integrity sha512-hM5OwjrUPxxrCjC1Ykf+wPld2lbnN3/m9Y9wuMPt0jmYluJpAV3OXc1HiliZxFkxLzw2FcrSOXdw/3uI7PYCFA==
   dependencies:
     ajv "^8.0.0"
-    dotenv "^11.0.0"
-    dotenv-expand "^5.1.0"
+    dotenv "^16.0.0"
+    dotenv-expand "^8.0.3"
 
 err-code@^2.0.2:
   version "2.0.3"
@@ -4548,39 +4588,6 @@ fastestsmallesttextencoderdecoder@1.0.22:
   resolved "https://registry.yarnpkg.com/fastestsmallesttextencoderdecoder/-/fastestsmallesttextencoderdecoder-1.0.22.tgz#59b47e7b965f45258629cc6c127bf783281c5e93"
   integrity sha512-Pb8d48e+oIuY4MaM64Cd7OW1gt4nxCHs7/ddPPZ/Ic3sg8yVGM7O9wDvZ7us6ScaUupzM+pfBolwtYhN1IxBIw==
 
-fastify-autoload@^3.11.0:
-  version "3.12.0"
-  resolved "https://registry.yarnpkg.com/fastify-autoload/-/fastify-autoload-3.12.0.tgz#912c7c48c83e732cc76919b4f3713ee884fc8557"
-  integrity sha512-qm8HG8V24A0AdcIjGMMTnyKQj6yzEbdcXHbWjzPtYPReGo4D4Ki7oRLDocYQJVpaOxlcLJSbadfMhZTu3+G6oQ==
-  dependencies:
-    pkg-up "^3.1.0"
-    semver "^7.3.5"
-
-fastify-basic-auth@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/fastify-basic-auth/-/fastify-basic-auth-2.2.0.tgz#6c76052cd39ac43e333bf3bf8015dad204f0db60"
-  integrity sha512-xXeNhyhONlQNoWIzy9rhms0td6PFL1KCRqu0lkEpd54Ju4dHLbB/woPwtK0Vutuqy0sDav77If6UtdfDajx44Q==
-  dependencies:
-    basic-auth "^2.0.1"
-    fastify-plugin "^3.0.0"
-    http-errors "^1.7.3"
-
-fastify-cors@^6.0.3:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/fastify-cors/-/fastify-cors-6.0.3.tgz#1907f92c3f855a18ef6fb6213186c73cf0bbf9e4"
-  integrity sha512-fMbXubKKyBHHCfSBtsCi3+7VyVRdhJQmGes5gM+eGKkRErCdm0NaYO0ozd31BQBL1ycoTIjbqOZhJo4RTF/Vlg==
-  dependencies:
-    fastify-plugin "^3.0.0"
-    vary "^1.1.2"
-
-fastify-env@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/fastify-env/-/fastify-env-2.1.1.tgz#443cc8f9b443320bfd9330975606fdbb2ba2f799"
-  integrity sha512-5IyYR+d+0/hwae/PpC6oWb+hlMpBqG1MuWWTEbFR2uzGhDXX/rCp4gdBrodt7SndOyvVlF+Z8QZ0fGlXPWtIOw==
-  dependencies:
-    env-schema "^3.0.1"
-    fastify-plugin "^3.0.0"
-
 fastify-error@^0.3.0:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/fastify-error/-/fastify-error-0.3.1.tgz#8eb993e15e3cf57f0357fc452af9290f1c1278d2"
@@ -4612,18 +4619,6 @@ fastify-static@^4.0.0:
     p-limit "^3.1.0"
     readable-stream "^3.4.0"
     send "^0.17.1"
-
-fastify-swagger@^5.1.0:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/fastify-swagger/-/fastify-swagger-5.1.1.tgz#9aae3f7edb629c98e534841c3c0a1347f9321cd1"
-  integrity sha512-7DA0zS8CCV5r+gbLgWdeeKEwLrVbbOxLMJVUfOl1H9+wSildSLD8hok2TLX7s3c28wOjF8+iZRxsz/hBDzfdIw==
-  dependencies:
-    fastify-plugin "^3.0.0"
-    fastify-static "^4.0.0"
-    js-yaml "^4.0.0"
-    json-schema-resolver "^1.3.0"
-    openapi-types "^10.0.0"
-    rfdc "^1.3.0"
 
 fastify@^3.28.0:
   version "3.28.0"
@@ -5386,7 +5381,7 @@ http-errors-enhanced@^1.0.6:
   resolved "https://registry.yarnpkg.com/http-errors-enhanced/-/http-errors-enhanced-1.0.6.tgz#ff52fdfda41279be478f1f41ad142e0d06635539"
   integrity sha512-67SfvFLAQ9DR6YW3i8T691g7aQTt9LGxUJMeBPtUyYrjYnh0YVAOiGG2GEdUTiMmqZQWklftHKE7FZw6gVsfvA==
 
-http-errors@1.8.1, http-errors@^1.7.3:
+http-errors@1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/http-errors/-/http-errors-1.8.1.tgz#7c3f28577cbc8a207388455dbd62295ed07bd68c"
   integrity sha512-Kpk9Sm7NmI+RHhnj6OIWDI1d6fIoFAtFt9RLaTMRlg/8w49juAStsrBgp0Dp4OdxdVbRIeKhtCUvoi/RuAhO4g==
@@ -5395,6 +5390,17 @@ http-errors@1.8.1, http-errors@^1.7.3:
     inherits "2.0.4"
     setprototypeof "1.2.0"
     statuses ">= 1.5.0 < 2"
+    toidentifier "1.0.1"
+
+http-errors@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/http-errors/-/http-errors-2.0.0.tgz#b7774a1486ef73cf7667ac9ae0858c012c57b9d3"
+  integrity sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==
+  dependencies:
+    depd "2.0.0"
+    inherits "2.0.4"
+    setprototypeof "1.2.0"
+    statuses "2.0.1"
     toidentifier "1.0.1"
 
 http-proxy-agent@^4.0.1:
@@ -9727,15 +9733,15 @@ start-server-and-test@^1.14.0:
     ps-tree "1.2.0"
     wait-on "6.0.0"
 
+statuses@2.0.1, statuses@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/statuses/-/statuses-2.0.1.tgz#55cb000ccf1d48728bd23c685a063998cf1a1b63"
+  integrity sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==
+
 "statuses@>= 1.5.0 < 2", statuses@~1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
   integrity sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=
-
-statuses@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/statuses/-/statuses-2.0.1.tgz#55cb000ccf1d48728bd23c685a063998cf1a1b63"
-  integrity sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==
 
 stdout-stderr@^0.1.13:
   version "0.1.13"
