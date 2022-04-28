@@ -84,7 +84,16 @@ const OpHolder = {
       $id: "op-holder-logo",
     },
   },
-  required: ["type"],
+  required: [
+    "type",
+    "name",
+    "url",
+    "postalCode",
+    "addressCountry",
+    "addressRegion",
+    "addressLocality",
+    "streetAddress",
+  ],
   additionalProperties: false,
 } as const;
 
