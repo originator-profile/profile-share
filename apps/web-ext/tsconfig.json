@@ -1,6 +1,8 @@
 {
   "extends": "@webdino/profile-tsconfig/tsconfig.json",
   "compilerOptions": {
-    "jsxImportSource": "@emotion/react"
+    "jsxImportSource": "@emotion/react",
+    "jsxFactory": "jsx",
+    "jsxFragmentFactory": "React.Fragment"
   }
 }

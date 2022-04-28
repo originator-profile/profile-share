@@ -19,8 +19,10 @@
     "@types/react-dom": "^18.0.1",
     "@types/webextension-polyfill": "^0.8.3",
     "@webdino/profile-model": "*",
+    "@webdino/profile-sign": "*",
     "@webdino/profile-tsconfig": "*",
     "autoprefixer": "^10.4.5",
+    "clsx": "^1.1.1",
     "esbuild": "^0.14.38",
     "esbuild-copy-static-files": "^0.1.0",
     "eslint": "^8.14.0",
@@ -58,8 +60,8 @@
     "dev": "NODE_ENV=development node esbuild.dev.js",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "start:chromium": "web-ext run --source-dir dist --target=chromium",
-    "start:firefox": "web-ext run --source-dir dist --target=firefox-desktop",
+    "start:chromium": "web-ext run --source-dir dist --target=chromium --no-reload",
+    "start:firefox": "web-ext run --source-dir dist --target=firefox-desktop --no-reload",
     "test": "vitest --passWithNoTests"
   }
 }
