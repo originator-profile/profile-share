@@ -4,7 +4,12 @@ import ProfileItem from "../components/ProfileItem";
 
 function Holders(): React.ReactElement {
   const { ops } = useOpDocumentsAtom();
-  if (!ops) return <Spinner />;
+  if (!ops)
+    return (
+      <div className="w-screen h-screen flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
   return (
     <>
       {ops.map((op) => (
