@@ -31,30 +31,30 @@ model ops {
 /// 会員
 model accounts {
   id                       String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  /// ウェブサイトのURL
+  /// ウェブサイトのURL*
   url                      String                      @unique
   /// 会員種別
   role                     roles                       @relation(fields: [roleValue], references: [value])
   roleValue                String                      @default("group")
-  /// 法人名
+  /// 法人名*
   name                     String
   /// 説明 (ウェブメディアそれを運用する法人、認定機関、業界団体等であることの記述)
-  description              String
+  description              String?
   /// 事業種目
   businessCategories       accountBusinessCategories[]
   /// メールアドレス
-  email                    String
+  email                    String?
   /// 電話番号
-  phoneNumber              String
-  /// 郵便番号
+  phoneNumber              String?
+  /// 郵便番号*
   postalCode               String
-  /// 国
+  /// 国*
   addressCountry           String
-  /// 都道府県
+  /// 都道府県*
   addressRegion            String
-  /// 市区町村
+  /// 市区町村*
   addressLocality          String
-  /// 番地・ビル名
+  /// 番地・ビル名*
   streetAddress            String
   /// 連絡先表示名
   contactTitle             String?
