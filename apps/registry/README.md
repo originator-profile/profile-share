@@ -51,7 +51,7 @@ running command...
 
 ## `profile-registry account:register`
 
-アカウントの登録
+会員の登録
 
 ```
 USAGE
@@ -61,7 +61,7 @@ FLAGS
   -i, --input=<value>  (required) [default: account.example.json] Prisma.accountsCreateManyInput (JSON) file
 
 DESCRIPTION
-  アカウントの登録
+  会員の登録
 ```
 
 ## `profile-registry account:register-key`

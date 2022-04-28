@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { JWTPayload, decodeJwt, errors } from "jose";
+import flush from "just-flush";
 import { addYears, fromUnixTime } from "date-fns";
 import { NotFoundError, BadRequestError } from "http-errors-enhanced";
-import Op from "@webdino/profile-model/src/op";
 import { signOp } from "@webdino/profile-sign";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
@@ -63,22 +63,22 @@ export const CertificateService = ({
     if (!certifier) return new NotFoundError();
     if (!holder) return new NotFoundError();
 
-    const op: Op = {
+    const input = {
       issuedAt: options.issuedAt.toISOString(),
       expiredAt: options.expiredAt.toISOString(),
       issuer: certifier.url,
       subject: holder.url,
       item: [
         { type: "credential", ...options.credential },
-        { type: "certifier", ...certifier },
-        { type: "holder", ...holder },
+        { type: "certifier", ...flush(certifier) },
+        { type: "holder", ...flush(holder) },
       ],
     };
 
     const holderKeys = await account.getKeys(accountId);
     if (holderKeys instanceof Error) return holderKeys;
-    if (holderKeys.keys.length > 0) Object.assign(op, { jwks: holderKeys });
-    const valid = validator.opValidate(op);
+    if (holderKeys.keys.length > 0) Object.assign(input, { jwks: holderKeys });
+    const valid = validator.opValidate(input);
     if (valid instanceof Error) return valid;
     const jwt: string = await signOp(valid, pkcs8);
     return jwt;

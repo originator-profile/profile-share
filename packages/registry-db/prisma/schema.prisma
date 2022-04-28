@@ -30,40 +30,52 @@ model ops {
 
 /// 会員
 model accounts {
-  id                 String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  /// ウェブサイトのURL
-  url                String                      @unique
+  id                       String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  /// ウェブサイトのURL*
+  url                      String                      @unique
   /// 会員種別
-  role               roles                       @relation(fields: [roleValue], references: [value])
-  roleValue          String                      @default("group")
-  /// 法人名
-  name               String
+  role                     roles                       @relation(fields: [roleValue], references: [value])
+  roleValue                String                      @default("group")
+  /// 法人名*
+  name                     String
   /// 説明 (ウェブメディアそれを運用する法人、認定機関、業界団体等であることの記述)
-  description        String
+  description              String?
   /// 事業種目
-  businessCategories accountBusinessCategories[]
+  businessCategories       accountBusinessCategories[]
   /// メールアドレス
-  email              String
+  email                    String?
   /// 電話番号
-  phoneNumber        String
-  /// 郵便番号
-  postalCode         String
-  /// 国
-  addressCountry     String
-  /// 都道府県
-  addressRegion      String
-  /// 市区町村
-  addressLocality    String
-  /// 番地・ビル名
-  streetAddress      String
+  phoneNumber              String?
+  /// 郵便番号*
+  postalCode               String
+  /// 国*
+  addressCountry           String
+  /// 都道府県*
+  addressRegion            String
+  /// 市区町村*
+  addressLocality          String
+  /// 番地・ビル名*
+  streetAddress            String
+  /// 連絡先表示名
+  contactTitle             String?
+  /// 連絡先URL
+  contactUrl               String?
+  /// プライバシーポリシー表示名
+  privacyPolicyTitle       String?
+  /// プライバシーポリシーURL
+  privacyPolicyUrl         String?
+  /// 編集ガイドライン表示名
+  publishingPrincipleTitle String?
+  /// 編集ガイドラインURL
+  publishingPrincipleUrl   String?
   /// ロゴ画像
-  logos              logos[]
+  logos                    logos[]
   /// 発行履歴
-  issues             ops[]
+  issues                   ops[]
   /// 公開履歴
-  publications       publications[]
+  publications             publications[]
   /// 公開鍵
-  keys               keys[]
+  keys                     keys[]
 }
 
 /// 会員種別

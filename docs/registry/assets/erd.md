@@ -21,6 +21,12 @@ erDiagram
     String addressRegion
     String addressLocality
     String streetAddress
+    String contactTitle
+    String contactUrl
+    String privacyPolicyTitle
+    String privacyPolicyUrl
+    String publishingPrincipleTitle
+    String publishingPrincipleUrl
     }
   
 

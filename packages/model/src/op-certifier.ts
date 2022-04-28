@@ -55,12 +55,45 @@ const OpCertifier = {
       title: "番地・ビル名",
       type: "string",
     },
+    contactTitle: {
+      title: "連絡先表示名",
+      type: "string",
+    },
+    contactUrl: {
+      title: "連絡先URL",
+      type: "string",
+    },
+    privacyPolicyTitle: {
+      title: "プライバシーポリシー表示名",
+      type: "string",
+    },
+    privacyPolicyUrl: {
+      title: "プライバシーポリシーURL",
+      type: "string",
+    },
+    publishingPrincipleTitle: {
+      title: "編集ガイドライン表示名",
+      type: "string",
+    },
+    publishingPrincipleUrl: {
+      title: "編集ガイドラインURL",
+      type: "string",
+    },
     logo: {
       ...Logo,
       $id: "op-certifier-logo",
     },
   },
-  required: ["type"],
+  required: [
+    "type",
+    "name",
+    "url",
+    "postalCode",
+    "addressCountry",
+    "addressRegion",
+    "addressLocality",
+    "streetAddress",
+  ],
   additionalProperties: false,
 } as const;
 
