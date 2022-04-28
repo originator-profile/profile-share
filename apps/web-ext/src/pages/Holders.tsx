@@ -1,17 +1,15 @@
-import { Link } from "react-router-dom";
-import useOpsAtom from "../store/useOpsAtom";
+import useOpDocumentsAtom from "../store/useOpsAtom";
+import Spinner from "../components/Spinner";
+import ProfileItem from "../components/ProfileItem";
 
 function Holders(): React.ReactElement {
-  const [ops] = useOpsAtom();
+  const { ops } = useOpDocumentsAtom();
+  if (!ops) return <Spinner />;
   return (
     <>
-      <h1>保有者の一覧</h1>
-      <ul>
-        <li>
-          <Link to="/holder">保有者の詳細</Link>
-        </li>
-      </ul>
-      <p>{JSON.stringify(ops)}</p>
+      {ops.map((op) => (
+        <ProfileItem key={op.subject} op={op} variant="primary" />
+      ))}
     </>
   );
 }

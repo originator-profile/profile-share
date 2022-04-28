@@ -1,0 +1,17 @@
+import clsx from "clsx";
+
+type Props = {
+  className?: string;
+};
+
+function Spinner({ className }: Props): React.ReactElement {
+  return (
+    <div className={clsx("jumpu-spinner", className)}>
+      <svg viewBox="25 25 50 50">
+        <circle cx="50" cy="50" r="20"></circle>
+      </svg>
+    </div>
+  );
+}
+
+export default Spinner;
