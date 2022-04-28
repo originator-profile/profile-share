@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import fs from "node:fs/promises";
 
 export class AccountRegister extends Command {
-  static description = "アカウントの登録";
+  static description = "会員の登録";
   static flags = {
     input: Flags.string({
       char: "i",
