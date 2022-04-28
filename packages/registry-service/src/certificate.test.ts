@@ -45,7 +45,7 @@ describe("CertificateService", () => {
       name: "WebDINO Japan OPR",
       description: "Profile Registry (Demo)",
       email: "example@webdino.org",
-      phoneNumber: "0123456789",
+      phoneNumber: null,
       postalCode: "123-4567",
       addressCountry: "JP",
       addressRegion: "東京都",
@@ -75,11 +75,11 @@ describe("CertificateService", () => {
       sub: "http://sub.example",
       "https://opr.webdino.org/jwt/claims/op": { jwks: { keys: [jwk] } },
     });
-    expect(
-      valid["https://opr.webdino.org/jwt/claims/op"].item.find(
-        ({ type }) => type === "holder"
-      )?.url
-    ).toBe("http://sub.example");
+    const holder = valid["https://opr.webdino.org/jwt/claims/op"].item.find(
+      ({ type }) => type === "holder"
+    );
+    expect(holder?.url).toBe("http://sub.example");
+    expect(holder).not.toHaveProperty("phoneNumber");
   });
 
   test("issue() calls prisma.ops.create()", async () => {
