@@ -1,7 +1,9 @@
 import { useAsync } from "react-use";
 import { atom, useAtom } from "jotai";
 import browser from "webextension-polyfill";
-import Op from "@webdino/profile-model/src/op";
+import { Op } from "@webdino/profile-model";
+import { JwtOpPayload } from "../types/op";
+import { toOp } from "../utils/op";
 
 const opsAtom = atom<Op[]>([]);
 
@@ -13,10 +15,16 @@ function useOpsAtom() {
       active: true,
       currentWindow: false,
     });
-    const response = await browser.tabs.sendMessage(tabs[0].id ?? NaN, {});
-    setOps(response);
+    const response: JwtOpPayload[] = await browser.tabs.sendMessage(
+      tabs[0].id ?? NaN,
+      {}
+    );
+    setOps(response.map(toOp));
   }, [setOps]);
-  return [ops, setOps];
+  return {
+    ops,
+    setOps,
+  };
 }
 
 export default useOpsAtom;

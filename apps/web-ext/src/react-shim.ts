@@ -1,2 +1,3 @@
 import * as React from "react";
-export { React };
+import { jsx } from "@emotion/react";
+export { React, jsx };
