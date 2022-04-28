@@ -51,7 +51,7 @@ const OpHolder = {
       title: "市区町村",
       type: "string",
     },
-    addressStreet: {
+    streetAddress: {
       title: "番地・ビル名",
       type: "string",
     },

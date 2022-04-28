@@ -29,7 +29,7 @@ op-holder#/properties/item/items/anyOf/0
 | [addressCountry](#addresscountry)     | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-国.md "op-holder#/properties/item/items/anyOf/0/properties/addressCountry")                                     |
 | [addressRegion](#addressregion)       | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-都道府県.md "op-holder#/properties/item/items/anyOf/0/properties/addressRegion")                                   |
 | [addressLocality](#addresslocality)   | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-市区町村.md "op-holder#/properties/item/items/anyOf/0/properties/addressLocality")                                 |
-| [addressStreet](#addressstreet)       | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-番地ビル名.md "op-holder#/properties/item/items/anyOf/0/properties/addressStreet")                                  |
+| [streetAddress](#streetaddress)       | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-番地ビル名.md "op-holder#/properties/item/items/anyOf/0/properties/streetAddress")                                  |
 | [logo](#logo)                         | `array`       | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo.md "op-holder-logo#/properties/item/items/anyOf/0/properties/logo")                                       |
 
 ## type
@@ -238,11 +238,11 @@ unknown
 
 `string` ([市区町村](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-市区町村.md))
 
-## addressStreet
+## streetAddress
 
 
 
-`addressStreet`
+`streetAddress`
 
 *   is optional
 
@@ -250,9 +250,9 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-番地ビル名.md "op-holder#/properties/item/items/anyOf/0/properties/addressStreet")
+*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-番地ビル名.md "op-holder#/properties/item/items/anyOf/0/properties/streetAddress")
 
-### addressStreet Type
+### streetAddress Type
 
 `string` ([番地・ビル名](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-番地ビル名.md))
 

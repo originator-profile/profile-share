@@ -20,7 +20,7 @@ erDiagram
     String addressCountry
     String addressRegion
     String addressLocality
-    String addressStreet
+    String streetAddress
     }
   
 

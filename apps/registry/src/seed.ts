@@ -48,7 +48,7 @@ export async function seed(): Promise<void> {
         addressCountry: "JP",
         addressRegion: "東京都",
         addressLocality: "中央区",
-        addressStreet: "日本橋富沢町 10-13 WORK EDITION NIHONBASHI 3F",
+        streetAddress: "日本橋富沢町 10-13 WORK EDITION NIHONBASHI 3F",
       },
     });
   }
