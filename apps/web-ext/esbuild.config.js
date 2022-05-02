@@ -6,6 +6,9 @@ module.exports = {
   bundle: true,
   minify: true,
   sourcemap: process.env.NODE_ENV === "development",
+  define: {
+    "import.meta.env": '{ "MODE": "production" }',
+  },
   inject: ["src/react-shim.ts"],
   plugins: [
     require("esbuild-copy-static-files")({ src: "public", dest: "dist" }),
