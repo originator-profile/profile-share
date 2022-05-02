@@ -7,7 +7,7 @@ module.exports = {
   minify: true,
   sourcemap: process.env.NODE_ENV === "development",
   define: {
-    "import.meta.env": "{ \"MODE\": \"production\" }",
+    "import.meta.env": '{ "MODE": "production" }',
   },
   inject: ["src/react-shim.ts"],
   plugins: [
