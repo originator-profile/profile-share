@@ -14,7 +14,7 @@ function HolderTable({ className, holder }: Props): React.ReactElement {
         <TableRow
           header="所在地"
           data={`
-              〒${holder.postalCode} ${holder.addressRegion}${holder.addressLocality}${holder.streetAddress}
+              〒${holder.postalCode} ${holder.addressCountry} ${holder.addressRegion}${holder.addressLocality}${holder.streetAddress}
           `}
         />
         <TableRow
