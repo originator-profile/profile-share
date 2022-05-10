@@ -4,7 +4,7 @@ import ProfileItem from "../components/ProfileItem";
 
 function Holders(): React.ReactElement {
   const { ops } = useOpsAtom();
-  if (!ops)
+  if (ops.length === 0)
     return (
       <div className="w-screen h-screen flex justify-center items-center">
         <Spinner />
