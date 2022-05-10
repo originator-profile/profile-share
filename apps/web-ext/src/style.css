@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
+
+.anchor-link {
+  @apply text-blue-600;
+}
+
+.anchor-link:hover {
+  @apply underline;
+}
+
 @tailwind utilities;
