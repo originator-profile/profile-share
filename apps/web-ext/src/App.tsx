@@ -8,9 +8,12 @@ function App(): React.ReactElement {
   return (
     <Routes>
       <Route path="/" element={<Holders />} />
-      <Route path="/holder/:subject" element={<Holder />} />
-      <Route path="/credential" element={<Credential />} />
-      <Route path="/technical-information" element={<TechnicalInformation />} />
+      <Route path="/:subject/holder" element={<Holder />} />
+      <Route path="/:subject/credential" element={<Credential />} />
+      <Route
+        path="/:subject/technical-information"
+        element={<TechnicalInformation />}
+      />
     </Routes>
   );
 }
