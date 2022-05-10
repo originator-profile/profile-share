@@ -40,6 +40,8 @@ function Holder(): React.ReactElement {
         className="w-full"
         src={logo?.url ?? "/assets/placeholder-logo-main.png"}
         alt={`${holder.name}のロゴ`}
+        width={640}
+        height={396}
       />
       <div className="px-3 py-3">
         <p className="mb-1 text-success flex items-center">

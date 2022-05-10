@@ -29,6 +29,8 @@ function ProfileLogo({
           : "/assets/placeholder-logo-sub.png"
       }
       alt={`${holder.name}のロゴ`}
+      width={variant === "primary" ? 640 : 180}
+      height={variant === "primary" ? 396 : 112}
     />
   );
 }
@@ -58,7 +60,7 @@ function ProfileItem({ op, variant }: Props): React.ReactElement {
         </div>
         <Link
           className="jumpu-icon-button flex-shrink-0 h-12"
-          to={`/holder/${encodeURIComponent(op.subject)}`}
+          to={`/${encodeURIComponent(op.subject)}/holder`}
         >
           <Icon
             className="text-lg text-gray-300"
