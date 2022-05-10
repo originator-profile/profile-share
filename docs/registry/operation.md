@@ -6,7 +6,7 @@ apps/registry 実行時に以下の環境変数を設定する
 | ------------ | --------------- |
 | DATABASE_URL | DATABASE 接続先 |
 
-DATABASE 接続先は、data.heroku.com の Settings -> Administration -> Database Credentials -> UIR を指定する
+DATABASE 接続先は、data.heroku.com の Settings -> Administration -> Database Credentials -> URI を指定する
 
 ## DB の内容参照
 
