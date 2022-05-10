@@ -57,6 +57,16 @@ function Holder(): React.ReactElement {
       </div>
       <hr className="border-gray-50 border-4" />
       <HolderTable className="w-full" holder={holder} />
+      {holder.description && (
+        <section className="px-3 py-2 border-gray-200 border-b">
+          <h2 className="mb-1 text-gray-500 font-normal">追加情報</h2>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: holder.description,
+            }}
+          />
+        </section>
+      )}
     </>
   );
 }
