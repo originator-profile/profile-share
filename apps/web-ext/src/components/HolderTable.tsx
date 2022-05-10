@@ -7,6 +7,9 @@ type Props = {
 };
 
 function HolderTable({ className, holder }: Props): React.ReactElement {
+  const regionNamesInJapanese = new Intl.DisplayNames(["ja"], {
+    type: "region",
+  });
   return (
     <table className={className}>
       <tbody>
@@ -14,7 +17,11 @@ function HolderTable({ className, holder }: Props): React.ReactElement {
         <TableRow
           header="所在地"
           data={`
-              〒${holder.postalCode} ${holder.addressCountry} ${holder.addressRegion}${holder.addressLocality}${holder.streetAddress}
+              〒${holder.postalCode} ${regionNamesInJapanese.of(
+            holder.addressCountry
+          )} ${holder.addressRegion}${holder.addressLocality}${
+            holder.streetAddress
+          }
           `}
         />
         <TableRow
