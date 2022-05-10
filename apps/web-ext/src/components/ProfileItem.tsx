@@ -61,11 +61,15 @@ function ProfileItem({ op, variant }: Props): React.ReactElement {
         <Link
           className="jumpu-icon-button flex-shrink-0 h-12"
           to={`/${encodeURIComponent(op.subject)}/holder`}
+          aria-describedby={`tooltip-${op.subject}`}
         >
           <Icon
             className="text-lg text-gray-300"
             icon="fa6-solid:chevron-right"
           />
+          <span id={`tooltip-${op.subject}`} role="tooltip">
+            詳細
+          </span>
         </Link>
       </div>
     </div>
