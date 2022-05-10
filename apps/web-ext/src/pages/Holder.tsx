@@ -51,7 +51,7 @@ function Holder(): React.ReactElement {
           />
           検証済み
         </p>
-        <p className="jumpu-tag text-sm bg-gray-100">
+        <p className="jumpu-tag hover:border-transparent cursor-auto text-sm bg-gray-100">
           コンテンツを出版しています
         </p>
       </div>

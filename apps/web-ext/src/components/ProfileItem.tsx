@@ -54,7 +54,7 @@ function ProfileItem({ op, variant }: Props): React.ReactElement {
         )}
         <div className="flex-1">
           <p className="text-base mb-1">{holder.name}</p>
-          <p className="jumpu-tag text-sm bg-gray-100">
+          <p className="jumpu-tag hover:border-transparent cursor-auto text-sm bg-gray-100">
             コンテンツを出版しています
           </p>
         </div>
