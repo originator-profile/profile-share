@@ -61,6 +61,7 @@ function Holder(): React.ReactElement {
         <section className="px-3 py-2 border-gray-200 border-b">
           <h2 className="mb-1 text-gray-500 font-normal">説明</h2>
           <div
+            className="prose prose-sm"
             dangerouslySetInnerHTML={{
               __html: holder.description,
             }}
