@@ -1,15 +1,17 @@
 import useOpsAtom from "../store/useOpsAtom";
+import Placeholder from "../components/Placeholder";
 import Spinner from "../components/Spinner";
 import ProfileItem from "../components/ProfileItem";
 
 function Holders(): React.ReactElement {
   const { ops } = useOpsAtom();
-  if (!ops)
+  if (ops.length === 0) {
     return (
-      <div className="w-screen h-screen flex justify-center items-center">
+      <Placeholder>
         <Spinner />
-      </div>
+      </Placeholder>
     );
+  }
   return (
     <>
       {ops.map((op) => (
