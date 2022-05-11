@@ -29,6 +29,8 @@ function ProfileLogo({
           : "/assets/placeholder-logo-sub.png"
       }
       alt={`${holder.name}のロゴ`}
+      width={variant === "primary" ? 640 : 180}
+      height={variant === "primary" ? 396 : 112}
     />
   );
 }
@@ -52,18 +54,22 @@ function ProfileItem({ op, variant }: Props): React.ReactElement {
         )}
         <div className="flex-1">
           <p className="text-base mb-1">{holder.name}</p>
-          <p className="jumpu-tag text-sm bg-gray-100">
+          <p className="jumpu-tag hover:border-transparent cursor-auto text-sm bg-gray-100">
             コンテンツを出版しています
           </p>
         </div>
         <Link
           className="jumpu-icon-button flex-shrink-0 h-12"
-          to={`/holder/${encodeURIComponent(op.subject)}`}
+          to={`/${encodeURIComponent(op.subject)}/holder`}
+          aria-describedby={`tooltip-${op.subject}`}
         >
           <Icon
             className="text-lg text-gray-300"
             icon="fa6-solid:chevron-right"
           />
+          <span id={`tooltip-${op.subject}`} role="tooltip">
+            詳細
+          </span>
         </Link>
       </div>
     </div>
