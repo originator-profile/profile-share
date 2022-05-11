@@ -3,5 +3,8 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [...require("@jumpu-ui/tailwindcss")],
+  plugins: [
+    ...require("@jumpu-ui/tailwindcss"),
+    require("@tailwindcss/typography"),
+  ],
 };
