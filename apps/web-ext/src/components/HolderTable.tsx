@@ -39,7 +39,7 @@ function HolderTable({ className, holder }: Props): React.ReactElement {
         />
         {"phoneNumber" in holder && (
           <TableRow
-            header="電話"
+            header="電話番号"
             data={
               <a className="anchor-link" href={`tel:${holder.phoneNumber}`}>
                 {holder.phoneNumber}
