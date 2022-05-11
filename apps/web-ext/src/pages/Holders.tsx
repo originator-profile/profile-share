@@ -14,8 +14,12 @@ function Holders(): React.ReactElement {
   }
   return (
     <>
-      {ops.map((op) => (
-        <ProfileItem key={op.subject} op={op} variant="primary" />
+      {ops.map((op, index) => (
+        <ProfileItem
+          key={op.subject}
+          op={op}
+          variant={index === 0 ? "primary" : "secondary"}
+        />
       ))}
     </>
   );
