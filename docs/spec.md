@@ -295,3 +295,8 @@ HTML では、`<script>` 要素を使用する内部的な表現と `<link>` 要
   type="application/ld+json"
 />
 ```
+
+## Well-Known URL
+
+HTML に Originator Profile Document または Document Profile Document いずれも記述されていない場合、対象のページの URL のパス `/.well-known/op-document` に配置できます。
+この Well-Known URL は対象のページと同一オリジンで、かつ HTTP(S) GET によってアクセスし Originator Profile Document を取得できる必要があります。
