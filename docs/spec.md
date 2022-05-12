@@ -222,6 +222,7 @@ Document Profile Document のためのプロパティです。
 
 対象の要素のその子孫のレンダリングされたテキストの内容への署名を表すオブジェクトです。
 対象の要素は `url` プロパティの URL と `location` プロパティの CSS セレクターで指定します。
+テキストは [WHATWG Encoding Standard](https://encoding.spec.whatwg.org/) に準拠した方法によって UTF-8 に符号化します。
 シリアライズする際に対象の要素が複数存在する場合、それらを結合します。
 
 - `type` プロパティは、必ず文字列 `visibleText` でなければなりません。
@@ -233,6 +234,7 @@ Document Profile Document のためのプロパティです。
 
 対象の要素の子孫のテキストへの署名を表すオブジェクトです。
 対象の要素は `url` プロパティの URL と `location` プロパティの CSS セレクターで指定します。
+テキストは [WHATWG Encoding Standard](https://encoding.spec.whatwg.org/) に準拠した方法によって UTF-8 に符号化します。
 シリアライズする際に対象の要素が複数存在する場合、それらを結合します。
 
 - `type` プロパティは、必ず文字列 `text` でなければなりません。
@@ -244,6 +246,7 @@ Document Profile Document のためのプロパティです。
 
 対象の要素とその子孫を含む部分を HTML としてシリアライズしたものへの署名を表すオブジェクトです。
 対象の要素は `url` プロパティの URL と `location` プロパティの CSS セレクターで指定します。
+テキストは [WHATWG Encoding Standard](https://encoding.spec.whatwg.org/) に準拠した方法によって UTF-8 に符号化します。
 シリアライズする際に対象の要素が複数存在する場合、それらを結合します。
 
 - `type` プロパティは、必ず文字列 `html` でなければなりません。
