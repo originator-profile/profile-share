@@ -264,7 +264,7 @@ HTML では、`<script>` 要素を使用する内部的な表現と `<link>` 要
 
 ### &lt;script&gt;
 
-`<script>` 要素の `type` 属性として `application/ld+json` を指定し、Originator Profile Document を記述します。
+`<script>` 要素の `type` 属性として `application/ld+json` を指定し、Originator Profile Document または Document Profile Document を記述します。
 
 例:
 
@@ -281,6 +281,8 @@ HTML では、`<script>` 要素を使用する内部的な表現と `<link>` 要
   }
 </script>
 ```
+
+Document Profile Document の場合、署名の際に `location` として含まれる要素にを対象にこの `<script>` 要素を含めてはいけません。その場合、必ず `<link>` 要素または Well-Known URL の使用によって代替してください。
 
 ### &lt;link&gt;
 
