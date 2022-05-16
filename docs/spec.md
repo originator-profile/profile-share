@@ -264,7 +264,7 @@ HTML では、`<script>` 要素を使用する内部的な表現と `<link>` 要
 
 ### &lt;script&gt;
 
-`<script>` 要素の `type` 属性として `application/ld+json` を指定し、Originator Profile Document を記述します。
+`<script>` 要素の `type` 属性として `application/ld+json` を指定し、Originator Profile Document または Document Profile Document を記述します。
 
 例:
 
@@ -282,6 +282,8 @@ HTML では、`<script>` 要素を使用する内部的な表現と `<link>` 要
 </script>
 ```
 
+Document Profile Document の場合、署名の際に `location` として含まれる要素にを対象にこの `<script>` 要素を含めてはいけません。その場合、必ず `<link>` 要素または Well-Known URL の使用によって代替してください。
+
 ### &lt;link&gt;
 
 `<link>` 要素の `rel` 属性として `alternate`、`type` 属性として `application/ld+json` を指定し、`href` 属性として Originator Profile Document の URL を記述します。
@@ -295,3 +297,8 @@ HTML では、`<script>` 要素を使用する内部的な表現と `<link>` 要
   type="application/ld+json"
 />
 ```
+
+## Well-Known URL
+
+HTML に Originator Profile Document または Document Profile Document いずれも記述されていない場合、対象のページの URL のパス `/.well-known/op-document` に配置できます。
+この Well-Known URL は対象のページと同一オリジンで、かつ HTTP(S) GET によってアクセスし Originator Profile Document を取得できる必要があります。
