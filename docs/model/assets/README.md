@@ -20,7 +20,7 @@
 
 *   [JSON Web Key Sets](./op-properties-json-web-key-sets.md) – `jwks#/properties/jwks`
 
-*   [Logo](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo-logo.md) – `op-holder-logo#/properties/item/items/anyOf/0/properties/logo/items`
+*   [Logo](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo-logo.md) – `op-holder-logo#/properties/item/items/anyOf/0/properties/logos/items`
 
 *   [Logo](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-logo-logo.md) – `op-certifier-logo#/properties/item/items/anyOf/2/properties/logo/items`
 
@@ -46,7 +46,7 @@
 
 *   [JSON Web Key](./op-properties-json-web-key-sets-properties-json-web-key.md) – `jwks#/properties/jwks/properties/keys`
 
-*   [Logo](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo.md) – `op-holder-logo#/properties/item/items/anyOf/0/properties/logo`
+*   [Logo](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo.md) – `op-holder-logo#/properties/item/items/anyOf/0/properties/logos`
 
 *   [Logo](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-logo.md) – `op-certifier-logo#/properties/item/items/anyOf/2/properties/logo`
 

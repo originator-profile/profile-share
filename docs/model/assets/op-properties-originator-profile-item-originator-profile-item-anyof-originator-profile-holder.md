@@ -36,7 +36,7 @@ op-holder#/properties/item/items/anyOf/0
 | [privacyPolicyUrl](#privacypolicyurl)                 | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-プライバシーポリシーurl.md "op-holder#/properties/item/items/anyOf/0/properties/privacyPolicyUrl")                       |
 | [publishingPrincipleTitle](#publishingprincipletitle) | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-編集ガイドライン表示名.md "op-holder#/properties/item/items/anyOf/0/properties/publishingPrincipleTitle")                 |
 | [publishingPrincipleUrl](#publishingprincipleurl)     | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-編集ガイドラインurl.md "op-holder#/properties/item/items/anyOf/0/properties/publishingPrincipleUrl")                   |
-| [logo](#logo)                                         | `array`       | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo.md "op-holder-logo#/properties/item/items/anyOf/0/properties/logo")                                       |
+| [logos](#logos)                                       | `array`       | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo.md "op-holder-logo#/properties/item/items/anyOf/0/properties/logos")                                      |
 
 ## type
 
@@ -370,11 +370,11 @@ unknown
 
 `string` ([編集ガイドラインURL](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-編集ガイドラインurl.md))
 
-## logo
+## logos
 
 
 
-`logo`
+`logos`
 
 *   is optional
 
@@ -382,8 +382,8 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo.md "op-holder-logo#/properties/item/items/anyOf/0/properties/logo")
+*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo.md "op-holder-logo#/properties/item/items/anyOf/0/properties/logos")
 
-### logo Type
+### logos Type
 
 `object[]` ([Logo](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo-logo.md))
