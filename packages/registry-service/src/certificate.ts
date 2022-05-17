@@ -56,12 +56,15 @@ export const CertificateService = ({
     const data = await Promise.all([
       prisma.accounts.findUnique({ where: { id } }),
       prisma.accounts.findUnique({ where: { id: accountId } }),
+      prisma.logos.findMany({ where: { accountId } }),
     ]).catch((e: Error) => e);
     if (data instanceof Error) return data;
 
-    const [certifier, holder] = data;
+    const [certifier, holder, logos] = data;
     if (!certifier) return new NotFoundError();
     if (!holder) return new NotFoundError();
+
+    holder.logos = logos;
 
     const input = {
       issuedAt: options.issuedAt.toISOString(),
