@@ -28,6 +28,20 @@ model ops {
   publication publications?
 }
 
+/// DP 文書
+model dps {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  /// 発行者
+  issuer    accounts @relation(fields: [issuerId], references: [id])
+  issuerId  String   @db.Uuid
+  /// 発行日
+  issuedAt  DateTime
+  /// 有効期限
+  expiredAt DateTime
+  /// JWT
+  jwt       String   @unique
+}
+
 /// 会員
 model accounts {
   id                       String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -70,9 +84,11 @@ model accounts {
   publishingPrincipleUrl   String?
   /// ロゴ画像
   logos                    logos[]
-  /// 発行履歴
-  issues                   ops[]
-  /// 公開履歴
+  /// OP文書発行履歴
+  issuedOps                ops[]
+  /// DP文書発行履歴
+  issuedDps                dps[]
+  /// OP文書公開履歴
   publications             publications[]
   /// 公開鍵
   keys                     keys[]

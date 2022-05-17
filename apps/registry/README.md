@@ -1,6 +1,6 @@
 # Profile Registry
 
-Originator Profile の管理を行うシステムです。
+Originator Profile と Document Profile の管理を行うシステムです。
 
 デモ: https://oprdev.herokuapp.com/
 
