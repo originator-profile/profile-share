@@ -79,7 +79,7 @@ const OpCertifier = {
       title: "編集ガイドラインURL",
       type: "string",
     },
-    logo: {
+    logos: {
       ...Logo,
       $id: "op-certifier-logo",
     },

@@ -22,7 +22,7 @@
 
 *   [Logo](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo-logo.md) – `op-holder-logo#/properties/item/items/anyOf/0/properties/logos/items`
 
-*   [Logo](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-logo-logo.md) – `op-certifier-logo#/properties/item/items/anyOf/2/properties/logo/items`
+*   [Logo](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-logo-logo.md) – `op-certifier-logo#/properties/item/items/anyOf/2/properties/logos/items`
 
 *   [Originator Profile Certifier](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier.md "資格情報を発行する認証機構") – `op-certifier#/properties/item/items/anyOf/2`
 
@@ -48,7 +48,7 @@
 
 *   [Logo](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-logo.md) – `op-holder-logo#/properties/item/items/anyOf/0/properties/logos`
 
-*   [Logo](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-logo.md) – `op-certifier-logo#/properties/item/items/anyOf/2/properties/logo`
+*   [Logo](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-logo.md) – `op-certifier-logo#/properties/item/items/anyOf/2/properties/logos`
 
 *   [Originator Profile Item](./op-properties-originator-profile-item.md) – `op#/properties/item`
 
