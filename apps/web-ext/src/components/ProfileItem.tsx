@@ -19,7 +19,7 @@ function ProfileLogo({
   holder: OpHolder;
   variant: Props["variant"];
 }): React.ReactElement {
-  const logo = holder.logo?.find(({ isMain }) => isMain);
+  const logo = holder.logos?.find(({ isMain }) => isMain);
   return (
     <img
       className={className}

@@ -32,7 +32,7 @@ function Holder(): React.ReactElement {
       </Placeholder>
     );
   }
-  const logo = holder.logo?.find(({ isMain }) => isMain);
+  const logo = holder.logos?.find(({ isMain }) => isMain);
 
   return (
     <>
