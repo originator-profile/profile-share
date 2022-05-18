@@ -9,6 +9,14 @@ erDiagram
     }
   
 
+  dps {
+      String id
+    DateTime issuedAt
+    DateTime expiredAt
+    String jwt
+    }
+  
+
   accounts {
       String id
     String url
@@ -62,6 +70,7 @@ erDiagram
     }
   
     ops o{--|| accounts : "certifier"
+    dps o{--|| accounts : "issuer"
     accounts o{--|| roles : "role"
     accountBusinessCategories o{--|| accounts : "account"
     accountBusinessCategories o{--|| businessCategories : "businessCategory"
