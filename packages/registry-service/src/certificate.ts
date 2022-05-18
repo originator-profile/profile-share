@@ -54,8 +54,11 @@ export const CertificateService = ({
     }
   ): Promise<string | Error> {
     const data = await Promise.all([
-      prisma.accounts.findUnique({ where: { id } }),
-      prisma.accounts.findUnique({ where: { id: accountId } }),
+      prisma.accounts.findUnique({ where: { id }, include: { logos: true } }),
+      prisma.accounts.findUnique({
+        where: { id: accountId },
+        include: { logos: true },
+      }),
     ]).catch((e: Error) => e);
     if (data instanceof Error) return data;
 

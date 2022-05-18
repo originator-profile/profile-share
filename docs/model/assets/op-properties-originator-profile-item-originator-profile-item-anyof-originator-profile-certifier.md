@@ -36,7 +36,7 @@ op-certifier#/properties/item/items/anyOf/2
 | [privacyPolicyUrl](#privacypolicyurl)                 | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-プライバシーポリシーurl.md "op-certifier#/properties/item/items/anyOf/2/properties/privacyPolicyUrl")                       |
 | [publishingPrincipleTitle](#publishingprincipletitle) | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-編集ガイドライン表示名.md "op-certifier#/properties/item/items/anyOf/2/properties/publishingPrincipleTitle")                 |
 | [publishingPrincipleUrl](#publishingprincipleurl)     | `string`      | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-編集ガイドラインurl.md "op-certifier#/properties/item/items/anyOf/2/properties/publishingPrincipleUrl")                   |
-| [logo](#logo)                                         | `array`       | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-logo.md "op-certifier-logo#/properties/item/items/anyOf/2/properties/logo")                                       |
+| [logos](#logos)                                       | `array`       | Optional | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-logo.md "op-certifier-logo#/properties/item/items/anyOf/2/properties/logos")                                      |
 
 ## type
 
@@ -370,11 +370,11 @@ unknown
 
 `string` ([編集ガイドラインURL](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-編集ガイドラインurl.md))
 
-## logo
+## logos
 
 
 
-`logo`
+`logos`
 
 *   is optional
 
@@ -382,8 +382,8 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-logo.md "op-certifier-logo#/properties/item/items/anyOf/2/properties/logo")
+*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-logo.md "op-certifier-logo#/properties/item/items/anyOf/2/properties/logos")
 
-### logo Type
+### logos Type
 
 `object[]` ([Logo](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier-properties-logo-logo.md))
