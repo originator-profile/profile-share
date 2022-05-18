@@ -1,10 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import useOpsAtom from "../store/useOpsAtom";
 import { isHolder } from "../utils/op";
 import Placeholder from "../components/Placeholder";
 import Spinner from "../components/Spinner";
 import ProfileLogo from "../components/ProfileLogo";
+import ProfileHeader from "../components/ProfileHeader";
 import HolderTable from "../components/HolderTable";
 
 function Holder(): React.ReactElement {
@@ -37,6 +38,31 @@ function Holder(): React.ReactElement {
 
   return (
     <>
+      <ProfileHeader className="sticky top-0">
+        <Link
+          css={{
+            "[role='tooltip']": {
+              transform: "translateX(-50%) translateY(150%) scale(0)",
+            },
+            "&:hover": {
+              "[role='tooltip']": {
+                transform: "translateX(-50%) translateY(150%) scale(1)",
+              },
+            },
+          }}
+          className="jumpu-icon-button flex-shrink-0"
+          to="/"
+          aria-describedby="tooltip-back"
+        >
+          <Icon
+            className="text-lg text-gray-700"
+            icon="fa6-solid:chevron-left"
+          />
+          <span id="tooltip-back" role="tooltip">
+            戻る
+          </span>
+        </Link>
+      </ProfileHeader>
       <ProfileLogo
         src={logo?.url}
         placeholderSrc="/assets/placeholder-logo-main.png"
