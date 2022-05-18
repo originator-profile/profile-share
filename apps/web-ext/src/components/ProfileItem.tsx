@@ -1,8 +1,8 @@
 import { Icon } from "@iconify/react";
 import { Op } from "@webdino/profile-model";
 import { isHolder } from "../utils/op";
-import { OpHolder } from "../types/op";
 import { Link } from "react-router-dom";
+import ProfileLogo from "./ProfileLogo";
 
 type Props = {
   op: Op;
@@ -10,48 +10,32 @@ type Props = {
   onClick?: () => void;
 };
 
-function ProfileLogo({
-  className,
-  holder,
-  variant,
-}: {
-  className?: string;
-  holder: OpHolder;
-  variant: Props["variant"];
-}): React.ReactElement {
-  const logo = holder.logos?.find(({ isMain }) => isMain);
-  return (
-    <img
-      className={className}
-      src={
-        logo?.url ??
-        (variant === "primary"
-          ? "/assets/placeholder-logo-main.png"
-          : "/assets/placeholder-logo-sub.png")
-      }
-      alt={`${holder.name}のロゴ`}
-      width={variant === "primary" ? 640 : 180}
-      height={variant === "primary" ? 396 : 112}
-    />
-  );
-}
-
 function ProfileItem({ op, variant }: Props): React.ReactElement {
   const holder = op.item.find(isHolder);
   if (!holder) return <div />;
+  const logo = holder.logos?.find(({ isMain }) => isMain);
   return (
     <div className="border-gray-200 border-b">
       {variant === "primary" && (
-        <ProfileLogo className="w-full" holder={holder} variant={variant} />
+        <ProfileLogo
+          src={logo?.url}
+          placeholderSrc="/assets/placeholder-logo-main.png"
+          alt={`${holder.name}のロゴ`}
+          width={320}
+          height={198}
+        />
       )}
       <div className="px-3 py-3 flex items-center gap-2">
         {variant === "secondary" && (
-          <ProfileLogo
-            css={{ width: 90 }}
-            className="flex-shrink-0"
-            holder={holder}
-            variant={variant}
-          />
+          <div css={{ width: 90 }} className="flex-shrink-0">
+            <ProfileLogo
+              src={logo?.url}
+              placeholderSrc="/assets/placeholder-logo-sub.png"
+              alt={`${holder.name}のロゴ`}
+              width={90}
+              height={56}
+            />
+          </div>
         )}
         <div className="flex-1">
           <p className="text-base mb-1">{holder.name}</p>
