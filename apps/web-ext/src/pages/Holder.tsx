@@ -4,6 +4,7 @@ import useOpsAtom from "../store/useOpsAtom";
 import { isHolder } from "../utils/op";
 import Placeholder from "../components/Placeholder";
 import Spinner from "../components/Spinner";
+import ProfileLogo from "../components/ProfileLogo";
 import HolderTable from "../components/HolderTable";
 
 function Holder(): React.ReactElement {
@@ -36,12 +37,12 @@ function Holder(): React.ReactElement {
 
   return (
     <>
-      <img
-        className="w-full"
-        src={logo?.url ?? "/assets/placeholder-logo-main.png"}
+      <ProfileLogo
+        src={logo?.url}
+        placeholderSrc="/assets/placeholder-logo-main.png"
         alt={`${holder.name}のロゴ`}
-        width={640}
-        height={396}
+        width={320}
+        height={198}
       />
       <div className="px-3 py-3">
         <p className="mb-1 text-success flex items-center">
