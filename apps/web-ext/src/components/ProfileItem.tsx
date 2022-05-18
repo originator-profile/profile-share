@@ -24,9 +24,10 @@ function ProfileLogo({
     <img
       className={className}
       src={
-        logo?.url ?? variant === "primary"
+        logo?.url ??
+        (variant === "primary"
           ? "/assets/placeholder-logo-main.png"
-          : "/assets/placeholder-logo-sub.png"
+          : "/assets/placeholder-logo-sub.png")
       }
       alt={`${holder.name}のロゴ`}
       width={variant === "primary" ? 640 : 180}
