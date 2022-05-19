@@ -4,8 +4,8 @@ import useOpsAtom from "../store/useOpsAtom";
 import { isHolder } from "../utils/op";
 import Placeholder from "../components/Placeholder";
 import Spinner from "../components/Spinner";
-import ProfileLogo from "../components/ProfileLogo";
-import ProfileHeader from "../components/ProfileHeader";
+import Image from "../components/Image";
+import Header from "../components/Header";
 import HolderTable from "../components/HolderTable";
 
 function Holder(): React.ReactElement {
@@ -38,7 +38,7 @@ function Holder(): React.ReactElement {
 
   return (
     <>
-      <ProfileHeader className="sticky top-0">
+      <Header className="sticky top-0">
         <Link
           css={{
             "[role='tooltip']": {
@@ -62,8 +62,8 @@ function Holder(): React.ReactElement {
             戻る
           </span>
         </Link>
-      </ProfileHeader>
-      <ProfileLogo
+      </Header>
+      <Image
         src={logo?.url}
         placeholderSrc="/assets/placeholder-logo-main.png"
         alt={`${holder.name}のロゴ`}
