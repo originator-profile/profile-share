@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Op } from "@webdino/profile-model";
+import { Op } from "../types/op";
 import { isHolder } from "../utils/op";
 import { Link } from "react-router-dom";
 import Image from "./Image";
