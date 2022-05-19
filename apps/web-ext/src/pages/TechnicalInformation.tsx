@@ -4,6 +4,7 @@ import { Op } from "../types/op";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import BackHeader from "../components/BackHeader";
+import TechnicalInformationTable from "../components/TechnicalInformationTable";
 
 function Page({ op, targetOrigin }: { op: Op; targetOrigin?: string }) {
   return (
@@ -14,6 +15,11 @@ function Page({ op, targetOrigin }: { op: Op; targetOrigin?: string }) {
       >
         <h1 className="text-base">技術情報</h1>
       </BackHeader>
+      <TechnicalInformationTable
+        className="w-full"
+        op={op}
+        targetOrigin={targetOrigin}
+      />
     </>
   );
 }
