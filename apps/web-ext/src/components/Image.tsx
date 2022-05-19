@@ -9,14 +9,7 @@ type Props = {
   height: number;
 };
 
-function ProfileLogo({
-  className,
-  src,
-  placeholderSrc,
-  alt,
-  width,
-  height,
-}: Props) {
+function Image({ className, src, placeholderSrc, alt, width, height }: Props) {
   return (
     <img
       css={{ maxHeight: height }}
@@ -29,4 +22,4 @@ function ProfileLogo({
   );
 }
 
-export default ProfileLogo;
+export default Image;
