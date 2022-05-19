@@ -1,40 +1,16 @@
 import { useParams, Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
-import useOpsAtom from "../store/useOpsAtom";
+import useOps from "../utils/use-ops";
 import { isHolder } from "../utils/op";
-import Placeholder from "../components/Placeholder";
-import Spinner from "../components/Spinner";
+import { Op, OpHolder } from "../types/op";
+import LoadingPlaceholder from "../components/LoadingPlaceholder";
+import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Image from "../components/Image";
 import Header from "../components/Header";
 import HolderTable from "../components/HolderTable";
 import NavLink from "../components/NavLink";
 
-function Holder(): React.ReactElement {
-  const { subject } = useParams();
-  const { ops } = useOpsAtom();
-  if (ops.length === 0) {
-    return (
-      <Placeholder>
-        <Spinner />
-      </Placeholder>
-    );
-  }
-  const op = ops.find((op) => op.subject === subject);
-  if (!op) {
-    return (
-      <Placeholder>
-        <p>プロファイルが見つかりませんでした</p>
-      </Placeholder>
-    );
-  }
-  const holder = op.item.find(isHolder);
-  if (!holder) {
-    return (
-      <Placeholder>
-        <p>所有者情報が見つかりませんでした</p>
-      </Placeholder>
-    );
-  }
+function Page({ op, holder }: { op: Op; holder: OpHolder }) {
   const logo = holder.logos?.find(({ isMain }) => isMain);
 
   return (
@@ -106,6 +82,45 @@ function Holder(): React.ReactElement {
       </div>
     </>
   );
+}
+
+function Holder() {
+  const { subject } = useParams();
+  const { ops, error, targetOrigin } = useOps();
+  if (error) {
+    return (
+      <ErrorPlaceholder>
+        <p className="whitespace-pre-wrap">{error.message}</p>
+      </ErrorPlaceholder>
+    );
+  }
+  if (!ops) {
+    return (
+      <LoadingPlaceholder>
+        <p>
+          {targetOrigin && `${targetOrigin} の`}
+          プロファイルを取得検証しています...
+        </p>
+      </LoadingPlaceholder>
+    );
+  }
+  const op = ops.find((op) => op.subject === subject);
+  if (!op) {
+    return (
+      <ErrorPlaceholder>
+        <p>プロファイルが見つかりませんでした</p>
+      </ErrorPlaceholder>
+    );
+  }
+  const holder = op.item.find(isHolder);
+  if (!holder) {
+    return (
+      <ErrorPlaceholder>
+        <p>所有者情報が見つかりませんでした</p>
+      </ErrorPlaceholder>
+    );
+  }
+  return <Page op={op} holder={holder} />;
 }
 
 export default Holder;
