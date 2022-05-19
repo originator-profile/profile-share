@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Holders from "./pages/Holders";
 import Holder from "./pages/Holder";
-import Credential from "./pages/Credential";
+import Certifier from "./pages/Certifier";
 import TechnicalInformation from "./pages/TechnicalInformation";
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Holders />} />
       <Route path="/:subject/holder" element={<Holder />} />
-      <Route path="/:subject/credential" element={<Credential />} />
+      <Route path="/:subject/certifier" element={<Certifier />} />
       <Route
         path="/:subject/technical-information"
         element={<TechnicalInformation />}
