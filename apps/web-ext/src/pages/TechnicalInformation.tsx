@@ -1,19 +1,19 @@
-import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import useOps from "../utils/use-ops";
 import { Op } from "../types/op";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
+import BackHeader from "../components/BackHeader";
 
 function Page({ op, targetOrigin }: { op: Op; targetOrigin?: string }) {
   return (
     <>
-      <h1>技術情報</h1>
-      <ul>
-        <li>
-          <Link to="/holder">保有者の詳細</Link>
-        </li>
-      </ul>
+      <BackHeader
+        className="sticky top-0"
+        to={`/${encodeURIComponent(op.subject)}/holder`}
+      >
+        <h1 className="text-base">技術情報</h1>
+      </BackHeader>
     </>
   );
 }

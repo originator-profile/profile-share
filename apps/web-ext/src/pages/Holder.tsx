@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import useOps from "../utils/use-ops";
 import { isHolder } from "../utils/op";
@@ -6,7 +6,7 @@ import { Op, OpHolder } from "../types/op";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Image from "../components/Image";
-import Header from "../components/Header";
+import BackHeader from "../components/BackHeader";
 import HolderTable from "../components/HolderTable";
 import NavLink from "../components/NavLink";
 
@@ -15,32 +15,9 @@ function Page({ op, holder }: { op: Op; holder: OpHolder }) {
 
   return (
     <>
-      <Header className="sticky top-0">
-        <Link
-          css={{
-            "[role='tooltip']": {
-              transform: "translateX(-50%) translateY(150%) scale(0)",
-            },
-            "&:hover": {
-              "[role='tooltip']": {
-                transform: "translateX(-50%) translateY(150%) scale(1)",
-              },
-            },
-          }}
-          className="jumpu-icon-button flex-shrink-0"
-          to="/"
-          aria-describedby="tooltip-back"
-        >
-          <Icon
-            className="text-lg text-gray-700"
-            icon="fa6-solid:chevron-left"
-          />
-          <span id="tooltip-back" role="tooltip">
-            戻る
-          </span>
-        </Link>
+      <BackHeader className="sticky top-0" to="/">
         <h1 className="text-base">所有者情報</h1>
-      </Header>
+      </BackHeader>
       <Image
         src={logo?.url}
         placeholderSrc="/assets/placeholder-logo-main.png"
