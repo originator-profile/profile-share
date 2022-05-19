@@ -4,7 +4,7 @@ import Holder from "./pages/Holder";
 import Credential from "./pages/Credential";
 import TechnicalInformation from "./pages/TechnicalInformation";
 
-function App(): React.ReactElement {
+function App() {
   return (
     <Routes>
       <Route path="/" element={<Holders />} />

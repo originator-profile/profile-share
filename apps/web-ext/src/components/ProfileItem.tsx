@@ -10,7 +10,7 @@ type Props = {
   onClick?: () => void;
 };
 
-function ProfileItem({ op, variant }: Props): React.ReactElement {
+function ProfileItem({ op, variant }: Props) {
   const holder = op.item.find(isHolder);
   if (!holder) return <div />;
   const logo = holder.logos?.find(({ isMain }) => isMain);
