@@ -55,7 +55,7 @@
     "build:esbuild": "node esbuild.build.js",
     "build:web-ext": "web-ext build --source-dir dist --overwrite-dest",
     "clean": "rimraf dist",
-    "dev": "NODE_ENV=development node esbuild.dev.js",
+    "dev": "node esbuild.dev.js",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "start:chromium": "web-ext run --source-dir dist --target=chromium --no-reload",

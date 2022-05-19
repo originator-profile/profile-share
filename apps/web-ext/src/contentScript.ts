@@ -4,7 +4,7 @@ import browser from "webextension-polyfill";
 
 async function verifyOp() {
   const context = "https://github.com/webdino/profile#";
-  const issuer = "https://oprdev.herokuapp.com";
+  const issuer = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(`${issuer}/.well-known/jwks.json`);
   const targetOrigin = document.location.origin;
   const opEndpoint = new URL(`${targetOrigin}/.well-known/op-document`);
