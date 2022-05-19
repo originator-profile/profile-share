@@ -15,5 +15,14 @@
   "privacyPolicyTitle": "個人情報保護方針",
   "privacyPolicyUrl": "https://www.webdino.org/privacy/",
   "publishingPrincipleTitle": "編集ガイドライン",
-  "publishingPrincipleUrl": "https://www.webdino.org/publishing-principle/"
+  "publishingPrincipleUrl": "https://www.webdino.org/publishing-principle/",
+  "logos": {
+    "create": [
+      { "url": "http://localhost:8080/logos/horizontal-webdino.jpg" },
+      {
+        "url": "http://localhost:8080/logos/square-webdino.jpg",
+        "isMain": true
+      }
+    ]
+  }
 }
