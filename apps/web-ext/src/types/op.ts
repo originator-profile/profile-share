@@ -7,3 +7,5 @@ export type JwtOpPayload = OpPayload &
   Required<Pick<JWTPayload, "iss" | "sub" | "iat" | "exp">>;
 export type OpItem = Op["item"][number];
 export type OpHolder = Extract<OpItem, { type: "holder" }>;
+export type OpCertifier = Extract<OpItem, { type: "certifier" }>;
+export type OpCredential = Extract<OpItem, { type: "credential" }>;

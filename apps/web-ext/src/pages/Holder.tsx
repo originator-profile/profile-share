@@ -52,6 +52,12 @@ function Page({ op, holder }: { op: Op; holder: OpHolder }) {
       )}
       <div className="px-3 pt-2 pb-20 bg-gray-50">
         <NavLink
+          className="mb-2"
+          to={`/${encodeURIComponent(op.subject)}/certifier`}
+        >
+          認証機関
+        </NavLink>
+        <NavLink
           to={`/${encodeURIComponent(op.subject)}/technical-information`}
         >
           技術情報
