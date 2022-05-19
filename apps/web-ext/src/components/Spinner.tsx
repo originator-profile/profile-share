@@ -4,7 +4,7 @@ type Props = {
   className?: string;
 };
 
-function Spinner({ className }: Props): React.ReactElement {
+function Spinner({ className }: Props) {
   return (
     <div className={clsx("jumpu-spinner", className)}>
       <svg viewBox="25 25 50 50">

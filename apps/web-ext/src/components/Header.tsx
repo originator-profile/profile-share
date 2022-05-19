@@ -5,7 +5,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-function Header({ className, children }: Props): React.ReactElement {
+function Header({ className, children }: Props) {
   return (
     <header
       className={clsx(

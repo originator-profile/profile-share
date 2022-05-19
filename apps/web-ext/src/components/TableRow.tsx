@@ -3,7 +3,7 @@ type Props = {
   data: React.ReactNode;
 };
 
-function TableRow({ header, data }: Props): React.ReactElement {
+function TableRow({ header, data }: Props) {
   return (
     <tr>
       <th className="w-2/6 text-left pl-3 pr-1 py-2 text-gray-500 font-normal border-gray-200 border-b">
