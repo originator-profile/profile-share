@@ -7,6 +7,7 @@ import Spinner from "../components/Spinner";
 import Image from "../components/Image";
 import Header from "../components/Header";
 import HolderTable from "../components/HolderTable";
+import NavLink from "../components/NavLink";
 
 function Holder(): React.ReactElement {
   const { subject } = useParams();
@@ -62,6 +63,7 @@ function Holder(): React.ReactElement {
             戻る
           </span>
         </Link>
+        <h1 className="text-base">所有者情報</h1>
       </Header>
       <Image
         src={logo?.url}
@@ -95,6 +97,13 @@ function Holder(): React.ReactElement {
           />
         </section>
       )}
+      <div className="px-3 pt-2 pb-20 bg-gray-50">
+        <NavLink
+          to={`/${encodeURIComponent(op.subject)}/technical-information`}
+        >
+          技術情報
+        </NavLink>
+      </div>
     </>
   );
 }
