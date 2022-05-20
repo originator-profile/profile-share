@@ -5,7 +5,8 @@ import useSWR, { mutate } from "swr";
 import { useAsync } from "react-use";
 import { Op } from "@webdino/profile-model";
 import { OpMessageResponse } from "../types/message";
-import { toOp } from "../utils/op";
+import { toOp } from "./op";
+import storage from "./storage";
 
 const key = "ops";
 
@@ -57,15 +58,11 @@ async function fetchOps(_: typeof key, targetOrigin?: string) {
 
 function useOps() {
   const message = useAsync(async () => {
-    // TODO: 拡張機能を呼び出したアクティブタブであることを保証する
-    const tabs = await browser.tabs.query({
-      active: true,
-      currentWindow: false,
+    const tabId = storage.getItem("tabId");
+    if (tabId === null) return null;
+    const response: OpMessageResponse = await browser.tabs.sendMessage(tabId, {
+      type: "op",
     });
-    const response: OpMessageResponse = await browser.tabs.sendMessage(
-      tabs[0].id ?? NaN,
-      { type: "op" }
-    );
     return response;
   });
   const { data: ops, error } = useSWR<Op[]>(
