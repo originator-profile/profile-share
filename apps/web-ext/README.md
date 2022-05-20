@@ -19,3 +19,7 @@ Web ブラウザーで Originator Profile の閲覧と検証を行うアプリ�
 ## ドキュメント
 
 [ブラウザー拡張機能 - Mozilla | MDN](https://developer.mozilla.org/ja/docs/Mozilla/Add-ons/WebExtensions)
+
+## 商標
+
+JICDAQ およびそのロゴは、一般社団法人デジタル広告品質認証機構の商標または登録商標です。
