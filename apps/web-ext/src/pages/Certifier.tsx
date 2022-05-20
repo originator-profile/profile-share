@@ -3,28 +3,33 @@ import useOps from "../utils/use-ops";
 import { Op } from "../types/op";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
+import Image from "../components/Image";
 import BackHeader from "../components/BackHeader";
-import TechnicalInformationTable from "../components/TechnicalInformationTable";
+import CertifierTable from "../components/CertifierTable";
 
-function Page({ op, targetOrigin }: { op: Op; targetOrigin?: string }) {
+function Page({ op }: { op: Op }) {
   return (
     <>
       <BackHeader
         className="sticky top-0"
         to={`/${encodeURIComponent(op.subject)}/holder`}
       >
-        <h1 className="text-base">技術情報</h1>
+        <h1 className="text-base">認証機関</h1>
       </BackHeader>
-      <TechnicalInformationTable
-        className="w-full"
-        op={op}
-        targetOrigin={targetOrigin}
+      <Image
+        src="/assets/logo-jicdaq.png"
+        placeholderSrc="/assets/placeholder-logo-main.png"
+        alt="一般社団法人 デジタル広告品質認証機構のロゴ"
+        width={320}
+        height={198}
       />
+      <hr className="border-gray-50 border-4" />
+      <CertifierTable className="w-full" op={op} />
     </>
   );
 }
 
-function TechnicalInformation() {
+function Certifier() {
   const { subject } = useParams();
   const { ops, error, targetOrigin } = useOps();
   if (error) {
@@ -52,7 +57,7 @@ function TechnicalInformation() {
       </ErrorPlaceholder>
     );
   }
-  return <Page op={op} targetOrigin={targetOrigin} />;
+  return <Page op={op} />;
 }
 
-export default TechnicalInformation;
+export default Certifier;

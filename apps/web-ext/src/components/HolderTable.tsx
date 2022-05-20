@@ -1,12 +1,12 @@
 import { OpHolder } from "../types/op";
-import TableRow from "../components/TableRow";
+import TableRow from "./TableRow";
 
 type Props = {
   className?: string;
   holder: OpHolder;
 };
 
-function HolderTable({ className, holder }: Props): React.ReactElement {
+function HolderTable({ className, holder }: Props) {
   return (
     <table className={className}>
       <tbody>

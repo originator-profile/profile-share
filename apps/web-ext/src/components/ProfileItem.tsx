@@ -1,8 +1,8 @@
 import { Icon } from "@iconify/react";
-import { Op } from "@webdino/profile-model";
+import { Op } from "../types/op";
 import { isHolder } from "../utils/op";
 import { Link } from "react-router-dom";
-import ProfileLogo from "./ProfileLogo";
+import Image from "./Image";
 
 type Props = {
   op: Op;
@@ -10,14 +10,14 @@ type Props = {
   onClick?: () => void;
 };
 
-function ProfileItem({ op, variant }: Props): React.ReactElement {
+function ProfileItem({ op, variant }: Props) {
   const holder = op.item.find(isHolder);
   if (!holder) return <div />;
   const logo = holder.logos?.find(({ isMain }) => isMain);
   return (
     <div className="border-gray-200 border-b">
       {variant === "primary" && (
-        <ProfileLogo
+        <Image
           src={logo?.url}
           placeholderSrc="/assets/placeholder-logo-main.png"
           alt={`${holder.name}のロゴ`}
@@ -28,7 +28,7 @@ function ProfileItem({ op, variant }: Props): React.ReactElement {
       <div className="px-3 py-3 flex items-center gap-2">
         {variant === "secondary" && (
           <div css={{ width: 90 }} className="flex-shrink-0">
-            <ProfileLogo
+            <Image
               src={logo?.url}
               placeholderSrc="/assets/placeholder-logo-sub.png"
               alt={`${holder.name}のロゴ`}

@@ -1,69 +1,24 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
-import useOpsAtom from "../store/useOpsAtom";
+import useOps from "../utils/use-ops";
 import { isHolder } from "../utils/op";
-import Placeholder from "../components/Placeholder";
-import Spinner from "../components/Spinner";
-import ProfileLogo from "../components/ProfileLogo";
-import ProfileHeader from "../components/ProfileHeader";
+import { Op, OpHolder } from "../types/op";
+import LoadingPlaceholder from "../components/LoadingPlaceholder";
+import ErrorPlaceholder from "../components/ErrorPlaceholder";
+import Image from "../components/Image";
+import BackHeader from "../components/BackHeader";
 import HolderTable from "../components/HolderTable";
+import NavLink from "../components/NavLink";
 
-function Holder(): React.ReactElement {
-  const { subject } = useParams();
-  const { ops } = useOpsAtom();
-  if (ops.length === 0) {
-    return (
-      <Placeholder>
-        <Spinner />
-      </Placeholder>
-    );
-  }
-  const op = ops.find((op) => op.subject === subject);
-  if (!op) {
-    return (
-      <Placeholder>
-        <p>プロファイルが見つかりませんでした</p>
-      </Placeholder>
-    );
-  }
-  const holder = op.item.find(isHolder);
-  if (!holder) {
-    return (
-      <Placeholder>
-        <p>所有者情報が見つかりませんでした</p>
-      </Placeholder>
-    );
-  }
+function Page({ op, holder }: { op: Op; holder: OpHolder }) {
   const logo = holder.logos?.find(({ isMain }) => isMain);
 
   return (
     <>
-      <ProfileHeader className="sticky top-0">
-        <Link
-          css={{
-            "[role='tooltip']": {
-              transform: "translateX(-50%) translateY(150%) scale(0)",
-            },
-            "&:hover": {
-              "[role='tooltip']": {
-                transform: "translateX(-50%) translateY(150%) scale(1)",
-              },
-            },
-          }}
-          className="jumpu-icon-button flex-shrink-0"
-          to="/"
-          aria-describedby="tooltip-back"
-        >
-          <Icon
-            className="text-lg text-gray-700"
-            icon="fa6-solid:chevron-left"
-          />
-          <span id="tooltip-back" role="tooltip">
-            戻る
-          </span>
-        </Link>
-      </ProfileHeader>
-      <ProfileLogo
+      <BackHeader className="sticky top-0" to="/">
+        <h1 className="text-base">所有者情報</h1>
+      </BackHeader>
+      <Image
         src={logo?.url}
         placeholderSrc="/assets/placeholder-logo-main.png"
         alt={`${holder.name}のロゴ`}
@@ -95,8 +50,60 @@ function Holder(): React.ReactElement {
           />
         </section>
       )}
+      <div className="px-3 pt-2 pb-20 bg-gray-50">
+        <NavLink
+          className="mb-2"
+          to={`/${encodeURIComponent(op.subject)}/certifier`}
+        >
+          認証機関
+        </NavLink>
+        <NavLink
+          to={`/${encodeURIComponent(op.subject)}/technical-information`}
+        >
+          技術情報
+        </NavLink>
+      </div>
     </>
   );
+}
+
+function Holder() {
+  const { subject } = useParams();
+  const { ops, error, targetOrigin } = useOps();
+  if (error) {
+    return (
+      <ErrorPlaceholder>
+        <p className="whitespace-pre-wrap">{error.message}</p>
+      </ErrorPlaceholder>
+    );
+  }
+  if (!ops) {
+    return (
+      <LoadingPlaceholder>
+        <p>
+          {targetOrigin && `${targetOrigin} の`}
+          プロファイルを取得検証しています...
+        </p>
+      </LoadingPlaceholder>
+    );
+  }
+  const op = ops.find((op) => op.subject === subject);
+  if (!op) {
+    return (
+      <ErrorPlaceholder>
+        <p>プロファイルが見つかりませんでした</p>
+      </ErrorPlaceholder>
+    );
+  }
+  const holder = op.item.find(isHolder);
+  if (!holder) {
+    return (
+      <ErrorPlaceholder>
+        <p>所有者情報が見つかりませんでした</p>
+      </ErrorPlaceholder>
+    );
+  }
+  return <Page op={op} holder={holder} />;
 }
 
 export default Holder;

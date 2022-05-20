@@ -1,8 +1,18 @@
-import { JwtOpPayload, OpItem, OpHolder } from "../types/op";
-import { Op } from "@webdino/profile-model";
+import {
+  JwtOpPayload,
+  Op,
+  OpItem,
+  OpHolder,
+  OpCertifier,
+  OpCredential,
+} from "../types/op";
 
 export const isHolder = (opItem: OpItem): opItem is OpHolder =>
   opItem.type === "holder";
+export const isCertifier = (opItem: OpItem): opItem is OpCertifier =>
+  opItem.type === "certifier";
+export const isCredential = (opItem: OpItem): opItem is OpCredential =>
+  opItem.type === "credential";
 
 export const toOp = ({
   iss,
