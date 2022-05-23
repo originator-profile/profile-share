@@ -1,6 +1,6 @@
 # 操作手順
 
-apps/registry 実行時に以下の環境変数を設定する
+apps/registry 実行時に以下の環境変数を apps/registry/.env に設定する
 
 | 環境変数     | 内容            |
 | ------------ | --------------- |
@@ -14,7 +14,7 @@ studio の起動を起動して DB の内容を参照する
 
 ```bash
 cd apps/registry
-bin/dev db:prisma studio --schema=../../packages/registry-db/prisma/schema.prisma
+yarn dotenv -e .env bin/dev db:prisma studio --schema=../../packages/registry-db/prisma/schema.prisma
 ```
 
 ## OP 登録手順
@@ -26,7 +26,7 @@ apps/registry を使って OP を登録する手順 apps/registry ディレク�
 OP に登録する内容の JSON ファイルを作成し以下のコマンドで登録を行う
 
 ```bash
-$ bin/dev account:register -i account.json
+$ yarn dotenv -e .env bin/dev account:register -i account.json
 {
 "id": "daab5a08-d513-400d-aaaa-e1c1493e0421",
 ...
@@ -39,8 +39,8 @@ account.json の例
 ### 鍵作成と登録
 
 ```bash
-$ bin/dev key-gen -o key
-$ bin/dev account:register-key -k key.pub.json --id daab5a08-d513-400d-aaaa-e1c1493e0421
+$ yarn dotenv -e .env bin/dev key-gen -o key
+$ yarn dotenv -e .env bin/dev account:register-key -k key.pub.json --id daab5a08-d513-400d-aaaa-e1c1493e0421
 ```
 
 id には account:register 実行時の id を使用する
@@ -48,7 +48,7 @@ id には account:register 実行時の id を使用する
 ### OP 発行
 
 ```bash
-bin/dev cert:issue --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e -i key --holder daab5a08-d513-400d-aaaa-e1c1493e0421
+yarn dotenv -e .env bin/dev cert:issue --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e -i key --holder daab5a08-d513-400d-aaaa-e1c1493e0421
 ```
 
 https://oprdev.herokuapp.com　の場合であれば --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e を指定する。
