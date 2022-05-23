@@ -10,7 +10,7 @@ const DpVisibleText = {
     "対象の要素のその子孫のレンダリングされたテキストとそのテキストへの署名",
   type: "object",
   properties: {
-    type: { const: "visible-text" },
+    type: { const: "visibleText" },
     url: {
       ...DpUrl,
       $id: "dp-visible-text-url",
@@ -24,7 +24,7 @@ const DpVisibleText = {
       $id: "dp-visible-text-proof",
     },
   },
-  required: ["type", "url", "location", "proof"],
+  required: ["type", "url", "proof"],
   additionalProperties: false,
 } as const;
 

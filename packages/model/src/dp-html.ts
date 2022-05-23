@@ -23,7 +23,7 @@ const DpHtml = {
       $id: "dp-html-proof",
     },
   },
-  required: ["type", "url", "location", "proof"],
+  required: ["type", "url", "proof"],
   additionalProperties: false,
 } as const;
 
