@@ -36,6 +36,8 @@
 
 *   [Proof](./dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-proof.md "対象のテキストへの署名") – `dp-html-proof#/properties/item/items/anyOf/2/properties/proof`
 
+*   [Website](./dp-properties-document-profile-item-document-profile-item-anyof-website.md "Website") – `og-website#/properties/item/items/anyOf/3`
+
 ### Arrays
 
 *   [Business Category](./op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder-properties-business-category.md) – `op-holder-business-category#/properties/item/items/anyOf/0/properties/businessCategory`

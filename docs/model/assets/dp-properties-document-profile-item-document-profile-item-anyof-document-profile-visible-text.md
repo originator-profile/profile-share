@@ -20,7 +20,7 @@ dp-visible-text#/properties/item/items/anyOf/0
 | :-------------------- | :------------ | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [type](#type)         | Not specified | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-type.md "dp-visible-text#/properties/item/items/anyOf/0/properties/type")                  |
 | [url](#url)           | `string`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-url.md "dp-visible-text-url#/properties/item/items/anyOf/0/properties/url")                |
-| [location](#location) | `string`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-location.md "dp-visible-text-location#/properties/item/items/anyOf/0/properties/location") |
+| [location](#location) | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-location.md "dp-visible-text-location#/properties/item/items/anyOf/0/properties/location") |
 | [proof](#proof)       | `object`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-proof.md "dp-visible-text-proof#/properties/item/items/anyOf/0/properties/proof")          |
 
 ## type
@@ -46,7 +46,7 @@ unknown
 **constant**: the value of this property must be equal to:
 
 ```json
-"visible-text"
+"visibleText"
 ```
 
 ## url
@@ -73,7 +73,7 @@ unknown
 
 `location`
 
-*   is required
+*   is optional
 
 *   Type: `string` ([Location](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-location.md))
 

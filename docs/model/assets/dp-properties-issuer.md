@@ -1,23 +1,15 @@
-# Untitled undefined type in Document Profile Schema
+# Issuer Schema
 
 ```txt
-dp-visible-text#/properties/item/items/anyOf/0/properties/type
+dp#/properties/issuer
 ```
 
-
+組織を表す一義的な識別子
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [dp.schema.json\*](dp.schema.json "open original schema") |
 
-## type Type
+## issuer Type
 
-unknown
-
-## type Constraints
-
-**constant**: the value of this property must be equal to:
-
-```json
-"visibleText"
-```
+`string` ([Issuer](dp-properties-issuer.md))
