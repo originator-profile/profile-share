@@ -55,7 +55,17 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
 
     const website = await prisma.websites.create({
       data: {
-        ...omit(input.website ?? {}, "type", "url"),
+        ...omit(
+          input.website ?? {},
+          "type",
+          "url",
+          "https://schema.org/author",
+          "https://schema.org/category",
+          "https://schema.org/editor"
+        ),
+        author: input.website?.["https://schema.org/author"],
+        category: input.website?.["https://schema.org/category"],
+        editor: input.website?.["https://schema.org/editor"],
         accountId: id,
         url: input.url,
         bodyFormatValue: input.bodyFormat,
