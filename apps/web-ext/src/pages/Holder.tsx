@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
-import useOps from "../utils/use-ops";
-import { isHolder } from "../utils/op";
+import useProfiles from "../utils/use-profiles";
+import { isHolder, isOp } from "../utils/op";
 import { Op, OpHolder } from "../types/op";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
@@ -69,7 +69,7 @@ function Page({ op, holder }: { op: Op; holder: OpHolder }) {
 
 function Holder() {
   const { subject } = useParams();
-  const { ops, error, targetOrigin } = useOps();
+  const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
     return (
       <ErrorPlaceholder>
@@ -77,7 +77,7 @@ function Holder() {
       </ErrorPlaceholder>
     );
   }
-  if (!ops) {
+  if (!profiles) {
     return (
       <LoadingPlaceholder>
         <p>
@@ -87,15 +87,15 @@ function Holder() {
       </LoadingPlaceholder>
     );
   }
-  const op = ops.find((op) => op.subject === subject);
-  if (!op) {
+  const profile = profiles.find((profile) => profile.subject === subject);
+  if (!profile || !isOp(profile)) {
     return (
       <ErrorPlaceholder>
         <p>プロファイルが見つかりませんでした</p>
       </ErrorPlaceholder>
     );
   }
-  const holder = op.item.find(isHolder);
+  const holder = profile.item.find(isHolder);
   if (!holder) {
     return (
       <ErrorPlaceholder>
@@ -103,7 +103,7 @@ function Holder() {
       </ErrorPlaceholder>
     );
   }
-  return <Page op={op} holder={holder} />;
+  return <Page op={profile} holder={holder} />;
 }
 
 export default Holder;

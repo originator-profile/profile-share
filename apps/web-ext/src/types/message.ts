@@ -1,9 +1,9 @@
-export type OpMessageRequest = {
-  type: "op";
+export type FetchProfilesMessageRequest = {
+  type: "fetch-profiles";
 };
-export type OpMessageResponse = {
-  type: "op";
+export type FetchProfilesMessageResponse = {
+  type: "fetch-profiles";
   targetOrigin: string;
 };
-export type MessageRequest = OpMessageRequest;
-export type MessageResponse = OpMessageResponse;
+export type MessageRequest = FetchProfilesMessageRequest;
+export type MessageResponse = FetchProfilesMessageResponse;
