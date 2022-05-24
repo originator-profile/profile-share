@@ -1,8 +1,8 @@
-import { Dp } from "@webdino/profile-model";
+import { Dp as DpModel } from "@webdino/profile-model";
 import { DpPayload } from "@webdino/profile-sign/src/types";
 import { JWTPayload } from "jose";
 
-export { Dp } from "@webdino/profile-model";
+export type Dp = DpModel & { error?: Error };
 export type JwtDpPayload = DpPayload &
   Required<Pick<JWTPayload, "iss" | "sub" | "iat" | "exp">>;
 export type DpItem = Dp["item"][number];

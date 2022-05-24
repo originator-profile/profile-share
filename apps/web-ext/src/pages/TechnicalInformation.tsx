@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
-import useOps from "../utils/use-ops";
+import useProfiles from "../utils/use-profiles";
 import { Op } from "../types/op";
+import { isOp } from "../utils/op";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import BackHeader from "../components/BackHeader";
@@ -26,7 +27,7 @@ function Page({ op, targetOrigin }: { op: Op; targetOrigin?: string }) {
 
 function TechnicalInformation() {
   const { subject } = useParams();
-  const { ops, error, targetOrigin } = useOps();
+  const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
     return (
       <ErrorPlaceholder>
@@ -34,7 +35,7 @@ function TechnicalInformation() {
       </ErrorPlaceholder>
     );
   }
-  if (!ops) {
+  if (!profiles) {
     return (
       <LoadingPlaceholder>
         <p>
@@ -44,15 +45,15 @@ function TechnicalInformation() {
       </LoadingPlaceholder>
     );
   }
-  const op = ops.find((op) => op.subject === subject);
-  if (!op) {
+  const profile = profiles.find((profile) => profile.subject === subject);
+  if (!profile || !isOp(profile)) {
     return (
       <ErrorPlaceholder>
         <p>プロファイルが見つかりませんでした</p>
       </ErrorPlaceholder>
     );
   }
-  return <Page op={op} targetOrigin={targetOrigin} />;
+  return <Page op={profile} targetOrigin={targetOrigin} />;
 }
 
 export default TechnicalInformation;

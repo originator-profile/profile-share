@@ -12,14 +12,8 @@ Web ブラウザーで Originator Profile の閲覧と検証を行うアプリ�
 
 ### デモの Profile Registry で動作確認
 
-1. `PROFILE_ISSUER=https://oprdev.herokuapp.com yarn dev` で拡張機能の差分ビルドを生成します。
+1. `yarn dev` で拡張機能の差分ビルドを生成します。
 2. 異なるターミナルセッションで `yarn start:chromium --url=https://oprdev.herokuapp.com` で拡張機能を Chromium でプレビューします。
-
-## 環境変数
-
-- `PROFILE_ISSUER`: プロファイルを発行しているレジストリ。プロファイルの署名検証時に使用する公開鍵の参照先の URL オリジン。
-  - `yarn dev` 時のデフォルト値: `"http://localhost:8080"`
-  - `yarn build` 時のデフォルト値: `"https://oprdev.herokuapp.com"`
 
 ## npm スクリプト
 

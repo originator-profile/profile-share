@@ -1,6 +1,5 @@
 const defaultEnv = {
   MODE: "production",
-  PROFILE_ISSUER: process.env.PROFILE_ISSUER ?? "https://oprdev.herokuapp.com",
 };
 
 module.exports = {

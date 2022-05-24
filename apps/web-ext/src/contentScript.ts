@@ -5,9 +5,9 @@ function handleMessageResponse(
   message: MessageRequest
 ): Promise<MessageResponse> {
   switch (message.type) {
-    case "op":
+    case "fetch-profiles":
       return Promise.resolve({
-        type: "op",
+        type: "fetch-profiles",
         targetOrigin: document.location.origin,
       });
   }
