@@ -20,7 +20,7 @@ dp-text#/properties/item/items/anyOf/1
 | :-------------------- | :------------ | :------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [type](#type)         | Not specified | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-text-properties-type.md "dp-text#/properties/item/items/anyOf/1/properties/type")                  |
 | [url](#url)           | `string`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-text-properties-url.md "dp-text-url#/properties/item/items/anyOf/1/properties/url")                |
-| [location](#location) | `string`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-text-properties-location.md "dp-text-location#/properties/item/items/anyOf/1/properties/location") |
+| [location](#location) | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-text-properties-location.md "dp-text-location#/properties/item/items/anyOf/1/properties/location") |
 | [proof](#proof)       | `object`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-text-properties-proof.md "dp-text-proof#/properties/item/items/anyOf/1/properties/proof")          |
 
 ## type
@@ -73,7 +73,7 @@ unknown
 
 `location`
 
-*   is required
+*   is optional
 
 *   Type: `string` ([Location](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-text-properties-location.md))
 

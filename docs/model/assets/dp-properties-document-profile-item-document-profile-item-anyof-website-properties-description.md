@@ -1,7 +1,7 @@
-# Untitled undefined type in Document Profile Schema
+# Description Schema
 
 ```txt
-dp-visible-text#/properties/item/items/anyOf/0/properties/type
+og-website#/properties/item/items/anyOf/3/properties/description
 ```
 
 
@@ -10,14 +10,6 @@ dp-visible-text#/properties/item/items/anyOf/0/properties/type
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [dp.schema.json\*](dp.schema.json "open original schema") |
 
-## type Type
+## description Type
 
-unknown
-
-## type Constraints
-
-**constant**: the value of this property must be equal to:
-
-```json
-"visibleText"
-```
+`string` ([Description](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-description.md))

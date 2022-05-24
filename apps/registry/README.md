@@ -47,6 +47,7 @@ running command...
 * [`profile-registry help [COMMAND]`](#profile-registry-help-command)
 * [`profile-registry key-gen`](#profile-registry-key-gen)
 * [`profile-registry openapi-gen [OUTPUT]`](#profile-registry-openapi-gen-output)
+* [`profile-registry publisher:register-website`](#profile-registry-publisherregister-website)
 * [`profile-registry start`](#profile-registry-start)
 
 ## `profile-registry account:register`
@@ -191,6 +192,33 @@ ARGUMENTS
 
 DESCRIPTION
   OpenAPI ドキュメント生成
+```
+
+## `profile-registry publisher:register-website`
+
+ウェブページの登録
+
+```
+USAGE
+  $ profile-registry publisher:register-website -i <value> --id <value> --url <value> --body <value> [--title <value>] [--image
+    <value>] [--description <value>] [--location <value>] [--bodyFormat html|text|visibleText] [--issued-at <value>]
+    [--expired-at <value>]
+
+FLAGS
+  -i, --identity=<value>                (required) PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル
+  --body=<value>                        (required) 対象のテキストファイル (UTF-8)
+  --bodyFormat=(html|text|visibleText)  対象のテキストの形式
+  --description=<value>                 Description
+  --expired-at=<value>                  有効期限 (ISO 8601)
+  --id=<value>                          (required) 会員 (UUID)
+  --image=<value>                       Image URL
+  --issued-at=<value>                   発行日時 (ISO 8601)
+  --location=<value>                    対象の要素の場所 (CSS セレクター)
+  --title=<value>                       Title
+  --url=<value>                         (required) URL
+
+DESCRIPTION
+  ウェブページの登録
 ```
 
 ## `profile-registry start`

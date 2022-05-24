@@ -21,3 +21,5 @@ any of
 *   [Document Profile Text](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-text.md "check type definition")
 
 *   [Document Profile HTML](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html.md "check type definition")
+
+*   [Website](dp-properties-document-profile-item-document-profile-item-anyof-website.md "check type definition")

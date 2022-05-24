@@ -1,7 +1,7 @@
-# Untitled undefined type in Document Profile Schema
+# 発行日時 Schema
 
 ```txt
-dp-visible-text#/properties/item/items/anyOf/0/properties/type
+dp#/properties/issuedAt
 ```
 
 
@@ -10,14 +10,10 @@ dp-visible-text#/properties/item/items/anyOf/0/properties/type
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [dp.schema.json\*](dp.schema.json "open original schema") |
 
-## type Type
+## issuedAt Type
 
-unknown
+`string` ([発行日時](dp-properties-発行日時.md))
 
-## type Constraints
+## issuedAt Constraints
 
-**constant**: the value of this property must be equal to:
-
-```json
-"visibleText"
-```
+**date time**: the string must be a date time string, according to [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339 "check the specification")

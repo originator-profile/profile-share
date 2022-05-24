@@ -69,6 +69,22 @@ erDiagram
     Json jwk
     }
   
+
+  websites {
+      Int id
+    String url
+    String title
+    String image
+    String description
+    String location
+    String proofJws
+    }
+  
+
+  bodyFormats {
+      String value
+    }
+  
     ops o{--|| accounts : "certifier"
     dps o{--|| accounts : "issuer"
     accounts o{--|| roles : "role"
@@ -78,4 +94,6 @@ erDiagram
     publications o|--|| ops : "op"
     publications o{--|| accounts : "account"
     keys o{--|| accounts : "account"
+    websites o{--|| accounts : "account"
+    websites o{--|| bodyFormats : "bodyFormat"
 ```

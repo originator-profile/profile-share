@@ -92,6 +92,8 @@ model accounts {
   publications             publications[]
   /// 公開鍵
   keys                     keys[]
+  /// ウェブページ
+  websites                 websites[]
 }
 
 /// 会員種別
@@ -153,4 +155,35 @@ model keys {
   accountId String   @db.Uuid
   /// JWK
   jwk       Json
+}
+
+/// ウェブページ
+model websites {
+  id              Int         @id @default(autoincrement())
+  /// 会員
+  account         accounts    @relation(fields: [accountId], references: [id])
+  accountId       String      @db.Uuid
+  /// URL
+  url             String
+  /// タイトル
+  title           String?
+  /// 画像URL
+  image           String?
+  /// 説明
+  description     String?
+  /// 対象の要素の場所 (CSS セレクター)
+  location        String?
+  /// 対象のテキストの形式
+  bodyFormat      bodyFormats @relation(fields: [bodyFormatValue], references: [value])
+  bodyFormatValue String
+  /// 対象のテキストへの署名 (Detached JSON Web Signature)
+  proofJws        String
+}
+
+/// 本文の形式
+model bodyFormats {
+  /// "visibleText" "text" "html"
+  value    String     @id
+  /// ウェブページ
+  websites websites[]
 }

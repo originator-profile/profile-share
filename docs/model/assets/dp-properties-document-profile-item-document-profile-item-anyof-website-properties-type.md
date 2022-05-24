@@ -1,7 +1,7 @@
 # Untitled undefined type in Document Profile Schema
 
 ```txt
-dp-visible-text#/properties/item/items/anyOf/0/properties/type
+og-website#/properties/item/items/anyOf/3/properties/type
 ```
 
 
@@ -19,5 +19,5 @@ unknown
 **constant**: the value of this property must be equal to:
 
 ```json
-"visibleText"
+"website"
 ```
