@@ -4,7 +4,24 @@ Web ブラウザーで Originator Profile の閲覧と検証を行うアプリ�
 
 ## 使い方
 
-クイックスタート: `yarn dev` したのち、異なるターミナルセッションで `yarn start:chromium` すると、拡張機能を Chromium でプレビューしながら開発できます。
+### ローカルの Profile Registry で動作確認
+
+1. ルートディレクトリに移動します。
+2. `yarn dev` でローカルの Profile Registry の起動と拡張機能の差分ビルドを生成します。
+3. 異なるターミナルセッションで `yarn start:chromium --url=http://localhost:8080` で拡張機能を Chromium でプレビューします。
+
+### デモの Profile Registry で動作確認
+
+1. `PROFILE_ISSUER=https://oprdev.herokuapp.com yarn dev` で拡張機能の差分ビルドを生成します。
+2. 異なるターミナルセッションで `yarn start:chromium --url=https://oprdev.herokuapp.com` で拡張機能を Chromium でプレビューします。
+
+## 環境変数
+
+- `PROFILE_ISSUER`: プロファイルを発行しているレジストリ。プロファイルの署名検証時に使用する公開鍵の参照先の URL。
+  - `yarn dev` 時のデフォルト値: `"http://localhost:8080"`
+  - `yarn build` 時のデフォルト値: `"https://oprdev.herokuapp.com"`
+
+## npm スクリプト
 
 - `yarn build`: 拡張機能をビルドしたのち、パッケージングします。
 - `yarn build:esbuild`: `dist` を出力先として、拡張機能を esbuild でビルドします。
