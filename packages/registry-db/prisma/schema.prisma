@@ -171,6 +171,12 @@ model websites {
   image           String?
   /// 説明
   description     String?
+  /// https://schema.org/author
+  author          String?
+  /// https://schema.org/category (例えば IAB 2.0 モデル)
+  category        String?
+  /// https://schema.org/editor
+  editor          String?
   /// 対象の要素の場所 (CSS セレクター)
   location        String?
   /// 対象のテキストの形式

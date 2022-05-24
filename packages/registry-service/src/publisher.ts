@@ -76,6 +76,9 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
             title: website.title,
             image: website.image,
             description: website.description,
+            "https://schema.org/author": website.author,
+            "https://schema.org/category": website.category,
+            "https://schema.org/editor": website.editor,
           }),
         },
         {

@@ -29,6 +29,15 @@ export class PublisherRegisterWebsite extends Command {
     description: Flags.string({
       description: "Description",
     }),
+    author: Flags.string({
+      description: "Author",
+    }),
+    category: Flags.string({
+      description: "Category",
+    }),
+    editor: Flags.string({
+      description: "Editor",
+    }),
     location: Flags.string({
       description: "対象の要素の場所 (CSS セレクター)",
     }),
@@ -83,6 +92,9 @@ export class PublisherRegisterWebsite extends Command {
           title: flags.title,
           image: flags.image,
           description: flags.description,
+          "https://schema.org/author": flags.author,
+          "https://schema.org/category": flags.category,
+          "https://schema.org/editor": flags.editor,
         },
       },
       { issuedAt, expiredAt }

@@ -76,6 +76,9 @@ erDiagram
     String title
     String image
     String description
+    String author
+    String category
+    String editor
     String location
     String proofJws
     }

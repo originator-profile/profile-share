@@ -25,6 +25,9 @@ describe("PublisherService", () => {
       title: "Article 42",
       image: "http://iss.example/asset/image.png",
       description: "The article",
+      "https://schema.org/author": "執筆太郎",
+      "https://schema.org/category": "Sports>Baseball",
+      "https://schema.org/editor": "編集部",
     };
     const input = {
       url: website.url,
@@ -46,6 +49,9 @@ describe("PublisherService", () => {
       title: website.title,
       image: website.image,
       description: website.description,
+      author: website["https://schema.org/author"],
+      category: website["https://schema.org/category"],
+      editor: website["https://schema.org/editor"],
       location: input.location,
       bodyFormatValue: input.bodyFormat,
       proofJws: "jws",
