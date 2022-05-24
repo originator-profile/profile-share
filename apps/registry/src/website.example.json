@@ -1,0 +1,14 @@
+{
+  "url": "http://localhost:8080/",
+  "location": "h1",
+  "bodyFormat": "html",
+  "body": "<h1>OP 確認くん</h1>",
+  "website": {
+    "type": "website",
+    "url": "http://localhost:8080/",
+    "title": "OP 確認くん",
+    "https://schema.org/author": "執筆太郎",
+    "https://schema.org/category": "Sports>Baseball",
+    "https://schema.org/editor": "編集部"
+  }
+}
