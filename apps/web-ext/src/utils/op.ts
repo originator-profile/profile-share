@@ -1,3 +1,4 @@
+import { JwtProfilePayload } from "../types/profile";
 import {
   JwtOpPayload,
   Op,
@@ -7,6 +8,10 @@ import {
   OpCredential,
 } from "../types/op";
 
+export const isJwtOpPayload = (
+  payload: JwtProfilePayload
+): payload is JwtOpPayload =>
+  "https://opr.webdino.org/jwt/claims/op" in payload;
 export const isHolder = (opItem: OpItem): opItem is OpHolder =>
   opItem.type === "holder";
 export const isCertifier = (opItem: OpItem): opItem is OpCertifier =>
