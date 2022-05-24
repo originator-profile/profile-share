@@ -201,14 +201,17 @@ DESCRIPTION
 ```
 USAGE
   $ profile-registry publisher:register-website -i <value> --id <value> --url <value> --body <value> [--title <value>] [--image
-    <value>] [--description <value>] [--location <value>] [--bodyFormat html|text|visibleText] [--issued-at <value>]
-    [--expired-at <value>]
+    <value>] [--description <value>] [--author <value>] [--category <value>] [--editor <value>] [--location <value>]
+    [--bodyFormat html|text|visibleText] [--issued-at <value>] [--expired-at <value>]
 
 FLAGS
   -i, --identity=<value>                (required) PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル
+  --author=<value>                      Author
   --body=<value>                        (required) 対象のテキストファイル (UTF-8)
   --bodyFormat=(html|text|visibleText)  対象のテキストの形式
+  --category=<value>                    Category
   --description=<value>                 Description
+  --editor=<value>                      Editor
   --expired-at=<value>                  有効期限 (ISO 8601)
   --id=<value>                          (required) 会員 (UUID)
   --image=<value>                       Image URL
