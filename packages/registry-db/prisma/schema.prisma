@@ -23,7 +23,7 @@ model ops {
   /// 有効期限
   expiredAt   DateTime
   /// JWT
-  jwt         String        @unique
+  jwt         String
   /// 公開
   publication publications?
 }
@@ -39,7 +39,7 @@ model dps {
   /// 有効期限
   expiredAt DateTime
   /// JWT
-  jwt       String   @unique
+  jwt       String
 }
 
 /// 会員
