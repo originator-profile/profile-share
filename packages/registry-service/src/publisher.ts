@@ -68,6 +68,7 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
         editor: input.website?.["https://schema.org/editor"],
         accountId: id,
         url: input.url,
+        location: input.location,
         bodyFormatValue: input.bodyFormat,
         proofJws,
       },
