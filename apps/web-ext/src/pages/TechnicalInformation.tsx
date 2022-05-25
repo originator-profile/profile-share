@@ -25,7 +25,7 @@ function Page({
         <h1 className="text-base">技術情報</h1>
       </BackHeader>
       <TechnicalInformationTable
-        className="w-full"
+        className="w-full table-fixed"
         profile={profile}
         targetOrigin={targetOrigin}
       />
