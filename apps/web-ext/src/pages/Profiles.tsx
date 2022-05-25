@@ -4,6 +4,7 @@ import { isOp } from "../utils/op";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import OpItem from "../components/OpItem";
+import DpItem from "../components/DpItem";
 
 function Page({ profiles }: { profiles: Profile[] }) {
   return (
@@ -16,10 +17,7 @@ function Page({ profiles }: { profiles: Profile[] }) {
             variant={index === 0 ? "primary" : "secondary"}
           />
         ) : (
-          // TODO: DpItem の実装
-          <li key={profile.subject}>
-            <pre>{JSON.stringify(profile, null, 2)}</pre>
-          </li>
+          <DpItem key={profile.subject} dp={profile} />
         )
       )}
     </ul>

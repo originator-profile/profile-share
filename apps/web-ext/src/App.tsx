@@ -3,6 +3,7 @@ import Profiles from "./pages/Profiles";
 import Holder from "./pages/Holder";
 import Certifier from "./pages/Certifier";
 import TechnicalInformation from "./pages/TechnicalInformation";
+import Website from "./pages/Website";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         path="/:subject/technical-information"
         element={<TechnicalInformation />}
       />
+      <Route path="/:subject/website" element={<Website />} />
     </Routes>
   );
 }
