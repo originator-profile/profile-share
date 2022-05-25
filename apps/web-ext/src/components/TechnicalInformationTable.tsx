@@ -17,6 +17,16 @@ function TechnicalInformationTable({
     <table className={className}>
       <tbody>
         <TableRow
+          header="検証結果"
+          data={profile.error instanceof Error ? "失敗" : "成功"}
+        />
+        {profile.error instanceof Error && (
+          <TableRow
+            header="検証エラー"
+            data={`${profile.error.name}: ${profile.error.message}`}
+          />
+        )}
+        <TableRow
           header="プロファイル 文書"
           data={`${targetOrigin}/.well-known/op-document`}
         />
