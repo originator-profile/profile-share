@@ -1,23 +1,32 @@
 import { useParams } from "react-router-dom";
-import useOps from "../utils/use-ops";
-import { Op } from "../types/op";
+import useProfiles from "../utils/use-profiles";
+import { Profile } from "../types/profile";
+import { isOp } from "../utils/op";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import BackHeader from "../components/BackHeader";
 import TechnicalInformationTable from "../components/TechnicalInformationTable";
 
-function Page({ op, targetOrigin }: { op: Op; targetOrigin?: string }) {
+function Page({
+  profile,
+  targetOrigin,
+}: {
+  profile: Profile;
+  targetOrigin?: string;
+}) {
   return (
     <>
       <BackHeader
         className="sticky top-0"
-        to={`/${encodeURIComponent(op.subject)}/holder`}
+        to={`/${encodeURIComponent(profile.subject)}/${
+          isOp(profile) ? "holder" : "website"
+        }`}
       >
         <h1 className="text-base">技術情報</h1>
       </BackHeader>
       <TechnicalInformationTable
-        className="w-full"
-        op={op}
+        className="w-full table-fixed"
+        profile={profile}
         targetOrigin={targetOrigin}
       />
     </>
@@ -26,7 +35,7 @@ function Page({ op, targetOrigin }: { op: Op; targetOrigin?: string }) {
 
 function TechnicalInformation() {
   const { subject } = useParams();
-  const { ops, error, targetOrigin } = useOps();
+  const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
     return (
       <ErrorPlaceholder>
@@ -34,7 +43,7 @@ function TechnicalInformation() {
       </ErrorPlaceholder>
     );
   }
-  if (!ops) {
+  if (!profiles) {
     return (
       <LoadingPlaceholder>
         <p>
@@ -44,15 +53,15 @@ function TechnicalInformation() {
       </LoadingPlaceholder>
     );
   }
-  const op = ops.find((op) => op.subject === subject);
-  if (!op) {
+  const profile = profiles.find((profile) => profile.subject === subject);
+  if (!profile) {
     return (
       <ErrorPlaceholder>
         <p>プロファイルが見つかりませんでした</p>
       </ErrorPlaceholder>
     );
   }
-  return <Page op={op} targetOrigin={targetOrigin} />;
+  return <Page profile={profile} targetOrigin={targetOrigin} />;
 }
 
 export default TechnicalInformation;

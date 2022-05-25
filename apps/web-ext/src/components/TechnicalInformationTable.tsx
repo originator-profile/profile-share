@@ -1,29 +1,50 @@
-import { Op } from "../types/op";
+import { Profile } from "../types/profile";
+import { isOp } from "../utils/op";
 import TableRow from "./TableRow";
 
 type Props = {
   className?: string;
-  op: Op;
+  profile: Profile;
   targetOrigin?: string;
 };
 
-function TechnicalInformationTable({ className, op, targetOrigin }: Props) {
+function TechnicalInformationTable({
+  className,
+  profile,
+  targetOrigin,
+}: Props) {
   return (
     <table className={className}>
       <tbody>
         <TableRow
-          header="OP 文書"
+          header="検証結果"
+          data={profile.error instanceof Error ? "失敗" : "成功"}
+        />
+        {profile.error instanceof Error && (
+          <TableRow
+            header="検証エラー"
+            data={`${profile.error.name}: ${profile.error.message}`}
+          />
+        )}
+        <TableRow
+          header="プロファイル 文書"
           data={`${targetOrigin}/.well-known/op-document`}
         />
-        <TableRow header="OP 識別子" data={op.subject} />
-        <TableRow header="OP レジストリ" data={op.issuer} />
+        <TableRow
+          header={`${isOp(profile) ? "OP" : "DP"} 識別子`}
+          data={profile.subject}
+        />
+        <TableRow
+          header={`${isOp(profile) ? "OP レジストリ" : "OP 識別子"}`}
+          data={profile.issuer}
+        />
         <TableRow
           header="発行日"
-          data={new Date(op.issuedAt).toLocaleString("ja-JP")}
+          data={new Date(profile.issuedAt).toLocaleString("ja-JP")}
         />
         <TableRow
           header="有効期限"
-          data={new Date(op.expiredAt).toLocaleString("ja-JP")}
+          data={new Date(profile.expiredAt).toLocaleString("ja-JP")}
         />
       </tbody>
     </table>
