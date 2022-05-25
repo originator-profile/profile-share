@@ -1,5 +1,5 @@
+import clsx from "clsx";
 import { useParams } from "react-router-dom";
-import { Icon } from "@iconify/react";
 import useProfiles from "../utils/use-profiles";
 import { isHolder, isOp } from "../utils/op";
 import { Op, OpHolder } from "../types/op";
@@ -9,6 +9,8 @@ import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Image from "../components/Image";
 import BackHeader from "../components/BackHeader";
+import VerifySuccessBadge from "../components/VerifySuccessBadge";
+import VerifyFailureBadge from "../components/VerifyFailureBadge";
 import Roles from "../components/Roles";
 import HolderTable from "../components/HolderTable";
 import NavLink from "../components/NavLink";
@@ -37,13 +39,15 @@ function Page({
         height={198}
       />
       <div className="px-3 py-3">
-        <p className="mb-1 text-success flex items-center">
-          <Icon
-            className="mr-1 text-base"
-            icon="akar-icons:circle-check-fill"
+        {op.error instanceof Error ? (
+          <VerifyFailureBadge
+            className={clsx({ ["mb-1"]: roles.length > 0 })}
           />
-          検証済み
-        </p>
+        ) : (
+          <VerifySuccessBadge
+            className={clsx({ ["mb-1"]: roles.length > 0 })}
+          />
+        )}
         <Roles roles={roles} />
       </div>
       <hr className="border-gray-50 border-4" />

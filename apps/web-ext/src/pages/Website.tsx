@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import { Icon } from "@iconify/react";
 import useProfiles from "../utils/use-profiles";
 import { isWebsite, isDp } from "../utils/dp";
 import { Dp, DpWebsite } from "../types/dp";
@@ -7,6 +6,8 @@ import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Image from "../components/Image";
 import BackHeader from "../components/BackHeader";
+import VerifySuccessBadge from "../components/VerifySuccessBadge";
+import VerifyFailureBadge from "../components/VerifyFailureBadge";
 import WebsiteTable from "../components/WebsiteTable";
 import NavLink from "../components/NavLink";
 
@@ -24,13 +25,11 @@ function Page({ dp, website }: { dp: Dp; website: DpWebsite }) {
         height={198}
       />
       <div className="px-3 py-3">
-        <p className="mb-1 text-success flex items-center">
-          <Icon
-            className="mr-1 text-base"
-            icon="akar-icons:circle-check-fill"
-          />
-          検証済み
-        </p>
+        {dp.error instanceof Error ? (
+          <VerifyFailureBadge />
+        ) : (
+          <VerifySuccessBadge />
+        )}
       </div>
       <hr className="border-gray-50 border-4" />
       <WebsiteTable className="w-full" website={website} />
