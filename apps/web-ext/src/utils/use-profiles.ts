@@ -32,14 +32,16 @@ async function fetchProfiles(_: typeof key, targetOrigin?: string) {
   }
   const [expanded] = await expand(data);
   if (!expanded) return { advertisers: [], mains: [], profiles: [] };
-  // @ts-expect-error assert
-  const advertisers: string[] = expanded[`${context}advertiser`].map(
-    (advertiser: { "@value": string }) => advertiser["@value"]
-  );
-  // @ts-expect-error assert
-  const mains: string[] = expanded[`${context}main`].map(
-    (main: { "@value": string }) => main["@value"]
-  );
+  const advertisers: string[] =
+    // @ts-expect-error assert
+    expanded[`${context}advertiser`]?.map(
+      (advertiser: { "@value": string }) => advertiser["@value"]
+    ) ?? [];
+  const mains: string[] =
+    // @ts-expect-error assert
+    expanded[`${context}main`]?.map(
+      (main: { "@value": string }) => main["@value"]
+    ) ?? [];
   // @ts-expect-error assert
   const jwts: string[] = expanded[`${context}profile`].map(
     (profile: { "@value": string }) => profile["@value"]
