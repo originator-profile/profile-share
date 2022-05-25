@@ -6,6 +6,7 @@ import { useAsync } from "react-use";
 import { FetchProfilesMessageResponse } from "../types/message";
 import { JwtProfilePayload, Profile } from "../types/profile";
 import { toProfile } from "./profile";
+import { isJwtOpPayload } from "./op";
 import storage from "./storage";
 
 const key = "profiles";
@@ -49,7 +50,11 @@ async function fetchProfiles(_: typeof key, targetOrigin?: string) {
   const verifyResults = await Promise.all(
     jwts.map((jwt: string) => {
       const payload = decodeJwt(jwt) as JwtProfilePayload;
-      const jwksEndpoint = new URL(`${payload.iss}/.well-known/jwks.json`);
+      const jwksEndpoint = new URL(
+        `${
+          isJwtOpPayload(payload) ? import.meta.env.PROFILE_ISSUER : payload.iss
+        }/.well-known/jwks.json`
+      );
       const jwks = createRemoteJWKSet(jwksEndpoint);
       return jwtVerify(jwt, jwks, { issuer: payload.iss })
         .then((dec) => dec.payload as JwtProfilePayload)

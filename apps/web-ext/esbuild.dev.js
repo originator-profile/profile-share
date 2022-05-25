@@ -10,6 +10,7 @@ require("esbuild")
       "import.meta.env": JSON.stringify({
         ...JSON.parse(config.define["import.meta.env"]),
         MODE: "development",
+        PROFILE_ISSUER: process.env.PROFILE_ISSUER ?? "http://localhost:8080",
       }),
     },
     watch: {
