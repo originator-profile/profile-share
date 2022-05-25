@@ -3,14 +3,25 @@ import { Icon } from "@iconify/react";
 import useProfiles from "../utils/use-profiles";
 import { isHolder, isOp } from "../utils/op";
 import { Op, OpHolder } from "../types/op";
+import { Role } from "../types/role";
+import { toRoles } from "../utils/role";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Image from "../components/Image";
 import BackHeader from "../components/BackHeader";
+import Roles from "../components/Roles";
 import HolderTable from "../components/HolderTable";
 import NavLink from "../components/NavLink";
 
-function Page({ op, holder }: { op: Op; holder: OpHolder }) {
+function Page({
+  op,
+  holder,
+  roles,
+}: {
+  op: Op;
+  holder: OpHolder;
+  roles: Role[];
+}) {
   const logo = holder.logos?.find(({ isMain }) => isMain);
 
   return (
@@ -33,9 +44,7 @@ function Page({ op, holder }: { op: Op; holder: OpHolder }) {
           />
           検証済み
         </p>
-        <p className="jumpu-tag hover:border-transparent cursor-auto text-sm bg-gray-100">
-          コンテンツを出版しています
-        </p>
+        <Roles roles={roles} />
       </div>
       <hr className="border-gray-50 border-4" />
       <HolderTable className="w-full" holder={holder} />
@@ -69,7 +78,13 @@ function Page({ op, holder }: { op: Op; holder: OpHolder }) {
 
 function Holder() {
   const { subject } = useParams();
-  const { profiles, error, targetOrigin } = useProfiles();
+  const {
+    advertisers = [],
+    mains = [],
+    profiles,
+    error,
+    targetOrigin,
+  } = useProfiles();
   if (error) {
     return (
       <ErrorPlaceholder>
@@ -103,7 +118,8 @@ function Holder() {
       </ErrorPlaceholder>
     );
   }
-  return <Page op={profile} holder={holder} />;
+  const roles = toRoles(profile.subject, advertisers, mains);
+  return <Page op={profile} holder={holder} roles={roles} />;
 }
 
 export default Holder;

@@ -31,7 +31,15 @@ async function fetchProfiles(_: typeof key, targetOrigin?: string) {
     };
   }
   const [expanded] = await expand(data);
-  if (!expanded) return [];
+  if (!expanded) return { advertisers: [], mains: [], profiles: [] };
+  // @ts-expect-error assert
+  const advertisers: string[] = expanded[`${context}advertiser`].map(
+    (advertiser: { "@value": string }) => advertiser["@value"]
+  );
+  // @ts-expect-error assert
+  const mains: string[] = expanded[`${context}main`].map(
+    (main: { "@value": string }) => main["@value"]
+  );
   // @ts-expect-error assert
   const jwts: string[] = expanded[`${context}profile`].map(
     (profile: { "@value": string }) => profile["@value"]
@@ -46,7 +54,7 @@ async function fetchProfiles(_: typeof key, targetOrigin?: string) {
         .catch((e) => ({ payload, error: e }));
     })
   );
-  return verifyResults.map(toProfile);
+  return { advertisers, mains, profiles: verifyResults.map(toProfile) };
 }
 
 function useProfiles() {
@@ -59,12 +67,13 @@ function useProfiles() {
       });
     return response;
   });
-  const { data: profiles, error } = useSWR<Profile[]>(
-    [key, message.value?.targetOrigin],
-    fetchProfiles
-  );
+  const { data, error } = useSWR<{
+    advertisers: string[];
+    mains: string[];
+    profiles: Profile[];
+  }>([key, message.value?.targetOrigin], fetchProfiles);
   return {
-    profiles,
+    ...data,
     error: message.error || error,
     targetOrigin: message.value?.targetOrigin,
   };
