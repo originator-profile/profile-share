@@ -1,16 +1,16 @@
 # 操作手順
 
-apps/registry 実行時に以下の環境変数を apps/registry/.env に設定する
+apps/registry 実行時に以下の環境変数を apps/registry/.env に設定する。
 
 | 環境変数     | 内容            |
 | ------------ | --------------- |
 | DATABASE_URL | DATABASE 接続先 |
 
-DATABASE 接続先は、data.heroku.com の Settings -> Administration -> Database Credentials -> URI を指定する
+DATABASE 接続先は、data.heroku.com の Settings -> Administration -> Database Credentials -> URI を指定する。
 
 ## DB の内容参照
 
-studio の起動を起動して DB の内容を参照する
+studio の起動を起動して DB の内容を参照する。
 
 ```bash
 cd apps/registry
@@ -19,11 +19,11 @@ yarn dotenv -e .env bin/dev db:prisma studio --schema=../../packages/registry-db
 
 ## OP 登録手順
 
-apps/registry を使って OP を登録する手順 apps/registry ディレクトリで実行する
+apps/registry を使って OP を登録する手順 apps/registry ディレクトリで実行する。
 
 ### アカウント登録
 
-OP に登録する内容の JSON ファイルを作成し以下のコマンドで登録を行う
+OP に登録する内容の JSON ファイルを作成し以下のコマンドで登録を行う。
 
 ```bash
 $ yarn dotenv -e .env bin/dev account:register -i account.json
@@ -43,7 +43,7 @@ $ yarn dotenv -e .env bin/dev key-gen -o key
 $ yarn dotenv -e .env bin/dev account:register-key -k key.pub.json --id daab5a08-d513-400d-aaaa-e1c1493e0421
 ```
 
-id には account:register 実行時の id を使用する
+id には account:register 実行時の id を使用する。
 
 ### OP 発行
 
@@ -52,7 +52,7 @@ yarn dotenv -e .env bin/dev cert:issue --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f
 ```
 
 https://oprdev.herokuapp.com　の場合であれば --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e を指定する。
-発行者を作成し別途指定することもできる。その場合、ISSUER_UUID を指定する必要がある [#7](https://github.com/webdino/profile-samples/issues/7#issuecomment-1114494665)
+発行者を作成し別途指定することもできる。その場合、ISSUER_UUID を指定する必要がある。 [#7](https://github.com/webdino/profile-samples/issues/7#issuecomment-1114494665)
 
 -i は、作成した秘密鍵、--holder はアカウント登録時の id を指定する。
 
@@ -89,11 +89,11 @@ op-document
 }
 ```
 
-登録した OP は studio で見ることができる
+登録した OP は studio で見ることができる。
 
 ### logo の登録
 
-DB の logos テーブルを埋める
+DB の logos テーブルに内容を追加する。
 
 ```json
 {
@@ -105,13 +105,13 @@ DB の logos テーブルを埋める
 
 上記は、よみうりの場合(log ファイルを `https://yomiuri.demosites.pages.dev/logos/logs.png` に配置)
 
-DB を編集後 OP を再発行する
+DB を編集後 OP を再発行する。
 
 ### OP 削除
 
-DB 対象の値を studio を立ち上げて削除する
+DB 対象の値を studio を立ち上げて削除する。
 
-OP(ops, publications), accounts, keys の削除以下の順番で削除を行う
+OP(ops, publications), accounts, keys の削除以下の順番で削除を行う。
 
 publications -> ops
 keys -> accounts
@@ -120,7 +120,8 @@ keys -> accounts
 
 ### DP の発行
 
-予め account の key 登録と OP の発行を行っている必要がある
+予め account の key 登録と OP の発行を行っている必要がある。
+
 上記で登録した daab5a08-d513-400d-aaaa-e1c1493e0421 のアカウントに対して https://yomiuri.demosites.pages.dev/1 の DP を発行する例
 
 ```bash
@@ -143,8 +144,8 @@ $ yarn dotenv -e .env bin/dev publisher:register-website
 
 ### 配置
 
-上記のコマンドを実行すると DB の dps にエントリが生成される
-生成されたエントリの jwt を op-document の profile に追加する
+上記のコマンドを実行すると DB の dps にエントリが生成される。
+生成されたエントリの jwt を op-document の profile に追加する。
 
 op-document
 
