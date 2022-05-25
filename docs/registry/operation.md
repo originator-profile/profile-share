@@ -81,15 +81,31 @@ op-document
 ```json
 {
   "@context": "https://oprdev.herokuapp.com/context",
-  "main": ["https://suntory.demosites.pages.dev"], // <- アカウント登録時に指定した URL
+  "main": ["https://examples.demosites.pages.dev"], // <- アカウント登録時に指定した URL
   "profile": [
     // <- 発行した OP の値 ops - jwt の値
-    "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9...6zNuTzuaVP5r7RkGYWjcKUx7TRCXZGRiHSF10PFaBe3Et8BqRdITxVZfbBy2Ho0l0Nu0zS3E7PeY6_jjmYrRg"
+    "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9..."
   ]
 }
 ```
 
 登録した OP は studio で見ることができる
+
+### logo の登録
+
+DB の logos テーブルを埋める
+
+```json
+{
+  "url": "https://yomiuri.demosites.pages.dev/logos/logs.png",
+  "isMain": true,
+  "accountId": "759fa613-3c70-485a-abfc-172b25c9d1fa" <- 登録したいアカウントの ID を指定する
+}
+```
+
+上記は、よみうりの場合(log ファイルを `https://yomiuri.demosites.pages.dev/logos/logs.png` に配置)
+
+DB を編集後 OP を再発行する
 
 ### OP 削除
 
@@ -99,3 +115,46 @@ OP(ops, publications), accounts, keys の削除以下の順番で削除を行う
 
 publications -> ops
 keys -> accounts
+
+## DP 登録手順
+
+### DP の発行
+
+予め account の key 登録と OP の発行を行っている必要がある
+上記で登録した daab5a08-d513-400d-aaaa-e1c1493e0421 のアカウントに対して https://yomiuri.demosites.pages.dev/1 の DP を発行する例
+
+```bash
+$ yarn dotenv -e .env bin/dev publisher:register-website
+  -i key \
+  --id daab5a08-d513-400d-aaaa-e1c1493e0421 \
+  --url https://yomiuri.demosites.pages.dev/1 \
+  --body body.txt \ <- 本文が書かれたファイル
+  --bodyFormat text \ <- 本文のフォーマット
+  --description 'https://yomiuri.demosites.pages.dev/1 の備考' \ <- ページの備考
+  --title '大谷翔平、通算１０１号は１３０ｍの今季最長弾…エンゼルスファンが好捕' \
+  --image https://yomiuri.demosites.pages.dev/1.png \
+  --location '[itemprop=articleBody]' \
+  --author '前木 理一郎' \
+  --category 'スポーツ > 野球' \
+  --editor 'デジタル編集部'
+```
+
+オプションについては、[apps/registry/README.md](https://github.com/webdino/profile/tree/main/apps/registry) を参照
+
+### 配置
+
+上記のコマンドを実行すると DB の dps にエントリが生成される
+生成されたエントリの jwt を op-document の profile に追加する
+
+op-document
+
+```json
+{
+  "@context": "https://oprdev.herokuapp.com/context",
+  "main": ["https://examples.demosites.pages.dev"], // <- アカウント登録時に指定した URL
+  "profile": [
+    "eyJhbGciOiJFUzI1NiIsInR7cCI6IkpXVCJ9..."
+    // <- 発行した DP の値 dps - jwt の値を追加する
+  ]
+}
+```
