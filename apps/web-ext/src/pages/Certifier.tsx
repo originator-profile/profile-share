@@ -25,7 +25,7 @@ function Page({ op }: { op: Op }) {
         height={198}
       />
       <hr className="border-gray-50 border-4" />
-      <CertifierTable className="w-full" op={op} />
+      <CertifierTable className="w-full table-fixed" op={op} />
     </>
   );
 }
