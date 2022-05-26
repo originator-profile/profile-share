@@ -11,12 +11,18 @@ import storage from "./storage";
 
 const key = "profiles";
 
-async function fetchProfiles(_: typeof key, targetOrigin?: string) {
+async function fetchProfiles(
+  _: typeof key,
+  targetOrigin?: string,
+  profilesLink?: string
+) {
   if (!targetOrigin) {
     throw new Error("プロファイルを取得するウェブページが特定できませんでした");
   }
   const context = "https://github.com/webdino/profile#";
-  const profileEndpoint = new URL(`${targetOrigin}/.well-known/op-document`);
+  const profileEndpoint = new URL(
+    profilesLink ?? `${targetOrigin}/.well-known/op-document`
+  );
   const data = await fetch(profileEndpoint.href)
     .then((res) => {
       if (!res.ok) {
@@ -78,7 +84,10 @@ function useProfiles() {
     advertisers: string[];
     mains: string[];
     profiles: Profile[];
-  }>([key, message.value?.targetOrigin], fetchProfiles);
+  }>(
+    [key, message.value?.targetOrigin, message.value?.profilesLink],
+    fetchProfiles
+  );
   return {
     ...data,
     error: message.error || error,

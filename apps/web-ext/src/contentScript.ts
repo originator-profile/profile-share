@@ -9,6 +9,10 @@ function handleMessageResponse(
       return Promise.resolve({
         type: "fetch-profiles",
         targetOrigin: document.location.origin,
+        profilesLink:
+          document
+            .querySelector('link[rel="alternate"][type="application/ld+json"]')
+            ?.getAttribute("href") ?? null,
       });
   }
 }
