@@ -29,7 +29,7 @@ function Page({
   return (
     <>
       <BackHeader className="sticky top-0" to="/">
-        <h1 className="text-base">所有者情報</h1>
+        <h1 className="text-sm">所有者情報</h1>
       </BackHeader>
       <Image
         src={logo?.url}
@@ -57,7 +57,7 @@ function Page({
           <h2 className="mb-1 text-gray-500 font-normal">説明</h2>
           <div
             css={{ overflowWrap: "break-word" }}
-            className="prose prose-sm"
+            className="prose prose-xs"
             dangerouslySetInnerHTML={{
               __html: holder.description,
             }}

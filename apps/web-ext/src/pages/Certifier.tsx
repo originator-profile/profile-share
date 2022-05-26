@@ -15,7 +15,7 @@ function Page({ op }: { op: Op }) {
         className="sticky top-0"
         to={`/${encodeURIComponent(op.subject)}/holder`}
       >
-        <h1 className="text-base">認証機関</h1>
+        <h1 className="text-sm">認証機関</h1>
       </BackHeader>
       <Image
         src="/assets/logo-jicdaq.png"
