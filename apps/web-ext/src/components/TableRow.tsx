@@ -5,7 +5,7 @@ type Props = {
 
 function TableRow({ header, data }: Props) {
   return (
-    <tr>
+    <tr className="text-xs">
       <th className="w-2/6 text-left pl-3 pr-1 py-2 text-gray-500 font-normal border-gray-200 border-b">
         {header}
       </th>
