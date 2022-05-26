@@ -44,7 +44,8 @@ export const AccountService = ({ config, prisma, validator }: Options) => ({
 
     const ops = data.map((publication) => publication.op);
     const profiles: JsonLdDocument = {
-      "@context": config.JSONLD_CONTEXT,
+      "@context":
+        config.JSONLD_CONTEXT ?? Config.properties.JSONLD_CONTEXT.default,
       main: data.map((publication) => publication.account.url),
       profile: ops.map((op) => op.jwt),
     };

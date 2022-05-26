@@ -11,11 +11,7 @@ import { ValidatorService } from "./validator";
 import { CertificateService } from "./certificate";
 
 const certifierId: string = crypto.randomUUID();
-const config: Config = {
-  PORT: "8080",
-  ISSUER_UUID: "d613c1d6-5312-41e9-98ad-2b99765955b6",
-  JSONLD_CONTEXT: "https://github.com/webdino/profile",
-};
+const config: Config = { ISSUER_UUID: "d613c1d6-5312-41e9-98ad-2b99765955b6" };
 
 describe("CertificateService", () => {
   const prisma = mockDeep<PrismaClient>();

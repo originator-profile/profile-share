@@ -21,12 +21,7 @@ export class AccountRegisterKey extends Command {
     const { flags } = await this.parse(AccountRegisterKey);
     const prisma = new PrismaClient();
     const services = Services({
-      config: {
-        ISSUER_UUID: process.env.ISSUER_UUID ?? "",
-        JSONLD_CONTEXT:
-          process.env.JSONLD_CONTEXT ??
-          "https://github.com/webdino/profile-registry/blob/master/contexts/profile.jsonld",
-      },
+      config: { ISSUER_UUID: process.env.ISSUER_UUID ?? "" },
       prisma,
     });
     const keyFile = await fs.readFile(flags.key);

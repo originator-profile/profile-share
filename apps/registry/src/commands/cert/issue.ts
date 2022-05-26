@@ -4,12 +4,7 @@ import fs from "node:fs/promises";
 import { addYears } from "date-fns";
 import { Services } from "@webdino/profile-registry-service";
 
-const config = {
-  ISSUER_UUID: process.env.ISSUER_UUID ?? "",
-  JSONLD_CONTEXT:
-    process.env.JSONLD_CONTEXT ??
-    "https://github.com/webdino/profile-registry/blob/master/contexts/profile.jsonld",
-};
+const config = { ISSUER_UUID: process.env.ISSUER_UUID ?? "" };
 
 export class CertIssue extends Command {
   static description = "OP の発行";
@@ -41,11 +36,7 @@ export class CertIssue extends Command {
   async run(): Promise<void> {
     const { flags } = await this.parse(CertIssue);
     const prisma = new PrismaClient();
-    const services = Services({
-      config,
-      prisma,
-    });
-
+    const services = Services({ config, prisma });
     const isCertifier = await services.certificate.isCertifier(flags.certifier);
     if (isCertifier instanceof Error) this.error(isCertifier);
     if (!isCertifier) this.error("Invalid certifier.");

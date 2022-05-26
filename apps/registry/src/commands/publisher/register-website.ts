@@ -61,11 +61,7 @@ export class PublisherRegisterWebsite extends Command {
     const { flags } = await this.parse(PublisherRegisterWebsite);
     const prisma = new PrismaClient();
     const services = Services({
-      config: {
-        ISSUER_UUID: process.env.ISSUER_UUID ?? "",
-        JSONLD_CONTEXT:
-          process.env.JSONLD_CONTEXT ?? "https://oprdev.herokuapp.com/context",
-      },
+      config: { ISSUER_UUID: process.env.ISSUER_UUID ?? "" },
       prisma,
     });
     const pkcs8File = await fs.readFile(flags.identity);
