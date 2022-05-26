@@ -15,7 +15,7 @@ function Page({ dp, website }: { dp: Dp; website: DpWebsite }) {
   return (
     <>
       <BackHeader className="sticky top-0" to="/">
-        <h1 className="text-base">ウェブサイト情報</h1>
+        <h1 className="text-sm">ウェブサイト情報</h1>
       </BackHeader>
       <Image
         src={website.image}
@@ -38,7 +38,7 @@ function Page({ dp, website }: { dp: Dp; website: DpWebsite }) {
           <h2 className="mb-1 text-gray-500 font-normal">説明</h2>
           <div
             css={{ overflowWrap: "break-word" }}
-            className="prose prose-sm"
+            className="prose prose-xs"
             dangerouslySetInnerHTML={{
               __html: website.description,
             }}

@@ -41,7 +41,7 @@ function OpItem({ op, variant, roles }: Props) {
           </div>
         )}
         <div className="flex-1">
-          <p className="text-base mb-1">{holder.name}</p>
+          <p className="text-sm mb-1">{holder.name}</p>
           <Roles roles={roles} />
         </div>
         <Link
