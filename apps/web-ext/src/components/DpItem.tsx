@@ -24,7 +24,7 @@ function DpItem({ dp }: Props) {
             height={56}
           />
         </div>
-        <p className="flex-1 text-base">{website.title}</p>
+        <p className="flex-1 text-sm">{website.title}</p>
         <Link
           className="jumpu-icon-button flex-shrink-0 h-12"
           to={`/${encodeURIComponent(dp.subject)}/website`}

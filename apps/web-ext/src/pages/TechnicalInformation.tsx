@@ -22,7 +22,7 @@ function Page({
           isOp(profile) ? "holder" : "website"
         }`}
       >
-        <h1 className="text-base">技術情報</h1>
+        <h1 className="text-sm">技術情報</h1>
       </BackHeader>
       <TechnicalInformationTable
         className="w-full table-fixed"
