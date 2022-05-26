@@ -7,9 +7,8 @@ Web ブラウザーで Originator Profile の閲覧と検証を行うアプリ�
 ### ローカルの Profile Registry で動作確認
 
 1. ルートディレクトリに移動します。
-2. yarn dev でローカルの Profile Registry の起動と拡張機能の差分ビルドを生成します。
-3. 異なるターミナルセッションを開き、ルートディレクトリにいたら cd apps/web-ext に移動します。
-4. yarn start:chromium --url=http://localhost:8080 で拡張機能を Chromium でプレビューします。
+2. `yarn dev` でローカルの Profile Registry の起動と拡張機能の差分ビルドを生成します。
+3. 異なるターミナルセッションを開き、 `yarn --cwd apps/web-ext start:chromium --url=http://localhost:8080` で拡張機能を Chromium でプレビューします。
 
 ### デモの Profile Registry で動作確認
 
