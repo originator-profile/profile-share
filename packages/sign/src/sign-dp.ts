@@ -1,7 +1,7 @@
 import { importPKCS8, SignJWT } from "jose";
 import { getUnixTime } from "date-fns";
 import Dp from "@webdino/profile-model/src/dp";
-import { DpPayload } from "./types";
+import { JwtDpPayload } from "./claims";
 
 /**
  * DP への署名
@@ -19,7 +19,7 @@ export async function signDp(
     alg,
     typ: "JWT",
   };
-  const payload: DpPayload = {
+  const payload: Pick<JwtDpPayload, "https://opr.webdino.org/jwt/claims/dp"> = {
     "https://opr.webdino.org/jwt/claims/dp": {
       item: dp.item,
     },

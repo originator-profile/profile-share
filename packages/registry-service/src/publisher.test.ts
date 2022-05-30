@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 import crypto from "node:crypto";
 import { addYears, getUnixTime } from "date-fns";
 import { decodeJwt, generateKeyPair, SignJWT } from "jose";
-import { generateKey, DpPayload } from "@webdino/profile-sign";
+import { generateKey, JwtDpPayload } from "@webdino/profile-sign";
 import { ValidatorService } from "./validator";
 import { PublisherService } from "./publisher";
 
@@ -59,7 +59,7 @@ describe("PublisherService", () => {
     const jwt = await publisher.registerWebsite(accountId, pkcs8, input);
     expect(prisma.websites.create.call.length).toBe(1);
     // @ts-expect-error assert
-    const valid: DpPayload = decodeJwt(jwt);
+    const valid: JwtDpPayload = decodeJwt(jwt);
     expect(valid).toMatchObject({
       iss: "http://iss.example",
       sub: "http://iss.example/article/42",

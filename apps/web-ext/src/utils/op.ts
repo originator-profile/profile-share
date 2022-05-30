@@ -1,19 +1,11 @@
-import { JwtProfilePayload, Profile } from "../types/profile";
-import {
-  JwtOpPayload,
-  Op,
-  OpItem,
-  OpHolder,
-  OpCertifier,
-  OpCredential,
-} from "../types/op";
+import { JwtOpPayload, isJwtOpPayload } from "@webdino/profile-sign";
+import { Profile } from "../types/profile";
+import { Op, OpItem, OpHolder, OpCertifier, OpCredential } from "../types/op";
 
 const opItemTypes: OpItem["type"][] = ["holder", "certifier", "credential"];
 
-export const isJwtOpPayload = (
-  payload: JwtProfilePayload
-): payload is JwtOpPayload =>
-  "https://opr.webdino.org/jwt/claims/op" in payload;
+export { isJwtOpPayload };
+
 export const isOp = (profile: Profile): profile is Op =>
   profile.item.some((item) =>
     opItemTypes.includes(item.type as OpItem["type"])

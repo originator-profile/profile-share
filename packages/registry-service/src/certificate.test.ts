@@ -4,7 +4,7 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import crypto from "node:crypto";
 import { addYears, getUnixTime } from "date-fns";
 import { decodeJwt, generateKeyPair, SignJWT } from "jose";
-import { generateKey, OpPayload } from "@webdino/profile-sign";
+import { generateKey, JwtOpPayload } from "@webdino/profile-sign";
 import Config from "./config";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
@@ -65,7 +65,7 @@ describe("CertificateService", () => {
     ]);
     const jwt = await certificate.signOp(id, accountId, pkcs8);
     // @ts-expect-error assert
-    const valid: OpPayload = decodeJwt(jwt);
+    const valid: JwtOpPayload = decodeJwt(jwt);
     expect(valid).toMatchObject({
       iss: "http://iss.example",
       sub: "http://sub.example",
