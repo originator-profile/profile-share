@@ -1,6 +1,6 @@
-import { JwtProfilePayload, Profile } from "../types/profile";
+import { JwtDpPayload, isJwtDpPayload } from "@webdino/profile-sign";
+import { Profile } from "../types/profile";
 import {
-  JwtDpPayload,
   Dp,
   DpItem,
   DpWebsite,
@@ -16,10 +16,7 @@ const dpItemTypes: DpItem["type"][] = [
   "html",
 ];
 
-export const isJwtDpPayload = (
-  payload: JwtProfilePayload
-): payload is JwtDpPayload =>
-  "https://opr.webdino.org/jwt/claims/dp" in payload;
+export { isJwtDpPayload };
 export const isDp = (profile: Profile): profile is Dp =>
   profile.item.some((item) =>
     dpItemTypes.includes(item.type as DpItem["type"])
