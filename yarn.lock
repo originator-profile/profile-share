@@ -6047,6 +6047,11 @@ jose@^4.8.0:
   resolved "https://registry.yarnpkg.com/jose/-/jose-4.8.0.tgz#470c4c045f2abc899b924872aecb000c28947288"
   integrity sha512-XmcX4PdqRlfDCSn9UPAvGoVylQxuJxtCZNlX4U0KgmOSHUvxYCalgnU/JNdNJQ20mGth3+xrPSkFj9rxS9tYWQ==
 
+jose@^4.8.1:
+  version "4.8.1"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-4.8.1.tgz#dc7c2660b115ba29b44880e588c5ac313c158247"
+  integrity sha512-+/hpTbRcCw9YC0TOfN1W47pej4a9lRmltdOVdRLz5FP5UvUq3CenhXjQK7u/8NdMIIShMXYAh9VLPhc7TjhvFw==
+
 jotai@^1.6.4:
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/jotai/-/jotai-1.6.4.tgz#4d9904362c53c4293d32e21fb358d3de34b82912"
@@ -6151,7 +6156,7 @@ json-schema-to-ts@^2.2.0:
     ts-algebra "^1.0.1"
     ts-toolbelt "^9.6.0"
 
-json-schema-to-ts@^2.5.2:
+json-schema-to-ts@^2.3.0, json-schema-to-ts@^2.5.2:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/json-schema-to-ts/-/json-schema-to-ts-2.5.2.tgz#51332d25d9f11c35aee2e6b8ad6c6235ddaece12"
   integrity sha512-cpk2KMwC9sD1D4Rxz8jPhUbeIsbZ1VYik6BUkQ9/cBAovUByWSBekpy0m6alk3Cw6jj8/8gXLGCbaXRy1dYgKA==
