@@ -10,16 +10,16 @@ import DpItem from "../components/DpItem";
 function Page({
   profiles,
   advertisers,
-  mains,
+  main,
 }: {
   profiles: Profile[];
   advertisers: string[];
-  mains: string[];
+  main: string[];
 }) {
   return (
     <ul>
       {profiles.map((profile, index) => {
-        const roles = toRoles(profile.subject, advertisers, mains);
+        const roles = toRoles(profile.subject, advertisers, main);
         return isOp(profile) ? (
           <OpItem
             key={profile.subject}
@@ -38,7 +38,7 @@ function Page({
 function Profiles() {
   const {
     advertisers = [],
-    mains = [],
+    main = [],
     profiles,
     error,
     targetOrigin,
@@ -60,7 +60,7 @@ function Profiles() {
       </LoadingPlaceholder>
     );
   }
-  return <Page profiles={profiles} advertisers={advertisers} mains={mains} />;
+  return <Page profiles={profiles} advertisers={advertisers} main={main} />;
 }
 
 export default Profiles;

@@ -38,13 +38,13 @@ async function fetchProfiles(
     };
   }
   const [expanded] = await expand(data);
-  if (!expanded) return { advertisers: [], mains: [], profiles: [] };
+  if (!expanded) return { advertisers: [], main: [], profiles: [] };
   const advertisers: string[] =
     // @ts-expect-error assert
     expanded[`${context}advertiser`]?.map(
       (advertiser: { "@value": string }) => advertiser["@value"]
     ) ?? [];
-  const mains: string[] =
+  const main: string[] =
     // @ts-expect-error assert
     expanded[`${context}main`]?.map(
       (main: { "@value": string }) => main["@value"]
@@ -67,7 +67,7 @@ async function fetchProfiles(
         .catch((e) => ({ payload, error: e }));
     })
   );
-  return { advertisers, mains, profiles: verifyResults.map(toProfile) };
+  return { advertisers, main, profiles: verifyResults.map(toProfile) };
 }
 
 function useProfiles() {
@@ -82,7 +82,7 @@ function useProfiles() {
   });
   const { data, error } = useSWR<{
     advertisers: string[];
-    mains: string[];
+    main: string[];
     profiles: Profile[];
   }>(
     [key, message.value?.targetOrigin, message.value?.profilesLink],
