@@ -105,8 +105,13 @@ export const JwtDpPayload = {
 /** DP JWT Claims Set object */
 export type JwtDpPayload = FromSchema<typeof JwtDpPayload>;
 
+export const JwtProfilePayload = {
+  title: "Profile JWT Claims Set object",
+  anyOf: [JwtOpPayload, JwtDpPayload],
+} as const;
+
 /** Profile JWT Claims Set object */
-export type JwtProfilePayload = JwtOpPayload | JwtDpPayload;
+export type JwtProfilePayload = FromSchema<typeof JwtProfilePayload>;
 
 /**
  * JwtOpPayload 型であるか否か
