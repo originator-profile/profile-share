@@ -1,6 +1,6 @@
 import { For, createSignal } from "solid-js";
-import { createRemoteJWKSet, jwtVerify } from "jose";
 import { expand } from "jsonld";
+import { RemoteKeys, ProfilesVerifier } from "@webdino/profile-verify";
 
 function useProfile() {
   const context = "https://github.com/webdino/profile#";
@@ -42,15 +42,10 @@ function useProfile() {
         ],
       ]);
     }
-    const jwks = createRemoteJWKSet(jwksEndpoint);
-    const verifies = await Promise.all(
-      profile.map((jwt: string) =>
-        jwtVerify(jwt, jwks, { issuer, subject: targetOrigin })
-          .then((dec) => dec.payload)
-          .catch((e) => e)
-      )
-    );
-    setValues([...values(), ["verifies", JSON.stringify(verifies)]]);
+    const keys = RemoteKeys(jwksEndpoint);
+    const verify = ProfilesVerifier({ profile }, keys, issuer);
+    const verifyResults = await verify();
+    setValues([...values(), ["verifies", JSON.stringify(verifyResults)]]);
   };
 
   return { values, verify };
