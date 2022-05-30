@@ -1,12 +1,11 @@
 import browser from "webextension-polyfill";
-import { createRemoteJWKSet, decodeJwt, jwtVerify } from "jose";
 import { expand } from "jsonld";
 import useSWR, { mutate } from "swr";
 import { useAsync } from "react-use";
+import { RemoteKeys, ProfilesVerifier } from "@webdino/profile-verify";
 import { FetchProfilesMessageResponse } from "../types/message";
-import { JwtProfilePayload, Profile } from "../types/profile";
+import { Profile } from "../types/profile";
 import { toProfile } from "./profile";
-import { isJwtOpPayload } from "./op";
 import storage from "./storage";
 
 const key = "profiles";
@@ -19,6 +18,7 @@ async function fetchProfiles(
   if (!targetOrigin) {
     throw new Error("プロファイルを取得するウェブページが特定できませんでした");
   }
+  // TODO: このあたりの取得プロセスはシステム全体で固有のものなので外部化してテスタビリティを高めておきたい
   const context = "https://github.com/webdino/profile#";
   const profileEndpoint = new URL(
     profilesLink ?? `${targetOrigin}/.well-known/op-document`
@@ -37,6 +37,7 @@ async function fetchProfiles(
       message: `プロファイルを取得できませんでした:\n${data.message}`,
     };
   }
+  // TODO: このあたりの JSON-LD の Profiles Set の変換も外部化してテスタビリティを高めたい
   const [expanded] = await expand(data);
   if (!expanded) return { advertisers: [], main: [], profiles: [] };
   const advertisers: string[] =
@@ -50,23 +51,14 @@ async function fetchProfiles(
       (main: { "@value": string }) => main["@value"]
     ) ?? [];
   // @ts-expect-error assert
-  const jwts: string[] = expanded[`${context}profile`].map(
+  const profile: string[] = expanded[`${context}profile`].map(
     (profile: { "@value": string }) => profile["@value"]
   );
-  const verifyResults = await Promise.all(
-    jwts.map((jwt: string) => {
-      const payload = decodeJwt(jwt) as JwtProfilePayload;
-      const jwksEndpoint = new URL(
-        `${
-          isJwtOpPayload(payload) ? import.meta.env.PROFILE_ISSUER : payload.iss
-        }/.well-known/jwks.json`
-      );
-      const jwks = createRemoteJWKSet(jwksEndpoint);
-      return jwtVerify(jwt, jwks, { issuer: payload.iss })
-        .then((dec) => dec.payload as JwtProfilePayload)
-        .catch((e) => ({ payload, error: e }));
-    })
-  );
+  const registry = import.meta.env.PROFILE_ISSUER;
+  const jwksEndpoint = new URL(`${registry}/.well-known/jwks.json`);
+  const keys = RemoteKeys(jwksEndpoint);
+  const verify = ProfilesVerifier({ profile }, keys, registry);
+  const verifyResults = await verify();
   return { advertisers, main, profiles: verifyResults.map(toProfile) };
 }
 
