@@ -11,11 +11,11 @@
     "@types/jsonld": "^1.5.6",
     "@webdino/profile-tsconfig": "*",
     "ajv": "^8.11.0",
-    "eslint": "^8.14.0",
+    "eslint": "^8.16.0",
     "eslint-config-webdino-profile": "*",
-    "json-schema-to-ts": "^2.2.0",
+    "json-schema-to-ts": "^5.2.3",
     "jsonld": "^5.2.0",
-    "msw": "^0.39.2",
-    "vitest": "^0.10.0"
+    "msw": "^0.42.0",
+    "vitest": "^0.13.0"
   }
 }

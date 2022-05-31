@@ -2,90 +2,90 @@
 erDiagram
 
   ops {
-      String id
-    DateTime issuedAt
-    DateTime expiredAt
-    String jwt
+    String id PK 
+    DateTime issuedAt  
+    DateTime expiredAt  
+    String jwt  
     }
   
 
   dps {
-      String id
-    DateTime issuedAt
-    DateTime expiredAt
-    String jwt
+    String id PK 
+    DateTime issuedAt  
+    DateTime expiredAt  
+    String jwt  
     }
   
 
   accounts {
-      String id
-    String url
-    String name
-    String description
-    String email
-    String phoneNumber
-    String postalCode
-    String addressCountry
-    String addressRegion
-    String addressLocality
-    String streetAddress
-    String contactTitle
-    String contactUrl
-    String privacyPolicyTitle
-    String privacyPolicyUrl
-    String publishingPrincipleTitle
-    String publishingPrincipleUrl
+    String id PK 
+    String url  
+    String name  
+    String description  "nullable"
+    String email  "nullable"
+    String phoneNumber  "nullable"
+    String postalCode  
+    String addressCountry  
+    String addressRegion  
+    String addressLocality  
+    String streetAddress  
+    String contactTitle  "nullable"
+    String contactUrl  "nullable"
+    String privacyPolicyTitle  "nullable"
+    String privacyPolicyUrl  "nullable"
+    String publishingPrincipleTitle  "nullable"
+    String publishingPrincipleUrl  "nullable"
     }
   
 
   roles {
-      String value
+    String value PK 
     }
   
 
   businessCategories {
-      String value
+    String value PK 
     }
   
 
   accountBusinessCategories {
-  
+
     }
   
 
   logos {
-      String url
-    Boolean isMain
+    String url PK 
+    Boolean isMain  
     }
   
 
   publications {
-      DateTime publishedAt
+    DateTime publishedAt  
     }
   
 
   keys {
-      Int id
-    Json jwk
+    Int id PK 
+    Json jwk  
     }
   
 
   websites {
-      Int id
-    String url
-    String title
-    String image
-    String description
-    String author
-    String category
-    String editor
-    String location
-    String proofJws
+    Int id PK 
+    String url  
+    String title  "nullable"
+    String image  "nullable"
+    String description  "nullable"
+    String author  "nullable"
+    String category  "nullable"
+    String editor  "nullable"
+    String location  "nullable"
+    String proofJws  
     }
   
 
   bodyFormats {
-      String value
+    String value PK 
     }
   
     ops o{--|| accounts : "certifier"
