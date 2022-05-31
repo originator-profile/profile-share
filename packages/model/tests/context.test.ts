@@ -13,7 +13,7 @@ test("context.json is valid", async () => {
 
 test("sample document", async () => {
   const doc: JsonLdDocument = {
-    "@context": "https://github.com/webdino/profile",
+    "@context": "https://oprdev.herokuapp.com/context",
     main: ["https://example.org"],
     profile: [
       "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL29wci53ZWJkaW5vLm9yZyIsInN1YiI6Imh0dHBzOi8vZXhhbXBsZS5jb20ifQ.xK1KL0pDWdDTyvL1VSuvnPfDZ6zAIJM_Jn8wbNzIi-0",

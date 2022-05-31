@@ -4,7 +4,7 @@ import { setupServer } from "msw/node";
 import context from "@webdino/profile-model/context.json";
 
 const endpoints = [
-  rest.get("https://github.com/webdino/profile", (_, res, ctx) => {
+  rest.get("https://oprdev.herokuapp.com/context", (_, res, ctx) => {
     return res(ctx.status(200), ctx.json(context));
   }),
 ];

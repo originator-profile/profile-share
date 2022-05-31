@@ -4,18 +4,14 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import crypto from "node:crypto";
 import { addYears, getUnixTime } from "date-fns";
 import { decodeJwt, generateKeyPair, SignJWT } from "jose";
-import { generateKey, OpPayload } from "@webdino/profile-sign";
+import { generateKey, JwtOpPayload } from "@webdino/profile-sign";
 import Config from "./config";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
 import { CertificateService } from "./certificate";
 
 const certifierId: string = crypto.randomUUID();
-const config: Config = {
-  PORT: "8080",
-  ISSUER_UUID: "d613c1d6-5312-41e9-98ad-2b99765955b6",
-  JSONLD_CONTEXT: "https://github.com/webdino/profile",
-};
+const config: Config = { ISSUER_UUID: "d613c1d6-5312-41e9-98ad-2b99765955b6" };
 
 describe("CertificateService", () => {
   const prisma = mockDeep<PrismaClient>();
@@ -69,7 +65,7 @@ describe("CertificateService", () => {
     ]);
     const jwt = await certificate.signOp(id, accountId, pkcs8);
     // @ts-expect-error assert
-    const valid: OpPayload = decodeJwt(jwt);
+    const valid: JwtOpPayload = decodeJwt(jwt);
     expect(valid).toMatchObject({
       iss: "http://iss.example",
       sub: "http://sub.example",

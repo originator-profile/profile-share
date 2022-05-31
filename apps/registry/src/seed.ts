@@ -24,10 +24,7 @@ export async function seed(): Promise<void> {
   const issuerUuid: string = process.env.ISSUER_UUID ?? crypto.randomUUID();
   const prisma: PrismaClient = new PrismaClient();
   const services = Services({
-    config: {
-      ISSUER_UUID: issuerUuid,
-      JSONLD_CONTEXT: "https://github.com/webdino/profile",
-    },
+    config: { ISSUER_UUID: issuerUuid },
     prisma,
   });
 

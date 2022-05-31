@@ -9,12 +9,7 @@ import Config from "./config";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
 
-const config: Config = {
-  PORT: "8080",
-  ISSUER_UUID: "d613c1d6-5312-41e9-98ad-2b99765955b6",
-  JSONLD_CONTEXT: "https://github.com/webdino/profile",
-};
-
+const config: Config = { ISSUER_UUID: "d613c1d6-5312-41e9-98ad-2b99765955b6" };
 const accountId: string = crypto.randomUUID();
 const opId: string = crypto.randomUUID();
 
@@ -62,8 +57,8 @@ describe("AccountService", () => {
     // @ts-expect-error assert
     const data: JsonLdDocument = await account.getProfiles(crypto.randomUUID());
     const op = await expand(data);
-    expect(`${config.JSONLD_CONTEXT}#main` in op[0]).toBe(true);
-    expect(`${config.JSONLD_CONTEXT}#profile` in op[0]).toBe(true);
+    expect("https://github.com/webdino/profile#main" in op[0]).toBe(true);
+    expect("https://github.com/webdino/profile#profile" in op[0]).toBe(true);
   });
 
   test("registerKey() calls prisma.keys.create()", async () => {

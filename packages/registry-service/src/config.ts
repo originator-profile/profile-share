@@ -9,10 +9,10 @@ const Config = {
     },
     JSONLD_CONTEXT: {
       type: "string",
-      default: "http://localhost:8080/context",
+      default: "https://oprdev.herokuapp.com/context",
     },
   },
-  required: ["ISSUER_UUID", "JSONLD_CONTEXT"],
+  required: ["ISSUER_UUID"],
 } as const;
 
 type Config = FromSchema<typeof Config>;
