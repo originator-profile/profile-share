@@ -85,7 +85,7 @@ function Holder() {
   const { subject } = useParams();
   const {
     advertisers = [],
-    mains = [],
+    main = [],
     profiles,
     error,
     targetOrigin,
@@ -123,7 +123,7 @@ function Holder() {
       </ErrorPlaceholder>
     );
   }
-  const roles = toRoles(profile.subject, advertisers, mains);
+  const roles = toRoles(profile.subject, advertisers, main);
   return <Page op={profile} holder={holder} roles={roles} />;
 }
 
