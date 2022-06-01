@@ -23,7 +23,7 @@
     "eslint-config-webdino-profile": "*",
     "http-errors-enhanced": "^1.0.6",
     "jose": "^4.8.1",
-    "json-schema-to-ts": "^5.2.3",
+    "json-schema-to-ts": "^2.5.3",
     "jsonld": "^5.2.0",
     "just-flush": "^2.1.1",
     "just-omit": "^2.0.1",
