@@ -3,8 +3,9 @@ import { JWTVerifyResult, ResolvedKey } from "jose";
 import { JwtOpPayload, JwtDpPayload } from "./claims";
 import {
   ProfileClaimsValidationFailed,
-  ProfilesVerifyFailed,
   ProfileTokenVerifyFailed,
+  ProfilesResolveFailed,
+  ProfilesVerifyFailed,
 } from "./errors";
 
 /** Profile の Token の復号結果 */
@@ -15,7 +16,9 @@ export type DecodeResult =
 
 /** Profile の Token の検証結果 */
 export type VerifyTokenResult =
-  | (JWTVerifyResult & ResolvedKey & ({ op: Op } | { dp: Dp }))
+  | (JWTVerifyResult &
+      ResolvedKey &
+      ({ op: Op; jwt: string } | { dp: Dp; jwt: string }))
   | ProfileClaimsValidationFailed
   | ProfileTokenVerifyFailed;
 
@@ -23,7 +26,10 @@ export type VerifyTokenResult =
 export type Profiles = { profile: string[] };
 
 /** Profile の検証結果 */
-export type VerifyResult = ProfilesVerifyFailed | VerifyTokenResult;
+export type VerifyResult =
+  | VerifyTokenResult
+  | ProfilesResolveFailed
+  | ProfilesVerifyFailed;
 
 /** Profiles Set の検証結果 */
 export type VerifyResults = VerifyResult[];
