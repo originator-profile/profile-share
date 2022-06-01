@@ -8,7 +8,7 @@ type Props = {
 
 const roleName = {
   advertiser: "広告を出稿しています",
-  main: "コンテンツを出版しています",
+  publisher: "コンテンツを出版しています",
 } as const;
 
 function Roles({ className, roles }: Props) {

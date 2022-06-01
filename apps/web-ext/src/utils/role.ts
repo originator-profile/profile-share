@@ -3,9 +3,9 @@ import { Role } from "../types/role";
 export const toRoles = (
   subject: string,
   advertisers: string[],
-  main: string[]
+  publisher: string[]
 ): Role[] =>
   [
     advertisers.includes(subject) ? ["advertiser" as const] : [],
-    main.includes(subject) ? ["main" as const] : [],
+    publisher.includes(subject) ? ["publisher" as const] : [],
   ].flat();

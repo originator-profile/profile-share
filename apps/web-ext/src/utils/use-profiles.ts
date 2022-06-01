@@ -39,11 +39,17 @@ async function fetchProfiles(
   }
   // TODO: このあたりの JSON-LD の Profiles Set の変換も外部化してテスタビリティを高めたい
   const [expanded] = await expand(data);
-  if (!expanded) return { advertisers: [], main: [], profiles: [] };
+  if (!expanded)
+    return { advertisers: [], publishers: [], main: [], profiles: [] };
   const advertisers: string[] =
     // @ts-expect-error assert
     expanded[`${context}advertiser`]?.map(
       (advertiser: { "@value": string }) => advertiser["@value"]
+    ) ?? [];
+  const publishers: string[] =
+    // @ts-expect-error assert
+    expanded[`${context}publisher`]?.map(
+      (publisher: { "@value": string }) => publisher["@value"]
     ) ?? [];
   const main: string[] =
     // @ts-expect-error assert
@@ -59,7 +65,12 @@ async function fetchProfiles(
   const keys = RemoteKeys(jwksEndpoint);
   const verify = ProfilesVerifier({ profile }, keys, registry);
   const verifyResults = await verify();
-  return { advertisers, main, profiles: verifyResults.map(toProfile) };
+  return {
+    advertisers,
+    publishers,
+    main,
+    profiles: verifyResults.map(toProfile),
+  };
 }
 
 function useProfiles() {
@@ -74,6 +85,7 @@ function useProfiles() {
   });
   const { data, error } = useSWR<{
     advertisers: string[];
+    publishers: string[];
     main: string[];
     profiles: Profile[];
   }>(
