@@ -57,7 +57,7 @@ function Page({
           <h2 className="mb-1 text-gray-500 font-normal">説明</h2>
           <div
             css={{ overflowWrap: "break-word" }}
-            className="prose prose-xs"
+            className="prose prose-xs text-xs"
             dangerouslySetInnerHTML={{
               __html: holder.description,
             }}
