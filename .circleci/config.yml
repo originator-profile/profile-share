@@ -17,8 +17,21 @@ jobs:
           name: Save Yarn cache
           key: 'yarn-v1-{{ checksum "yarn.lock" }}'
           paths: ["~/.cache/yarn"]
+      - add_ssh_keys:
+          fingerprints: ["dd:f4:c2:d0:4f:dc:64:85:73:8f:2c:b9:5d:1c:63:9c"]
       - run: yarn lint
       - run: yarn test
+      - run: yarn build
+      - run:
+          name: Commit
+          command: |
+            git config user.name bot
+            git config user.email bot@webdino.org
+            if git commit -am 'bot: build'; then
+              git push origin HEAD:"$CIRCLE_BRANCH"
+            fi
+      - store_artifacts:
+          path: apps/web-ext/web-ext-artifacts
   format:
     docker:
       - image: "cimg/node:lts"
