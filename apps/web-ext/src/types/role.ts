@@ -1,1 +1,1 @@
-export type Role = "advertiser" | "main";
+export type Role = "advertiser" | "publisher";
