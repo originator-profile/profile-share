@@ -18,8 +18,9 @@ export class ProfileClaimsValidationFailed extends ProfileGenericError {
 
   /** 復号結果 */
   result: {
-    errors: ErrorObject[];
-    payload: JWTPayload;
+    error?: JOSEError;
+    errors?: ErrorObject[];
+    payload?: JWTPayload;
     jwt: string;
   };
 
