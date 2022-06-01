@@ -37,10 +37,10 @@ export function TokenVerifier(
       });
     }
     if (isJwtOpPayload(verified.payload)) {
-      return { ...verified, op: toOp(verified.payload) };
+      return { ...verified, op: toOp(verified.payload), jwt };
     }
     if (isJwtDpPayload(verified.payload)) {
-      return { ...verified, dp: toDp(verified.payload) };
+      return { ...verified, dp: toDp(verified.payload), jwt };
     }
     return new ProfileTokenVerifyFailed(
       "Profile Token Verification Failed",

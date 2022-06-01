@@ -1,6 +1,7 @@
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
-import { decodeJwt } from "jose";
+import { decodeJwt, JWTPayload } from "jose";
+import { JOSEError } from "jose/dist/types/util/errors";
 import {
   JwtOpPayload,
   JwtDpPayload,
@@ -32,7 +33,13 @@ export function TokenDecoder() {
    * @return 復号結果
    */
   function decodeToken(jwt: string): DecodeResult {
-    const payload = decodeJwt(jwt);
+    let payload: JWTPayload;
+    try {
+      payload = decodeJwt(jwt);
+    } catch (e) {
+      const error = e as JOSEError;
+      return new ProfileClaimsValidationFailed(error.message, { error, jwt });
+    }
     const valid = isJwtOpPayload(payload)
       ? validator.validateJwtOpPayload(payload)
       : validator.validateJwtDpPayload(payload);
@@ -47,6 +54,7 @@ export function TokenDecoder() {
         {
           errors: errors ?? [],
           payload,
+          jwt,
         }
       );
     }
@@ -55,6 +63,7 @@ export function TokenDecoder() {
     return new ProfileClaimsValidationFailed("Unknown Claims Set", {
       errors: [],
       payload,
+      jwt,
     });
   }
 
