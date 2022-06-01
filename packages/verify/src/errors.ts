@@ -18,29 +18,16 @@ export class ProfileClaimsValidationFailed extends ProfileGenericError {
 
   /** 復号結果 */
   result: {
-    errors: ErrorObject[];
-    payload: JWTPayload;
+    error?: JOSEError;
+    errors?: ErrorObject[];
+    payload?: JWTPayload;
+    jwt: string;
   };
 
   constructor(
     message: string,
     result: ProfileClaimsValidationFailed["result"]
   ) {
-    super(message);
-    this.result = result;
-  }
-}
-
-export class ProfilesVerifyFailed extends ProfileGenericError {
-  static get code() {
-    return "ERR_PROFILES_VERIFY_FAILED" as const;
-  }
-  readonly code = ProfilesVerifyFailed.code;
-
-  /** 検証結果 */
-  result: Exclude<DecodeResult, ProfileClaimsValidationFailed>;
-
-  constructor(message: string, result: ProfilesVerifyFailed["result"]) {
     super(message);
     this.result = result;
   }
@@ -53,11 +40,41 @@ export class ProfileTokenVerifyFailed extends ProfileGenericError {
   readonly code = ProfileTokenVerifyFailed.code;
 
   /** 検証結果 */
-  result: ProfilesVerifyFailed["result"] & {
+  result: Exclude<DecodeResult, ProfileGenericError> & {
     error?: JOSEError;
   };
 
   constructor(message: string, result: ProfileTokenVerifyFailed["result"]) {
+    super(message);
+    this.result = result;
+  }
+}
+
+export class ProfilesResolveFailed extends ProfileGenericError {
+  static get code() {
+    return "ERR_PROFILES_RESOLVE_FAILED" as const;
+  }
+  readonly code = ProfilesResolveFailed.code;
+
+  /** 検証結果 */
+  result: Exclude<DecodeResult, ProfileGenericError>;
+
+  constructor(message: string, result: ProfilesResolveFailed["result"]) {
+    super(message);
+    this.result = result;
+  }
+}
+
+export class ProfilesVerifyFailed extends ProfileGenericError {
+  static get code() {
+    return "ERR_PROFILES_VERIFY_FAILED" as const;
+  }
+  readonly code = ProfilesVerifyFailed.code;
+
+  /** 検証結果 */
+  result: Exclude<DecodeResult, ProfileGenericError>;
+
+  constructor(message: string, result: ProfilesVerifyFailed["result"]) {
     super(message);
     this.result = result;
   }
