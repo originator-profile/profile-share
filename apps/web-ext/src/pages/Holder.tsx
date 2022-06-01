@@ -13,6 +13,7 @@ import VerifySuccessBadge from "../components/VerifySuccessBadge";
 import VerifyFailureBadge from "../components/VerifyFailureBadge";
 import Roles from "../components/Roles";
 import HolderTable from "../components/HolderTable";
+import Description from "../components/Description";
 import NavLink from "../components/NavLink";
 
 function Page({
@@ -52,18 +53,7 @@ function Page({
       </div>
       <hr className="border-gray-50 border-4" />
       <HolderTable className="w-full table-fixed" holder={holder} />
-      {holder.description && (
-        <section className="px-3 py-2 border-gray-200 border-b">
-          <h2 className="mb-1 text-gray-500 font-normal">説明</h2>
-          <div
-            css={{ overflowWrap: "break-word" }}
-            className="prose prose-xs"
-            dangerouslySetInnerHTML={{
-              __html: holder.description,
-            }}
-          />
-        </section>
-      )}
+      {holder.description && <Description description={holder.description} />}
       <div className="px-3 pt-2 pb-20 bg-gray-50">
         <NavLink
           className="mb-2"

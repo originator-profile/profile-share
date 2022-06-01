@@ -1,0 +1,29 @@
+import clsx from "clsx";
+
+type Props = {
+  className?: string;
+  description: string;
+};
+
+function Description({ className, description }: Props) {
+  const parser = new DOMParser();
+  const descriptionDocument = parser.parseFromString(description, "text/html");
+  for (const anchor of descriptionDocument.getElementsByTagName("a")) {
+    anchor.target = "_blank";
+    anchor.rel = "noopener noreferrer";
+  }
+  return (
+    <section className={clsx("px-3 py-2 border-gray-200 border-b", className)}>
+      <h2 className="mb-1 text-gray-500 font-normal">説明</h2>
+      <div
+        css={{ overflowWrap: "break-word" }}
+        className="prose prose-xs text-xs"
+        dangerouslySetInnerHTML={{
+          __html: descriptionDocument.body.innerHTML,
+        }}
+      />
+    </section>
+  );
+}
+
+export default Description;
