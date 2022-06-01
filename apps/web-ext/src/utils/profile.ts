@@ -10,7 +10,7 @@ import {
 
 export const toProfile = (verifyResult: VerifyResult): Profile => {
   if (verifyResult instanceof ProfileGenericError) {
-    const payload = verifyResult.result.payload;
+    const payload = verifyResult.result.payload ?? {};
     const profile = isJwtOpPayload(payload)
       ? toOp(payload)
       : toDp(payload as JwtDpPayload);
