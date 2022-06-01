@@ -2,6 +2,7 @@ import useProfiles from "../utils/use-profiles";
 import { Profile } from "../types/profile";
 import { isOp } from "../utils/op";
 import { toRoles } from "../utils/role";
+import { sortProfiles } from "../utils/profile";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import OpItem from "../components/OpItem";
@@ -20,7 +21,7 @@ function Page({
 }) {
   return (
     <ul>
-      {profiles.map((profile, index) => {
+      {sortProfiles(profiles, main).map((profile, index) => {
         const roles = toRoles(profile.subject, advertisers, publishers);
         return isOp(profile) ? (
           <OpItem
