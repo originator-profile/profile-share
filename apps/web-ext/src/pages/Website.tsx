@@ -9,6 +9,7 @@ import BackHeader from "../components/BackHeader";
 import VerifySuccessBadge from "../components/VerifySuccessBadge";
 import VerifyFailureBadge from "../components/VerifyFailureBadge";
 import WebsiteTable from "../components/WebsiteTable";
+import Description from "../components/Description";
 import NavLink from "../components/NavLink";
 
 function Page({ dp, website }: { dp: Dp; website: DpWebsite }) {
@@ -33,18 +34,7 @@ function Page({ dp, website }: { dp: Dp; website: DpWebsite }) {
       </div>
       <hr className="border-gray-50 border-4" />
       <WebsiteTable className="w-full table-fixed" website={website} />
-      {website.description && (
-        <section className="px-3 py-2 border-gray-200 border-b">
-          <h2 className="mb-1 text-gray-500 font-normal">説明</h2>
-          <div
-            css={{ overflowWrap: "break-word" }}
-            className="prose prose-xs"
-            dangerouslySetInnerHTML={{
-              __html: website.description,
-            }}
-          />
-        </section>
-      )}
+      {website.description && <Description description={website.description} />}
       <div className="px-3 pt-2 pb-20 bg-gray-50">
         <NavLink
           className="mb-2"
