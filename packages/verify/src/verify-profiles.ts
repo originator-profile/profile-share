@@ -1,8 +1,26 @@
+import { JwtOpPayload, JwtDpPayload } from "./claims";
 import { TokenDecoder } from "./decode";
-import { ProfilesVerifyFailed } from "./errors";
+import {
+  ProfileGenericError,
+  ProfileClaimsValidationFailed,
+  ProfilesVerifyFailed,
+  ProfilesResolveFailed,
+} from "./errors";
 import { Keys, LocalKeys } from "./keys";
-import { Profiles, VerifyResult, VerifyResults } from "./types";
+import {
+  DecodeResult,
+  VerifyTokenResult,
+  Profiles,
+  VerifyResult,
+  VerifyResults,
+} from "./types";
 import { TokenVerifier } from "./verify-token";
+
+function getToken(res: DecodeResult | VerifyTokenResult) {
+  return res instanceof ProfileGenericError ? res.result.jwt : res.jwt;
+}
+
+type Token = ReturnType<typeof getToken>;
 
 /**
  * Profiles Set の検証者の生成
@@ -16,26 +34,28 @@ export function ProfilesVerifier(
   registryKeys: Keys,
   registry: string
 ) {
+  const results = new Map<Token | symbol, VerifyResult>();
   const decoder = TokenDecoder();
   const opVerifier = TokenVerifier(registryKeys, registry, decoder);
-  const decoded = profiles.profile.map(decoder);
-  const verifiers = new Map<string, TokenVerifier>();
-  verifiers.set(registry, opVerifier);
+  const opTokens: Array<{ payload: JwtOpPayload; jwt: string }> = [];
+  const dpTokens: Array<{ payload: JwtDpPayload; jwt: string }> = [];
 
-  for (const result of decoded.values()) {
-    if (result instanceof Error) continue;
-    if ("dp" in result) continue;
-
-    const issuer = result.payload.iss;
-    if (issuer !== registry) continue;
-
-    const subject = result.payload.sub;
-    if (verifiers.has(subject)) continue;
-
-    const jwks = result.payload["https://opr.webdino.org/jwt/claims/op"].jwks;
-    const keys = LocalKeys(jwks ?? { keys: [] });
-    const verify = TokenVerifier(keys, issuer, decoder);
-    verifiers.set(subject, verify);
+  for (const token of profiles.profile) {
+    const res = decoder(token);
+    if (res instanceof ProfileClaimsValidationFailed) {
+      results.set(token, res);
+      continue;
+    }
+    if (results.has(token)) {
+      const error = new ProfilesVerifyFailed("Duplicated token", res);
+      results.set(token, error);
+      results.set(Symbol(error.message), error);
+      continue;
+    }
+    const pending = new ProfilesResolveFailed("Unresolved Profiles", res);
+    results.set(token, pending);
+    if ("dp" in res) dpTokens.push(res);
+    if ("op" in res) opTokens.push(res);
   }
 
   /**
@@ -43,29 +63,41 @@ export function ProfilesVerifier(
    * @return 検証結果
    */
   async function verifyProfiles(): Promise<VerifyResults> {
-    const results: Array<VerifyResult | Promise<VerifyResult>> = [];
+    const opResults: Promise<VerifyTokenResult>[] = [];
+    const dpResults: Promise<VerifyTokenResult>[] = [];
 
-    for (const result of decoded.values()) {
-      if (result instanceof Error) {
-        results.push(result);
-        continue;
+    opTokens
+      .filter(({ payload }) => payload.iss === registry)
+      .forEach(({ jwt }) => {
+        opResults.push(opVerifier(jwt));
+      });
+
+    for (const res of await Promise.all(opResults)) {
+      const token = getToken(res);
+      if (results.get(token) instanceof ProfilesResolveFailed) {
+        results.set(token, res);
       }
+      if (res instanceof ProfileGenericError) continue;
+      const subject = res.payload.sub ?? "";
+      const jwks = "op" in res ? res.op.jwks : undefined;
+      const keys = LocalKeys(jwks ?? { keys: [] });
+      const verifier = TokenVerifier(keys, subject, decoder);
 
-      const issuer = result.payload.iss;
-      const verifier = verifiers.get(issuer);
-      if (verifier === undefined) {
-        const error = new ProfilesVerifyFailed(
-          "Profiles Verification Failed",
-          result
-        );
-        results.push(error);
-        continue;
-      }
-
-      results.push(verifier(result.jwt));
+      dpTokens
+        .filter(({ payload }) => payload.iss === subject)
+        .forEach(({ jwt }) => {
+          dpResults.push(verifier(jwt));
+        });
     }
 
-    return await Promise.all(results);
+    for (const res of await Promise.all(dpResults)) {
+      const token = getToken(res);
+      if (results.get(token) instanceof ProfilesResolveFailed) {
+        results.set(token, res);
+      }
+    }
+
+    return [...results.values()];
   }
 
   return verifyProfiles;

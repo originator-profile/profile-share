@@ -47,6 +47,7 @@ export function TokenDecoder() {
         {
           errors: errors ?? [],
           payload,
+          jwt,
         }
       );
     }
@@ -55,6 +56,7 @@ export function TokenDecoder() {
     return new ProfileClaimsValidationFailed("Unknown Claims Set", {
       errors: [],
       payload,
+      jwt,
     });
   }
 

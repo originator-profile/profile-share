@@ -1,12 +1,17 @@
-import { test, expect } from "vitest";
+import { describe, test, expect } from "vitest";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { Op, Dp } from "@webdino/profile-model";
 import { generateKey, signOp, signDp } from "@webdino/profile-sign";
+import {
+  ProfileClaimsValidationFailed,
+  ProfilesVerifyFailed,
+  ProfileTokenVerifyFailed,
+} from "./errors";
 import { LocalKeys } from "./keys";
 import { ProfilesVerifier } from "./verify-profiles";
 
-test("verify Profiles", async () => {
-  const issKeys = await generateKey();
+describe("verify-profiles", async () => {
+  const certKeys = await generateKey();
   const subKeys = await generateKey();
   const iat = getUnixTime(new Date());
   const exp = getUnixTime(addYears(new Date(), 10));
@@ -25,15 +30,85 @@ test("verify Profiles", async () => {
     subject: "http://sub.localhost:8080/article/42",
     item: [],
   };
-  const opToken = await signOp(op, issKeys.pkcs8);
+  const opToken = await signOp(op, certKeys.pkcs8);
   const dpToken = await signDp(dp, subKeys.pkcs8);
-  const registryKeys = LocalKeys({ keys: [issKeys.jwk] });
-  const verifier = ProfilesVerifier(
-    { profile: [opToken, dpToken] },
-    registryKeys,
-    op.issuer
-  );
-  const verified = await verifier();
-  expect(verified[0]).toMatchObject({ op });
-  expect(verified[1]).toMatchObject({ dp });
+  const registryKeys = LocalKeys({ keys: [certKeys.jwk] });
+
+  test("Verify Profiles", async () => {
+    const verifier = ProfilesVerifier(
+      { profile: [opToken, dpToken] },
+      registryKeys,
+      op.issuer
+    );
+    const verified = await verifier();
+    expect(verified[0]).toMatchObject({ op });
+    expect(verified[1]).toMatchObject({ dp });
+  });
+
+  test("OPの検証に失敗すると子も検証に失敗", async () => {
+    const evilKeys = await generateKey();
+    const evilOpToken = await signOp(op, evilKeys.pkcs8);
+    const verifier = ProfilesVerifier(
+      { profile: [evilOpToken, dpToken] },
+      registryKeys,
+      op.issuer
+    );
+    const results = await verifier();
+    expect(results[0]).instanceOf(Error);
+    expect(results[0]).not.haveOwnProperty("op");
+    expect(results[1]).instanceOf(Error);
+    expect(results[1]).not.haveOwnProperty("dp");
+  });
+
+  test("不正なitemが含まれるときClaims Setの確認に失敗", async () => {
+    const invalidOp = {
+      issuedAt: fromUnixTime(iat).toISOString(),
+      expiredAt: fromUnixTime(exp).toISOString(),
+      issuer: "http://localhost:8080",
+      subject: "http://sub.localhost:8080",
+      item: ["invalid"],
+      jwks: { keys: [subKeys.jwk] },
+    };
+    // @ts-expect-error invalid Op
+    const invalidOpToken = await signOp(invalidOp, certKeys.pkcs8);
+    const verifier = ProfilesVerifier(
+      { profile: [invalidOpToken] },
+      registryKeys,
+      op.issuer
+    );
+    const results = await verifier();
+    expect(results[0]).instanceOf(ProfileClaimsValidationFailed);
+  });
+
+  test("不正な公開鍵のときJWTの検証に失敗", async () => {
+    const evilKeys = await generateKey();
+    const evilOp: Op = {
+      issuedAt: fromUnixTime(iat).toISOString(),
+      expiredAt: fromUnixTime(exp).toISOString(),
+      issuer: "http://localhost:8080",
+      subject: "http://sub.localhost:8080",
+      item: [],
+      jwks: { keys: [evilKeys.jwk] },
+    };
+    const evilOpToken = await signOp(evilOp, certKeys.pkcs8);
+    const verifier = ProfilesVerifier(
+      { profile: [evilOpToken, dpToken] },
+      registryKeys,
+      op.issuer
+    );
+    const results = await verifier();
+    expect(results[1]).instanceOf(ProfileTokenVerifyFailed);
+  });
+
+  test("重複するJWTが含まれるときProfiles Setの検証に失敗", async () => {
+    const verifier = ProfilesVerifier(
+      { profile: [opToken, opToken] },
+      registryKeys,
+      op.issuer
+    );
+    const results = await verifier();
+    expect(results.length).toBe(2);
+    expect(results[0]).instanceOf(ProfilesVerifyFailed);
+    expect(results[0]).toBe(results[1]);
+  });
 });
