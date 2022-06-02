@@ -6,6 +6,8 @@ import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import BackHeader from "../components/BackHeader";
 import TechnicalInformationTable from "../components/TechnicalInformationTable";
+import useHolderUrl from "../utils/use-holder-url";
+import useWebsiteUrl from "../utils/use-website-url";
 
 function Page({
   profile,
@@ -14,13 +16,13 @@ function Page({
   profile: Profile;
   targetOrigin?: string;
 }) {
+  const holderUrl = useHolderUrl(profile.subject);
+  const websiteUrl = useWebsiteUrl(profile.subject);
   return (
     <>
       <BackHeader
         className="sticky top-0"
-        to={`/${encodeURIComponent(profile.subject)}/${
-          isOp(profile) ? "holder" : "website"
-        }`}
+        to={isOp(profile) ? holderUrl : websiteUrl}
       >
         <h1 className="text-sm">技術情報</h1>
       </BackHeader>

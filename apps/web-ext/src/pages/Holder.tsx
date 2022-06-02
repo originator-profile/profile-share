@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import useProfiles from "../utils/use-profiles";
 import { isHolder, isOp } from "../utils/op";
 import { Op, OpHolder } from "../types/op";
@@ -15,6 +15,9 @@ import Roles from "../components/Roles";
 import HolderTable from "../components/HolderTable";
 import Description from "../components/Description";
 import NavLink from "../components/NavLink";
+import useWebsiteUrl from "../utils/use-website-url";
+import useCertifierUrl from "../utils/use-certifier-url";
+import useTechnicalInformationUrl from "../utils/use-technical-information-url";
 
 function Page({
   op,
@@ -26,10 +29,18 @@ function Page({
   roles: Role[];
 }) {
   const logo = holder.logos?.find(({ isMain }) => isMain);
+  const [searchParams] = useSearchParams();
+  const dpSubject = searchParams.get("dp") ?? "";
+  const websiteUrl = useWebsiteUrl(dpSubject);
+  const certifierUrl = useCertifierUrl(op.subject);
+  const technicalInformationUrl = useTechnicalInformationUrl(op.subject);
 
   return (
     <>
-      <BackHeader className="sticky top-0" to="/">
+      <BackHeader
+        className="sticky top-0"
+        to={searchParams.has("dp") ? websiteUrl : "/"}
+      >
         <h1 className="text-sm">所有者情報</h1>
       </BackHeader>
       <Image
@@ -55,17 +66,10 @@ function Page({
       <HolderTable className="w-full table-fixed" holder={holder} />
       {holder.description && <Description description={holder.description} />}
       <div className="px-3 pt-2 pb-20 bg-gray-50">
-        <NavLink
-          className="mb-2"
-          to={`/${encodeURIComponent(op.subject)}/certifier`}
-        >
+        <NavLink className="mb-2" to={certifierUrl}>
           認証機関
         </NavLink>
-        <NavLink
-          to={`/${encodeURIComponent(op.subject)}/technical-information`}
-        >
-          技術情報
-        </NavLink>
+        <NavLink to={technicalInformationUrl}>技術情報</NavLink>
       </div>
     </>
   );
