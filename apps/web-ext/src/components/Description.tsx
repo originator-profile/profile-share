@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import DOMPurify from "dompurify";
 
 type Props = {
   className?: string;
@@ -19,7 +20,7 @@ function Description({ className, description }: Props) {
         css={{ overflowWrap: "break-word" }}
         className="prose prose-xs text-xs"
         dangerouslySetInnerHTML={{
-          __html: descriptionDocument.body.innerHTML,
+          __html: DOMPurify.sanitize(descriptionDocument.body.innerHTML),
         }}
       />
     </section>
