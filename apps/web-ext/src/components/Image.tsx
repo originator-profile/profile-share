@@ -11,14 +11,19 @@ type Props = {
 
 function Image({ className, src, placeholderSrc, alt, width, height }: Props) {
   return (
-    <img
-      css={{ maxHeight: height }}
-      className={clsx("bg-white mx-auto w-auto", className)}
-      src={src ?? placeholderSrc}
-      alt={alt}
-      width={width}
-      height={height}
-    />
+    <figure
+      css={{ height }}
+      className={clsx("flex justify-center items-center bg-white", className)}
+    >
+      <img
+        css={{ maxHeight: height }}
+        className="w-auto"
+        src={src ?? placeholderSrc}
+        alt={alt}
+        width={width}
+        height={height}
+      />
+    </figure>
   );
 }
 
