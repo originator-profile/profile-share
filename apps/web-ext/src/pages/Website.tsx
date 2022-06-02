@@ -11,8 +11,12 @@ import VerifyFailureBadge from "../components/VerifyFailureBadge";
 import WebsiteTable from "../components/WebsiteTable";
 import Description from "../components/Description";
 import NavLink from "../components/NavLink";
+import useHolderUrl from "../utils/use-holder-url";
+import useTechnicalInformationUrl from "../utils/use-technical-information-url";
 
 function Page({ dp, website }: { dp: Dp; website: DpWebsite }) {
+  const holderUrl = useHolderUrl(dp.issuer);
+  const technicalInformationUrl = useTechnicalInformationUrl(dp.subject);
   return (
     <>
       <BackHeader className="sticky top-0" to="/">
@@ -38,15 +42,11 @@ function Page({ dp, website }: { dp: Dp; website: DpWebsite }) {
       <div className="px-3 pt-2 pb-20 bg-gray-50">
         <NavLink
           className="mb-2"
-          to={`/${encodeURIComponent(dp.issuer)}/holder`}
+          to={`${holderUrl}?dp=${encodeURIComponent(dp.subject)}`}
         >
           所有者情報
         </NavLink>
-        <NavLink
-          to={`/${encodeURIComponent(dp.subject)}/technical-information`}
-        >
-          技術情報
-        </NavLink>
+        <NavLink to={technicalInformationUrl}>技術情報</NavLink>
       </div>
     </>
   );

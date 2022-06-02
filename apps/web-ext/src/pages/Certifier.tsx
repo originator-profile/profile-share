@@ -7,14 +7,13 @@ import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Image from "../components/Image";
 import BackHeader from "../components/BackHeader";
 import CertifierTable from "../components/CertifierTable";
+import useHolderUrl from "../utils/use-holder-url";
 
 function Page({ op }: { op: Op }) {
+  const holderUrl = useHolderUrl(op.subject);
   return (
     <>
-      <BackHeader
-        className="sticky top-0"
-        to={`/${encodeURIComponent(op.subject)}/holder`}
-      >
+      <BackHeader className="sticky top-0" to={holderUrl}>
         <h1 className="text-sm">認証機関</h1>
       </BackHeader>
       <Image
