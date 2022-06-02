@@ -13,11 +13,11 @@ function Image({ className, src, placeholderSrc, alt, width, height }: Props) {
   return (
     <figure
       css={{ height }}
-      className={clsx("flex justify-center items-center", className)}
+      className={clsx("flex justify-center items-center bg-white", className)}
     >
       <img
         css={{ maxHeight: height }}
-        className="bg-white w-auto"
+        className="w-auto"
         src={src ?? placeholderSrc}
         alt={alt}
         width={width}
