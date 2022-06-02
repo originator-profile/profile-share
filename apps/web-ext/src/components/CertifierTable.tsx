@@ -10,29 +10,26 @@ function CertifierTable({ className, op }: Props) {
   return (
     <table className={className}>
       <tbody>
-        <TableRow
-          header="認証機関"
-          data="一般社団法人 デジタル広告品質認証機構"
-        />
-        <TableRow header="所在地" data="〒104-0061 東京都中央区銀座3-10-7" />
+        <TableRow header="認証機関" data="一般社団法人 第三者認証機関" />
+        <TableRow header="所在地" data="〒100-8111 東京都千代田区千代田1-1" />
         <TableRow
           header="URL"
           data={
             <a
               className="anchor-link"
-              href="https://www.jicdaq.or.jp"
+              href="https://example.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              https://www.jicdaq.or.jp
+              https://example.com
             </a>
           }
         />
         <TableRow
           header="電話番号"
           data={
-            <a className="anchor-link" href="tel:03-6264-2065">
-              03-6264-2065
+            <a className="anchor-link" href="tel:03-1234-5678">
+              03-1234-5678
             </a>
           }
         />
@@ -45,7 +42,7 @@ function CertifierTable({ className, op }: Props) {
           data={new Date(op.expiredAt).toLocaleString("ja-JP")}
         />
         <TableRow header="認定内容" data="ブランドセーフティ認証" />
-        <TableRow header="検証機関" data="一般社団法人 日本ABC協会" />
+        <TableRow header="検証機関" data="一般社団法人 第三者認証機関" />
       </tbody>
     </table>
   );

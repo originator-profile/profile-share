@@ -18,9 +18,9 @@ function Page({ op }: { op: Op }) {
         <h1 className="text-sm">認証機関</h1>
       </BackHeader>
       <Image
-        src="/assets/logo-jicdaq.png"
+        src="/assets/logo-certifier.png"
         placeholderSrc="/assets/placeholder-logo-main.png"
-        alt="一般社団法人 デジタル広告品質認証機構のロゴ"
+        alt="第三者認証機関のロゴ"
         width={320}
         height={198}
       />
