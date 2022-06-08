@@ -2,18 +2,18 @@ import { useParams } from "react-router-dom";
 import useProfiles from "../utils/use-profiles";
 import { Op } from "../types/op";
 import { isOp } from "../utils/op";
+import { Paths } from "../types/routes";
+import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Image from "../components/Image";
 import BackHeader from "../components/BackHeader";
 import CertifierTable from "../components/CertifierTable";
-import useHolderUrl from "../utils/use-holder-url";
 
-function Page({ op }: { op: Op }) {
-  const holderUrl = useHolderUrl(op.subject);
+function Page({ op, paths }: { op: Op; paths: Paths }) {
   return (
     <>
-      <BackHeader className="sticky top-0" to={holderUrl}>
+      <BackHeader className="sticky top-0" to={paths.back}>
         <h1 className="text-sm">認証機関</h1>
       </BackHeader>
       <Image
@@ -30,7 +30,15 @@ function Page({ op }: { op: Op }) {
 }
 
 function Certifier() {
-  const { subject } = useParams();
+  const params = useParams();
+  const paths = {
+    back:
+      "nestedIssuer" in params
+        ? routes.nestedHolder.toPath(params)
+        : routes.holder.toPath(params),
+  } as const;
+  const subject =
+    "nestedSubject" in params ? params.nestedSubject : params.subject;
   const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
     return (
@@ -57,7 +65,7 @@ function Certifier() {
       </ErrorPlaceholder>
     );
   }
-  return <Page op={profile} />;
+  return <Page op={profile} paths={paths} />;
 }
 
 export default Certifier;

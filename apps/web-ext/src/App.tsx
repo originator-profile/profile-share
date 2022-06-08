@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { routes } from "./utils/routes";
 import Profiles from "./pages/Profiles";
 import Holder from "./pages/Holder";
 import Certifier from "./pages/Certifier";
@@ -8,14 +9,20 @@ import Website from "./pages/Website";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Profiles />} />
-      <Route path="/:subject/holder" element={<Holder />} />
-      <Route path="/:subject/certifier" element={<Certifier />} />
+      <Route path={routes.profiles.path} element={<Profiles />} />
+      <Route path={routes.holder.path} element={<Holder />} />
+      <Route path={routes.certifier.path} element={<Certifier />} />
       <Route
-        path="/:subject/technical-information"
+        path={routes.technicalInformation.path}
         element={<TechnicalInformation />}
       />
-      <Route path="/:subject/website" element={<Website />} />
+      <Route path={routes.website.path} element={<Website />} />
+      <Route path={routes.nestedHolder.path} element={<Holder />} />
+      <Route path={routes.nestedCertifier.path} element={<Certifier />} />
+      <Route
+        path={routes.nestedTechnicalInformation.path}
+        element={<TechnicalInformation />}
+      />
     </Routes>
   );
 }

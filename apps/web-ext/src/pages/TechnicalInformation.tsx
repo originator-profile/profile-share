@@ -2,28 +2,25 @@ import { useParams } from "react-router-dom";
 import useProfiles from "../utils/use-profiles";
 import { Profile } from "../types/profile";
 import { isOp } from "../utils/op";
+import { Paths } from "../types/routes";
+import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import BackHeader from "../components/BackHeader";
 import TechnicalInformationTable from "../components/TechnicalInformationTable";
-import useHolderUrl from "../utils/use-holder-url";
-import useWebsiteUrl from "../utils/use-website-url";
 
 function Page({
   profile,
   targetOrigin,
+  paths,
 }: {
   profile: Profile;
   targetOrigin?: string;
+  paths: Paths;
 }) {
-  const holderUrl = useHolderUrl(profile.subject);
-  const websiteUrl = useWebsiteUrl(profile.subject);
   return (
     <>
-      <BackHeader
-        className="sticky top-0"
-        to={isOp(profile) ? holderUrl : websiteUrl}
-      >
+      <BackHeader className="sticky top-0" to={paths.back}>
         <h1 className="text-sm">技術情報</h1>
       </BackHeader>
       <TechnicalInformationTable
@@ -36,7 +33,9 @@ function Page({
 }
 
 function TechnicalInformation() {
-  const { subject } = useParams();
+  const params = useParams();
+  const subject =
+    "nestedSubject" in params ? params.nestedSubject : params.subject;
   const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
     return (
@@ -63,7 +62,15 @@ function TechnicalInformation() {
       </ErrorPlaceholder>
     );
   }
-  return <Page profile={profile} targetOrigin={targetOrigin} />;
+  const paths = {
+    back:
+      "nestedIssuer" in params
+        ? routes.nestedHolder.toPath(params)
+        : isOp(profile)
+        ? routes.holder.toPath(params)
+        : routes.website.toPath(params),
+  } as const;
+  return <Page profile={profile} targetOrigin={targetOrigin} paths={paths} />;
 }
 
 export default TechnicalInformation;

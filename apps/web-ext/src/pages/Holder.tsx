@@ -1,10 +1,12 @@
 import clsx from "clsx";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useProfiles from "../utils/use-profiles";
 import { isHolder, isOp } from "../utils/op";
 import { Op, OpHolder } from "../types/op";
 import { Role } from "../types/role";
 import { toRoles } from "../utils/role";
+import { Paths } from "../types/routes";
+import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Image from "../components/Image";
@@ -15,32 +17,22 @@ import Roles from "../components/Roles";
 import HolderTable from "../components/HolderTable";
 import Description from "../components/Description";
 import NavLink from "../components/NavLink";
-import useWebsiteUrl from "../utils/use-website-url";
-import useCertifierUrl from "../utils/use-certifier-url";
-import useTechnicalInformationUrl from "../utils/use-technical-information-url";
 
 function Page({
   op,
   holder,
   roles,
+  paths,
 }: {
   op: Op;
   holder: OpHolder;
   roles: Role[];
+  paths: Paths;
 }) {
   const logo = holder.logos?.find(({ isMain }) => isMain);
-  const [searchParams] = useSearchParams();
-  const dpSubject = searchParams.get("dp") ?? "";
-  const websiteUrl = useWebsiteUrl(dpSubject);
-  const certifierUrl = useCertifierUrl(op.subject);
-  const technicalInformationUrl = useTechnicalInformationUrl(op.subject);
-
   return (
     <>
-      <BackHeader
-        className="sticky top-0"
-        to={searchParams.has("dp") ? websiteUrl : "/"}
-      >
+      <BackHeader className="sticky top-0" to={paths.back}>
         <h1 className="text-sm">所有者情報</h1>
       </BackHeader>
       <Image
@@ -66,17 +58,32 @@ function Page({
       <HolderTable className="w-full table-fixed" holder={holder} />
       {holder.description && <Description description={holder.description} />}
       <div className="px-3 pt-2 pb-20 bg-gray-50">
-        <NavLink className="mb-2" to={certifierUrl}>
+        <NavLink className="mb-2" to={paths.certifier}>
           認証機関
         </NavLink>
-        <NavLink to={technicalInformationUrl}>技術情報</NavLink>
+        <NavLink to={paths.technicalInformation}>技術情報</NavLink>
       </div>
     </>
   );
 }
 
 function Holder() {
-  const { subject } = useParams();
+  const params = useParams();
+  const paths =
+    "nestedIssuer" in params
+      ? ({
+          back: routes.website.toPath(params),
+          certifier: routes.nestedCertifier.toPath(params),
+          technicalInformation:
+            routes.nestedTechnicalInformation.toPath(params),
+        } as const)
+      : ({
+          back: routes.profiles.toPath(params),
+          certifier: routes.certifier.toPath(params),
+          technicalInformation: routes.technicalInformation.toPath(params),
+        } as const);
+  const subject =
+    "nestedSubject" in params ? params.nestedSubject : params.subject;
   const {
     advertisers = [],
     publishers = [],
@@ -118,7 +125,7 @@ function Holder() {
     );
   }
   const roles = toRoles(profile.subject, advertisers, publishers);
-  return <Page op={profile} holder={holder} roles={roles} />;
+  return <Page op={profile} holder={holder} roles={roles} paths={paths} />;
 }
 
 export default Holder;

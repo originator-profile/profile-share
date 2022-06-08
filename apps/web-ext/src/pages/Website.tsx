@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import useProfiles from "../utils/use-profiles";
 import { isWebsite, isDp } from "../utils/dp";
 import { Dp, DpWebsite } from "../types/dp";
+import { Paths } from "../types/routes";
+import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Image from "../components/Image";
@@ -11,15 +13,19 @@ import VerifyFailureBadge from "../components/VerifyFailureBadge";
 import WebsiteTable from "../components/WebsiteTable";
 import Description from "../components/Description";
 import NavLink from "../components/NavLink";
-import useHolderUrl from "../utils/use-holder-url";
-import useTechnicalInformationUrl from "../utils/use-technical-information-url";
 
-function Page({ dp, website }: { dp: Dp; website: DpWebsite }) {
-  const holderUrl = useHolderUrl(dp.issuer);
-  const technicalInformationUrl = useTechnicalInformationUrl(dp.subject);
+function Page({
+  dp,
+  website,
+  paths,
+}: {
+  dp: Dp;
+  website: DpWebsite;
+  paths: Paths;
+}) {
   return (
     <>
-      <BackHeader className="sticky top-0" to="/">
+      <BackHeader className="sticky top-0" to={paths.back}>
         <h1 className="text-sm">ウェブサイト情報</h1>
       </BackHeader>
       <Image
@@ -40,20 +46,21 @@ function Page({ dp, website }: { dp: Dp; website: DpWebsite }) {
       <WebsiteTable className="w-full table-fixed" website={website} />
       {website.description && <Description description={website.description} />}
       <div className="px-3 pt-2 pb-20 bg-gray-50">
-        <NavLink
-          className="mb-2"
-          to={`${holderUrl}?dp=${encodeURIComponent(dp.subject)}`}
-        >
-          所有者情報
-        </NavLink>
-        <NavLink to={technicalInformationUrl}>技術情報</NavLink>
+        {paths.holder && (
+          <NavLink className="mb-2" to={paths.holder}>
+            所有者情報
+          </NavLink>
+        )}
+        <NavLink to={paths.technicalInformation}>技術情報</NavLink>
       </div>
     </>
   );
 }
 
 function Website() {
-  const { subject } = useParams();
+  const params = useParams();
+  const subject =
+    "nestedSubject" in params ? params.nestedSubject : params.subject;
   const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
     return (
@@ -88,7 +95,22 @@ function Website() {
       </ErrorPlaceholder>
     );
   }
-  return <Page dp={profile} website={website} />;
+  const nestedProfile = profiles.find(
+    ({ subject }) => subject === profile.issuer
+  );
+  const paths = {
+    back: routes.profiles.toPath(params),
+    holder:
+      (nestedProfile &&
+        routes.nestedHolder.toPath({
+          ...params,
+          nestedIssuer: nestedProfile.issuer,
+          nestedSubject: nestedProfile.subject,
+        })) ||
+      "",
+    technicalInformation: routes.technicalInformation.toPath(params),
+  } as const;
+  return <Page dp={profile} website={website} paths={paths} />;
 }
 
 export default Website;
