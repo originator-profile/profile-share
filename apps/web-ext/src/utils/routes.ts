@@ -1,3 +1,5 @@
+import { Params } from "react-router-dom";
+
 type Path = string;
 type Param = {
   name: string;
@@ -5,7 +7,7 @@ type Param = {
 };
 type PathOrParam = Path | Param;
 type Route = {
-  toPath: (params: { [key: string]: string }) => string;
+  toPath: (params: Params) => string;
   path: string;
 };
 
@@ -27,7 +29,7 @@ export const route = (...pathOrParams: PathOrParam[]): Route => {
           if (isParam(pathOrParam)) {
             const param = params[pathOrParam.name];
             if (!param) throw new Error(`Param ${pathOrParam.name} not found`);
-            return param;
+            return encodeURIComponent(param);
           }
           return pathOrParam;
         })
@@ -43,7 +45,7 @@ export const route = (...pathOrParams: PathOrParam[]): Route => {
 };
 
 export const routes = {
-  profiles: route("profiles"),
+  profiles: route(""),
   holder: route(param("issuer"), param("subject"), "holder"),
   certifier: route(param("issuer"), param("subject"), "certifier"),
   technicalInformation: route(
@@ -53,22 +55,24 @@ export const routes = {
   ),
   website: route(param("issuer"), param("subject"), "website"),
   nestedHolder: route(
-    param("dpIssuer"),
-    param("dpSubject"),
-    param("opIssuer"),
-    param("opSubject"),
+    param("issuer"),
+    param("subject"),
+    param("nestedIssuer"),
+    param("nestedSubject"),
     "holder"
   ),
   nestedCertifier: route(
-    param("dpIssuer"),
-    param("dpSubject"),
-    param("opIssuer"),
-    param("opSubject"),
+    param("issuer"),
+    param("subject"),
+    param("nestedIssuer"),
+    param("nestedSubject"),
     "certifier"
   ),
   nestedTechnicalInformation: route(
-    param("dpIssuer"),
-    param("dpSubject"),
+    param("issuer"),
+    param("subject"),
+    param("nestedIssuer"),
+    param("nestedSubject"),
     "technical-information"
   ),
 } as const;
