@@ -6,11 +6,30 @@ import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Template from "../templates/Certifier";
 
-function Certifier() {
+type Props = {
+  nested?: boolean;
+};
+
+type RouteProps = Omit<Parameters<typeof Template>[0], "paths">;
+
+function NestedRoute(props: RouteProps) {
+  const params = useParams();
+  const paths = {
+    back: routes.nestedHolder.toPath(params),
+  } as const;
+  return <Template {...props} paths={paths} />;
+}
+
+function Route(props: RouteProps) {
   const params = useParams();
   const paths = {
     back: routes.holder.toPath(params),
-  } as const;
+  };
+  return <Template {...props} paths={paths} />;
+}
+
+function Certifier({ nested = false }: Props) {
+  const { subject, nestedSubject } = useParams();
   const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
     return (
@@ -30,7 +49,7 @@ function Certifier() {
     );
   }
   const profile = profiles.find(
-    (profile) => profile.subject === params.subject
+    (profile) => profile.subject === (nested ? nestedSubject : subject)
   );
   if (!profile || !isOp(profile)) {
     return (
@@ -39,7 +58,8 @@ function Certifier() {
       </ErrorPlaceholder>
     );
   }
-  return <Template op={profile} paths={paths} />;
+  if (nested) return <NestedRoute op={profile} />;
+  return <Route op={profile} />;
 }
 
 export default Certifier;

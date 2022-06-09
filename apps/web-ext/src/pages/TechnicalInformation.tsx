@@ -1,12 +1,37 @@
 import { useParams } from "react-router-dom";
 import useProfiles from "../utils/use-profiles";
+import { isOp } from "../utils/op";
 import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Template from "../templates/TechnicalInformation";
 
-function TechnicalInformation() {
+type Props = {
+  nested?: boolean;
+};
+
+type RouteProps = Omit<Parameters<typeof Template>[0], "paths">;
+
+function NestedRoute(props: RouteProps) {
   const params = useParams();
+  const paths = {
+    back: routes.nestedHolder.toPath(params),
+  } as const;
+  return <Template {...props} paths={paths} />;
+}
+
+function Route(props: RouteProps) {
+  const params = useParams();
+  const paths = {
+    back: isOp(props.profile)
+      ? routes.holder.toPath(params)
+      : routes.website.toPath(params),
+  } as const;
+  return <Template {...props} paths={paths} />;
+}
+
+function TechnicalInformation({ nested }: Props) {
+  const { subject, nestedSubject } = useParams();
   const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
     return (
@@ -26,7 +51,7 @@ function TechnicalInformation() {
     );
   }
   const profile = profiles.find(
-    (profile) => profile.subject === params.subject
+    (profile) => profile.subject === (nested ? nestedSubject : subject)
   );
   if (!profile) {
     return (
@@ -35,12 +60,9 @@ function TechnicalInformation() {
       </ErrorPlaceholder>
     );
   }
-  const paths = {
-    back: routes.nestedHolder.toPath(params),
-  } as const;
-  return (
-    <Template profile={profile} targetOrigin={targetOrigin} paths={paths} />
-  );
+  if (nested)
+    return <NestedRoute profile={profile} targetOrigin={targetOrigin} />;
+  return <Route profile={profile} targetOrigin={targetOrigin} />;
 }
 
 export default TechnicalInformation;

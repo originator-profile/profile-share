@@ -5,9 +5,6 @@ import Holder from "./pages/Holder";
 import Certifier from "./pages/Certifier";
 import TechnicalInformation from "./pages/TechnicalInformation";
 import Website from "./pages/Website";
-import NestedHolder from "./pages/NestedHolder";
-import NestedCertifier from "./pages/NestedCertifier";
-import NestedTechnicalInformation from "./pages/NestedTechnicalInformation";
 
 function App() {
   return (
@@ -20,11 +17,14 @@ function App() {
         element={<TechnicalInformation />}
       />
       <Route path={routes.website.path} element={<Website />} />
-      <Route path={routes.nestedHolder.path} element={<NestedHolder />} />
-      <Route path={routes.nestedCertifier.path} element={<NestedCertifier />} />
+      <Route path={routes.nestedHolder.path} element={<Holder nested />} />
+      <Route
+        path={routes.nestedCertifier.path}
+        element={<Certifier nested />}
+      />
       <Route
         path={routes.nestedTechnicalInformation.path}
-        element={<NestedTechnicalInformation />}
+        element={<TechnicalInformation nested />}
       />
     </Routes>
   );
