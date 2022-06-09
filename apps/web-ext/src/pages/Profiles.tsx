@@ -1,42 +1,7 @@
 import useProfiles from "../utils/use-profiles";
-import { Profile } from "../types/profile";
-import { isOp } from "../utils/op";
-import { toRoles } from "../utils/role";
-import { sortProfiles } from "../utils/profile";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
-import OpItem from "../components/OpItem";
-import DpItem from "../components/DpItem";
-
-function Page({
-  profiles,
-  advertisers,
-  publishers,
-  main,
-}: {
-  profiles: Profile[];
-  advertisers: string[];
-  publishers: string[];
-  main: string[];
-}) {
-  return (
-    <ul>
-      {sortProfiles(profiles, main).map((profile, index) => {
-        const roles = toRoles(profile.subject, advertisers, publishers);
-        return isOp(profile) ? (
-          <OpItem
-            key={profile.subject}
-            op={profile}
-            variant={index === 0 ? "primary" : "secondary"}
-            roles={roles}
-          />
-        ) : (
-          <DpItem key={profile.subject} dp={profile} />
-        );
-      })}
-    </ul>
-  );
-}
+import Template from "../templates/Profiles";
 
 function Profiles() {
   const {
@@ -65,7 +30,7 @@ function Profiles() {
     );
   }
   return (
-    <Page
+    <Template
       profiles={profiles}
       advertisers={advertisers}
       publishers={publishers}

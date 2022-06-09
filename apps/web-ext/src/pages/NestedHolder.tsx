@@ -1,14 +1,26 @@
 import { useParams } from "react-router-dom";
 import useProfiles from "../utils/use-profiles";
-import { isWebsite, isDp } from "../utils/dp";
+import { isHolder, isOp } from "../utils/op";
+import { toRoles } from "../utils/role";
 import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
-import Template from "../templates/Website";
+import Template from "../templates/Holder";
 
-function Website() {
+function NestedHolder() {
   const params = useParams();
-  const { profiles, error, targetOrigin } = useProfiles();
+  const paths = {
+    back: routes.website.toPath(params),
+    certifier: routes.nestedCertifier.toPath(params),
+    technicalInformation: routes.nestedTechnicalInformation.toPath(params),
+  } as const;
+  const {
+    advertisers = [],
+    publishers = [],
+    profiles,
+    error,
+    targetOrigin,
+  } = useProfiles();
   if (error) {
     return (
       <ErrorPlaceholder>
@@ -27,39 +39,25 @@ function Website() {
     );
   }
   const profile = profiles.find(
-    (profile) => profile.subject === params.subject
+    (profile) => profile.subject === params.nestedSubject
   );
-  if (!profile || !isDp(profile)) {
+  if (!profile || !isOp(profile)) {
     return (
       <ErrorPlaceholder>
         <p>プロファイルが見つかりませんでした</p>
       </ErrorPlaceholder>
     );
   }
-  const website = profile.item.find(isWebsite);
-  if (!website) {
+  const holder = profile.item.find(isHolder);
+  if (!holder) {
     return (
       <ErrorPlaceholder>
-        <p>ウェブサイトが見つかりませんでした</p>
+        <p>所有者情報が見つかりませんでした</p>
       </ErrorPlaceholder>
     );
   }
-  const nestedProfile = profiles.find(
-    ({ subject }) => subject === profile.issuer
-  );
-  const paths = {
-    back: routes.profiles.toPath(params),
-    holder:
-      (nestedProfile &&
-        routes.nestedHolder.toPath({
-          ...params,
-          nestedIssuer: nestedProfile.issuer,
-          nestedSubject: nestedProfile.subject,
-        })) ||
-      "",
-    technicalInformation: routes.technicalInformation.toPath(params),
-  } as const;
-  return <Template dp={profile} website={website} paths={paths} />;
+  const roles = toRoles(profile.subject, advertisers, publishers);
+  return <Template op={profile} holder={holder} roles={roles} paths={paths} />;
 }
 
-export default Website;
+export default NestedHolder;
