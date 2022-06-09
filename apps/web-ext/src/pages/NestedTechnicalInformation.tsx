@@ -1,11 +1,12 @@
 import { useParams } from "react-router-dom";
 import useProfiles from "../utils/use-profiles";
+import { isOp } from "../utils/op";
 import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Template from "../templates/TechnicalInformation";
 
-function TechnicalInformation() {
+function NestedTechnicalInformation() {
   const params = useParams();
   const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
@@ -26,7 +27,7 @@ function TechnicalInformation() {
     );
   }
   const profile = profiles.find(
-    (profile) => profile.subject === params.subject
+    (profile) => profile.subject === params.nestedSubject
   );
   if (!profile) {
     return (
@@ -36,11 +37,13 @@ function TechnicalInformation() {
     );
   }
   const paths = {
-    back: routes.nestedHolder.toPath(params),
+    back: isOp(profile)
+      ? routes.holder.toPath(params)
+      : routes.website.toPath(params),
   } as const;
   return (
     <Template profile={profile} targetOrigin={targetOrigin} paths={paths} />
   );
 }
 
-export default TechnicalInformation;
+export default NestedTechnicalInformation;

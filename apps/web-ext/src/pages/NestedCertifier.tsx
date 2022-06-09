@@ -1,12 +1,16 @@
 import { useParams } from "react-router-dom";
 import useProfiles from "../utils/use-profiles";
+import { isOp } from "../utils/op";
 import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
-import Template from "../templates/TechnicalInformation";
+import Template from "../templates/Certifier";
 
-function TechnicalInformation() {
+function NestedCertifier() {
   const params = useParams();
+  const paths = {
+    back: routes.nestedHolder.toPath(params),
+  } as const;
   const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
     return (
@@ -26,21 +30,16 @@ function TechnicalInformation() {
     );
   }
   const profile = profiles.find(
-    (profile) => profile.subject === params.subject
+    (profile) => profile.subject === params.nestedSubject
   );
-  if (!profile) {
+  if (!profile || !isOp(profile)) {
     return (
       <ErrorPlaceholder>
         <p>プロファイルが見つかりませんでした</p>
       </ErrorPlaceholder>
     );
   }
-  const paths = {
-    back: routes.nestedHolder.toPath(params),
-  } as const;
-  return (
-    <Template profile={profile} targetOrigin={targetOrigin} paths={paths} />
-  );
+  return <Template op={profile} paths={paths} />;
 }
 
-export default TechnicalInformation;
+export default NestedCertifier;
