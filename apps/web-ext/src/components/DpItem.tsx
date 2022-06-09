@@ -28,7 +28,7 @@ function DpItem({ dp }: Props) {
         <p className="flex-1 text-sm">{website.title}</p>
         <Link
           className="jumpu-icon-button flex-shrink-0 h-12"
-          to={routes.website.toPath({ issuer: dp.issuer, subject: dp.subject })}
+          to={routes.website.build({ issuer: dp.issuer, subject: dp.subject })}
           aria-describedby={`tooltip-${dp.subject}`}
         >
           <Icon

@@ -47,7 +47,7 @@ function OpItem({ op, variant, roles }: Props) {
         </div>
         <Link
           className="jumpu-icon-button flex-shrink-0 h-12"
-          to={routes.holder.toPath({ issuer: op.issuer, subject: op.subject })}
+          to={routes.holder.build({ issuer: op.issuer, subject: op.subject })}
           aria-describedby={`tooltip-${op.subject}`}
         >
           <Icon

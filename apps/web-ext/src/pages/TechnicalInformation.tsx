@@ -15,7 +15,7 @@ type RouteProps = Omit<Parameters<typeof Template>[0], "paths">;
 function NestedRoute(props: RouteProps) {
   const params = useParams();
   const paths = {
-    back: routes.nestedHolder.toPath(params),
+    back: routes.nestedHolder.build(params),
   } as const;
   return <Template {...props} paths={paths} />;
 }
@@ -24,14 +24,14 @@ function Route(props: RouteProps) {
   const params = useParams();
   const paths = {
     back: isOp(props.profile)
-      ? routes.holder.toPath(params)
-      : routes.website.toPath(params),
+      ? routes.holder.build(params)
+      : routes.website.build(params),
   } as const;
   return <Template {...props} paths={paths} />;
 }
 
 function TechnicalInformation({ nested }: Props) {
-  const { subject, nestedSubject } = useParams();
+  const { subject } = useParams();
   const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
     return (
@@ -50,9 +50,7 @@ function TechnicalInformation({ nested }: Props) {
       </LoadingPlaceholder>
     );
   }
-  const profile = profiles.find(
-    (profile) => profile.subject === (nested ? nestedSubject : subject)
-  );
+  const profile = profiles.find((profile) => profile.subject === subject);
   if (!profile) {
     return (
       <ErrorPlaceholder>
