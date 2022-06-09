@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import { Profile } from "../types/profile";
 import useProfiles from "../utils/use-profiles";
 import { isWebsite, isDp } from "../utils/dp";
 import { routes } from "../utils/routes";
@@ -6,8 +7,33 @@ import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Template from "../templates/Website";
 
-function Website() {
+type RouteProps = Omit<Parameters<typeof Template>[0], "paths"> & {
+  profiles: Profile[];
+};
+
+function Route({ profiles, ...props }: RouteProps) {
   const params = useParams();
+  const profile = profiles.find(
+    (profile) => profile.subject === props.dp.issuer
+  );
+  const paths = {
+    back: routes.profiles.build(params),
+    holder:
+      (profile &&
+        routes.nestedHolder.build({
+          nestedIssuer: props.dp.issuer,
+          nestedSubject: props.dp.subject,
+          issuer: profile.issuer,
+          subject: profile.subject,
+        })) ||
+      "",
+    technicalInformation: routes.technicalInformation.build(params),
+  } as const;
+  return <Template {...props} paths={paths} />;
+}
+
+function Website() {
+  const { subject } = useParams();
   const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
     return (
@@ -26,9 +52,7 @@ function Website() {
       </LoadingPlaceholder>
     );
   }
-  const profile = profiles.find(
-    (profile) => profile.subject === params.subject
-  );
+  const profile = profiles.find((profile) => profile.subject === subject);
   if (!profile || !isDp(profile)) {
     return (
       <ErrorPlaceholder>
@@ -44,22 +68,7 @@ function Website() {
       </ErrorPlaceholder>
     );
   }
-  const nestedProfile = profiles.find(
-    ({ subject }) => subject === profile.issuer
-  );
-  const paths = {
-    back: routes.profiles.toPath(params),
-    holder:
-      (nestedProfile &&
-        routes.nestedHolder.toPath({
-          ...params,
-          nestedIssuer: nestedProfile.issuer,
-          nestedSubject: nestedProfile.subject,
-        })) ||
-      "",
-    technicalInformation: routes.technicalInformation.toPath(params),
-  } as const;
-  return <Template dp={profile} website={website} paths={paths} />;
+  return <Route dp={profile} website={website} profiles={profiles} />;
 }
 
 export default Website;

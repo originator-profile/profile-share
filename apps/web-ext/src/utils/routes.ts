@@ -1,78 +1,43 @@
-import { Params } from "react-router-dom";
+import { Params, generatePath } from "react-router-dom";
 
-type Path = string;
-type Param = {
-  name: string;
-  path: string;
-};
-type PathOrParam = Path | Param;
-type Route = {
-  toPath: (params: Params) => string;
-  path: string;
-};
-
-const isParam = (pathOrParam: PathOrParam): pathOrParam is Param =>
-  typeof pathOrParam === "object";
-
-export const param = (param: string): Param =>
-  ({
-    name: param,
-    path: ":" + param,
-  } as const);
-
-export const route = (...pathOrParams: PathOrParam[]): Route => {
+export function route(path: string) {
   return {
-    toPath: (params) =>
-      "/" +
-      pathOrParams
-        .map((pathOrParam) => {
-          if (isParam(pathOrParam)) {
-            const param = params[pathOrParam.name];
-            if (!param) throw new Error(`Param ${pathOrParam.name} not found`);
-            return encodeURIComponent(param);
-          }
-          return pathOrParam;
-        })
-        .join("/"),
-    path:
-      "/" +
-      pathOrParams
-        .map((pathOrParam) =>
-          isParam(pathOrParam) ? pathOrParam.path : pathOrParam
-        )
-        .join("/"),
-  } as const;
-};
+    path,
+    build: (params: Params) => generatePath(path, params),
+  };
+}
+
+function urlParamsRoute(path: string) {
+  const baseRoute = route(path);
+  return {
+    ...baseRoute,
+    build(params: Params) {
+      const encodedParams = Object.fromEntries(
+        Object.entries(params).map(([key, value]) => [
+          key,
+          encodeURIComponent(String(value)),
+        ])
+      );
+      return baseRoute.build(encodedParams);
+    },
+  };
+}
 
 export const routes = {
-  profiles: route(""),
-  holder: route(param("issuer"), param("subject"), "holder"),
-  certifier: route(param("issuer"), param("subject"), "certifier"),
-  technicalInformation: route(
-    param("issuer"),
-    param("subject"),
-    "technical-information"
+  profiles: urlParamsRoute("/"),
+  holder: urlParamsRoute("/:issuer/:subject"),
+  certifier: urlParamsRoute("/:issuer/:subject/certifier"),
+  technicalInformation: urlParamsRoute(
+    "/:issuer/:subject/technical-information"
   ),
-  website: route(param("issuer"), param("subject"), "website"),
-  nestedHolder: route(
-    param("issuer"),
-    param("subject"),
-    param("nestedIssuer"),
-    param("nestedSubject"),
-    "holder"
+  website: urlParamsRoute("/:issuer/:subject/website"),
+  nestedHolder: urlParamsRoute(
+    "/:nestedIssuer/:nestedSubject/:issuer/:subject/holder"
   ),
-  nestedCertifier: route(
-    param("issuer"),
-    param("subject"),
-    param("nestedIssuer"),
-    param("nestedSubject"),
-    "certifier"
+  nestedCertifier: urlParamsRoute(
+    "/:nestedIssuer/:nestedSubject/:issuer/:subject/certifier"
   ),
-  nestedTechnicalInformation: route(
-    param("issuer"),
-    param("subject"),
-    param("nestedIssuer"),
-    param("nestedSubject"),
-    "technical-information"
+  nestedTechnicalInformation: urlParamsRoute(
+    "/:nestedIssuer/:nestedSubject/:issuer/:subject/technical-information"
   ),
 } as const;
