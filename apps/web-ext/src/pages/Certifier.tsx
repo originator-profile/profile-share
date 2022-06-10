@@ -1,38 +1,13 @@
 import { useParams } from "react-router-dom";
 import useProfiles from "../utils/use-profiles";
 import { isOp } from "../utils/op";
-import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Template from "../templates/Certifier";
 
-type Props = {
-  nested?: boolean;
-};
+type Props = { back: string };
 
-type RouteProps = Omit<Parameters<typeof Template>[0], "paths">;
-
-function NestedRoute(props: RouteProps) {
-  const params = useParams() as {
-    nestedIssuer: string;
-    nestedSubject: string;
-    issuer: string;
-    subject: string;
-  };
-  const paths = {
-    back: routes.nestedHolder.build(params),
-  } as const;
-  return <Template {...props} paths={paths} />;
-}
-
-function Route(props: RouteProps) {
-  const paths = {
-    back: routes.holder.build(props.op),
-  };
-  return <Template {...props} paths={paths} />;
-}
-
-function Certifier({ nested = false }: Props) {
+function Certifier(props: Props) {
   const { subject } = useParams();
   const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
@@ -60,8 +35,7 @@ function Certifier({ nested = false }: Props) {
       </ErrorPlaceholder>
     );
   }
-  if (nested) return <NestedRoute op={profile} />;
-  return <Route op={profile} />;
+  return <Template op={profile} paths={props} />;
 }
 
 export default Certifier;

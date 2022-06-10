@@ -28,20 +28,9 @@ function urlParamsRoute<Path extends string>(path: Path) {
 }
 
 export const routes = {
-  profiles: urlParamsRoute("/"),
-  holder: urlParamsRoute("/:issuer/:subject"),
-  certifier: urlParamsRoute("/:issuer/:subject/certifier"),
-  technicalInformation: urlParamsRoute(
-    "/:issuer/:subject/technical-information"
-  ),
-  website: urlParamsRoute("/:issuer/:subject/website"),
-  nestedHolder: urlParamsRoute(
-    "/:nestedIssuer/:nestedSubject/:issuer/:subject/holder"
-  ),
-  nestedCertifier: urlParamsRoute(
-    "/:nestedIssuer/:nestedSubject/:issuer/:subject/certifier"
-  ),
-  nestedTechnicalInformation: urlParamsRoute(
-    "/:nestedIssuer/:nestedSubject/:issuer/:subject/technical-information"
-  ),
+  profiles: route("/"),
+  holder: urlParamsRoute("holder/:issuer/:subject"),
+  certifier: route("certifier"),
+  tech: route("tech"),
+  website: urlParamsRoute("website/:issuer/:subject"),
 } as const;
