@@ -1,23 +1,27 @@
-import { Params, generatePath } from "react-router-dom";
+import { generatePath } from "react-router-dom";
+import { ParseUrlParams } from "typed-url-params";
 
-export function route(path: string) {
+export function route<Path extends string>(path: Path) {
   return {
     path,
-    build: (params: Params) => generatePath(path, params),
+    build(params: ParseUrlParams<Path>) {
+      // @ts-expect-error ParserError
+      return generatePath(path, params);
+    },
   };
 }
 
-function urlParamsRoute(path: string) {
+function urlParamsRoute<Path extends string>(path: Path) {
   const baseRoute = route(path);
   return {
     ...baseRoute,
-    build(params: Params) {
+    build(params: ParseUrlParams<Path>) {
       const encodedParams = Object.fromEntries(
         Object.entries(params).map(([key, value]) => [
           key,
           encodeURIComponent(String(value)),
         ])
-      );
+      ) as ParseUrlParams<Path>;
       return baseRoute.build(encodedParams);
     },
   };

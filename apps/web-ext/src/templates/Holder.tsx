@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { Op, OpHolder } from "../types/op";
 import { Role } from "../types/role";
-import { Paths } from "../types/routes";
 import Image from "../components/Image";
 import BackHeader from "../components/BackHeader";
 import VerifySuccessBadge from "../components/VerifySuccessBadge";
@@ -15,7 +14,7 @@ type Props = {
   op: Op;
   holder: OpHolder;
   roles: Role[];
-  paths: Paths;
+  paths: { back: string; certifier: string; technicalInformation: string };
 };
 
 function Holder({ op, holder, roles, paths }: Props) {

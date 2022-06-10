@@ -1,12 +1,11 @@
 import { Profile } from "../types/profile";
-import { Paths } from "../types/routes";
 import BackHeader from "../components/BackHeader";
 import TechnicalInformationTable from "../components/TechnicalInformationTable";
 
 type Props = {
   profile: Profile;
   targetOrigin?: string;
-  paths: Paths;
+  paths: { back: string };
 };
 
 function TechnicalInformation({ profile, targetOrigin, paths }: Props) {

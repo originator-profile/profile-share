@@ -14,7 +14,12 @@ type Props = {
 type RouteProps = Omit<Parameters<typeof Template>[0], "paths">;
 
 function NestedRoute(props: RouteProps) {
-  const params = useParams();
+  const params = useParams() as {
+    nestedIssuer: string;
+    nestedSubject: string;
+    issuer: string;
+    subject: string;
+  };
   const paths = {
     back: routes.website.build({
       issuer: params.nestedIssuer,
@@ -27,11 +32,10 @@ function NestedRoute(props: RouteProps) {
 }
 
 function Route(props: RouteProps) {
-  const params = useParams();
   const paths = {
-    back: routes.profiles.build(params),
-    certifier: routes.certifier.build(params),
-    technicalInformation: routes.technicalInformation.build(params),
+    back: routes.profiles.build({}),
+    certifier: routes.certifier.build(props.op),
+    technicalInformation: routes.technicalInformation.build(props.op),
   } as const;
   return <Template {...props} paths={paths} />;
 }

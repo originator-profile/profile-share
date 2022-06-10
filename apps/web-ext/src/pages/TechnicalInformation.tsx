@@ -10,28 +10,8 @@ type Props = {
   nested?: boolean;
 };
 
-type RouteProps = Omit<Parameters<typeof Template>[0], "paths">;
-
-function NestedRoute(props: RouteProps) {
-  const params = useParams();
-  const paths = {
-    back: routes.nestedHolder.build(params),
-  } as const;
-  return <Template {...props} paths={paths} />;
-}
-
-function Route(props: RouteProps) {
-  const params = useParams();
-  const paths = {
-    back: isOp(props.profile)
-      ? routes.holder.build(params)
-      : routes.website.build(params),
-  } as const;
-  return <Template {...props} paths={paths} />;
-}
-
-function TechnicalInformation({ nested }: Props) {
-  const { subject } = useParams();
+function TechnicalInformation(props: Props) {
+  const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
   const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
     return (
@@ -50,7 +30,9 @@ function TechnicalInformation({ nested }: Props) {
       </LoadingPlaceholder>
     );
   }
-  const profile = profiles.find((profile) => profile.subject === subject);
+  const profile = profiles.find(
+    (profile) => profile.issuer === issuer && profile.subject === subject
+  );
   if (!profile) {
     return (
       <ErrorPlaceholder>
