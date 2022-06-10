@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import { Op } from "../types/op";
 import { Role } from "../types/role";
 import { isHolder } from "../utils/op";
+import { routes } from "../utils/routes";
 import { Link } from "react-router-dom";
 import Image from "./Image";
 import Roles from "../components/Roles";
@@ -46,7 +47,7 @@ function OpItem({ op, variant, roles }: Props) {
         </div>
         <Link
           className="jumpu-icon-button flex-shrink-0 h-12"
-          to={`/${encodeURIComponent(op.subject)}/holder`}
+          to={routes.holder.build({ issuer: op.issuer, subject: op.subject })}
           aria-describedby={`tooltip-${op.subject}`}
         >
           <Icon

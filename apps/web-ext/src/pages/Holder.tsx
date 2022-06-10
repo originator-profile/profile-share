@@ -1,77 +1,42 @@
-import clsx from "clsx";
 import { useParams } from "react-router-dom";
 import useProfiles from "../utils/use-profiles";
 import { isHolder, isOp } from "../utils/op";
-import { Op, OpHolder } from "../types/op";
-import { Role } from "../types/role";
 import { toRoles } from "../utils/role";
+import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
-import Image from "../components/Image";
-import BackHeader from "../components/BackHeader";
-import VerifySuccessBadge from "../components/VerifySuccessBadge";
-import VerifyFailureBadge from "../components/VerifyFailureBadge";
-import Roles from "../components/Roles";
-import HolderTable from "../components/HolderTable";
-import Description from "../components/Description";
-import NavLink from "../components/NavLink";
+import Template from "../templates/Holder";
 
-function Page({
-  op,
-  holder,
-  roles,
-}: {
-  op: Op;
-  holder: OpHolder;
-  roles: Role[];
-}) {
-  const logo = holder.logos?.find(({ isMain }) => isMain);
+type Props = {
+  nested?: boolean;
+};
 
-  return (
-    <>
-      <BackHeader className="sticky top-0" to="/">
-        <h1 className="text-sm">所有者情報</h1>
-      </BackHeader>
-      <Image
-        src={logo?.url}
-        placeholderSrc="/assets/placeholder-logo-main.png"
-        alt={`${holder.name}のロゴ`}
-        width={320}
-        height={198}
-      />
-      <div className="px-3 py-3">
-        {op.error instanceof Error ? (
-          <VerifyFailureBadge
-            className={clsx({ ["mb-1"]: roles.length > 0 })}
-          />
-        ) : (
-          <VerifySuccessBadge
-            className={clsx({ ["mb-1"]: roles.length > 0 })}
-          />
-        )}
-        <Roles roles={roles} />
-      </div>
-      <hr className="border-gray-50 border-4" />
-      <HolderTable className="w-full table-fixed" holder={holder} />
-      {holder.description && <Description description={holder.description} />}
-      <div className="px-3 pt-2 pb-20 bg-gray-50">
-        <NavLink
-          className="mb-2"
-          to={`/${encodeURIComponent(op.subject)}/certifier`}
-        >
-          認証機関
-        </NavLink>
-        <NavLink
-          to={`/${encodeURIComponent(op.subject)}/technical-information`}
-        >
-          技術情報
-        </NavLink>
-      </div>
-    </>
-  );
+type RouteProps = Omit<Parameters<typeof Template>[0], "paths">;
+
+function NestedRoute(props: RouteProps) {
+  const params = useParams();
+  const paths = {
+    back: routes.website.build({
+      issuer: params.nestedIssuer,
+      subject: params.nestedSubject,
+    }),
+    certifier: routes.nestedCertifier.build(params),
+    technicalInformation: routes.nestedTechnicalInformation.build(params),
+  } as const;
+  return <Template {...props} paths={paths} />;
 }
 
-function Holder() {
+function Route(props: RouteProps) {
+  const params = useParams();
+  const paths = {
+    back: routes.profiles.build(params),
+    certifier: routes.certifier.build(params),
+    technicalInformation: routes.technicalInformation.build(params),
+  } as const;
+  return <Template {...props} paths={paths} />;
+}
+
+function Holder({ nested = false }: Props) {
   const { subject } = useParams();
   const {
     advertisers = [],
@@ -114,7 +79,8 @@ function Holder() {
     );
   }
   const roles = toRoles(profile.subject, advertisers, publishers);
-  return <Page op={profile} holder={holder} roles={roles} />;
+  if (nested) return <NestedRoute op={profile} holder={holder} roles={roles} />;
+  return <Route op={profile} holder={holder} roles={roles} />;
 }
 
 export default Holder;

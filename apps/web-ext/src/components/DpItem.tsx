@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { Dp } from "../types/dp";
 import { isWebsite } from "../utils/dp";
+import { routes } from "../utils/routes";
 import { Link } from "react-router-dom";
 import Image from "./Image";
 
@@ -27,7 +28,7 @@ function DpItem({ dp }: Props) {
         <p className="flex-1 text-sm">{website.title}</p>
         <Link
           className="jumpu-icon-button flex-shrink-0 h-12"
-          to={`/${encodeURIComponent(dp.subject)}/website`}
+          to={routes.website.build({ issuer: dp.issuer, subject: dp.subject })}
           aria-describedby={`tooltip-${dp.subject}`}
         >
           <Icon
