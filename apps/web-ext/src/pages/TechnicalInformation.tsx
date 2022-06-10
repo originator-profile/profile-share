@@ -1,39 +1,36 @@
 import { useParams } from "react-router-dom";
 import useProfiles from "../utils/use-profiles";
-import { Profile } from "../types/profile";
 import { isOp } from "../utils/op";
+import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
-import BackHeader from "../components/BackHeader";
-import TechnicalInformationTable from "../components/TechnicalInformationTable";
+import Template from "../templates/TechnicalInformation";
 
-function Page({
-  profile,
-  targetOrigin,
-}: {
-  profile: Profile;
-  targetOrigin?: string;
-}) {
-  return (
-    <>
-      <BackHeader
-        className="sticky top-0"
-        to={`/${encodeURIComponent(profile.subject)}/${
-          isOp(profile) ? "holder" : "website"
-        }`}
-      >
-        <h1 className="text-sm">技術情報</h1>
-      </BackHeader>
-      <TechnicalInformationTable
-        className="w-full table-fixed"
-        profile={profile}
-        targetOrigin={targetOrigin}
-      />
-    </>
-  );
+type Props = {
+  nested?: boolean;
+};
+
+type RouteProps = Omit<Parameters<typeof Template>[0], "paths">;
+
+function NestedRoute(props: RouteProps) {
+  const params = useParams();
+  const paths = {
+    back: routes.nestedHolder.build(params),
+  } as const;
+  return <Template {...props} paths={paths} />;
 }
 
-function TechnicalInformation() {
+function Route(props: RouteProps) {
+  const params = useParams();
+  const paths = {
+    back: isOp(props.profile)
+      ? routes.holder.build(params)
+      : routes.website.build(params),
+  } as const;
+  return <Template {...props} paths={paths} />;
+}
+
+function TechnicalInformation({ nested }: Props) {
   const { subject } = useParams();
   const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
@@ -61,7 +58,9 @@ function TechnicalInformation() {
       </ErrorPlaceholder>
     );
   }
-  return <Page profile={profile} targetOrigin={targetOrigin} />;
+  if (nested)
+    return <NestedRoute profile={profile} targetOrigin={targetOrigin} />;
+  return <Route profile={profile} targetOrigin={targetOrigin} />;
 }
 
 export default TechnicalInformation;

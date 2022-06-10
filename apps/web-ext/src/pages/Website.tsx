@@ -1,55 +1,35 @@
 import { useParams } from "react-router-dom";
+import { Profile } from "../types/profile";
 import useProfiles from "../utils/use-profiles";
 import { isWebsite, isDp } from "../utils/dp";
-import { Dp, DpWebsite } from "../types/dp";
+import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
-import Image from "../components/Image";
-import BackHeader from "../components/BackHeader";
-import VerifySuccessBadge from "../components/VerifySuccessBadge";
-import VerifyFailureBadge from "../components/VerifyFailureBadge";
-import WebsiteTable from "../components/WebsiteTable";
-import Description from "../components/Description";
-import NavLink from "../components/NavLink";
+import Template from "../templates/Website";
 
-function Page({ dp, website }: { dp: Dp; website: DpWebsite }) {
-  return (
-    <>
-      <BackHeader className="sticky top-0" to="/">
-        <h1 className="text-sm">ウェブサイト情報</h1>
-      </BackHeader>
-      <Image
-        src={website.image}
-        placeholderSrc="/assets/placeholder-logo-main.png"
-        alt={`${website.name}のロゴ`}
-        width={320}
-        height={198}
-      />
-      <div className="px-3 py-3">
-        {dp.error instanceof Error ? (
-          <VerifyFailureBadge />
-        ) : (
-          <VerifySuccessBadge />
-        )}
-      </div>
-      <hr className="border-gray-50 border-4" />
-      <WebsiteTable className="w-full table-fixed" website={website} />
-      {website.description && <Description description={website.description} />}
-      <div className="px-3 pt-2 pb-20 bg-gray-50">
-        <NavLink
-          className="mb-2"
-          to={`/${encodeURIComponent(dp.issuer)}/holder`}
-        >
-          所有者情報
-        </NavLink>
-        <NavLink
-          to={`/${encodeURIComponent(dp.subject)}/technical-information`}
-        >
-          技術情報
-        </NavLink>
-      </div>
-    </>
+type RouteProps = Omit<Parameters<typeof Template>[0], "paths"> & {
+  profiles: Profile[];
+};
+
+function Route({ profiles, ...props }: RouteProps) {
+  const params = useParams();
+  const profile = profiles.find(
+    (profile) => profile.subject === props.dp.issuer
   );
+  const paths = {
+    back: routes.profiles.build(params),
+    holder:
+      (profile &&
+        routes.nestedHolder.build({
+          nestedIssuer: props.dp.issuer,
+          nestedSubject: props.dp.subject,
+          issuer: profile.issuer,
+          subject: profile.subject,
+        })) ||
+      "",
+    technicalInformation: routes.technicalInformation.build(params),
+  } as const;
+  return <Template {...props} paths={paths} />;
 }
 
 function Website() {
@@ -88,7 +68,7 @@ function Website() {
       </ErrorPlaceholder>
     );
   }
-  return <Page dp={profile} website={website} />;
+  return <Route dp={profile} website={website} profiles={profiles} />;
 }
 
 export default Website;
