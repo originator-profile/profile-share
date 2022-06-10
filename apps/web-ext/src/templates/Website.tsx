@@ -1,5 +1,4 @@
 import { Dp, DpWebsite } from "../types/dp";
-import { Paths } from "../types/routes";
 import Image from "../components/Image";
 import BackHeader from "../components/BackHeader";
 import VerifySuccessBadge from "../components/VerifySuccessBadge";
@@ -11,7 +10,7 @@ import NavLink from "../components/NavLink";
 type Props = {
   dp: Dp;
   website: DpWebsite;
-  paths: Paths;
+  paths: { back: string; holder: string; technicalInformation: string };
 };
 
 function Website({ dp, website, paths }: Props) {

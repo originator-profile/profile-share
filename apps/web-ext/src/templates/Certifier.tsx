@@ -1,12 +1,11 @@
 import { Op } from "../types/op";
-import { Paths } from "../types/routes";
 import Image from "../components/Image";
 import BackHeader from "../components/BackHeader";
 import CertifierTable from "../components/CertifierTable";
 
 type Props = {
   op: Op;
-  paths: Paths;
+  paths: { back: string };
 };
 
 function Certifier({ op, paths }: Props) {

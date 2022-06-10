@@ -12,28 +12,26 @@ type RouteProps = Omit<Parameters<typeof Template>[0], "paths"> & {
 };
 
 function Route({ profiles, ...props }: RouteProps) {
-  const params = useParams();
   const profile = profiles.find(
     (profile) => profile.subject === props.dp.issuer
   );
   const paths = {
-    back: routes.profiles.build(params),
-    holder:
-      (profile &&
-        routes.nestedHolder.build({
+    back: routes.profiles.build({}),
+    holder: profile
+      ? routes.nestedHolder.build({
           nestedIssuer: props.dp.issuer,
           nestedSubject: props.dp.subject,
           issuer: profile.issuer,
           subject: profile.subject,
-        })) ||
-      "",
-    technicalInformation: routes.technicalInformation.build(params),
+        })
+      : "",
+    technicalInformation: routes.technicalInformation.build(props.dp),
   } as const;
   return <Template {...props} paths={paths} />;
 }
 
 function Website() {
-  const { subject } = useParams();
+  const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
   const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
     return (
@@ -52,7 +50,9 @@ function Website() {
       </LoadingPlaceholder>
     );
   }
-  const profile = profiles.find((profile) => profile.subject === subject);
+  const profile = profiles.find(
+    (profile) => profile.issuer === issuer && profile.subject === subject
+  );
   if (!profile || !isDp(profile)) {
     return (
       <ErrorPlaceholder>

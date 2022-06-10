@@ -13,6 +13,7 @@ describe("routes", async () => {
   });
 
   test("build() throws error if any params not found", async () => {
+    // @ts-expect-error assert
     expect(() => exampleRoute.build({ b: "b" })).toThrow();
   });
 });

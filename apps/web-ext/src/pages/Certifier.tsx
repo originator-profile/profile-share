@@ -13,7 +13,12 @@ type Props = {
 type RouteProps = Omit<Parameters<typeof Template>[0], "paths">;
 
 function NestedRoute(props: RouteProps) {
-  const params = useParams();
+  const params = useParams() as {
+    nestedIssuer: string;
+    nestedSubject: string;
+    issuer: string;
+    subject: string;
+  };
   const paths = {
     back: routes.nestedHolder.build(params),
   } as const;
@@ -21,9 +26,8 @@ function NestedRoute(props: RouteProps) {
 }
 
 function Route(props: RouteProps) {
-  const params = useParams();
   const paths = {
-    back: routes.holder.build(params),
+    back: routes.holder.build(props.op),
   };
   return <Template {...props} paths={paths} />;
 }
