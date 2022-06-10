@@ -1,34 +1,10 @@
 import { useParams } from "react-router-dom";
-import { Profile } from "../types/profile";
 import useProfiles from "../utils/use-profiles";
 import { isWebsite, isDp } from "../utils/dp";
 import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Template from "../templates/Website";
-
-type RouteProps = Omit<Parameters<typeof Template>[0], "paths"> & {
-  profiles: Profile[];
-};
-
-function Route({ profiles, ...props }: RouteProps) {
-  const profile = profiles.find(
-    (profile) => profile.subject === props.dp.issuer
-  );
-  const paths = {
-    back: routes.profiles.build({}),
-    holder: profile
-      ? routes.nestedHolder.build({
-          nestedIssuer: props.dp.issuer,
-          nestedSubject: props.dp.subject,
-          issuer: profile.issuer,
-          subject: profile.subject,
-        })
-      : "",
-    technicalInformation: routes.technicalInformation.build(props.dp),
-  } as const;
-  return <Template {...props} paths={paths} />;
-}
 
 function Website() {
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
@@ -68,7 +44,14 @@ function Website() {
       </ErrorPlaceholder>
     );
   }
-  return <Route dp={profile} website={website} profiles={profiles} />;
+
+  const op = profiles.find(({ subject }) => subject === profile.issuer);
+  const paths = {
+    back: routes.profiles.build({}),
+    holder: op ? routes.holder.build(op) : "",
+    technicalInformation: routes.tech.build({}),
+  } as const;
+  return <Template dp={profile} website={website} paths={paths} />;
 }
 
 export default Website;

@@ -1,14 +1,10 @@
 import { useParams } from "react-router-dom";
 import useProfiles from "../utils/use-profiles";
-import { isOp } from "../utils/op";
-import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Template from "../templates/TechnicalInformation";
 
-type Props = {
-  nested?: boolean;
-};
+type Props = { back: string };
 
 function TechnicalInformation(props: Props) {
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
@@ -40,9 +36,8 @@ function TechnicalInformation(props: Props) {
       </ErrorPlaceholder>
     );
   }
-  if (nested)
-    return <NestedRoute profile={profile} targetOrigin={targetOrigin} />;
-  return <Route profile={profile} targetOrigin={targetOrigin} />;
+
+  return <Template profile={profile} paths={props} />;
 }
 
 export default TechnicalInformation;
