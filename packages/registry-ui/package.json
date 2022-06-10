@@ -10,7 +10,6 @@
     "@exampledev/new.css": "^1.1.3",
     "@webdino/profile-tsconfig": "*",
     "@webdino/profile-verify": "*",
-    "babel-preset-solid": "^1.4.2",
     "eslint": "^8.16.0",
     "eslint-config-webdino-profile": "*",
     "jsonld": "^5.2.0",
