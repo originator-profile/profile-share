@@ -2,13 +2,9 @@
   "name": "@webdino/profile-registry-db",
   "version": "0.0.0",
   "private": true,
-  "main": "prisma/seed.ts",
   "scripts": {
     "build": "prisma generate",
     "dev": "prisma generate --watch"
-  },
-  "dependencies": {
-    "@prisma/client": "^3.14.0"
   },
   "devDependencies": {
     "prisma": "^3.14.0",
