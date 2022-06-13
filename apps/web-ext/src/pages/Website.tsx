@@ -49,7 +49,7 @@ function Website() {
   const paths = {
     back: routes.profiles.build({}),
     holder: op ? routes.holder.build(op) : "",
-    technicalInformation: routes.tech.build({}),
+    tech: routes.tech.build({}),
   } as const;
   return <Template dp={profile} website={website} paths={paths} />;
 }
