@@ -37,7 +37,13 @@ function Tech(props: Props) {
     );
   }
 
-  return <Template profile={profile} paths={props} />;
+  return (
+    <Template
+      profile={profile}
+      targetOrigin={targetOrigin ?? ""}
+      paths={props}
+    />
+  );
 }
 
 export default Tech;

@@ -4,7 +4,7 @@ import TechTable from "../components/TechTable";
 
 type Props = {
   profile: Profile;
-  targetOrigin?: string;
+  targetOrigin: string;
   paths: { back: string };
 };
 
