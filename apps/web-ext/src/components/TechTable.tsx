@@ -5,14 +5,10 @@ import TableRow from "./TableRow";
 type Props = {
   className?: string;
   profile: Profile;
-  targetOrigin?: string;
+  targetOrigin: string;
 };
 
-function TechnicalInformationTable({
-  className,
-  profile,
-  targetOrigin,
-}: Props) {
+function TechTable({ className, profile, targetOrigin }: Props) {
   return (
     <table className={className}>
       <tbody>
@@ -51,4 +47,4 @@ function TechnicalInformationTable({
   );
 }
 
-export default TechnicalInformationTable;
+export default TechTable;

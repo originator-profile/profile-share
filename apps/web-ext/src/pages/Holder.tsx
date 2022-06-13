@@ -7,36 +7,9 @@ import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Template from "../templates/Holder";
 
-type Props = {
-  nested?: boolean;
-};
+type Props = { back: string };
 
-type RouteProps = Omit<Parameters<typeof Template>[0], "paths">;
-
-function NestedRoute(props: RouteProps) {
-  const params = useParams();
-  const paths = {
-    back: routes.website.build({
-      issuer: params.nestedIssuer,
-      subject: params.nestedSubject,
-    }),
-    certifier: routes.nestedCertifier.build(params),
-    technicalInformation: routes.nestedTechnicalInformation.build(params),
-  } as const;
-  return <Template {...props} paths={paths} />;
-}
-
-function Route(props: RouteProps) {
-  const params = useParams();
-  const paths = {
-    back: routes.profiles.build(params),
-    certifier: routes.certifier.build(params),
-    technicalInformation: routes.technicalInformation.build(params),
-  } as const;
-  return <Template {...props} paths={paths} />;
-}
-
-function Holder({ nested = false }: Props) {
+function Holder(props: Props) {
   const { subject } = useParams();
   const {
     advertisers = [],
@@ -79,8 +52,12 @@ function Holder({ nested = false }: Props) {
     );
   }
   const roles = toRoles(profile.subject, advertisers, publishers);
-  if (nested) return <NestedRoute op={profile} holder={holder} roles={roles} />;
-  return <Route op={profile} holder={holder} roles={roles} />;
+  const paths = {
+    back: props.back,
+    certifier: routes.certifier.build({}),
+    tech: routes.tech.build({}),
+  } as const;
+  return <Template paths={paths} op={profile} holder={holder} roles={roles} />;
 }
 
 export default Holder;

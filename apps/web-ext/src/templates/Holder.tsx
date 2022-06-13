@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { Op, OpHolder } from "../types/op";
 import { Role } from "../types/role";
-import { Paths } from "../types/routes";
 import Image from "../components/Image";
 import BackHeader from "../components/BackHeader";
 import VerifySuccessBadge from "../components/VerifySuccessBadge";
@@ -15,7 +14,7 @@ type Props = {
   op: Op;
   holder: OpHolder;
   roles: Role[];
-  paths: Paths;
+  paths: { back: string; certifier: string; tech: string };
 };
 
 function Holder({ op, holder, roles, paths }: Props) {
@@ -51,7 +50,7 @@ function Holder({ op, holder, roles, paths }: Props) {
         <NavLink className="mb-2" to={paths.certifier}>
           認証機関
         </NavLink>
-        <NavLink to={paths.technicalInformation}>技術情報</NavLink>
+        <NavLink to={paths.tech}>技術情報</NavLink>
       </div>
     </>
   );
