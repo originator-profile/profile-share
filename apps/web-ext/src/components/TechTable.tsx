@@ -5,7 +5,7 @@ import TableRow from "./TableRow";
 type Props = {
   className?: string;
   profile: Profile;
-  targetOrigin?: string;
+  targetOrigin: string;
 };
 
 function TechTable({ className, profile, targetOrigin }: Props) {
