@@ -55,7 +55,7 @@ function Holder(props: Props) {
   const paths = {
     back: props.back,
     certifier: routes.certifier.build({}),
-    technicalInformation: routes.tech.build({}),
+    tech: routes.tech.build({}),
   } as const;
   return <Template paths={paths} op={profile} holder={holder} roles={roles} />;
 }

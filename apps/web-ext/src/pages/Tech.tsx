@@ -2,11 +2,11 @@ import { useParams } from "react-router-dom";
 import useProfiles from "../utils/use-profiles";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
-import Template from "../templates/TechnicalInformation";
+import Template from "../templates/Tech";
 
 type Props = { back: string };
 
-function TechnicalInformation(props: Props) {
+function Tech(props: Props) {
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
   const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
@@ -40,4 +40,4 @@ function TechnicalInformation(props: Props) {
   return <Template profile={profile} paths={props} />;
 }
 
-export default TechnicalInformation;
+export default Tech;

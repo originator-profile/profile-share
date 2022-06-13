@@ -14,7 +14,7 @@ type Props = {
   op: Op;
   holder: OpHolder;
   roles: Role[];
-  paths: { back: string; certifier: string; technicalInformation: string };
+  paths: { back: string; certifier: string; tech: string };
 };
 
 function Holder({ op, holder, roles, paths }: Props) {
@@ -50,7 +50,7 @@ function Holder({ op, holder, roles, paths }: Props) {
         <NavLink className="mb-2" to={paths.certifier}>
           認証機関
         </NavLink>
-        <NavLink to={paths.technicalInformation}>技術情報</NavLink>
+        <NavLink to={paths.tech}>技術情報</NavLink>
       </div>
     </>
   );

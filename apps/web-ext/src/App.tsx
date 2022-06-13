@@ -3,7 +3,7 @@ import { routes } from "./utils/routes";
 import Profiles from "./pages/Profiles";
 import Holder from "./pages/Holder";
 import Certifier from "./pages/Certifier";
-import Tech from "./pages/TechnicalInformation";
+import Tech from "./pages/Tech";
 import Website from "./pages/Website";
 
 const profiles: RouteObject = {

@@ -10,7 +10,7 @@ import NavLink from "../components/NavLink";
 type Props = {
   dp: Dp;
   website: DpWebsite;
-  paths: { back: string; holder: string; technicalInformation: string };
+  paths: { back: string; holder: string; tech: string };
 };
 
 function Website({ dp, website, paths }: Props) {
@@ -42,7 +42,7 @@ function Website({ dp, website, paths }: Props) {
             所有者情報
           </NavLink>
         )}
-        <NavLink to={paths.technicalInformation}>技術情報</NavLink>
+        <NavLink to={paths.tech}>技術情報</NavLink>
       </div>
     </>
   );

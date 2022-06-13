@@ -1,6 +1,6 @@
 import { Profile } from "../types/profile";
 import BackHeader from "../components/BackHeader";
-import TechnicalInformationTable from "../components/TechnicalInformationTable";
+import TechTable from "../components/TechTable";
 
 type Props = {
   profile: Profile;
@@ -8,13 +8,13 @@ type Props = {
   paths: { back: string };
 };
 
-function TechnicalInformation({ profile, targetOrigin, paths }: Props) {
+function Tech({ profile, targetOrigin, paths }: Props) {
   return (
     <>
       <BackHeader className="sticky top-0" to={paths.back}>
         <h1 className="text-sm">技術情報</h1>
       </BackHeader>
-      <TechnicalInformationTable
+      <TechTable
         className="w-full table-fixed"
         profile={profile}
         targetOrigin={targetOrigin}
@@ -23,4 +23,4 @@ function TechnicalInformation({ profile, targetOrigin, paths }: Props) {
   );
 }
 
-export default TechnicalInformation;
+export default Tech;
