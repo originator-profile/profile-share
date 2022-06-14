@@ -1,0 +1,47 @@
+import { afterAll, beforeAll } from "vitest";
+import { BrowserContext, chromium, Page } from "playwright";
+import fs from "node:fs/promises";
+import path from "node:path";
+import os from "node:os";
+import util from "node:util";
+import rimraf from "rimraf";
+
+export let ctx: BrowserContext;
+
+const browserType = chromium;
+const clean = util.promisify(rimraf);
+let userDataDir: string;
+
+beforeAll(async () => {
+  userDataDir = await fs.mkdtemp(path.join(os.tmpdir(), "profile-web-ext-"));
+  const extensionPath = path.resolve(__dirname, "../dist");
+  ctx = await browserType.launchPersistentContext(userDataDir, {
+    headless: false,
+    // loading chromium extension
+    args: [
+      `--disable-extensions-except=${extensionPath}`,
+      `--load-extension=${extensionPath}`,
+    ],
+  });
+});
+
+afterAll(async () => {
+  ctx?.close();
+  if (userDataDir) await clean(userDataDir);
+});
+
+export async function popup(ctx: BrowserContext): Promise<Page> {
+  const [backgroundPage] = ctx.backgroundPages();
+  await backgroundPage.evaluate(() => {
+    // @ts-expect-error chrome is not defined
+    chrome.tabs.query({ active: true }, ([targetTab]) => {
+      // @ts-expect-error chrome is not defined
+      chrome.browserAction.onClicked.dispatch(targetTab);
+    });
+  });
+  // NOTE: wait for popup to be opened
+  await backgroundPage.waitForTimeout(1_000);
+  // @ts-expect-error assert that popup is opened
+  const page: Page = ctx.pages().at(-1);
+  return page;
+}

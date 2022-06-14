@@ -1,60 +1,72 @@
 version: 2.1
 orbs:
-  node: circleci/node@5.0.1
-jobs:
-  test:
-    docker:
-      - image: "cimg/node:lts"
+  node: circleci/node@5.0.2
+commands:
+  git_checkout_and_config:
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints: ["dd:f4:c2:d0:4f:dc:64:85:73:8f:2c:b9:5d:1c:63:9c"]
+      - run:
+          name: Configure Git
+          command: |
+            git config user.name bot
+            git config user.email bot@webdino.org
+  yarn_install_with_cache:
+    steps:
       - restore_cache:
           name: Restore Yarn cache
-          keys: ['yarn-v1-{{ checksum "yarn.lock" }}']
+          keys:
+            - "yarn-v1-{{ .Branch }}"
+            - "yarn-v1-"
       - run:
           name: Install dependencies
           command: "yarn install --frozen-lockfile --cache-folder ~/.cache/yarn"
       - save_cache:
           name: Save Yarn cache
-          key: 'yarn-v1-{{ checksum "yarn.lock" }}'
+          key: "yarn-v1-{{ .Branch }}"
           paths: ["~/.cache/yarn"]
-      - add_ssh_keys:
-          fingerprints: ["dd:f4:c2:d0:4f:dc:64:85:73:8f:2c:b9:5d:1c:63:9c"]
+jobs:
+  test:
+    docker:
+      - image: "cimg/node:lts"
+    steps:
+      - git_checkout_and_config
+      - yarn_install_with_cache
       - run: yarn lint
       - run: yarn test
       - run: yarn build
       - run:
           name: Commit
           command: |
-            git config user.name bot
-            git config user.email bot@webdino.org
             if git commit -am 'bot: build'; then
               git push origin HEAD:"$CIRCLE_BRANCH"
             fi
       - store_artifacts:
           path: apps/web-ext/web-ext-artifacts
+  e2e:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large
+    steps:
+      - checkout
+      - node/install:
+          install-yarn: true
+      - yarn_install_with_cache
+      - run: sudo apt-get install -y fonts-noto-cjk
+      - run: yarn e2e
+      - store_artifacts:
+          path: apps/web-ext/screenshots
   format:
     docker:
       - image: "cimg/node:lts"
     steps:
-      - checkout
-      - restore_cache:
-          name: Restore Yarn cache
-          keys: ['yarn-v1-{{ checksum "yarn.lock" }}']
-      - run:
-          name: Install dependencies
-          command: "yarn install --frozen-lockfile --cache-folder ~/.cache/yarn"
-      - save_cache:
-          name: Save Yarn cache
-          key: 'yarn-v1-{{ checksum "yarn.lock" }}'
-          paths: ["~/.cache/yarn"]
-      - add_ssh_keys:
-          fingerprints: ["dd:f4:c2:d0:4f:dc:64:85:73:8f:2c:b9:5d:1c:63:9c"]
+      - git_checkout_and_config
+      - yarn_install_with_cache
       - run: yarn format
       - run:
           name: Commit
           command: |
-            git config user.name bot
-            git config user.email bot@webdino.org
             if git commit -am 'bot: format'; then
               git push origin HEAD:"$CIRCLE_BRANCH"
             fi
@@ -62,6 +74,7 @@ workflows:
   test:
     jobs:
       - test
+      - e2e
   format:
     jobs:
       - format

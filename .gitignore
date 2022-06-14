@@ -6,3 +6,4 @@ dist
 tmp
 /apps/registry/oclif.manifest.json
 /apps/web-ext/web-ext-artifacts
+/apps/web-ext/screenshots

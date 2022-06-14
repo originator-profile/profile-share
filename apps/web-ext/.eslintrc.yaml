@@ -8,3 +8,6 @@ overrides:
   - files: "*.tsx"
     rules:
       filenames/match-exported: ["error", "pascal"]
+  - files: "e2e/**/*.test.ts"
+    rules:
+      require-atomic-updates: "off"
