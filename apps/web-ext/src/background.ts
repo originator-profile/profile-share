@@ -12,11 +12,18 @@ browser.browserAction.onClicked.addListener(async function (tab) {
   }
   if (tab.id !== undefined) storage.setItem("tabId", tab.id);
   const url = browser.runtime.getURL("index.html");
-  const window = await browser.windows.create({
+
+  if (import.meta.env.MODE === "development") {
+    // @ts-expect-error e2e testing only
+    window.open().location.href = url;
+    return;
+  }
+
+  const { id } = await browser.windows.create({
     url,
     type: "popup",
     width: 320,
     height: 640,
   });
-  windowId = window.id ?? NaN;
+  windowId = id ?? NaN;
 });
