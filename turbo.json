@@ -9,8 +9,7 @@
       "cache": false
     },
     "e2e": {
-      "dependsOn": ["build"],
-      "outputs": []
+      "cache": false
     },
     "test": {
       "dependsOn": ["build"],
