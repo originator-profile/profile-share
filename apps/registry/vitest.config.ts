@@ -1,13 +1,19 @@
 import { UserConfig, defineConfig } from "vite";
 
 export default defineConfig(({ mode }) => {
-  const e2e = mode === "e2e";
-  const dir = e2e ? "e2e" : "tests";
-  const config: UserConfig = {
+  const tests = {
     test: {
-      dir,
-      setupFiles: `${dir}/setup.ts`,
+      dir: "tests",
+      setupFiles: "tests/setup.ts",
     },
+    e2e: {
+      dir: "e2e",
+      setupFiles: "e2e/setup.ts",
+      testTimeout: 10_000,
+    },
+  };
+  const config: UserConfig = {
+    test: tests[mode as "test" | "e2e"],
   };
   return config;
 });

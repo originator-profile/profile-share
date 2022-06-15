@@ -25,7 +25,9 @@ commands:
       - save_cache:
           name: Save Yarn cache
           key: "yarn-v1-{{ .Branch }}"
-          paths: ["~/.cache/yarn"]
+          paths:
+            - ~/.cache/yarn
+            - ~/.cache/ms-playwright
 jobs:
   test:
     docker:
