@@ -8,11 +8,11 @@ export default class Start extends Command {
   static description = "API サーバーの起動";
   static flags = {
     ...DbInit.flags,
-    port: Flags.string({
+    port: Flags.integer({
       char: "p",
       description: "Listen port",
       env: "PORT",
-      default: "8080",
+      default: 8080,
     }),
     "basic-auth-token": Flags.string({
       description: "Basic 認証用のトークン (デフォルト: 無効)",
