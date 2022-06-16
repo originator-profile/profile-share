@@ -7,24 +7,36 @@ import Image from "./Image";
 
 type Props = {
   dp: Dp;
+  variant: "primary" | "secondary";
 };
 
-function DpItem({ dp }: Props) {
+function DpItem({ dp, variant }: Props) {
   const website = dp.item.find(isWebsite);
   // TODO: ウェブサイトが存在しない場合の見た目
   if (!website) return <div />;
   return (
     <li className="border-gray-200 border-b">
+      {variant === "primary" && (
+        <Image
+          src={website?.image}
+          placeholderSrc="/assets/placeholder-logo-main.png"
+          alt={`${website.title}のサムネイル`}
+          width={320}
+          height={198}
+        />
+      )}
       <div className="px-3 py-3 flex items-center gap-2">
-        <div css={{ width: 90 }} className="flex-shrink-0">
-          <Image
-            src={website?.image}
-            placeholderSrc="/assets/placeholder-logo-sub.png"
-            alt={`${website.title}のサムネイル`}
-            width={90}
-            height={56}
-          />
-        </div>
+        {variant === "secondary" && (
+          <div css={{ width: 90 }} className="flex-shrink-0">
+            <Image
+              src={website?.image}
+              placeholderSrc="/assets/placeholder-logo-sub.png"
+              alt={`${website.title}のサムネイル`}
+              width={90}
+              height={56}
+            />
+          </div>
+        )}
         <p className="flex-1 text-sm">{website.title}</p>
         <Link
           className="jumpu-icon-button flex-shrink-0 h-12"
