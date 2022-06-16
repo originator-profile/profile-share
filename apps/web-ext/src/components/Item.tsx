@@ -1,24 +1,25 @@
+import { useId } from "react";
 import { Icon } from "@iconify/react";
-import { Dp } from "../types/dp";
-import { isWebsite } from "../utils/dp";
-import { routes } from "../utils/routes";
 import { Link } from "react-router-dom";
+import { Role } from "../types/role";
 import Image from "./Image";
+import Roles from "../components/Roles";
 
 type Props = {
-  dp: Dp;
+  image?: string;
+  name?: string;
+  to: string;
   variant: "main" | "sub";
+  roles?: Role[];
 };
 
-function DpItem({ dp, variant }: Props) {
-  const website = dp.item.find(isWebsite);
-  // TODO: ウェブサイトが存在しない場合の見た目
-  if (!website) return <div />;
+function Item({ image, name, to, variant, roles = [] }: Props) {
+  const id = useId();
   return (
     <li className="border-gray-200 border-b">
       {variant === "main" && (
         <Image
-          src={website?.image}
+          src={image}
           placeholderSrc="/assets/placeholder-logo-main.png"
           alt=""
           width={320}
@@ -29,7 +30,7 @@ function DpItem({ dp, variant }: Props) {
         {variant === "sub" && (
           <div css={{ width: 90 }} className="flex-shrink-0">
             <Image
-              src={website?.image}
+              src={image}
               placeholderSrc="/assets/placeholder-logo-sub.png"
               alt=""
               width={90}
@@ -37,17 +38,20 @@ function DpItem({ dp, variant }: Props) {
             />
           </div>
         )}
-        <p className="flex-1 text-sm">{website.title}</p>
+        <div className="flex-1">
+          <p className="text-sm mb-1">{name}</p>
+          <Roles roles={roles} />
+        </div>
         <Link
           className="jumpu-icon-button flex-shrink-0 h-12"
-          to={routes.website.build({ issuer: dp.issuer, subject: dp.subject })}
-          aria-describedby={`tooltip-${dp.subject}`}
+          to={to}
+          aria-describedby={id}
         >
           <Icon
             className="text-lg text-gray-300"
             icon="fa6-solid:chevron-right"
           />
-          <span id={`tooltip-${dp.subject}`} role="tooltip">
+          <span id={id} role="tooltip">
             詳細
           </span>
         </Link>
@@ -56,4 +60,4 @@ function DpItem({ dp, variant }: Props) {
   );
 }
 
-export default DpItem;
+export default Item;
