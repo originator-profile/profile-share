@@ -14,8 +14,7 @@ type Props = {
 function ProfileItem({ profile, variant, roles = [] }: Props) {
   if (isOp(profile)) {
     const holder = profile.item.find(isHolder);
-    // TODO: 所有者が存在しない場合の見た目の実装
-    if (!holder) return <div />;
+    if (!holder) return null;
     const logo = holder.logos?.find(({ isMain }) => isMain);
     return (
       <Item
@@ -28,8 +27,7 @@ function ProfileItem({ profile, variant, roles = [] }: Props) {
     );
   } else {
     const website = profile.item.find(isWebsite);
-    // TODO: ウェブサイトが存在しない場合の見た目
-    if (!website) return <div />;
+    if (!website) return null;
     return (
       <Item
         image={website.image}
