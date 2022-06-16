@@ -21,14 +21,14 @@ function Profiles({ profiles, advertisers, publishers, main }: Props) {
           <OpItem
             key={profile.subject}
             op={profile}
-            variant={index === 0 ? "primary" : "secondary"}
+            variant={index === 0 ? "main" : "sub"}
             roles={roles}
           />
         ) : (
           <DpItem
             key={profile.subject}
             dp={profile}
-            variant={index === 0 ? "primary" : "secondary"}
+            variant={index === 0 ? "main" : "sub"}
           />
         );
       })}

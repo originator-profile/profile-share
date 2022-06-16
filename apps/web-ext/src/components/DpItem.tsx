@@ -7,7 +7,7 @@ import Image from "./Image";
 
 type Props = {
   dp: Dp;
-  variant: "primary" | "secondary";
+  variant: "main" | "sub";
 };
 
 function DpItem({ dp, variant }: Props) {
@@ -16,7 +16,7 @@ function DpItem({ dp, variant }: Props) {
   if (!website) return <div />;
   return (
     <li className="border-gray-200 border-b">
-      {variant === "primary" && (
+      {variant === "main" && (
         <Image
           src={website?.image}
           placeholderSrc="/assets/placeholder-logo-main.png"
@@ -26,7 +26,7 @@ function DpItem({ dp, variant }: Props) {
         />
       )}
       <div className="px-3 py-3 flex items-center gap-2">
-        {variant === "secondary" && (
+        {variant === "sub" && (
           <div css={{ width: 90 }} className="flex-shrink-0">
             <Image
               src={website?.image}

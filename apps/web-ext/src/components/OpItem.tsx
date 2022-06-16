@@ -9,7 +9,7 @@ import Roles from "../components/Roles";
 
 type Props = {
   op: Op;
-  variant: "primary" | "secondary";
+  variant: "main" | "sub";
   roles: Role[];
 };
 
@@ -20,7 +20,7 @@ function OpItem({ op, variant, roles }: Props) {
   const logo = holder.logos?.find(({ isMain }) => isMain);
   return (
     <li className="border-gray-200 border-b">
-      {variant === "primary" && (
+      {variant === "main" && (
         <Image
           src={logo?.url}
           placeholderSrc="/assets/placeholder-logo-main.png"
@@ -30,7 +30,7 @@ function OpItem({ op, variant, roles }: Props) {
         />
       )}
       <div className="px-3 py-3 flex items-center gap-2">
-        {variant === "secondary" && (
+        {variant === "sub" && (
           <div css={{ width: 90 }} className="flex-shrink-0">
             <Image
               src={logo?.url}
