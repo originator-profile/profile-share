@@ -25,7 +25,11 @@ function Profiles({ profiles, advertisers, publishers, main }: Props) {
             roles={roles}
           />
         ) : (
-          <DpItem key={profile.subject} dp={profile} />
+          <DpItem
+            key={profile.subject}
+            dp={profile}
+            variant={index === 0 ? "primary" : "secondary"}
+          />
         );
       })}
     </ul>
