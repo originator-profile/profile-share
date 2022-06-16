@@ -17,7 +17,9 @@ function Profiles({ profiles, advertisers, publishers, main }: Props) {
         const roles = toRoles(profile.subject, advertisers, publishers);
         return (
           <ProfileItem
-            key={profile.issuer + profile.subject}
+            key={`${encodeURIComponent(profile.issuer)}/${encodeURIComponent(
+              profile.subject
+            )}`}
             profile={profile}
             variant={index === 0 ? "main" : "sub"}
             roles={roles}
