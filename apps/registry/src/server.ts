@@ -71,8 +71,8 @@ export function create(options: Options): Server {
   return app;
 }
 
-export async function start(server: Server, port: string): Promise<string> {
+export async function start(server: Server, port: number): Promise<string> {
   await server.ready();
-  const address: string = await server.listen(port, "::");
+  const address: string = await server.listen({ port, host: "::" });
   return address;
 }
