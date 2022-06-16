@@ -20,7 +20,7 @@ function DpItem({ dp, variant }: Props) {
         <Image
           src={website?.image}
           placeholderSrc="/assets/placeholder-logo-main.png"
-          alt={`${website.title}のサムネイル`}
+          alt=""
           width={320}
           height={198}
         />
@@ -31,7 +31,7 @@ function DpItem({ dp, variant }: Props) {
             <Image
               src={website?.image}
               placeholderSrc="/assets/placeholder-logo-sub.png"
-              alt={`${website.title}のサムネイル`}
+              alt=""
               width={90}
               height={56}
             />

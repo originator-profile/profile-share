@@ -24,7 +24,7 @@ function OpItem({ op, variant, roles }: Props) {
         <Image
           src={logo?.url}
           placeholderSrc="/assets/placeholder-logo-main.png"
-          alt={`${holder.name}のロゴ`}
+          alt=""
           width={320}
           height={198}
         />
@@ -35,7 +35,7 @@ function OpItem({ op, variant, roles }: Props) {
             <Image
               src={logo?.url}
               placeholderSrc="/assets/placeholder-logo-sub.png"
-              alt={`${holder.name}のロゴ`}
+              alt=""
               width={90}
               height={56}
             />
