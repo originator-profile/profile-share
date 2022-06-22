@@ -15,11 +15,12 @@ async function fetchProfiles(
   targetOrigin?: string,
   profilesLink?: string
 ) {
-  if (!targetOrigin) {
-    throw new Error("プロファイルを取得するウェブページが特定できませんでした");
-  }
   // TODO: このあたりの取得プロセスはシステム全体で固有のものなので外部化してテスタビリティを高めておきたい
   const context = "https://github.com/webdino/profile#";
+  if (!profilesLink && !targetOrigin)
+    throw new Error(
+      "プロファイルを取得できませんでした:\nプロファイルを取得するウェブページが特定できませんでした"
+    );
   const profileEndpoint = new URL(
     profilesLink ?? `${targetOrigin}/.well-known/op-document`
   );
@@ -70,6 +71,8 @@ async function fetchProfiles(
     publishers,
     main,
     profiles: verifyResults.map(toProfile),
+    targetOrigin: targetOrigin,
+    profileEndpoint: profileEndpoint.href,
   };
 }
 
@@ -88,6 +91,8 @@ function useProfiles() {
     publishers: string[];
     main: string[];
     profiles: Profile[];
+    targetOrigin?: string;
+    profileEndpoint?: string;
   }>(
     [key, message.value?.targetOrigin, message.value?.profilesLink],
     fetchProfiles
@@ -95,7 +100,8 @@ function useProfiles() {
   return {
     ...data,
     error: message.error || error,
-    targetOrigin: message.value?.targetOrigin,
+    targetOrigin: data?.targetOrigin,
+    profileEndpoint: data?.profileEndpoint,
   };
 }
 
