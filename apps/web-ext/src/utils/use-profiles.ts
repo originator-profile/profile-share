@@ -86,7 +86,7 @@ function useProfiles() {
     ...data,
     error: message.error || error,
     targetOrigin: message.value?.targetOrigin,
-    profileEndpoint
+    profileEndpoint,
   };
 }
 
