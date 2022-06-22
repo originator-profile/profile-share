@@ -10,10 +10,26 @@ import storage from "./storage";
 
 const key = "profiles";
 
-async function fetchProfiles(_: typeof key, profileEndpoint: string) {
+async function fetchProfiles(
+  _: typeof key,
+  targetOrigin?: string,
+  profilesLink?: string
+) {
   // TODO: このあたりの取得プロセスはシステム全体で固有のものなので外部化してテスタビリティを高めておきたい
   const context = "https://github.com/webdino/profile#";
-  const data = await fetch(new URL(profileEndpoint).href)
+  if (!profilesLink && !targetOrigin) {
+    const err = new Error(
+      "プロファイルを取得するウェブページが特定できませんでした"
+    );
+    throw {
+      ...err,
+      message: `プロファイルを取得できませんでした:\n${err.message}`,
+    };
+  }
+  const profileEndpoint = new URL(
+    profilesLink ?? `${targetOrigin}/.well-known/op-document`
+  );
+  const data = await fetch(profileEndpoint.href)
     .then((res) => {
       if (!res.ok) {
         throw new Error(`HTTP ステータスコード ${res.status}`);
@@ -60,6 +76,8 @@ async function fetchProfiles(_: typeof key, profileEndpoint: string) {
     publishers,
     main,
     profiles: verifyResults.map(toProfile),
+    targetOrigin: targetOrigin,
+    profileEndpoint: profileEndpoint.href,
   };
 }
 
@@ -73,20 +91,22 @@ function useProfiles() {
       });
     return response;
   });
-  const profileEndpoint =
-    message.value?.profilesLink ??
-    `${message.value?.targetOrigin}/.well-known/op-document`;
   const { data, error } = useSWR<{
     advertisers: string[];
     publishers: string[];
     main: string[];
     profiles: Profile[];
-  }>([key, profileEndpoint], fetchProfiles);
+    targetOrigin?: string,
+    profileEndpoint?: string;
+  }>(
+    [key, message.value?.targetOrigin, message.value?.profilesLink],
+    fetchProfiles
+  );
   return {
     ...data,
     error: message.error || error,
-    targetOrigin: message.value?.targetOrigin,
-    profileEndpoint
+    targetOrigin: data?.targetOrigin,
+    profileEndpoint: data?.profileEndpoint,
   };
 }
 
