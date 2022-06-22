@@ -96,7 +96,7 @@ function useProfiles() {
     publishers: string[];
     main: string[];
     profiles: Profile[];
-    targetOrigin?: string,
+    targetOrigin?: string;
     profileEndpoint?: string;
   }>(
     [key, message.value?.targetOrigin, message.value?.profilesLink],
