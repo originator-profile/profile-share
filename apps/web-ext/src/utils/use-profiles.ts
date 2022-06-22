@@ -17,15 +17,10 @@ async function fetchProfiles(
 ) {
   // TODO: このあたりの取得プロセスはシステム全体で固有のものなので外部化してテスタビリティを高めておきたい
   const context = "https://github.com/webdino/profile#";
-  if (!profilesLink && !targetOrigin) {
-    const err = new Error(
-      "プロファイルを取得するウェブページが特定できませんでした"
+  if (!profilesLink && !targetOrigin)
+    throw new Error(
+      "プロファイルを取得できませんでした:\nプロファイルを取得するウェブページが特定できませんでした"
     );
-    throw {
-      ...err,
-      message: `プロファイルを取得できませんでした:\n${err.message}`,
-    };
-  }
   const profileEndpoint = new URL(
     profilesLink ?? `${targetOrigin}/.well-known/op-document`
   );
@@ -96,7 +91,7 @@ function useProfiles() {
     publishers: string[];
     main: string[];
     profiles: Profile[];
-    targetOrigin?: string,
+    targetOrigin?: string;
     profileEndpoint?: string;
   }>(
     [key, message.value?.targetOrigin, message.value?.profilesLink],
