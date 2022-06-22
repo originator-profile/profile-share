@@ -4,11 +4,11 @@ import TechTable from "../components/TechTable";
 
 type Props = {
   profile: Profile;
-  targetOrigin: string;
+  profileEndpoint: string;
   paths: { back: string };
 };
 
-function Tech({ profile, targetOrigin, paths }: Props) {
+function Tech({ profile, profileEndpoint, paths }: Props) {
   return (
     <>
       <BackHeader className="sticky top-0" to={paths.back}>
@@ -17,7 +17,7 @@ function Tech({ profile, targetOrigin, paths }: Props) {
       <TechTable
         className="w-full table-fixed"
         profile={profile}
-        targetOrigin={targetOrigin}
+        profileEndpoint={profileEndpoint}
       />
     </>
   );

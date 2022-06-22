@@ -8,7 +8,7 @@ type Props = { back: string };
 
 function Tech(props: Props) {
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
-  const { profiles, error, targetOrigin } = useProfiles();
+  const { profiles, error, profileEndpoint } = useProfiles();
   if (error) {
     return (
       <ErrorPlaceholder>
@@ -20,7 +20,7 @@ function Tech(props: Props) {
     return (
       <LoadingPlaceholder>
         <p>
-          {targetOrigin && `${targetOrigin} の`}
+          {profileEndpoint && `${profileEndpoint} の`}
           プロファイルを取得検証しています...
         </p>
       </LoadingPlaceholder>
@@ -40,7 +40,7 @@ function Tech(props: Props) {
   return (
     <Template
       profile={profile}
-      targetOrigin={targetOrigin ?? ""}
+      profileEndpoint={profileEndpoint ?? ""}
       paths={props}
     />
   );

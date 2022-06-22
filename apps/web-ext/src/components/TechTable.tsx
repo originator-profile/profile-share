@@ -5,10 +5,10 @@ import TableRow from "./TableRow";
 type Props = {
   className?: string;
   profile: Profile;
-  targetOrigin: string;
+  profileEndpoint: string;
 };
 
-function TechTable({ className, profile, targetOrigin }: Props) {
+function TechTable({ className, profile, profileEndpoint }: Props) {
   return (
     <table className={className}>
       <tbody>
@@ -22,10 +22,7 @@ function TechTable({ className, profile, targetOrigin }: Props) {
             data={`${profile.error.name}: ${profile.error.message}`}
           />
         )}
-        <TableRow
-          header="プロファイル 文書"
-          data={`${targetOrigin}/.well-known/op-document`}
-        />
+        <TableRow header="プロファイル 文書" data={profileEndpoint} />
         <TableRow
           header={`${isOp(profile) ? "OP" : "DP"} 識別子`}
           data={profile.subject}
