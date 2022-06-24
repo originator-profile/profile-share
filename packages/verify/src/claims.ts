@@ -1,11 +1,7 @@
-import { Op, Dp } from "@webdino/profile-model";
-import {
-  JwtProfilePayload,
-  JwtOpPayload,
-  JwtDpPayload,
-  isJwtOpPayload,
-  isJwtDpPayload,
-} from "@webdino/profile-sign";
+import { Op, Dp, JwtProfilePayload } from "@webdino/profile-model";
+import JwtOpPayload from "@webdino/profile-model/src/jwt-op-payload";
+import JwtDpPayload from "@webdino/profile-model/src/jwt-dp-payload";
+import { isJwtOpPayload, isJwtDpPayload } from "@webdino/profile-sign";
 
 export {
   JwtProfilePayload,
