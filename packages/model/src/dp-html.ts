@@ -4,24 +4,14 @@ import DpLocation from "./dp-location";
 import DpProof from "./dp-proof";
 
 const DpHtml = {
-  $id: "dp-html",
   title: "Document Profile HTML",
   description: "対象の要素とその子孫を含む部分の HTML とその HTML への署名",
   type: "object",
   properties: {
     type: { const: "html" },
-    url: {
-      ...DpUrl,
-      $id: "dp-html-url",
-    },
-    location: {
-      ...DpLocation,
-      $id: "dp-html-location",
-    },
-    proof: {
-      ...DpProof,
-      $id: "dp-html-proof",
-    },
+    url: DpUrl,
+    location: DpLocation,
+    proof: DpProof,
   },
   required: ["type", "url", "proof"],
   additionalProperties: false,

@@ -2,7 +2,6 @@ import { FromSchema } from "json-schema-to-ts";
 import Jwk from "./jwk";
 
 const Jwks = {
-  $id: "jwks",
   title: "JSON Web Key Sets",
   type: "object",
   properties: {

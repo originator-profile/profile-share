@@ -3,7 +3,6 @@ import BusinessCategory from "./business-category";
 import Logo from "./logo";
 
 const OpCertifier = {
-  $id: "op-certifier",
   title: "Originator Profile Certifier",
   description: "資格情報を発行する認証機構",
   type: "object",
@@ -23,10 +22,7 @@ const OpCertifier = {
         "ウェブメディアそれを運用する法人、認定機関、業界団体等であることの記述",
       type: "string",
     },
-    businessCategory: {
-      ...BusinessCategory,
-      $id: "op-certifier-business-category",
-    },
+    businessCategory: BusinessCategory,
     email: {
       title: "メールアドレス",
       type: "string",
@@ -79,10 +75,7 @@ const OpCertifier = {
       title: "編集ガイドラインURL",
       type: "string",
     },
-    logos: {
-      ...Logo,
-      $id: "op-certifier-logo",
-    },
+    logos: Logo,
   },
   required: [
     "type",
