@@ -21,6 +21,7 @@
     "@types/react-dom": "^18.0.5",
     "@types/rimraf": "^3.0.2",
     "@types/webextension-polyfill": "^0.9.0",
+    "@webdino/profile-core": "*",
     "@webdino/profile-model": "*",
     "@webdino/profile-tsconfig": "*",
     "@webdino/profile-verify": "*",

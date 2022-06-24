@@ -1,0 +1,17 @@
+import { Op } from "@webdino/profile-model";
+import JwtOpPayload from "@webdino/profile-model/src/jwt-op-payload";
+
+/**
+ * JwtOpPayload を与えると有効な Op を返す関数
+ * @param payload
+ * @return Op
+ */
+export function fromJwtOpPayload(payload: JwtOpPayload): Op {
+  return {
+    issuer: payload.iss,
+    subject: payload.sub,
+    issuedAt: new Date(payload.iat * 1000).toISOString(),
+    expiredAt: new Date(payload.exp * 1000).toISOString(),
+    ...payload["https://opr.webdino.org/jwt/claims/op"],
+  };
+}

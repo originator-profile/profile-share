@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
+import { isOgWebsite } from "@webdino/profile-core";
 import useProfiles from "../utils/use-profiles";
-import { isWebsite, isDp } from "../utils/dp";
+import { isDp } from "../utils/dp";
 import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
@@ -36,7 +37,7 @@ function Website() {
       </ErrorPlaceholder>
     );
   }
-  const website = profile.item.find(isWebsite);
+  const website = profile.item.find(isOgWebsite);
   if (!website) {
     return (
       <ErrorPlaceholder>

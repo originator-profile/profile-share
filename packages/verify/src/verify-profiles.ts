@@ -1,4 +1,5 @@
-import { JwtOpPayload, JwtDpPayload } from "./claims";
+import JwtOpPayload from "@webdino/profile-model/src/jwt-op-payload";
+import JwtDpPayload from "@webdino/profile-model/src/jwt-dp-payload";
 import { TokenDecoder } from "./decode";
 import {
   ProfileGenericError,

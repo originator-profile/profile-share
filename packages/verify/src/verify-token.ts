@@ -1,6 +1,11 @@
 import { jwtVerify } from "jose";
 import { JOSEError } from "jose/dist/types/util/errors";
-import { isJwtOpPayload, isJwtDpPayload, toOp, toDp } from "./claims";
+import {
+  fromJwtOpPayload,
+  fromJwtDpPayload,
+  isJwtOpPayload,
+  isJwtDpPayload,
+} from "@webdino/profile-core";
 import { TokenDecoder } from "./decode";
 import { ProfileTokenVerifyFailed } from "./errors";
 import { Keys } from "./keys";
@@ -37,10 +42,10 @@ export function TokenVerifier(
       });
     }
     if (isJwtOpPayload(verified.payload)) {
-      return { ...verified, op: toOp(verified.payload), jwt };
+      return { ...verified, op: fromJwtOpPayload(verified.payload), jwt };
     }
     if (isJwtDpPayload(verified.payload)) {
-      return { ...verified, dp: toDp(verified.payload), jwt };
+      return { ...verified, dp: fromJwtDpPayload(verified.payload), jwt };
     }
     return new ProfileTokenVerifyFailed(
       "Profile Token Verification Failed",
