@@ -1,4 +1,3 @@
-export * from "./claims";
 export * from "./decode";
 export * from "./errors";
 export * from "./keys";

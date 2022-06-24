@@ -1,7 +1,7 @@
 import { test, expect } from "vitest";
 import JwtOpPayload from "@webdino/profile-model/src/jwt-op-payload";
 import JwtDpPayload from "@webdino/profile-model/src/jwt-dp-payload";
-import { isJwtOpPayload, isJwtDpPayload } from "./claims";
+import { isJwtOpPayload, isJwtDpPayload } from "./jwt-payload";
 
 test("isJwtOpPayload() returns true if of type JwtOpPayload", () => {
   const payload: JwtOpPayload = {

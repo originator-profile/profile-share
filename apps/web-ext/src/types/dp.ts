@@ -1,8 +1,6 @@
 import { Dp as DpModel } from "@webdino/profile-model";
+import OgWebsite from "@webdino/profile-model/src/og-website";
 
 export type Dp = DpModel & { error?: Error };
-export type DpItem = Dp["item"][number];
-export type DpWebsite = Extract<DpItem, { type: "website" }>;
-export type DpText = Extract<DpItem, { type: "text" }>;
-export type DpVisibleText = Extract<DpItem, { type: "visibleText" }>;
-export type DpHtml = Extract<DpItem, { type: "html" }>;
+export type { default as DpItem } from "@webdino/profile-model/src/dp-item";
+export type DpWebsite = OgWebsite;

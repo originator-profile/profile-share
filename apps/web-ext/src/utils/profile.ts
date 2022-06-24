@@ -1,20 +1,19 @@
 import { Profile } from "../types/profile";
-import {
-  VerifyResult,
-  ProfileGenericError,
-  isJwtOpPayload,
-  JwtDpPayload,
-  toOp,
-  toDp,
-} from "@webdino/profile-verify";
+import { VerifyResult, ProfileGenericError } from "@webdino/profile-verify";
 import { isOp } from "../utils/op";
+import JwtDpPayload from "@webdino/profile-model/src/jwt-dp-payload";
+import {
+  fromJwtDpPayload,
+  fromJwtOpPayload,
+  isJwtOpPayload,
+} from "@webdino/profile-core";
 
 export const toProfile = (verifyResult: VerifyResult): Profile => {
   if (verifyResult instanceof ProfileGenericError) {
     const payload = verifyResult.result.payload ?? {};
     const profile = isJwtOpPayload(payload)
-      ? toOp(payload)
-      : toDp(payload as JwtDpPayload);
+      ? fromJwtOpPayload(payload)
+      : fromJwtDpPayload(payload as JwtDpPayload);
     return { ...profile, error: verifyResult };
   }
 
