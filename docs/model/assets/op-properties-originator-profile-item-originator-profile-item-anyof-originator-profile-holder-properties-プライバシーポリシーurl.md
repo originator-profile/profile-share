@@ -1,7 +1,7 @@
 # プライバシーポリシーURL Schema
 
 ```txt
-op-holder#/properties/item/items/anyOf/0/properties/privacyPolicyUrl
+op#/properties/item/items/anyOf/0/properties/privacyPolicyUrl
 ```
 
 

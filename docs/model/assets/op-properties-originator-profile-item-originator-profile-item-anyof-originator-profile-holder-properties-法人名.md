@@ -1,7 +1,7 @@
 # 法人名 Schema
 
 ```txt
-op-holder#/properties/item/items/anyOf/0/properties/name
+op#/properties/item/items/anyOf/0/properties/name
 ```
 
 

@@ -1,7 +1,7 @@
 # 国 Schema
 
 ```txt
-op-holder#/properties/item/items/anyOf/0/properties/addressCountry
+op#/properties/item/items/anyOf/0/properties/addressCountry
 ```
 
 

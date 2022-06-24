@@ -1,7 +1,7 @@
 # 番地・ビル名 Schema
 
 ```txt
-op-holder#/properties/item/items/anyOf/0/properties/streetAddress
+op#/properties/item/items/anyOf/0/properties/streetAddress
 ```
 
 

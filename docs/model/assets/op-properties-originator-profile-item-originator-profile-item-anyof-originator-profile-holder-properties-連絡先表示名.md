@@ -1,7 +1,7 @@
 # 連絡先表示名 Schema
 
 ```txt
-op-holder#/properties/item/items/anyOf/0/properties/contactTitle
+op#/properties/item/items/anyOf/0/properties/contactTitle
 ```
 
 

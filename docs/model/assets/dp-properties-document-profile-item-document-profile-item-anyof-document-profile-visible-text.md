@@ -1,7 +1,7 @@
 # Document Profile Visible Text Schema
 
 ```txt
-dp-visible-text#/properties/item/items/anyOf/0
+dp#/properties/item/items/anyOf/0
 ```
 
 対象の要素のその子孫のレンダリングされたテキストとそのテキストへの署名
@@ -16,12 +16,12 @@ dp-visible-text#/properties/item/items/anyOf/0
 
 # 0 Properties
 
-| Property              | Type          | Required | Nullable       | Defined by                                                                                                                                                                                                             |
-| :-------------------- | :------------ | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [type](#type)         | Not specified | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-type.md "dp-visible-text#/properties/item/items/anyOf/0/properties/type")                  |
-| [url](#url)           | `string`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-url.md "dp-visible-text-url#/properties/item/items/anyOf/0/properties/url")                |
-| [location](#location) | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-location.md "dp-visible-text-location#/properties/item/items/anyOf/0/properties/location") |
-| [proof](#proof)       | `object`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-proof.md "dp-visible-text-proof#/properties/item/items/anyOf/0/properties/proof")          |
+| Property              | Type          | Required | Nullable       | Defined by                                                                                                                                                                                       |
+| :-------------------- | :------------ | :------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [type](#type)         | Not specified | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-type.md "dp#/properties/item/items/anyOf/0/properties/type")         |
+| [url](#url)           | `string`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-url.md "dp#/properties/item/items/anyOf/0/properties/url")           |
+| [location](#location) | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-location.md "dp#/properties/item/items/anyOf/0/properties/location") |
+| [proof](#proof)       | `object`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-proof.md "dp#/properties/item/items/anyOf/0/properties/proof")       |
 
 ## type
 
@@ -35,7 +35,7 @@ dp-visible-text#/properties/item/items/anyOf/0
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-type.md "dp-visible-text#/properties/item/items/anyOf/0/properties/type")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-type.md "dp#/properties/item/items/anyOf/0/properties/type")
 
 ### type Type
 
@@ -61,7 +61,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-url.md "dp-visible-text-url#/properties/item/items/anyOf/0/properties/url")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-url.md "dp#/properties/item/items/anyOf/0/properties/url")
 
 ### url Type
 
@@ -79,7 +79,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-location.md "dp-visible-text-location#/properties/item/items/anyOf/0/properties/location")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-location.md "dp#/properties/item/items/anyOf/0/properties/location")
 
 ### location Type
 
@@ -97,7 +97,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-proof.md "dp-visible-text-proof#/properties/item/items/anyOf/0/properties/proof")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-proof.md "dp#/properties/item/items/anyOf/0/properties/proof")
 
 ### proof Type
 

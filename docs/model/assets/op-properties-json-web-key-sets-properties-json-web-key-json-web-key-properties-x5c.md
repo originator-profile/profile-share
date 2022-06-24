@@ -1,7 +1,7 @@
 # Untitled array in Originator Profile Schema
 
 ```txt
-jwk#/properties/jwks/properties/keys/items/properties/x5c
+op#/properties/jwks/properties/keys/items/properties/x5c
 ```
 
 

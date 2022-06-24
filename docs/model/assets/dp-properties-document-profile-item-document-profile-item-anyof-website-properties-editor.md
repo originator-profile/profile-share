@@ -1,7 +1,7 @@
 # Editor Schema
 
 ```txt
-og-website#/properties/item/items/anyOf/3/properties/https://schema.org/editor
+dp#/properties/item/items/anyOf/3/properties/https://schema.org/editor
 ```
 
 

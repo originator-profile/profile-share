@@ -1,7 +1,7 @@
 # 電話番号 Schema
 
 ```txt
-op-holder#/properties/item/items/anyOf/0/properties/phoneNumber
+op#/properties/item/items/anyOf/0/properties/phoneNumber
 ```
 
 

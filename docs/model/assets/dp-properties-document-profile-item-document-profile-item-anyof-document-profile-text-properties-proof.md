@@ -1,7 +1,7 @@
 # Proof Schema
 
 ```txt
-dp-text-proof#/properties/item/items/anyOf/1/properties/proof
+dp#/properties/item/items/anyOf/1/properties/proof
 ```
 
 対象のテキストへの署名
@@ -16,9 +16,9 @@ dp-text-proof#/properties/item/items/anyOf/1/properties/proof
 
 # proof Properties
 
-| Property    | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                                                          |
-| :---------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [jws](#jws) | `string` | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-text-properties-proof-properties-detached-json-web-signature.md "dp-text-proof#/properties/item/items/anyOf/1/properties/proof/properties/jws") |
+| Property    | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                                               |
+| :---------- | :------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [jws](#jws) | `string` | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-text-properties-proof-properties-detached-json-web-signature.md "dp#/properties/item/items/anyOf/1/properties/proof/properties/jws") |
 
 ## jws
 
@@ -32,7 +32,7 @@ dp-text-proof#/properties/item/items/anyOf/1/properties/proof
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-text-properties-proof-properties-detached-json-web-signature.md "dp-text-proof#/properties/item/items/anyOf/1/properties/proof/properties/jws")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-text-properties-proof-properties-detached-json-web-signature.md "dp#/properties/item/items/anyOf/1/properties/proof/properties/jws")
 
 ### jws Type
 

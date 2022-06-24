@@ -1,7 +1,7 @@
 # Untitled undefined type in Document Profile Schema
 
 ```txt
-og-website#/properties/item/items/anyOf/3/properties/type
+dp#/properties/item/items/anyOf/3/properties/type
 ```
 
 

@@ -1,7 +1,7 @@
 # 郵便番号 Schema
 
 ```txt
-op-holder#/properties/item/items/anyOf/0/properties/postalCode
+op#/properties/item/items/anyOf/0/properties/postalCode
 ```
 
 

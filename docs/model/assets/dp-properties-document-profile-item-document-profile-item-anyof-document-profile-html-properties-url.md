@@ -1,7 +1,7 @@
 # URL Schema
 
 ```txt
-dp-html-url#/properties/item/items/anyOf/2/properties/url
+dp#/properties/item/items/anyOf/2/properties/url
 ```
 
 対象の要素が存在するページの URL

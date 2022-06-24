@@ -1,7 +1,7 @@
 # 連絡先URL Schema
 
 ```txt
-op-holder#/properties/item/items/anyOf/0/properties/contactUrl
+op#/properties/item/items/anyOf/0/properties/contactUrl
 ```
 
 

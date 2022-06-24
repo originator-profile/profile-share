@@ -1,7 +1,7 @@
 # Logo Schema
 
 ```txt
-op-certifier-logo#/properties/item/items/anyOf/2/properties/logos
+op#/properties/item/items/anyOf/2/properties/logos
 ```
 
 

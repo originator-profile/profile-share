@@ -1,7 +1,7 @@
 # Detached JSON Web Signature Schema
 
 ```txt
-dp-html-proof#/properties/item/items/anyOf/2/properties/proof/properties/jws
+dp#/properties/item/items/anyOf/2/properties/proof/properties/jws
 ```
 
 

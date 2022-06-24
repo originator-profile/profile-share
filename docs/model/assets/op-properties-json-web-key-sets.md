@@ -1,7 +1,7 @@
 # JSON Web Key Sets Schema
 
 ```txt
-jwks#/properties/jwks
+op#/properties/jwks
 ```
 
 
@@ -16,10 +16,10 @@ jwks#/properties/jwks
 
 # jwks Properties
 
-| Property              | Type    | Required | Nullable       | Defined by                                                                                                               |
-| :-------------------- | :------ | :------- | :------------- | :----------------------------------------------------------------------------------------------------------------------- |
-| [keys](#keys)         | `array` | Required | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key.md "jwks#/properties/jwks/properties/keys") |
-| Additional Properties | Any     | Optional | can be null    |                                                                                                                          |
+| Property              | Type    | Required | Nullable       | Defined by                                                                                                             |
+| :-------------------- | :------ | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------- |
+| [keys](#keys)         | `array` | Required | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key.md "op#/properties/jwks/properties/keys") |
+| Additional Properties | Any     | Optional | can be null    |                                                                                                                        |
 
 ## keys
 
@@ -33,7 +33,7 @@ jwks#/properties/jwks
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key.md "jwks#/properties/jwks/properties/keys")
+*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key.md "op#/properties/jwks/properties/keys")
 
 ### keys Type
 

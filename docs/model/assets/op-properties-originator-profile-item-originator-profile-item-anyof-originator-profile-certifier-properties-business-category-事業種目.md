@@ -1,7 +1,7 @@
 # 事業種目 Schema
 
 ```txt
-op-certifier-business-category#/properties/item/items/anyOf/2/properties/businessCategory/items
+op#/properties/item/items/anyOf/2/properties/businessCategory/items
 ```
 
 

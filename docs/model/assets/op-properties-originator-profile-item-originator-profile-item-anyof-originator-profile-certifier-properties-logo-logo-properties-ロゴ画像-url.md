@@ -1,7 +1,7 @@
 # ロゴ画像 URL Schema
 
 ```txt
-op-certifier-logo#/properties/item/items/anyOf/2/properties/logos/items/properties/url
+op#/properties/item/items/anyOf/2/properties/logos/items/properties/url
 ```
 
 

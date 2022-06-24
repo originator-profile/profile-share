@@ -1,7 +1,7 @@
 # Description Schema
 
 ```txt
-og-website#/properties/item/items/anyOf/3/properties/description
+dp#/properties/item/items/anyOf/3/properties/description
 ```
 
 

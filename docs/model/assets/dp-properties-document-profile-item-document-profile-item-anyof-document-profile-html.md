@@ -1,7 +1,7 @@
 # Document Profile HTML Schema
 
 ```txt
-dp-html#/properties/item/items/anyOf/2
+dp#/properties/item/items/anyOf/2
 ```
 
 対象の要素とその子孫を含む部分の HTML とその HTML への署名
@@ -16,12 +16,12 @@ dp-html#/properties/item/items/anyOf/2
 
 # 2 Properties
 
-| Property              | Type          | Required | Nullable       | Defined by                                                                                                                                                                                             |
-| :-------------------- | :------------ | :------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [type](#type)         | Not specified | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-type.md "dp-html#/properties/item/items/anyOf/2/properties/type")                  |
-| [url](#url)           | `string`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-url.md "dp-html-url#/properties/item/items/anyOf/2/properties/url")                |
-| [location](#location) | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-location.md "dp-html-location#/properties/item/items/anyOf/2/properties/location") |
-| [proof](#proof)       | `object`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-proof.md "dp-html-proof#/properties/item/items/anyOf/2/properties/proof")          |
+| Property              | Type          | Required | Nullable       | Defined by                                                                                                                                                                               |
+| :-------------------- | :------------ | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [type](#type)         | Not specified | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-type.md "dp#/properties/item/items/anyOf/2/properties/type")         |
+| [url](#url)           | `string`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-url.md "dp#/properties/item/items/anyOf/2/properties/url")           |
+| [location](#location) | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-location.md "dp#/properties/item/items/anyOf/2/properties/location") |
+| [proof](#proof)       | `object`      | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-proof.md "dp#/properties/item/items/anyOf/2/properties/proof")       |
 
 ## type
 
@@ -35,7 +35,7 @@ dp-html#/properties/item/items/anyOf/2
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-type.md "dp-html#/properties/item/items/anyOf/2/properties/type")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-type.md "dp#/properties/item/items/anyOf/2/properties/type")
 
 ### type Type
 
@@ -61,7 +61,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-url.md "dp-html-url#/properties/item/items/anyOf/2/properties/url")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-url.md "dp#/properties/item/items/anyOf/2/properties/url")
 
 ### url Type
 
@@ -79,7 +79,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-location.md "dp-html-location#/properties/item/items/anyOf/2/properties/location")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-location.md "dp#/properties/item/items/anyOf/2/properties/location")
 
 ### location Type
 
@@ -97,7 +97,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-proof.md "dp-html-proof#/properties/item/items/anyOf/2/properties/proof")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-html-properties-proof.md "dp#/properties/item/items/anyOf/2/properties/proof")
 
 ### proof Type
 

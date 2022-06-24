@@ -2,7 +2,6 @@ import { FromSchema } from "json-schema-to-ts";
 import DpItem from "./dp-item";
 
 const Dp = {
-  $id: "dp",
   title: "Document Profile",
   type: "object",
   properties: {

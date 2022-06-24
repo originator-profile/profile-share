@@ -1,7 +1,7 @@
 # ウェブサイトのURL Schema
 
 ```txt
-op-holder#/properties/item/items/anyOf/0/properties/url
+op#/properties/item/items/anyOf/0/properties/url
 ```
 
 

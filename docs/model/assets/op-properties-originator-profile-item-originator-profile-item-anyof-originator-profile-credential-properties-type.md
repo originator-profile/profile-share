@@ -1,7 +1,7 @@
 # Untitled undefined type in Originator Profile Schema
 
 ```txt
-op-credential#/properties/item/items/anyOf/1/properties/type
+op#/properties/item/items/anyOf/1/properties/type
 ```
 
 

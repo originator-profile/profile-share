@@ -1,7 +1,7 @@
 # Originator Profile Credential Schema
 
 ```txt
-op-credential#/properties/item/items/anyOf/1
+op#/properties/item/items/anyOf/1
 ```
 
 認証機構の報告書などの資格情報
@@ -16,9 +16,9 @@ op-credential#/properties/item/items/anyOf/1
 
 # 1 Properties
 
-| Property      | Type          | Required | Nullable       | Defined by                                                                                                                                                                                                |
-| :------------ | :------------ | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [type](#type) | Not specified | Required | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-credential-properties-type.md "op-credential#/properties/item/items/anyOf/1/properties/type") |
+| Property      | Type          | Required | Nullable       | Defined by                                                                                                                                                                                     |
+| :------------ | :------------ | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [type](#type) | Not specified | Required | cannot be null | [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-credential-properties-type.md "op#/properties/item/items/anyOf/1/properties/type") |
 
 ## type
 
@@ -32,7 +32,7 @@ op-credential#/properties/item/items/anyOf/1
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-credential-properties-type.md "op-credential#/properties/item/items/anyOf/1/properties/type")
+*   defined in: [Originator Profile](op-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-credential-properties-type.md "op#/properties/item/items/anyOf/1/properties/type")
 
 ### type Type
 

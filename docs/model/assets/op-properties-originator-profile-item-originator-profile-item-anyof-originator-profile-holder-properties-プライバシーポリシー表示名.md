@@ -1,7 +1,7 @@
 # プライバシーポリシー表示名 Schema
 
 ```txt
-op-holder#/properties/item/items/anyOf/0/properties/privacyPolicyTitle
+op#/properties/item/items/anyOf/0/properties/privacyPolicyTitle
 ```
 
 

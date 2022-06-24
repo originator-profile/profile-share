@@ -1,7 +1,7 @@
 # メールアドレス Schema
 
 ```txt
-op-certifier#/properties/item/items/anyOf/2/properties/email
+op#/properties/item/items/anyOf/2/properties/email
 ```
 
 

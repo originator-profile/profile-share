@@ -23,7 +23,7 @@ op
 | [issuedAt](#issuedat)   | `string` | Required | cannot be null | [Originator Profile](op-properties-発行日時.md "op#/properties/issuedAt")                |
 | [expiredAt](#expiredat) | `string` | Required | cannot be null | [Originator Profile](op-properties-有効期限.md "op#/properties/expiredAt")               |
 | [item](#item)           | `array`  | Required | cannot be null | [Originator Profile](op-properties-originator-profile-item.md "op#/properties/item") |
-| [jwks](#jwks)           | `object` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets.md "jwks#/properties/jwks")     |
+| [jwks](#jwks)           | `object` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets.md "op#/properties/jwks")       |
 
 ## issuer
 
@@ -135,7 +135,7 @@ an array of merged types ([Originator Profile Item](op-properties-originator-pro
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-json-web-key-sets.md "jwks#/properties/jwks")
+*   defined in: [Originator Profile](op-properties-json-web-key-sets.md "op#/properties/jwks")
 
 ### jwks Type
 

@@ -1,7 +1,7 @@
 # Document Profile Item Schema
 
 ```txt
-dp-item#/properties/item/items
+dp#/properties/item/items
 ```
 
 

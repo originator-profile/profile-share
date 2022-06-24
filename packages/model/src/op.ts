@@ -3,7 +3,6 @@ import OpItem from "./op-item";
 import Jwks from "./jwks";
 
 const Op = {
-  $id: "op",
   title: "Originator Profile",
   type: "object",
   properties: {

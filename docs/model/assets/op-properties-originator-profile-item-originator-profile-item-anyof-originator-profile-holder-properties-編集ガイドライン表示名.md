@@ -1,7 +1,7 @@
 # 編集ガイドライン表示名 Schema
 
 ```txt
-op-holder#/properties/item/items/anyOf/0/properties/publishingPrincipleTitle
+op#/properties/item/items/anyOf/0/properties/publishingPrincipleTitle
 ```
 
 

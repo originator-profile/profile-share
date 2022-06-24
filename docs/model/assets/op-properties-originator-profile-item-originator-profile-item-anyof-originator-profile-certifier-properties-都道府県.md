@@ -1,7 +1,7 @@
 # 都道府県 Schema
 
 ```txt
-op-certifier#/properties/item/items/anyOf/2/properties/addressRegion
+op#/properties/item/items/anyOf/2/properties/addressRegion
 ```
 
 

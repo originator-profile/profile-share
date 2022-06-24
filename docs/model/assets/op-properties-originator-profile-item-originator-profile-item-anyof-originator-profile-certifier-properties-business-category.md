@@ -1,7 +1,7 @@
 # Business Category Schema
 
 ```txt
-op-certifier-business-category#/properties/item/items/anyOf/2/properties/businessCategory
+op#/properties/item/items/anyOf/2/properties/businessCategory
 ```
 
 

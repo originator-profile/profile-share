@@ -1,7 +1,7 @@
 # Originator Profile Item Schema
 
 ```txt
-op-item#/properties/item/items
+op#/properties/item/items
 ```
 
 

@@ -1,7 +1,7 @@
 # JSON Web Key Schema
 
 ```txt
-jwk#/properties/jwks/properties/keys/items
+op#/properties/jwks/properties/keys/items
 ```
 
 
@@ -16,18 +16,18 @@ jwk#/properties/jwks/properties/keys/items
 
 # items Properties
 
-| Property              | Type     | Required | Nullable       | Defined by                                                                                                                                                                        |
-| :-------------------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [kty](#kty)           | `string` | Required | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-kty.md "jwk#/properties/jwks/properties/keys/items/properties/kty")          |
-| [use](#use)           | `string` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-use.md "jwk#/properties/jwks/properties/keys/items/properties/use")          |
-| [key\_ops](#key_ops)  | `array`  | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-key_ops.md "jwk#/properties/jwks/properties/keys/items/properties/key_ops")  |
-| [alg](#alg)           | `string` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-alg.md "jwk#/properties/jwks/properties/keys/items/properties/alg")          |
-| [kid](#kid)           | `string` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-kid.md "jwk#/properties/jwks/properties/keys/items/properties/kid")          |
-| [x5u](#x5u)           | `string` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5u.md "jwk#/properties/jwks/properties/keys/items/properties/x5u")          |
-| [x5c](#x5c)           | `array`  | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5c.md "jwk#/properties/jwks/properties/keys/items/properties/x5c")          |
-| [x5t](#x5t)           | `string` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5t.md "jwk#/properties/jwks/properties/keys/items/properties/x5t")          |
-| [x5t#S256](#x5ts256)  | `string` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5ts256.md "jwk#/properties/jwks/properties/keys/items/properties/x5t#S256") |
-| Additional Properties | Any      | Optional | can be null    |                                                                                                                                                                                   |
+| Property              | Type     | Required | Nullable       | Defined by                                                                                                                                                                       |
+| :-------------------- | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [kty](#kty)           | `string` | Required | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-kty.md "op#/properties/jwks/properties/keys/items/properties/kty")          |
+| [use](#use)           | `string` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-use.md "op#/properties/jwks/properties/keys/items/properties/use")          |
+| [key\_ops](#key_ops)  | `array`  | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-key_ops.md "op#/properties/jwks/properties/keys/items/properties/key_ops")  |
+| [alg](#alg)           | `string` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-alg.md "op#/properties/jwks/properties/keys/items/properties/alg")          |
+| [kid](#kid)           | `string` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-kid.md "op#/properties/jwks/properties/keys/items/properties/kid")          |
+| [x5u](#x5u)           | `string` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5u.md "op#/properties/jwks/properties/keys/items/properties/x5u")          |
+| [x5c](#x5c)           | `array`  | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5c.md "op#/properties/jwks/properties/keys/items/properties/x5c")          |
+| [x5t](#x5t)           | `string` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5t.md "op#/properties/jwks/properties/keys/items/properties/x5t")          |
+| [x5t#S256](#x5ts256)  | `string` | Optional | cannot be null | [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5ts256.md "op#/properties/jwks/properties/keys/items/properties/x5t#S256") |
+| Additional Properties | Any      | Optional | can be null    |                                                                                                                                                                                  |
 
 ## kty
 
@@ -41,7 +41,7 @@ jwk#/properties/jwks/properties/keys/items
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-kty.md "jwk#/properties/jwks/properties/keys/items/properties/kty")
+*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-kty.md "op#/properties/jwks/properties/keys/items/properties/kty")
 
 ### kty Type
 
@@ -59,7 +59,7 @@ jwk#/properties/jwks/properties/keys/items
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-use.md "jwk#/properties/jwks/properties/keys/items/properties/use")
+*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-use.md "op#/properties/jwks/properties/keys/items/properties/use")
 
 ### use Type
 
@@ -77,7 +77,7 @@ jwk#/properties/jwks/properties/keys/items
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-key_ops.md "jwk#/properties/jwks/properties/keys/items/properties/key_ops")
+*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-key_ops.md "op#/properties/jwks/properties/keys/items/properties/key_ops")
 
 ### key\_ops Type
 
@@ -95,7 +95,7 @@ jwk#/properties/jwks/properties/keys/items
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-alg.md "jwk#/properties/jwks/properties/keys/items/properties/alg")
+*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-alg.md "op#/properties/jwks/properties/keys/items/properties/alg")
 
 ### alg Type
 
@@ -113,7 +113,7 @@ jwk#/properties/jwks/properties/keys/items
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-kid.md "jwk#/properties/jwks/properties/keys/items/properties/kid")
+*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-kid.md "op#/properties/jwks/properties/keys/items/properties/kid")
 
 ### kid Type
 
@@ -131,7 +131,7 @@ jwk#/properties/jwks/properties/keys/items
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5u.md "jwk#/properties/jwks/properties/keys/items/properties/x5u")
+*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5u.md "op#/properties/jwks/properties/keys/items/properties/x5u")
 
 ### x5u Type
 
@@ -149,7 +149,7 @@ jwk#/properties/jwks/properties/keys/items
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5c.md "jwk#/properties/jwks/properties/keys/items/properties/x5c")
+*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5c.md "op#/properties/jwks/properties/keys/items/properties/x5c")
 
 ### x5c Type
 
@@ -167,7 +167,7 @@ jwk#/properties/jwks/properties/keys/items
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5t.md "jwk#/properties/jwks/properties/keys/items/properties/x5t")
+*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5t.md "op#/properties/jwks/properties/keys/items/properties/x5t")
 
 ### x5t Type
 
@@ -185,7 +185,7 @@ jwk#/properties/jwks/properties/keys/items
 
 *   cannot be null
 
-*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5ts256.md "jwk#/properties/jwks/properties/keys/items/properties/x5t#S256")
+*   defined in: [Originator Profile](op-properties-json-web-key-sets-properties-json-web-key-json-web-key-properties-x5ts256.md "op#/properties/jwks/properties/keys/items/properties/x5t#S256")
 
 ### x5t#S256 Type
 

@@ -1,7 +1,7 @@
 # URL Schema
 
 ```txt
-og-website#/properties/item/items/anyOf/3/properties/url
+dp#/properties/item/items/anyOf/3/properties/url
 ```
 
 

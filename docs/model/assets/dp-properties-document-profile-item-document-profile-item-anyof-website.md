@@ -1,7 +1,7 @@
 # Website Schema
 
 ```txt
-og-website#/properties/item/items/anyOf/3
+dp#/properties/item/items/anyOf/3
 ```
 
 Website
@@ -16,16 +16,16 @@ Website
 
 # 3 Properties
 
-| Property                                               | Type          | Required | Nullable       | Defined by                                                                                                                                                                                            |
-| :----------------------------------------------------- | :------------ | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [type](#type)                                          | Not specified | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-type.md "og-website#/properties/item/items/anyOf/3/properties/type")                            |
-| [url](#url)                                            | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-url.md "og-website#/properties/item/items/anyOf/3/properties/url")                              |
-| [title](#title)                                        | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-title.md "og-website#/properties/item/items/anyOf/3/properties/title")                          |
-| [image](#image)                                        | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-image-url.md "og-website#/properties/item/items/anyOf/3/properties/image")                      |
-| [description](#description)                            | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-description.md "og-website#/properties/item/items/anyOf/3/properties/description")              |
-| [https://schema.org/author](#httpsschemaorgauthor)     | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-author.md "og-website#/properties/item/items/anyOf/3/properties/https://schema.org/author")     |
-| [https://schema.org/category](#httpsschemaorgcategory) | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-category.md "og-website#/properties/item/items/anyOf/3/properties/https://schema.org/category") |
-| [https://schema.org/editor](#httpsschemaorgeditor)     | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-editor.md "og-website#/properties/item/items/anyOf/3/properties/https://schema.org/editor")     |
+| Property                                               | Type          | Required | Nullable       | Defined by                                                                                                                                                                                    |
+| :----------------------------------------------------- | :------------ | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [type](#type)                                          | Not specified | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-type.md "dp#/properties/item/items/anyOf/3/properties/type")                            |
+| [url](#url)                                            | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-url.md "dp#/properties/item/items/anyOf/3/properties/url")                              |
+| [title](#title)                                        | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-title.md "dp#/properties/item/items/anyOf/3/properties/title")                          |
+| [image](#image)                                        | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-image-url.md "dp#/properties/item/items/anyOf/3/properties/image")                      |
+| [description](#description)                            | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-description.md "dp#/properties/item/items/anyOf/3/properties/description")              |
+| [https://schema.org/author](#httpsschemaorgauthor)     | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-author.md "dp#/properties/item/items/anyOf/3/properties/https://schema.org/author")     |
+| [https://schema.org/category](#httpsschemaorgcategory) | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-category.md "dp#/properties/item/items/anyOf/3/properties/https://schema.org/category") |
+| [https://schema.org/editor](#httpsschemaorgeditor)     | `string`      | Optional | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-editor.md "dp#/properties/item/items/anyOf/3/properties/https://schema.org/editor")     |
 
 ## type
 
@@ -39,7 +39,7 @@ Website
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-type.md "og-website#/properties/item/items/anyOf/3/properties/type")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-type.md "dp#/properties/item/items/anyOf/3/properties/type")
 
 ### type Type
 
@@ -65,7 +65,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-url.md "og-website#/properties/item/items/anyOf/3/properties/url")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-url.md "dp#/properties/item/items/anyOf/3/properties/url")
 
 ### url Type
 
@@ -83,7 +83,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-title.md "og-website#/properties/item/items/anyOf/3/properties/title")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-title.md "dp#/properties/item/items/anyOf/3/properties/title")
 
 ### title Type
 
@@ -101,7 +101,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-image-url.md "og-website#/properties/item/items/anyOf/3/properties/image")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-image-url.md "dp#/properties/item/items/anyOf/3/properties/image")
 
 ### image Type
 
@@ -119,7 +119,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-description.md "og-website#/properties/item/items/anyOf/3/properties/description")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-description.md "dp#/properties/item/items/anyOf/3/properties/description")
 
 ### description Type
 
@@ -137,7 +137,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-author.md "og-website#/properties/item/items/anyOf/3/properties/https://schema.org/author")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-author.md "dp#/properties/item/items/anyOf/3/properties/https://schema.org/author")
 
 ### author Type
 
@@ -155,7 +155,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-category.md "og-website#/properties/item/items/anyOf/3/properties/https://schema.org/category")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-category.md "dp#/properties/item/items/anyOf/3/properties/https://schema.org/category")
 
 ### category Type
 
@@ -173,7 +173,7 @@ unknown
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-editor.md "og-website#/properties/item/items/anyOf/3/properties/https://schema.org/editor")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-website-properties-editor.md "dp#/properties/item/items/anyOf/3/properties/https://schema.org/editor")
 
 ### editor Type
 

@@ -1,7 +1,7 @@
 # 法人名 Schema
 
 ```txt
-op-certifier#/properties/item/items/anyOf/2/properties/name
+op#/properties/item/items/anyOf/2/properties/name
 ```
 
 

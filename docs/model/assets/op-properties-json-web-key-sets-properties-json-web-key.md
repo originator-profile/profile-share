@@ -1,7 +1,7 @@
 # JSON Web Key Schema
 
 ```txt
-jwks#/properties/jwks/properties/keys
+op#/properties/jwks/properties/keys
 ```
 
 

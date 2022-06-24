@@ -1,7 +1,7 @@
 # Business Category Schema
 
 ```txt
-op-holder-business-category#/properties/item/items/anyOf/0/properties/businessCategory
+op#/properties/item/items/anyOf/0/properties/businessCategory
 ```
 
 

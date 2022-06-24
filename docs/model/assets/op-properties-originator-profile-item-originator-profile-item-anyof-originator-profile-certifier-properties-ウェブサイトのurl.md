@@ -1,7 +1,7 @@
 # ウェブサイトのURL Schema
 
 ```txt
-op-certifier#/properties/item/items/anyOf/2/properties/url
+op#/properties/item/items/anyOf/2/properties/url
 ```
 
 

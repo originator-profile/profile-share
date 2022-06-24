@@ -1,7 +1,7 @@
 # Proof Schema
 
 ```txt
-dp-visible-text-proof#/properties/item/items/anyOf/0/properties/proof
+dp#/properties/item/items/anyOf/0/properties/proof
 ```
 
 対象のテキストへの署名
@@ -16,9 +16,9 @@ dp-visible-text-proof#/properties/item/items/anyOf/0/properties/proof
 
 # proof Properties
 
-| Property    | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                                                                          |
-| :---------- | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [jws](#jws) | `string` | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-proof-properties-detached-json-web-signature.md "dp-visible-text-proof#/properties/item/items/anyOf/0/properties/proof/properties/jws") |
+| Property    | Type     | Required | Nullable       | Defined by                                                                                                                                                                                                                                       |
+| :---------- | :------- | :------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [jws](#jws) | `string` | Required | cannot be null | [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-proof-properties-detached-json-web-signature.md "dp#/properties/item/items/anyOf/0/properties/proof/properties/jws") |
 
 ## jws
 
@@ -32,7 +32,7 @@ dp-visible-text-proof#/properties/item/items/anyOf/0/properties/proof
 
 *   cannot be null
 
-*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-proof-properties-detached-json-web-signature.md "dp-visible-text-proof#/properties/item/items/anyOf/0/properties/proof/properties/jws")
+*   defined in: [Document Profile](dp-properties-document-profile-item-document-profile-item-anyof-document-profile-visible-text-properties-proof-properties-detached-json-web-signature.md "dp#/properties/item/items/anyOf/0/properties/proof/properties/jws")
 
 ### jws Type
 

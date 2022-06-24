@@ -1,7 +1,7 @@
 # 説明 Schema
 
 ```txt
-op-holder#/properties/item/items/anyOf/0/properties/description
+op#/properties/item/items/anyOf/0/properties/description
 ```
 
 ウェブメディアそれを運用する法人、認定機関、業界団体等であることの記述

@@ -1,7 +1,7 @@
 # Category Schema
 
 ```txt
-og-website#/properties/item/items/anyOf/3/properties/https://schema.org/category
+dp#/properties/item/items/anyOf/3/properties/https://schema.org/category
 ```
 
 

@@ -1,7 +1,7 @@
 # 編集ガイドラインURL Schema
 
 ```txt
-op-holder#/properties/item/items/anyOf/0/properties/publishingPrincipleUrl
+op#/properties/item/items/anyOf/0/properties/publishingPrincipleUrl
 ```
 
 

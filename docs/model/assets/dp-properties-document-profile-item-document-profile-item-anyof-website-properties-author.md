@@ -1,7 +1,7 @@
 # Author Schema
 
 ```txt
-og-website#/properties/item/items/anyOf/3/properties/https://schema.org/author
+dp#/properties/item/items/anyOf/3/properties/https://schema.org/author
 ```
 
 

@@ -1,7 +1,7 @@
 # 市区町村 Schema
 
 ```txt
-op-holder#/properties/item/items/anyOf/0/properties/addressLocality
+op#/properties/item/items/anyOf/0/properties/addressLocality
 ```
 
 

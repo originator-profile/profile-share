@@ -1,7 +1,7 @@
 # 事業種目 Schema
 
 ```txt
-op-holder-business-category#/properties/item/items/anyOf/0/properties/businessCategory/items
+op#/properties/item/items/anyOf/0/properties/businessCategory/items
 ```
 
 

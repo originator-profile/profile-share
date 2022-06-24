@@ -1,7 +1,7 @@
 # プライバシーポリシーURL Schema
 
 ```txt
-op-certifier#/properties/item/items/anyOf/2/properties/privacyPolicyUrl
+op#/properties/item/items/anyOf/2/properties/privacyPolicyUrl
 ```
 
 

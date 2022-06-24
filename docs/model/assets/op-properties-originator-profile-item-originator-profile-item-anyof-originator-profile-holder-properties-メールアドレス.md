@@ -1,7 +1,7 @@
 # メールアドレス Schema
 
 ```txt
-op-holder#/properties/item/items/anyOf/0/properties/email
+op#/properties/item/items/anyOf/0/properties/email
 ```
 
 

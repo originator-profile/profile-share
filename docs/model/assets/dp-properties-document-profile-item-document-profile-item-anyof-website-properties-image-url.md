@@ -1,7 +1,7 @@
 # Image URL Schema
 
 ```txt
-og-website#/properties/item/items/anyOf/3/properties/image
+dp#/properties/item/items/anyOf/3/properties/image
 ```
 
 
