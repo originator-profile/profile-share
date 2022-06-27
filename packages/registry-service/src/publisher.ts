@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { JWTPayload, decodeJwt, errors } from "jose";
 import omit from "just-omit";
 import flush from "just-flush";
 import { addYears, fromUnixTime } from "date-fns";
@@ -115,22 +114,10 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
    * @param jwt JWT でエンコードされた DP
    */
   async issueDp(id: AccountId, jwt: string): Promise<DpId | Error> {
-    let payload: JWTPayload;
-    try {
-      payload = decodeJwt(jwt);
-    } catch (e) {
-      if (e instanceof errors.JWTInvalid) {
-        return new BadRequestError(e.message, e);
-      }
-      throw e;
-    }
-    for (const key of ["iss", "sub", "exp", "iat"] as const) {
-      if (payload[key] === undefined) {
-        return new BadRequestError(`missing ${key}`);
-      }
-    }
-    const issuedAt: Date = fromUnixTime(payload.iat as number);
-    const expiredAt: Date = fromUnixTime(payload.exp as number);
+    const decoded = validator.decodeToken(jwt);
+    if (decoded instanceof Error) return decoded;
+    const issuedAt: Date = fromUnixTime(decoded.payload.iat);
+    const expiredAt: Date = fromUnixTime(decoded.payload.exp);
     const data = await prisma.dps
       .create({
         data: {

@@ -86,7 +86,9 @@ describe("PublisherService", () => {
     const expiredAt = addYears(new Date(), 10);
     const { privateKey } = await generateKeyPair("ES256");
     const dpId: string = crypto.randomUUID();
-    const jwt = await new SignJWT({})
+    const jwt = await new SignJWT({
+      "https://opr.webdino.org/jwt/claims/dp": { item: [] },
+    })
       .setProtectedHeader({ alg: "ES256" })
       .setIssuer(issuer)
       .setSubject(subject)

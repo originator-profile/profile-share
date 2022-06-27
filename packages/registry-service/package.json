@@ -16,6 +16,7 @@
     "@webdino/profile-registry-db": "*",
     "@webdino/profile-sign": "*",
     "@webdino/profile-tsconfig": "*",
+    "@webdino/profile-verify": "*",
     "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
     "date-fns": "^2.28.0",
