@@ -1,7 +1,9 @@
-import OpItem from "@webdino/profile-model/src/op-item";
-import OpHolder from "@webdino/profile-model/src/op-holder";
-import OpCertifier from "@webdino/profile-model/src/op-certifier";
-import OpCredential from "@webdino/profile-model/src/op-credential";
+import {
+  OpItem,
+  OpHolder,
+  OpCertifier,
+  OpCredential,
+} from "@webdino/profile-model";
 
 /**
  * OpItem が OpHolder 型であるか否か

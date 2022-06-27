@@ -70,6 +70,7 @@ export const CertificateService = ({
     if (!holder) return new NotFoundError();
 
     const input = {
+      type: "op",
       issuedAt: options.issuedAt.toISOString(),
       expiredAt: options.expiredAt.toISOString(),
       issuer: certifier.url,

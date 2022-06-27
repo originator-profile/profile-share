@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 import crypto from "node:crypto";
 import { addYears, getUnixTime } from "date-fns";
 import { decodeJwt, generateKeyPair, SignJWT } from "jose";
-import JwtDpPayload from "@webdino/profile-model/src/jwt-dp-payload";
+import { JwtDpPayload } from "@webdino/profile-model";
 import { generateKey } from "@webdino/profile-sign";
 import { ValidatorService } from "./validator";
 import { PublisherService } from "./publisher";

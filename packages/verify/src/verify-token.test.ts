@@ -10,6 +10,7 @@ test("verify OP Token", async () => {
   const iat = getUnixTime(new Date());
   const exp = getUnixTime(addYears(new Date(), 10));
   const op: Op = {
+    type: "op",
     issuedAt: fromUnixTime(iat).toISOString(),
     expiredAt: fromUnixTime(exp).toISOString(),
     issuer: "http://localhost:8080",
@@ -30,6 +31,7 @@ test("verify DP Token", async () => {
   const iat = getUnixTime(new Date());
   const exp = getUnixTime(addYears(new Date(), 10));
   const dp: Dp = {
+    type: "dp",
     issuedAt: fromUnixTime(iat).toISOString(),
     expiredAt: fromUnixTime(exp).toISOString(),
     issuer: "http://localhost:8080",

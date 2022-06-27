@@ -1,5 +1,5 @@
 import { FromSchema } from "json-schema-to-ts";
-import DpItem from "@webdino/profile-model/src/dp-item";
+import DpItem from "./dp-item";
 
 const JwtDpPayload = {
   title: "DP JWT Claims Set object",

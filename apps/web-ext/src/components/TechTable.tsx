@@ -1,5 +1,5 @@
+import { isOp } from "@webdino/profile-core";
 import { Profile } from "../types/profile";
-import { isOp } from "../utils/op";
 import TableRow from "./TableRow";
 
 type Props = {

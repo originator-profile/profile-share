@@ -1,8 +1,8 @@
 import { Profile } from "../types/profile";
 import { VerifyResult, ProfileGenericError } from "@webdino/profile-verify";
-import { isOp } from "../utils/op";
-import JwtDpPayload from "@webdino/profile-model/src/jwt-dp-payload";
+import { JwtDpPayload } from "@webdino/profile-model";
 import {
+  isOp,
   fromJwtDpPayload,
   fromJwtOpPayload,
   isJwtOpPayload,

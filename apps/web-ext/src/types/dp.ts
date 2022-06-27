@@ -1,6 +1,8 @@
-import { Dp as DpModel } from "@webdino/profile-model";
-import OgWebsite from "@webdino/profile-model/src/og-website";
+import {
+  Dp as DpModel,
+  DpItem,
+  OgWebsite as DpWebsite,
+} from "@webdino/profile-model";
 
 export type Dp = DpModel & { error?: Error };
-export type { default as DpItem } from "@webdino/profile-model/src/dp-item";
-export type DpWebsite = OgWebsite;
+export type { DpItem, DpWebsite };

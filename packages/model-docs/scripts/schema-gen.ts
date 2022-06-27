@@ -2,9 +2,10 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import rimraf from "rimraf";
 import kebabCase from "just-kebab-case";
-import * as schemas from "@webdino/profile-model";
+import { Profile, JwtProfilePayload } from "@webdino/profile-model";
 
 const out = "dist";
+const schemas = { Profile, JwtProfilePayload };
 
 async function main() {
   rimraf.sync(out);

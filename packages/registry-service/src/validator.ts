@@ -1,9 +1,7 @@
 import Ajv, { Schema } from "ajv";
 import addFormats from "ajv-formats";
 import { BadRequestError } from "http-errors-enhanced";
-import Op from "@webdino/profile-model/src/op";
-import Jwk from "@webdino/profile-model/src/jwk";
-import Dp from "@webdino/profile-model/src/dp";
+import { Op, Dp, Jwk } from "@webdino/profile-model";
 // TODO: Node.js 17+ ならば不要
 import structuredClone from "@ungap/structured-clone";
 
