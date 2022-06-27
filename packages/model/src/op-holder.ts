@@ -3,7 +3,6 @@ import BusinessCategory from "./business-category";
 import Logo from "./logo";
 
 const OpHolder = {
-  $id: "op-holder",
   title: "Originator Profile Holder",
   description: "資格情報を保有する組織",
   type: "object",
@@ -23,10 +22,7 @@ const OpHolder = {
         "ウェブメディアそれを運用する法人、認定機関、業界団体等であることの記述",
       type: "string",
     },
-    businessCategory: {
-      ...BusinessCategory,
-      $id: "op-holder-business-category",
-    },
+    businessCategory: BusinessCategory,
     email: {
       title: "メールアドレス",
       type: "string",
@@ -79,10 +75,7 @@ const OpHolder = {
       title: "編集ガイドラインURL",
       type: "string",
     },
-    logos: {
-      ...Logo,
-      $id: "op-holder-logo",
-    },
+    logos: Logo,
   },
   required: [
     "type",

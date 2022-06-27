@@ -3,10 +3,10 @@ import OpItem from "./op-item";
 import Jwks from "./jwks";
 
 const Op = {
-  $id: "op",
   title: "Originator Profile",
   type: "object",
   properties: {
+    type: { const: "op" },
     issuer: {
       title: "Issuer",
       description: "認証機構または組織を表す一義的な識別子",
@@ -35,7 +35,7 @@ const Op = {
     },
     jwks: Jwks,
   },
-  required: ["issuer", "subject", "issuedAt", "expiredAt", "item"],
+  required: ["type", "issuer", "subject", "issuedAt", "expiredAt", "item"],
   additionalProperties: false,
 } as const;
 

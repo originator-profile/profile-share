@@ -4,24 +4,14 @@ import DpLocation from "./dp-location";
 import DpProof from "./dp-proof";
 
 const DpText = {
-  $id: "dp-text",
   title: "Document Profile Text",
   description: "対象の要素の子孫のテキストとそのテキストへの署名",
   type: "object",
   properties: {
     type: { const: "text" },
-    url: {
-      ...DpUrl,
-      $id: "dp-text-url",
-    },
-    location: {
-      ...DpLocation,
-      $id: "dp-text-location",
-    },
-    proof: {
-      ...DpProof,
-      $id: "dp-text-proof",
-    },
+    url: DpUrl,
+    location: DpLocation,
+    proof: DpProof,
   },
   required: ["type", "url", "proof"],
   additionalProperties: false,

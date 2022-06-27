@@ -8,6 +8,7 @@ import { sortProfiles } from "./profile";
 const iat = getUnixTime(new Date());
 const exp = getUnixTime(addYears(new Date(), 10));
 const op: Op = {
+  type: "op",
   issuedAt: fromUnixTime(iat).toISOString(),
   expiredAt: fromUnixTime(exp).toISOString(),
   issuer: "http://localhost:8080",
@@ -16,6 +17,7 @@ const op: Op = {
   jwks: { keys: [] },
 };
 const dp: Dp = {
+  type: "dp",
   issuedAt: fromUnixTime(iat).toISOString(),
   expiredAt: fromUnixTime(exp).toISOString(),
   issuer: "http://sub.localhost:8080",
@@ -23,6 +25,7 @@ const dp: Dp = {
   item: [],
 };
 const anotherDp: Dp = {
+  type: "dp",
   issuedAt: fromUnixTime(iat).toISOString(),
   expiredAt: fromUnixTime(exp).toISOString(),
   issuer: "http://sub.localhost:8080",

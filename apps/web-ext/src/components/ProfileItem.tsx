@@ -1,7 +1,6 @@
+import { isOp, isOpHolder, isOgWebsite } from "@webdino/profile-core";
 import { Profile } from "../types/profile";
 import { Role } from "../types/role";
-import { isOp, isHolder } from "../utils/op";
-import { isWebsite } from "../utils/dp";
 import { routes } from "../utils/routes";
 import Item from "./Item";
 
@@ -13,7 +12,7 @@ type Props = {
 
 function ProfileItem({ profile, variant, roles = [] }: Props) {
   if (isOp(profile)) {
-    const holder = profile.item.find(isHolder);
+    const holder = profile.item.find(isOpHolder);
     if (!holder) return null;
     const logo = holder.logos?.find(({ isMain }) => isMain);
     return (
@@ -26,7 +25,7 @@ function ProfileItem({ profile, variant, roles = [] }: Props) {
       />
     );
   } else {
-    const website = profile.item.find(isWebsite);
+    const website = profile.item.find(isOgWebsite);
     if (!website) return null;
     return (
       <Item

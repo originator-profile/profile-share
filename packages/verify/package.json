@@ -8,6 +8,7 @@
     "lint": "eslint --fix ."
   },
   "devDependencies": {
+    "@webdino/profile-core": "*",
     "@webdino/profile-model": "*",
     "@webdino/profile-sign": "*",
     "@webdino/profile-tsconfig": "*",

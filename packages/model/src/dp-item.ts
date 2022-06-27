@@ -5,7 +5,6 @@ import DpHtml from "./dp-html";
 import OgWebsite from "./og-website";
 
 const DpItem = {
-  $id: "dp-item",
   title: "Document Profile Item",
   anyOf: [DpVisibleText, DpText, DpHtml, OgWebsite],
 } as const;

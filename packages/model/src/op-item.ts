@@ -4,7 +4,6 @@ import OpCredential from "./op-credential";
 import OpCertifier from "./op-certifier";
 
 const OpItem = {
-  $id: "op-item",
   title: "Originator Profile Item",
   anyOf: [OpHolder, OpCredential, OpCertifier],
 } as const;

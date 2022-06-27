@@ -1,7 +1,6 @@
 import { FromSchema } from "json-schema-to-ts";
 
 const BusinessCategory = {
-  $id: "business-category",
   title: "Business Category",
   type: "array",
   items: {

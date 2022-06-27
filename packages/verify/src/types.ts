@@ -1,6 +1,5 @@
-import { Op, Dp } from "@webdino/profile-model";
+import { Op, Dp, JwtOpPayload, JwtDpPayload } from "@webdino/profile-model";
 import { JWTVerifyResult, ResolvedKey } from "jose";
-import { JwtOpPayload, JwtDpPayload } from "./claims";
 import {
   ProfileClaimsValidationFailed,
   ProfileTokenVerifyFailed,
