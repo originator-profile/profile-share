@@ -1,0 +1,17 @@
+{
+  "name": "@webdino/profile-core",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "vitest run",
+    "lint": "eslint --fix ."
+  },
+  "devDependencies": {
+    "@webdino/profile-model": "*",
+    "@webdino/profile-tsconfig": "*",
+    "eslint": "^8.16.0",
+    "eslint-config-webdino-profile": "*",
+    "vitest": "^0.13.0"
+  }
+}

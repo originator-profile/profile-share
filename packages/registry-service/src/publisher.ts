@@ -4,7 +4,7 @@ import omit from "just-omit";
 import flush from "just-flush";
 import { addYears, fromUnixTime } from "date-fns";
 import { NotFoundError, BadRequestError } from "http-errors-enhanced";
-import OgWebsite from "@webdino/profile-model/src/og-website";
+import { OgWebsite } from "@webdino/profile-model";
 import { signDp, signBody } from "@webdino/profile-sign";
 import { ValidatorService } from "./validator";
 
@@ -75,6 +75,7 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
     });
 
     const inputDp = {
+      type: "dp",
       issuedAt: options.issuedAt.toISOString(),
       expiredAt: options.expiredAt.toISOString(),
       issuer: publisher.url,

@@ -1,7 +1,6 @@
 import { FromSchema } from "json-schema-to-ts";
 
 const DpProof = {
-  $id: "dp-proof",
   title: "Proof",
   description: "対象のテキストへの署名",
   type: "object",

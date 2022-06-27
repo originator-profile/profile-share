@@ -1,2 +1,17 @@
+export { default as Profile } from "./profile";
+export { default as JwtProfilePayload } from "./jwt-profile-payload";
 export { default as Op } from "./op";
+export { default as OpItem } from "./op-item";
+export { default as OpHolder } from "./op-holder";
+export { default as OpCertifier } from "./op-certifier";
+export { default as OpCredential } from "./op-credential";
 export { default as Dp } from "./dp";
+export { default as DpItem } from "./dp-item";
+export { default as DpVisibleText } from "./dp-visible-text";
+export { default as DpText } from "./dp-text";
+export { default as DpHtml } from "./dp-html";
+export { default as OgWebsite } from "./og-website";
+export { default as Jwks } from "./jwks";
+export { default as Jwk } from "./jwk";
+export { default as JwtOpPayload } from "./jwt-op-payload";
+export { default as JwtDpPayload } from "./jwt-dp-payload";

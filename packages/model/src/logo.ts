@@ -1,7 +1,6 @@
 import { FromSchema } from "json-schema-to-ts";
 
 const Logo = {
-  $id: "logo",
   title: "Logo",
   type: "array",
   items: {

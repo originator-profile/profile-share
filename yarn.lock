@@ -6407,6 +6407,11 @@ just-flush@^2.1.1:
   resolved "https://registry.yarnpkg.com/just-flush/-/just-flush-2.1.1.tgz#4bb23e1effd9c85d34a8049052f236eb10774403"
   integrity sha512-JmVECHSPesfZA5046/lXa52uMnBN2MV00idjnGcvPA2ur42+GZ3lMgu5Voe2dixLVUCFZO61PeQRyprB6NuYAQ==
 
+just-kebab-case@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/just-kebab-case/-/just-kebab-case-4.0.3.tgz#e69186bc9de484372c6831eb8a3fafdc8cb8b189"
+  integrity sha512-T1afsOXLXs1ezkWq02qrJwJLh6eib5ISr8/jkh56k5YnDhDuOvyd++QlMO9YUofwVbAi9JRTEms2yTs+WZ8TLQ==
+
 just-omit@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/just-omit/-/just-omit-2.0.1.tgz#25d5967424cc69a2ef4faa315ede1d5b7be3168c"

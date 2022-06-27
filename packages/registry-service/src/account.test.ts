@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 import crypto from "node:crypto";
 import Ajv from "ajv";
 import { expand, JsonLdDocument } from "jsonld";
-import Jwks from "@webdino/profile-model/src/jwks";
+import { Jwks } from "@webdino/profile-model";
 import Config from "./config";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";

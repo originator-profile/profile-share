@@ -1,8 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { JsonLdDocument } from "jsonld";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
-import Jwk from "@webdino/profile-model/src/jwk";
-import Jwks from "@webdino/profile-model/src/jwks";
+import { Jwk, Jwks } from "@webdino/profile-model";
 import Config from "./config";
 import { ValidatorService } from "./validator";
 

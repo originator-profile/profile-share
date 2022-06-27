@@ -1,10 +1,7 @@
 import Ajv, { Schema } from "ajv";
 import addFormats from "ajv-formats";
 import { BadRequestError } from "http-errors-enhanced";
-import omit from "just-omit";
-import Op from "@webdino/profile-model/src/op";
-import Jwk from "@webdino/profile-model/src/jwk";
-import Dp from "@webdino/profile-model/src/dp";
+import { Op, Dp, Jwk } from "@webdino/profile-model";
 // TODO: Node.js 17+ ならば不要
 import structuredClone from "@ungap/structured-clone";
 
@@ -54,7 +51,7 @@ export function ValidatorService() {
      * @param input 対象のオブジェクト
      * @return 妥当な JWK
      */
-    jwkValidate: createValidator<Jwk>(omit(Jwk, "$id")),
+    jwkValidate: createValidator<Jwk>(Jwk),
 
     /**
      * DP の確認 (注: 署名の検証は別で行ってください)

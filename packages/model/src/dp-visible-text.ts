@@ -4,25 +4,15 @@ import DpLocation from "./dp-location";
 import DpProof from "./dp-proof";
 
 const DpVisibleText = {
-  $id: "dp-visible-text",
   title: "Document Profile Visible Text",
   description:
     "対象の要素のその子孫のレンダリングされたテキストとそのテキストへの署名",
   type: "object",
   properties: {
     type: { const: "visibleText" },
-    url: {
-      ...DpUrl,
-      $id: "dp-visible-text-url",
-    },
-    location: {
-      ...DpLocation,
-      $id: "dp-visible-text-location",
-    },
-    proof: {
-      ...DpProof,
-      $id: "dp-visible-text-proof",
-    },
+    url: DpUrl,
+    location: DpLocation,
+    proof: DpProof,
   },
   required: ["type", "url", "proof"],
   additionalProperties: false,

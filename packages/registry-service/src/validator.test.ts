@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
 import { addYears } from "date-fns";
-import Op from "@webdino/profile-model/src/op";
+import { Op } from "@webdino/profile-model";
 import { ValidatorService } from "./validator";
 
 test("opValidate() return OP", () => {
@@ -8,6 +8,7 @@ test("opValidate() return OP", () => {
   const issuedAt = new Date();
   const expiredAt = addYears(new Date(), 10);
   const op: Op = {
+    type: "op",
     issuedAt: issuedAt.toISOString(),
     expiredAt: expiredAt.toISOString(),
     issuer: "http://localhost:8080",

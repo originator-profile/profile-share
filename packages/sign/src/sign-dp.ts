@@ -1,7 +1,6 @@
 import { importPKCS8, SignJWT } from "jose";
 import { getUnixTime } from "date-fns";
-import Dp from "@webdino/profile-model/src/dp";
-import { JwtDpPayload } from "./claims";
+import { Dp, JwtDpPayload } from "@webdino/profile-model";
 
 /**
  * DP への署名

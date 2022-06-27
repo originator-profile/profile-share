@@ -1,7 +1,6 @@
 import { FromSchema } from "json-schema-to-ts";
 
 const OgWebsite = {
-  $id: "og-website",
   title: "Website",
   description: "Website",
   type: "object",
