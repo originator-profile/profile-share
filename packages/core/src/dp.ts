@@ -1,5 +1,4 @@
-import { Dp } from "@webdino/profile-model";
-import JwtDpPayload from "@webdino/profile-model/src/jwt-dp-payload";
+import { Dp, JwtDpPayload } from "@webdino/profile-model";
 
 /**
  * JwtDpPayload を与えると有効な Dp を返す関数
@@ -8,6 +7,7 @@ import JwtDpPayload from "@webdino/profile-model/src/jwt-dp-payload";
  */
 export function fromJwtDpPayload(payload: JwtDpPayload): Dp {
   return {
+    type: "dp",
     issuer: payload.iss,
     subject: payload.sub,
     issuedAt: new Date(payload.iat * 1000).toISOString(),

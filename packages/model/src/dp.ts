@@ -5,6 +5,7 @@ const Dp = {
   title: "Document Profile",
   type: "object",
   properties: {
+    type: { const: "dp" },
     issuer: {
       title: "Issuer",
       description: "組織を表す一義的な識別子",
@@ -31,7 +32,7 @@ const Dp = {
       items: DpItem,
     },
   },
-  required: ["issuer", "subject", "issuedAt", "expiredAt", "item"],
+  required: ["type", "issuer", "subject", "issuedAt", "expiredAt", "item"],
   additionalProperties: false,
 } as const;
 

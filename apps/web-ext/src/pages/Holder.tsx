@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
-import { isOpHolder } from "@webdino/profile-core";
+import { isOp, isOpHolder } from "@webdino/profile-core";
 import useProfiles from "../utils/use-profiles";
-import { isOp } from "../utils/op";
 import { toRoles } from "../utils/role";
 import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";

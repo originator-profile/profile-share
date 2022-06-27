@@ -1,7 +1,6 @@
-import { isOpHolder, isOgWebsite } from "@webdino/profile-core";
+import { isOp, isOpHolder, isOgWebsite } from "@webdino/profile-core";
 import { Profile } from "../types/profile";
 import { Role } from "../types/role";
-import { isOp } from "../utils/op";
 import { routes } from "../utils/routes";
 import Item from "./Item";
 

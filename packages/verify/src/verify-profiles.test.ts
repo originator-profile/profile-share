@@ -16,6 +16,7 @@ describe("verify-profiles", async () => {
   const iat = getUnixTime(new Date());
   const exp = getUnixTime(addYears(new Date(), 10));
   const op: Op = {
+    type: "op",
     issuedAt: fromUnixTime(iat).toISOString(),
     expiredAt: fromUnixTime(exp).toISOString(),
     issuer: "http://localhost:8080",
@@ -24,6 +25,7 @@ describe("verify-profiles", async () => {
     jwks: { keys: [subKeys.jwk] },
   };
   const dp: Dp = {
+    type: "dp",
     issuedAt: fromUnixTime(iat).toISOString(),
     expiredAt: fromUnixTime(exp).toISOString(),
     issuer: "http://sub.localhost:8080",
@@ -83,6 +85,7 @@ describe("verify-profiles", async () => {
   test("不正な公開鍵のときJWTの検証に失敗", async () => {
     const evilKeys = await generateKey();
     const evilOp: Op = {
+      type: "op",
       issuedAt: fromUnixTime(iat).toISOString(),
       expiredAt: fromUnixTime(exp).toISOString(),
       issuer: "http://localhost:8080",

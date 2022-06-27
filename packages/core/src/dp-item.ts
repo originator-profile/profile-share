@@ -1,8 +1,10 @@
-import DpItem from "@webdino/profile-model/src/dp-item";
-import DpVisibleText from "@webdino/profile-model/src/dp-visible-text";
-import DpText from "@webdino/profile-model/src/dp-text";
-import DpHtml from "@webdino/profile-model/src/dp-html";
-import OgWebsite from "@webdino/profile-model/src/og-website";
+import {
+  DpItem,
+  DpVisibleText,
+  DpText,
+  DpHtml,
+  OgWebsite,
+} from "@webdino/profile-model";
 
 /**
  * DpText 型であるか否か

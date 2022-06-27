@@ -1,5 +1,4 @@
-import { Op } from "@webdino/profile-model";
-import JwtOpPayload from "@webdino/profile-model/src/jwt-op-payload";
+import { Op, JwtOpPayload } from "@webdino/profile-model";
 
 /**
  * JwtOpPayload を与えると有効な Op を返す関数
@@ -8,6 +7,7 @@ import JwtOpPayload from "@webdino/profile-model/src/jwt-op-payload";
  */
 export function fromJwtOpPayload(payload: JwtOpPayload): Op {
   return {
+    type: "op",
     issuer: payload.iss,
     subject: payload.sub,
     issuedAt: new Date(payload.iat * 1000).toISOString(),

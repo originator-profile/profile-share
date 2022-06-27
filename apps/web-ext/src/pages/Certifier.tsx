@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
+import { isOp } from "@webdino/profile-core";
 import useProfiles from "../utils/use-profiles";
-import { isOp } from "../utils/op";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Template from "../templates/Certifier";

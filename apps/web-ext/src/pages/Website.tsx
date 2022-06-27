@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
-import { isOgWebsite } from "@webdino/profile-core";
+import { isDp, isOgWebsite } from "@webdino/profile-core";
 import useProfiles from "../utils/use-profiles";
-import { isDp } from "../utils/dp";
 import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
