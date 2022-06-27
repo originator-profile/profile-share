@@ -44,7 +44,6 @@
   },
   "devDependencies": {
     "@fastify/autoload": "^5.0.0",
-    "@fastify/basic-auth": "^4.0.0",
     "@fastify/cors": "^8.0.0",
     "@fastify/env": "^4.0.0",
     "@fastify/swagger": "^7.4.1",
