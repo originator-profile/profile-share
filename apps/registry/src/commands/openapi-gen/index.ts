@@ -1,6 +1,5 @@
 import { Command } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
-import { mock } from "vitest-mock-extended";
 import path from "node:path";
 import fs from "node:fs/promises";
 import { create } from "../../server";
@@ -18,9 +17,10 @@ export default class OpenapiGen extends Command {
   async run(): Promise<void> {
     const { args } = await this.parse(OpenapiGen);
     const output: string = args.output;
+    const mockedPrismaClient: PrismaClient = {} as PrismaClient;
     const server = create({
       isDev: true,
-      prisma: mock<PrismaClient>(),
+      prisma: mockedPrismaClient,
       routes: path.resolve(__dirname, "../../routes"),
       quiet: true,
     });
