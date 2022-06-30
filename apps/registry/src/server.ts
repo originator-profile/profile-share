@@ -31,7 +31,7 @@ const openapi: FastifyDynamicSwaggerOptions["openapi"] = {
 
 export function create(options: Options): Server {
   const app = fastify({
-    logger: !options.quiet && { prettyPrint: options.isDev },
+    logger: !options.quiet,
   });
 
   if (options.isDev) {
