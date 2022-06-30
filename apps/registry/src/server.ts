@@ -3,6 +3,7 @@ import fastify, { FastifyInstance } from "fastify";
 import autoload from "@fastify/autoload";
 import cors from "@fastify/cors";
 import env from "@fastify/env";
+import helmet from "@fastify/helmet";
 import swagger, { FastifyDynamicSwaggerOptions } from "@fastify/swagger";
 import httpErrorsEnhanced from "fastify-http-errors-enhanced";
 import { Config, Services } from "@webdino/profile-registry-service";
@@ -42,6 +43,11 @@ export function create(options: Options): Server {
   });
   app.register(cors);
   app.register(env, { schema: Config });
+  app.register(helmet, {
+    hsts: { preload: true },
+    contentSecurityPolicy: false,
+    crossOriginResourcePolicy: false,
+  });
   app.register(httpErrorsEnhanced);
   app.after(() => {
     app.decorate(

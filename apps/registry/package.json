@@ -46,6 +46,7 @@
     "@fastify/autoload": "^5.0.0",
     "@fastify/cors": "^8.0.0",
     "@fastify/env": "^4.0.0",
+    "@fastify/helmet": "^9.1.0",
     "@fastify/swagger": "^7.4.1",
     "@types/jsonld": "^1.5.6",
     "@types/serve-handler": "^6.1.1",

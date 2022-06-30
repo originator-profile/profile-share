@@ -525,6 +525,14 @@
   dependencies:
     fast-json-stringify "^5.0.0"
 
+"@fastify/helmet@^9.1.0":
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/@fastify/helmet/-/helmet-9.1.0.tgz#6a87b35c8d03a826ee052e306d2d2c81b49088bc"
+  integrity sha512-wAtu/38t90vH46GdLM6pVi8tM1HZXb6PRdLTNBo9pudSfSw5i5Ogm8Hq1Nx337WjgSOeU6MefaTd+1avlOlCDQ==
+  dependencies:
+    fastify-plugin "^3.0.0"
+    helmet "^5.0.1"
+
 "@fastify/static@^6.0.0":
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/@fastify/static/-/static-6.4.0.tgz#11438686fa41d6926759a910c22f788f49a9defe"
@@ -5265,6 +5273,11 @@ headers-polyfill@^3.0.4:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/headers-polyfill/-/headers-polyfill-3.0.7.tgz#725c4f591e6748f46b036197eae102c92b959ff4"
   integrity sha512-JoLCAdCEab58+2/yEmSnOlficyHFpIl0XJqwu3l+Unkm1gXpFUYsThz6Yha3D6tNhocWkCPfyW0YVIGWFqTi7w==
+
+helmet@^5.0.1:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/helmet/-/helmet-5.1.0.tgz#e98a5d4bf89ab8119c856018a3bcc82addadcd47"
+  integrity sha512-klsunXs8rgNSZoaUrNeuCiWUxyc+wzucnEnFejUg3/A+CaF589k9qepLZZ1Jehnzig7YbD4hEuscGXuBY3fq+g==
 
 highlightjs@^9.12.0:
   version "9.16.2"
