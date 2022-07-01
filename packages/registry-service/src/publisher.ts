@@ -1,10 +1,9 @@
 import { PrismaClient } from "@prisma/client";
-import omit from "just-omit";
 import flush from "just-flush";
 import { addYears, fromUnixTime } from "date-fns";
 import { NotFoundError, BadRequestError } from "http-errors-enhanced";
-import { OgWebsite } from "@webdino/profile-model";
-import { signDp, signBody } from "@webdino/profile-sign";
+import { Dp } from "@webdino/profile-model";
+import { signDp } from "@webdino/profile-sign";
 import { ValidatorService } from "./validator";
 
 type Options = {
@@ -17,63 +16,32 @@ type DpId = string;
 
 export const PublisherService = ({ prisma, validator }: Options) => ({
   /**
-   * ウェブページの登録
+   * DP への署名
    * @param id 会員ID
+   * @param url ウェブページ URL
    * @param pkcs8 PEM base64 でエンコードされた PKCS #8 秘密鍵
-   * @param input.url URL
-   * @param input.location 対象の要素の場所 (CSS セレクター)
-   * @param input.bodyFormat 対象のテキストの形式
-   * @param input.body 対象のテキスト
-   * @param input.website ウェブページ
    * @param options 署名オプション
    * @return JWT でエンコードされた DP
    */
-  async registerWebsite(
+  async signDp(
     id: AccountId,
+    url: string,
     pkcs8: string,
-    input: {
-      url: string;
-      location?: string;
-      bodyFormat: "html" | "text" | "visibleText";
-      body: string;
-      website?: OgWebsite;
-    },
     options = {
       issuedAt: new Date(),
       expiredAt: addYears(new Date(), 10),
     }
   ): Promise<string | Error> {
     const publisher = await prisma.accounts
-      .findUnique({ where: { id } })
+      .findUnique({ where: { id }, include: { websites: { where: { url } } } })
       .catch((e: Error) => e);
     if (publisher instanceof Error) return publisher;
     if (!publisher) return new NotFoundError();
 
-    const proofJws = await signBody(input.body, pkcs8).catch((e: Error) => e);
-    if (proofJws instanceof Error) return proofJws;
+    const [website] = publisher.websites;
+    if (!website) return new NotFoundError();
 
-    const website = await prisma.websites.create({
-      data: {
-        ...omit(
-          input.website ?? {},
-          "type",
-          "url",
-          "https://schema.org/author",
-          "https://schema.org/category",
-          "https://schema.org/editor"
-        ),
-        author: input.website?.["https://schema.org/author"],
-        category: input.website?.["https://schema.org/category"],
-        editor: input.website?.["https://schema.org/editor"],
-        accountId: id,
-        url: input.url,
-        location: input.location,
-        bodyFormatValue: input.bodyFormat,
-        proofJws,
-      },
-    });
-
-    const inputDp = {
+    const input: Dp = {
       type: "dp",
       issuedAt: options.issuedAt.toISOString(),
       expiredAt: options.expiredAt.toISOString(),
@@ -93,6 +61,7 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
           }),
         },
         {
+          // @ts-expect-error bodyFormatValue is string type
           type: website.bodyFormatValue,
           ...flush({
             url: website.url,
@@ -103,7 +72,7 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
       ],
     };
 
-    const valid = validator.dpValidate(inputDp);
+    const valid = validator.dpValidate(input);
     if (valid instanceof Error) return valid;
     const jwt: string = await signDp(valid, pkcs8);
     return jwt;

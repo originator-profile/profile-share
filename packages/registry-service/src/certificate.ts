@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import flush from "just-flush";
 import { addYears, fromUnixTime } from "date-fns";
 import { NotFoundError, BadRequestError } from "http-errors-enhanced";
+import { Op } from "@webdino/profile-model";
 import { signOp } from "@webdino/profile-sign";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
@@ -68,7 +69,7 @@ export const CertificateService = ({
     if (!certifier) return new NotFoundError();
     if (!holder) return new NotFoundError();
 
-    const input = {
+    const input: Op = {
       type: "op",
       issuedAt: options.issuedAt.toISOString(),
       expiredAt: options.expiredAt.toISOString(),
@@ -76,7 +77,9 @@ export const CertificateService = ({
       subject: holder.url,
       item: [
         { type: "credential", ...options.credential },
+        // @ts-expect-error any properties
         { type: "certifier", ...flush(certifier) },
+        // @ts-expect-error any properties
         { type: "holder", ...flush(holder) },
       ],
     };

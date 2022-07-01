@@ -122,21 +122,30 @@ DB 対象の値を Prisma Studio を立ち上げて削除する。
 
 上記で登録した daab5a08-d513-400d-aaaa-e1c1493e0421 の会員に対して https://yomiuri.demosites.pages.dev/1 の DP を発行する例
 
+```json
+{
+  "url": "https://yomiuri.demosites.pages.dev/1",
+  "location": "[itemprop=articleBody]",
+  "bodyFormat": { "connect": { "value": "text" } },
+  "body": "大谷翔平、通算１０１号は１３０ｍの今季最長弾…エンゼルスファンが好捕",
+  "title": "大谷翔平、通算１０１号は１３０ｍの今季最長弾…エンゼルスファンが好捕",
+  "description": "https://yomiuri.demosites.pages.dev/1 の備考",
+  "author": "前木 理一郎",
+  "category": "スポーツ > 野球",
+  "editor": "デジタル編集部"
+}
+```
+
 ```bash
-$ yarn dotenv -e .env bin/dev publisher:register-website
+yarn dotenv -e .env bin/dev publisher:website \
   -i key \
   --id daab5a08-d513-400d-aaaa-e1c1493e0421 \
-  --url https://yomiuri.demosites.pages.dev/1 \
-  --body body.txt \ <- 本文が書かれたファイル
-  --bodyFormat text \ <- 本文のフォーマット
-  --description 'https://yomiuri.demosites.pages.dev/1 の備考' \ <- ページの備考
-  --title '大谷翔平、通算１０１号は１３０ｍの今季最長弾…エンゼルスファンが好捕' \
-  --image https://yomiuri.demosites.pages.dev/1.png \
-  --location '[itemprop=articleBody]' \
-  --author '前木 理一郎' \
-  --category 'スポーツ > 野球' \
-  --editor 'デジタル編集部'
+  --input website.json \
+  -o create
 ```
+
+website.json の例
+[website.example.json](https://github.com/webdino/profile/blob/main/apps/registry/website.example.json)
 
 オプションについては、[apps/registry/README.md](https://github.com/webdino/profile/tree/main/apps/registry) を参照
 
