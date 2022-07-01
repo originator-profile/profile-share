@@ -159,12 +159,11 @@ model keys {
 
 /// ウェブページ
 model websites {
-  id              Int         @id @default(autoincrement())
+  /// ウェブページ URL
+  url             String      @id
   /// 会員
   account         accounts    @relation(fields: [accountId], references: [id], onDelete: Cascade)
   accountId       String      @db.Uuid
-  /// URL
-  url             String
   /// タイトル
   title           String?
   /// 画像URL

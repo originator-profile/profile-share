@@ -71,8 +71,7 @@ erDiagram
   
 
   websites {
-    Int id PK 
-    String url  
+    String url PK 
     String title  "nullable"
     String image  "nullable"
     String description  "nullable"
