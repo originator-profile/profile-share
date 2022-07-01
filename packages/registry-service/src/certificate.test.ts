@@ -103,7 +103,8 @@ describe("CertificateService", () => {
       expiredAt,
     });
     const data = await certificate.issue(certifierId, jwt);
-    expect(prisma.ops.create.call.length).toBe(1);
+    // @ts-expect-error assert
+    expect(prisma.ops.create.calls.length).toBe(1);
     expect(data).toBe(opId);
   });
 });

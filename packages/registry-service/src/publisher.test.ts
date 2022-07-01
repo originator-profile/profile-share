@@ -58,7 +58,8 @@ describe("PublisherService", () => {
       proofJws: "jws",
     });
     const jwt = await publisher.registerWebsite(accountId, pkcs8, input);
-    expect(prisma.websites.create.call.length).toBe(1);
+    // @ts-expect-error assert
+    expect(prisma.websites.create.calls.length).toBe(1);
     // @ts-expect-error assert
     const valid: JwtDpPayload = decodeJwt(jwt);
     expect(valid).toMatchObject({
@@ -103,7 +104,8 @@ describe("PublisherService", () => {
       expiredAt,
     });
     const data = await publisher.issueDp(accountId, jwt);
-    expect(prisma.dps.create.call.length).toBe(1);
+    // @ts-expect-error assert
+    expect(prisma.dps.create.calls.length).toBe(1);
     expect(data).toBe(dpId);
   });
 });

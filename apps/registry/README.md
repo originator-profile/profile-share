@@ -59,10 +59,15 @@ USAGE
   $ profile-registry account:register -i <value>
 
 FLAGS
-  -i, --input=<value>  (required) [default: account.example.json] Prisma.accountsCreateManyInput (JSON) file
+  -i, --input=<value>  (required) [default: account.example.json] Prisma.accountsCreateInput (JSON) file
 
 DESCRIPTION
   会員の登録
+
+FLAG DESCRIPTIONS
+  -i, --input=<value>  Prisma.accountsCreateInput (JSON) file
+
+    詳細はデータベーススキーマを参照してください。
 ```
 
 ## `profile-registry account:register-key`

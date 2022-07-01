@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma, accounts } from "@prisma/client";
 import { JsonLdDocument } from "jsonld";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
 import { Jwk, Jwks } from "@webdino/profile-model";
@@ -15,6 +15,14 @@ type AccountId = string;
 type OpId = string;
 
 export const AccountService = ({ config, prisma, validator }: Options) => ({
+  /**
+   * 会員の作成
+   * @param input 会員
+   * @return 会員
+   */
+  async create(input: Prisma.accountsCreateInput): Promise<accounts | Error> {
+    return await prisma.accounts.create({ data: input }).catch((e: Error) => e);
+  },
   /**
    * JWKS の取得
    * @param id 会員 ID
