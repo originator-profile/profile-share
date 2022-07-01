@@ -38,7 +38,7 @@ running command...
 
 <!-- prettier-ignore-start -->
 <!-- commands -->
-* [`profile-registry account:register`](#profile-registry-accountregister)
+* [`profile-registry account`](#profile-registry-account)
 * [`profile-registry account:register-key`](#profile-registry-accountregister-key)
 * [`profile-registry cert:issue`](#profile-registry-certissue)
 * [`profile-registry db:init`](#profile-registry-dbinit)
@@ -50,23 +50,25 @@ running command...
 * [`profile-registry publisher:register-website`](#profile-registry-publisherregister-website)
 * [`profile-registry start`](#profile-registry-start)
 
-## `profile-registry account:register`
+## `profile-registry account`
 
-会員の登録
+会員の作成・表示・更新・削除
 
 ```
 USAGE
-  $ profile-registry account:register -i <value>
+  $ profile-registry account -i <value> -o create|read|update|delete
 
 FLAGS
-  -i, --input=<value>  (required) [default: account.example.json] Prisma.accountsCreateInput (JSON) file
+  -i, --input=<value>                          (required) [default: account.example.json] JSON file
+  -o, --operation=(create|read|update|delete)  (required) 操作
 
 DESCRIPTION
-  会員の登録
+  会員の作成・表示・更新・削除
 
 FLAG DESCRIPTIONS
-  -i, --input=<value>  Prisma.accountsCreateInput (JSON) file
+  -i, --input=<value>  JSON file
 
+    Prisma.accountsCreateInput または Prisma.accountsUpdateInput
     詳細はデータベーススキーマを参照してください。
 ```
 

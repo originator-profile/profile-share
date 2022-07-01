@@ -1,16 +1,19 @@
-# 操作手順
+# Profile Registry 操作手順
 
-apps/registry 実行時に以下の環境変数を apps/registry/.env に設定する。
+あらかじめ以下の環境変数を apps/registry/.env に設定する。
 
-| 環境変数     | 内容            |
-| ------------ | --------------- |
-| DATABASE_URL | DATABASE 接続先 |
+| 環境変数     | 内容                                           |
+| ------------ | ---------------------------------------------- |
+| DATABASE_URL | [PostgreSQL 接続 URL][postgres_connection_url] |
 
-DATABASE 接続先は、data.heroku.com の Settings -> Administration -> Database Credentials -> URI を指定する。
+PostgreSQL 接続 URL は、 [Heroku Data][heroku_data_url] の Settings -> Administration -> Database Credentials -> URI を指定する。
 
-## DB の内容参照
+[postgres_connection_url]: https://www.prisma.io/docs/reference/database-connectors/connection-urls/
+[heroku_data_url]: https://data.heroku.com/
 
-studio の起動を起動して DB の内容を参照する。
+## DB の内容の参照
+
+Prisma Studio を使用して DB の内容を参照する。
 
 ```bash
 cd apps/registry
@@ -19,18 +22,16 @@ yarn dotenv -e .env bin/dev db:prisma studio --schema=../../packages/registry-db
 
 ## OP 登録手順
 
-apps/registry を使って OP を登録する手順 apps/registry ディレクトリで実行する。
+Profile Registry を使用して OP を登録する。
+下記のコマンドは apps/registry ディレクトリで実行する。
 
-### アカウント登録
+### 会員登録
 
 OP に登録する内容の JSON ファイルを作成し以下のコマンドで登録を行う。
 
-```bash
-$ yarn dotenv -e .env bin/dev account:register -i account.json
-{
-"id": "daab5a08-d513-400d-aaaa-e1c1493e0421",
-...
-}
+```console
+$ yarn dotenv -e .env bin/dev account -i account.json -o create
+UUID: daab5a08-d513-400d-aaaa-e1c1493e0421
 ```
 
 account.json の例
@@ -38,23 +39,25 @@ account.json の例
 
 ### 鍵作成と登録
 
-```bash
+```console
 $ yarn dotenv -e .env bin/dev key-gen -o key
 $ yarn dotenv -e .env bin/dev account:register-key -k key.pub.json --id daab5a08-d513-400d-aaaa-e1c1493e0421
 ```
 
-id には account:register 実行時の id を使用する。
+id には会員登録時の UUID を指定する。
 
 ### OP 発行
 
 ```bash
-yarn dotenv -e .env bin/dev cert:issue --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e -i key --holder daab5a08-d513-400d-aaaa-e1c1493e0421
+yarn dotenv -e .env bin/dev cert:issue \
+  -i key \
+  --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e \
+  --holder daab5a08-d513-400d-aaaa-e1c1493e0421
 ```
 
-https://oprdev.herokuapp.com　の場合であれば --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e を指定する。
-発行者を作成し別途指定することもできる。その場合、ISSUER_UUID を指定する必要がある。 [#7](https://github.com/webdino/profile-samples/issues/7#issuecomment-1114494665)
+https://oprdev.herokuapp.com の場合であれば --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e を指定する。
 
--i は、作成した秘密鍵、--holder はアカウント登録時の id を指定する。
+-i は、作成した秘密鍵、--holder は会員登録時の UUID を指定する。
 
 ### 配置
 
@@ -62,7 +65,7 @@ https://oprdev.herokuapp.com　の場合であれば --certifier 48a40d8c-4fb0-4
 
 jwks.json
 
-```json
+```jsonc
 {
   "keys": [
     {
@@ -78,10 +81,10 @@ jwks.json
 
 op-document
 
-```json
+```jsonc
 {
   "@context": "https://oprdev.herokuapp.com/context",
-  "main": ["https://examples.demosites.pages.dev"], // <- アカウント登録時に指定した URL
+  "main": ["https://examples.demosites.pages.dev"], // <- 会員登録時に指定した URL
   "profile": [
     // <- 発行した OP の値 ops - jwt の値
     "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -89,7 +92,7 @@ op-document
 }
 ```
 
-登録した OP は studio で見ることができる。
+登録した OP は Prisma Studio で見ることができる。
 
 ### logo の登録
 
@@ -99,7 +102,7 @@ DB の logos テーブルに内容を追加する。
 {
   "url": "https://yomiuri.demosites.pages.dev/logos/logs.png",
   "isMain": true,
-  "accountId": "759fa613-3c70-485a-abfc-172b25c9d1fa" <- 登録したいアカウントの ID を指定する
+  "accountId": "759fa613-3c70-485a-abfc-172b25c9d1fa" <- 登録したい会員の ID を指定する
 }
 ```
 
@@ -109,12 +112,7 @@ DB を編集後 OP を再発行する。
 
 ### OP 削除
 
-DB 対象の値を studio を立ち上げて削除する。
-
-OP(ops, publications), accounts, keys の削除以下の順番で削除を行う。
-
-publications -> ops
-keys -> accounts
+DB 対象の値を Prisma Studio を立ち上げて削除する。
 
 ## DP 登録手順
 
@@ -122,7 +120,7 @@ keys -> accounts
 
 予め account の key 登録と OP の発行を行っている必要がある。
 
-上記で登録した daab5a08-d513-400d-aaaa-e1c1493e0421 のアカウントに対して https://yomiuri.demosites.pages.dev/1 の DP を発行する例
+上記で登録した daab5a08-d513-400d-aaaa-e1c1493e0421 の会員に対して https://yomiuri.demosites.pages.dev/1 の DP を発行する例
 
 ```bash
 $ yarn dotenv -e .env bin/dev publisher:register-website
@@ -149,10 +147,10 @@ $ yarn dotenv -e .env bin/dev publisher:register-website
 
 op-document
 
-```json
+```jsonc
 {
   "@context": "https://oprdev.herokuapp.com/context",
-  "main": ["https://examples.demosites.pages.dev"], // <- アカウント登録時に指定した URL
+  "main": ["https://examples.demosites.pages.dev"], // <- 会員登録時に指定した URL
   "profile": [
     "eyJhbGciOiJFUzI1NiIsInR7cCI6IkpXVCJ9..."
     // <- 発行した DP の値 dps - jwt の値を追加する

@@ -16,7 +16,7 @@ generator erd {
 model ops {
   id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   /// 認証機構
-  certifier   accounts      @relation(fields: [certifierId], references: [id])
+  certifier   accounts      @relation(fields: [certifierId], references: [id], onDelete: Cascade)
   certifierId String        @db.Uuid
   /// 発行日
   issuedAt    DateTime
@@ -32,7 +32,7 @@ model ops {
 model dps {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   /// 発行者
-  issuer    accounts @relation(fields: [issuerId], references: [id])
+  issuer    accounts @relation(fields: [issuerId], references: [id], onDelete: Cascade)
   issuerId  String   @db.Uuid
   /// 発行日
   issuedAt  DateTime
@@ -115,7 +115,7 @@ model businessCategories {
 /// 会員・事業種目リレーション
 model accountBusinessCategories {
   /// 会員
-  account               accounts           @relation(fields: [accountId], references: [id])
+  account               accounts           @relation(fields: [accountId], references: [id], onDelete: Cascade)
   accountId             String             @db.Uuid
   /// 事業種目
   businessCategory      businessCategories @relation(fields: [businessCategoryValue], references: [value])
@@ -131,17 +131,17 @@ model logos {
   /// 主なロゴ画像か否か (true: 主なロゴ画像、それ以外: ロゴ画像の候補)
   isMain    Boolean  @default(false)
   /// 会員
-  account   accounts @relation(fields: [accountId], references: [id])
+  account   accounts @relation(fields: [accountId], references: [id], onDelete: Cascade)
   accountId String   @db.Uuid
 }
 
 /// 公開
 model publications {
   /// OP 文書
-  op          ops      @relation(fields: [opId], references: [id])
+  op          ops      @relation(fields: [opId], references: [id], onDelete: Cascade)
   opId        String   @id @db.Uuid
   /// 会員
-  account     accounts @relation(fields: [accountId], references: [id])
+  account     accounts @relation(fields: [accountId], references: [id], onDelete: Cascade)
   accountId   String   @db.Uuid
   /// 公開日
   publishedAt DateTime @default(now())
@@ -151,7 +151,7 @@ model publications {
 model keys {
   id        Int      @id @default(autoincrement())
   /// 会員
-  account   accounts @relation(fields: [accountId], references: [id])
+  account   accounts @relation(fields: [accountId], references: [id], onDelete: Cascade)
   accountId String   @db.Uuid
   /// JWK
   jwk       Json
@@ -161,7 +161,7 @@ model keys {
 model websites {
   id              Int         @id @default(autoincrement())
   /// 会員
-  account         accounts    @relation(fields: [accountId], references: [id])
+  account         accounts    @relation(fields: [accountId], references: [id], onDelete: Cascade)
   accountId       String      @db.Uuid
   /// URL
   url             String
