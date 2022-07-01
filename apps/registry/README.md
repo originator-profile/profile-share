@@ -119,7 +119,7 @@ USAGE
 
 FLAGS
   --schema=<value>  [default: node_modules/@webdino/profile-registry/dist/prisma/schema.prisma] Prisma schema file
-  --seed            Seed database
+  --[no-]seed       Seed database
 
 DESCRIPTION
   データベースの初期化
@@ -242,7 +242,7 @@ USAGE
 FLAGS
   -p, --port=<value>  [default: 8080] Listen port
   --schema=<value>    [default: node_modules/@webdino/profile-registry/dist/prisma/schema.prisma] Prisma schema file
-  --seed              Seed database
+  --[no-]seed         Seed database
 
 DESCRIPTION
   API サーバーの起動

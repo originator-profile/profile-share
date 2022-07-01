@@ -18,7 +18,10 @@ export default class Start extends Command {
 
   async run(): Promise<void> {
     const { flags } = await this.parse(Start);
-    await DbInit.run(this.argv);
+    await DbInit.run([
+      `--schema=${flags.schema}`,
+      `--${flags.seed ? "" : "no-"}seed`,
+    ]);
     const isDev = process.env.NODE_ENV === "development";
     const prisma = new PrismaClient();
     const server = create({
