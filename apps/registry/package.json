@@ -31,7 +31,7 @@
     "docs:cli": "oclif readme",
     "docs:api": "widdershins dist/openapi.json --omitHeader --language_tabs shell:Shell --outfile ../../docs/registry/assets/api.md",
     "docs:assets": "shx cp dist/openapi.json ../../docs/registry/assets/openapi.json",
-    "e2e": "dotenv -e .env.development vitest --mode e2e run",
+    "e2e": "dotenv -e .env.development -- vitest --mode e2e run",
     "test": "vitest run",
     "lint": "eslint --fix .",
     "start": "bin/run start"
@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@fastify/autoload": "^5.0.0",
+    "@fastify/basic-auth": "^4.0.0",
     "@fastify/cors": "^8.0.0",
     "@fastify/env": "^4.0.0",
     "@fastify/helmet": "^9.1.0",
@@ -66,6 +67,7 @@
     "fastify-http-errors-enhanced": "^3.0.6",
     "json-schema-to-ts": "^2.5.3",
     "jsonld": "^6.0.0",
+    "just-omit": "^2.0.1",
     "npm-run-all": "^4.1.5",
     "oclif": "^3.0.1",
     "serve-handler": "^6.1.3",

@@ -96,6 +96,7 @@ export const CertificateService = ({
    * OP の発行
    * @param id 認証機構 ID
    * @param jwt JWT でエンコードされた OP
+   * @return ops.id
    */
   async issue(id: CertifierId, jwt: string): Promise<OpId | Error> {
     const decoded = validator.decodeToken(jwt);

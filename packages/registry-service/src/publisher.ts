@@ -81,6 +81,7 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
    * DP の発行
    * @param id 会員ID
    * @param jwt JWT でエンコードされた DP
+   * @return dps.id
    */
   async issueDp(id: AccountId, jwt: string): Promise<DpId | Error> {
     const decoded = validator.decodeToken(jwt);

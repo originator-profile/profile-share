@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "@prisma/client": "^4.0.0",
+    "@types/bcryptjs": "^2.4.2",
     "@types/jsonld": "^1.5.6",
     "@types/ungap__structured-clone": "^0.3.0",
     "@ungap/structured-clone": "^1.0.1",
@@ -19,6 +20,7 @@
     "@webdino/profile-verify": "*",
     "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
+    "bcryptjs": "^2.4.3",
     "date-fns": "^2.28.0",
     "eslint": "^8.18.0",
     "eslint-config-webdino-profile": "*",

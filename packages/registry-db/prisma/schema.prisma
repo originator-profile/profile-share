@@ -94,6 +94,8 @@ model accounts {
   keys                     keys[]
   /// ウェブページ
   websites                 websites[]
+  /// 管理者権限
+  admins                   admins?
 }
 
 /// 会員種別
@@ -191,4 +193,13 @@ model bodyFormats {
   value    String     @id
   /// ウェブページ
   websites websites[]
+}
+
+/// 管理者
+model admins {
+  /// 管理者
+  admin    accounts @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  adminId  String   @id @db.Uuid
+  /// パスワード
+  password String
 }

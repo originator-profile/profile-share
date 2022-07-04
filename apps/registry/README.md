@@ -40,6 +40,8 @@ running command...
 <!-- commands -->
 * [`profile-registry account`](#profile-registry-account)
 * [`profile-registry account:register-key`](#profile-registry-accountregister-key)
+* [`profile-registry admin:create`](#profile-registry-admincreate)
+* [`profile-registry admin:delete`](#profile-registry-admindelete)
 * [`profile-registry cert:issue`](#profile-registry-certissue)
 * [`profile-registry db:init`](#profile-registry-dbinit)
 * [`profile-registry db:prisma`](#profile-registry-dbprisma)
@@ -86,6 +88,37 @@ FLAGS
 
 DESCRIPTION
   公開鍵の登録
+```
+
+## `profile-registry admin:create`
+
+管理者の作成
+
+```
+USAGE
+  $ profile-registry admin:create [--id <value>] [--password <value>]
+
+FLAGS
+  --id=<value>        会員 (デフォルト: ISSUER_UUID)
+  --password=<value>  パスフレーズ
+
+DESCRIPTION
+  管理者の作成
+```
+
+## `profile-registry admin:delete`
+
+管理者権限の削除
+
+```
+USAGE
+  $ profile-registry admin:delete [--id <value>]
+
+FLAGS
+  --id=<value>  会員 (デフォルト: ISSUER_UUID)
+
+DESCRIPTION
+  管理者権限の削除
 ```
 
 ## `profile-registry cert:issue`

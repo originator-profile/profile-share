@@ -24,6 +24,14 @@ const openapi: FastifyDynamicSwaggerOptions["openapi"] = {
     version: pkg.version,
     description: "Profile Registry API Documentation.",
   },
+  components: {
+    securitySchemes: {
+      basicAuth: {
+        type: "http",
+        scheme: "basic",
+      },
+    },
+  },
 };
 
 export function create(options: Options): Server {
@@ -40,6 +48,8 @@ export function create(options: Options): Server {
   app.register(autoload, {
     dir: options.routes,
     routeParams: true,
+    autoHooks: true,
+    cascadeHooks: true,
   });
   app.register(cors);
   app.register(env, { schema: Config });

@@ -6,6 +6,10 @@
 
 Profile Registry API Documentation.
 
+# Authentication
+
+- HTTP Authentication, scheme: basic 
+
 <h1 id="profile-registry-api-default">Default</h1>
 
 ## frontend
@@ -403,6 +407,659 @@ Status Code **404**
 
 <aside class="success">
 This operation does not require authentication
+</aside>
+
+## post__admin_account_{id}_
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /admin/account/{id}/ \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /admin/account/{id}/`
+
+会員の作成・表示・更新・削除
+
+> Body parameter
+
+```json
+{
+  "input": {}
+}
+```
+
+<h3 id="post__admin_account_{id}_-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+|body|body|object|false|none|
+|» input|body|object|false|Prisma.accountsCreateInput または Prisma.accountsUpdateInput を与えます。|
+
+#### Detailed descriptions
+
+**» input**: Prisma.accountsCreateInput または Prisma.accountsUpdateInput を与えます。
+詳細は[データベーススキーマ](https://github.com/webdino/profile/blob/main/packages/registry-db/prisma/schema.prisma)を参照してください。
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="post__admin_account_{id}_-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Default Response|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Default Response|Inline|
+
+<h3 id="post__admin_account_{id}_-responseschema">Response Schema</h3>
+
+Status Code **200**
+
+*会員*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+
+Status Code **400**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» statusCode|number|false|none|none|
+|» error|string|false|none|none|
+|» message|string|false|none|none|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+basicAuth
+</aside>
+
+## get__admin_account_{id}_
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /admin/account/{id}/ \
+  -H 'Accept: application/json'
+
+```
+
+`GET /admin/account/{id}/`
+
+会員の作成・表示・更新・削除
+
+<h3 id="get__admin_account_{id}_-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="get__admin_account_{id}_-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Default Response|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Default Response|Inline|
+
+<h3 id="get__admin_account_{id}_-responseschema">Response Schema</h3>
+
+Status Code **200**
+
+*会員*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+
+Status Code **400**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» statusCode|number|false|none|none|
+|» error|string|false|none|none|
+|» message|string|false|none|none|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+basicAuth
+</aside>
+
+## put__admin_account_{id}_
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /admin/account/{id}/ \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /admin/account/{id}/`
+
+会員の作成・表示・更新・削除
+
+> Body parameter
+
+```json
+{
+  "input": {}
+}
+```
+
+<h3 id="put__admin_account_{id}_-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+|body|body|object|false|none|
+|» input|body|object|false|Prisma.accountsCreateInput または Prisma.accountsUpdateInput を与えます。|
+
+#### Detailed descriptions
+
+**» input**: Prisma.accountsCreateInput または Prisma.accountsUpdateInput を与えます。
+詳細は[データベーススキーマ](https://github.com/webdino/profile/blob/main/packages/registry-db/prisma/schema.prisma)を参照してください。
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="put__admin_account_{id}_-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Default Response|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Default Response|Inline|
+
+<h3 id="put__admin_account_{id}_-responseschema">Response Schema</h3>
+
+Status Code **200**
+
+*会員*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+
+Status Code **400**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» statusCode|number|false|none|none|
+|» error|string|false|none|none|
+|» message|string|false|none|none|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+basicAuth
+</aside>
+
+## delete__admin_account_{id}_
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /admin/account/{id}/ \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /admin/account/{id}/`
+
+会員の作成・表示・更新・削除
+
+<h3 id="delete__admin_account_{id}_-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="delete__admin_account_{id}_-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Default Response|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Default Response|Inline|
+
+<h3 id="delete__admin_account_{id}_-responseschema">Response Schema</h3>
+
+Status Code **200**
+
+*会員*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+
+Status Code **400**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» statusCode|number|false|none|none|
+|» error|string|false|none|none|
+|» message|string|false|none|none|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+basicAuth
+</aside>
+
+## post__admin_publisher_{id}_
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /admin/publisher/{id}/ \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /admin/publisher/{id}/`
+
+ウェブページの作成・表示・更新・削除
+
+> Body parameter
+
+```json
+{
+  "input": {}
+}
+```
+
+<h3 id="post__admin_publisher_{id}_-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+|body|body|object|false|none|
+|» input|body|object|false|Prisma.websitesCreateInput または Prisma.websitesUpdateInput を与えます。|
+
+#### Detailed descriptions
+
+**» input**: Prisma.websitesCreateInput または Prisma.websitesUpdateInput を与えます。
+詳細は[データベーススキーマ](https://github.com/webdino/profile/blob/main/packages/registry-db/prisma/schema.prisma)を参照してください。
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="post__admin_publisher_{id}_-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Default Response|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Default Response|Inline|
+
+<h3 id="post__admin_publisher_{id}_-responseschema">Response Schema</h3>
+
+Status Code **200**
+
+*ウェブページ*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+
+Status Code **400**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» statusCode|number|false|none|none|
+|» error|string|false|none|none|
+|» message|string|false|none|none|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+basicAuth
+</aside>
+
+## get__admin_publisher_{id}_
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /admin/publisher/{id}/ \
+  -H 'Accept: application/json'
+
+```
+
+`GET /admin/publisher/{id}/`
+
+ウェブページの作成・表示・更新・削除
+
+<h3 id="get__admin_publisher_{id}_-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="get__admin_publisher_{id}_-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Default Response|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Default Response|Inline|
+
+<h3 id="get__admin_publisher_{id}_-responseschema">Response Schema</h3>
+
+Status Code **200**
+
+*ウェブページ*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+
+Status Code **400**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» statusCode|number|false|none|none|
+|» error|string|false|none|none|
+|» message|string|false|none|none|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+basicAuth
+</aside>
+
+## put__admin_publisher_{id}_
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /admin/publisher/{id}/ \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /admin/publisher/{id}/`
+
+ウェブページの作成・表示・更新・削除
+
+> Body parameter
+
+```json
+{
+  "input": {}
+}
+```
+
+<h3 id="put__admin_publisher_{id}_-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+|body|body|object|false|none|
+|» input|body|object|false|Prisma.websitesCreateInput または Prisma.websitesUpdateInput を与えます。|
+
+#### Detailed descriptions
+
+**» input**: Prisma.websitesCreateInput または Prisma.websitesUpdateInput を与えます。
+詳細は[データベーススキーマ](https://github.com/webdino/profile/blob/main/packages/registry-db/prisma/schema.prisma)を参照してください。
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="put__admin_publisher_{id}_-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Default Response|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Default Response|Inline|
+
+<h3 id="put__admin_publisher_{id}_-responseschema">Response Schema</h3>
+
+Status Code **200**
+
+*ウェブページ*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+
+Status Code **400**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» statusCode|number|false|none|none|
+|» error|string|false|none|none|
+|» message|string|false|none|none|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+basicAuth
+</aside>
+
+## delete__admin_publisher_{id}_
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /admin/publisher/{id}/ \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /admin/publisher/{id}/`
+
+ウェブページの作成・表示・更新・削除
+
+<h3 id="delete__admin_publisher_{id}_-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="delete__admin_publisher_{id}_-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|Default Response|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Default Response|Inline|
+
+<h3 id="delete__admin_publisher_{id}_-responseschema">Response Schema</h3>
+
+Status Code **200**
+
+*ウェブページ*
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+
+Status Code **400**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» statusCode|number|false|none|none|
+|» error|string|false|none|none|
+|» message|string|false|none|none|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+basicAuth
+</aside>
+
+## post__admin_publisher_{id}_issue
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /admin/publisher/{id}/issue \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /admin/publisher/{id}/issue`
+
+DP の登録
+
+> Body parameter
+
+```json
+{
+  "jwt": "string"
+}
+```
+
+<h3 id="post__admin_publisher_{id}_issue-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+|body|body|object|true|none|
+|» jwt|body|string|true|DP (JWT)|
+
+> Example responses
+
+> 200 Response
+
+```json
+"string"
+```
+
+<h3 id="post__admin_publisher_{id}_issue-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|ok|string|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Default Response|Inline|
+
+<h3 id="post__admin_publisher_{id}_issue-responseschema">Response Schema</h3>
+
+Status Code **400**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» statusCode|number|false|none|none|
+|» error|string|false|none|none|
+|» message|string|false|none|none|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+basicAuth
+</aside>
+
+## post__admin_certifier_{certifier_id}_holder_{holder_id}_issue
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /admin/certifier/{certifier_id}/holder/{holder_id}/issue \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /admin/certifier/{certifier_id}/holder/{holder_id}/issue`
+
+OP の登録
+
+> Body parameter
+
+```json
+{
+  "jwt": "string"
+}
+```
+
+<h3 id="post__admin_certifier_{certifier_id}_holder_{holder_id}_issue-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|certifier_id|path|string|true|none|
+|holder_id|path|string|true|none|
+|body|body|object|true|none|
+|» jwt|body|string|true|OP (JWT)|
+
+> Example responses
+
+> 200 Response
+
+```json
+"string"
+```
+
+<h3 id="post__admin_certifier_{certifier_id}_holder_{holder_id}_issue-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|ok|string|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Default Response|Inline|
+
+<h3 id="post__admin_certifier_{certifier_id}_holder_{holder_id}_issue-responseschema">Response Schema</h3>
+
+Status Code **400**
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|» statusCode|number|false|none|none|
+|» error|string|false|none|none|
+|» message|string|false|none|none|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+basicAuth
 </aside>
 
 # Schemas
