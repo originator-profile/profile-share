@@ -39,6 +39,6 @@ Prisma.accountsCreateInput または Prisma.accountsUpdateInput
       | "delete";
     const data = await services.account[operation](input);
     if (data instanceof Error) this.error(data);
-    this.log(`UUID: ${data.id}`);
+    this.log(JSON.stringify(data, null, 2));
   }
 }

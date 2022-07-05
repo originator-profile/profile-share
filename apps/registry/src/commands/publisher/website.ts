@@ -66,7 +66,7 @@ Prisma.websitesCreateInput または Prisma.websitesUpdateInput
       proofJws,
     });
     if (data instanceof Error) this.error(data);
-    this.log(data.url);
+    this.log(JSON.stringify(data, null, 2));
     if (operation !== "create") return;
 
     const issuedAt = flags["issued-at"]

@@ -31,7 +31,10 @@ OP に登録する内容の JSON ファイルを作成し以下のコマンド�
 
 ```console
 $ yarn dotenv -e .env bin/dev account -i account.json -o create
-UUID: daab5a08-d513-400d-aaaa-e1c1493e0421
+{
+  "id": "daab5a08-d513-400d-aaaa-e1c1493e0421",
+  ...
+}
 ```
 
 account.json の例
