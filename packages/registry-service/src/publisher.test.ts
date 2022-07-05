@@ -1,6 +1,6 @@
 import { test, expect, describe, afterEach } from "vitest";
 import { mockDeep, mockClear } from "vitest-mock-extended";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, websites } from "@prisma/client";
 import crypto from "node:crypto";
 import { addYears, getUnixTime } from "date-fns";
 import { decodeJwt, generateKeyPair, SignJWT } from "jose";
@@ -18,64 +18,37 @@ describe("PublisherService", () => {
     mockClear(prisma);
   });
 
-  test("registerWebsite() calls prisma.websites.create()", async () => {
+  test("signDp() return a valid JWT", async () => {
     const accountId = crypto.randomUUID();
-    const website = {
-      type: "website" as const,
-      url: "http://iss.example/article/42",
-      title: "Article 42",
-      image: "http://iss.example/asset/image.png",
-      description: "The article",
-      "https://schema.org/author": "執筆太郎",
-      "https://schema.org/category": "Sports>Baseball",
-      "https://schema.org/editor": "編集部",
-    };
-    const input = {
-      url: website.url,
+    const url = "http://localhost:8080/";
+    const dummyWebsite: Partial<websites> = {
+      accountId,
+      url,
       location: "h1",
-      bodyFormat: "visibleText" as const,
-      body: "Hello, World!",
-      website,
+      bodyFormatValue: "html",
+      title: "OP 確認くん",
+      proofJws:
+        "eyJhbGciOiJFUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..RTQpkRZ81kVLRcVp3kqDVM_EBq35qF0c1Z1vzYUfb6z5MoyDd1BDn482qLS6vkD9NkefPwiwVkv58GHAZ6qvPA",
     };
-    const { pkcs8 } = await generateKey();
-    // @ts-expect-error assert
     prisma.accounts.findUnique.mockResolvedValue({
       id: accountId,
-      url: "http://iss.example",
+      url: "http://localhost:8080",
+      // @ts-expect-error include websites
+      websites: [dummyWebsite],
     });
-    prisma.websites.create.mockResolvedValue({
-      id: 1,
-      accountId,
-      url: website.url,
-      title: website.title,
-      image: website.image,
-      description: website.description,
-      author: website["https://schema.org/author"],
-      category: website["https://schema.org/category"],
-      editor: website["https://schema.org/editor"],
-      location: input.location,
-      bodyFormatValue: input.bodyFormat,
-      proofJws: "jws",
-    });
-    const jwt = await publisher.registerWebsite(accountId, pkcs8, input);
-    expect(prisma.websites.create.call.length).toBe(1);
+    const { pkcs8 } = await generateKey();
+    const jwt = await publisher.signDp(accountId, url, pkcs8);
     // @ts-expect-error assert
     const valid: JwtDpPayload = decodeJwt(jwt);
     expect(valid).toMatchObject({
-      iss: "http://iss.example",
-      sub: "http://iss.example/article/42",
-      "https://opr.webdino.org/jwt/claims/dp": {
-        item: expect.arrayContaining([
-          website,
-          {
-            type: "visibleText",
-            url: input.url,
-            location: input.location,
-            proof: { jws: "jws" },
-          },
-        ]),
-      },
+      iss: "http://localhost:8080",
+      sub: url,
+      "https://opr.webdino.org/jwt/claims/dp": {},
     });
+    const website = valid["https://opr.webdino.org/jwt/claims/dp"].item.find(
+      ({ type }) => type === "website"
+    );
+    expect(website?.url).toBe(url);
   });
 
   test("issueDp() calls prisma.dps.create()", async () => {
@@ -86,7 +59,9 @@ describe("PublisherService", () => {
     const expiredAt = addYears(new Date(), 10);
     const { privateKey } = await generateKeyPair("ES256");
     const dpId: string = crypto.randomUUID();
-    const jwt = await new SignJWT({})
+    const jwt = await new SignJWT({
+      "https://opr.webdino.org/jwt/claims/dp": { item: [] },
+    })
       .setProtectedHeader({ alg: "ES256" })
       .setIssuer(issuer)
       .setSubject(subject)
@@ -101,7 +76,8 @@ describe("PublisherService", () => {
       expiredAt,
     });
     const data = await publisher.issueDp(accountId, jwt);
-    expect(prisma.dps.create.call.length).toBe(1);
+    // @ts-expect-error assert
+    expect(prisma.dps.create.calls.length).toBe(1);
     expect(data).toBe(dpId);
   });
 });

@@ -86,7 +86,9 @@ describe("CertificateService", () => {
     const expiredAt = addYears(new Date(), 10);
     const { privateKey } = await generateKeyPair("ES256");
     const opId: string = crypto.randomUUID();
-    const jwt = await new SignJWT({})
+    const jwt = await new SignJWT({
+      "https://opr.webdino.org/jwt/claims/op": { item: [] },
+    })
       .setProtectedHeader({ alg: "ES256" })
       .setIssuer(issuer)
       .setSubject(subject)
@@ -101,7 +103,8 @@ describe("CertificateService", () => {
       expiredAt,
     });
     const data = await certificate.issue(certifierId, jwt);
-    expect(prisma.ops.create.call.length).toBe(1);
+    // @ts-expect-error assert
+    expect(prisma.ops.create.calls.length).toBe(1);
     expect(data).toBe(opId);
   });
 });

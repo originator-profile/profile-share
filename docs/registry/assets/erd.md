@@ -71,8 +71,7 @@ erDiagram
   
 
   websites {
-    Int id PK 
-    String url  
+    String url PK 
     String title  "nullable"
     String image  "nullable"
     String description  "nullable"
@@ -88,6 +87,11 @@ erDiagram
     String value PK 
     }
   
+
+  admins {
+    String password  
+    }
+  
     ops o{--|| accounts : "certifier"
     dps o{--|| accounts : "issuer"
     accounts o{--|| roles : "role"
@@ -99,4 +103,5 @@ erDiagram
     keys o{--|| accounts : "account"
     websites o{--|| accounts : "account"
     websites o{--|| bodyFormats : "bodyFormat"
+    admins o|--|| accounts : "admin"
 ```

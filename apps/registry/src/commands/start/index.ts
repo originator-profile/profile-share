@@ -14,22 +14,20 @@ export default class Start extends Command {
       env: "PORT",
       default: 8080,
     }),
-    "basic-auth-token": Flags.string({
-      description: "Basic 認証用のトークン (デフォルト: 無効)",
-      env: "BASIC_AUTH_TOKEN",
-    }),
   };
 
   async run(): Promise<void> {
     const { flags } = await this.parse(Start);
-    await DbInit.run(this.argv);
+    await DbInit.run([
+      `--schema=${flags.schema}`,
+      `--${flags.seed ? "" : "no-"}seed`,
+    ]);
     const isDev = process.env.NODE_ENV === "development";
     const prisma = new PrismaClient();
     const server = create({
       isDev,
       prisma,
       routes: path.resolve(__dirname, "../../routes"),
-      basicAuthToken: flags["basic-auth-token"],
     });
     await start(server, flags.port);
   }

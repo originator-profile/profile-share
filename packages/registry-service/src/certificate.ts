@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { JWTPayload, decodeJwt, errors } from "jose";
 import flush from "just-flush";
 import { addYears, fromUnixTime } from "date-fns";
 import { NotFoundError, BadRequestError } from "http-errors-enhanced";
+import { Op } from "@webdino/profile-model";
 import { signOp } from "@webdino/profile-sign";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
@@ -69,7 +69,7 @@ export const CertificateService = ({
     if (!certifier) return new NotFoundError();
     if (!holder) return new NotFoundError();
 
-    const input = {
+    const input: Op = {
       type: "op",
       issuedAt: options.issuedAt.toISOString(),
       expiredAt: options.expiredAt.toISOString(),
@@ -77,7 +77,9 @@ export const CertificateService = ({
       subject: holder.url,
       item: [
         { type: "credential", ...options.credential },
+        // @ts-expect-error any properties
         { type: "certifier", ...flush(certifier) },
+        // @ts-expect-error any properties
         { type: "holder", ...flush(holder) },
       ],
     };
@@ -94,24 +96,13 @@ export const CertificateService = ({
    * OP の発行
    * @param id 認証機構 ID
    * @param jwt JWT でエンコードされた OP
+   * @return ops.id
    */
   async issue(id: CertifierId, jwt: string): Promise<OpId | Error> {
-    let payload: JWTPayload;
-    try {
-      payload = decodeJwt(jwt);
-    } catch (e) {
-      if (e instanceof errors.JWTInvalid) {
-        return new BadRequestError(e.message, e);
-      }
-      throw e;
-    }
-    for (const key of ["iss", "sub", "exp", "iat"] as const) {
-      if (payload[key] === undefined) {
-        return new BadRequestError(`missing ${key}`);
-      }
-    }
-    const issuedAt: Date = fromUnixTime(payload.iat as number);
-    const expiredAt: Date = fromUnixTime(payload.exp as number);
+    const decoded = validator.decodeToken(jwt);
+    if (decoded instanceof Error) return decoded;
+    const issuedAt: Date = fromUnixTime(decoded.payload.iat);
+    const expiredAt: Date = fromUnixTime(decoded.payload.exp);
     const data = await prisma.ops
       .create({
         data: {

@@ -1,9 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import Config from "./config";
 import { AccountService } from "./account";
+import { AdminService } from "./admin";
 import { CertificateService } from "./certificate";
 import { ValidatorService } from "./validator";
 import { PublisherService } from "./publisher";
+import { WebsiteService } from "./website";
 
 type Options = {
   config: Config;
@@ -15,9 +17,19 @@ export { Config };
 export const Services = (options: Options) => {
   const validator = ValidatorService();
   const account = AccountService({ ...options, validator });
+  const admin = AdminService(options);
   const certificate = CertificateService({ ...options, account, validator });
   const publisher = PublisherService({ ...options, validator });
-  return { prisma: options.prisma, validator, account, certificate, publisher };
+  const website = WebsiteService(options);
+  return {
+    prisma: options.prisma,
+    validator,
+    account,
+    admin,
+    certificate,
+    publisher,
+    website,
+  };
 };
 
 export type Services = ReturnType<typeof Services>;

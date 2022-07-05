@@ -38,8 +38,10 @@ running command...
 
 <!-- prettier-ignore-start -->
 <!-- commands -->
-* [`profile-registry account:register`](#profile-registry-accountregister)
+* [`profile-registry account`](#profile-registry-account)
 * [`profile-registry account:register-key`](#profile-registry-accountregister-key)
+* [`profile-registry admin:create`](#profile-registry-admincreate)
+* [`profile-registry admin:delete`](#profile-registry-admindelete)
 * [`profile-registry cert:issue`](#profile-registry-certissue)
 * [`profile-registry db:init`](#profile-registry-dbinit)
 * [`profile-registry db:prisma`](#profile-registry-dbprisma)
@@ -47,22 +49,29 @@ running command...
 * [`profile-registry help [COMMAND]`](#profile-registry-help-command)
 * [`profile-registry key-gen`](#profile-registry-key-gen)
 * [`profile-registry openapi-gen [OUTPUT]`](#profile-registry-openapi-gen-output)
-* [`profile-registry publisher:register-website`](#profile-registry-publisherregister-website)
+* [`profile-registry publisher:website`](#profile-registry-publisherwebsite)
 * [`profile-registry start`](#profile-registry-start)
 
-## `profile-registry account:register`
+## `profile-registry account`
 
-会員の登録
+会員の作成・表示・更新・削除
 
 ```
 USAGE
-  $ profile-registry account:register -i <value>
+  $ profile-registry account -i <value> -o create|read|update|delete
 
 FLAGS
-  -i, --input=<value>  (required) [default: account.example.json] Prisma.accountsCreateManyInput (JSON) file
+  -i, --input=<value>                          (required) [default: account.example.json] JSON file
+  -o, --operation=(create|read|update|delete)  (required) 操作
 
 DESCRIPTION
-  会員の登録
+  会員の作成・表示・更新・削除
+
+FLAG DESCRIPTIONS
+  -i, --input=<value>  JSON file
+
+    Prisma.accountsCreateInput または Prisma.accountsUpdateInput
+    詳細はデータベーススキーマを参照してください。
 ```
 
 ## `profile-registry account:register-key`
@@ -79,6 +88,37 @@ FLAGS
 
 DESCRIPTION
   公開鍵の登録
+```
+
+## `profile-registry admin:create`
+
+管理者の作成
+
+```
+USAGE
+  $ profile-registry admin:create [--id <value>] [--password <value>]
+
+FLAGS
+  --id=<value>        会員 (デフォルト: ISSUER_UUID)
+  --password=<value>  パスフレーズ
+
+DESCRIPTION
+  管理者の作成
+```
+
+## `profile-registry admin:delete`
+
+管理者権限の削除
+
+```
+USAGE
+  $ profile-registry admin:delete [--id <value>]
+
+FLAGS
+  --id=<value>  会員 (デフォルト: ISSUER_UUID)
+
+DESCRIPTION
+  管理者権限の削除
 ```
 
 ## `profile-registry cert:issue`
@@ -112,7 +152,7 @@ USAGE
 
 FLAGS
   --schema=<value>  [default: node_modules/@webdino/profile-registry/dist/prisma/schema.prisma] Prisma schema file
-  --seed            Seed database
+  --[no-]seed       Seed database
 
 DESCRIPTION
   データベースの初期化
@@ -194,34 +234,31 @@ DESCRIPTION
   OpenAPI ドキュメント生成
 ```
 
-## `profile-registry publisher:register-website`
+## `profile-registry publisher:website`
 
-ウェブページの登録
+ウェブページの作成・表示・更新・削除
 
 ```
 USAGE
-  $ profile-registry publisher:register-website -i <value> --id <value> --url <value> --body <value> [--title <value>] [--image
-    <value>] [--description <value>] [--author <value>] [--category <value>] [--editor <value>] [--location <value>]
-    [--bodyFormat html|text|visibleText] [--issued-at <value>] [--expired-at <value>]
+  $ profile-registry publisher:website -i <value> --id <value> --input <value> -o create|read|update|delete
+    [--issued-at <value>] [--expired-at <value>]
 
 FLAGS
-  -i, --identity=<value>                (required) PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル
-  --author=<value>                      Author
-  --body=<value>                        (required) 対象のテキストファイル (UTF-8)
-  --bodyFormat=(html|text|visibleText)  対象のテキストの形式
-  --category=<value>                    Category
-  --description=<value>                 Description
-  --editor=<value>                      Editor
-  --expired-at=<value>                  有効期限 (ISO 8601)
-  --id=<value>                          (required) 会員 (UUID)
-  --image=<value>                       Image URL
-  --issued-at=<value>                   発行日時 (ISO 8601)
-  --location=<value>                    対象の要素の場所 (CSS セレクター)
-  --title=<value>                       Title
-  --url=<value>                         (required) URL
+  -i, --identity=<value>                       (required) PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル
+  -o, --operation=(create|read|update|delete)  (required) 操作
+  --expired-at=<value>                         有効期限 (ISO 8601)
+  --id=<value>                                 (required) 会員 (UUID)
+  --input=<value>                              (required) [default: website.example.json] JSON file
+  --issued-at=<value>                          発行日時 (ISO 8601)
 
 DESCRIPTION
-  ウェブページの登録
+  ウェブページの作成・表示・更新・削除
+
+FLAG DESCRIPTIONS
+  --input=<value>  JSON file
+
+    Prisma.websitesCreateInput または Prisma.websitesUpdateInput
+    詳細はデータベーススキーマを参照してください。
 ```
 
 ## `profile-registry start`
@@ -230,14 +267,12 @@ API サーバーの起動
 
 ```
 USAGE
-  $ profile-registry start [--schema <value>] [--seed] [-p <value>] [--basic-auth-token <value>]
+  $ profile-registry start [--schema <value>] [--seed] [-p <value>]
 
 FLAGS
-  -p, --port=<value>          [default: 8080] Listen port
-  --basic-auth-token=<value>  Basic 認証用のトークン (デフォルト: 無効)
-  --schema=<value>            [default: node_modules/@webdino/profile-registry/dist/prisma/schema.prisma] Prisma schema
-                              file
-  --seed                      Seed database
+  -p, --port=<value>  [default: 8080] Listen port
+  --schema=<value>    [default: node_modules/@webdino/profile-registry/dist/prisma/schema.prisma] Prisma schema file
+  --[no-]seed         Seed database
 
 DESCRIPTION
   API サーバーの起動

@@ -5,6 +5,7 @@ import { Services } from "@webdino/profile-registry-service";
 import { generateKey } from "@webdino/profile-sign";
 import exampleAccount from "./account.example.json";
 import exampleWebsite from "./website.example.json";
+import { Jwk } from "@webdino/profile-model";
 
 export async function waitForDb(prisma: PrismaClient): Promise<void> {
   const sleep = util.promisify(setTimeout);
@@ -20,30 +21,12 @@ export async function waitForDb(prisma: PrismaClient): Promise<void> {
   }
 }
 
-export async function seed(): Promise<void> {
-  const issuerUuid: string = process.env.ISSUER_UUID ?? crypto.randomUUID();
-  const prisma: PrismaClient = new PrismaClient();
-  const services = Services({
-    config: { ISSUER_UUID: issuerUuid },
-    prisma,
-  });
-
-  await waitForDb(prisma);
-
-  const issuerExists = await prisma.accounts.findUnique({
-    where: { id: issuerUuid },
-  });
-  if (!issuerExists) {
-    await prisma.accounts.create({
-      data: { id: issuerUuid, ...exampleAccount },
-    });
-  }
-  console.log(`UUID: ${issuerUuid}`);
-
-  const accountKeys = await services.account.getKeys(issuerUuid);
-  if ("keys" in accountKeys && accountKeys.keys.length > 0) return;
-
-  const { jwk, pkcs8 } = await generateKey();
+async function issueOp(
+  services: Services,
+  issuerUuid: string,
+  jwk: Jwk,
+  pkcs8: string
+) {
   const data = await services.account.registerKey(issuerUuid, jwk);
   if (data instanceof Error) throw data;
   const jwt = await services.certificate.signOp(issuerUuid, issuerUuid, pkcs8);
@@ -55,19 +38,49 @@ export async function seed(): Promise<void> {
 Public Key: ${JSON.stringify(jwk)}
 
 ${pkcs8}`);
+}
 
-  const websiteExists = await prisma.websites.count({
-    where: { accountId: issuerUuid },
+async function issueDp(services: Services, issuerUuid: string, pkcs8: string) {
+  const { body, ...input } = exampleWebsite;
+  const proofJws = await services.website.signBody(pkcs8, body);
+  if (proofJws instanceof Error) throw proofJws;
+  const website = await services.website.create({
+    ...input,
+    account: { connect: { id: issuerUuid } },
+    proofJws,
   });
-  if (websiteExists === 0) {
-    const jwt = await services.publisher.registerWebsite(issuerUuid, pkcs8, {
-      ...exampleWebsite,
-      bodyFormat: exampleWebsite.bodyFormat as "html" | "text" | "visibleText",
-      website: { ...exampleWebsite.website, type: "website" },
-    });
-    if (jwt instanceof Error) throw jwt;
-    await services.publisher.issueDp(issuerUuid, jwt);
-    console.log(`Document Profile: ${jwt}`);
+  if (website instanceof Error) throw website;
+  const dpJwt = await services.publisher.signDp(issuerUuid, input.url, pkcs8);
+  if (dpJwt instanceof Error) throw dpJwt;
+  await services.publisher.issueDp(issuerUuid, dpJwt);
+  console.log(`Document Profile: ${dpJwt}`);
+}
+
+export async function seed(): Promise<void> {
+  const issuerUuid: string = process.env.ISSUER_UUID ?? crypto.randomUUID();
+  const prisma: PrismaClient = new PrismaClient();
+  const services = Services({
+    config: { ISSUER_UUID: issuerUuid },
+    prisma,
+  });
+
+  await waitForDb(prisma);
+
+  const issuerExists = await services.account.read({ id: issuerUuid });
+  if (issuerExists instanceof Error) {
+    await services.account.create({ id: issuerUuid, ...exampleAccount });
+  }
+  console.log(`UUID: ${issuerUuid}`);
+
+  const accountKeys = await services.account.getKeys(issuerUuid);
+  if ("keys" in accountKeys && accountKeys.keys.length === 0) {
+    const { jwk, pkcs8 } = await generateKey();
+    await issueOp(services, issuerUuid, jwk, pkcs8);
+
+    const websiteExists = await services.website.read(exampleWebsite);
+    if (websiteExists instanceof Error) {
+      await issueDp(services, issuerUuid, pkcs8);
+    }
   }
 }
 

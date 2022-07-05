@@ -15,6 +15,7 @@ export class DbInit extends Command {
     seed: Flags.boolean({
       description: "Seed database",
       default: false,
+      allowNo: true,
     }),
   };
 

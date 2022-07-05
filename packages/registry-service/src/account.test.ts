@@ -1,6 +1,6 @@
 import { test, expect, describe, afterEach } from "vitest";
 import { mock, mockDeep, mockClear } from "vitest-mock-extended";
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import crypto from "node:crypto";
 import Ajv from "ajv";
 import { expand, JsonLdDocument } from "jsonld";
@@ -19,6 +19,41 @@ describe("AccountService", () => {
 
   afterEach(() => {
     mockClear(prisma);
+  });
+
+  test("create() calls prisma.accounts.create()", async () => {
+    prisma.accounts.create.mockRejectedValue({});
+    const account: AccountService = AccountService({
+      config,
+      prisma,
+      validator,
+    });
+    const input: Prisma.accountsCreateInput = {
+      url: "http://localhost:8080",
+      role: { connect: { value: "certifier" } },
+      name: "一般社団法人 WebDINO Japan",
+      postalCode: "103-0006",
+      addressCountry: "JP",
+      addressRegion: "東京都",
+      addressLocality: "中央区",
+      streetAddress: "日本橋富沢町 10-13 WORK EDITION NIHONBASHI 3F",
+      contactTitle: "お問い合わせ",
+      contactUrl: "https://www.webdino.org/contact/",
+      privacyPolicyTitle: "個人情報保護方針",
+      privacyPolicyUrl: "https://www.webdino.org/privacy/",
+      logos: {
+        create: [
+          { url: "http://localhost:8080/logos/horizontal-webdino.jpg" },
+          {
+            url: "http://localhost:8080/logos/square-webdino.jpg",
+            isMain: true,
+          },
+        ],
+      },
+    };
+    await account.create(input);
+    // @ts-expect-error assert
+    expect(prisma.accounts.create.calls.length).toBe(1);
   });
 
   test("getKeys() returns valid JWKS", async () => {
@@ -70,7 +105,8 @@ describe("AccountService", () => {
       validator,
     });
     const data = await account.registerKey(accountId, jwk);
-    expect(prisma.keys.create.call.length).toBe(1);
+    // @ts-expect-error assert
+    expect(prisma.keys.create.calls.length).toBe(1);
     expect(data).toMatchObject({ keys: [jwk] });
   });
 
@@ -88,6 +124,7 @@ describe("AccountService", () => {
       validator,
     });
     await account.publishProfile(accountId, opId);
-    expect(prisma.publications.create.call.length).toBe(1);
+    // @ts-expect-error assert
+    expect(prisma.publications.create.calls.length).toBe(1);
   });
 });
