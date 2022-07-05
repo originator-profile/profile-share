@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
     e2e: {
       dir: "e2e",
       setupFiles: "e2e/setup.ts",
-      testTimeout: 10_000,
+      testTimeout: 20_000,
     },
   };
   const config: UserConfig = {
