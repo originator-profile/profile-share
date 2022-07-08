@@ -2,6 +2,7 @@ import { useId } from "react";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import { Role } from "../types/role";
+import clsx from "clsx";
 import Image from "./Image";
 import Roles from "../components/Roles";
 
@@ -11,12 +12,18 @@ type Props = {
   to: string;
   variant: "main" | "sub";
   roles?: Role[];
+  onClick?: () => void;
 };
 
-function Item({ image, name, to, variant, roles = [] }: Props) {
+function Item({ image, name, to, variant, roles = [], onClick }: Props) {
   const id = useId();
   return (
-    <li className="border-gray-200 border-b">
+    <li
+      className={clsx("border-gray-200 border-b", {
+        ["hover:bg-gray-50 cursor-pointer"]: onClick,
+      })}
+      onClick={onClick}
+    >
       {variant === "main" && (
         <Image
           src={image}
