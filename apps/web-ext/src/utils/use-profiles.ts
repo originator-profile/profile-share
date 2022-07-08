@@ -1,11 +1,11 @@
 import browser from "webextension-polyfill";
-import { expand } from "jsonld";
 import useSWR, { mutate } from "swr";
 import { useAsync } from "react-use";
 import {
   RemoteKeys,
   ProfilesVerifier,
   fetchProfileDocument,
+  expandProfileDocument,
 } from "@webdino/profile-verify";
 import { FetchProfilesMessageResponse } from "../types/message";
 import { Profile } from "../types/profile";
@@ -23,29 +23,8 @@ async function fetchProfiles(
     targetOrigin,
     profilesLink
   );
-  // TODO: このあたりの JSON-LD の Profiles Set の変換も外部化してテスタビリティを高めたい
-  const [expanded] = await expand(data);
-  if (!expanded)
-    return { advertisers: [], publishers: [], main: [], profiles: [] };
-  const advertisers: string[] =
-    // @ts-expect-error assert
-    expanded[`${context}advertiser`]?.map(
-      (advertiser: { "@value": string }) => advertiser["@value"]
-    ) ?? [];
-  const publishers: string[] =
-    // @ts-expect-error assert
-    expanded[`${context}publisher`]?.map(
-      (publisher: { "@value": string }) => publisher["@value"]
-    ) ?? [];
-  const main: string[] =
-    // @ts-expect-error assert
-    expanded[`${context}main`]?.map(
-      (main: { "@value": string }) => main["@value"]
-    ) ?? [];
-  // @ts-expect-error assert
-  const profile: string[] = expanded[`${context}profile`].map(
-    (profile: { "@value": string }) => profile["@value"]
-  );
+  const { advertisers, publishers, main, profile } =
+    await expandProfileDocument(profileDocument);
   const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(`${registry}/.well-known/jwks.json`);
   const keys = RemoteKeys(jwksEndpoint);

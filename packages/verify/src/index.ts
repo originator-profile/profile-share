@@ -6,3 +6,4 @@ export * from "./verify-body";
 export * from "./verify-profiles";
 export * from "./verify-token";
 export * from "./fetch-profile-document";
+export * from "./expand-profile-document";
