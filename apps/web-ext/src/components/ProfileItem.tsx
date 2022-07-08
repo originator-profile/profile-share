@@ -8,9 +8,11 @@ type Props = {
   profile: Profile;
   variant: "main" | "sub";
   roles?: Role[];
+  onClickProfile?: (profile: Profile) => void;
 };
 
-function ProfileItem({ profile, variant, roles = [] }: Props) {
+function ProfileItem({ profile, variant, roles = [], onClickProfile }: Props) {
+  const handleClick = (profile: Profile) => () => onClickProfile?.(profile);
   if (isOp(profile)) {
     const holder = profile.item.find(isOpHolder);
     if (!holder) return null;
@@ -22,6 +24,7 @@ function ProfileItem({ profile, variant, roles = [] }: Props) {
         to={routes.holder.build(profile)}
         variant={variant}
         roles={roles}
+        onClick={handleClick(profile)}
       />
     );
   } else {
@@ -34,6 +37,7 @@ function ProfileItem({ profile, variant, roles = [] }: Props) {
         to={routes.website.build(profile)}
         variant={variant}
         roles={roles}
+        onClick={handleClick(profile)}
       />
     );
   }
