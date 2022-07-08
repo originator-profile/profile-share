@@ -3,7 +3,7 @@
   "manifest_version": 2,
   "name": "Profile Web Extension",
   "version": "1.0.0",
-  "homepage_url": "https://github.com/tuqulore/web-ext-sample",
+  "homepage_url": "https://originator-profile.pages.dev/",
   "icons": {
     "48": "icons/48x48.png",
     "128": "icons/128x128.png"
