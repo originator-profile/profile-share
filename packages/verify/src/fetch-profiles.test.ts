@@ -5,9 +5,9 @@ import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { JsonLdDocument } from "jsonld";
 import { generateKey, signOp } from "@webdino/profile-sign";
 import { Op } from "@webdino/profile-model";
-import { expandProfileDocument } from "./expand-profile-document";
+import { fetchProfiles } from "./fetch-profiles";
 
-describe("expand-profiles-document", async () => {
+describe("fetch-profiles", async () => {
   const iat = getUnixTime(new Date());
   const exp = getUnixTime(addYears(new Date(), 10));
   const op: Op = {
@@ -20,7 +20,7 @@ describe("expand-profiles-document", async () => {
   };
   const { pkcs8 } = await generateKey();
   const jwt = await signOp(op, pkcs8);
-  const profileDocument: JsonLdDocument = {
+  const profiles: JsonLdDocument = {
     "@context": "https://oprdev.herokuapp.com/context",
     main: ["http://sub.localhost:8080"],
     profile: [jwt],
@@ -28,25 +28,27 @@ describe("expand-profiles-document", async () => {
 
   beforeEach(() => {
     mockFetch.clearAll();
+    mockGet("http://localhost:8080/.well-known/op-document").willResolve(
+      profiles
+    );
   });
 
-  test("expand Profile Document to Profile Set", async () => {
-    mockGet("https://oprdev.herokuapp.com/context").willResolve({
-      "@context": {
-        op: "https://github.com/webdino/profile#",
-        xsd: "http://www.w3.org/2001/XMLSchema#",
-        main: { "@id": "op:main", "@type": "xsd:string" },
-        profile: { "@id": "op:profile", "@type": "xsd:string" },
-        publisher: { "@id": "op:publisher", "@type": "xsd:string" },
-        advertiser: { "@id": "op:advertiser", "@type": "xsd:string" },
-      },
-    });
-    const result = await expandProfileDocument(profileDocument);
+  test("オリジン指定時適切な Profiles Set と well-known エンドポイントが得られる", async () => {
+    const result = await fetchProfiles("http://localhost:8080");
     expect(result).toEqual({
-      advertisers: [],
-      publishers: [],
-      main: ["http://sub.localhost:8080"],
-      profile: [jwt],
+      profiles,
+      profileEndpoint: new URL("http://localhost:8080/.well-known/op-document"),
+    });
+  });
+
+  test("エンドポイント指定時適切な Profiles Set とエンドポイントが得られる", async () => {
+    const result = await fetchProfiles(
+      undefined,
+      "http://localhost:8080/.well-known/op-document"
+    );
+    expect(result).toEqual({
+      profiles,
+      profileEndpoint: new URL("http://localhost:8080/.well-known/op-document"),
     });
   });
 });

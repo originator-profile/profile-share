@@ -5,9 +5,9 @@ import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { JsonLdDocument } from "jsonld";
 import { generateKey, signOp } from "@webdino/profile-sign";
 import { Op } from "@webdino/profile-model";
-import { fetchProfileDocument } from "./fetch-profile-document";
+import { expandProfiles } from "./expand-profiles";
 
-describe("fetch-profiles-document", async () => {
+describe("expand-profiles", async () => {
   const iat = getUnixTime(new Date());
   const exp = getUnixTime(addYears(new Date(), 10));
   const op: Op = {
@@ -30,28 +30,23 @@ describe("fetch-profiles-document", async () => {
     mockFetch.clearAll();
   });
 
-  test("オリジン指定時適切なProfile Documentとwell-knownエンドポイントが得られる", async () => {
-    mockGet("http://localhost:8080/.well-known/op-document").willResolve(
-      profileDocument
-    );
-    const result = await fetchProfileDocument("http://localhost:8080");
-    expect(result).toEqual({
-      profileDocument,
-      profileEndpoint: new URL("http://localhost:8080/.well-known/op-document"),
+  test("expand Profiles Set JSON-LD Document", async () => {
+    mockGet("https://oprdev.herokuapp.com/context").willResolve({
+      "@context": {
+        op: "https://github.com/webdino/profile#",
+        xsd: "http://www.w3.org/2001/XMLSchema#",
+        main: { "@id": "op:main", "@type": "xsd:string" },
+        profile: { "@id": "op:profile", "@type": "xsd:string" },
+        publisher: { "@id": "op:publisher", "@type": "xsd:string" },
+        advertiser: { "@id": "op:advertiser", "@type": "xsd:string" },
+      },
     });
-  });
-
-  test("エンドポイント指定時適切なProfile Documentとエンドポイントが得られる", async () => {
-    mockGet("http://localhost:8080/.well-known/op-document").willResolve(
-      profileDocument
-    );
-    const result = await fetchProfileDocument(
-      undefined,
-      "http://localhost:8080/.well-known/op-document"
-    );
+    const result = await expandProfiles(profileDocument);
     expect(result).toEqual({
-      profileDocument,
-      profileEndpoint: new URL("http://localhost:8080/.well-known/op-document"),
+      advertisers: [],
+      publishers: [],
+      main: ["http://sub.localhost:8080"],
+      profile: [jwt],
     });
   });
 });
