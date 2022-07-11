@@ -23,17 +23,29 @@ Originator Profile Document によって記述します。
 - 組織の身元は、法的な責任を負う企業や公的機関の身元(たとえば、名称や連絡先など)を表明するオブジェクトです。
 - 署名と鍵は、認証機構によって付与され、Originator Profile を検証するために使用されるデータです。
 
-### Originator Profile Document
+## Document Profile データモデル
 
-メディア・広告などに関わる組織の身元を表明し検証可能にするためのデータ表現です。
+メディア・広告などの出版物を検証可能にするためのモデルです。
+Document Profile Document によって記述します。
+
+![dp-model](assets/dp-model.dio.png)
+
+- 組織の識別子は、Document Profile の発行者を表す一義的な識別子です。
+- 出版物は、組織の主要な出版物を表明するオブジェクトです。
+- 署名と鍵は、組織とその組織の Originator Profile によって与えられ、Document Profile を検証するために使用されるデータです。
+
+## Profiles Set
+
+メディア・広告などに関わる組織の身元またはその組織の主要な出版物を表明し検証可能にするためのデータ表現です。
 JSON Web Token (JWT) として署名され、それらの集合を JSON-LD によって表現します。
+必ず Document Profile Document と共にその Document Profile Document を発行した組織の Originator Profile Document を含めなければなりません。
 
 例:
 
 ```json
 {
   "@context": "https://oprdev.herokuapp.com/context",
-  "main": ["https://example.org"],
+  "main": ["https://example.org/article/42"],
   "profile": [
     "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL29wci53ZWJkaW5vLm9yZyIsInN1YiI6Imh0dHBzOi8vZXhhbXBsZS5jb20ifQ.xK1KL0pDWdDTyvL1VSuvnPfDZ6zAIJM_Jn8wbNzIi-0",
     "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL29wci53ZWJkaW5vLm9yZyIsInN1YiI6Imh0dHBzOi8vZXhhbXBsZS5vcmcifQ.v4udvFAOXwegfbpboDDJgCfanS5htYSodZaBLw-_D8w",
@@ -42,7 +54,7 @@ JSON Web Token (JWT) として署名され、それらの集合を JSON-LD に�
 }
 ```
 
-`profile` プロパティの JWT をデコードして、組織の身元を取得します。
+`profile` プロパティの JWT をデコードして、組織の身元をまたは出版物を取得します。
 
 ### `profile` プロパティ
 
@@ -51,7 +63,7 @@ JSON Web Token (JWT) として署名され、それらの集合を JSON-LD に�
 
 ### `main` プロパティ
 
-主要な組織の身元またはその組織の主要な出版物を表明するためのプロパティです。
+主要な出版物を表明するためのプロパティです。
 必ず `profile` プロパティの JWT をデコードして得られる `sub` クレームの文字列のいずれかでなければなりません。
 
 ### `publisher` プロパティ
@@ -64,42 +76,17 @@ JSON Web Token (JWT) として署名され、それらの集合を JSON-LD に�
 広告主を表明するためのプロパティです。
 必ず `profile` プロパティの JWT をデコードして得られる `sub` クレームの文字列のいずれかでなければなりません。
 
-## Document Profile データモデル
+### Originator Profile Document
 
-メディア・広告などの出版物を検証可能にするためのモデルです。
-Document Profile Document によって記述します。
-
-![dp-model](assets/dp-model.dio.png)
-
-- 組織の識別子は、Document Profile の発行者を表す一義的な識別子です。
-- 出版物は、組織の主要な出版物を表明するオブジェクトです。
-- 署名と鍵は、組織とその組織の Originator Profile によって与えられ、Document Profile を検証するために使用されるデータです。
+メディア・広告などに関わる組織の身元を表明し検証可能にするためのデータ表現です。
+JSON Web Token (JWT) として署名します。
+必ず `op` クレームを含めなければなりません。
 
 ### Document Profile Document
 
-メディア・広告などに関わる組織の身元を表明し検証可能にするためのデータ表現です。
-JSON Web Token (JWT) として署名され、それらの集合を JSON-LD によって表現します。
-必ずその組織の Originator Profile Document を含めなければなりません。
-
-例:
-
-```json
-{
-  "@context": "https://oprdev.herokuapp.com/context",
-  "main": ["https://example.org", "https://example.org/article/42"],
-  "profile": [
-    "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL29wci53ZWJkaW5vLm9yZyIsInN1YiI6Imh0dHBzOi8vZXhhbXBsZS5jb20ifQ.xK1KL0pDWdDTyvL1VSuvnPfDZ6zAIJM_Jn8wbNzIi-0",
-    "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL29wci53ZWJkaW5vLm9yZyIsInN1YiI6Imh0dHBzOi8vZXhhbXBsZS5vcmcifQ.v4udvFAOXwegfbpboDDJgCfanS5htYSodZaBLw-_D8w",
-    "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL29wci53ZWJkaW5vLm9yZyIsInN1YiI6Imh0dHBzOi8vZXhhbXBsZS5uZXQifQ.FSEFDg_Qk0-1xQbaTg0407qFXHer1qJNSfI6vuiJTS8"
-  ]
-}
-```
-
-`profile` プロパティの JWT をデコードして、組織の身元をまたは出版物を取得します。
-
-## JWT
-
-組織の身元のデータ表現です。
+出版物を表明し検証可能にするためのデータ表現です。
+JSON Web Token (JWT) として署名します。
+必ず `dp` クレームを含めなければなりません。
 
 ### `iss` (Issuer) クレーム
 
