@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "run-s build:{ts,db,ui,cli,api} docs",
-    "build:ts": "tsup src --clean",
+    "build:ts": "tsup --clean",
     "build:db": "shx cp -r ../../packages/registry-db/prisma dist/",
     "build:ui": "run-s ui:{clean,install}",
     "build:cli": "oclif manifest",
@@ -20,7 +20,7 @@
     "dev:db": "run-p dev:db:*",
     "dev:db:up": "docker compose --env-file .env.development up db",
     "dev:db:gen": "yarn workspace @webdino/profile-registry-db dev",
-    "dev:build": "tsup src --watch --onSuccess 'run-p dev:{ui,docs,start}'",
+    "dev:build": "tsup --watch --onSuccess 'run-p dev:{ui,docs,start}'",
     "dev:ui": "run-s ui:{build,clean,install}",
     "dev:docs": "run-s build:{cli,api} docs",
     "dev:start": "npm start -- --seed --schema=../../packages/registry-db/prisma/schema.prisma",
