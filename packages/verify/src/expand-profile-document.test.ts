@@ -1,4 +1,6 @@
-import { describe, test, expect } from "vitest";
+import "vi-fetch/setup";
+import { mockFetch, mockGet } from "vi-fetch";
+import { describe, beforeEach, test, expect } from "vitest";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { JsonLdDocument } from "jsonld";
 import { generateKey, signOp } from "@webdino/profile-sign";
@@ -24,7 +26,21 @@ describe("expand-profiles-document", async () => {
     profile: [jwt],
   };
 
+  beforeEach(() => {
+    mockFetch.clearAll();
+  });
+
   test("expand Profile Document to Profile Set", async () => {
+    mockGet("https://oprdev.herokuapp.com/context").willResolve({
+      "@context": {
+        op: "https://github.com/webdino/profile#",
+        xsd: "http://www.w3.org/2001/XMLSchema#",
+        main: { "@id": "op:main", "@type": "xsd:string" },
+        profile: { "@id": "op:profile", "@type": "xsd:string" },
+        publisher: { "@id": "op:publisher", "@type": "xsd:string" },
+        advertiser: { "@id": "op:advertiser", "@type": "xsd:string" },
+      },
+    });
     const result = await expandProfileDocument(profileDocument);
     expect(result).toEqual({
       advertisers: [],
