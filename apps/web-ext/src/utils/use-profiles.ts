@@ -4,8 +4,8 @@ import { useAsync } from "react-use";
 import {
   RemoteKeys,
   ProfilesVerifier,
-  fetchProfileDocument,
-  expandProfileDocument,
+  fetchProfiles,
+  expandProfiles,
 } from "@webdino/profile-verify";
 import { FetchProfilesMessageResponse } from "../types/message";
 import { Profile } from "../types/profile";
@@ -14,17 +14,18 @@ import storage from "./storage";
 
 const key = "profiles";
 
-async function fetchProfiles(
+async function fetchVerifiedProfiles(
   _: typeof key,
   targetOrigin?: string,
   profilesLink?: string
 ) {
-  const { profileDocument, profileEndpoint } = await fetchProfileDocument(
+  const { profiles, profileEndpoint } = await fetchProfiles(
     targetOrigin,
     profilesLink
   );
-  const { advertisers, publishers, main, profile } =
-    await expandProfileDocument(profileDocument);
+  const { advertisers, publishers, main, profile } = await expandProfiles(
+    profiles
+  );
   const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(`${registry}/.well-known/jwks.json`);
   const keys = RemoteKeys(jwksEndpoint);
@@ -59,7 +60,7 @@ function useProfiles() {
     profileEndpoint?: string;
   }>(
     [key, message.value?.targetOrigin, message.value?.profilesLink],
-    fetchProfiles
+    fetchVerifiedProfiles
   );
   return {
     ...data,
