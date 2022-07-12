@@ -28,6 +28,7 @@ async function getProfiles(
   }>,
   reply: FastifyReply
 ) {
+  // TODO: 仕様に合わせてDocument Profileを含むProfiles Setを返すように修正してほしい
   const data: JsonLdDocument | Error =
     await server.services.account.getProfiles(params.id);
   if (data instanceof HttpError) return data;

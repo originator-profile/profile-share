@@ -71,6 +71,7 @@ export const AccountService = ({ config, prisma, validator }: Options) => ({
   },
   /**
    * Originator Profile Document の取得
+   * @deprecated
    * @param id 会員 ID
    */
   async getProfiles(id: AccountId): Promise<JsonLdDocument | Error> {
