@@ -18,7 +18,7 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["contentScript.js"]
+      "js": ["content-script.js"]
     }
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",

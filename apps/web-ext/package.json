@@ -38,6 +38,7 @@
     "playwright": "^1.23.0",
     "postcss": "^8.4.14",
     "postcss-load-config": "^4.0.1",
+    "postcss-prefix-selector": "^1.16.0",
     "react-router-dom": "^6.3.0",
     "react-use": "^17.4.0",
     "rimraf": "^3.0.2",
