@@ -9,21 +9,15 @@ function BackHeader({ className, children, ...props }: Props) {
     <Header className={className}>
       <Link
         {...props}
-        css={{
-          "[role='tooltip']": {
-            transform: "translateX(-50%) translateY(150%) scale(0)",
-          },
-          "&:hover": {
-            "[role='tooltip']": {
-              transform: "translateX(-50%) translateY(150%) scale(1)",
-            },
-          },
-        }}
-        className="jumpu-icon-button flex-shrink-0"
+        className="jumpu-icon-button flex-shrink-0 group"
         aria-describedby="tooltip-back"
       >
         <Icon className="text-lg text-gray-700" icon="fa6-solid:chevron-left" />
-        <span id="tooltip-back" role="tooltip">
+        <span
+          id="tooltip-back"
+          role="tooltip"
+          className="![transform:translate(-50%,_150%)_scale(0)] group-hover:![transform:translate(-50%,_150%)_scale(1)]"
+        >
           戻る
         </span>
       </Link>

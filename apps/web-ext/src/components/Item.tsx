@@ -41,7 +41,7 @@ function Item({ image, name, to, variant, roles = [], onClick }: Props) {
         )}
         <div className="px-3 py-3 flex items-center gap-2">
           {variant === "sub" && (
-            <div css={{ width: 90 }} className="flex-shrink-0">
+            <div className="flex-shrink-0 w-[90px]">
               <Image
                 src={image}
                 placeholderSrc="/assets/placeholder-logo-sub.png"
