@@ -17,51 +17,58 @@ type Props = {
 
 function Item({ image, name, to, variant, roles = [], onClick }: Props) {
   const id = useId();
+  const handleKeyUp = (event: React.KeyboardEvent) => {
+    if (event.key !== "Enter") return;
+    onClick?.();
+  };
   return (
-    <li
-      className={clsx("border-gray-200 border-b", {
-        ["hover:bg-gray-50 cursor-pointer"]: onClick,
-      })}
-      onClick={onClick}
-    >
-      {variant === "main" && (
-        <Image
-          src={image}
-          placeholderSrc="/assets/placeholder-logo-main.png"
-          alt=""
-          width={320}
-          height={198}
-        />
-      )}
-      <div className="px-3 py-3 flex items-center gap-2">
-        {variant === "sub" && (
-          <div css={{ width: 90 }} className="flex-shrink-0">
-            <Image
-              src={image}
-              placeholderSrc="/assets/placeholder-logo-sub.png"
-              alt=""
-              width={90}
-              height={56}
-            />
-          </div>
-        )}
-        <div className="flex-1">
-          <p className="text-sm mb-1">{name}</p>
-          <Roles roles={roles} />
-        </div>
-        <Link
-          className="jumpu-icon-button flex-shrink-0 h-12"
-          to={to}
-          aria-describedby={id}
-        >
-          <Icon
-            className="text-lg text-gray-300"
-            icon="fa6-solid:chevron-right"
+    <li className="border-gray-200 border-b">
+      <div
+        className={clsx({ ["hover:bg-gray-50 cursor-pointer"]: onClick })}
+        tabIndex={0}
+        role="button"
+        onClick={onClick}
+        onKeyUp={handleKeyUp}
+      >
+        {variant === "main" && (
+          <Image
+            src={image}
+            placeholderSrc="/assets/placeholder-logo-main.png"
+            alt=""
+            width={320}
+            height={198}
           />
-          <span id={id} role="tooltip">
-            詳細
-          </span>
-        </Link>
+        )}
+        <div className="px-3 py-3 flex items-center gap-2">
+          {variant === "sub" && (
+            <div css={{ width: 90 }} className="flex-shrink-0">
+              <Image
+                src={image}
+                placeholderSrc="/assets/placeholder-logo-sub.png"
+                alt=""
+                width={90}
+                height={56}
+              />
+            </div>
+          )}
+          <div className="flex-1">
+            <p className="text-sm mb-1">{name}</p>
+            <Roles roles={roles} />
+          </div>
+          <Link
+            className="jumpu-icon-button flex-shrink-0 h-12"
+            to={to}
+            aria-describedby={id}
+          >
+            <Icon
+              className="text-lg text-gray-300"
+              icon="fa6-solid:chevron-right"
+            />
+            <span id={id} role="tooltip">
+              詳細
+            </span>
+          </Link>
+        </div>
       </div>
     </li>
   );
