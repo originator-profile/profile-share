@@ -2,7 +2,7 @@ module.exports = {
   plugins: {
     tailwindcss: {},
     "postcss-prefix-selector": {
-      prefix: "#profile-web-extension-root",
+      prefix: ":is(#profile-web-extension-root, #headlessui-portal-root)",
       exclude: ["#profile-web-extension-root"],
       includeFiles: ["src/content-script/style.css"],
     },
