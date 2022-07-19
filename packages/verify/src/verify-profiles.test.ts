@@ -105,13 +105,36 @@ describe("verify-profiles", async () => {
 
   test("重複するJWTが含まれるときProfiles Setの検証に失敗", async () => {
     const verifier = ProfilesVerifier(
-      { profile: [opToken, opToken] },
+      { profile: [opToken, opToken, dpToken] },
       registryKeys,
       op.issuer
     );
     const results = await verifier();
-    expect(results.length).toBe(2);
+    expect(results.length).toBe(3);
     expect(results[0]).instanceOf(ProfilesVerifyFailed);
     expect(results[0]).toBe(results[1]);
+  });
+
+  test("DPの持たないOPが存在するときProfiles Setの検証に失敗", async () => {
+    const verifier = ProfilesVerifier(
+      { profile: [opToken] },
+      registryKeys,
+      op.issuer
+    );
+    const results = await verifier();
+    expect(results[0]).instanceOf(ProfilesVerifyFailed);
+  });
+
+  test("DPの検証に失敗するとその親のOPも検証に失敗", async () => {
+    const evilKeys = await generateKey();
+    const evilDpToken = await signDp(dp, evilKeys.pkcs8);
+    const verifier = ProfilesVerifier(
+      { profile: [opToken, evilDpToken] },
+      registryKeys,
+      op.issuer
+    );
+    const results = await verifier();
+    expect(results[0]).instanceOf(Error);
+    expect(results[1]).instanceOf(Error);
   });
 });

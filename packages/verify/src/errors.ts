@@ -1,7 +1,7 @@
 import { ErrorObject } from "ajv";
 import { JWTPayload } from "jose";
 import { JOSEError } from "jose/dist/types/util/errors";
-import { DecodeResult } from "./types";
+import { DecodeResult, VerifyTokenResult } from "./types";
 
 export class ProfileGenericError extends Error {
   static get code() {
@@ -72,7 +72,7 @@ export class ProfilesVerifyFailed extends ProfileGenericError {
   readonly code = ProfilesVerifyFailed.code;
 
   /** 検証結果 */
-  result: Exclude<DecodeResult, ProfileGenericError>;
+  result: Exclude<DecodeResult | VerifyTokenResult, ProfileGenericError>;
 
   constructor(message: string, result: ProfilesVerifyFailed["result"]) {
     super(message);
