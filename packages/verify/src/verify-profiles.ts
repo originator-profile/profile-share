@@ -37,8 +37,8 @@ export function ProfilesVerifier(
   const results = new Map<Token | symbol, VerifyResult>();
   const decoder = TokenDecoder();
   const opVerifier = TokenVerifier(registryKeys, registry, decoder);
-  const opTokens: Array<{ payload: JwtOpPayload; jwt: string }> = [];
-  const dpTokens: Array<{ payload: JwtDpPayload; jwt: string }> = [];
+  const opTokens: Array<{ op: true; payload: JwtOpPayload; jwt: string }> = [];
+  const dpTokens: Array<{ dp: true; payload: JwtDpPayload; jwt: string }> = [];
 
   for (const token of profiles.profile) {
     const res = decoder(token);
@@ -56,6 +56,14 @@ export function ProfilesVerifier(
     results.set(token, pending);
     if ("dp" in res) dpTokens.push(res);
     if ("op" in res) opTokens.push(res);
+  }
+
+  for (const [i, op] of opTokens.entries()) {
+    const exists = dpTokens.find((dp) => op.payload.sub === dp.payload.iss);
+    if (exists) continue;
+    const error = new ProfilesVerifyFailed("Document Profile is required", op);
+    results.set(getToken(op), error);
+    dpTokens.splice(i, 1);
   }
 
   /**
@@ -81,12 +89,23 @@ export function ProfilesVerifier(
       const subject = res.payload.sub ?? "";
       const jwks = "op" in res ? res.op.jwks : undefined;
       const keys = LocalKeys(jwks ?? { keys: [] });
-      const verifier = TokenVerifier(keys, subject, decoder);
+      const dpVerifier = TokenVerifier(keys, subject, decoder);
+      const verify = async (jwt: string) => {
+        const dp = await dpVerifier(jwt);
+        if (dp instanceof ProfileGenericError) {
+          const error = new ProfilesVerifyFailed(
+            "Document Profile is invalid",
+            res
+          );
+          results.set(token, error);
+        }
+        return dp;
+      };
 
       dpTokens
         .filter(({ payload }) => payload.iss === subject)
         .forEach(({ jwt }) => {
-          dpResults.push(verifier(jwt));
+          dpResults.push(verify(jwt));
         });
     }
 
