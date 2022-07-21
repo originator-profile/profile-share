@@ -41,7 +41,7 @@ jobs:
       - run:
           name: Commit
           command: |
-            if git commit -am 'bot: build'; then
+            if git commit -am 'bot: build [skip ci]'; then
               git push origin HEAD:"$CIRCLE_BRANCH"
             fi
       - store_artifacts:
@@ -72,7 +72,7 @@ jobs:
       - run:
           name: Commit
           command: |
-            if git commit -am 'bot: format'; then
+            if git commit -am 'bot: format [skip ci]'; then
               git push origin HEAD:"$CIRCLE_BRANCH"
             fi
 workflows:
