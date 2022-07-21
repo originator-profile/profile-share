@@ -84,11 +84,11 @@ model accounts {
   publishingPrincipleUrl   String?
   /// ロゴ画像
   logos                    logos[]
-  /// OP文書発行履歴
+  /// Signed Originator Profile 発行履歴
   issuedOps                ops[]
-  /// DP文書発行履歴
+  /// Signed Document Profile 発行履歴
   issuedDps                dps[]
-  /// OP文書公開履歴
+  /// Signed Originator Profile 公開履歴
   publications             publications[]
   /// 公開鍵
   keys                     keys[]
@@ -139,7 +139,7 @@ model logos {
 
 /// 公開
 model publications {
-  /// OP 文書
+  /// Signed Originator Profile
   op          ops      @relation(fields: [opId], references: [id], onDelete: Cascade)
   opId        String   @id @db.Uuid
   /// 会員
