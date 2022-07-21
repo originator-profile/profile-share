@@ -15,7 +15,7 @@
 ## Originator Profile データモデル
 
 メディア・広告などに関わる組織の身元を表明し検証可能にするためのモデルです。
-Originator Profile Document によって記述します。
+Signed Originator Profile によって記述します。
 
 ![op-model](assets/op-model.dio.png)
 
@@ -26,7 +26,7 @@ Originator Profile Document によって記述します。
 ## Document Profile データモデル
 
 メディア・広告などの出版物を検証可能にするためのモデルです。
-Document Profile Document によって記述します。
+Signed Document Profile によって記述します。
 
 ![dp-model](assets/dp-model.dio.png)
 
@@ -38,7 +38,7 @@ Document Profile Document によって記述します。
 
 メディア・広告などに関わる組織の身元またはその組織の主要な出版物を表明し検証可能にするためのデータ表現です。
 JSON Web Token (JWT) として署名され、それらの集合を JSON-LD によって表現します。
-必ず Document Profile Document と共にその Document Profile Document を発行した組織の Originator Profile Document を含めなければなりません。
+必ず Signed Document Profile と共にその Signed Document Profile を発行した組織の Signed Originator Profile を含めなければなりません。
 
 例:
 
@@ -76,13 +76,13 @@ JSON Web Token (JWT) として署名され、それらの集合を JSON-LD に�
 広告主を表明するためのプロパティです。
 必ず `profile` プロパティの JWT をデコードして得られる `sub` クレームの文字列のいずれかでなければなりません。
 
-### Originator Profile Document
+### Signed Originator Profile
 
 メディア・広告などに関わる組織の身元を表明し検証可能にするためのデータ表現です。
 JSON Web Token (JWT) として署名します。
 必ず `op` クレームを含めなければなりません。
 
-### Document Profile Document
+### Signed Document Profile
 
 出版物を表明し検証可能にするためのデータ表現です。
 JSON Web Token (JWT) として署名します。
@@ -92,7 +92,7 @@ JSON Web Token (JWT) として署名します。
 
 `iss` クレームは、認証機構または組織を表す一義的な識別子です。
 必ず https スキームの URL でなければなりません。
-Document Profile Document ならば、必ずその組織の Originator Profile Document の `sub` クレームの文字列と一致する必要があります。
+Signed Document Profile ならば、必ずその組織の Signed Originator Profile の `sub` クレームの文字列と一致する必要があります。
 
 ### `sub` (Subject) クレーム
 
@@ -177,7 +177,7 @@ Document Profile Document ならば、必ずその組織の Originator Profile D
 
 ### `jwks` プロパティ
 
-Document Profile Document のためのプロパティです。
+Signed Document Profile のためのプロパティです。
 
 ### `dp` クレームの `item` プロパティ
 
@@ -257,7 +257,7 @@ Document Profile Document のためのプロパティです。
 
 複数の JSON Web Key (JWK) からなる JWK Set Format として表現されます。
 JWT `iss` クレームによって表明される認証機構の識別子の末尾に `/.well-known/jwks.json` を加えた URL に必ずアクセスできなければなりません。
-Document Profile Document ならば、その組織の Originator Profile Document の `op` クレームの中の `jwks` プロパティとして持つ必要があります。
+Signed Document Profile ならば、その組織の Signed Originator Profile の `op` クレームの中の `jwks` プロパティとして持つ必要があります。
 
 ## HTML
 
@@ -266,7 +266,7 @@ HTML では、`<script>` 要素を使用する内部的な表現と `<link>` 要
 
 ### &lt;script&gt;
 
-`<script>` 要素の `type` 属性として `application/ld+json` を指定し、Originator Profile Document または Document Profile Document を記述します。
+`<script>` 要素の `type` 属性として `application/ld+json` を指定し、Signed Originator Profile または Signed Document Profile を記述します。
 
 例:
 
@@ -284,11 +284,11 @@ HTML では、`<script>` 要素を使用する内部的な表現と `<link>` 要
 </script>
 ```
 
-Document Profile Document の場合、署名の際に `location` として含まれる要素にを対象にこの `<script>` 要素を含めてはいけません。その場合、必ず `<link>` 要素または Well-Known URL の使用によって代替してください。
+Signed Document Profile の場合、署名の際に `location` として含まれる要素にを対象にこの `<script>` 要素を含めてはいけません。その場合、必ず `<link>` 要素または Well-Known URL の使用によって代替してください。
 
 ### &lt;link&gt;
 
-`<link>` 要素の `rel` 属性として `alternate`、`type` 属性として `application/ld+json` を指定し、`href` 属性として Originator Profile Document の URL を記述します。
+`<link>` 要素の `rel` 属性として `alternate`、`type` 属性として `application/ld+json` を指定し、`href` 属性として Signed Originator Profile の URL を記述します。
 
 例:
 
@@ -302,5 +302,5 @@ Document Profile Document の場合、署名の際に `location` として含ま
 
 ## Well-Known URL
 
-HTML に Originator Profile Document または Document Profile Document いずれも記述されていない場合、対象のページの URL のパス `/.well-known/op-document` に配置できます。
-この Well-Known URL は対象のページと同一オリジンで、かつ HTTP(S) GET によってアクセスし Originator Profile Document を取得できる必要があります。
+HTML に Signed Originator Profile または Signed Document Profile いずれも記述されていない場合、対象のページの URL のパス `/.well-known/op-document` に配置できます。
+この Well-Known URL は対象のページと同一オリジンで、かつ HTTP(S) GET によってアクセスし Signed Originator Profile を取得できる必要があります。

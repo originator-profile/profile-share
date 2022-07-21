@@ -1,6 +1,6 @@
 // Vitest Snapshot v1
 
-exports[`sample document 1`] = `
+exports[`sample profiles set 1`] = `
 [
   {
     "https://github.com/webdino/profile#advertiser": [

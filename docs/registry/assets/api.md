@@ -223,7 +223,7 @@ curl -X GET /.well-known/op-document \
 
 Status Code **200**
 
-*Originator Profile Document*
+*Profiles Set*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
@@ -384,7 +384,7 @@ curl -X GET /account/{id}/profiles \
 
 Status Code **200**
 
-*Originator Profile Document*
+*Profiles Set*
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|

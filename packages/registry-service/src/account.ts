@@ -70,7 +70,7 @@ export const AccountService = ({ config, prisma, validator }: Options) => ({
     return jwks;
   },
   /**
-   * Originator Profile Document の取得
+   * Profiles Set の取得
    * @deprecated
    * @param id 会員 ID
    */
