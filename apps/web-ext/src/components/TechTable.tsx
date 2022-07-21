@@ -22,7 +22,7 @@ function TechTable({ className, profile, profileEndpoint }: Props) {
             data={`${profile.error.name}: ${profile.error.message}`}
           />
         )}
-        <TableRow header="プロファイル 文書" data={profileEndpoint} />
+        <TableRow header="取得エンドポイント" data={profileEndpoint} />
         <TableRow
           header={`${isOp(profile) ? "OP" : "DP"} 識別子`}
           data={profile.subject}

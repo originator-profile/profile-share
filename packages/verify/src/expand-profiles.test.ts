@@ -20,7 +20,7 @@ describe("expand-profiles", async () => {
   };
   const { pkcs8 } = await generateKey();
   const jwt = await signOp(op, pkcs8);
-  const profileDocument: JsonLdDocument = {
+  const profiles: JsonLdDocument = {
     "@context": "https://oprdev.herokuapp.com/context",
     main: ["http://sub.localhost:8080"],
     profile: [jwt],
@@ -41,7 +41,7 @@ describe("expand-profiles", async () => {
         advertiser: { "@id": "op:advertiser", "@type": "xsd:string" },
       },
     });
-    const result = await expandProfiles(profileDocument);
+    const result = await expandProfiles(profiles);
     expect(result).toEqual({
       advertisers: [],
       publishers: [],

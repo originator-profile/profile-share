@@ -11,8 +11,8 @@ test("context.json is valid", async () => {
   await expand(context);
 });
 
-test("sample document", async () => {
-  const doc: JsonLdDocument = {
+test("sample profiles set", async () => {
+  const profiles: JsonLdDocument = {
     "@context": "https://oprdev.herokuapp.com/context",
     main: ["https://example.org"],
     profile: [
@@ -23,6 +23,6 @@ test("sample document", async () => {
     publisher: ["https://example.org"],
     advertiser: ["https://example.com"],
   };
-  const expanded = await expand(doc);
+  const expanded = await expand(profiles);
   expect(expanded).toMatchSnapshot();
 });
