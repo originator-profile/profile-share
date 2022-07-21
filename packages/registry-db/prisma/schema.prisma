@@ -12,7 +12,7 @@ generator erd {
   output   = "../../../docs/registry/assets/erd.md"
 }
 
-/// OP 文書
+/// Originator Profile
 model ops {
   id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   /// 認証機構
@@ -28,7 +28,7 @@ model ops {
   publication publications?
 }
 
-/// DP 文書
+/// Document Profile
 model dps {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   /// 発行者
