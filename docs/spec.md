@@ -266,7 +266,7 @@ HTML では、`<script>` 要素を使用する内部的な表現と `<link>` 要
 
 ### &lt;script&gt;
 
-`<script>` 要素の `type` 属性として `application/ld+json` を指定し、Signed Originator Profile または Signed Document Profile を記述します。
+`<script>` 要素の `type` 属性として `application/ld+json` を指定し、Profiles Set を記述します。
 
 例:
 
@@ -288,7 +288,7 @@ Signed Document Profile の場合、署名の際に `location` として含ま�
 
 ### &lt;link&gt;
 
-`<link>` 要素の `rel` 属性として `alternate`、`type` 属性として `application/ld+json` を指定し、`href` 属性として Signed Originator Profile の URL を記述します。
+`<link>` 要素の `rel` 属性として `alternate`、`type` 属性として `application/ld+json` を指定し、`href` 属性として Profiles Set の URL を記述します。
 
 例:
 
@@ -302,5 +302,5 @@ Signed Document Profile の場合、署名の際に `location` として含ま�
 
 ## Well-Known URL
 
-HTML に Signed Originator Profile または Signed Document Profile いずれも記述されていない場合、対象のページの URL のパス `/.well-known/op-document` に配置できます。
+HTML に Profiles Set が記述されていない場合、対象のページの URL のパス `/.well-known/op-document` に配置できます。
 この Well-Known URL は対象のページと同一オリジンで、かつ HTTP(S) GET によってアクセスし Signed Originator Profile を取得できる必要があります。
