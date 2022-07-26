@@ -5,7 +5,12 @@ const defaultEnv = {
 
 module.exports = {
   target: "es2015",
-  entryPoints: ["src/main.tsx", "src/background.ts", "src/content-script.ts", "src/content-script/iframe.tsx"],
+  entryPoints: [
+    "src/main.tsx",
+    "src/background.ts",
+    "src/content-script.ts",
+    "src/content-script/iframe.tsx",
+  ],
   outdir: "dist",
   color: true,
   bundle: true,
