@@ -21,6 +21,11 @@ function Item({ image, name, to, variant, roles = [], onClick }: Props) {
     if (event.key !== "Enter") return;
     onClick?.();
   };
+  const handleClickLink = (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
+  };
   return (
     <li className="border-gray-200 border-b">
       <div
@@ -59,6 +64,7 @@ function Item({ image, name, to, variant, roles = [], onClick }: Props) {
             className="jumpu-icon-button flex-shrink-0 h-12"
             to={to}
             aria-describedby={id}
+            onClick={handleClickLink}
           >
             <Icon
               className="text-lg text-gray-300"
