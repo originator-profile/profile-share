@@ -12,6 +12,7 @@ export function activate(document: Document) {
   iframe.style.left = "0";
   iframe.style.width = "100vw";
   iframe.style.height = "100vh";
+  iframe.style.zIndex = "2147483647";
   document.body.appendChild(iframe);
   if (!iframe.contentDocument) return;
   const link = iframe.contentDocument.createElement("link");
