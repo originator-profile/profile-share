@@ -1,7 +1,7 @@
 import "./style.css";
 import browser from "webextension-polyfill";
 import { MessageRequest, MessageResponse } from "./types/message";
-import { activate } from "./utils/iframe";
+import { activate, deactivate } from "./utils/iframe";
 
 function handleMessageResponse(
   message: MessageRequest
@@ -17,7 +17,7 @@ function handleMessageResponse(
             ?.getAttribute("href") ?? null,
       });
     case "focus-profile":
-      activate(document);
+      activate();
       return Promise.resolve({
         type: "focus-profile",
       });
@@ -25,3 +25,13 @@ function handleMessageResponse(
 }
 
 browser.runtime.onMessage.addListener(handleMessageResponse);
+
+function handlePostMessageResponse(event: MessageEvent) {
+  switch (event.data.type) {
+    case "blur-profile":
+      deactivate();
+      break;
+  }
+}
+
+window.addEventListener("message", handlePostMessageResponse);

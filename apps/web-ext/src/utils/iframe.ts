@@ -1,6 +1,6 @@
 import browser from "webextension-polyfill";
 
-export function activate(document: Document) {
+export function activate() {
   const iframe =
     (document.getElementById(
       "profile-extension-iframe"
@@ -22,9 +22,10 @@ export function activate(document: Document) {
   const script = iframe.contentDocument.createElement("script");
   script.src = browser.runtime.getURL("content-script/iframe.js");
   iframe.contentDocument.body.appendChild(script);
+  return iframe;
 }
 
-export function deactivate(document: Document) {
+export function deactivate() {
   const iframe = document.getElementById("profile-extension-iframe");
   if (!iframe) return;
   iframe.remove();
