@@ -26,6 +26,7 @@ function handleMessageResponse(
 browser.runtime.onMessage.addListener(handleMessageResponse);
 
 function handlePostMessageResponse(event: MessageEvent) {
+  if (event.origin !== window.location.origin) return;
   switch (event.data.type) {
     case "blur-profile":
       deactivate();
