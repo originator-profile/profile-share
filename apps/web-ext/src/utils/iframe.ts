@@ -17,7 +17,7 @@ export function activate() {
   if (!iframe.contentDocument) return;
   const link = iframe.contentDocument.createElement("link");
   link.rel = "stylesheet";
-  link.href = browser.runtime.getURL("content-script.css");
+  link.href = browser.runtime.getURL("main.css");
   iframe.contentDocument.head.appendChild(link);
   const script = iframe.contentDocument.createElement("script");
   script.src = browser.runtime.getURL("content-script/iframe.js");
