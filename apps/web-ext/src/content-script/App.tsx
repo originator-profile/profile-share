@@ -9,7 +9,10 @@ function App() {
   }
 
   function handleLeave() {
-    parent.window.postMessage({ type: "blur-profile" });
+    window.parent.postMessage(
+      { type: "blur-profile" },
+      window.parent.location.origin
+    );
   }
 
   return (
