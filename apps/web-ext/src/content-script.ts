@@ -1,4 +1,3 @@
-import "./style.css";
 import browser from "webextension-polyfill";
 import { MessageRequest, MessageResponse } from "./types/message";
 import { activate, deactivate } from "./utils/iframe";
