@@ -1,6 +1,9 @@
 import browser from "webextension-polyfill";
 import { MessageRequest, MessageResponse } from "./types/message";
 import { activate, deactivate } from "./utils/iframe";
+import { Profile } from "./types/profile";
+
+let profile: Profile | null = null;
 
 function handleMessageResponse(
   message: MessageRequest
@@ -17,6 +20,7 @@ function handleMessageResponse(
       });
     case "focus-profile":
       activate();
+      profile = message.profile;
       return Promise.resolve({
         type: "focus-profile",
       });
@@ -28,7 +32,13 @@ browser.runtime.onMessage.addListener(handleMessageResponse);
 function handlePostMessageResponse(event: MessageEvent) {
   if (event.origin !== window.location.origin) return;
   switch (event.data.type) {
-    case "blur-profile":
+    case "enter-overlay":
+      event.source?.postMessage({
+        type: "enter-overlay",
+        profile,
+      });
+      break;
+    case "leave-overlay":
       deactivate();
       break;
   }
