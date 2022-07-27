@@ -6,6 +6,7 @@ export function activate() {
       "profile-extension-iframe"
     ) as HTMLIFrameElement) ?? document.createElement("iframe");
   iframe.id = "profile-extension-iframe";
+  iframe.src = "about:blank";
   iframe.style.border = "none";
   iframe.style.position = "fixed";
   iframe.style.top = "0";
@@ -22,7 +23,6 @@ export function activate() {
   const script = iframe.contentDocument.createElement("script");
   script.src = browser.runtime.getURL("content-script/iframe.js");
   iframe.contentDocument.body.appendChild(script);
-  return iframe;
 }
 
 export function deactivate() {

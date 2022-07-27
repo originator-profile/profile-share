@@ -1,8 +1,28 @@
 import { useState, Fragment } from "react";
+import { useLifecycles } from "react-use";
 import { Dialog, Transition } from "@headlessui/react";
+import { Profile } from "../types/profile";
 
 function App() {
   const [isOpen, setIsOpen] = useState(true);
+  const [profile, setProfile] = useState<Profile | null>(null);
+
+  function handleMessage(event: MessageEvent) {
+    if (event.origin !== window.parent.location.origin) return;
+    switch (event.data.type) {
+      case "enter-overlay":
+        setProfile(event.data.profile);
+        break;
+    }
+  }
+
+  useLifecycles(
+    () => {
+      window.addEventListener("message", handleMessage);
+      window.parent.postMessage({ type: "enter-overlay" });
+    },
+    () => window.removeEventListener("message", handleMessage)
+  );
 
   function closeModal() {
     setIsOpen(false);
@@ -10,7 +30,7 @@ function App() {
 
   function handleLeave() {
     window.parent.postMessage(
-      { type: "blur-profile" },
+      { type: "leave-overlay" },
       window.parent.location.origin
     );
   }
