@@ -42,7 +42,7 @@ yarn dotenv -e .env bin/dev account -i account.json -o create
 
 [account.example.json](https://github.com/webdino/profile/blob/main/apps/registry/account.example.json)
 
-#### トヨタ自動車株式会社登録時の例
+#### トヨタ登録時の例
 
 ```jsonc
 {
@@ -73,6 +73,8 @@ yarn dotenv -e .env bin/dev account -i account.json -o create
   }
 }
 ```
+
+「トヨタ」は、トヨタ自動車株式会社の登録商標です。
 
 ### 鍵ペアの生成
 
@@ -125,7 +127,7 @@ yarn dotenv -e .env bin/dev publisher:website \
 
 [website.example.json](https://github.com/webdino/profile/blob/main/apps/registry/website.example.json)
 
-#### 読売新聞の記事登録の例
+#### 読売新聞社の記事登録の例
 
 ```json
 {
@@ -137,10 +139,11 @@ yarn dotenv -e .env bin/dev publisher:website \
   "description": "https://yomiuri.demosites.pages.dev/1 の備考",
   "author": "前木 理一郎",
   "category": "スポーツ > 野球",
-  "editor": "デジタル編集部",
-  "proofJws": "eyJhbGciOiJFUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..TQpkRZ81kVLRcVp3kqDVM_EBq35qF0c1Z1vzYUfb6z5MoyDd1BDn482qLS6vkD9NkefPwiwVkv58GHAZ6qvPA"
+  "editor": "デジタル編集部"
 }
 ```
+
+「読売新聞社」は、株式会社読売新聞東京本社の登録商標です。
 
 ### デプロイ用 Profiles Set の作成
 
