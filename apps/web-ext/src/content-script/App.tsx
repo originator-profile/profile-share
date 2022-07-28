@@ -2,12 +2,13 @@ import { useState, Fragment } from "react";
 import { useLifecycles } from "react-use";
 import { Dialog, Transition } from "@headlessui/react";
 import { Profile } from "../types/profile";
+import { PostMessageResponseEvent } from "../types/message";
 
 function App() {
   const [isOpen, setIsOpen] = useState(true);
   const [profile, setProfile] = useState<Profile | null>(null);
 
-  function handleMessage(event: MessageEvent) {
+  function handleMessage(event: PostMessageResponseEvent) {
     if (event.origin !== window.parent.location.origin) return;
     switch (event.data.type) {
       case "enter-overlay":
