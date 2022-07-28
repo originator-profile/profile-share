@@ -21,3 +21,19 @@ export type MessageRequest =
 export type MessageResponse =
   | FetchProfilesMessageResponse
   | FocusProfileMessageResponse;
+
+export type EnterOverlayMessageRequest = {
+  type: "enter-overlay";
+};
+export type EnterOverlayMessageResponse = {
+  type: "enter-overlay";
+  profile: Profile;
+};
+export type LeaveOverlayMessageRequest = {
+  type: "leave-overlay";
+};
+export type PostMessageRequestEvent = MessageEvent<
+  EnterOverlayMessageRequest | LeaveOverlayMessageRequest
+>;
+export type PostMessageResponseEvent =
+  MessageEvent<EnterOverlayMessageResponse>;
