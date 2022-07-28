@@ -7,27 +7,32 @@ import Image from "./Image";
 import Roles from "../components/Roles";
 
 type Props = {
+  className?: string;
   image?: string;
   name?: string;
-  to: string;
+  to?: string;
   variant: "main" | "sub";
+  as?: React.ElementType;
   roles?: Role[];
   onClick?: () => void;
 };
 
-function Item({ image, name, to, variant, roles = [], onClick }: Props) {
-  const id = useId();
+function ItemBase({
+  className,
+  image,
+  name,
+  variant,
+  as: As = "li",
+  roles = [],
+  onClick,
+  children,
+}: Omit<Props, "to"> & { children?: React.ReactNode }) {
   const handleKeyUp = (event: React.KeyboardEvent) => {
     if (event.key !== "Enter") return;
     onClick?.();
   };
-  const handleClickLink = (
-    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-  ) => {
-    event.stopPropagation();
-  };
   return (
-    <li className="border-gray-200 border-b">
+    <As className={clsx("border-gray-200 border-b", className)}>
       <div
         className={clsx({ ["hover:bg-gray-50 cursor-pointer"]: onClick })}
         tabIndex={0}
@@ -60,23 +65,38 @@ function Item({ image, name, to, variant, roles = [], onClick }: Props) {
             <p className="text-sm mb-1">{name}</p>
             <Roles roles={roles} />
           </div>
-          <Link
-            className="jumpu-icon-button flex-shrink-0 h-12"
-            to={to}
-            aria-describedby={id}
-            onClick={handleClickLink}
-          >
-            <Icon
-              className="text-lg text-gray-300"
-              icon="fa6-solid:chevron-right"
-            />
-            <span id={id} role="tooltip">
-              詳細
-            </span>
-          </Link>
+          {children}
         </div>
       </div>
-    </li>
+    </As>
+  );
+}
+
+function Item({ to, ...props }: Props) {
+  const id = useId();
+  const handleClickLink = (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
+  };
+  if (!to) return <ItemBase {...props} />;
+  return (
+    <ItemBase {...props}>
+      <Link
+        className="jumpu-icon-button flex-shrink-0 h-12"
+        to={to}
+        aria-describedby={id}
+        onClick={handleClickLink}
+      >
+        <Icon
+          className="text-lg text-gray-300"
+          icon="fa6-solid:chevron-right"
+        />
+        <span id={id} role="tooltip">
+          詳細
+        </span>
+      </Link>
+    </ItemBase>
   );
 }
 
