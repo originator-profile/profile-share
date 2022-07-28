@@ -5,13 +5,24 @@ import { routes } from "../utils/routes";
 import Item from "./Item";
 
 type Props = {
+  className?: string;
   profile: Profile;
   variant: "main" | "sub";
+  as?: React.ElementType;
+  link?: boolean;
   roles?: Role[];
   onClickProfile?: (profile: Profile) => void;
 };
 
-function ProfileItem({ profile, variant, roles = [], onClickProfile }: Props) {
+function ProfileItem({
+  className,
+  profile,
+  variant,
+  as,
+  link = true,
+  roles = [],
+  onClickProfile,
+}: Props) {
   const handleClick = (profile: Profile) => () => onClickProfile?.(profile);
   if (isOp(profile)) {
     const holder = profile.item.find(isOpHolder);
@@ -19,12 +30,14 @@ function ProfileItem({ profile, variant, roles = [], onClickProfile }: Props) {
     const logo = holder.logos?.find(({ isMain }) => isMain);
     return (
       <Item
+        className={className}
         image={logo?.url}
         name={holder.name}
-        to={routes.holder.build(profile)}
+        to={link ? routes.holder.build(profile) : undefined}
         variant={variant}
+        as={as}
         roles={roles}
-        onClick={handleClick(profile)}
+        onClick={onClickProfile ? handleClick(profile) : undefined}
       />
     );
   } else {
@@ -32,10 +45,12 @@ function ProfileItem({ profile, variant, roles = [], onClickProfile }: Props) {
     if (!website) return null;
     return (
       <Item
+        className={className}
         image={website.image}
         name={website.title}
-        to={routes.website.build(profile)}
+        to={link ? routes.website.build(profile) : undefined}
         variant={variant}
+        as={as}
         roles={roles}
         onClick={handleClick(profile)}
       />

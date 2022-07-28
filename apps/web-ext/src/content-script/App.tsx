@@ -1,12 +1,15 @@
-import { useState, Fragment } from "react";
+import { useState, useRef, Fragment } from "react";
 import { useLifecycles } from "react-use";
 import { Dialog, Transition } from "@headlessui/react";
 import { Profile } from "../types/profile";
 import { PostMessageResponseEvent } from "../types/message";
+import ProfileItem from "../components/ProfileItem";
+import Spinner from "../components/Spinner";
 
 function App() {
   const [isOpen, setIsOpen] = useState(true);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const focusRef = useRef(null);
 
   function handleMessage(event: PostMessageResponseEvent) {
     if (event.origin !== window.parent.location.origin) return;
@@ -38,7 +41,12 @@ function App() {
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={closeModal}>
+      <Dialog
+        as="div"
+        className="relative z-10"
+        onClose={closeModal}
+        initialFocus={focusRef}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -63,28 +71,17 @@ function App() {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title
-                  as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
-                >
-                  Payment successful
-                </Dialog.Title>
-                <div className="mt-2">
-                  <p className="text-sm text-gray-500">
-                    Your payment has been successfully submitted. We’ve sent you
-                    an email with all of the details of your order.
-                  </p>
-                </div>
-
-                <div className="mt-4">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    onClick={closeModal}
-                  >
-                    Got it, thanks!
-                  </button>
+              <Dialog.Panel className="w-full max-w-md bg-white rounded-xl p-6">
+                <div ref={focusRef}>
+                  {(profile && (
+                    <ProfileItem
+                      className="border-none"
+                      variant="main"
+                      as="div"
+                      link={false}
+                      profile={profile}
+                    />
+                  )) || <Spinner className="m-auto" />}
                 </div>
               </Dialog.Panel>
             </Transition.Child>
