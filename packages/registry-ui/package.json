@@ -13,6 +13,7 @@
     "eslint": "^8.18.0",
     "eslint-config-webdino-profile": "*",
     "jsonld": "^6.0.0",
+    "solid-js": "^1.4.8",
     "vite": "^2.9.13",
     "vite-plugin-solid": "^2.2.6"
   }
