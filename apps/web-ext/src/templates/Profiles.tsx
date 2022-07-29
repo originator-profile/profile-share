@@ -2,6 +2,8 @@ import { Profile } from "../types/profile";
 import { toRoles } from "../utils/role";
 import { sortProfiles } from "../utils/profile";
 import ProfileItem from "../components/ProfileItem";
+import storage from "../utils/storage";
+import browser from "webextension-polyfill";
 
 type Props = {
   profiles: Profile[];
@@ -11,6 +13,14 @@ type Props = {
 };
 
 function Profiles({ profiles, advertisers, publishers, main }: Props) {
+  const handleClickProfile = (profile: Profile) => {
+    const tabId = storage.getItem("tabId");
+    if (!tabId) return;
+    browser.tabs.sendMessage(tabId, {
+      type: "focus-profile",
+      profile: profile,
+    });
+  };
   return (
     <ul>
       {sortProfiles(profiles, main).map((profile, index) => {
@@ -23,6 +33,7 @@ function Profiles({ profiles, advertisers, publishers, main }: Props) {
             profile={profile}
             variant={index === 0 ? "main" : "sub"}
             roles={roles}
+            onClickProfile={handleClickProfile}
           />
         );
       })}

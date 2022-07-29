@@ -18,8 +18,17 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["contentScript.js"]
+      "js": ["content-script.js"]
     }
+  ],
+  "web_accessible_resources": [
+    "content-script/iframe.js",
+    "content-script/iframe.js.map",
+    "background.js.map",
+    "content-script.js.map",
+    "main.css",
+    "main.css.map",
+    "main.js.map"
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "permissions": ["http://*/*", "https://*/*", "activeTab"]
