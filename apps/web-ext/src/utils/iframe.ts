@@ -1,11 +1,6 @@
 import browser from "webextension-polyfill";
 
-export function activate() {
-  const iframe =
-    (document.getElementById(
-      "profile-extension-iframe"
-    ) as HTMLIFrameElement) ?? document.createElement("iframe");
-  iframe.id = "profile-extension-iframe";
+export function activate(iframe: HTMLIFrameElement) {
   iframe.src = "about:blank";
   iframe.style.cssText = `
     background: transparent;
@@ -36,8 +31,6 @@ export function activate() {
   iframe.contentDocument.body.appendChild(script);
 }
 
-export function deactivate() {
-  const iframe = document.getElementById("profile-extension-iframe");
-  if (!iframe) return;
+export function deactivate(iframe: HTMLIFrameElement) {
   iframe.remove();
 }
