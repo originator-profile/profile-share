@@ -36,7 +36,7 @@ function ItemBase({
       <div
         className={clsx({ ["hover:bg-gray-50 cursor-pointer"]: onClick })}
         tabIndex={0}
-        role="button"
+        role={onClick ? "button" : undefined}
         onClick={onClick}
         onKeyUp={handleKeyUp}
       >
