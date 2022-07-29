@@ -40,12 +40,9 @@ export type EnterOverlayMessageResponse = {
 export type LeaveOverlayMessageRequest = {
   type: "leave-overlay";
 };
-export type LeaveOverlayMessageResponse = {
-  type: "leave-overlay";
-};
-export type PostMessageRequestEvent = MessageEvent<
+export type ContentWindowPostMessageEvent = MessageEvent<
   EnterOverlayMessageRequest | LeaveOverlayMessageRequest
 >;
-export type PostMessageResponseEvent = MessageEvent<
-  EnterOverlayMessageResponse | LeaveOverlayMessageResponse
+export type IFramePostMessageEvent = MessageEvent<
+  EnterOverlayMessageResponse | LeaveOverlayMessageRequest
 >;

@@ -2,7 +2,7 @@ import { useState, useRef, Fragment } from "react";
 import { useLifecycles } from "react-use";
 import { Dialog, Transition } from "@headlessui/react";
 import { Profile } from "../types/profile";
-import { PostMessageResponseEvent } from "../types/message";
+import { IFramePostMessageEvent } from "../types/message";
 import ProfileItem from "../components/ProfileItem";
 import Spinner from "../components/Spinner";
 
@@ -15,7 +15,7 @@ function App() {
     setIsOpen(false);
   }
 
-  function handleMessage(event: PostMessageResponseEvent) {
+  function handleMessage(event: IFramePostMessageEvent) {
     if (event.origin !== window.parent.location.origin) return;
     switch (event.data.type) {
       case "enter-overlay":
