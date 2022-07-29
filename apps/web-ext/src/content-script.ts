@@ -8,6 +8,7 @@ import { activate, deactivate } from "./utils/iframe";
 import { Profile } from "./types/profile";
 
 let profile: Profile | null = null;
+const iframe = document.createElement("iframe");
 
 function handleMessageResponse(
   message: MessageRequest
@@ -23,7 +24,7 @@ function handleMessageResponse(
             ?.getAttribute("href") ?? null,
       });
     case "focus-profile":
-      activate();
+      activate(iframe);
       profile = message.profile;
       return Promise.resolve({
         type: "focus-profile",
@@ -43,7 +44,7 @@ function handlePostMessageResponse(event: PostMessageRequestEvent) {
       });
       break;
     case "leave-overlay":
-      deactivate();
+      deactivate(iframe);
       break;
   }
 }
