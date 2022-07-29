@@ -30,5 +30,5 @@
   "engines": {
     "node": "^16.16.0 || ^18.7.0"
   },
-  "packageManager": "yarn@1.22.18"
+  "packageManager": "yarn@1.22.19"
 }
