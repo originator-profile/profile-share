@@ -2,7 +2,7 @@ import browser from "webextension-polyfill";
 import {
   MessageRequest,
   MessageResponse,
-  PostMessageRequestEvent,
+  ContentWindowPostMessageEvent,
 } from "./types/message";
 import { activate, deactivate } from "./utils/iframe";
 import { Profile } from "./types/profile";
@@ -29,12 +29,17 @@ function handleMessageResponse(
       return Promise.resolve({
         type: "focus-profile",
       });
+    case "close-window":
+      iframe.contentWindow?.postMessage({ type: "leave-overlay" });
+      return Promise.resolve({
+        type: "close-window",
+      });
   }
 }
 
 browser.runtime.onMessage.addListener(handleMessageResponse);
 
-function handlePostMessageResponse(event: PostMessageRequestEvent) {
+function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
   if (event.origin !== window.location.origin) return;
   switch (event.data.type) {
     case "enter-overlay":

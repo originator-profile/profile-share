@@ -15,12 +15,20 @@ export type FocusProfileMessageRequest = {
 export type FocusProfileMessageResponse = {
   type: "focus-profile";
 };
+export type CloseWindowMessageRequest = {
+  type: "close-window";
+};
+export type CloseWindowMessageResponse = {
+  type: "close-window";
+};
 export type MessageRequest =
   | FetchProfilesMessageRequest
-  | FocusProfileMessageRequest;
+  | FocusProfileMessageRequest
+  | CloseWindowMessageRequest;
 export type MessageResponse =
   | FetchProfilesMessageResponse
-  | FocusProfileMessageResponse;
+  | FocusProfileMessageResponse
+  | CloseWindowMessageResponse;
 
 export type EnterOverlayMessageRequest = {
   type: "enter-overlay";
@@ -32,8 +40,9 @@ export type EnterOverlayMessageResponse = {
 export type LeaveOverlayMessageRequest = {
   type: "leave-overlay";
 };
-export type PostMessageRequestEvent = MessageEvent<
+export type ContentWindowPostMessageEvent = MessageEvent<
   EnterOverlayMessageRequest | LeaveOverlayMessageRequest
 >;
-export type PostMessageResponseEvent =
-  MessageEvent<EnterOverlayMessageResponse>;
+export type IFramePostMessageEvent = MessageEvent<
+  EnterOverlayMessageResponse | LeaveOverlayMessageRequest
+>;

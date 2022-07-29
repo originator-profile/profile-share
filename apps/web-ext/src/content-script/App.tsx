@@ -2,7 +2,7 @@ import { useState, useRef, Fragment } from "react";
 import { useLifecycles } from "react-use";
 import { Dialog, Transition } from "@headlessui/react";
 import { Profile } from "../types/profile";
-import { PostMessageResponseEvent } from "../types/message";
+import { IFramePostMessageEvent } from "../types/message";
 import ProfileItem from "../components/ProfileItem";
 import Spinner from "../components/Spinner";
 
@@ -11,11 +11,18 @@ function App() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const focusRef = useRef(null);
 
-  function handleMessage(event: PostMessageResponseEvent) {
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function handleMessage(event: IFramePostMessageEvent) {
     if (event.origin !== window.parent.location.origin) return;
     switch (event.data.type) {
       case "enter-overlay":
         setProfile(event.data.profile);
+        break;
+      case "leave-overlay":
+        closeModal();
         break;
     }
   }
@@ -27,10 +34,6 @@ function App() {
     },
     () => window.removeEventListener("message", handleMessage)
   );
-
-  function closeModal() {
-    setIsOpen(false);
-  }
 
   function handleLeave() {
     window.parent.postMessage(
