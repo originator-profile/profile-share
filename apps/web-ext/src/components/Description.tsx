@@ -17,8 +17,7 @@ function Description({ className, description }: Props) {
     <section className={clsx("px-3 py-2 border-gray-200 border-b", className)}>
       <h2 className="mb-1 text-gray-500 font-normal">説明</h2>
       <div
-        css={{ overflowWrap: "break-word" }}
-        className="prose prose-xs text-xs"
+        className="prose prose-xs text-xs break-words"
         dangerouslySetInnerHTML={{
           __html: DOMPurify.sanitize(descriptionDocument.body.innerHTML),
         }}
