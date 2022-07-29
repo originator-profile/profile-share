@@ -3,6 +3,7 @@ const defaultEnv = {
   PROFILE_ISSUER: process.env.PROFILE_ISSUER ?? "https://oprdev.herokuapp.com",
 };
 
+/** @type {import("esbuild").BuildOptions} */
 module.exports = {
   target: "es2015",
   entryPoints: [
@@ -16,7 +17,7 @@ module.exports = {
   bundle: true,
   minify: true,
   define: { "import.meta.env": JSON.stringify(defaultEnv) },
-  inject: ["src/react-shim.ts"],
+  jsx: "automatic",
   plugins: [
     require("esbuild-copy-static-files")({ src: "public", dest: "dist" }),
     require("./esbuild.postcss"),

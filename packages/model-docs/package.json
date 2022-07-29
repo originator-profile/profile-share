@@ -17,7 +17,7 @@
     "@webdino/profile-model": "*",
     "@webdino/profile-tsconfig": "*",
     "esbuild-register": "^3.3.3",
-    "eslint": "^8.18.0",
+    "eslint": "^8.20.0",
     "eslint-config-webdino-profile": "*",
     "just-kebab-case": "^4.0.3",
     "markdown-link-check": "^3.10.2",
