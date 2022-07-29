@@ -20,7 +20,7 @@ export function activate() {
     left: 0;
     margin: 0;
     padding: 0;
-    opcity: 1;
+    opacity: 1;
     visibility: visible;
     outilne: 0;
     z-index: 2147483647;
