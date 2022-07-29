@@ -29,6 +29,11 @@ function handleMessageResponse(
       return Promise.resolve({
         type: "focus-profile",
       });
+    case "close-window":
+      iframe.contentWindow?.postMessage({ type: "leave-overlay" });
+      return Promise.resolve({
+        type: "close-window",
+      });
   }
 }
 

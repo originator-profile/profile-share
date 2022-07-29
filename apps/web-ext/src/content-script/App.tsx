@@ -11,11 +11,18 @@ function App() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const focusRef = useRef(null);
 
+  function closeModal() {
+    setIsOpen(false);
+  }
+
   function handleMessage(event: PostMessageResponseEvent) {
     if (event.origin !== window.parent.location.origin) return;
     switch (event.data.type) {
       case "enter-overlay":
         setProfile(event.data.profile);
+        break;
+      case "leave-overlay":
+        closeModal();
         break;
     }
   }
@@ -27,10 +34,6 @@ function App() {
     },
     () => window.removeEventListener("message", handleMessage)
   );
-
-  function closeModal() {
-    setIsOpen(false);
-  }
 
   function handleLeave() {
     window.parent.postMessage(
