@@ -2,7 +2,7 @@ import browser from "webextension-polyfill";
 import {
   MessageRequest,
   MessageResponse,
-  PostMessageRequestEvent,
+  ContentWindowPostMessageEvent,
 } from "./types/message";
 import { activate, deactivate } from "./utils/iframe";
 import { Profile } from "./types/profile";
@@ -39,7 +39,7 @@ function handleMessageResponse(
 
 browser.runtime.onMessage.addListener(handleMessageResponse);
 
-function handlePostMessageResponse(event: PostMessageRequestEvent) {
+function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
   if (event.origin !== window.location.origin) return;
   switch (event.data.type) {
     case "enter-overlay":
