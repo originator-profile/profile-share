@@ -4,7 +4,7 @@
 profile#/anyOf/0/properties/item/items/anyOf/1
 ```
 
-認証機構の報告書などの資格情報
+認証機関の報告書などの資格情報
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                          |
 | :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------ |

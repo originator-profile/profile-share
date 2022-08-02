@@ -4,7 +4,7 @@
 profile#/anyOf/0/properties/issuer
 ```
 
-認証機構または組織を表す一義的な識別子
+認証機関または組織を表す一義的な識別子
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                          |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------ |

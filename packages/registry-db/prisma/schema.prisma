@@ -15,7 +15,7 @@ generator erd {
 /// Signed Originator Profile
 model ops {
   id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  /// 認証機構
+  /// 認証機関
   certifier   accounts      @relation(fields: [certifierId], references: [id], onDelete: Cascade)
   certifierId String        @db.Uuid
   /// 発行日
@@ -100,7 +100,7 @@ model accounts {
 
 /// 会員種別
 model roles {
-  /// "group": 組織、"certifier": 認証機構
+  /// "group": 組織、"certifier": 認証機関
   value    String     @id
   /// 会員
   accounts accounts[]

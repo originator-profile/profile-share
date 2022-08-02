@@ -26,9 +26,9 @@
 
 *   [Originator Profile](./profile-anyof-originator-profile.md) – `profile#/anyOf/0`
 
-*   [Originator Profile Certifier](./profile-anyof-originator-profile-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier.md "資格情報を発行する認証機構") – `profile#/anyOf/0/properties/item/items/anyOf/2`
+*   [Originator Profile Certifier](./profile-anyof-originator-profile-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-certifier.md "資格情報を発行する認証機関") – `profile#/anyOf/0/properties/item/items/anyOf/2`
 
-*   [Originator Profile Credential](./profile-anyof-originator-profile-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-credential.md "認証機構の報告書などの資格情報") – `profile#/anyOf/0/properties/item/items/anyOf/1`
+*   [Originator Profile Credential](./profile-anyof-originator-profile-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-credential.md "認証機関の報告書などの資格情報") – `profile#/anyOf/0/properties/item/items/anyOf/1`
 
 *   [Originator Profile Holder](./profile-anyof-originator-profile-properties-originator-profile-item-originator-profile-item-anyof-originator-profile-holder.md "資格情報を保有する組織") – `profile#/anyOf/0/properties/item/items/anyOf/0`
 

@@ -9,7 +9,7 @@ const Op = {
     type: { const: "op" },
     issuer: {
       title: "Issuer",
-      description: "認証機構または組織を表す一義的な識別子",
+      description: "認証機関または組織を表す一義的な識別子",
       type: "string",
     },
     subject: {

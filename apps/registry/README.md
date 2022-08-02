@@ -132,8 +132,8 @@ USAGE
 
 FLAGS
   -i, --identity=<value>  (required) PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル
-  --certifier=<value>     (required) 認証機構 (UUID)
-  --credential=<value>    認証機構の報告書 JSON ファイル
+  --certifier=<value>     (required) 認証機関 (UUID)
+  --credential=<value>    認証機関の報告書 JSON ファイル
   --expired-at=<value>    有効期限 (ISO 8601)
   --holder=<value>        (required) 発行対象の会員 (UUID)
   --issued-at=<value>     発行日時 (ISO 8601)

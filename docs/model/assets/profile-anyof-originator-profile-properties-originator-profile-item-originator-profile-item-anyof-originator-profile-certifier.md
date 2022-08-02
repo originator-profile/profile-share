@@ -4,7 +4,7 @@
 profile#/anyOf/0/properties/item/items/anyOf/2
 ```
 
-資格情報を発行する認証機構
+資格情報を発行する認証機関
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                          |
 | :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------ |
