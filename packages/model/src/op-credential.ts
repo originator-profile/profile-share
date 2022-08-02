@@ -2,7 +2,7 @@ import { FromSchema } from "json-schema-to-ts";
 
 const OpCredential = {
   title: "Originator Profile Credential",
-  description: "認証機構の報告書などの資格情報",
+  description: "認証機関の報告書などの資格情報",
   type: "object",
   properties: {
     type: { const: "credential" },

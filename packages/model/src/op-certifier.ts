@@ -4,7 +4,7 @@ import Logo from "./logo";
 
 const OpCertifier = {
   title: "Originator Profile Certifier",
-  description: "資格情報を発行する認証機構",
+  description: "資格情報を発行する認証機関",
   type: "object",
   properties: {
     type: { const: "certifier" },
