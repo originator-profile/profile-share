@@ -10,10 +10,10 @@ import NavLink from "../components/NavLink";
 type Props = {
   dp: Dp;
   website: DpWebsite;
-  paths: { back: string; holder: string; tech: string };
+  paths: { back: string; org: string };
 };
 
-function Website({ dp, website, paths }: Props) {
+function Publ({ dp, website, paths }: Props) {
   return (
     <>
       <BackHeader className="sticky top-0" to={paths.back}>
@@ -37,15 +37,14 @@ function Website({ dp, website, paths }: Props) {
       <WebsiteTable className="w-full table-fixed" website={website} />
       {website.description && <Description description={website.description} />}
       <div className="px-3 pt-2 pb-20 bg-gray-50">
-        {paths.holder && (
-          <NavLink className="mb-2" to={paths.holder}>
+        {paths.org && (
+          <NavLink className="mb-2" to={paths.org}>
             所有者情報
           </NavLink>
         )}
-        <NavLink to={paths.tech}>技術情報</NavLink>
       </div>
     </>
   );
 }
 
-export default Website;
+export default Publ;

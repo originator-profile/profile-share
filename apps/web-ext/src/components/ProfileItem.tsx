@@ -33,7 +33,6 @@ function ProfileItem({
         className={className}
         image={logo?.url}
         name={holder.name}
-        to={link ? routes.holder.build(profile) : undefined}
         variant={variant}
         as={as}
         roles={roles}
@@ -48,7 +47,7 @@ function ProfileItem({
         className={className}
         image={website.image}
         name={website.title}
-        to={link ? routes.website.build(profile) : undefined}
+        to={link ? routes.publ.build(profile) : undefined}
         variant={variant}
         as={as}
         roles={roles}

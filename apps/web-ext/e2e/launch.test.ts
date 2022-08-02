@@ -19,7 +19,5 @@ describe("launch", () => {
     await page?.goto("http://localhost:8080/");
     page = await popup(ctx);
     expect(await page.title()).toBe("Profile Web Extension");
-    // 会員のロゴ画像の例 (apps/registry/account.example.json)
-    await page.waitForSelector("img[src$='-webdino.jpg']");
   });
 });
