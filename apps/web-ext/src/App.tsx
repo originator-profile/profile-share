@@ -1,36 +1,26 @@
 import { RouteObject, Outlet, useRoutes } from "react-router-dom";
 import { routes } from "./utils/routes";
-import Profiles from "./pages/Profiles";
-import Holder from "./pages/Holder";
-import Certifier from "./pages/Certifier";
-import Tech from "./pages/Tech";
-import Website from "./pages/Website";
+import Root from "./pages/Root";
+import Org from "./pages/Org";
+import Publ from "./pages/Publ";
 
-const profiles: RouteObject = {
-  path: routes.profiles.path,
-  element: <Profiles />,
+const root: RouteObject = {
+  path: routes.root.path,
+  element: <Root />,
 };
-const holder: RouteObject = {
-  path: routes.holder.path,
+const org: RouteObject = {
+  path: routes.org.path,
   element: <Outlet />,
-  children: [
-    { path: "", /*                   */ element: <Holder back="../.." /> },
-    { path: routes.certifier.path, /**/ element: <Certifier back=".." /> },
-    { path: routes.tech.path, /*     */ element: <Tech back=".." /> },
-  ],
+  children: [{ path: "", element: <Org back="../.." /> }],
 };
-const website: RouteObject = {
-  path: routes.website.path,
+const publ: RouteObject = {
+  path: routes.publ.path,
   element: <Outlet />,
-  children: [
-    { path: "", /*              */ element: <Website /> },
-    { path: routes.tech.path, /**/ element: <Tech back=".." /> },
-    holder,
-  ],
+  children: [{ path: "", element: <Publ /> }, org],
 };
 
 function App() {
-  const element = useRoutes([profiles, holder, website]);
+  const element = useRoutes([root, publ]);
   return element;
 }
 

@@ -8,16 +8,18 @@ import VerifyFailureBadge from "../components/VerifyFailureBadge";
 import Roles from "../components/Roles";
 import HolderTable from "../components/HolderTable";
 import Description from "../components/Description";
-import NavLink from "../components/NavLink";
+import CertifierTable from "../components/CertifierTable";
+import TechTable from "../components/TechTable";
 
 type Props = {
   op: Op;
   holder: OpHolder;
   roles: Role[];
-  paths: { back: string; certifier: string; tech: string };
+  profileEndpoint: string;
+  paths: { back: string };
 };
 
-function Holder({ op, holder, roles, paths }: Props) {
+function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
   const logo = holder.logos?.find(({ isMain }) => isMain);
   return (
     <>
@@ -46,14 +48,24 @@ function Holder({ op, holder, roles, paths }: Props) {
       <hr className="border-gray-50 border-4" />
       <HolderTable className="w-full table-fixed" holder={holder} />
       {holder.description && <Description description={holder.description} />}
-      <div className="px-3 pt-2 pb-20 bg-gray-50">
-        <NavLink className="mb-2" to={paths.certifier}>
-          認証機関
-        </NavLink>
-        <NavLink to={paths.tech}>技術情報</NavLink>
-      </div>
+      <hr className="border-gray-50 border-4" />
+      <Image
+        src="/assets/logo-certifier.png"
+        placeholderSrc="/assets/placeholder-logo-main.png"
+        alt="第三者認証機関のロゴ"
+        width={320}
+        height={198}
+      />
+      <hr className="border-gray-50 border-4" />
+      <CertifierTable className="w-full table-fixed" op={op} />
+      <hr className="border-gray-50 border-4" />
+      <TechTable
+        className="w-full table-fixed"
+        profile={op}
+        profileEndpoint={profileEndpoint}
+      />
     </>
   );
 }
 
-export default Holder;
+export default Org;
