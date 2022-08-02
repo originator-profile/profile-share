@@ -16,7 +16,7 @@ type Props = {
   holder: OpHolder;
   roles: Role[];
   profileEndpoint: string;
-  paths: { back: string; certifier: string; tech: string };
+  paths: { back: string };
 };
 
 function Op({ op, holder, roles, paths, profileEndpoint }: Props) {

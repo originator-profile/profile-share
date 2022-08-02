@@ -30,7 +30,5 @@ function urlParamsRoute<Path extends string>(path: Path) {
 export const routes = {
   root: route("/"),
   op: urlParamsRoute("op/:issuer/:subject"),
-  certifier: route("certifier"),
-  tech: route("tech"),
   dp: urlParamsRoute("dp/:issuer/:subject"),
 } as const;
