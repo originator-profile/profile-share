@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import { isOp, isOpHolder } from "@webdino/profile-core";
 import useProfiles from "../utils/use-profiles";
 import { toRoles } from "../utils/role";
-import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Template from "../templates/Op";
@@ -55,8 +54,6 @@ function Op(props: Props) {
   const roles = toRoles(profile.subject, advertisers, publishers);
   const paths = {
     back: props.back,
-    certifier: routes.certifier.build({}),
-    tech: routes.tech.build({}),
   } as const;
   return (
     <Template
