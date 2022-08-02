@@ -4,9 +4,9 @@ import useProfiles from "../utils/use-profiles";
 import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
-import Template from "../templates/Dp";
+import Template from "../templates/Publ";
 
-function Dp() {
+function Publ() {
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
   const { profiles, error, targetOrigin } = useProfiles();
   if (error) {
@@ -48,9 +48,9 @@ function Dp() {
   const op = profiles.find(({ subject }) => subject === profile.issuer);
   const paths = {
     back: routes.root.build({}),
-    op: op ? routes.op.build(op) : "",
+    org: op ? routes.org.build(op) : "",
   } as const;
   return <Template dp={profile} website={website} paths={paths} />;
 }
 
-export default Dp;
+export default Publ;
