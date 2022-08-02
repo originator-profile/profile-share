@@ -1,9 +1,10 @@
+import { isDp } from "@webdino/profile-core";
 import useProfiles from "../utils/use-profiles";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
-import Template from "../templates/Profiles";
+import Template from "../templates/Root";
 
-function Profiles() {
+function Root() {
   const {
     advertisers = [],
     publishers = [],
@@ -29,9 +30,10 @@ function Profiles() {
       </LoadingPlaceholder>
     );
   }
+  const dps = profiles.filter(isDp);
   return (
     <Template
-      profiles={profiles}
+      dps={dps}
       advertisers={advertisers}
       publishers={publishers}
       main={main}
@@ -39,4 +41,4 @@ function Profiles() {
   );
 }
 
-export default Profiles;
+export default Root;

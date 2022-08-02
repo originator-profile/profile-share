@@ -1,14 +1,24 @@
 import { useParams } from "react-router-dom";
-import { isDp, isOgWebsite } from "@webdino/profile-core";
+import { isOp, isOpHolder } from "@webdino/profile-core";
 import useProfiles from "../utils/use-profiles";
+import { toRoles } from "../utils/role";
 import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
-import Template from "../templates/Website";
+import Template from "../templates/Op";
 
-function Website() {
-  const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
-  const { profiles, error, targetOrigin } = useProfiles();
+type Props = { back: string };
+
+function Op(props: Props) {
+  const { subject } = useParams();
+  const {
+    advertisers = [],
+    publishers = [],
+    profiles,
+    error,
+    targetOrigin,
+    profileEndpoint,
+  } = useProfiles();
   if (error) {
     return (
       <ErrorPlaceholder>
@@ -26,32 +36,37 @@ function Website() {
       </LoadingPlaceholder>
     );
   }
-  const profile = profiles.find(
-    (profile) => profile.issuer === issuer && profile.subject === subject
-  );
-  if (!profile || !isDp(profile)) {
+  const profile = profiles.find((profile) => profile.subject === subject);
+  if (!profile || !isOp(profile)) {
     return (
       <ErrorPlaceholder>
         <p>プロファイルが見つかりませんでした</p>
       </ErrorPlaceholder>
     );
   }
-  const website = profile.item.find(isOgWebsite);
-  if (!website) {
+  const holder = profile.item.find(isOpHolder);
+  if (!holder) {
     return (
       <ErrorPlaceholder>
-        <p>ウェブサイトが見つかりませんでした</p>
+        <p>所有者情報が見つかりませんでした</p>
       </ErrorPlaceholder>
     );
   }
-
-  const op = profiles.find(({ subject }) => subject === profile.issuer);
+  const roles = toRoles(profile.subject, advertisers, publishers);
   const paths = {
-    back: routes.profiles.build({}),
-    holder: op ? routes.holder.build(op) : "",
+    back: props.back,
+    certifier: routes.certifier.build({}),
     tech: routes.tech.build({}),
   } as const;
-  return <Template dp={profile} website={website} paths={paths} />;
+  return (
+    <Template
+      paths={paths}
+      op={profile}
+      holder={holder}
+      roles={roles}
+      profileEndpoint={profileEndpoint ?? ""}
+    />
+  );
 }
 
-export default Website;
+export default Op;
