@@ -15,7 +15,7 @@ export class CertIssue extends Command {
       required: true,
     }),
     certifier: Flags.string({
-      description: "認証機構 (UUID)",
+      description: "認証機関 (UUID)",
       required: true,
     }),
     holder: Flags.string({
@@ -23,7 +23,7 @@ export class CertIssue extends Command {
       required: true,
     }),
     credential: Flags.string({
-      description: "認証機構の報告書 JSON ファイル",
+      description: "認証機関の報告書 JSON ファイル",
     }),
     "issued-at": Flags.string({
       description: "発行日時 (ISO 8601)",

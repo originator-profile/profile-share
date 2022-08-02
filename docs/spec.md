@@ -4,7 +4,7 @@
 
 ![model](assets/model.dio.png)
 
-- 発行者(たとえば、認証機構)は、検証可能な資格情報を生成します。
+- 発行者(たとえば、認証機関)は、検証可能な資格情報を生成します。
 - 所有者(たとえば、メディア・広告などに関わる組織)は、資格情報を保存し、提供します。
 - 検証者は、所有者から資格情報を受け取り、適切に署名されていることを検証します。
 
@@ -19,9 +19,9 @@ Signed Originator Profile によって記述します。
 
 ![op-model](assets/op-model.dio.png)
 
-- 認証機構の識別子は、Originator Profile の発行者を表す一義的な識別子です。
+- 認証機関の識別子は、Originator Profile の発行者を表す一義的な識別子です。
 - 組織の身元は、法的な責任を負う企業や公的機関の身元(たとえば、名称や連絡先など)を表明するオブジェクトです。
-- 署名と鍵は、認証機構によって付与され、Originator Profile を検証するために使用されるデータです。
+- 署名と鍵は、認証機関によって付与され、Originator Profile を検証するために使用されるデータです。
 
 ## Document Profile データモデル
 
@@ -90,7 +90,7 @@ JSON Web Token (JWT) として署名します。
 
 ### `iss` (Issuer) クレーム
 
-`iss` クレームは、認証機構または組織を表す一義的な識別子です。
+`iss` クレームは、認証機関または組織を表す一義的な識別子です。
 必ず https スキームの URL でなければなりません。
 Signed Document Profile ならば、必ずその組織の Signed Originator Profile の `sub` クレームの文字列と一致する必要があります。
 
@@ -102,7 +102,7 @@ Signed Document Profile ならば、必ずその組織の Signed Originator Prof
 
 ### `op` (Originator Profile) クレーム
 
-組織の身元の詳細と認証機構によって報告されたその組織の資格情報を表すためのオブジェクトです。
+組織の身元の詳細と認証機関によって報告されたその組織の資格情報を表すためのオブジェクトです。
 クレーム名は IANA JSON Web トークンクレームレジストリに登録されていないので、耐衝突性を持つ名前空間を含むことに注意してください。
 
 例:
@@ -195,13 +195,13 @@ Signed Document Profile のためのプロパティです。
 
 ## `credential` 型
 
-認証機構によって報告された資格情報を表すオブジェクトです。
+認証機関によって報告された資格情報を表すオブジェクトです。
 
 - `type` プロパティは、必ず文字列 `credential` でなければなりません。
 
 ## `certifier` 型
 
-認証機構の身元を表すオブジェクトです。
+認証機関の身元を表すオブジェクトです。
 
 - `type` プロパティは、必ず文字列 `certifier` でなければなりません。
 
@@ -256,7 +256,7 @@ Signed Document Profile のためのプロパティです。
 ## 鍵
 
 複数の JSON Web Key (JWK) からなる JWK Set Format として表現されます。
-JWT `iss` クレームによって表明される認証機構の識別子の末尾に `/.well-known/jwks.json` を加えた URL に必ずアクセスできなければなりません。
+JWT `iss` クレームによって表明される認証機関の識別子の末尾に `/.well-known/jwks.json` を加えた URL に必ずアクセスできなければなりません。
 Signed Document Profile ならば、その組織の Signed Originator Profile の `op` クレームの中の `jwks` プロパティとして持つ必要があります。
 
 ## HTML

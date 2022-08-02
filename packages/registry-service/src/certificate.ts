@@ -23,9 +23,9 @@ export const CertificateService = ({
   validator,
 }: Options) => ({
   /**
-   * 認証機構か否かを判定する
-   * @param id 認証機構 ID
-   * @return 認証機構であれば true, そうでなければ false
+   * 認証機関か否かを判定する
+   * @param id 認証機関 ID
+   * @return 認証機関であれば true, そうでなければ false
    */
   async isCertifier(id: CertifierId): Promise<boolean | Error> {
     const data = await prisma.accounts
@@ -37,7 +37,7 @@ export const CertificateService = ({
   },
   /**
    * OP への署名
-   * @param id 認証機構 ID
+   * @param id 認証機関 ID
    * @param accountId 会員 ID
    * @param pkcs8 PEM base64 でエンコードされた PKCS #8 秘密鍵
    * @param options 署名オプション
@@ -94,7 +94,7 @@ export const CertificateService = ({
   },
   /**
    * OP の発行
-   * @param id 認証機構 ID
+   * @param id 認証機関 ID
    * @param jwt JWT でエンコードされた OP
    * @return ops.id
    */
