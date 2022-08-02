@@ -4,11 +4,11 @@ import useProfiles from "../utils/use-profiles";
 import { toRoles } from "../utils/role";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
-import Template from "../templates/Op";
+import Template from "../templates/Org";
 
 type Props = { back: string };
 
-function Op(props: Props) {
+function Org(props: Props) {
   const { subject } = useParams();
   const {
     advertisers = [],
@@ -66,4 +66,4 @@ function Op(props: Props) {
   );
 }
 
-export default Op;
+export default Org;

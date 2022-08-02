@@ -47,7 +47,7 @@ function ProfileItem({
         className={className}
         image={website.image}
         name={website.title}
-        to={link ? routes.dp.build(profile) : undefined}
+        to={link ? routes.publ.build(profile) : undefined}
         variant={variant}
         as={as}
         roles={roles}

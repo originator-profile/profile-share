@@ -19,7 +19,7 @@ type Props = {
   paths: { back: string };
 };
 
-function Op({ op, holder, roles, paths, profileEndpoint }: Props) {
+function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
   const logo = holder.logos?.find(({ isMain }) => isMain);
   return (
     <>
@@ -68,4 +68,4 @@ function Op({ op, holder, roles, paths, profileEndpoint }: Props) {
   );
 }
 
-export default Op;
+export default Org;
