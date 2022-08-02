@@ -20,7 +20,7 @@ const publ: RouteObject = {
 };
 
 function App() {
-  const element = useRoutes([root, org, publ]);
+  const element = useRoutes([root, publ]);
   return element;
 }
 
