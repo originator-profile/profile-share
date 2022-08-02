@@ -28,9 +28,9 @@ function urlParamsRoute<Path extends string>(path: Path) {
 }
 
 export const routes = {
-  profiles: route("/"),
-  holder: urlParamsRoute("holder/:issuer/:subject"),
+  root: route("/"),
+  op: urlParamsRoute("op/:issuer/:subject"),
   certifier: route("certifier"),
   tech: route("tech"),
-  website: urlParamsRoute("website/:issuer/:subject"),
+  dp: urlParamsRoute("dp/:issuer/:subject"),
 } as const;

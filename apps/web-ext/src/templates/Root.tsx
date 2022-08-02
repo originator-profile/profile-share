@@ -1,4 +1,5 @@
 import { Profile } from "../types/profile";
+import { Dp } from "../types/dp";
 import { toRoles } from "../utils/role";
 import { sortProfiles } from "../utils/profile";
 import ProfileItem from "../components/ProfileItem";
@@ -6,13 +7,13 @@ import storage from "../utils/storage";
 import browser from "webextension-polyfill";
 
 type Props = {
-  profiles: Profile[];
+  dps: Dp[];
   advertisers: string[];
   publishers: string[];
   main: string[];
 };
 
-function Profiles({ profiles, advertisers, publishers, main }: Props) {
+function Root({ dps, advertisers, publishers, main }: Props) {
   const handleClickProfile = (profile: Profile) => {
     const tabId = storage.getItem("tabId");
     if (!tabId) return;
@@ -23,7 +24,7 @@ function Profiles({ profiles, advertisers, publishers, main }: Props) {
   };
   return (
     <ul>
-      {sortProfiles(profiles, main).map((profile, index) => {
+      {sortProfiles(dps, main).map((profile, index) => {
         const roles = toRoles(profile.subject, advertisers, publishers);
         return (
           <ProfileItem
@@ -41,4 +42,4 @@ function Profiles({ profiles, advertisers, publishers, main }: Props) {
   );
 }
 
-export default Profiles;
+export default Root;
