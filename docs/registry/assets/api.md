@@ -351,18 +351,18 @@ This operation does not require authentication
 
 ```shell
 # You can also use wget
-curl -X GET /account/{id}/profiles \
+curl -X GET /website/{url}/profiles \
   -H 'Accept: application/ld+json'
 
 ```
 
-`GET /account/{id}/profiles`
+`GET /website/{url}/profiles`
 
 <h3 id="getprofiles-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
-|id|path|string|true|none|
+|url|path|string|true|none|
 
 > Example responses
 

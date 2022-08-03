@@ -40,6 +40,9 @@ model dps {
   expiredAt DateTime
   /// JWT
   jwt       String
+  /// ウェブページ
+  website   websites? @relation(fields: [websiteId], references: [url], onDelete: Cascade)
+  websiteId String?
 }
 
 /// 会員
@@ -185,6 +188,7 @@ model websites {
   bodyFormatValue String
   /// 対象のテキストへの署名 (Detached JSON Web Signature)
   proofJws        String
+  dps             dps[]
 }
 
 /// 本文の形式
