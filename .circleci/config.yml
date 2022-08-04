@@ -31,12 +31,15 @@ commands:
 jobs:
   test:
     docker:
-      - image: "cimg/node:lts"
+      - image: "cimg/node:18.7.0"
     steps:
       - git_checkout_and_config
       - yarn_install_with_cache
       - run: yarn lint
-      - run: yarn test
+      - run:
+          command: yarn test
+          environment:
+            VITEST_MAX_THREADS: 3
       - run: yarn build
       - run:
           name: Commit
