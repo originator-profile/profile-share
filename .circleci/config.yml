@@ -39,7 +39,7 @@ jobs:
       - run:
           command: yarn test
           environment:
-            VITEST_MAX_THREADS: 3
+            VITEST_MAX_THREADS: 3 # NOTE: ランナーのメモリ枯渇を回避する目的
       - run: yarn build
       - run:
           name: Commit
