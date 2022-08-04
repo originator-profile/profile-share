@@ -2,8 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import flush from "just-flush";
 import { addYears, fromUnixTime } from "date-fns";
 import { NotFoundError, BadRequestError } from "http-errors-enhanced";
-import { Dp, JwtDpPayload } from "@webdino/profile-model";
-import { fromJwtDpPayload } from "@webdino/profile-core";
+import { Dp } from "@webdino/profile-model";
 import { signDp } from "@webdino/profile-sign";
 import { ValidatorService } from "./validator";
 
@@ -89,8 +88,7 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
     if (decoded instanceof Error) return decoded;
     const issuedAt: Date = fromUnixTime(decoded.payload.iat);
     const expiredAt: Date = fromUnixTime(decoded.payload.exp);
-    const profile = fromJwtDpPayload(decoded.payload as JwtDpPayload);
-    const [websiteId] = profile.item.map((item) => item.url);
+    const websiteId = decoded.payload.sub;
     const data = await prisma.dps
       .create({
         data: {
