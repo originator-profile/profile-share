@@ -1,12 +1,15 @@
 import { PrismaClient, Prisma, websites } from "@prisma/client";
+import { JsonLdDocument } from "jsonld";
 import { NotFoundError } from "http-errors-enhanced";
 import { signBody } from "@webdino/profile-sign";
+import Config from "./config";
 
 type Options = {
+  config: Config;
   prisma: PrismaClient;
 };
 
-export const WebsiteService = ({ prisma }: Options) => ({
+export const WebsiteService = ({ config, prisma }: Options) => ({
   /**
    * ウェブページの作成
    * @param input ウェブページ
@@ -54,6 +57,41 @@ export const WebsiteService = ({ prisma }: Options) => ({
    * @return Detached Compact JWS
    */ async signBody(pkcs8: string, body: string): Promise<string | Error> {
     return await signBody(body, pkcs8).catch((e: Error) => e);
+  },
+  /**
+   * Profiles Set の取得
+   * @deprecated
+   * @param url ウェブページ URL
+   */
+  async getProfiles(url: string): Promise<JsonLdDocument | Error> {
+    const data = await prisma.websites
+      .findUnique({
+        where: { url },
+        include: {
+          account: {
+            include: {
+              publications: {
+                include: {
+                  op: true,
+                },
+              },
+            },
+          },
+          dps: true,
+        },
+      })
+      .catch((e: Error) => e);
+    if (!data) return new NotFoundError();
+    if (data instanceof Error) return data;
+
+    const ops = data.account.publications.map((publication) => publication.op);
+    const profiles: JsonLdDocument = {
+      "@context":
+        config.JSONLD_CONTEXT ?? Config.properties.JSONLD_CONTEXT.default,
+      main: data.url,
+      profile: [...ops.map((op) => op.jwt), ...data.dps.map((dp) => dp.jwt)],
+    };
+    return profiles;
   },
 });
 

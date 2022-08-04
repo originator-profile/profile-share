@@ -94,6 +94,7 @@ erDiagram
   
     ops o{--|| accounts : "certifier"
     dps o{--|| accounts : "issuer"
+    dps o{--|| websites : "website"
     accounts o{--|| roles : "role"
     accountBusinessCategories o{--|| accounts : "account"
     accountBusinessCategories o{--|| businessCategories : "businessCategory"

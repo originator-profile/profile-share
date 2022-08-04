@@ -88,6 +88,7 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
     if (decoded instanceof Error) return decoded;
     const issuedAt: Date = fromUnixTime(decoded.payload.iat);
     const expiredAt: Date = fromUnixTime(decoded.payload.exp);
+    const websiteId = decoded.payload.sub;
     const data = await prisma.dps
       .create({
         data: {
@@ -95,6 +96,7 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
           jwt,
           issuedAt,
           expiredAt,
+          websiteId,
         },
       })
       .catch((e: Error) => e);
