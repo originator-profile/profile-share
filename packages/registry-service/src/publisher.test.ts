@@ -74,6 +74,7 @@ describe("PublisherService", () => {
       jwt,
       issuedAt,
       expiredAt,
+      websiteId: null,
     });
     const data = await publisher.issueDp(accountId, jwt);
     // @ts-expect-error assert

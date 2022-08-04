@@ -188,6 +188,7 @@ model websites {
   bodyFormatValue String
   /// 対象のテキストへの署名 (Detached JSON Web Signature)
   proofJws        String
+  /// Signed Document Profile
   dps             dps[]
 }
 

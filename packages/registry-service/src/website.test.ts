@@ -3,7 +3,10 @@ import { mockDeep, mockClear } from "vitest-mock-extended";
 import { Prisma, PrismaClient } from "@prisma/client";
 import crypto from "node:crypto";
 import { generateKey } from "@webdino/profile-sign";
+import Config from "./config";
 import { WebsiteService } from "./website";
+
+const config: Config = { ISSUER_UUID: "d613c1d6-5312-41e9-98ad-2b99765955b6" };
 
 describe("WebsiteService", () => {
   const prisma = mockDeep<PrismaClient>();
@@ -14,7 +17,7 @@ describe("WebsiteService", () => {
 
   test("create() calls prisma.websites.create()", async () => {
     prisma.websites.create.mockRejectedValue({});
-    const website: WebsiteService = WebsiteService({ prisma });
+    const website: WebsiteService = WebsiteService({ config, prisma });
     const accountId = crypto.randomUUID();
     const input: Prisma.websitesCreateInput = {
       account: { connect: { id: accountId } },
@@ -31,7 +34,7 @@ describe("WebsiteService", () => {
   });
 
   test("signBody() return compact JWS", async () => {
-    const website: WebsiteService = WebsiteService({ prisma });
+    const website: WebsiteService = WebsiteService({ config, prisma });
     const { pkcs8 } = await generateKey();
     const body = "<h1>OP 確認くん</h1>";
     const jws = await website.signBody(pkcs8, body);
