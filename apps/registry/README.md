@@ -12,20 +12,9 @@ Originator Profile と Document Profile の管理を行うシステムです。
 
 ## Dependencies
 
-- 開発環境を構築するためには、[Node.js](https://nodejs.org/) が必要です。
-- 開発用サーバーを起動するには、[Docker](https://www.docker.com/get-started) と [Compose v2](https://docs.docker.com/compose/cli-command/) がインストールされ、起動できる環境が必要です。
+[開発ガイド](https://github.com/webdino/profile/blob/main/docs/development.md)を参照してください。
 
 ## Usage
-
-```sh-session
-$ corepack yarn install
-$ corepack yarn workspace @webdino/profile-registry run
-スクリプトの実行...
-$ corepack yarn workspace @webdino/profile-registry dev
-http://localhost:8080 での開発用サーバーの起動...
-```
-
-その他
 
 ```
 $ bin/dev COMMAND
