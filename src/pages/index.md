@@ -1,4 +1,4 @@
-<!-- https://webdino.github.io/profile/ -->
+<!-- https://profile-docs.pages.dev/ -->
 
 メディア・広告に関わる法人・個人の透明性に関する認定機関の報告結果を検証可能な方法で一般市民に提示することを目的としたプロジェクトです。
 
