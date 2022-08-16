@@ -21,7 +21,9 @@
     "update:npm": "npm-check-updates --deep --upgrade",
     "update:dedupe": "yarn-deduplicate",
     "predocs": "yarn build",
-    "docs": "docusaurus build --out-dir pages",
+    "docs": "run-s docs:{ts,build}",
+    "docs:ts": "typedoc",
+    "docs:build": "docusaurus build --out-dir pages",
     "docs:preview": "docusaurus start",
     "start": "profile-registry start"
   },
@@ -36,6 +38,7 @@
     "prettier": "^2.7.1",
     "start-server-and-test": "^1.14.0",
     "turbo": "latest",
+    "typedoc": "^0.23.10",
     "yarn-deduplicate": "^5.0.0"
   },
   "engines": {

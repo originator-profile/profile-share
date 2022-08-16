@@ -1,0 +1,8 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "readme": "src/pages/ts.md",
+  "out": "static/ts",
+  "entryPoints": ["."],
+  "entryPointStrategy": "packages",
+  "exclude": ["apps/*"]
+}

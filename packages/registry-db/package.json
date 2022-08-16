@@ -2,11 +2,16 @@
   "name": "@webdino/profile-registry-db",
   "version": "0.0.0",
   "private": true,
+  "main": "src/index.ts",
+  "typedoc": {
+    "readmeFile": "README.md"
+  },
   "scripts": {
     "build": "prisma generate",
     "dev": "prisma generate --watch"
   },
   "devDependencies": {
+    "@prisma/client": "^4.2.1",
     "prisma": "^4.1.1",
     "prisma-erd-generator": "^1.0.2"
   }

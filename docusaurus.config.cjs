@@ -34,6 +34,11 @@ module.exports = {
       title,
       items: [
         {
+          href: `${url}/ts/`,
+          label: "TSDoc",
+          position: "right",
+        },
+        {
           href: githubUrl,
           label: "GitHub",
           position: "right",
