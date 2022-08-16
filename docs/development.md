@@ -58,6 +58,18 @@ yarn --cwd apps/web-ext start:chromium --url=http://localhost:8080
 
 コードの整形を行います。
 
+## 便利な CI ワークフロー
+
+[GitHub Checks が有効化されており](https://circleci.com/docs/ja/enable-checks)、GitHub リポジトリ上で各コミットに対する CI の結果を確認することができます。 CI で実行している便利な CI ワークフローを紹介します。
+
+### test
+
+`yarn lint` `yarn test` `yarn build` `yarn e2e` を行います。
+
+### format
+
+`yarn format` を行います。
+
 ## 後付
 
 ### Windows 環境での開発
