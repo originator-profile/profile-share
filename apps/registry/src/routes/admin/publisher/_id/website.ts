@@ -12,8 +12,10 @@ const Body = {
       type: "object",
       title: "JSON",
       description: `\
-Prisma.websitesCreateInput または Prisma.websitesUpdateInput を与えます。
-詳細は[データベーススキーマ](https://github.com/webdino/profile/blob/main/packages/registry-db/prisma/schema.prisma)を参照してください。`,
+[Prisma.websitesCreateInput](https://profile-docs.pages.dev/ts/types/_webdino_profile_registry_db.default.Prisma.websitesCreateInput.html)\
+ または \
+[Prisma.websitesUpdateInput](https://profile-docs.pages.dev/ts/types/_webdino_profile_registry_db.default.Prisma.websitesUpdateInput.html)\
+ を与えます。`,
       additionalProperties: true,
     },
   },

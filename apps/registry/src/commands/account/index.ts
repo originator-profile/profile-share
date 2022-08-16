@@ -11,7 +11,9 @@ export class Account extends Command {
       summary: "JSON file",
       description: `\
 Prisma.accountsCreateInput または Prisma.accountsUpdateInput
-詳細はデータベーススキーマを参照してください。`,
+詳細はTSDocを参照してください。
+
+https://profile-docs.pages.dev/ts/`,
       default: "account.example.json",
       required: true,
     }),
