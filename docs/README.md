@@ -1,3 +1,7 @@
+---
+sidebar_position: 0
+---
+
 # ドキュメント
 
 - [仕様](spec.md)
