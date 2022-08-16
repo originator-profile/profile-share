@@ -1,3 +1,8 @@
+---
+sidebar_position: 2
+sidebar_label: 操作説明書
+---
+
 # Profile Registry 操作手順
 
 あらかじめ以下の環境変数を apps/registry/.env に設定する。

@@ -1,5 +1,8 @@
 {
   "name": "@webdino/profile",
+  "description": "Originator Profile",
+  "homepage": "https://profile-docs.pages.dev",
+  "repository": "https://github.com/webdino/profile",
   "version": "0.0.0",
   "private": true,
   "workspaces": [
@@ -13,13 +16,21 @@
     "e2e:run": "turbo run e2e --parallel",
     "test": "turbo run test",
     "lint": "turbo run lint",
-    "format": "prettier --ignore-path .gitignore --write . '!docs/**/assets'",
+    "format": "prettier --ignore-path .gitignore --write .",
     "update": "run-s update:{npm,dedupe}",
     "update:npm": "npm-check-updates --deep --upgrade",
     "update:dedupe": "yarn-deduplicate",
+    "predocs": "yarn build",
+    "docs": "docusaurus build --out-dir pages",
+    "docs:preview": "docusaurus start",
     "start": "profile-registry start"
   },
   "devDependencies": {
+    "@docusaurus/core": "^2.0.1",
+    "@docusaurus/preset-classic": "^2.0.1",
+    "@docusaurus/types": "^2.0.1",
+    "mdx-mermaid": "^1.2.3",
+    "mermaid": "^9.1.5",
     "npm-check-updates": "^16.0.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1",

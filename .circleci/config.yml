@@ -33,7 +33,7 @@ jobs:
     docker:
       - image: "cimg/node:18.7.0"
     steps:
-      - git_checkout_and_config
+      - checkout
       - yarn_install_with_cache
       - run: yarn lint
       - run:
@@ -43,12 +43,6 @@ jobs:
             VITEST_MAX_THREADS: 3
             VITEST_MIN_THREADS: 1
       - run: yarn build
-      - run:
-          name: Commit
-          command: |
-            if git commit -am 'bot: build [skip ci]'; then
-              git push origin HEAD:"$CIRCLE_BRANCH"
-            fi
       - store_artifacts:
           path: apps/web-ext/web-ext-artifacts
   e2e:
