@@ -21,8 +21,7 @@ export class PublisherWebsite extends Command {
       description: `\
 Prisma.websitesCreateInput または Prisma.websitesUpdateInput
 詳細はTSDocを参照してください。
-
-https://profile-docs.pages.dev/ts/`,
+https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma`,
       default: "website.example.json",
       required: true,
     }),
