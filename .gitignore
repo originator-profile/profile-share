@@ -10,3 +10,4 @@ tmp
 /apps/web-ext/screenshots
 /docs/**/assets
 /pages
+/static/ts

@@ -60,7 +60,8 @@ FLAG DESCRIPTIONS
   -i, --input=<value>  JSON file
 
     Prisma.accountsCreateInput または Prisma.accountsUpdateInput
-    詳細はデータベーススキーマを参照してください。
+    詳細はTSDocを参照してください。
+    https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
 ```
 
 ## `profile-registry account:register-key`
@@ -247,7 +248,8 @@ FLAG DESCRIPTIONS
   --input=<value>  JSON file
 
     Prisma.websitesCreateInput または Prisma.websitesUpdateInput
-    詳細はデータベーススキーマを参照してください。
+    詳細はTSDocを参照してください。
+    https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
 ```
 
 ## `profile-registry start`
