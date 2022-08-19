@@ -4,7 +4,7 @@ services:
     build:
       context: "."
       args:
-        NODE_VERSION: 18.7-alpine
+        NODE_VERSION: 16.17-alpine
     healthcheck:
       test: "wget -qO /dev/null http://localhost:8080/"
     environment:
