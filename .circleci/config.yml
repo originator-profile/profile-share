@@ -30,18 +30,18 @@ commands:
             - ~/.cache/ms-playwright
 jobs:
   test:
-    docker:
-      - image: "cimg/node:18.7.0"
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large
     steps:
       - checkout
+      - node/install:
+          install-yarn: true
+          # NOTE: Node.js v18.7.0 で @webdino/profile-model:test に失敗する問題 (#315) ので Node.js v16.17.0 を使う
+          node-version: "16.17.0"
       - yarn_install_with_cache
       - run: yarn lint
-      - run:
-          command: yarn test
-          environment:
-            # NOTE: ランナーのメモリ枯渇を回避する目的
-            VITEST_MAX_THREADS: 3
-            VITEST_MIN_THREADS: 1
+      - run: yarn test
       - run: yarn build
       - store_artifacts:
           path: apps/web-ext/web-ext-artifacts
