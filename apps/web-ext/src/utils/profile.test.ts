@@ -34,12 +34,17 @@ const anotherDp: Dp = {
 };
 const profiles: Profile[] = [anotherDp, dp, op];
 
-test("sortProfile() sorts main to head if main exists", async () => {
+test("sortProfiles() sorts main to head if main exists", async () => {
   const sorted = sortProfiles(profiles, [dp.subject]);
   expect(sorted).toMatchObject([dp, anotherDp, op]);
 });
 
-test("sortProfile() sorts first op to head if op exists", async () => {
+test("sortProfiles() sorts first op to head if op exists", async () => {
   const sorted = sortProfiles(profiles, []);
   expect(sorted).toMatchObject([op, anotherDp, dp]);
+});
+
+test("sortProfiles() returns empty array if niether main and profile exists", async () => {
+  const sorted = sortProfiles([], []);
+  expect(sorted).toMatchObject([]);
 });
