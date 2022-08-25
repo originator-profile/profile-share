@@ -34,8 +34,8 @@ export const sortProfiles = (
   const mainIndex = profiles.findIndex(
     (profile) => profile.subject === main[0]
   );
-  if (isFinite(mainIndex)) return reorder(profiles, mainIndex, 0);
+  if (mainIndex !== -1) return reorder(profiles, mainIndex, 0);
   const opIndex = profiles.findIndex(isOp);
-  if (isFinite(opIndex)) return reorder(profiles, opIndex, 0);
+  if (opIndex !== -1) return reorder(profiles, opIndex, 0);
   return profiles;
 };
