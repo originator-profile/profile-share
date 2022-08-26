@@ -58,9 +58,10 @@ async function issueDp(services: Services, issuerUuid: string, pkcs8: string) {
 
 export async function seed(): Promise<void> {
   const issuerUuid: string = process.env.ISSUER_UUID ?? crypto.randomUUID();
+  const appUrl: string = process.env.APP_URL ?? "http://localhost:8080";
   const prisma: PrismaClient = new PrismaClient();
   const services = Services({
-    config: { ISSUER_UUID: issuerUuid },
+    config: { ISSUER_UUID: issuerUuid, APP_URL: appUrl },
     prisma,
   });
 

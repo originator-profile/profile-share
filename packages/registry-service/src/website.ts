@@ -60,7 +60,6 @@ export const WebsiteService = ({ config, prisma }: Options) => ({
   },
   /**
    * Profiles Set の取得
-   * @deprecated
    * @param url ウェブページ URL
    */
   async getProfiles(url: string): Promise<JsonLdDocument | Error> {
