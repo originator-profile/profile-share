@@ -16,7 +16,7 @@ const Config = {
       default: "https://oprdev.herokuapp.com",
     },
   },
-  required: ["ISSUER_UUID", "APP_URL"],
+  required: ["ISSUER_UUID"],
 } as const;
 
 type Config = FromSchema<typeof Config>;
