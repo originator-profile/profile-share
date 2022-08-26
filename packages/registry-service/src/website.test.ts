@@ -6,7 +6,10 @@ import { generateKey } from "@webdino/profile-sign";
 import Config from "./config";
 import { WebsiteService } from "./website";
 
-const config: Config = { ISSUER_UUID: "d613c1d6-5312-41e9-98ad-2b99765955b6" };
+const config: Config = {
+  ISSUER_UUID: "d613c1d6-5312-41e9-98ad-2b99765955b6",
+  APP_URL: "http://localhost:8080",
+};
 
 describe("WebsiteService", () => {
   const prisma = mockDeep<PrismaClient>();

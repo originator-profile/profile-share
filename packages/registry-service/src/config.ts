@@ -11,8 +11,12 @@ const Config = {
       type: "string",
       default: "https://oprdev.herokuapp.com/context",
     },
+    APP_URL: {
+      type: "string",
+      default: "https://oprdev.herokuapp.com",
+    },
   },
-  required: ["ISSUER_UUID"],
+  required: ["ISSUER_UUID", "APP_URL"],
 } as const;
 
 type Config = FromSchema<typeof Config>;
