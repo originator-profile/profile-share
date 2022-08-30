@@ -4,6 +4,8 @@ import { isOp, isDp, isOpHolder } from "@webdino/profile-core";
 import { sortProfiles } from "../utils/profile";
 import { routes } from "../utils/routes";
 import Image from "../components/Image";
+import storage from "../utils/storage";
+import browser from "webextension-polyfill";
 
 type Props = {
   profiles: Profile[];
@@ -11,6 +13,14 @@ type Props = {
 };
 
 function Publs({ profiles, main }: Props) {
+  const handleClickProfile = (profile: Profile) => () => {
+    const tabId = storage.getItem("tabId");
+    if (!tabId) return;
+    browser.tabs.sendMessage(tabId, {
+      type: "focus-profile",
+      profile: profile,
+    });
+  };
   return (
     <ul>
       {sortProfiles(profiles.filter(isDp), main).map((dp) => {
@@ -28,6 +38,7 @@ function Publs({ profiles, main }: Props) {
             <Link
               className="flex justify-center items-center h-20 hover:bg-blue-50"
               to={routes.publ.build(dp)}
+              onClick={handleClickProfile(dp)}
             >
               <Image
                 src={logo?.url}
