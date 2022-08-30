@@ -23,12 +23,12 @@ const publ: RouteObject = {
 function App() {
   const element = useRoutes([root, publ]);
   return (
-    <div className="flex">
-      <nav className="flex-shrink-0 w-20 h-screen overflow-y-auto shadow-xl z-10">
+    <>
+      <nav className="flex-shrink-0 w-20 h-screen overflow-y-auto fixed bg-white shadow-xl z-10">
         <Publs />
       </nav>
-      <main className="flex-1">{element}</main>
-    </div>
+      <main className="pl-20">{element}</main>
+    </>
   );
 }
 
