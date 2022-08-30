@@ -3,6 +3,7 @@ import { routes } from "./utils/routes";
 import Root from "./pages/Root";
 import Org from "./pages/Org";
 import Publ from "./pages/Publ";
+import Publs from "./pages/Publs";
 
 const root: RouteObject = {
   path: routes.root.path,
@@ -21,7 +22,14 @@ const publ: RouteObject = {
 
 function App() {
   const element = useRoutes([root, publ]);
-  return element;
+  return (
+    <div className="flex">
+      <nav className="flex-shrink-0 w-20 h-screen shadow-xl z-10">
+        <Publs />
+      </nav>
+      <main className="flex-1">{element}</main>
+    </div>
+  );
 }
 
 export default App;

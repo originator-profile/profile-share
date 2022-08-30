@@ -49,7 +49,6 @@ function Publ() {
 
   const op = profiles.filter(isOp).find(({ subject }) => subject === dp.issuer);
   const paths = {
-    back: routes.root.build({}),
     org: op ? routes.org.build(op) : "",
   } as const;
   return <Template dp={dp} website={website} paths={paths} />;

@@ -1,6 +1,5 @@
 import { Dp, DpWebsite } from "../types/dp";
 import Image from "../components/Image";
-import BackHeader from "../components/BackHeader";
 import VerifySuccessBadge from "../components/VerifySuccessBadge";
 import VerifyFailureBadge from "../components/VerifyFailureBadge";
 import WebsiteTable from "../components/WebsiteTable";
@@ -10,15 +9,12 @@ import NavLink from "../components/NavLink";
 type Props = {
   dp: Dp;
   website: DpWebsite;
-  paths: { back: string; org: string };
+  paths: { org: string };
 };
 
 function Publ({ dp, website, paths }: Props) {
   return (
     <>
-      <BackHeader className="sticky top-0" to={paths.back}>
-        <h1 className="text-sm">ウェブサイト情報</h1>
-      </BackHeader>
       <Image
         src={website.image}
         placeholderSrc="/assets/placeholder-logo-main.png"

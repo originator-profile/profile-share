@@ -24,14 +24,14 @@ function Root({ dps, advertisers, publishers, main }: Props) {
   };
   return (
     <ul>
-      {sortProfiles(dps, main).map((profile, index) => {
-        const roles = toRoles(profile.subject, advertisers, publishers);
+      {sortProfiles(dps, main).map((dp, index) => {
+        const roles = toRoles(dp.subject, advertisers, publishers);
         return (
           <ProfileItem
-            key={`${encodeURIComponent(profile.issuer)}/${encodeURIComponent(
-              profile.subject
+            key={`${encodeURIComponent(dp.issuer)}/${encodeURIComponent(
+              dp.subject
             )}`}
-            profile={profile}
+            profile={dp}
             variant={index === 0 ? "main" : "sub"}
             roles={roles}
             onClickProfile={handleClickProfile}
