@@ -1,18 +1,13 @@
+import { Navigate } from "react-router-dom";
 import { isDp } from "@webdino/profile-core";
+import { sortProfiles } from "../utils/profile";
+import { routes } from "../utils/routes";
 import useProfiles from "../utils/use-profiles";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
-import Template from "../templates/Root";
 
 function Root() {
-  const {
-    advertisers = [],
-    publishers = [],
-    main = [],
-    profiles,
-    error,
-    targetOrigin,
-  } = useProfiles();
+  const { main = [], profiles, error, targetOrigin } = useProfiles();
   if (error) {
     return (
       <ErrorPlaceholder>
@@ -30,15 +25,15 @@ function Root() {
       </LoadingPlaceholder>
     );
   }
-  const dps = profiles.filter(isDp);
-  return (
-    <Template
-      dps={dps}
-      advertisers={advertisers}
-      publishers={publishers}
-      main={main}
-    />
-  );
+  const [dp] = sortProfiles(profiles.filter(isDp), main);
+  if (!dp) {
+    return (
+      <ErrorPlaceholder>
+        <p>プロファイルが見つかりませんでした</p>
+      </ErrorPlaceholder>
+    );
+  }
+  return <Navigate to={routes.publ.build(dp)} />;
 }
 
 export default Root;
