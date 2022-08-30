@@ -22,7 +22,7 @@ browser.browserAction.onClicked.addListener(async function (tab) {
   const { id } = await browser.windows.create({
     url,
     type: "popup",
-    width: 320,
+    width: 400,
     height: 640,
   });
   windowId = id ?? NaN;
