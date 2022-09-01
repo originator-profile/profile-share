@@ -46,7 +46,7 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
         <Roles roles={roles} />
       </div>
       <hr className="border-gray-50 border-4" />
-      <HolderTable className="w-full table-fixed" holder={holder} />
+      <HolderTable holder={holder} />
       {holder.description && <Description description={holder.description} />}
       <hr className="border-gray-50 border-4" />
       <Image
@@ -57,13 +57,9 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
         height={198}
       />
       <hr className="border-gray-50 border-4" />
-      <CertifierTable className="w-full table-fixed" op={op} />
+      <CertifierTable op={op} />
       <hr className="border-gray-50 border-4" />
-      <TechTable
-        className="w-full table-fixed"
-        profile={op}
-        profileEndpoint={profileEndpoint}
-      />
+      <TechTable profile={op} profileEndpoint={profileEndpoint} />
     </>
   );
 }

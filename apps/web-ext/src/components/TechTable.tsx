@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { isOp } from "@webdino/profile-core";
 import { Profile } from "../types/profile";
 import TableRow from "./TableRow";
@@ -10,7 +11,7 @@ type Props = {
 
 function TechTable({ className, profile, profileEndpoint }: Props) {
   return (
-    <table className={className}>
+    <table className={clsx("w-full table-fixed", className)}>
       <tbody>
         <TableRow
           header="検証結果"

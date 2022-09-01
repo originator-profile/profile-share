@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { Op } from "../types/op";
 import TableRow from "./TableRow";
 
@@ -8,7 +9,7 @@ type Props = {
 
 function CertifierTable({ className, op }: Props) {
   return (
-    <table className={className}>
+    <table className={clsx("w-full table-fixed", className)}>
       <tbody>
         <TableRow header="認証機関" data="一般社団法人 第三者認証機関" />
         <TableRow header="所在地" data="〒100-8111 東京都千代田区千代田1-1" />
