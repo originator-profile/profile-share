@@ -1,6 +1,5 @@
 import { Dp, DpWebsite } from "../types/dp";
 import Image from "../components/Image";
-import BackHeader from "../components/BackHeader";
 import VerifySuccessBadge from "../components/VerifySuccessBadge";
 import VerifyFailureBadge from "../components/VerifyFailureBadge";
 import WebsiteTable from "../components/WebsiteTable";
@@ -10,15 +9,12 @@ import NavLink from "../components/NavLink";
 type Props = {
   dp: Dp;
   website: DpWebsite;
-  paths: { back: string; org: string };
+  paths: { org: string };
 };
 
 function Publ({ dp, website, paths }: Props) {
   return (
-    <>
-      <BackHeader className="sticky top-0" to={paths.back}>
-        <h1 className="text-sm">ウェブサイト情報</h1>
-      </BackHeader>
+    <div className="bg-gray-50 min-h-screen">
       <Image
         src={website.image}
         placeholderSrc="/assets/placeholder-logo-main.png"
@@ -26,7 +22,7 @@ function Publ({ dp, website, paths }: Props) {
         width={320}
         height={198}
       />
-      <div className="px-3 py-3">
+      <div className="px-3 py-3 bg-white">
         {dp.error instanceof Error ? (
           <VerifyFailureBadge />
         ) : (
@@ -34,16 +30,16 @@ function Publ({ dp, website, paths }: Props) {
         )}
       </div>
       <hr className="border-gray-50 border-4" />
-      <WebsiteTable className="w-full table-fixed" website={website} />
+      <WebsiteTable className="w-full table-fixed bg-white" website={website} />
       {website.description && <Description description={website.description} />}
-      <div className="px-3 pt-2 pb-20 bg-gray-50">
+      <div className="px-3 pt-2">
         {paths.org && (
           <NavLink className="mb-2" to={paths.org}>
             所有者情報
           </NavLink>
         )}
       </div>
-    </>
+    </div>
   );
 }
 
