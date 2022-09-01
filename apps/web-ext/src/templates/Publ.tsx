@@ -19,6 +19,7 @@ function Publ({ dp, website, paths }: Props) {
         src={website.image}
         placeholderSrc="/assets/placeholder-logo-main.png"
         alt={`${website.name}のロゴ`}
+        alt=""
         width={320}
         height={198}
       />

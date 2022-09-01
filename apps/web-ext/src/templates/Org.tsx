@@ -29,7 +29,7 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
       <Image
         src={logo?.url}
         placeholderSrc="/assets/placeholder-logo-main.png"
-        alt={`${holder.name}のロゴ`}
+        alt=""
         width={320}
         height={198}
       />
@@ -52,7 +52,7 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
       <Image
         src="/assets/logo-certifier.png"
         placeholderSrc="/assets/placeholder-logo-main.png"
-        alt="第三者認証機関のロゴ"
+        alt=""
         width={320}
         height={198}
       />
