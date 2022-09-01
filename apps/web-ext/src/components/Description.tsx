@@ -14,7 +14,7 @@ function Description({ className, description }: Props) {
     anchor.rel = "noopener noreferrer";
   }
   return (
-    <section className={clsx("py-1 border-gray-200 border-b", className)}>
+    <section className={clsx("py-1", className)}>
       <h2 className="mb-1 text-gray-500 font-normal">説明</h2>
       <div
         className="prose prose-xs text-xs break-words"
