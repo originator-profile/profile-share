@@ -14,7 +14,7 @@ type Props = {
 
 function Publ({ dp, website, paths }: Props) {
   return (
-    <>
+    <div className="bg-gray-50 min-h-screen">
       <Image
         src={website.image}
         placeholderSrc="/assets/placeholder-logo-main.png"
@@ -22,7 +22,7 @@ function Publ({ dp, website, paths }: Props) {
         width={320}
         height={198}
       />
-      <div className="px-3 py-3">
+      <div className="px-3 py-3 bg-white">
         {dp.error instanceof Error ? (
           <VerifyFailureBadge />
         ) : (
@@ -30,16 +30,16 @@ function Publ({ dp, website, paths }: Props) {
         )}
       </div>
       <hr className="border-gray-50 border-4" />
-      <WebsiteTable className="w-full table-fixed" website={website} />
+      <WebsiteTable className="w-full table-fixed bg-white" website={website} />
       {website.description && <Description description={website.description} />}
-      <div className="px-3 pt-2 pb-20 bg-gray-50">
+      <div className="px-3 pt-2">
         {paths.org && (
           <NavLink className="mb-2" to={paths.org}>
             所有者情報
           </NavLink>
         )}
       </div>
-    </>
+    </div>
   );
 }
 
