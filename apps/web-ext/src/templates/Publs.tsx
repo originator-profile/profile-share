@@ -43,7 +43,7 @@ function Publs({ profiles, main }: Props) {
               <Image
                 src={logo?.url}
                 placeholderSrc="/assets/placeholder-logo-main.png"
-                alt={`${holder?.name}のロゴ`}
+                alt={holder?.name ?? ""}
                 width={54}
                 height={54}
                 rounded
