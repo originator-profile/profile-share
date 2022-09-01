@@ -8,7 +8,7 @@ import Template from "../templates/Publ";
 
 function Publ() {
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
-  const { profiles, error, targetOrigin } = useProfiles();
+  const { profiles, error, targetOrigin, profileEndpoint } = useProfiles();
   if (error) {
     return (
       <ErrorPlaceholder>
@@ -51,7 +51,14 @@ function Publ() {
   const paths = {
     org: op ? routes.org.build(op) : "",
   } as const;
-  return <Template dp={dp} website={website} paths={paths} />;
+  return (
+    <Template
+      dp={dp}
+      website={website}
+      paths={paths}
+      profileEndpoint={profileEndpoint ?? ""}
+    />
+  );
 }
 
 export default Publ;

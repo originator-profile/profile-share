@@ -6,10 +6,10 @@ type Props = {
 function TableRow({ header, data }: Props) {
   return (
     <tr className="text-xs">
-      <th className="w-2/6 text-left pl-3 pr-1 py-2 text-gray-500 font-normal border-gray-200 border-b">
+      <th className="w-2/6 text-left pr-1 py-1 text-gray-500 font-normal">
         {header}
       </th>
-      <td className="pr-3 py-2 border-gray-200 border-b break-words">{data}</td>
+      <td className="py-1 break-words">{data}</td>
     </tr>
   );
 }
