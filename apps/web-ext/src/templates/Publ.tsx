@@ -1,29 +1,29 @@
+import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import { Disclosure, Transition } from "@headlessui/react";
-import { OgWebsite } from "@webdino/profile-model";
+import { OgWebsite, OpHolder } from "@webdino/profile-model";
 import { Dp } from "../types/profile";
 import Image from "../components/Image";
-import VerifySuccessBadge from "../components/VerifySuccessBadge";
-import VerifyFailureBadge from "../components/VerifyFailureBadge";
 import WebsiteMainTable from "../components/WebsiteMainTable";
 import WebsiteSubTable from "../components/WebsiteSubTable";
 import TechTable from "../components/TechTable";
 import Description from "../components/Description";
-import NavLink from "../components/NavLink";
 
 type Props = {
   dp: Dp;
   website: OgWebsite;
+  holder: OpHolder;
   paths: { org: string };
   profileEndpoint: string;
 };
 
-function Publ({ dp, website, paths, profileEndpoint }: Props) {
+function Publ({ dp, website, holder, paths, profileEndpoint }: Props) {
+  const logo = holder.logos?.find(({ isMain }) => isMain);
   return (
     <div className="bg-gray-50 min-h-screen p-4">
       <div className="flex gap-4">
         <Image
-          className="flex-shrink-0"
+          className="flex-shrink-0 mt-8"
           src={website.image}
           placeholderSrc="/assets/placeholder-logo-main.png"
           alt=""
@@ -48,7 +48,7 @@ function Publ({ dp, website, paths, profileEndpoint }: Props) {
                         : "ant-design:plus-square-outlined"
                     }
                   />
-                  <span className="text-black font-bold">
+                  <span className="font-bold">
                     この記事についてさらに詳しく...
                   </span>
                 </Disclosure.Button>
@@ -73,20 +73,82 @@ function Publ({ dp, website, paths, profileEndpoint }: Props) {
           </Disclosure>
         </div>
       </div>
-      <div className="px-3 py-3 bg-white">
-        {dp.error instanceof Error ? (
-          <VerifyFailureBadge />
-        ) : (
-          <VerifySuccessBadge />
+      <div className="jumpu-card">
+        <Link className="flex items-center gap-4 mx-4 my-3" to={paths.org}>
+          <Image
+            className="flex-shrink-0"
+            src={logo?.url}
+            placeholderSrc="/assets/placeholder-logo-main"
+            alt=""
+            width={60}
+            height={60}
+            rounded
+          />
+          <div>
+            <p className="text-gray-700 text-sm">この記事を発行した組織</p>
+            <p className="text-lg">{holder.name}</p>
+          </div>
+        </Link>
+        <div className="flex items-center gap-2 bg-blue-50 p-2 mx-4 my-3 rounded-sm">
+          <Icon
+            className="flex-shrink-0 text-blue-500 text-2xl"
+            icon="akar-icons:circle-check-fill"
+          />
+          <p className="flex-1 text-blue-500 text-base font-bold">
+            この組織は認証を受けています
+          </p>
+        </div>
+        <div className="flex mx-4 my-3">
+          <Image
+            className="flex-shrink-0"
+            src="/assets/logo-certifier.png"
+            placeholderSrc="/assets/placeholder-logo-main.png"
+            alt=""
+            width={80}
+            height={50}
+          />
+          <div>
+            <p className="text-sm text-gray-500 mb-1">
+              <span className="font-bold text-gray-700 mr-1">
+                無効トラフィック対策認証 第三者検証
+              </span>
+              その他2件の認証情報
+            </p>
+            <p className="text-xs">
+              <Icon
+                className="inline text-blue-600 mr-1"
+                icon="akar-icons:check"
+              />
+              有効期限内
+            </p>
+          </div>
+        </div>
+        {holder.publishingPrincipleUrl && (
+          <a
+            className="block bg-gray-50 rounded-lg px-4 py-2 mx-4 my-3"
+            href={holder.publishingPrincipleUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <p className="text-sm font-bold text-gray-600 mb-1">
+              編集ガイドライン
+            </p>
+            <p className="text-xs text-blue-600">
+              {holder.publishingPrincipleTitle ?? holder.publishingPrincipleUrl}
+              <Icon
+                className="inline ml-1 text-gray-500"
+                icon="fa-solid:external-link-alt"
+              />
+            </p>
+          </a>
         )}
-      </div>
-      <hr className="border-gray-50 border-4" />
-      <div className="px-3 pt-2">
-        {paths.org && (
-          <NavLink className="mb-2" to={paths.org}>
-            所有者情報
-          </NavLink>
-        )}
+        <Link
+          className="flex gap-2 justify-center items-center text-sm border-t boder-gray-100 px-4 py-3"
+          to={paths.org}
+        >
+          <span className="">組織情報をみる</span>
+          <Icon className="flex-shrink-0" icon="fa6-solid:chevron-right" />
+        </Link>
       </div>
     </div>
   );
