@@ -13,10 +13,10 @@
   "devDependencies": {
     "@webdino/profile-model": "*",
     "@webdino/profile-tsconfig": "*",
-    "date-fns": "^2.29.1",
-    "eslint": "^8.20.0",
+    "date-fns": "^2.29.2",
+    "eslint": "^8.23.0",
     "eslint-config-webdino-profile": "*",
-    "jose": "^4.8.3",
-    "vitest": "^0.19.1"
+    "jose": "^4.9.1",
+    "vitest": "^0.22.1"
   }
 }
