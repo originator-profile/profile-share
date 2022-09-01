@@ -48,7 +48,7 @@ function Publ({ dp, website, holder, paths, profileEndpoint }: Props) {
                         : "ant-design:plus-square-outlined"
                     }
                   />
-                  <span className="font-bold">
+                  <span className="text-xs font-bold">
                     この記事についてさらに詳しく...
                   </span>
                 </Disclosure.Button>
@@ -146,7 +146,7 @@ function Publ({ dp, website, holder, paths, profileEndpoint }: Props) {
           className="flex gap-2 justify-center items-center text-sm border-t boder-gray-100 px-4 py-3"
           to={paths.org}
         >
-          <span className="">組織情報をみる</span>
+          <span className="text-sm font-bold">組織情報を見る</span>
           <Icon className="flex-shrink-0" icon="fa6-solid:chevron-right" />
         </Link>
       </div>
