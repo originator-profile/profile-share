@@ -58,7 +58,10 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
         )}
         <table className="w-full table-fixed mb-3">
           <tbody>
-            <TableRow header="組織情報の発行日" data="2022年7月1日" />
+            <TableRow
+              header="組織情報の発行日"
+              data={new Date(op.issuedAt).toLocaleString("ja-JP")}
+            />
           </tbody>
         </table>
         {roles.length > 0 && <Roles className="mb-3" roles={roles} />}
