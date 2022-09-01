@@ -113,7 +113,7 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
           <CertifierTable op={op} />
         </div>
         <h2 className="text-sm text-gray-600 font-bold mb-3">技術情報</h2>
-        <div className="jumpu-card p-2 mb-4">
+        <div className="jumpu-card p-2">
           <TechTable
             className="jumpu-card p-2"
             profile={op}
