@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { OpHolder } from "../types/op";
+import { OpHolder } from "@webdino/profile-model";
 import TableRow from "./TableRow";
 
 type Props = {
