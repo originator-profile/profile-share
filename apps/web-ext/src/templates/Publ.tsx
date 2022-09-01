@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { Disclosure, Transition } from "@headlessui/react";
-import { Dp, DpWebsite } from "../types/dp";
+import { OgWebsite } from "@webdino/profile-model";
+import { Dp } from "../types/profile";
 import Image from "../components/Image";
 import VerifySuccessBadge from "../components/VerifySuccessBadge";
 import VerifyFailureBadge from "../components/VerifyFailureBadge";
@@ -12,7 +13,7 @@ import NavLink from "../components/NavLink";
 
 type Props = {
   dp: Dp;
-  website: DpWebsite;
+  website: OgWebsite;
   paths: { org: string };
   profileEndpoint: string;
 };

@@ -1,5 +1,6 @@
 import clsx from "clsx";
-import { Op, OpHolder } from "../types/op";
+import { OpHolder } from "@webdino/profile-model";
+import { Op } from "../types/profile";
 import { Role } from "../types/role";
 import Image from "../components/Image";
 import BackHeader from "../components/BackHeader";

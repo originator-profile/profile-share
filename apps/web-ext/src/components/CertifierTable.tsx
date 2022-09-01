@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Op } from "../types/op";
+import { Op } from "../types/profile";
 import TableRow from "./TableRow";
 
 type Props = {
