@@ -7,16 +7,29 @@ type Props = {
   alt: string;
   width: number;
   height: number;
+  rounded?: boolean;
 };
 
-function Image({ className, src, placeholderSrc, alt, width, height }: Props) {
+function Image({
+  className,
+  src,
+  placeholderSrc,
+  alt,
+  width,
+  height,
+  rounded = false,
+}: Props) {
   return (
     <figure
-      className={clsx("flex justify-center items-center bg-white", className)}
+      className={clsx(
+        "flex justify-center items-center",
+        { "bg-white": !rounded },
+        className
+      )}
       style={{ height }}
     >
       <img
-        className="w-auto"
+        className={clsx("w-auto", { ["rounded-full"]: rounded })}
         style={{ maxHeight: height }}
         src={src ?? placeholderSrc}
         alt={alt}

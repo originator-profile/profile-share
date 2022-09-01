@@ -35,15 +35,17 @@ function Org(props: Props) {
       </LoadingPlaceholder>
     );
   }
-  const profile = profiles.find((profile) => profile.subject === subject);
-  if (!profile || !isOp(profile)) {
+  const op = profiles
+    .filter(isOp)
+    .find((profile) => profile.subject === subject);
+  if (!op) {
     return (
       <ErrorPlaceholder>
         <p>プロファイルが見つかりませんでした</p>
       </ErrorPlaceholder>
     );
   }
-  const holder = profile.item.find(isOpHolder);
+  const holder = op.item.find(isOpHolder);
   if (!holder) {
     return (
       <ErrorPlaceholder>
@@ -51,14 +53,14 @@ function Org(props: Props) {
       </ErrorPlaceholder>
     );
   }
-  const roles = toRoles(profile.subject, advertisers, publishers);
+  const roles = toRoles(op.subject, advertisers, publishers);
   const paths = {
     back: props.back,
   } as const;
   return (
     <Template
       paths={paths}
-      op={profile}
+      op={op}
       holder={holder}
       roles={roles}
       profileEndpoint={profileEndpoint ?? ""}
