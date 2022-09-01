@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { DpWebsite } from "../types/dp";
 import TableRow from "./TableRow";
 
@@ -8,7 +9,7 @@ type Props = {
 
 function WebsiteTable({ className, website }: Props) {
   return (
-    <table className={className}>
+    <table className={clsx("w-full table-fixed", className)}>
       <tbody>
         {"title" in website && (
           <TableRow header="タイトル" data={website.title} />

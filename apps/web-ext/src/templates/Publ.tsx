@@ -30,7 +30,7 @@ function Publ({ dp, website, paths }: Props) {
         )}
       </div>
       <hr className="border-gray-50 border-4" />
-      <WebsiteTable className="w-full table-fixed bg-white" website={website} />
+      <WebsiteTable website={website} />
       {website.description && <Description description={website.description} />}
       <div className="px-3 pt-2">
         {paths.org && (
