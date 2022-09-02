@@ -4,29 +4,29 @@
  * @param profilesLink 取得先エンドポイント
  */
 export async function fetchProfiles(
-  targetOrigin?: string,
-  profilesLink?: string
+  targetOrigin: string,
+  profilesLink: string | null
 ) {
-  if (!profilesLink && !targetOrigin)
-    throw new Error(
-      "プロファイルを取得できませんでした:\nプロファイルを取得するウェブページが特定できませんでした"
+  let profileEndpoint, profiles;
+  try {
+    profileEndpoint = new URL(
+      profilesLink ?? `${targetOrigin}/.well-known/op-document`
     );
-  const profileEndpoint = new URL(
-    profilesLink ?? `${targetOrigin}/.well-known/op-document`
-  );
-  const profiles = await fetch(profileEndpoint.href)
-    .then((res) => {
+    profiles = await fetch(profileEndpoint.href).then((res) => {
       if (!res.ok) {
         throw new Error(`HTTP ステータスコード ${res.status}`);
       }
       return res.json();
-    })
-    .catch((e) => e);
-  if (profiles instanceof Error) {
-    throw {
-      ...profiles,
-      message: `プロファイルを取得できませんでした:\n${profiles.message}`,
-    };
+    });
+  } catch (e) {
+    if (e instanceof Error) {
+      throw {
+        ...e,
+        message: `プロファイルを取得できませんでした:\n${e.message}`,
+      };
+    } else {
+      throw e;
+    }
   }
   return { profiles, profileEndpoint };
 }
