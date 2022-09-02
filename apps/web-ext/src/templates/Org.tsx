@@ -60,7 +60,7 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
           <tbody>
             <TableRow
               header="組織情報の発行日"
-              data={new Date(op.issuedAt).toLocaleString("ja-JP")}
+              data={new Date(op.issuedAt).toLocaleString(navigator.language)}
             />
           </tbody>
         </table>

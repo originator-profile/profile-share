@@ -34,11 +34,11 @@ function TechTable({ className, profile, profileEndpoint }: Props) {
         />
         <TableRow
           header="発行日"
-          data={new Date(profile.issuedAt).toLocaleString("ja-JP")}
+          data={new Date(profile.issuedAt).toLocaleString(navigator.language)}
         />
         <TableRow
           header="有効期限"
-          data={new Date(profile.expiredAt).toLocaleString("ja-JP")}
+          data={new Date(profile.expiredAt).toLocaleString(navigator.language)}
         />
       </tbody>
     </table>
