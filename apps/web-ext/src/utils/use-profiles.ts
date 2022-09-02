@@ -1,6 +1,5 @@
 import browser from "webextension-polyfill";
 import useSWR, { mutate } from "swr";
-import { useAsync } from "react-use";
 import {
   RemoteKeys,
   ProfilesVerifier,
@@ -14,11 +13,11 @@ import storage from "./storage";
 
 const key = "profiles";
 
-async function fetchVerifiedProfiles(
-  _: typeof key,
-  targetOrigin?: string,
-  profilesLink?: string
-) {
+async function fetchVerifiedProfiles(_: typeof key, tabId: number) {
+  const { targetOrigin, profilesLink }: FetchProfilesMessageResponse =
+    await browser.tabs.sendMessage(tabId, {
+      type: "fetch-profiles",
+    });
   const { profiles, profileEndpoint } = await fetchProfiles(
     targetOrigin,
     profilesLink
@@ -42,15 +41,7 @@ async function fetchVerifiedProfiles(
 }
 
 function useProfiles() {
-  const message = useAsync(async () => {
-    const tabId = storage.getItem("tabId");
-    if (tabId === null) return null;
-    const response: FetchProfilesMessageResponse =
-      await browser.tabs.sendMessage(tabId, {
-        type: "fetch-profiles",
-      });
-    return response;
-  });
+  const tabId = storage.getItem("tabId");
   const { data, error } = useSWR<{
     advertisers: string[];
     publishers: string[];
@@ -58,13 +49,10 @@ function useProfiles() {
     profiles: Profile[];
     targetOrigin?: string;
     profileEndpoint?: string;
-  }>(
-    [key, message.value?.targetOrigin, message.value?.profilesLink],
-    fetchVerifiedProfiles
-  );
+  }>(tabId ? [key, tabId] : null, fetchVerifiedProfiles);
   return {
     ...data,
-    error: message.error || error,
+    error,
     targetOrigin: data?.targetOrigin,
     profileEndpoint: data?.profileEndpoint,
   };
