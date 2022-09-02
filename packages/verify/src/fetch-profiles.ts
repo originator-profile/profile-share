@@ -1,3 +1,5 @@
+import { JsonLdDocument } from "jsonld";
+
 /**
  * Profiles Set の取得
  * @param targetOrigin 取得先オリジン
@@ -6,7 +8,10 @@
 export async function fetchProfiles(
   targetOrigin: string,
   profilesLink: string | null
-) {
+): Promise<{
+  profileEndpoint: URL;
+  profiles: JsonLdDocument;
+}> {
   let profileEndpoint, profiles;
   try {
     profileEndpoint = new URL(
