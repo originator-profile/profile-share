@@ -1,4 +1,5 @@
-import { OpHolder } from "../types/op";
+import clsx from "clsx";
+import { OpHolder } from "@webdino/profile-model";
 import TableRow from "./TableRow";
 
 type Props = {
@@ -8,7 +9,7 @@ type Props = {
 
 function HolderTable({ className, holder }: Props) {
   return (
-    <table className={className}>
+    <table className={clsx("w-full table-fixed", className)}>
       <tbody>
         <TableRow header="所有者" data={holder.name} />
         <TableRow
