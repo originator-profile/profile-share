@@ -9,7 +9,10 @@ import Template from "../templates/Org";
 type Props = { back: string };
 
 function Org(props: Props) {
-  const { subject } = useParams();
+  const { orgIssuer, orgSubject } = useParams<{
+    orgIssuer: string;
+    orgSubject: string;
+  }>();
   const {
     advertisers = [],
     publishers = [],
@@ -37,7 +40,10 @@ function Org(props: Props) {
   }
   const op = profiles
     .filter(isOp)
-    .find((profile) => profile.subject === subject);
+    .find(
+      (profile) =>
+        profile.issuer === orgIssuer && profile.subject === orgSubject
+    );
   if (!op) {
     return (
       <ErrorPlaceholder>
