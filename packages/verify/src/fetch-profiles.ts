@@ -12,12 +12,11 @@ export async function fetchProfiles(
     profileEndpoint = new URL(
       profilesLink ?? `${targetOrigin}/.well-known/op-document`
     );
-    profiles = await fetch(profileEndpoint.href).then((res) => {
-      if (!res.ok) {
-        throw new Error(`HTTP ステータスコード ${res.status}`);
-      }
-      return res.json();
-    });
+    const res = await fetch(profileEndpoint.href);
+    if (!res.ok) {
+      throw new Error(`HTTP ステータスコード ${res.status}`);
+    }
+    profiles = await res.json();
   } catch (e) {
     if (e instanceof Error) {
       throw new Error(`プロファイルを取得できませんでした:\n${e.message}`, {
