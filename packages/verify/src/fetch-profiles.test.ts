@@ -34,7 +34,7 @@ describe("fetch-profiles", async () => {
   });
 
   test("オリジン指定時適切な Profiles Set と well-known エンドポイントが得られる", async () => {
-    const result = await fetchProfiles("http://localhost:8080");
+    const result = await fetchProfiles("http://localhost:8080", null);
     expect(result).toEqual({
       profiles,
       profileEndpoint: new URL("http://localhost:8080/.well-known/op-document"),
@@ -43,7 +43,7 @@ describe("fetch-profiles", async () => {
 
   test("エンドポイント指定時適切な Profiles Set とエンドポイントが得られる", async () => {
     const result = await fetchProfiles(
-      undefined,
+      "",
       "http://localhost:8080/.well-known/op-document"
     );
     expect(result).toEqual({
@@ -53,14 +53,14 @@ describe("fetch-profiles", async () => {
   });
 
   test("オリジンとエンドポイントのいずれも未指定のとき Profiles Set の取得に失敗", async () => {
-    expect(fetchProfiles()).rejects.toThrowError(
-      /^プロファイルを取得できませんでした:\nプロファイルを取得するウェブページが特定できませんでした$/
+    expect(fetchProfiles("", null)).rejects.toThrowError(
+      /^プロファイルを取得できませんでした:\nInvalid URL$/
     );
   });
 
   test("取得先に Profiles Set が存在しないとき Profiles Set の取得に失敗", async () => {
     mockGet("http://localhost:8080/.well-known/op-document").willFail({}, 404);
-    expect(fetchProfiles("http://localhost:8080")).rejects.toThrowError(
+    expect(fetchProfiles("http://localhost:8080", null)).rejects.toThrowError(
       /^プロファイルを取得できませんでした:\nHTTP ステータスコード 404$/
     );
   });
