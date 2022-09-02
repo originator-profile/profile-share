@@ -29,6 +29,6 @@ function urlParamsRoute<Path extends string>(path: Path) {
 
 export const routes = {
   root: route("/"),
-  org: urlParamsRoute("org/:issuer/:subject"),
+  org: urlParamsRoute("org/:orgIssuer/:orgSubject"),
   publ: urlParamsRoute("publ/:issuer/:subject"),
 } as const;
