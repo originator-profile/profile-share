@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import clsx from "clsx";
+import { useParams, Link } from "react-router-dom";
 import { Profile } from "../types/profile";
 import { isOp, isDp, isOpHolder } from "@webdino/profile-core";
 import { sortProfiles } from "../utils/profile";
@@ -13,6 +14,7 @@ type Props = {
 };
 
 function Publs({ profiles, main }: Props) {
+  const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
   const handleClickProfile = (profile: Profile) => () => {
     const tabId = storage.getItem("tabId");
     if (!tabId) return;
@@ -24,6 +26,7 @@ function Publs({ profiles, main }: Props) {
   return (
     <ul>
       {sortProfiles(profiles.filter(isDp), main).map((dp) => {
+        const active = dp.issuer === issuer && dp.subject === subject;
         const op = profiles
           .filter(isOp)
           .find(({ subject }) => subject === dp.issuer);
@@ -36,10 +39,23 @@ function Publs({ profiles, main }: Props) {
             )}`}
           >
             <Link
-              className="flex justify-center items-center h-20 hover:bg-blue-50"
+              className={clsx(
+                "flex justify-center items-center h-20 hover:bg-blue-50 relative",
+                { ["bg-blue-50"]: active }
+              )}
               to={routes.publ.build(dp)}
               onClick={handleClickProfile(dp)}
             >
+              {active && (
+                <svg
+                  viewBox="0 0 10 10"
+                  width="10"
+                  height="10"
+                  className="absolute left-0 -translate-x-1/2 fill-blue-500 stroke-transparent"
+                >
+                  <circle cx="5" cy="5" r="5" />
+                </svg>
+              )}
               <Image
                 src={logo?.url}
                 placeholderSrc="/assets/placeholder-logo-main.png"
