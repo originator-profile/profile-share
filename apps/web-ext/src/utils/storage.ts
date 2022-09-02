@@ -2,6 +2,6 @@ import { createStorage } from "typesafe-storage";
 
 const storage = createStorage<{
   tabId: number;
-}>(localStorage);
+}>(sessionStorage);
 
 export default storage;
