@@ -20,10 +20,9 @@ export async function fetchProfiles(
     });
   } catch (e) {
     if (e instanceof Error) {
-      throw {
-        ...e,
-        message: `プロファイルを取得できませんでした:\n${e.message}`,
-      };
+      throw new Error(`プロファイルを取得できませんでした:\n${e.message}`, {
+        cause: e,
+      });
     } else {
       throw e;
     }
