@@ -1,18 +1,16 @@
-import { DpWebsite } from "../types/dp";
+import clsx from "clsx";
+import { OgWebsite } from "@webdino/profile-model";
 import TableRow from "./TableRow";
 
 type Props = {
   className?: string;
-  website: DpWebsite;
+  website: OgWebsite;
 };
 
-function WebsiteTable({ className, website }: Props) {
+function WebsiteSubTable({ className, website }: Props) {
   return (
-    <table className={className}>
+    <table className={clsx("w-full table-fixed", className)}>
       <tbody>
-        {"title" in website && (
-          <TableRow header="タイトル" data={website.title} />
-        )}
         {"url" in website && (
           <TableRow
             header="URL"
@@ -28,19 +26,10 @@ function WebsiteTable({ className, website }: Props) {
             }
           />
         )}
-        {"https://schema.org/author" in website && (
-          <TableRow header="著者" data={website["https://schema.org/author"]} />
-        )}
         {"https://schema.org/category" in website && (
           <TableRow
             header="カテゴリー"
             data={website["https://schema.org/category"]}
-          />
-        )}
-        {"https://schema.org/editor" in website && (
-          <TableRow
-            header="編集者"
-            data={website["https://schema.org/editor"]}
           />
         )}
       </tbody>
@@ -48,4 +37,4 @@ function WebsiteTable({ className, website }: Props) {
   );
 }
 
-export default WebsiteTable;
+export default WebsiteSubTable;

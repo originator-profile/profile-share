@@ -19,17 +19,23 @@ const publ: RouteObject = {
   element: <Outlet />,
   children: [{ path: "", element: <Publ /> }, org],
 };
-
-function App() {
-  const element = useRoutes([root, publ]);
-  return (
+const layout: RouteObject = {
+  element: (
     <div className="flex">
       <nav className="flex-shrink-0 w-20 h-screen overflow-y-auto bg-white sticky top-0 shadow-xl z-10">
         <Publs />
       </nav>
-      <main className="flex-1">{element}</main>
+      <main className="flex-1">
+        <Outlet />
+      </main>
     </div>
-  );
+  ),
+  children: [root, publ],
+};
+
+function App() {
+  const element = useRoutes([layout]);
+  return element;
 }
 
 export default App;

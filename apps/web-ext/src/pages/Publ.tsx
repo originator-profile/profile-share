@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { isOp, isDp, isOgWebsite } from "@webdino/profile-core";
+import { isOp, isOpHolder, isDp, isOgWebsite } from "@webdino/profile-core";
 import useProfiles from "../utils/use-profiles";
 import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
@@ -8,7 +8,7 @@ import Template from "../templates/Publ";
 
 function Publ() {
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
-  const { profiles, error, targetOrigin } = useProfiles();
+  const { profiles, error, targetOrigin, profileEndpoint } = useProfiles();
   if (error) {
     return (
       <ErrorPlaceholder>
@@ -28,10 +28,9 @@ function Publ() {
   }
   const dp = profiles
     .filter(isDp)
-    .find(
-      (profile) => profile.issuer === issuer && profile.subject === subject
-    );
-  if (!dp) {
+    .find((dp) => dp.issuer === issuer && dp.subject === subject);
+  const op = profiles.filter(isOp).find((op) => op.subject === issuer);
+  if (!(dp && op)) {
     return (
       <ErrorPlaceholder>
         <p>プロファイルが見つかりませんでした</p>
@@ -46,12 +45,27 @@ function Publ() {
       </ErrorPlaceholder>
     );
   }
+  const holder = op.item.find(isOpHolder);
+  if (!holder) {
+    return (
+      <ErrorPlaceholder>
+        <p>所有者情報が見つかりませんでした</p>
+      </ErrorPlaceholder>
+    );
+  }
 
-  const op = profiles.filter(isOp).find(({ subject }) => subject === dp.issuer);
   const paths = {
-    org: op ? routes.org.build(op) : "",
+    org: routes.org.build(op),
   } as const;
-  return <Template dp={dp} website={website} paths={paths} />;
+  return (
+    <Template
+      dp={dp}
+      website={website}
+      holder={holder}
+      paths={paths}
+      profileEndpoint={profileEndpoint ?? ""}
+    />
+  );
 }
 
 export default Publ;

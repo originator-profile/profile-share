@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { isOp } from "@webdino/profile-core";
 import { Profile } from "../types/profile";
 import TableRow from "./TableRow";
@@ -10,7 +11,7 @@ type Props = {
 
 function TechTable({ className, profile, profileEndpoint }: Props) {
   return (
-    <table className={className}>
+    <table className={clsx("w-full table-fixed", className)}>
       <tbody>
         <TableRow
           header="検証結果"
@@ -33,11 +34,11 @@ function TechTable({ className, profile, profileEndpoint }: Props) {
         />
         <TableRow
           header="発行日"
-          data={new Date(profile.issuedAt).toLocaleString("ja-JP")}
+          data={new Date(profile.issuedAt).toLocaleString(navigator.language)}
         />
         <TableRow
           header="有効期限"
-          data={new Date(profile.expiredAt).toLocaleString("ja-JP")}
+          data={new Date(profile.expiredAt).toLocaleString(navigator.language)}
         />
       </tbody>
     </table>

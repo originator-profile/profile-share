@@ -1,8 +1,6 @@
 import { test, expect } from "vitest";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
-import { Op } from "../types/op";
-import { Dp } from "../types/dp";
-import { Profile } from "../types/profile";
+import { Op, Dp, Profile } from "../types/profile";
 import { sortProfiles } from "./profile";
 
 const iat = getUnixTime(new Date());
