@@ -8,6 +8,7 @@ import WebsiteMainTable from "../components/WebsiteMainTable";
 import WebsiteSubTable from "../components/WebsiteSubTable";
 import TechTable from "../components/TechTable";
 import Description from "../components/Description";
+import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
 
 type Props = {
   dp: Dp;
@@ -25,7 +26,7 @@ function Publ({ dp, website, holder, paths, profileEndpoint }: Props) {
         <Image
           className="flex-shrink-0 mt-8"
           src={website.image}
-          placeholderSrc="/assets/placeholder-logo-main.png"
+          placeholderSrc={placeholderLogoMainUrl}
           alt=""
           width={80}
           height={45}
@@ -78,7 +79,7 @@ function Publ({ dp, website, holder, paths, profileEndpoint }: Props) {
           <Image
             className="flex-shrink-0"
             src={logo?.url}
-            placeholderSrc="/assets/placeholder-logo-main"
+            placeholderSrc={placeholderLogoMainUrl}
             alt=""
             width={60}
             height={60}
@@ -102,7 +103,7 @@ function Publ({ dp, website, holder, paths, profileEndpoint }: Props) {
           <Image
             className="flex-shrink-0"
             src="/assets/logo-certifier.png"
-            placeholderSrc="/assets/placeholder-logo-main.png"
+            placeholderSrc={placeholderLogoMainUrl}
             alt=""
             width={80}
             height={50}
