@@ -18,6 +18,9 @@ module.exports = {
   minify: true,
   define: { "import.meta.env": JSON.stringify(defaultEnv) },
   jsx: "automatic",
+  loader: {
+    '.png': 'dataurl'
+  },
   plugins: [
     require("esbuild-copy-static-files")({ src: "public", dest: "dist" }),
     require("./esbuild.postcss"),
