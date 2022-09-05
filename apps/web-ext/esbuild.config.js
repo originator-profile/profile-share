@@ -19,7 +19,7 @@ module.exports = {
   define: { "import.meta.env": JSON.stringify(defaultEnv) },
   jsx: "automatic",
   loader: {
-    '.png': 'dataurl'
+    ".png": "dataurl",
   },
   plugins: [
     require("esbuild-copy-static-files")({ src: "public", dest: "dist" }),
