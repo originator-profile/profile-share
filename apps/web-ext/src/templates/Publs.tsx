@@ -7,6 +7,7 @@ import { routes } from "../utils/routes";
 import Image from "../components/Image";
 import storage from "../utils/storage";
 import browser from "webextension-polyfill";
+import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
 
 type Props = {
   profiles: Profile[];
@@ -58,7 +59,7 @@ function Publs({ profiles, main }: Props) {
               )}
               <Image
                 src={logo?.url}
-                placeholderSrc="/assets/placeholder-logo-main.png"
+                placeholderSrc={placeholderLogoMainUrl}
                 alt={holder?.name ?? ""}
                 width={54}
                 height={54}

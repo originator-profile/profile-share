@@ -5,6 +5,8 @@ import { Role } from "../types/role";
 import clsx from "clsx";
 import Image from "./Image";
 import Roles from "../components/Roles";
+import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
+import placeholderLogoSubUrl from "../assets/placeholder-logo-sub.png";
 
 type Props = {
   className?: string;
@@ -43,7 +45,7 @@ function ItemBase({
         {variant === "main" && (
           <Image
             src={image}
-            placeholderSrc="/assets/placeholder-logo-main.png"
+            placeholderSrc={placeholderLogoMainUrl}
             alt=""
             width={320}
             height={198}
@@ -54,7 +56,7 @@ function ItemBase({
             <div className="flex-shrink-0 w-[90px]">
               <Image
                 src={image}
-                placeholderSrc="/assets/placeholder-logo-sub.png"
+                placeholderSrc={placeholderLogoSubUrl}
                 alt=""
                 width={90}
                 height={56}

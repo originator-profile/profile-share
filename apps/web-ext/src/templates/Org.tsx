@@ -10,6 +10,8 @@ import Description from "../components/Description";
 import CertifierTable from "../components/CertifierTable";
 import TechTable from "../components/TechTable";
 import TableRow from "../components/TableRow";
+import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
+import logoCertifierUrl from "../assets/logo-certifier.png";
 
 type Props = {
   op: Op;
@@ -30,7 +32,7 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
         <Image
           className="mb-2"
           src={logo?.url}
-          placeholderSrc="/assets/placeholder-logo-main.png"
+          placeholderSrc={placeholderLogoMainUrl}
           alt=""
           width={120}
           height={120}
@@ -78,7 +80,7 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
           <li className="flex items-center gap-4">
             <Image
               src="/assets/logo-certifier.png"
-              placeholderSrc="/assets/placeholder-logo-main.png"
+              placeholderSrc={placeholderLogoMainUrl}
               alt=""
               width={80}
               height={50}
@@ -98,8 +100,8 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
         <h2 className="text-sm text-gray-600 font-bold mb-3">認定内容</h2>
         <div className="jumpu-card p-2 mb-4">
           <Image
-            src="/assets/logo-certifier.png"
-            placeholderSrc="/assets/placeholder-logo-main.png"
+            src={logoCertifierUrl}
+            placeholderSrc={placeholderLogoMainUrl}
             alt=""
             width={160}
             height={99}
