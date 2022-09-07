@@ -1,29 +1,15 @@
 import browser from "webextension-polyfill";
 import storage from "./utils/storage";
 
-let windowId: number;
-
 browser.browserAction.onClicked.addListener(async function (tab) {
-  try {
-    await browser.windows.update(windowId, { focused: true });
-    return;
-  } catch {
-    // nop
-  }
   if (tab.id !== undefined) storage.setItem("tabId", tab.id);
   const url = browser.runtime.getURL("index.html");
-
-  if (import.meta.env.MODE === "development") {
-    // @ts-expect-error e2e testing only
-    window.open().location.href = url;
-    return;
-  }
-
-  const { id } = await browser.windows.create({
-    url,
-    type: "popup",
-    width: 400,
-    height: 640,
-  });
-  windowId = id ?? NaN;
+  const popup = window.open(
+    "about:blank",
+    "_blank",
+    "popup,width=520,height=640"
+  );
+  if (!popup) return;
+  // NOTE: e2e テスト時ウィンドウ生成後移動しないと期待するページが開かれない
+  popup.location.href = url;
 });
