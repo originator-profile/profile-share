@@ -19,5 +19,6 @@ describe("launch", () => {
     await page?.goto("http://localhost:8080/");
     page = await popup(ctx);
     expect(await page.title()).toBe("Profile Web Extension");
+    await page.waitForSelector("text='OP 確認くん'");
   });
 });
