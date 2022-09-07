@@ -10,15 +10,12 @@ type Props = {
 function WebsiteMainTable({ className, website }: Props) {
   return (
     <Table className={className}>
-        {"https://schema.org/author" in website && (
-          <TableRow header="著者" data={website["https://schema.org/author"]} />
-        )}
-        {"https://schema.org/editor" in website && (
-          <TableRow
-            header="編集者"
-            data={website["https://schema.org/editor"]}
-          />
-        )}
+      {"https://schema.org/author" in website && (
+        <TableRow header="著者" data={website["https://schema.org/author"]} />
+      )}
+      {"https://schema.org/editor" in website && (
+        <TableRow header="編集者" data={website["https://schema.org/editor"]} />
+      )}
     </Table>
   );
 }
