@@ -1,5 +1,5 @@
-import clsx from "clsx";
 import { OgWebsite } from "@webdino/profile-model";
+import Table from "./Table"
 import TableRow from "./TableRow";
 
 type Props = {
@@ -9,8 +9,7 @@ type Props = {
 
 function WebsiteSubTable({ className, website }: Props) {
   return (
-    <table className={clsx("w-full table-fixed", className)}>
-      <tbody>
+    <Table className={className}>
         {"url" in website && (
           <TableRow
             header="URL"
@@ -32,8 +31,7 @@ function WebsiteSubTable({ className, website }: Props) {
             data={website["https://schema.org/category"]}
           />
         )}
-      </tbody>
-    </table>
+    </Table>
   );
 }
 

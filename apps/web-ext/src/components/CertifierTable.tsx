@@ -1,5 +1,5 @@
-import clsx from "clsx";
 import { Op } from "../types/profile";
+import Table from "./Table"
 import TableRow from "./TableRow";
 
 type Props = {
@@ -9,8 +9,7 @@ type Props = {
 
 function CertifierTable({ className, op }: Props) {
   return (
-    <table className={clsx("w-full table-fixed", className)}>
-      <tbody>
+    <Table className={className}>
         <TableRow header="認証機関" data="一般社団法人 第三者認証機関" />
         <TableRow header="所在地" data="〒100-8111 東京都千代田区千代田1-1" />
         <TableRow
@@ -44,8 +43,7 @@ function CertifierTable({ className, op }: Props) {
         />
         <TableRow header="認定内容" data="ブランドセーフティ認証" />
         <TableRow header="検証機関" data="一般社団法人 第三者認証機関" />
-      </tbody>
-    </table>
+    </Table>
   );
 }
 
