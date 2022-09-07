@@ -90,14 +90,14 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
           </li>
         </ul>
         <h2 className="text-sm text-gray-600 font-bold mb-3">所有者情報</h2>
-        <div className="jumpu-card p-2 mb-4">
+        <div className="jumpu-card p-4 mb-4">
           <HolderTable holder={holder} />
           {holder.description && (
             <Description description={holder.description} />
           )}
         </div>
         <h2 className="text-sm text-gray-600 font-bold mb-3">認定内容</h2>
-        <div className="jumpu-card p-2 mb-4">
+        <div className="jumpu-card p-4 mb-4">
           <Image
             src={logoCertifierUrl}
             placeholderSrc={placeholderLogoMainUrl}
@@ -117,9 +117,9 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
           <CertifierTable op={op} />
         </div>
         <h2 className="text-sm text-gray-600 font-bold mb-3">技術情報</h2>
-        <div className="jumpu-card p-2">
+        <div className="jumpu-card p-4">
           <TechTable
-            className="jumpu-card p-2"
+            className="p-4"
             profile={op}
             profileEndpoint={profileEndpoint}
           />
