@@ -1,6 +1,6 @@
-import clsx from "clsx";
 import { isOp } from "@webdino/profile-core";
 import { Profile } from "../types/profile";
+import Table from "./Table";
 import TableRow from "./TableRow";
 
 type Props = {
@@ -11,8 +11,7 @@ type Props = {
 
 function TechTable({ className, profile, profileEndpoint }: Props) {
   return (
-    <table className={clsx("w-full table-fixed", className)}>
-      <tbody>
+    <Table className={className}>
         <TableRow
           header="検証結果"
           data={profile.error instanceof Error ? "失敗" : "成功"}
@@ -40,8 +39,7 @@ function TechTable({ className, profile, profileEndpoint }: Props) {
           header="有効期限"
           data={new Date(profile.expiredAt).toLocaleString(navigator.language)}
         />
-      </tbody>
-    </table>
+    </Table>
   );
 }
 
