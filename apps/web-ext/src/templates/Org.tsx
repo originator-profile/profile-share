@@ -9,6 +9,7 @@ import HolderTable from "../components/HolderTable";
 import Description from "../components/Description";
 import CertifierTable from "../components/CertifierTable";
 import TechTable from "../components/TechTable";
+import Table from "../components/Table";
 import TableRow from "../components/TableRow";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
 import logoCertifierUrl from "../assets/logo-certifier.png";
@@ -58,14 +59,12 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
             </p>
           </a>
         )}
-        <table className="w-full table-fixed mb-3">
-          <tbody>
-            <TableRow
-              header="組織情報の発行日"
-              data={new Date(op.issuedAt).toLocaleString(navigator.language)}
-            />
-          </tbody>
-        </table>
+        <Table className="mb-3">
+          <TableRow
+            header="組織情報の発行日"
+            data={new Date(op.issuedAt).toLocaleString(navigator.language)}
+          />
+        </Table>
         {roles.length > 0 && <Roles className="mb-3" roles={roles} />}
         <div className="inline-flex items-center gap-2 bg-blue-50 px-2 py-1 mb-3 rounded-sm">
           <Icon
@@ -91,14 +90,14 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
           </li>
         </ul>
         <h2 className="text-sm text-gray-600 font-bold mb-3">所有者情報</h2>
-        <div className="jumpu-card p-2 mb-4">
+        <div className="jumpu-card p-4 mb-4">
           <HolderTable holder={holder} />
           {holder.description && (
             <Description description={holder.description} />
           )}
         </div>
         <h2 className="text-sm text-gray-600 font-bold mb-3">認定内容</h2>
-        <div className="jumpu-card p-2 mb-4">
+        <div className="jumpu-card p-4 mb-4">
           <Image
             src={logoCertifierUrl}
             placeholderSrc={placeholderLogoMainUrl}
@@ -118,9 +117,9 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
           <CertifierTable op={op} />
         </div>
         <h2 className="text-sm text-gray-600 font-bold mb-3">技術情報</h2>
-        <div className="jumpu-card p-2">
+        <div className="jumpu-card p-4">
           <TechTable
-            className="jumpu-card p-2"
+            className="p-4"
             profile={op}
             profileEndpoint={profileEndpoint}
           />

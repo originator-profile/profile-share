@@ -1,5 +1,5 @@
-import clsx from "clsx";
 import { OgWebsite } from "@webdino/profile-model";
+import Table from "./Table";
 import TableRow from "./TableRow";
 
 type Props = {
@@ -9,19 +9,14 @@ type Props = {
 
 function WebsiteMainTable({ className, website }: Props) {
   return (
-    <table className={clsx("w-full table-fixed", className)}>
-      <tbody>
-        {"https://schema.org/author" in website && (
-          <TableRow header="著者" data={website["https://schema.org/author"]} />
-        )}
-        {"https://schema.org/editor" in website && (
-          <TableRow
-            header="編集者"
-            data={website["https://schema.org/editor"]}
-          />
-        )}
-      </tbody>
-    </table>
+    <Table className={className}>
+      {"https://schema.org/author" in website && (
+        <TableRow header="著者" data={website["https://schema.org/author"]} />
+      )}
+      {"https://schema.org/editor" in website && (
+        <TableRow header="編集者" data={website["https://schema.org/editor"]} />
+      )}
+    </Table>
   );
 }
 
