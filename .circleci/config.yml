@@ -18,7 +18,6 @@ commands:
           name: Restore Yarn cache
           keys:
             - "yarn-v1-main"
-            - "yarn-v1-"
       - run:
           name: Install dependencies
           command: "yarn install --frozen-lockfile --cache-folder ~/.cache/yarn"
