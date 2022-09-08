@@ -17,13 +17,14 @@ commands:
       - restore_cache:
           name: Restore Yarn cache
           keys:
+            - "yarn-v1-main"
             - "yarn-v1-"
       - run:
           name: Install dependencies
           command: "yarn install --frozen-lockfile --cache-folder ~/.cache/yarn"
       - save_cache:
           name: Save Yarn cache
-          key: "yarn-v1-"
+          key: "yarn-v1-main"
           paths:
             - ~/.cache/yarn
             - ~/.cache/ms-playwright
