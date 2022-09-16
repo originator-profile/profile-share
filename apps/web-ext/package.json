@@ -26,6 +26,7 @@
     "@webdino/profile-verify": "*",
     "autoprefixer": "^10.4.8",
     "clsx": "^1.2.1",
+    "commander": "^9.4.0",
     "dompurify": "^2.4.0",
     "esbuild": "^0.15.6",
     "esbuild-copy-static-files": "^0.1.0",
