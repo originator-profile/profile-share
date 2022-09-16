@@ -6,14 +6,12 @@ Web ブラウザーで Originator Profile と Document Profile の閲覧と検�
 
 ### ローカルの Profile Registry で動作確認
 
-1. ルートディレクトリに移動します。
-2. `yarn dev` でローカルの Profile Registry の起動と拡張機能の差分ビルドを生成します。
-3. 異なるターミナルセッションを開き、 `yarn --cwd apps/web-ext start:chromium --url=http://localhost:8080` で拡張機能を Chromium でプレビューします。
+1. プロジェクトのルートディレクトリに移動します。
+2. `yarn dev` でローカルの Profile Registry の起動と拡張機能の差分ビルドをプレビューします。
 
 ### デモの Profile Registry で動作確認
 
-1. `PROFILE_ISSUER=https://oprdev.herokuapp.com yarn dev` で拡張機能の差分ビルドを生成します。
-2. 異なるターミナルセッションで `yarn start:chromium --url=https://oprdev.herokuapp.com` で拡張機能を Chromium でプレビューします。
+`yarn dev --issuer=https://oprdev.herokuapp.com --url=https://oprdev.herokuapp.com` で拡張機能の差分ビルドをプレビューします。
 
 ## 環境変数
 
@@ -26,11 +24,12 @@ Web ブラウザーで Originator Profile と Document Profile の閲覧と検�
 - `yarn build`: 拡張機能をビルドしたのち、パッケージングします。
 - `yarn build:esbuild`: `dist` を出力先として、拡張機能を esbuild でビルドします。
 - `yarn build:web-ext`: `dist` をソースとして、拡張機能を[パッケージング](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/#packaging-your-extension)します。
-- `yarn dev`: `dist` を出力先として、拡張機能を esbuild で差分ビルドします。
 - `yarn lint`: コードリントします。
 - `yarn lint:fix`: fixable なリントエラーを修正します。
-- `yarn start:firefox`: `dist` をソースとして、 Firefox で拡張機能をプレビューします。
-- `yarn start:chromium`: `dist` をソースとして、 Chromium で拡張機能をプレビューします。
+- `yarn dev`: `dist` を出力先として、拡張機能を esbuild で差分ビルドしてブラウザーでプレビューします。
+  - `-t, --target`: 拡張機能をプレビューする対象のランタイムを指定します。
+  - `-u, --url`: プレビュー開始時に表示される URL を指定します。
+  - `-i, --issuer`: 環境変数 `PROFILE_ISSUER` と同じです。
 - `yarn test`: ユニットテストします。
 
 ## ドキュメント

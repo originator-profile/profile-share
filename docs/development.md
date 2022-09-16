@@ -18,10 +18,8 @@ git clone https://github.com/webdino/profile
 cd profile
 corepack enable yarn
 yarn install
-yarn dev &
-# => 開発用サーバーが起動します (fg<Enter> + <Ctrl-C>: 開発用サーバーの終了)
-yarn --cwd apps/web-ext start:chromium --url=http://localhost:8080
-# => Webブラウザーが起動します
+yarn dev
+# => 開発用サーバーとWebブラウザーが起動します (<Ctrl-C>: 終了)
 ```
 
 あとはそれぞれのソースコードを編集することで開発を行うことができます。自由にカスタマイズしましょう。
