@@ -2,13 +2,14 @@ import Ajv, { Schema } from "ajv";
 import addFormats from "ajv-formats";
 import { BadRequestError } from "http-errors-enhanced";
 import { Op, Dp, Jwk } from "@webdino/profile-model";
-import { TokenDecoder } from "@webdino/profile-verify";
+import { SignedProfileValidator, TokenDecoder } from "@webdino/profile-verify";
 // TODO: Node.js 17+ ならば不要
 import structuredClone from "@ungap/structured-clone";
 
 export function ValidatorService() {
   const ajv = addFormats(new Ajv({ removeAdditional: true }));
-  const decodeToken = TokenDecoder();
+  const signedProfileValidator = SignedProfileValidator();
+  const decodeToken = TokenDecoder(signedProfileValidator);
 
   /**
    * バリデーターの生成

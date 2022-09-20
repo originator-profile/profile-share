@@ -7,8 +7,8 @@ import { JOSEError } from "jose/dist/types/util/errors";
 import { ProfileClaimsValidationFailed } from "./errors";
 import { DecodeResult } from "./types";
 
-/** ペイロードの確認用 */
-function Validator() {
+/** Signed Profile ペイロードの確認のためのバリデーター */
+export function SignedProfileValidator() {
   const ajv = new Ajv();
   addFormats(ajv);
   const validateJwtOpPayload = ajv.compile(JwtOpPayload);
@@ -16,15 +16,17 @@ function Validator() {
   return { ajv, validateJwtOpPayload, validateJwtDpPayload };
 }
 
+/** Signed Profile ペイロードの確認のためのバリデーター */
+export type SignedProfileValidator = ReturnType<typeof SignedProfileValidator>;
+
 /**
- * Profile の Token の復号器の生成
+ * Signed Profile の復号器の生成
+ * @param validator ペイロード確認のためのバリデーター (null: 無効)
  * @return 復号器
  */
-export function TokenDecoder() {
-  const validator = Validator();
-
+export function TokenDecoder(validator: SignedProfileValidator | null) {
   /**
-   * Profile の Token の復号
+   * Signed Profile の復号
    * @param jwt JWT
    * @return 復号結果
    */
@@ -36,23 +38,25 @@ export function TokenDecoder() {
       const error = e as JOSEError;
       return new ProfileClaimsValidationFailed(error.message, { error, jwt });
     }
-    const valid = isJwtOpPayload(payload)
-      ? validator.validateJwtOpPayload(payload)
-      : validator.validateJwtDpPayload(payload);
+    if (validator) {
+      const valid = isJwtOpPayload(payload)
+        ? validator.validateJwtOpPayload(payload)
+        : validator.validateJwtDpPayload(payload);
 
-    if (!valid) {
-      const errors = isJwtOpPayload(payload)
-        ? validator.validateJwtOpPayload.errors
-        : validator.validateJwtDpPayload.errors;
+      if (!valid) {
+        const errors = isJwtOpPayload(payload)
+          ? validator.validateJwtOpPayload.errors
+          : validator.validateJwtDpPayload.errors;
 
-      return new ProfileClaimsValidationFailed(
-        validator.ajv.errorsText(errors),
-        {
-          errors: errors ?? [],
-          payload,
-          jwt,
-        }
-      );
+        return new ProfileClaimsValidationFailed(
+          validator.ajv.errorsText(errors),
+          {
+            errors: errors ?? [],
+            payload,
+            jwt,
+          }
+        );
+      }
     }
     if (isJwtOpPayload(payload)) return { op: true, payload, jwt };
     if (isJwtDpPayload(payload)) return { dp: true, payload, jwt };

@@ -28,7 +28,7 @@ async function fetchVerifiedProfiles(_: typeof key, tabId: number) {
   const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(`${registry}/.well-known/jwks.json`);
   const keys = RemoteKeys(jwksEndpoint);
-  const verify = ProfilesVerifier({ profile }, keys, registry);
+  const verify = ProfilesVerifier({ profile }, keys, registry, null);
   const verifyResults = await verify();
   return {
     advertisers,
