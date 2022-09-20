@@ -1,10 +1,24 @@
 const config = require("./esbuild.config");
-const { program } = require("commander");
+const { program, Option } = require("commander");
 
 program
-  .option("-t, --target <target>", "The extensions runners to enable")
-  .option("-u, --url <url>", "Launch runner at specified page")
-  .option("-i, --issuer <issuer>", "Issuer trusted to sign");
+  .addOption(
+    new Option("-t, --target <target>", "The extensions runners to enable")
+      .choices(["chromium", "firefox-desktop", "firefox-android"])
+      .default("chromium")
+  )
+  .addOption(
+    new Option("-u, --url <url>", "Launch runner at specified page").default(
+      "http://localhost:8080",
+      "local profile registry"
+    )
+  )
+  .addOption(
+    new Option("-i, --issuer <issuer>", "Issuer trusted to sign")
+      .env("PROFILE_ISSUER")
+      .default("http://localhost:8080")
+  );
+
 program.parse(process.argv);
 const options = program.opts();
 
@@ -18,10 +32,7 @@ async function dev() {
       "import.meta.env": JSON.stringify({
         ...JSON.parse(config.define["import.meta.env"]),
         MODE: "development",
-        PROFILE_ISSUER:
-          options.issuer ??
-          process.env.PROFILE_ISSUER ??
-          "http://localhost:8080",
+        PROFILE_ISSUER: options.issuer,
       }),
     },
     watch: {
@@ -34,10 +45,10 @@ async function dev() {
   console.log("watching...");
   const webExt = await import("web-ext");
   webExt.cmd.run({
-    target: options.target ?? "chromium",
+    target: options.target,
     sourceDir: "dist",
     noReload: true,
-    startUrl: options.url ?? "http://localhost:8080",
+    startUrl: options.url,
   });
 }
 
