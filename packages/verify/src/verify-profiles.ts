@@ -1,5 +1,5 @@
 import { JwtOpPayload, JwtDpPayload } from "@webdino/profile-model";
-import { TokenDecoder } from "./decode";
+import { SignedProfileValidator, TokenDecoder } from "./decode";
 import {
   ProfileGenericError,
   ProfileClaimsValidationFailed,
@@ -27,15 +27,17 @@ type Token = ReturnType<typeof getToken>;
  * @param profiles Profiles Set
  * @param registryKeys OPレジストリの公開鍵
  * @param registry OPレジストリ
+ * @param validator ペイロード確認のためのバリデーター (null: 無効)
  * @return 検証者
  */
 export function ProfilesVerifier(
   profiles: Profiles,
   registryKeys: Keys,
-  registry: string
+  registry: string,
+  validator: SignedProfileValidator | null
 ) {
   const results = new Map<Token | symbol, VerifyResult>();
-  const decoder = TokenDecoder();
+  const decoder = TokenDecoder(validator);
   const opVerifier = TokenVerifier(registryKeys, registry, decoder);
   const opTokens: Array<{ op: true; payload: JwtOpPayload; jwt: string }> = [];
   const dpTokens: Array<{ dp: true; payload: JwtDpPayload; jwt: string }> = [];
