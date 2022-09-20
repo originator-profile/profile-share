@@ -20,7 +20,7 @@
     "date-fns": "^2.29.2",
     "eslint": "^8.23.0",
     "eslint-config-webdino-profile": "*",
-    "jose": "^4.9.1",
+    "jose": "^4.9.2",
     "jsonld": "^8.1.0",
     "vi-fetch": "^0.8.0",
     "vitest": "^0.22.1"
