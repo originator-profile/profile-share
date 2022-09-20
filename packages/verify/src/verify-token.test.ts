@@ -18,7 +18,7 @@ test("verify OP Token", async () => {
     item: [],
   };
   const { jwk, pkcs8 } = await generateKey();
-  const decoder = TokenDecoder();
+  const decoder = TokenDecoder(null);
   const keys = LocalKeys({ keys: [jwk] });
   const verifier = TokenVerifier(keys, "http://localhost:8080", decoder);
   const jwt = await signOp(op, pkcs8);
@@ -39,7 +39,7 @@ test("verify DP Token", async () => {
     item: [],
   };
   const { jwk, pkcs8 } = await generateKey();
-  const decoder = TokenDecoder();
+  const decoder = TokenDecoder(null);
   const keys = LocalKeys({ keys: [jwk] });
   const verifier = TokenVerifier(keys, "http://localhost:8080", decoder);
   const jwt = await signDp(dp, pkcs8);
