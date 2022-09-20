@@ -43,7 +43,7 @@ function useProfile() {
       ]);
     }
     const keys = RemoteKeys(jwksEndpoint);
-    const verify = ProfilesVerifier({ profile }, keys, issuer);
+    const verify = ProfilesVerifier({ profile }, keys, issuer, null);
     const verifyResults = await verify();
     setValues([...values(), ["verifies", JSON.stringify(verifyResults)]]);
   };

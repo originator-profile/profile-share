@@ -4,7 +4,7 @@ import { ProfileClaimsValidationFailed } from "./errors";
 
 test("無効な形式のJWTのときデコードに失敗", async () => {
   const invalidToken = "invalid.jwt";
-  const decoder = TokenDecoder();
+  const decoder = TokenDecoder(null);
   const decoded = decoder(invalidToken);
   expect(decoded).instanceOf(ProfileClaimsValidationFailed);
 });

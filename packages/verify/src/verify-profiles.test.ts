@@ -8,6 +8,7 @@ import {
   ProfileTokenVerifyFailed,
 } from "./errors";
 import { LocalKeys } from "./keys";
+import { SignedProfileValidator } from "./decode";
 import { ProfilesVerifier } from "./verify-profiles";
 
 describe("verify-profiles", async () => {
@@ -40,7 +41,8 @@ describe("verify-profiles", async () => {
     const verifier = ProfilesVerifier(
       { profile: [opToken, dpToken] },
       registryKeys,
-      op.issuer
+      op.issuer,
+      null
     );
     const verified = await verifier();
     expect(verified[0]).toMatchObject({ op });
@@ -53,7 +55,8 @@ describe("verify-profiles", async () => {
     const verifier = ProfilesVerifier(
       { profile: [evilOpToken, dpToken] },
       registryKeys,
-      op.issuer
+      op.issuer,
+      null
     );
     const results = await verifier();
     expect(results[0]).instanceOf(Error);
@@ -62,7 +65,8 @@ describe("verify-profiles", async () => {
     expect(results[1]).not.haveOwnProperty("dp");
   });
 
-  test("不正なitemが含まれるときClaims Setの確認に失敗", async () => {
+  test("不正なitemが含まれるときClaims Setの確認に失敗 (要 SignedProfileValidator)", async () => {
+    const signedProfileValidator = SignedProfileValidator();
     const invalidOp = {
       issuedAt: fromUnixTime(iat).toISOString(),
       expiredAt: fromUnixTime(exp).toISOString(),
@@ -76,7 +80,8 @@ describe("verify-profiles", async () => {
     const verifier = ProfilesVerifier(
       { profile: [invalidOpToken] },
       registryKeys,
-      op.issuer
+      op.issuer,
+      signedProfileValidator
     );
     const results = await verifier();
     expect(results[0]).instanceOf(ProfileClaimsValidationFailed);
@@ -97,7 +102,8 @@ describe("verify-profiles", async () => {
     const verifier = ProfilesVerifier(
       { profile: [evilOpToken, dpToken] },
       registryKeys,
-      op.issuer
+      op.issuer,
+      null
     );
     const results = await verifier();
     expect(results[1]).instanceOf(ProfileTokenVerifyFailed);
@@ -107,7 +113,8 @@ describe("verify-profiles", async () => {
     const verifier = ProfilesVerifier(
       { profile: [opToken, opToken, dpToken] },
       registryKeys,
-      op.issuer
+      op.issuer,
+      null
     );
     const results = await verifier();
     expect(results.length).toBe(3);
@@ -119,7 +126,8 @@ describe("verify-profiles", async () => {
     const verifier = ProfilesVerifier(
       { profile: [opToken] },
       registryKeys,
-      op.issuer
+      op.issuer,
+      null
     );
     const results = await verifier();
     expect(results[0]).instanceOf(ProfilesVerifyFailed);
@@ -131,7 +139,8 @@ describe("verify-profiles", async () => {
     const verifier = ProfilesVerifier(
       { profile: [opToken, evilDpToken] },
       registryKeys,
-      op.issuer
+      op.issuer,
+      null
     );
     const results = await verifier();
     expect(results[0]).instanceOf(Error);
