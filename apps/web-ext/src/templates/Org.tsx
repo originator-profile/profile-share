@@ -78,7 +78,7 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
         <ul className="mb-4">
           <li className="flex items-center gap-4">
             <Image
-              src="/assets/logo-certifier.png"
+              src={logoCertifierUrl}
               placeholderSrc={placeholderLogoMainUrl}
               alt=""
               width={80}
