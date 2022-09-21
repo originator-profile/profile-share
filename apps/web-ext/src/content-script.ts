@@ -1,4 +1,3 @@
-import browser from "webextension-polyfill";
 import {
   MessageRequest,
   MessageResponse,
@@ -37,7 +36,14 @@ function handleMessageResponse(
   }
 }
 
-browser.runtime.onMessage.addListener(handleMessageResponse);
+chrome.runtime.onMessage.addListener(async function (
+  message: MessageRequest,
+  _,
+  sendResponse
+) {
+  const response = await handleMessageResponse(message);
+  sendResponse(response);
+});
 
 function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
   if (event.origin !== window.location.origin) return;
