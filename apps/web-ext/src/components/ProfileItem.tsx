@@ -47,6 +47,7 @@ function ProfileItem({
         className={className}
         image={website.image}
         name={website.title}
+        // TODO: このリンクはコンテンツスクリプト内で使われないので必要なければ削除
         to={link ? routes.publ.build(profile) : undefined}
         variant={variant}
         as={as}

@@ -1,15 +1,11 @@
 import browser from "webextension-polyfill";
-import storage from "./utils/storage";
+
+const windowSize = {
+  width: 520,
+  height: 640,
+} as const;
 
 browser.browserAction.onClicked.addListener(async function (tab) {
-  if (tab.id !== undefined) storage.setItem("tabId", tab.id);
-  const url = browser.runtime.getURL("index.html");
-  const popup = window.open(
-    "about:blank",
-    "_blank",
-    "popup,width=520,height=640"
-  );
-  if (!popup) return;
-  // NOTE: e2e テスト時ウィンドウ生成後移動しないと期待するページが開かれない
-  popup.location.href = url;
+  const url = `${browser.runtime.getURL("index.html")}#/tab/${tab.id}`;
+  await browser.windows.create({ url, type: "popup", ...windowSize });
 });

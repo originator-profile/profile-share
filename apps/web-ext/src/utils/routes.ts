@@ -28,7 +28,7 @@ function urlParamsRoute<Path extends string>(path: Path) {
 }
 
 export const routes = {
-  root: route("/"),
+  base: route("/tab/:tabId"),
   org: urlParamsRoute("org/:orgIssuer/:orgSubject"),
   publ: urlParamsRoute("publ/:issuer/:subject"),
 } as const;
