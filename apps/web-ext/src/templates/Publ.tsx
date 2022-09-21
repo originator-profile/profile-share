@@ -9,6 +9,7 @@ import WebsiteSubTable from "../components/WebsiteSubTable";
 import TechTable from "../components/TechTable";
 import Description from "../components/Description";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
+import logoCertifierUrl from "../assets/logo-certifier.png";
 
 type Props = {
   dp: Dp;
@@ -102,7 +103,7 @@ function Publ({ dp, website, holder, paths, profileEndpoint }: Props) {
         <div className="flex mx-4 my-3">
           <Image
             className="flex-shrink-0"
-            src="/assets/logo-certifier.png"
+            src={logoCertifierUrl}
             placeholderSrc={placeholderLogoMainUrl}
             alt=""
             width={80}
