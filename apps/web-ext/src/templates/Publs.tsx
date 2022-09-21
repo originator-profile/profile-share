@@ -5,7 +5,6 @@ import { isOp, isDp, isOpHolder } from "@webdino/profile-core";
 import { sortProfiles } from "../utils/profile";
 import { routes } from "../utils/routes";
 import Image from "../components/Image";
-import browser from "webextension-polyfill";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
 
 type Props = {
@@ -20,8 +19,8 @@ function Publs({ profiles, main }: Props) {
     tabId: string;
   }>();
   const tabId = Number(params.tabId);
-  const handleClickProfile = (profile: Profile) => () => {
-    browser.tabs.sendMessage(tabId, {
+  const handleClickProfile = (profile: Profile) => async () => {
+    await chrome.tabs.sendMessage(tabId, {
       type: "focus-profile",
       profile: profile,
     });

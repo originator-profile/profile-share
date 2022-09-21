@@ -1,4 +1,3 @@
-import browser from "webextension-polyfill";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 import { useEvent } from "react-use";
@@ -16,7 +15,7 @@ const key = "profiles";
 
 async function fetchVerifiedProfiles(_: typeof key, tabId: number) {
   const { targetOrigin, profilesLink }: FetchProfilesMessageResponse =
-    await browser.tabs.sendMessage(tabId, {
+    await chrome.tabs.sendMessage(tabId, {
       type: "fetch-profiles",
     });
   const { profiles, profileEndpoint } = await fetchProfiles(
@@ -56,8 +55,8 @@ function useProfiles() {
     profileEndpoint?: string;
   }>([key, tabId], fetchVerifiedProfiles);
 
-  useEvent("unload", () => {
-    browser.tabs.sendMessage(tabId, { type: "close-window" });
+  useEvent("unload", async function () {
+    await chrome.tabs.sendMessage(tabId, { type: "close-window" });
   });
 
   return {

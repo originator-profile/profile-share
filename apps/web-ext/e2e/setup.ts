@@ -10,6 +10,7 @@ export let ctx: BrowserContext;
 
 const browserType = chromium;
 const clean = util.promisify(rimraf);
+const sleep = util.promisify(setTimeout);
 let userDataDir: string;
 
 beforeAll(async () => {
@@ -31,16 +32,14 @@ afterAll(async () => {
 });
 
 export async function popup(ctx: BrowserContext): Promise<Page> {
-  const [backgroundPage] = ctx.backgroundPages();
-  await backgroundPage.evaluate(() => {
-    // @ts-expect-error chrome is not defined
-    chrome.tabs.query({ active: true }, ([targetTab]) => {
-      // @ts-expect-error chrome is not defined
-      chrome.browserAction.onClicked.dispatch(targetTab);
-    });
+  const [backgroundWorker] = ctx.serviceWorkers();
+  await backgroundWorker.evaluate(async function () {
+    const [targetTab] = await chrome.tabs.query({ active: true });
+    // @ts-expect-error dispatch が未定義だが実際には存在する
+    chrome.action.onClicked.dispatch(targetTab);
   });
   // NOTE: wait for popup to be opened
-  await backgroundPage.waitForTimeout(1_000);
+  await sleep(1_000);
   // @ts-expect-error assert that popup is opened
   const page: Page = ctx.pages().at(-1);
   return page;
