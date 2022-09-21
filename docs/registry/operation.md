@@ -177,16 +177,17 @@ yarn dotenv -e .env bin/dev publisher:website \
 
 #### op-document
 
+ページ内に複数の DP が存在する場合があるので、それぞれの jwt の値は profile の配列に記述する。
+
 ```jsonc
 {
   "@context": "https://oprdev.herokuapp.com/context",
   "main": ["https://examples.demosites.pages.dev"],
   "profile": [
-    // <- 発行した Signed Document Profile の値 ops - jwt の値
-    "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9..."
+    // <- 発行した Signed Originator Profile の値 ops - jwt の値
+    "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9...",
     // <- 発行した Signed Document Profile の値 dps - jwt の値
     "eaXQbGciOiJFUzI1NiaXQiOlsiY6IkpXVCaX..."
-
   ]
 }
 ```
