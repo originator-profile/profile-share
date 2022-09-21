@@ -1,5 +1,7 @@
 import browser from "webextension-polyfill";
-import useSWR, { mutate } from "swr";
+import { useParams } from "react-router-dom";
+import useSWR from "swr";
+import { useEvent } from "react-use";
 import {
   RemoteKeys,
   ProfilesVerifier,
@@ -9,7 +11,6 @@ import {
 import { FetchProfilesMessageResponse } from "../types/message";
 import { Profile } from "../types/profile";
 import { toProfile } from "./profile";
-import storage from "./storage";
 
 const key = "profiles";
 
@@ -40,8 +41,12 @@ async function fetchVerifiedProfiles(_: typeof key, tabId: number) {
   };
 }
 
+/**
+ * Profiles Set 取得 (要 Base コンポーネント)
+ */
 function useProfiles() {
-  const tabId = storage.getItem("tabId");
+  const params = useParams<{ tabId: string }>();
+  const tabId = Number(params.tabId);
   const { data, error } = useSWR<{
     advertisers: string[];
     publishers: string[];
@@ -49,17 +54,19 @@ function useProfiles() {
     profiles: Profile[];
     targetOrigin?: string;
     profileEndpoint?: string;
-  }>(tabId ? [key, tabId] : null, fetchVerifiedProfiles);
+  }>([key, tabId], fetchVerifiedProfiles);
+
+  useEvent("unload", () => {
+    browser.tabs.sendMessage(tabId, { type: "close-window" });
+  });
+
   return {
     ...data,
     error,
+    tabId,
     targetOrigin: data?.targetOrigin,
     profileEndpoint: data?.profileEndpoint,
   };
 }
 
 export default useProfiles;
-
-export function revalidateProfiles(targetOrigin?: string) {
-  return mutate([key, targetOrigin]);
-}

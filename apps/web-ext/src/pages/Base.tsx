@@ -6,8 +6,8 @@ import useProfiles from "../utils/use-profiles";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 
-function Root() {
-  const { main = [], profiles, error, targetOrigin } = useProfiles();
+function Base() {
+  const { tabId, main = [], profiles, error, targetOrigin } = useProfiles();
   if (error) {
     return (
       <ErrorPlaceholder>
@@ -33,7 +33,14 @@ function Root() {
       </ErrorPlaceholder>
     );
   }
-  return <Navigate to={routes.publ.build(dp)} />;
+  return (
+    <Navigate
+      to={[
+        routes.base.build({ tabId: String(tabId) }),
+        routes.publ.build(dp),
+      ].join("/")}
+    />
+  );
 }
 
-export default Root;
+export default Base;

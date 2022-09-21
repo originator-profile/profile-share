@@ -31,7 +31,6 @@ async function dev() {
       ...config.define,
       "import.meta.env": JSON.stringify({
         ...JSON.parse(config.define["import.meta.env"]),
-        MODE: "development",
         PROFILE_ISSUER: options.issuer,
       }),
     },

@@ -1,14 +1,10 @@
 import { RouteObject, Outlet, useRoutes } from "react-router-dom";
 import { routes } from "./utils/routes";
-import Root from "./pages/Root";
+import Base from "./pages/Base";
 import Org from "./pages/Org";
 import Publ from "./pages/Publ";
 import Publs from "./pages/Publs";
 
-const root: RouteObject = {
-  path: routes.root.path,
-  element: <Root />,
-};
 const org: RouteObject = {
   path: routes.org.path,
   element: <Outlet />,
@@ -18,6 +14,11 @@ const publ: RouteObject = {
   path: routes.publ.path,
   element: <Outlet />,
   children: [{ path: "", element: <Publ /> }, org],
+};
+const base: RouteObject = {
+  path: routes.base.path,
+  element: <Outlet />,
+  children: [{ path: "", element: <Base /> }, publ],
 };
 const layout: RouteObject = {
   element: (
@@ -30,7 +31,7 @@ const layout: RouteObject = {
       </main>
     </div>
   ),
-  children: [root, publ],
+  children: [base],
 };
 
 function App() {

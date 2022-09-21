@@ -5,7 +5,6 @@ import { isOp, isDp, isOpHolder } from "@webdino/profile-core";
 import { sortProfiles } from "../utils/profile";
 import { routes } from "../utils/routes";
 import Image from "../components/Image";
-import storage from "../utils/storage";
 import browser from "webextension-polyfill";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
 
@@ -15,10 +14,13 @@ type Props = {
 };
 
 function Publs({ profiles, main }: Props) {
-  const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
+  const { issuer, subject, ...params } = useParams<{
+    issuer: string;
+    subject: string;
+    tabId: string;
+  }>();
+  const tabId = Number(params.tabId);
   const handleClickProfile = (profile: Profile) => () => {
-    const tabId = storage.getItem("tabId");
-    if (!tabId) return;
     browser.tabs.sendMessage(tabId, {
       type: "focus-profile",
       profile: profile,
@@ -44,7 +46,10 @@ function Publs({ profiles, main }: Props) {
                 "flex justify-center items-center h-20 hover:bg-blue-50 relative",
                 { ["bg-blue-50"]: active }
               )}
-              to={routes.publ.build(dp)}
+              to={[
+                routes.base.build({ tabId: String(tabId) }),
+                routes.publ.build(dp),
+              ].join("/")}
               onClick={handleClickProfile(dp)}
             >
               {active && (
