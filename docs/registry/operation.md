@@ -177,7 +177,7 @@ yarn dotenv -e .env bin/dev publisher:website \
 
 #### op-document
 
-ページ内に複数のDPが存在する場合があるので、それぞれの jwt の値は profile の配列に記述する。
+ページ内に複数の DP が存在する場合があるので、それぞれの jwt の値は profile の配列に記述する。
 
 ```jsonc
 {
@@ -188,7 +188,6 @@ yarn dotenv -e .env bin/dev publisher:website \
     "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9...",
     // <- 発行した Signed Document Profile の値 dps - jwt の値
     "eaXQbGciOiJFUzI1NiaXQiOlsiY6IkpXVCaX..."
-
   ]
 }
 ```
