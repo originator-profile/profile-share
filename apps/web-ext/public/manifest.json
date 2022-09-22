@@ -1,34 +1,28 @@
 {
-  "description": "Profile Web Extension",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Profile Web Extension",
+  "description": "Profile Web Extension",
   "version": "1.0.0",
   "homepage_url": "https://originator-profile.pages.dev/",
   "icons": {
     "48": "icons/48x48.png",
     "128": "icons/128x128.png"
   },
-  "browser_action": {
-    "default_icon": "icons/48x48.png",
-    "default_title": "Profile Web Extension"
-  },
+  "action": {},
   "background": {
-    "scripts": ["background.js"]
+    "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*"],
+      "matches": ["<all_urls>"],
       "js": ["content-script.js"]
     }
   ],
   "web_accessible_resources": [
-    "content-script/iframe.js",
-    "content-script/iframe.js.map",
-    "background.js.map",
-    "content-script.js.map",
-    "main.css",
-    "main.css.map",
-    "main.js.map"
+    {
+      "matches": ["<all_urls>"],
+      "resources": ["content-script/iframe.js", "main.css", "*.map"]
+    }
   ],
-  "permissions": ["http://*/*", "https://*/*", "activeTab"]
+  "permissions": ["activeTab"]
 }
