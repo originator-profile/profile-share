@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import useSWR from "swr";
+import useSWRImmutable from "swr/immutable";
 import { useEvent } from "react-use";
 import {
   RemoteKeys,
@@ -51,7 +51,8 @@ async function fetchVerifiedProfiles(_: typeof key, tabId: number) {
 function useProfiles() {
   const params = useParams<{ tabId: string }>();
   const tabId = Number(params.tabId);
-  const { data, error } = useSWR<{
+  // TODO: 自動再検証する場合は取得エンドポイントが変わりうることをUIの振る舞いで考慮して
+  const { data, error } = useSWRImmutable<{
     advertisers: string[];
     publishers: string[];
     main: string[];
