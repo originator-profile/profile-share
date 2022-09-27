@@ -41,7 +41,7 @@ function Marker({
       {rects.map((rect, index) => (
         <div
           key={index}
-          className="absolute"
+          className="absolute transition-[top,left] duration-100 ease-in-out"
           style={{
             top: rect.top - (width + border + tailHeight),
             left: rect.left - (54 + border * 2) / 2,
