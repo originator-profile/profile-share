@@ -16,7 +16,7 @@ function useRects(dpItem: DpText | DpVisibleText | DpHtml) {
     setRects(
       intersectingElements.map((element) => element.getBoundingClientRect())
     );
-  }, 300);
+  }, 10);
   useEvent("resize", handler, window.parent);
   useEvent("scroll", handler, window.parent);
   useEffect(() => {
