@@ -22,7 +22,7 @@ Prisma Studio を使用して DB の内容を参照する。
 
 ```console
 cd apps/registry
-yarn dotenv -e .env bin/dev db:prisma studio --schema=../../packages/registry-db/prisma/schema.prisma
+yarn dotenv -- -e .env -- bin/dev db:prisma studio --schema=../../packages/registry-db/prisma/schema.prisma
 ```
 
 ## Profiles Set 作成手順
@@ -36,7 +36,7 @@ Profile Registry を使用して Signed Originator Profile、Signed Document Pro
 会員登録する内容の JSON ファイルを作成し以下のコマンドで登録を行う。
 
 ```console
-yarn dotenv -e .env bin/dev account -i account.json -o create
+yarn dotenv -- -e .env -- bin/dev account -i account.json -o create
 {
   "id": "daab5a08-d513-400d-aaaa-e1c1493e0421",
   ...
@@ -84,7 +84,7 @@ yarn dotenv -e .env bin/dev account -i account.json -o create
 ### 鍵ペアの生成
 
 ```console
-yarn dotenv -e .env bin/dev key-gen -o key
+yarn dotenv -- -e .env -- bin/dev key-gen -o key
 ```
 
 key には出力ファイル名を指定する。
@@ -92,7 +92,7 @@ key には出力ファイル名を指定する。
 ### 公開鍵の登録
 
 ```console
-yarn dotenv -e .env bin/dev account:register-key -k key.pub.json --id daab5a08-d513-400d-aaaa-e1c1493e0421
+yarn dotenv -- -e .env -- bin/dev account:register-key -k key.pub.json --id daab5a08-d513-400d-aaaa-e1c1493e0421
 ```
 
 --id には登録を行う会員の UUID を指定する。
@@ -100,7 +100,7 @@ yarn dotenv -e .env bin/dev account:register-key -k key.pub.json --id daab5a08-d
 ### Signed Originator Profile 発行
 
 ```console
-yarn dotenv -e .env bin/dev cert:issue \
+yarn dotenv -- -e .env -- bin/dev cert:issue \
   -i key \
   --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e \
   --holder daab5a08-d513-400d-aaaa-e1c1493e0421
@@ -119,7 +119,7 @@ https://oprdev.herokuapp.com の場合であれば --certifier 48a40d8c-4fb0-4f3
 上記で登録した daab5a08-d513-400d-aaaa-e1c1493e0421 の会員に対して https://yomiuri.demosites.pages.dev/1 の Signed Document Profile を発行する例
 
 ```console
-yarn dotenv -e .env bin/dev publisher:website \
+yarn dotenv -- -e .env -- bin/dev publisher:website \
   -i key \
   --id daab5a08-d513-400d-aaaa-e1c1493e0421 \
   --input website.json \
