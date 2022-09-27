@@ -1,4 +1,4 @@
-import { Profile } from "./profile";
+import { Profile, Dp } from "./profile";
 
 export type FetchProfilesMessageRequest = {
   type: "fetch-profiles";
@@ -8,12 +8,13 @@ export type FetchProfilesMessageResponse = {
   targetOrigin: string;
   profilesLink: string | null;
 };
-export type FocusProfileMessageRequest = {
-  type: "focus-profile";
-  profile: Profile;
+export type OverlayProfilesMessageRequest = {
+  type: "overlay-profiles";
+  profiles: Profile[];
+  activeDp: Dp | null;
 };
-export type FocusProfileMessageResponse = {
-  type: "focus-profile";
+export type OverlayProfilesMessageResponse = {
+  type: "overlay-profiles";
 };
 export type CloseWindowMessageRequest = {
   type: "close-window";
@@ -21,27 +22,41 @@ export type CloseWindowMessageRequest = {
 export type CloseWindowMessageResponse = {
   type: "close-window";
 };
-export type MessageRequest =
+export type SelectOverlayDpMessageRequest = {
+  type: "select-overlay-dp";
+  dp: Dp;
+};
+export type SelectOverlayDpMessageResponse = {
+  type: "select-overlay-dp";
+};
+export type ContentScriptMessageRequest =
   | FetchProfilesMessageRequest
-  | FocusProfileMessageRequest
+  | OverlayProfilesMessageRequest
   | CloseWindowMessageRequest;
-export type MessageResponse =
+export type ContentScriptMessageResponse =
   | FetchProfilesMessageResponse
-  | FocusProfileMessageResponse
+  | OverlayProfilesMessageResponse
   | CloseWindowMessageResponse;
+export type BackgroundMessageRequest = SelectOverlayDpMessageRequest;
+export type BackgroundMessageResponse = SelectOverlayDpMessageResponse;
+export type PopupMessageRequest = SelectOverlayDpMessageRequest;
+export type PopupMessageResponse = SelectOverlayDpMessageResponse;
 
 export type EnterOverlayMessageRequest = {
   type: "enter-overlay";
 };
 export type EnterOverlayMessageResponse = {
   type: "enter-overlay";
-  profile: Profile;
+  profiles: Profile[];
+  activeDp: Dp | null;
 };
 export type LeaveOverlayMessageRequest = {
   type: "leave-overlay";
 };
 export type ContentWindowPostMessageEvent = MessageEvent<
-  EnterOverlayMessageRequest | LeaveOverlayMessageRequest
+  | EnterOverlayMessageRequest
+  | LeaveOverlayMessageRequest
+  | SelectOverlayDpMessageRequest
 >;
 export type IFramePostMessageEvent = MessageEvent<
   EnterOverlayMessageResponse | LeaveOverlayMessageRequest
