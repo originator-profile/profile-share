@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import { useParams, Link } from "react-router-dom";
-import { Profile } from "../types/profile";
+import { Profile, Dp } from "../types/profile";
 import { isOp, isDp, isOpHolder } from "@webdino/profile-core";
-import { sortProfiles } from "../utils/profile";
+import { sortDps } from "../utils/profile";
 import { routes } from "../utils/routes";
 import Image from "../components/Image";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
@@ -19,15 +19,16 @@ function Publs({ profiles, main }: Props) {
     tabId: string;
   }>();
   const tabId = Number(params.tabId);
-  const handleClickProfile = (profile: Profile) => async () => {
+  const handleClickDp = (dp: Dp) => async () => {
     await chrome.tabs.sendMessage(tabId, {
-      type: "focus-profile",
-      profile: profile,
+      type: "overlay-profiles",
+      profiles,
+      activeDp: dp,
     });
   };
   return (
     <ul>
-      {sortProfiles(profiles.filter(isDp), main).map((dp) => {
+      {sortDps(profiles.filter(isDp), main).map((dp) => {
         const active = dp.issuer === issuer && dp.subject === subject;
         const op = profiles
           .filter(isOp)
@@ -49,7 +50,7 @@ function Publs({ profiles, main }: Props) {
                 routes.base.build({ tabId: String(tabId) }),
                 routes.publ.build(dp),
               ].join("/")}
-              onClick={handleClickProfile(dp)}
+              onClick={handleClickDp(dp)}
             >
               {active && (
                 <svg

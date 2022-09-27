@@ -1,15 +1,14 @@
-import { useState, useRef, Fragment } from "react";
-import { useLifecycles } from "react-use";
+import { useState, Fragment } from "react";
+import { useMount, useEvent } from "react-use";
 import { Dialog, Transition } from "@headlessui/react";
-import { Profile } from "../types/profile";
+import { Profile, Dp } from "../types/profile";
 import { IFramePostMessageEvent } from "../types/message";
-import ProfileItem from "../components/ProfileItem";
-import Spinner from "../components/Spinner";
+import DpMap from "../components/DpMap";
 
 function App() {
   const [isOpen, setIsOpen] = useState(true);
-  const [profile, setProfile] = useState<Profile | null>(null);
-  const focusRef = useRef(null);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [activeDp, setActiveDp] = useState<Dp | null>(null);
 
   function closeModal() {
     setIsOpen(false);
@@ -19,7 +18,8 @@ function App() {
     if (event.origin !== window.parent.location.origin) return;
     switch (event.data.type) {
       case "enter-overlay":
-        setProfile(event.data.profile);
+        setProfiles(event.data.profiles);
+        setActiveDp(event.data.activeDp);
         break;
       case "leave-overlay":
         closeModal();
@@ -27,13 +27,10 @@ function App() {
     }
   }
 
-  useLifecycles(
-    () => {
-      window.addEventListener("message", handleMessage);
-      window.parent.postMessage({ type: "enter-overlay" });
-    },
-    () => window.removeEventListener("message", handleMessage)
-  );
+  useMount(() => {
+    window.parent.postMessage({ type: "enter-overlay" });
+  });
+  useEvent("message", handleMessage);
 
   function handleLeave() {
     window.parent.postMessage(
@@ -42,14 +39,17 @@ function App() {
     );
   }
 
+  async function handleClickDp(dp: Dp) {
+    setActiveDp(dp);
+    window.parent.postMessage({
+      type: "select-overlay-dp",
+      dp,
+    });
+  }
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-10"
-        onClose={closeModal}
-        initialFocus={focusRef}
-      >
+      <Dialog as="div" className="relative z-10" onClose={closeModal}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -64,7 +64,7 @@ function App() {
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
+          <div>
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -74,18 +74,12 @@ function App() {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md bg-white rounded-xl p-6">
-                <div ref={focusRef}>
-                  {(profile && (
-                    <ProfileItem
-                      className="border-none"
-                      variant="main"
-                      as="div"
-                      link={false}
-                      profile={profile}
-                    />
-                  )) || <Spinner className="m-auto" />}
-                </div>
+              <Dialog.Panel>
+                <DpMap
+                  profiles={profiles}
+                  activeDp={activeDp}
+                  onClickDp={handleClickDp}
+                />
               </Dialog.Panel>
             </Transition.Child>
           </div>

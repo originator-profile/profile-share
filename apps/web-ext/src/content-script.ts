@@ -1,17 +1,18 @@
 import {
-  MessageRequest,
-  MessageResponse,
+  ContentScriptMessageRequest,
+  ContentScriptMessageResponse,
   ContentWindowPostMessageEvent,
 } from "./types/message";
 import { activate, deactivate } from "./utils/iframe";
-import { Profile } from "./types/profile";
+import { Profile, Dp } from "./types/profile";
 
-let profile: Profile | null = null;
+let profiles: Profile[] = [];
+let activeDp: Dp | null = null;
 const iframe = document.createElement("iframe");
 
 function handleMessageResponse(
-  message: MessageRequest
-): Promise<MessageResponse> {
+  message: ContentScriptMessageRequest
+): Promise<ContentScriptMessageResponse> {
   switch (message.type) {
     case "fetch-profiles":
       return Promise.resolve({
@@ -22,11 +23,12 @@ function handleMessageResponse(
             .querySelector('link[rel="alternate"][type="application/ld+json"]')
             ?.getAttribute("href") ?? null,
       });
-    case "focus-profile":
+    case "overlay-profiles":
       activate(iframe);
-      profile = message.profile;
+      profiles = message.profiles;
+      activeDp = message.activeDp;
       return Promise.resolve({
-        type: "focus-profile",
+        type: "overlay-profiles",
       });
     case "close-window":
       iframe.contentWindow?.postMessage({ type: "leave-overlay" });
@@ -37,7 +39,7 @@ function handleMessageResponse(
 }
 
 chrome.runtime.onMessage.addListener(async function (
-  message: MessageRequest,
+  message: ContentScriptMessageRequest,
   _,
   sendResponse
 ) {
@@ -51,11 +53,15 @@ function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
     case "enter-overlay":
       event.source?.postMessage({
         type: "enter-overlay",
-        profile,
+        profiles,
+        activeDp,
       });
       break;
     case "leave-overlay":
       deactivate(iframe);
+      break;
+    case "select-overlay-dp":
+      chrome.runtime.sendMessage(event.data);
       break;
   }
 }
