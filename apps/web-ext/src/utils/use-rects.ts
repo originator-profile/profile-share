@@ -21,6 +21,7 @@ function useRects(dpItem: DpText | DpVisibleText | DpHtml) {
   useEvent("scroll", handler, window.parent);
   useEffect(() => {
     handler();
+    // NOTE: オーバーレイの初期状態（リサイズ、スクロール前）でマーカーが表示されないことへの対処
   }, [handler, intersectingElements]);
   return { rects };
 }
