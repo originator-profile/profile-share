@@ -91,7 +91,7 @@ function DpLocator({
   children: ({ rects }: { rects: DOMRect[] }) => React.ReactNode;
 }) {
   const { rects } = useRects(dpLocator);
-  // TODO: visibleText / text / html 型の書名を検証して
+  // TODO: visibleText / text / html 型の署名を検証して
   return <>{children({ rects })}</>;
 }
 
