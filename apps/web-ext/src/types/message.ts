@@ -26,9 +26,6 @@ export type SelectOverlayDpMessageRequest = {
   type: "select-overlay-dp";
   dp: Dp;
 };
-export type SelectOverlayDpMessageResponse = {
-  type: "select-overlay-dp";
-};
 export type ContentScriptMessageRequest =
   | FetchProfilesMessageRequest
   | OverlayProfilesMessageRequest
@@ -38,10 +35,7 @@ export type ContentScriptMessageResponse =
   | OverlayProfilesMessageResponse
   | CloseWindowMessageResponse;
 export type BackgroundMessageRequest = SelectOverlayDpMessageRequest;
-export type BackgroundMessageResponse = SelectOverlayDpMessageResponse;
 export type PopupMessageRequest = SelectOverlayDpMessageRequest;
-export type PopupMessageResponse = SelectOverlayDpMessageResponse;
-
 export type EnterOverlayMessageRequest = {
   type: "enter-overlay";
 };
