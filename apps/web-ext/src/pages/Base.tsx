@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { isDp } from "@webdino/profile-core";
-import { sortProfiles } from "../utils/profile";
+import { sortDps } from "../utils/profile";
 import { routes } from "../utils/routes";
 import useProfiles from "../utils/use-profiles";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
@@ -25,7 +25,7 @@ function Base() {
       </LoadingPlaceholder>
     );
   }
-  const [dp] = sortProfiles(profiles.filter(isDp), main);
+  const [dp] = sortDps(profiles.filter(isDp), main);
   if (!dp) {
     return (
       <ErrorPlaceholder>

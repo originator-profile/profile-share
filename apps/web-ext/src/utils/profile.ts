@@ -1,8 +1,7 @@
-import { Profile } from "../types/profile";
+import { Profile, Dp } from "../types/profile";
 import { VerifyResult, ProfileGenericError } from "@webdino/profile-verify";
 import { JwtDpPayload } from "@webdino/profile-model";
 import {
-  isOp,
   fromJwtDpPayload,
   fromJwtOpPayload,
   isJwtOpPayload,
@@ -27,15 +26,8 @@ const reorder = <T>(list: T[], startIndex: number, endIndex: number) => {
   return result;
 };
 
-export const sortProfiles = (
-  profiles: Profile[],
-  main: string[]
-): Profile[] => {
-  const mainIndex = profiles.findIndex(
-    (profile) => profile.subject === main[0]
-  );
-  if (mainIndex !== -1) return reorder(profiles, mainIndex, 0);
-  const opIndex = profiles.findIndex(isOp);
-  if (opIndex !== -1) return reorder(profiles, opIndex, 0);
-  return profiles;
+export const sortDps = (dps: Dp[], main: string[]): Dp[] => {
+  const mainIndex = dps.findIndex((dp) => dp.subject === main[0]);
+  if (mainIndex !== -1) return reorder(dps, mainIndex, 0);
+  return dps;
 };
