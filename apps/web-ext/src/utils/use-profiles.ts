@@ -1,4 +1,5 @@
-import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import useSWR from "swr";
 import { useEvent } from "react-use";
 import {
@@ -7,9 +8,13 @@ import {
   fetchProfiles,
   expandProfiles,
 } from "@webdino/profile-verify";
-import { FetchProfilesMessageResponse } from "../types/message";
+import {
+  FetchProfilesMessageResponse,
+  PopupMessageRequest,
+} from "../types/message";
 import { Profile } from "../types/profile";
 import { toProfile } from "./profile";
+import { routes } from "./routes";
 
 const key = "profiles";
 
@@ -58,6 +63,26 @@ function useProfiles() {
   useEvent("unload", async function () {
     await chrome.tabs.sendMessage(tabId, { type: "close-window" });
   });
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleMessageResponse = async (message: PopupMessageRequest) => {
+      switch (message.type) {
+        case "select-overlay-dp":
+          navigate(
+            [
+              routes.base.build({ tabId: String(tabId) }),
+              routes.publ.build(message.dp),
+            ].join("/")
+          );
+      }
+    };
+    chrome.runtime.onMessage.addListener(handleMessageResponse);
+    return () => {
+      chrome.runtime.onMessage.removeListener(handleMessageResponse);
+    };
+  }, [tabId, navigate]);
 
   return {
     ...data,
