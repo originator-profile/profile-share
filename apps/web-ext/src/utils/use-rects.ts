@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import { useEvent } from "react-use";
-import { debounce } from "throttle-debounce";
+import { useThrottledCallback } from "use-debounce";
 import { DpText, DpVisibleText, DpHtml } from "@webdino/profile-model";
 import useIntersectingElements from "./use-intersecting-elements";
 
@@ -12,11 +12,11 @@ function useRects(dpItem: DpText | DpVisibleText | DpHtml) {
   );
   const { intersectingElements } = useIntersectingElements(elements);
   const [rects, setRects] = useState<DOMRect[]>([]);
-  const handler = debounce(100, () => {
+  const handler = useThrottledCallback(() => {
     setRects(
       intersectingElements.map((element) => element.getBoundingClientRect())
     );
-  });
+  }, 300);
   useEvent("resize", handler, window.parent);
   useEvent("scroll", handler, window.parent);
   useEffect(() => {
