@@ -1,6 +1,6 @@
 import { Jwk } from "@webdino/profile-model";
 import { generateKeyPair, exportJWK, exportPKCS8 } from "jose";
-import { fingerprint } from "./fingerprint";
+import { createThumbprint } from "./thumbprint";
 
 /**
  * 鍵の生成
@@ -19,7 +19,7 @@ export async function generateKey(
   return {
     jwk: {
       kty: jwk.kty,
-      kid: fingerprint(jwk),
+      kid: await createThumbprint(jwk),
       ...jwk,
     },
     pkcs8,
