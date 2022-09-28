@@ -1,7 +1,7 @@
 import { importPKCS8, SignJWT } from "jose";
 import { getUnixTime } from "date-fns";
 import { Dp, JwtDpPayload } from "@webdino/profile-model";
-import { fingerprint } from "./fingerprint";
+import { createThumbprint } from "./thumbprint";
 
 /**
  * DP への署名
@@ -17,7 +17,7 @@ export async function signDp(
 ): Promise<string> {
   const header = {
     alg,
-    kid: fingerprint(pkcs8),
+    kid: await createThumbprint(pkcs8, alg),
     typ: "JWT",
   };
   const payload: Pick<JwtDpPayload, "https://opr.webdino.org/jwt/claims/dp"> = {
