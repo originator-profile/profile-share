@@ -30,7 +30,7 @@ function Image({
     >
       <img
         className={clsx("w-auto", { ["rounded-full"]: rounded })}
-        style={{ maxHeight: height }}
+        style={{ maxWidth: width, maxHeight: height }}
         src={src ?? placeholderSrc}
         alt={alt}
         width={width}
