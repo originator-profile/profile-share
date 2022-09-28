@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
 import { addYears } from "date-fns";
-import { decodeJwt } from "jose";
+import { decodeJwt, decodeProtectedHeader } from "jose";
 import { Op } from "@webdino/profile-model";
 import { generateKey } from "./generate-key";
 import { signOp } from "./sign-op";
@@ -16,8 +16,9 @@ test("signOp() return a valid JWT", async () => {
     subject: "http://sub.localhost:8080",
     item: [],
   };
-  const { pkcs8 } = await generateKey();
+  const { jwk, pkcs8 } = await generateKey();
   const jwt = await signOp(op, pkcs8);
+  expect(decodeProtectedHeader(jwt).kid).toBe(jwk.kid);
   const valid = decodeJwt(jwt);
   expect(valid).toMatchObject({
     iss: op.issuer,

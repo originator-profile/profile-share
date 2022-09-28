@@ -1,4 +1,5 @@
 import { importPKCS8, CompactSign } from "jose";
+import { fingerprint } from "./fingerprint";
 
 /**
  * 対象のテキストへの署名
@@ -14,6 +15,7 @@ export async function signBody(
 ): Promise<string> {
   const header = {
     alg,
+    kid: fingerprint(pkcs8),
     b64: false,
     crit: ["b64"],
   };

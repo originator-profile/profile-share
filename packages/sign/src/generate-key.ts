@@ -1,5 +1,6 @@
 import { Jwk } from "@webdino/profile-model";
 import { generateKeyPair, exportJWK, exportPKCS8 } from "jose";
+import { fingerprint } from "./fingerprint";
 
 /**
  * 鍵の生成
@@ -10,10 +11,17 @@ export async function generateKey(
   alg = "ES256"
 ): Promise<{ jwk: Jwk; pkcs8: string }> {
   const { publicKey, privateKey } = await generateKeyPair(alg);
-  const [{ kty, ...jwk }, pkcs8] = await Promise.all([
+  const [jwk, pkcs8] = await Promise.all([
     exportJWK(publicKey),
     exportPKCS8(privateKey),
   ]);
-  if (typeof kty !== "string") throw new Error("kty is not defined");
-  return { jwk: { kty, ...jwk }, pkcs8 };
+  if (typeof jwk.kty !== "string") throw new Error("kty is not defined");
+  return {
+    jwk: {
+      kty: jwk.kty,
+      kid: fingerprint(jwk),
+      ...jwk,
+    },
+    pkcs8,
+  };
 }
