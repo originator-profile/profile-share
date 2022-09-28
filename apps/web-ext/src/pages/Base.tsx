@@ -1,3 +1,4 @@
+import { useTitle } from "react-use";
 import { Navigate } from "react-router-dom";
 import { isDp } from "@webdino/profile-core";
 import { sortDps } from "../utils/profile";
@@ -8,6 +9,9 @@ import ErrorPlaceholder from "../components/ErrorPlaceholder";
 
 function Base() {
   const { tabId, main = [], profiles, error, targetOrigin } = useProfiles();
+
+  useTitle(["コンテンツ情報", targetOrigin].filter(Boolean).join(" ― "));
+
   if (error) {
     return (
       <ErrorPlaceholder>

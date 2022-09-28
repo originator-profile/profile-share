@@ -18,7 +18,7 @@ describe("launch", () => {
     // Profile Registry にアクセス (apps/registry)
     await page?.goto("http://localhost:8080/");
     page = await popup(ctx);
-    expect(await page.title()).toBe("Profile Web Extension");
+    expect(await page.title()).toMatch(/コンテンツ情報/);
     await page.waitForSelector("text='OP 確認くん'");
   });
 });
