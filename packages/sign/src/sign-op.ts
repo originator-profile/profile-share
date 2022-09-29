@@ -1,6 +1,7 @@
 import { importPKCS8, SignJWT } from "jose";
 import { getUnixTime } from "date-fns";
 import { Op, JwtOpPayload } from "@webdino/profile-model";
+import { createThumbprint } from "./thumbprint";
 
 /**
  * OP への署名
@@ -16,6 +17,7 @@ export async function signOp(
 ): Promise<string> {
   const header = {
     alg,
+    kid: await createThumbprint(pkcs8, alg),
     typ: "JWT",
   };
   const payload: Pick<JwtOpPayload, "https://opr.webdino.org/jwt/claims/op"> = {
