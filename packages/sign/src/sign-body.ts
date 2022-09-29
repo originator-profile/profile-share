@@ -1,4 +1,5 @@
 import { importPKCS8, CompactSign } from "jose";
+import { createThumbprint } from "./thumbprint";
 
 /**
  * 対象のテキストへの署名
@@ -14,6 +15,7 @@ export async function signBody(
 ): Promise<string> {
   const header = {
     alg,
+    kid: await createThumbprint(pkcs8, alg),
     b64: false,
     crit: ["b64"],
   };
