@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  node: circleci/node@5.0.2
+  node: circleci/node@5.0.3
 commands:
   git_checkout_and_config:
     steps:
@@ -37,7 +37,7 @@ jobs:
       - node/install:
           install-yarn: true
           # NOTE: Node.js v18.7.0 で @webdino/profile-model:test に失敗する問題 (#315) ので Node.js v16.17.0 を使う
-          node-version: "16.17.0"
+          node-version: "16.17.1"
       - yarn_install_with_cache
       - run: yarn format
       - run:
