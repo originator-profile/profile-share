@@ -13,8 +13,8 @@
   "devDependencies": {
     "@webdino/profile-model": "*",
     "@webdino/profile-tsconfig": "*",
-    "eslint": "^8.23.0",
+    "eslint": "^8.24.0",
     "eslint-config-webdino-profile": "*",
-    "vitest": "^0.22.1"
+    "vitest": "^0.23.4"
   }
 }
