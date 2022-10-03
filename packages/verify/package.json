@@ -17,12 +17,12 @@
     "@webdino/profile-tsconfig": "*",
     "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
-    "date-fns": "^2.29.2",
-    "eslint": "^8.23.0",
+    "date-fns": "^2.29.3",
+    "eslint": "^8.24.0",
     "eslint-config-webdino-profile": "*",
-    "jose": "^4.9.2",
+    "jose": "^4.10.0",
     "jsonld": "^8.1.0",
     "vi-fetch": "^0.8.0",
-    "vitest": "^0.22.1"
+    "vitest": "^0.23.4"
   }
 }
