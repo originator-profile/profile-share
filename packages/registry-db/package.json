@@ -11,8 +11,8 @@
     "dev": "prisma generate --watch"
   },
   "devDependencies": {
-    "@prisma/client": "^4.2.1",
-    "prisma": "^4.2.1",
-    "prisma-erd-generator": "^1.1.0"
+    "@prisma/client": "^4.4.0",
+    "prisma": "^4.4.0",
+    "prisma-erd-generator": "^1.2.1"
   }
 }
