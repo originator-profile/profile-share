@@ -31,8 +31,6 @@ Prisma Studio が起動します。現在レジストリ側に登録されてい
 
 今回は`roleValue`の列に`certifier`と役割を担っている`https://oprdev.herokuapp.com`に認証を受けるというシチュエーションを例に作業を解説します。
 
-
-
 ## Profiles Set 作成手順
 
 最初の手順には大きくこのような流れがあります。
@@ -42,7 +40,7 @@ Prisma Studio が起動します。現在レジストリ側に登録されてい
 3. 公開鍵の登録を行う
 4. Signed Originator Profile を作成する
 5. Signed Document Profile を作成する
-6. 公開するWebサイトにProfiles Setを紐付ける
+6. 公開する Web サイトに Profiles Set を紐付ける
 
 下記のコマンドは apps/registry ディレクトリで実行する。
 
@@ -101,13 +99,12 @@ Prisma Studio が起動します。現在レジストリ側に登録されてい
 ```console
 yarn dotenv -- -e .env -- bin/dev account -i account.json -o create
 ```
+
 と実行してください。 コマンド中の`account.json`の部分は先程の JSON ファイル名なので適宜置き換えることがあるかもしれません。
 
 Prisma Studio を確認してみてください。あなたの組織が登録されていたら成功です。
 
 <img width="1552" alt="スクリーンショット 0004-10-03 11 10 53" src="https://user-images.githubusercontent.com/281424/193491831-9ee55ec6-965d-465b-a2c6-44d6f150f9ea.png">
-
-
 
 ### 鍵ペアの生成
 
@@ -135,10 +132,10 @@ yarn dotenv -- -e .env -- bin/dev account:register-key -k key.pub.json --id daab
 
 ### Signed Originator Profile 発行
 
-ここで必要な情報は以下の2点です。
+ここで必要な情報は以下の 2 点です。
 
-- 自身の組織id --holder
-- 認証してもらう組織のid --certifier
+- 自身の組織 id --holder
+- 認証してもらう組織の id --certifier
 
 <img width="1552" alt="スクリーンショット 0004-10-03 11 10 53" src="https://user-images.githubusercontent.com/281424/193493119-5d092c32-7437-4ebe-a453-96457f2fda72.png">
 
@@ -154,6 +151,7 @@ yarn dotenv -- -e .env -- bin/dev cert:issue \
   --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e \
   --holder daab5a08-d513-400d-aaaa-e1c1493e0421
 ```
+
 Prisma Studio であなたの組織の行を横スクロールすると、`issuedOps`という列があり、`1 ops`と表示されていれば成功です。
 クリックすると、画面が変わり、画面下に `Open new tab` のボタンがあるのでそれを押すと、画面上部に新しいタブができます。
 
@@ -166,7 +164,7 @@ Signed Originator Profile の登録が完了しました。
 ### Signed Document Profile 登録手順
 
 あらかじめ会員登録、公開鍵の登録、Signed Originator Profile 発行を行っておく必要があります。。
-ここで用意するものはWebページの情報です。
+ここで用意するものは Web ページの情報です。
 
 #### website.json の例
 
@@ -176,7 +174,7 @@ Signed Originator Profile の登録が完了しました。
 
 #### 読売新聞社の記事登録の例
 
-`website.json` に記述する内容ですが、例えば以下のようになります。あなたのWebページの内容に沿って書き換えてください。
+`website.json` に記述する内容ですが、例えば以下のようになります。あなたの Web ページの内容に沿って書き換えてください。
 
 ```json
 {
@@ -194,8 +192,7 @@ Signed Originator Profile の登録が完了しました。
 
 「読売新聞社」は、株式会社読売新聞東京本社の登録商標です。
 
-
-あなたの組織idが仮に `daab5a08-d513-400d-aaaa-e1c1493e0421` であることを前提に、実際のWebページに対して Signed Document Profile を発行する例を見てみましょう。
+あなたの組織 id が仮に `daab5a08-d513-400d-aaaa-e1c1493e0421` であることを前提に、実際の Web ページに対して Signed Document Profile を発行する例を見てみましょう。
 
 --input は先程作成した`website.json`ファイル名です。
 
@@ -213,10 +210,9 @@ yarn dotenv -- -e .env -- bin/dev publisher:website \
 
 オプションについては、[apps/registry/README.md](https://github.com/webdino/profile/tree/main/apps/registry) を参照してください。
 
+### 公開する Web サイトに Profiles Set を紐付ける
 
-### 公開するWebサイトにProfiles Setを紐付ける
-
-最後にデプロイ用 Profiles Set の作成を行います。 
+最後にデプロイ用 Profiles Set の作成を行います。
 公開するサイトに配置する際には、トップディレクトリの .well-known に以下のファイルを配置します。
 
 - jwks.json
@@ -264,6 +260,5 @@ profile には `ops` と `dps` が混在しているように見えますが、 
   ]
 }
 ```
-
 
 [\<link\>](https://github.com/webdino/profile/blob/main/docs/spec.md#link) 要素の追加方法はリンク先に参照
