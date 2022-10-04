@@ -18,7 +18,6 @@ function Org(props: Props) {
     publishers = [],
     profiles,
     error,
-    targetOrigin,
     profileEndpoint,
   } = useProfiles();
   if (error) {
@@ -32,7 +31,7 @@ function Org(props: Props) {
     return (
       <LoadingPlaceholder>
         <p>
-          {targetOrigin && `${targetOrigin} の`}
+          {profileEndpoint && `${profileEndpoint.origin} の`}
           プロファイルを取得検証しています...
         </p>
       </LoadingPlaceholder>
@@ -69,7 +68,7 @@ function Org(props: Props) {
       op={op}
       holder={holder}
       roles={roles}
-      profileEndpoint={profileEndpoint ?? ""}
+      profileEndpoint={profileEndpoint}
     />
   );
 }

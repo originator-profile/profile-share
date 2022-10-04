@@ -16,7 +16,7 @@ type Props = {
   website: OgWebsite;
   holder: OpHolder;
   paths: { org: string };
-  profileEndpoint: string;
+  profileEndpoint?: URL;
 };
 
 function Publ({ dp, website, holder, paths, profileEndpoint }: Props) {
