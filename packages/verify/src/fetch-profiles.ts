@@ -7,9 +7,9 @@ import { JsonLdDocument } from "jsonld";
 export async function fetchProfiles(
   profileEndpoint: string
 ): Promise<JsonLdDocument> {
-  const url = new URL(profileEndpoint);
   let profiles;
   try {
+    const url = new URL(profileEndpoint);
     const res = await fetch(url.href);
     if (!res.ok) {
       throw new Error(`HTTP ステータスコード ${res.status}`);
