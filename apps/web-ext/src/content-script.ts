@@ -14,15 +14,16 @@ function handleMessageResponse(
   message: ContentScriptMessageRequest
 ): Promise<ContentScriptMessageResponse> {
   switch (message.type) {
-    case "fetch-profiles":
+    case "fetch-profiles": {
+      const link = document
+        .querySelector('link[rel="alternate"][type="application/ld+json"]')
+        ?.getAttribute("href");
       return Promise.resolve({
         type: "fetch-profiles",
-        targetOrigin: document.location.origin,
-        profilesLink:
-          document
-            .querySelector('link[rel="alternate"][type="application/ld+json"]')
-            ?.getAttribute("href") ?? null,
+        profileEndpoint:
+          link ?? `${document.location.origin}/.well-known/op-document`,
       });
+    }
     case "overlay-profiles":
       activate(iframe);
       profiles = message.profiles;
