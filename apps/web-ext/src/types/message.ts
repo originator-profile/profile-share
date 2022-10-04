@@ -5,8 +5,7 @@ export type FetchProfilesMessageRequest = {
 };
 export type FetchProfilesMessageResponse = {
   type: "fetch-profiles";
-  targetOrigin: string;
-  profilesLink: string | null;
+  profileEndpoint: string;
 };
 export type OverlayProfilesMessageRequest = {
   type: "overlay-profiles";

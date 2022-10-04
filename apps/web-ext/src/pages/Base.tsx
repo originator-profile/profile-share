@@ -8,9 +8,11 @@ import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 
 function Base() {
-  const { tabId, main = [], profiles, error, targetOrigin } = useProfiles();
+  const { tabId, main = [], profiles, error, profileEndpoint } = useProfiles();
 
-  useTitle(["コンテンツ情報", targetOrigin].filter(Boolean).join(" ― "));
+  useTitle(
+    ["コンテンツ情報", profileEndpoint?.origin].filter(Boolean).join(" ― ")
+  );
 
   if (error) {
     return (
@@ -23,7 +25,7 @@ function Base() {
     return (
       <LoadingPlaceholder>
         <p>
-          {targetOrigin && `${targetOrigin} の`}
+          {profileEndpoint && `${profileEndpoint.origin} の`}
           プロファイルを取得検証しています...
         </p>
       </LoadingPlaceholder>

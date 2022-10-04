@@ -8,7 +8,7 @@ import Template from "../templates/Publ";
 
 function Publ() {
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
-  const { profiles, error, targetOrigin, profileEndpoint } = useProfiles();
+  const { profiles, error, profileEndpoint } = useProfiles();
   if (error) {
     return (
       <ErrorPlaceholder>
@@ -20,7 +20,7 @@ function Publ() {
     return (
       <LoadingPlaceholder>
         <p>
-          {targetOrigin && `${targetOrigin} の`}
+          {profileEndpoint && `${profileEndpoint.origin} の`}
           プロファイルを取得検証しています...
         </p>
       </LoadingPlaceholder>
@@ -63,7 +63,7 @@ function Publ() {
       website={website}
       holder={holder}
       paths={paths}
-      profileEndpoint={profileEndpoint ?? ""}
+      profileEndpoint={profileEndpoint}
     />
   );
 }

@@ -18,7 +18,7 @@ type Props = {
   op: Op;
   holder: OpHolder;
   roles: Role[];
-  profileEndpoint: string;
+  profileEndpoint?: URL;
   paths: { back: string };
 };
 

@@ -19,14 +19,11 @@ import { routes } from "./routes";
 const key = "profiles";
 
 async function fetchVerifiedProfiles(_: typeof key, tabId: number) {
-  const { targetOrigin, profilesLink }: FetchProfilesMessageResponse =
+  const { profileEndpoint }: FetchProfilesMessageResponse =
     await chrome.tabs.sendMessage(tabId, {
       type: "fetch-profiles",
     });
-  const { profiles, profileEndpoint } = await fetchProfiles(
-    targetOrigin,
-    profilesLink
-  );
+  const profiles = await fetchProfiles(profileEndpoint);
   const { advertisers, publishers, main, profile } = await expandProfiles(
     profiles
   );
@@ -40,8 +37,7 @@ async function fetchVerifiedProfiles(_: typeof key, tabId: number) {
     publishers,
     main,
     profiles: verifyResults.map(toProfile),
-    targetOrigin: targetOrigin,
-    profileEndpoint: profileEndpoint.href,
+    profileEndpoint: new URL(profileEndpoint),
   };
 }
 
@@ -57,8 +53,7 @@ function useProfiles() {
     publishers: string[];
     main: string[];
     profiles: Profile[];
-    targetOrigin?: string;
-    profileEndpoint?: string;
+    profileEndpoint: URL;
   }>([key, tabId], fetchVerifiedProfiles);
 
   useEvent("unload", async function () {
@@ -89,8 +84,6 @@ function useProfiles() {
     ...data,
     error,
     tabId,
-    targetOrigin: data?.targetOrigin,
-    profileEndpoint: data?.profileEndpoint,
   };
 }
 

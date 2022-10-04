@@ -2,22 +2,15 @@ import { JsonLdDocument } from "jsonld";
 
 /**
  * Profiles Set の取得
- * @param targetOrigin 取得先オリジン
- * @param profilesLink 取得先エンドポイント
+ * @param profileEndpoint 取得先エンドポイント
  */
 export async function fetchProfiles(
-  targetOrigin: string,
-  profilesLink: string | null
-): Promise<{
-  profileEndpoint: URL;
-  profiles: JsonLdDocument;
-}> {
-  let profileEndpoint, profiles;
+  profileEndpoint: string
+): Promise<JsonLdDocument> {
+  let profiles;
   try {
-    profileEndpoint = new URL(
-      profilesLink ?? `${targetOrigin}/.well-known/op-document`
-    );
-    const res = await fetch(profileEndpoint.href);
+    const url = new URL(profileEndpoint);
+    const res = await fetch(url.href);
     if (!res.ok) {
       throw new Error(`HTTP ステータスコード ${res.status}`);
     }
@@ -31,5 +24,5 @@ export async function fetchProfiles(
       throw e;
     }
   }
-  return { profiles, profileEndpoint };
+  return profiles;
 }
