@@ -1,6 +1,8 @@
-import { DpLocator } from "../types/profile";
+import { DpVisibleText, DpText, DpHtml } from "@webdino/profile-model";
 
-function extract(element: Element, type: DpLocator["type"]): string {
+type Type = (DpVisibleText | DpText | DpHtml)["type"];
+
+function extract(element: Element, type: Type): string {
   switch (type) {
     case "visibleText":
       return element.innerHTML;
@@ -12,13 +14,8 @@ function extract(element: Element, type: DpLocator["type"]): string {
 }
 
 /** 対象の要素とその子孫にあたる文字列の抽出 */
-function extractBody(
-  elements: NodeListOf<Element>,
-  type: DpLocator["type"]
-): string {
+export function extractBody(elements: NodeListOf<Element>, type: Type): string {
   return Array.from(elements)
     .map((element) => extract(element, type))
     .join("");
 }
-
-export default extractBody;
