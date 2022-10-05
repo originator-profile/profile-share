@@ -10,16 +10,19 @@ import {
 import { Op, Dp, DpLocator } from "../types/profile";
 import useElements from "../utils/use-elements";
 import useRects from "../utils/use-rects";
+import useVerifyBody from "../utils/use-verify-body";
 import Image from "./Image";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
 
 function Marker({
+  result,
   rects,
   ogWebsite,
   opHolder,
   active,
   onClick,
 }: {
+  result: ReturnType<typeof useVerifyBody>["result"];
   rects: ResizeObserverEntry["contentRect"][];
   ogWebsite: OgWebsite;
   opHolder: OpHolder;
@@ -48,7 +51,12 @@ function Marker({
               "relative border-4 rounded-full shadow-xl",
               active ? "bg-blue-500 border-blue-500" : "bg-white border-white"
             )}
-            title={`${opHolder.name} ${ogWebsite.title}`}
+            title={`${opHolder.name} ${ogWebsite.title} ${
+              result &&
+              (result instanceof Error
+                ? result.message
+                : new TextDecoder().decode(result.payload))
+            }`}
             onClick={onClick}
           >
             <Image
@@ -80,16 +88,24 @@ function Marker({
 }
 
 function DpLocator({
+  op,
   dpLocator,
   children,
 }: {
+  op: Op;
   dpLocator: DpLocator;
-  children: ({ rects }: { rects: DOMRect[] }) => React.ReactNode;
+  children: ({
+    result,
+    rects,
+  }: {
+    result: ReturnType<typeof useVerifyBody>["result"];
+    rects: DOMRect[];
+  }) => React.ReactNode;
 }) {
-  // TODO: visibleText / text / html 型の署名を検証して
+  const { result } = useVerifyBody(dpLocator, op.jwks);
   const { elements } = useElements(dpLocator.location);
   const { rects } = useRects(elements);
-  return <>{children({ rects })}</>;
+  return <>{children({ result, rects })}</>;
 }
 
 type Props = {
@@ -111,9 +127,10 @@ function DpMarker({ dp, op, active, onClickDp }: Props) {
   const opHolder = op?.item.find(isOpHolder);
   if (!opHolder) return null;
   return (
-    <DpLocator dpLocator={dpLocator}>
-      {({ rects }) => (
+    <DpLocator op={op} dpLocator={dpLocator}>
+      {({ result, rects }) => (
         <Marker
+          result={result}
           rects={rects}
           ogWebsite={ogWebsite}
           opHolder={opHolder}
