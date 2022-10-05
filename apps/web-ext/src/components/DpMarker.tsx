@@ -1,11 +1,5 @@
 import clsx from "clsx";
-import {
-  OgWebsite,
-  DpText,
-  DpVisibleText,
-  DpHtml,
-  OpHolder,
-} from "@webdino/profile-model";
+import { OgWebsite, OpHolder } from "@webdino/profile-model";
 import {
   isOgWebsite,
   isDpText,
@@ -13,7 +7,7 @@ import {
   isDpHtml,
   isOpHolder,
 } from "@webdino/profile-core";
-import { Op, Dp } from "../types/profile";
+import { Op, Dp, DpLocator } from "../types/profile";
 import useRects from "../utils/use-rects";
 import Image from "./Image";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
@@ -88,7 +82,7 @@ function DpLocator({
   dpLocator,
   children,
 }: {
-  dpLocator: DpVisibleText | DpText | DpHtml;
+  dpLocator: DpLocator;
   children: ({ rects }: { rects: DOMRect[] }) => React.ReactNode;
 }) {
   const { rects } = useRects(dpLocator);
