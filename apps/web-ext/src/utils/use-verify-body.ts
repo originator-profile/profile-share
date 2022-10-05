@@ -1,7 +1,6 @@
 import useSWRImmutable from "swr/immutable";
-import { verifyBody, LocalKeys } from "@webdino/profile-verify";
+import { verifyBody, LocalKeys, extractBody } from "@webdino/profile-verify";
 import { Jwks } from "@webdino/profile-model";
-import extractBody from "../utils/extract-body";
 import { DpLocator } from "../types/profile";
 import useElements from "../utils/use-elements";
 
