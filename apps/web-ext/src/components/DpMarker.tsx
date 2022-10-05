@@ -8,6 +8,7 @@ import {
   isOpHolder,
 } from "@webdino/profile-core";
 import { Op, Dp, DpLocator } from "../types/profile";
+import useElements from "../utils/use-elements";
 import useRects from "../utils/use-rects";
 import Image from "./Image";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
@@ -85,8 +86,9 @@ function DpLocator({
   dpLocator: DpLocator;
   children: ({ rects }: { rects: DOMRect[] }) => React.ReactNode;
 }) {
-  const { rects } = useRects(dpLocator);
   // TODO: visibleText / text / html 型の署名を検証して
+  const { elements } = useElements(dpLocator.location);
+  const { rects } = useRects(elements);
   return <>{children({ rects })}</>;
 }
 
