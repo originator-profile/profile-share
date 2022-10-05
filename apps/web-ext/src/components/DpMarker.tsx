@@ -11,8 +11,9 @@ import {
   isDpText,
   isDpVisibleText,
   isDpHtml,
+  isOpHolder,
 } from "@webdino/profile-core";
-import { Dp } from "../types/profile";
+import { Op, Dp } from "../types/profile";
 import useRects from "../utils/use-rects";
 import Image from "./Image";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
@@ -97,12 +98,12 @@ function DpLocator({
 
 type Props = {
   dp: Dp;
-  opHolder: OpHolder;
+  op: Op;
   active: boolean;
   onClickDp: (dp: Dp) => void;
 };
 
-function DpMarker({ dp, opHolder, active, onClickDp }: Props) {
+function DpMarker({ dp, op, active, onClickDp }: Props) {
   const ogWebsite = dp.item.find(isOgWebsite);
   if (!ogWebsite) return null;
   const handleClick = () => onClickDp(dp);
@@ -111,6 +112,8 @@ function DpMarker({ dp, opHolder, active, onClickDp }: Props) {
     dp.item.find(isDpText) ||
     dp.item.find(isDpHtml);
   if (!dpLocator) return null;
+  const opHolder = op?.item.find(isOpHolder);
+  if (!opHolder) return null;
   return (
     <DpLocator dpLocator={dpLocator}>
       {({ rects }) => (
