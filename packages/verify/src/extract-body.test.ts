@@ -21,7 +21,7 @@ document.body.innerHTML = `
 `;
 document.location.href = "https://example.com/";
 
-test("extract body as text type", () => {
+test("extract body as visibleText type", () => {
   const item: DpVisibleText = {
     ...base,
     type: "visibleText",
