@@ -15,8 +15,7 @@ const base = {
 const window = new Window();
 const document = window.document as unknown as Document;
 document.body.innerHTML = `
-  <p>Hello,<br>World!</p>
-  <p style="visibility: hidden;">Hidden Text</p>
+  <p>Hello, World!</p>
   <p>Goodbye, World!</p>
 `;
 document.location.href = "https://example.com/";
@@ -28,7 +27,7 @@ test("extract body as visibleText type", () => {
   };
   const result = extractBody(document, item);
   expect(result).not.instanceOf(Error);
-  expect(result).toBe("Hello,World!Hidden TextGoodbye, World!");
+  expect(result).toBe("Hello, World!Goodbye, World!");
 });
 
 test("extract body as text type", () => {
@@ -38,7 +37,7 @@ test("extract body as text type", () => {
   };
   const result = extractBody(document, item);
   expect(result).not.instanceOf(Error);
-  expect(result).toBe("Hello,World!Hidden TextGoodbye, World!");
+  expect(result).toBe("Hello, World!Goodbye, World!");
 });
 
 test("extract body as html type", () => {
@@ -48,9 +47,7 @@ test("extract body as html type", () => {
   };
   const result = extractBody(document, item);
   expect(result).not.instanceOf(Error);
-  expect(result).toBe(
-    `<p>Hello,<br>World!</p><p style="visibility: hidden;">Hidden Text</p><p>Goodbye, World!</p>`
-  );
+  expect(result).toBe(`<p>Hello, World!</p><p>Goodbye, World!</p>`);
 });
 
 test("extract body failure when url misatch", () => {
