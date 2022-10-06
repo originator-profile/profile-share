@@ -11,7 +11,6 @@
     "lint": "eslint --fix ."
   },
   "devDependencies": {
-    "@types/jsdom": "^20.0.0",
     "@webdino/profile-core": "*",
     "@webdino/profile-model": "*",
     "@webdino/profile-sign": "*",
@@ -21,8 +20,8 @@
     "date-fns": "^2.29.3",
     "eslint": "^8.24.0",
     "eslint-config-webdino-profile": "*",
+    "happy-dom": "^7.0.2",
     "jose": "^4.10.0",
-    "jsdom": "^20.0.1",
     "jsonld": "^8.1.0",
     "vi-fetch": "^0.8.0",
     "vitest": "^0.23.4"

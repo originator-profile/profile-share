@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
-import { JSDOM } from "jsdom";
-import { DpText, DpHtml } from "@webdino/profile-model";
+import { Window } from "happy-dom";
+import { DpVisibleText, DpText, DpHtml } from "@webdino/profile-model";
 import { extractBody } from "./extract-body";
 
 const base = {
@@ -12,32 +12,31 @@ const base = {
   },
 };
 
-const dom = new JSDOM(
-  `
-  <!doctype html>
-  <html lang="en">
-    <head>
-      <title>Test</title>
-    </head>
-    <body>
-      <p>Hello,<br>World!</p>
-      <p style="visibility: hidden;">Hidden Text</p>
-      <p>Goodbye, World!</p>
-    </body>
-  </html>
-`,
-  { url: "https://example.com/" }
-);
+const window = new Window();
+const document = window.document as unknown as Document;
+document.body.innerHTML = `
+  <p>Hello,<br>World!</p>
+  <p style="visibility: hidden;">Hidden Text</p>
+  <p>Goodbye, World!</p>
+`;
+document.location.href = "https://example.com/";
 
-// TODO: visibleText 型での文字列の抽出をテストして
-// NOTE: JSDOM の innerText は未実装 https://github.com/jsdom/jsdom/issues/1245
+test("extract body as text type", () => {
+  const item: DpVisibleText = {
+    ...base,
+    type: "visibleText",
+  };
+  const result = extractBody(document, item);
+  expect(result).not.instanceOf(Error);
+  expect(result).toEqual("Hello,World!Hidden TextGoodbye, World!");
+});
 
 test("extract body as text type", () => {
   const item: DpText = {
     ...base,
     type: "text",
   };
-  const result = extractBody(dom.window.document, item);
+  const result = extractBody(document, item);
   expect(result).not.instanceOf(Error);
   expect(result).toEqual("Hello,World!Hidden TextGoodbye, World!");
 });
@@ -47,7 +46,7 @@ test("extract body as html type", () => {
     ...base,
     type: "html",
   };
-  const result = extractBody(dom.window.document, item);
+  const result = extractBody(document, item);
   expect(result).not.instanceOf(Error);
   expect(result).toEqual(
     `<p>Hello,<br>World!</p><p style="visibility: hidden;">Hidden Text</p><p>Goodbye, World!</p>`
@@ -60,6 +59,6 @@ test("extract body failure when url misatch", () => {
     url: "https://evil.com",
     type: "text",
   };
-  const result = extractBody(dom.window.document, item);
+  const result = extractBody(document, item);
   expect(result).instanceOf(Error);
 });
