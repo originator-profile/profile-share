@@ -28,7 +28,7 @@ test("extract body as visibleText type", () => {
   };
   const result = extractBody(document, item);
   expect(result).not.instanceOf(Error);
-  expect(result).toEqual("Hello,World!Hidden TextGoodbye, World!");
+  expect(result).toBe("Hello,World!Hidden TextGoodbye, World!");
 });
 
 test("extract body as text type", () => {
@@ -38,7 +38,7 @@ test("extract body as text type", () => {
   };
   const result = extractBody(document, item);
   expect(result).not.instanceOf(Error);
-  expect(result).toEqual("Hello,World!Hidden TextGoodbye, World!");
+  expect(result).toBe("Hello,World!Hidden TextGoodbye, World!");
 });
 
 test("extract body as html type", () => {
@@ -48,7 +48,7 @@ test("extract body as html type", () => {
   };
   const result = extractBody(document, item);
   expect(result).not.instanceOf(Error);
-  expect(result).toEqual(
+  expect(result).toBe(
     `<p>Hello,<br>World!</p><p style="visibility: hidden;">Hidden Text</p><p>Goodbye, World!</p>`
   );
 });
