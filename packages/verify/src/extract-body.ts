@@ -21,7 +21,7 @@ function extract(element: HTMLElement, type: DpItem["type"]): string {
  * @returns 抽出した文字列
  */
 export function extractBody(document: Document, item: DpItem) {
-  if (!document.location.href.startsWith(item.url))
+  if (document.location.href !== new URL(item.url).href)
     return new ProfileBodyExtractFailed("URL mismatch");
   const elements = document.querySelectorAll<HTMLElement>(
     item.location ?? ":root"
