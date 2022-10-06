@@ -22,7 +22,7 @@ function extract(element: HTMLElement, type: DpItem["type"]): string {
  */
 export function extractBody(document: Document, item: DpItem) {
   if (!document.location.href.startsWith(item.url))
-    return new ProfileBodyExtractFailed("Url mismatch");
+    return new ProfileBodyExtractFailed("URL mismatch");
   const elements = document.querySelectorAll<HTMLElement>(
     item.location ?? ":root"
   );
