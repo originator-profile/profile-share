@@ -1,8 +1,7 @@
 import { useMemo } from "react";
-import { DpLocator } from "../types/profile";
 
 /** CSS セレクターで指定した要素を返すフック関数 */
-function useElements(location: DpLocator["location"]) {
+function useElements(location?: string) {
   const elements = useMemo<NodeListOf<HTMLElement>>(
     () => window.parent.document.querySelectorAll(location ?? ":root"),
     [location]
