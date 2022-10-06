@@ -4,7 +4,7 @@ import { useThrottledCallback } from "use-debounce";
 import useIntersectingElements from "./use-intersecting-elements";
 
 /** 要素の寸法と相対位置を返すフック関数 */
-function useRects(elements: NodeListOf<Element>) {
+function useRects(elements: NodeListOf<HTMLElement>) {
   const { intersectingElements } = useIntersectingElements(elements);
   const [rects, setRects] = useState<DOMRect[]>([]);
   const handler = useThrottledCallback(() => {

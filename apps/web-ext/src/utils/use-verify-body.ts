@@ -9,7 +9,7 @@ const key = "verify-body" as const;
 async function fetcher(
   _: typeof key,
   dpLocator: DpLocator,
-  elements: NodeListOf<Element>,
+  elements: NodeListOf<HTMLElement>,
   jwks?: Jwks
 ) {
   const body = extractBody(elements, dpLocator.type);
