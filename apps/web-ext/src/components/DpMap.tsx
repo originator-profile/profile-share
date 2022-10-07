@@ -1,4 +1,4 @@
-import { isDp, isOp, isOpHolder } from "@webdino/profile-core";
+import { isDp, isOp } from "@webdino/profile-core";
 import { Profile, Dp, Op } from "../types/profile";
 import DpMarker from "../components/DpMarker";
 
@@ -14,19 +14,11 @@ function DpMapFragment({
   onClickDp: (dp: Dp) => void;
 }) {
   const op = ops.find((op) => op.subject === dp.issuer);
-  const opHolder = op?.item.find(isOpHolder);
-  if (!opHolder) return null;
+  if (!op) return null;
   const active = Boolean(
     activeDp && activeDp.issuer === dp.issuer && activeDp.subject === dp.subject
   );
-  return (
-    <DpMarker
-      dp={dp}
-      opHolder={opHolder}
-      active={active}
-      onClickDp={onClickDp}
-    />
-  );
+  return <DpMarker dp={dp} op={op} active={active} onClickDp={onClickDp} />;
 }
 
 type Props = {

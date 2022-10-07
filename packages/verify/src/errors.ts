@@ -50,6 +50,13 @@ export class ProfileTokenVerifyFailed extends ProfileGenericError {
   }
 }
 
+export class ProfileBodyExtractFailed extends ProfileGenericError {
+  static get code() {
+    return "ERR_PROFILE_BODY_EXTRACT_FAILED" as const;
+  }
+  readonly code = ProfileBodyExtractFailed.code;
+}
+
 export class ProfilesResolveFailed extends ProfileGenericError {
   static get code() {
     return "ERR_PROFILES_RESOLVE_FAILED" as const;

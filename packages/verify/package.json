@@ -20,6 +20,7 @@
     "date-fns": "^2.29.3",
     "eslint": "^8.24.0",
     "eslint-config-webdino-profile": "*",
+    "happy-dom": "^7.0.2",
     "jose": "^4.10.0",
     "jsonld": "^8.1.0",
     "vi-fetch": "^0.8.0",
