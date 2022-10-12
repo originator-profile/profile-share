@@ -64,7 +64,7 @@
     "dotenv-cli": "^6.0.0",
     "eslint": "^8.24.0",
     "eslint-config-webdino-profile": "*",
-    "fastify": "^4.6.0",
+    "fastify": "^4.8.1",
     "fastify-http-errors-enhanced": "^4.0.3",
     "json-schema-to-ts": "^2.5.5",
     "just-omit": "^2.1.2",
