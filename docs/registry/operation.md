@@ -11,13 +11,20 @@ Web サイトに Originator Profile を導入するために様々な役割を�
 
 ### Originator Profile （OP） の発行
 
-企業や組織が Originator Profile レジストリ （OP レジストリ） に対して組織の登録を行ないます。
-この場合、　 OP 　レジストリに会員登録申請をする企業担当者と、 OP レジストリ管理担当者が該当します。
+企業や組織が Originator Profile レジストリ （OPレジストリ） に対して組織の登録を行ないます。
+この場合、　OP　レジストリに会員登録申請をする企業担当者と、 OP レジストリ管理担当者が該当します。
 
 1. 企業や組織が行う会員登録申請の担当者
 2. 会員登録申請を受けてレジストリ登録する OP レジストリ担当者
 
-この人の役割として `組織の会員登録` から `Signed Originator Profile を作成する` の作業が該当します。
+この人の役割として 
+
+- [組織の会員登録](#組織の会員登録)
+- [鍵ペアの生成](#鍵ペアの生成)
+- [公開鍵の登録を行う](#公開鍵の登録を行う)
+- [Signed Originator Profile を作成する](Signed Originator Profile を作成する)
+
+の作業が該当します。
 
 ### 第三者認証機関の OP 登録
 
@@ -29,10 +36,15 @@ OP レジストリに登録される会員組織として、第三者認証機�
 ### Document Profile （DP） の発行
 
 OP 発行とは別の担当者になる可能性がある DP 発行者が存在します。
-これは Web サイト単位であったり、各記事ページであったり、広告や図版の一部まで（これらを総称して「コンテンツ」とします）に対し、第三者認証機関の証明などを Web ページ内に埋め込む DP を DP レジストリに登録する作業を行う立場の人です。
+これはWebサイト単位であったり、各記事ページであったり、広告や図版の一部まで（これらを総称して「コンテンツ」とします）に対し、第三者認証機関の証明などを Web ページ内に埋め込む DP を DP レジストリに登録する作業を行う立場の人です。
 例えば、記事編集者や広告出稿責任者など、コンテンツ単位で発信する担当者になります。
 
-この人の役割として `Signed Document Profile を作成する` `公開する Web サイトに Profiles Set を紐付ける` の作業が該当します。
+この人の役割として 
+
+- [Signed Document Profile を作成する](#Signed Document Profile を作成する)
+- [公開する Web サイトに Profiles Set を紐付ける](#公開する Web サイトに Profiles Set を紐付ける)
+
+の作業が該当します。
 
 ## 準備
 
@@ -61,7 +73,7 @@ yarn dotenv -- -e .env -- bin/dev db:prisma studio --schema=../../packages/regis
 
 Prisma Studio が起動します。現在レジストリ側に登録されている OP / DP 情報が閲覧できます。
 
-<img width="1552" alt="スクリーンショット 0004-10-03 11 10 53" src="https://user-images.githubusercontent.com/281424/193489958-76ffdb86-3e58-4442-a230-740402c5fcad.png">
+<img width="1552" alt="Prisma Studioの画面が起動した" src="https://user-images.githubusercontent.com/281424/193489958-76ffdb86-3e58-4442-a230-740402c5fcad.png">
 
 今回は`roleValue`の列に`certifier`と役割を担っている`https://oprdev.herokuapp.com`に認証を受けるというシチュエーションを例に作業を解説します。
 
@@ -70,7 +82,7 @@ Prisma Studio が起動します。現在レジストリ側に登録されてい
 最初の手順には大きくこのような流れがあります。
 
 1. [組織の会員登録](#組織の会員登録)
-2. [鍵ペアを取得する](#鍵ペアを取得する)
+2. [鍵ペアの生成](#鍵ペアの生成)
 3. [公開鍵の登録を行う](#公開鍵の登録を行う)
 4. [Signed Originator Profile を作成する](Signed Originator Profile を作成する)
 5. [Signed Document Profile を作成する](#Signed Document Profile を作成する)
@@ -138,7 +150,7 @@ yarn dotenv -- -e .env -- bin/dev account -i account.json -o create
 
 Prisma Studio を確認してみてください。あなたの組織が登録されていたら成功です。
 
-<img width="1552" alt="" src="https://user-images.githubusercontent.com/281424/193491831-9ee55ec6-965d-465b-a2c6-44d6f150f9ea.png">
+<img width="1552" alt="Prisma Studioで組織登録が完了した" src="https://user-images.githubusercontent.com/281424/193491831-9ee55ec6-965d-465b-a2c6-44d6f150f9ea.png">
 
 ### 鍵ペアの生成
 
@@ -189,7 +201,7 @@ yarn dotenv -- -e .env -- bin/dev cert:issue \
 Prisma Studio であなたの組織の行を横スクロールすると、`issuedOps`という列があり、`1 ops`と表示されていれば成功です。
 クリックすると、画面が変わり、画面下に `Open new tab` のボタンがあるのでそれを押すと、画面上部に新しいタブができます。
 
-<img width="1549" alt="" src="https://user-images.githubusercontent.com/281424/193494403-5b61796a-ea18-4499-b22d-596f63ad6f17.png">
+<img width="1549" alt="Prisma Studio画面内に OP が生成される" src="https://user-images.githubusercontent.com/281424/193494403-5b61796a-ea18-4499-b22d-596f63ad6f17.png">
 
 Signed Originator Profile の登録が完了しました。
 
@@ -238,7 +250,7 @@ yarn dotenv -- -e .env -- bin/dev publisher:website \
   -o create
 ```
 
-<img alt="" width="1082" alt="image" src="https://user-images.githubusercontent.com/281424/193495340-acc186d4-139b-407c-bc0a-be7e6b5496cd.png">
+<img alt="Signed Document Profile が作成された" width="1082" alt="image" src="https://user-images.githubusercontent.com/281424/193495340-acc186d4-139b-407c-bc0a-be7e6b5496cd.png">
 
 あなたの組織の行を横スクロールすると `issuedDps` が見えてきますが、そこに `1 dps`を表示されたら成功です。
 
@@ -295,4 +307,4 @@ profile には `ops` と `dps` が混在しているように見えますが、 
 }
 ```
 
-[\<link\>](https://github.com/webdino/profile/blob/main/docs/spec.md#link) 要素の追加方法はリンク先に参照
+[\<link\>](https://github.com/webdino/profile/blob/main/docs/spec.md#link) 要素の追加方法はリンク先に参照してください。
