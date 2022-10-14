@@ -22,7 +22,7 @@ Web サイトに Originator Profile を導入するために様々な役割を�
 - [組織の会員登録](#組織の会員登録)
 - [鍵ペアの生成](#鍵ペアの生成)
 - [公開鍵の登録を行う](#公開鍵の登録を行う)
-- [Signed Originator Profile を作成する](Signed Originator Profile を作成する)
+- [Signed Originator Profile を作成する](#Signed-Originator-Profile-を作成する)
 
 の作業が該当します。
 
@@ -30,8 +30,6 @@ Web サイトに Originator Profile を導入するために様々な役割を�
 
 OP レジストリに登録される会員組織として、第三者認証機関があります。レジストリには `roleValue: certifier` を持つ組織がそれにあたります。
 現状では上記の OP 発行と同じ手順で登録を行っています。
-
-この人の役割として `組織の会員登録` から `Signed Originator Profile を作成する` の作業が該当します。
 
 ### Document Profile （DP） の発行
 
@@ -41,8 +39,8 @@ OP 発行とは別の担当者になる可能性がある DP 発行者が存在�
 
 この人の役割として
 
-- [Signed Document Profile を作成する](#Signed Document Profile を作成する)
-- [公開する Web サイトに Profiles Set を紐付ける](#公開する Web サイトに Profiles Set を紐付ける)
+- [Signed Document Profile を作成する](#Signed-Document-Profile-を作成する)
+- [公開する Web サイトに Profiles Set を紐付ける](#公開する-Web-サイトに-Profiles-Set-を紐付ける)
 
 の作業が該当します。
 
@@ -84,9 +82,9 @@ Prisma Studio が起動します。現在レジストリ側に登録されてい
 1. [組織の会員登録](#組織の会員登録)
 2. [鍵ペアの生成](#鍵ペアの生成)
 3. [公開鍵の登録を行う](#公開鍵の登録を行う)
-4. [Signed Originator Profile を作成する](Signed Originator Profile を作成する)
-5. [Signed Document Profile を作成する](#Signed Document Profile を作成する)
-6. [公開する Web サイトに Profiles Set を紐付ける](#公開する Web サイトに Profiles Set を紐付ける)
+4. [Signed Originator Profile を作成する](Signed-Originator-Profile-を作成する)
+5. [Signed Document Profile を作成する](#Signed-Document-Profile-を作成する)
+6. [公開する Web サイトに Profiles Set を紐付ける](#公開する-Web-サイトに-Profiles-Set-を紐付ける)
 
 下記のコマンドは apps/registry ディレクトリで実行する。
 
@@ -176,7 +174,7 @@ Prisma Studio のあなたの組織情報の行の `id` 列にある値をコピ
 yarn dotenv -- -e .env -- bin/dev account:register-key -k key.pub.json --id daab5a08-d513-400d-aaaa-e1c1493e0421
 ```
 
-### Signed Originator Profile 発行
+### Signed Originator Profile を作成する
 
 ここで必要な情報は以下の 2 点です。
 
@@ -207,7 +205,7 @@ Signed Originator Profile の登録が完了しました。
 
 もしも組織情報そのものを削除する場合、現在のところ直接 Prisma Studio を立ち上げて画面上で削除を行う必要があります。
 
-### Signed Document Profile 登録手順
+### Signed Document Profile を作成する
 
 あらかじめ会員登録、公開鍵の登録、Signed Originator Profile 発行を行っておく必要があります。
 ここで用意するものは Web ページの情報です。
