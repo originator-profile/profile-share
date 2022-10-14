@@ -5,7 +5,41 @@ sidebar_label: 操作説明書
 
 # Profile Registry 操作手順
 
-あらかじめ以下の環境変数を apps/registry/.env に設定する。
+## 役割
+
+Web サイトに Originator Profile を導入するために様々な役割を持って作業を行うことが想定されます。
+
+### Originator Profile （OP） の発行
+
+企業や組織が Originator Profile レジストリ （OPレジストリ） に対して組織の登録を行ないます。
+この場合、　OP　レジストリに会員登録申請をする企業担当者と、 OP レジストリ管理担当者が該当します。
+
+1. 企業や組織が行う会員登録申請の担当者
+2. 会員登録申請を受けてレジストリ登録する OP レジストリ担当者
+
+この人の役割として `組織の会員登録` から `Signed Originator Profile を作成する` の作業が該当します。
+
+### 第三者認証機関の OP 登録
+
+OP レジストリに登録される会員組織として、第三者認証機関があります。レジストリには `roleValue: certifier` を持つ組織がそれにあたります。
+現状では上記の OP 発行と同じ手順で登録を行っています。
+
+この人の役割として `組織の会員登録` から `Signed Originator Profile を作成する` の作業が該当します。
+
+### Document Profile （DP） の発行
+
+OP 発行とは別の担当者になる可能性がある DP 発行者が存在します。
+これはWebサイト単位であったり、各記事ページであったり、広告や図版の一部まで（これらを総称して「コンテンツ」とします）に対し、第三者認証機関の証明などを Web ページ内に埋め込む DP を DP レジストリに登録する作業を行う立場の人です。
+例えば、記事編集者や広告出稿責任者など、コンテンツ単位で発信する担当者になります。
+
+この人の役割として `Signed Document Profile を作成する` `公開する Web サイトに Profiles Set を紐付ける` の作業が該当します。
+
+## 準備
+
+現状は前述した役割が誰であっても、このリポジトリを clone して コマンドラインで作業を行うことになります。
+詳しくは[ドキュメント](https://github.com/webdino/profile/tree/main/docs)を参照してください。
+
+あらかじめ以下の環境変数を apps/registry/.env に設定します。
 
 | 環境変数     | 内容                                           |
 | ------------ | ---------------------------------------------- |
@@ -16,7 +50,7 @@ PostgreSQL 接続 URL は、 [Heroku Data][heroku_data_url] の Settings -> Admi
 [postgres_connection_url]: https://www.prisma.io/docs/reference/database-connectors/connection-urls/
 [heroku_data_url]: https://data.heroku.com/
 
-## DB の内容の参照
+### DB の内容の参照
 
 Prisma Studio を使用して DB の内容を参照する。
 
@@ -35,12 +69,12 @@ Prisma Studio が起動します。現在レジストリ側に登録されてい
 
 最初の手順には大きくこのような流れがあります。
 
-1. 組織の会員登録
-2. 鍵ペアを取得する
-3. 公開鍵の登録を行う
-4. Signed Originator Profile を作成する
-5. Signed Document Profile を作成する
-6. 公開する Web サイトに Profiles Set を紐付ける
+1. [組織の会員登録](#組織の会員登録)
+2. [鍵ペアを取得する](#鍵ペアを取得する)
+3. [公開鍵の登録を行う](#公開鍵の登録を行う)
+4. [Signed Originator Profile を作成する](Signed Originator Profile を作成する)
+5. [Signed Document Profile を作成する](#Signed Document Profile を作成する)
+6. [公開する Web サイトに Profiles Set を紐付ける](#公開する Web サイトに Profiles Set を紐付ける)
 
 下記のコマンドは apps/registry ディレクトリで実行する。
 
@@ -49,13 +83,13 @@ Prisma Studio が起動します。現在レジストリ側に登録されてい
 まずはあなたの組織の情報をレジストリに登録して会員登録を行います。
 
 組織情報は JSON ファイルに記載します。 以下の JSON ファイルを確認した上で `account.json` というファイル名に複製し、内容をあなたの組織情報に入れ直してください。
-保存する場所は`account.ezample.json`と同階層の位置でよいでしょう。必要に応じて `.gitignore` ファイルに指定してください。
+保存する場所は`account.example.json`と同階層の位置でよいでしょう。必要に応じて `.gitignore` ファイルに指定してください。
 
 [account.example.json](https://github.com/webdino/profile/blob/main/apps/registry/account.example.json)
 
 #### トヨタ登録時の例
 
-トヨタ自動車株式会社の場合、このような JSON ファイルが作成されます、参考にしてください。
+トヨタ自動車株式会社の組織情報を記載する場合、以下のようになるでしょう。
 
 `account.example.json`
 
@@ -104,17 +138,17 @@ yarn dotenv -- -e .env -- bin/dev account -i account.json -o create
 
 Prisma Studio を確認してみてください。あなたの組織が登録されていたら成功です。
 
-<img width="1552" alt="スクリーンショット 0004-10-03 11 10 53" src="https://user-images.githubusercontent.com/281424/193491831-9ee55ec6-965d-465b-a2c6-44d6f150f9ea.png">
+<img width="1552" alt="" src="https://user-images.githubusercontent.com/281424/193491831-9ee55ec6-965d-465b-a2c6-44d6f150f9ea.png">
 
 ### 鍵ペアの生成
 
-この後の作業を行うために、鍵ペアを取得する作業が必要になります。 以下のコマンドを実行してください。
+Signed Originator Profile あるいは Signed Document Profile 発行の作業を行うために、鍵ペアを取得する作業が必要になります。 以下のコマンドを実行してください。
 
 ```console
 yarn dotenv -- -e .env -- bin/dev key-gen -o <keyのファイル名>
 ```
 
-key には出力ファイル名を指定します。例えば`key`にすると
+`<keyのファイル名>` には出力ファイル名を指定します。例えば`key`にすると
 
 - `key` （秘密鍵）
 - `key.pub.json` （公開鍵）
@@ -134,10 +168,10 @@ yarn dotenv -- -e .env -- bin/dev account:register-key -k key.pub.json --id daab
 
 ここで必要な情報は以下の 2 点です。
 
-- 自身の組織 id --holder
-- 認証してもらう組織の id --certifier
+- `--holder` に指定する自身の組織 id
+- `--certifier` に指定する認証してもらう組織の id
 
-<img width="1552" alt="スクリーンショット 0004-10-03 11 10 53" src="https://user-images.githubusercontent.com/281424/193493119-5d092c32-7437-4ebe-a453-96457f2fda72.png">
+<img width="1552" alt="Signed Originator Profile の発行" src="https://user-images.githubusercontent.com/281424/193493119-5d092c32-7437-4ebe-a453-96457f2fda72.png">
 
 例えば 認証してもらう組織が https://oprdev.herokuapp.com の場合であれば --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e となります。
 
@@ -155,7 +189,7 @@ yarn dotenv -- -e .env -- bin/dev cert:issue \
 Prisma Studio であなたの組織の行を横スクロールすると、`issuedOps`という列があり、`1 ops`と表示されていれば成功です。
 クリックすると、画面が変わり、画面下に `Open new tab` のボタンがあるのでそれを押すと、画面上部に新しいタブができます。
 
-<img width="1549" alt="image" src="https://user-images.githubusercontent.com/281424/193494403-5b61796a-ea18-4499-b22d-596f63ad6f17.png">
+<img width="1549" alt="" src="https://user-images.githubusercontent.com/281424/193494403-5b61796a-ea18-4499-b22d-596f63ad6f17.png">
 
 Signed Originator Profile の登録が完了しました。
 
@@ -163,7 +197,7 @@ Signed Originator Profile の登録が完了しました。
 
 ### Signed Document Profile 登録手順
 
-あらかじめ会員登録、公開鍵の登録、Signed Originator Profile 発行を行っておく必要があります。。
+あらかじめ会員登録、公開鍵の登録、Signed Originator Profile 発行を行っておく必要があります。
 ここで用意するものは Web ページの情報です。
 
 #### website.json の例
@@ -204,7 +238,7 @@ yarn dotenv -- -e .env -- bin/dev publisher:website \
   -o create
 ```
 
-<img width="1082" alt="image" src="https://user-images.githubusercontent.com/281424/193495340-acc186d4-139b-407c-bc0a-be7e6b5496cd.png">
+<img alt="" width="1082" alt="image" src="https://user-images.githubusercontent.com/281424/193495340-acc186d4-139b-407c-bc0a-be7e6b5496cd.png">
 
 あなたの組織の行を横スクロールすると `issuedDps` が見えてきますが、そこに `1 dps`を表示されたら成功です。
 
@@ -242,7 +276,7 @@ yarn dotenv -- -e .env -- bin/dev publisher:website \
 
 Prisma Studio の画面上部のタブで、`ops`と`dps`それぞれ画面の中に、`jwt`列があります、その値をコピーして以下に貼り付けてください。
 
-![名称未設定2](https://user-images.githubusercontent.com/281424/193496060-657ecdc7-23d0-47d8-b8c7-8d7b85136774.jpg)
+![jwtの値をコピーする](https://user-images.githubusercontent.com/281424/193496060-657ecdc7-23d0-47d8-b8c7-8d7b85136774.jpg)
 
 画面は`ops`を見ていますが `dps` でも同様の作業を行います。
 
