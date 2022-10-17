@@ -71,7 +71,7 @@ yarn dotenv -- -e .env -- bin/dev db:prisma studio --schema=../../packages/regis
 
 Prisma Studio が起動します。現在レジストリ側に登録されている OP / DP 情報が閲覧できます。
 
-<img width="1552" alt="Prisma Studioの画面が起動した" src="https://user-images.githubusercontent.com/281424/193489958-76ffdb86-3e58-4442-a230-740402c5fcad.png">
+<img width="1552" alt="Prisma Studioの画面が起動した" src="https://user-images.githubusercontent.com/281424/193489958-76ffdb86-3e58-4442-a230-740402c5fcad.png" />
 
 今回は`roleValue`の列に`certifier`と役割を担っている`https://oprdev.herokuapp.com`に認証を受けるというシチュエーションを例に作業を解説します。
 
@@ -148,7 +148,7 @@ yarn dotenv -- -e .env -- bin/dev account -i account.json -o create
 
 Prisma Studio を確認してみてください。組織が登録されていたら成功です。
 
-<img width="1552" alt="Prisma Studioで組織登録が完了した" src="https://user-images.githubusercontent.com/281424/193491831-9ee55ec6-965d-465b-a2c6-44d6f150f9ea.png">
+<img width="1552" alt="Prisma Studioで組織登録が完了した" src="https://user-images.githubusercontent.com/281424/193491831-9ee55ec6-965d-465b-a2c6-44d6f150f9ea.png" />
 
 ### 鍵ペアの生成
 
@@ -199,7 +199,7 @@ yarn dotenv -- -e .env -- bin/dev cert:issue \
 Prisma Studio で組織の行を横スクロールすると、`issuedOps`という列があり、`1 ops`と表示されていれば成功です。
 クリックすると、画面が変わり、画面下に `Open new tab` のボタンがあるのでそれを押すと、画面上部に新しいタブができます。
 
-<img width="1549" alt="Prisma Studio画面内に OP が生成される" src="https://user-images.githubusercontent.com/281424/193494403-5b61796a-ea18-4499-b22d-596f63ad6f17.png">
+<img width="1549" alt="Prisma Studio画面内に OP が生成される" src="https://user-images.githubusercontent.com/281424/193494403-5b61796a-ea18-4499-b22d-596f63ad6f17.png" />
 
 Signed Originator Profile の登録が完了しました。
 
@@ -248,7 +248,7 @@ yarn dotenv -- -e .env -- bin/dev publisher:website \
   -o create
 ```
 
-<img alt="Signed Document Profile が作成された" width="1082" alt="image" src="https://user-images.githubusercontent.com/281424/193495340-acc186d4-139b-407c-bc0a-be7e6b5496cd.png">
+<img alt="Signed Document Profile が作成された" width="1082" alt="image" src="https://user-images.githubusercontent.com/281424/193495340-acc186d4-139b-407c-bc0a-be7e6b5496cd.png" />
 
 組織の行を横スクロールすると `issuedDps` が見えてきますが、そこに `1 dps`を表示されたら成功です。
 
@@ -306,4 +306,4 @@ profile には `ops` と `dps` が混在しているように見えますが、 
 }
 ```
 
-[\<link\>](https://github.com/webdino/profile/blob/main/docs/spec.md#link) 要素の追加方法はリンク先に参照してください。
+[\<link\>](https://github.com/webdino/profile/blob/main/docs/spec.md#link) 要素の追加方法についてはリンク先を参照してください。
