@@ -82,7 +82,7 @@ Prisma Studio が起動します。現在レジストリ側に登録されてい
 1. [組織の会員登録](#組織の会員登録)
 2. [鍵ペアの生成](#鍵ペアの生成)
 3. [公開鍵の登録を行う](#公開鍵の登録を行う)
-4. [Signed Originator Profile を作成する](Signed-Originator-Profile-を作成する)
+4. [Signed Originator Profile を作成する](#Signed-Originator-Profile-を作成する)
 5. [Signed Document Profile を作成する](#Signed-Document-Profile-を作成する)
 6. [公開する Web サイトに Profiles Set を紐付ける](#公開する-Web-サイトに-Profiles-Set-を紐付ける)
 
@@ -181,7 +181,7 @@ yarn dotenv -- -e .env -- bin/dev account:register-key -k key.pub.json --id daab
 - `--holder` に指定する自身の組織 id
 - `--certifier` に指定する認証してもらう組織の id
 
-<img width="1552" alt="Signed Originator Profile の発行" src="https://user-images.githubusercontent.com/281424/193493119-5d092c32-7437-4ebe-a453-96457f2fda72.png">
+<img width="1552" alt="Signed Originator Profile の発行" src="https://user-images.githubusercontent.com/281424/193493119-5d092c32-7437-4ebe-a453-96457f2fda72.png" />
 
 例えば 認証してもらう組織が https://oprdev.herokuapp.com の場合であれば --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e となります。
 
