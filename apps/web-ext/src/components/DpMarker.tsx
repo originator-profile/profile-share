@@ -16,14 +16,14 @@ import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
 
 function Marker({
   result,
-  rects: [rect],
+  rect,
   ogWebsite,
   opHolder,
   active,
   onClick,
 }: {
   result: ReturnType<typeof useVerifyBody>["result"];
-  rects: ResizeObserverEntry["contentRect"][];
+  rect: ResizeObserverEntry["contentRect"];
   ogWebsite: OgWebsite;
   opHolder: OpHolder;
   active: boolean;
@@ -97,16 +97,19 @@ function DpLocator({
   dpLocator: DpLocator;
   children: ({
     result,
-    rects,
+    rect,
   }: {
     result: ReturnType<typeof useVerifyBody>["result"];
-    rects: DOMRect[];
+    rect: DOMRect;
   }) => React.ReactNode;
 }) {
   const { result } = useVerifyBody(dpLocator, op.jwks);
   const { elements } = useElements(dpLocator.location);
-  const { rects } = useRects(elements);
-  return <>{children({ result, rects })}</>;
+  const {
+    rects: [rect],
+  } = useRects(elements);
+  if (!rect) return null;
+  return <>{children({ result, rect })}</>;
 }
 
 type Props = {
@@ -129,10 +132,10 @@ function DpMarker({ dp, op, active, onClickDp }: Props) {
   if (!opHolder) return null;
   return (
     <DpLocator op={op} dpLocator={dpLocator}>
-      {({ result, rects }) => (
+      {({ result, rect }) => (
         <Marker
           result={result}
-          rects={rects}
+          rect={rect}
           ogWebsite={ogWebsite}
           opHolder={opHolder}
           active={active}
