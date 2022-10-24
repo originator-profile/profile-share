@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import clsx from "clsx";
 import { OgWebsite, OpHolder } from "@webdino/profile-model";
 import {
@@ -92,9 +93,11 @@ function DpLocator({
   op,
   dpLocator,
   children,
+  active,
 }: {
   op: Op;
   dpLocator: DpLocator;
+  active: boolean;
   children: ({
     result,
     rect,
@@ -105,6 +108,15 @@ function DpLocator({
 }) {
   const { result } = useVerifyBody(dpLocator, op.jwks);
   const { elements } = useElements(dpLocator.location);
+  useEffect(() => {
+    const [element] = elements;
+    if (!active) return;
+    element?.scrollIntoView({
+      behavior: "smooth",
+      inline: "nearest",
+      block: "nearest",
+    });
+  }, [active, elements]);
   const {
     rects: [rect],
   } = useRects(elements);
@@ -131,7 +143,7 @@ function DpMarker({ dp, op, active, onClickDp }: Props) {
   const opHolder = op?.item.find(isOpHolder);
   if (!opHolder) return null;
   return (
-    <DpLocator op={op} dpLocator={dpLocator}>
+    <DpLocator op={op} dpLocator={dpLocator} active={active}>
       {({ result, rect }) => (
         <Marker
           result={result}
