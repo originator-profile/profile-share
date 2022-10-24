@@ -16,7 +16,7 @@ import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
 
 function Marker({
   result,
-  rects,
+  rects: [rect],
   ogWebsite,
   opHolder,
   active,
@@ -35,63 +35,56 @@ function Marker({
   const tailWidth = 30;
   const tailHeight = 12;
   const logo = opHolder.logos?.find(({ isMain }) => isMain);
+  const isTopOverflow = rect.top < height + border + tailHeight;
   return (
-    <>
-      {rects.map((rect, index) => {
-        const isTopOverflow = rect.top < height + border + tailHeight;
-        return (
-          <div
-            key={index}
-            className="absolute"
-            style={{
-              top: isTopOverflow
-                ? rect.top - border + tailHeight
-                : rect.top - (height + border + tailHeight),
-              left: rect.left - (width + border * 2) / 2,
-            }}
-          >
-            <button
-              className={clsx(
-                "relative border-4 rounded-full shadow-xl",
-                active ? "bg-blue-500 border-blue-500" : "bg-white border-white"
-              )}
-              title={`${opHolder.name} ${ogWebsite.title} ${
-                result &&
-                (result instanceof Error
-                  ? result.message
-                  : new TextDecoder().decode(result.payload))
-              }`}
-              onClick={onClick}
-            >
-              <Image
-                src={logo?.url}
-                placeholderSrc={placeholderLogoMainUrl}
-                alt={opHolder.name ?? ""}
-                width={width}
-                height={height}
-                rounded
-              />
-              <svg
-                viewBox={`0 0 ${tailWidth} ${tailHeight}`}
-                width={tailWidth}
-                height={tailHeight}
-                className={clsx(
-                  "absolute left-1/2 stroke-transparent -translate-x-1/2",
-                  isTopOverflow
-                    ? "top-0 -translate-y-full rotate-180"
-                    : " bottom-0 translate-y-full",
-                  active ? "fill-blue-500" : "fill-white"
-                )}
-              >
-                <polygon
-                  points={`0,0 ${tailWidth / 2},${tailHeight} ${tailWidth},0`}
-                />
-              </svg>
-            </button>
-          </div>
-        );
-      })}
-    </>
+    <div
+      className="absolute"
+      style={{
+        top: isTopOverflow
+          ? rect.top - border + tailHeight
+          : rect.top - (height + border + tailHeight),
+        left: rect.left - (width + border * 2) / 2,
+      }}
+    >
+      <button
+        className={clsx(
+          "relative border-4 rounded-full shadow-xl",
+          active ? "bg-blue-500 border-blue-500" : "bg-white border-white"
+        )}
+        title={`${opHolder.name} ${ogWebsite.title} ${
+          result &&
+          (result instanceof Error
+            ? result.message
+            : new TextDecoder().decode(result.payload))
+        }`}
+        onClick={onClick}
+      >
+        <Image
+          src={logo?.url}
+          placeholderSrc={placeholderLogoMainUrl}
+          alt={opHolder.name ?? ""}
+          width={width}
+          height={height}
+          rounded
+        />
+        <svg
+          viewBox={`0 0 ${tailWidth} ${tailHeight}`}
+          width={tailWidth}
+          height={tailHeight}
+          className={clsx(
+            "absolute left-1/2 stroke-transparent -translate-x-1/2",
+            isTopOverflow
+              ? "top-0 -translate-y-full rotate-180"
+              : " bottom-0 translate-y-full",
+            active ? "fill-blue-500" : "fill-white"
+          )}
+        >
+          <polygon
+            points={`0,0 ${tailWidth / 2},${tailHeight} ${tailWidth},0`}
+          />
+        </svg>
+      </button>
+    </div>
   );
 }
 
