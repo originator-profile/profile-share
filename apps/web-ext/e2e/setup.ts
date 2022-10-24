@@ -33,7 +33,7 @@ afterAll(async () => {
 
 export async function popup(ctx: BrowserContext): Promise<Page> {
   const [backgroundWorker] = ctx.serviceWorkers();
-  await backgroundWorker.evaluate(async function () {
+  await backgroundWorker?.evaluate(async function () {
     const [targetTab] = await chrome.tabs.query({ active: true });
     // @ts-expect-error dispatch が未定義だが実際には存在する
     chrome.action.onClicked.dispatch(targetTab);
