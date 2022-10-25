@@ -8,7 +8,7 @@
     "build:docs": "run-s build:docs:clean build:docs:gen",
     "build:docs:clean": "rimraf ../../docs/model/assets",
     "build:docs:gen": "jsonschema2md --input dist --out ../../docs/model/assets --schema-out ../../docs/model/assets",
-    "test": "markdown-link-check ../../docs/model/assets/*.md",
+    "test": "markdown-link-check --config ./markdown-link-check.config.json ../../docs/model/assets/*.md",
     "lint": "eslint --fix ."
   },
   "devDependencies": {

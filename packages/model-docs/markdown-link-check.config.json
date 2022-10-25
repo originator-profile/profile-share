@@ -1,0 +1,7 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "^https://tools.ietf.org/html/rfc3339$"
+    }
+  ]
+}
