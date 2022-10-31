@@ -82,8 +82,11 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
           </p>
         </div>
         <ul className="mb-4 -mx-2">
-          <li className="mb-2" onClick={handleClick}>
-            <button className="flex items-center gap-4 hover:bg-primary-50 p-2 w-full rounded-sm">
+          <li className="mb-2">
+            <button
+              className="flex items-center gap-4 hover:bg-primary-50 p-2 w-full rounded-sm"
+              onClick={handleClick}
+            >
               <Image
                 src={logoCertifierUrl}
                 placeholderSrc={placeholderLogoMainUrl}
