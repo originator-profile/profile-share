@@ -11,9 +11,9 @@
     "lint": "eslint --fix ."
   },
   "devDependencies": {
-    "@prisma/client": "^4.4.0",
+    "@prisma/client": "^4.5.0",
     "@types/bcryptjs": "^2.4.2",
-    "@types/jsonld": "^1.5.6",
+    "@types/jsonld": "^1.5.7",
     "@types/ungap__structured-clone": "^0.3.0",
     "@ungap/structured-clone": "^1.0.1",
     "@webdino/profile-model": "*",
@@ -25,15 +25,15 @@
     "ajv-formats": "^2.1.1",
     "bcryptjs": "^2.4.3",
     "date-fns": "^2.29.3",
-    "eslint": "^8.24.0",
+    "eslint": "^8.26.0",
     "eslint-config-webdino-profile": "*",
-    "http-errors-enhanced": "^1.0.9",
-    "jose": "^4.10.0",
+    "http-errors-enhanced": "^1.0.12",
+    "jose": "^4.10.4",
     "json-schema-to-ts": "^2.5.5",
     "jsonld": "^8.1.0",
     "just-flush": "^2.2.1",
-    "msw": "^0.47.3",
-    "vitest": "^0.23.4",
-    "vitest-mock-extended": "^0.1.15"
+    "msw": "^0.47.4",
+    "vitest": "^0.24.3",
+    "vitest-mock-extended": "^1.0.3"
   }
 }

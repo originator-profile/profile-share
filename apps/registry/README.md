@@ -158,7 +158,6 @@ USAGE
 
 DESCRIPTION
   Prisma CLI
-
   see: https://www.prisma.io/docs/reference/api-reference/command-reference
 ```
 
@@ -192,7 +191,7 @@ DESCRIPTION
   Display help for profile-registry.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.14/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.17/src/commands/help.ts)_
 
 ## `profile-registry key-gen`
 

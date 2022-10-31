@@ -5,6 +5,7 @@ import cors from "@fastify/cors";
 import env from "@fastify/env";
 import helmet from "@fastify/helmet";
 import swagger, { FastifyDynamicSwaggerOptions } from "@fastify/swagger";
+import swaggerUi from "@fastify/swagger-ui";
 import httpErrorsEnhanced from "fastify-http-errors-enhanced";
 import { Config, Services } from "@webdino/profile-registry-service";
 import pkg from "./package.json";
@@ -40,10 +41,8 @@ export function create(options: Options): Server {
   });
 
   if (options.isDev) {
-    app.register(swagger, {
-      exposeRoute: options.isDev,
-      openapi,
-    });
+    app.register(swagger, { openapi });
+    app.register(swaggerUi);
   }
   app.register(autoload, {
     dir: options.routes,
