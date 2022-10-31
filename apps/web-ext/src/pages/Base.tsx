@@ -39,6 +39,11 @@ function Base() {
       </ErrorPlaceholder>
     );
   }
+  chrome.tabs.sendMessage(tabId, {
+    type: "overlay-profiles",
+    profiles,
+    activeDp: dp,
+  });
   return (
     <Navigate
       to={[
