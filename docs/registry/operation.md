@@ -9,6 +9,8 @@ sidebar_label: 操作説明書
 
 Web サイトに Originator Profile を導入するために様々な役割を持って作業を行うことが想定されます。
 
+![image](https://user-images.githubusercontent.com/281424/198944140-26516b92-3f3b-4b89-92be-e5f56c9bd3f8.png)
+
 ### Originator Profile （OP） の発行
 
 企業や組織が Originator Profile レジストリ （ OP レジストリ） に対して組織の登録を行ないます。
