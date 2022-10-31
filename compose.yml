@@ -12,13 +12,13 @@ services:
       ISSUER_UUID: ${ISSUER_UUID}
     ports: ["8080:8080"]
   db:
-    image: postgres:14.5-alpine
+    image: postgres:15.0-alpine
     healthcheck:
       test: pg_isready -U postgres
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports: ["5432:5432"]
     volumes:
-      - postgres_data_v14:/var/lib/postgresql/data
+      - postgres_data_v15:/var/lib/postgresql/data
 volumes:
-  postgres_data_v14:
+  postgres_data_v15:
