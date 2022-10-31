@@ -24,6 +24,12 @@ type Props = {
 
 function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
   const logo = holder.logos?.find(({ isMain }) => isMain);
+  const handleClick = () => {
+    const element = document.querySelector(
+      "#" + CSS.escape("ブランドセーフティ認証 第三者検証")
+    );
+    element?.scrollIntoView({ behavior: "smooth" });
+  };
   return (
     <>
       <BackHeader className="sticky top-0" to={paths.back}>
@@ -75,18 +81,20 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
             この組織は認証を受けています
           </p>
         </div>
-        <ul className="mb-4">
-          <li className="flex items-center gap-4">
-            <Image
-              src={logoCertifierUrl}
-              placeholderSrc={placeholderLogoMainUrl}
-              alt=""
-              width={80}
-              height={50}
-            />
-            <p className="text-sm font-bold text-gray-700">
-              ブランドセーフティ認証 第三者検証
-            </p>
+        <ul className="mb-4 -mx-2">
+          <li className="mb-2" onClick={handleClick}>
+            <button className="flex items-center gap-4 hover:bg-primary-50 p-2 w-full rounded-sm">
+              <Image
+                src={logoCertifierUrl}
+                placeholderSrc={placeholderLogoMainUrl}
+                alt=""
+                width={80}
+                height={50}
+              />
+              <p className="text-sm font-bold text-gray-700">
+                ブランドセーフティ認証 第三者検証
+              </p>
+            </button>
           </li>
         </ul>
         <h2 className="text-sm text-gray-600 font-bold mb-3">所有者情報</h2>
@@ -97,7 +105,10 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
           )}
         </div>
         <h2 className="text-sm text-gray-600 font-bold mb-3">認定内容</h2>
-        <div className="jumpu-card p-4 mb-4">
+        <div
+          id="ブランドセーフティ認証 第三者検証"
+          className="jumpu-card p-4 mb-4"
+        >
           <Image
             src={logoCertifierUrl}
             placeholderSrc={placeholderLogoMainUrl}
