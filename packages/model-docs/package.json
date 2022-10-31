@@ -12,12 +12,12 @@
     "lint": "eslint --fix ."
   },
   "devDependencies": {
-    "@adobe/jsonschema2md": "^7.1.1",
+    "@adobe/jsonschema2md": "^7.1.2",
     "@types/rimraf": "^3.0.2",
     "@webdino/profile-model": "*",
     "@webdino/profile-tsconfig": "*",
     "esbuild-register": "^3.3.3",
-    "eslint": "^8.24.0",
+    "eslint": "^8.26.0",
     "eslint-config-webdino-profile": "*",
     "just-kebab-case": "^4.1.1",
     "markdown-link-check": "^3.10.3",

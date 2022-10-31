@@ -5,6 +5,9 @@ export default defineConfig(({ mode }) => {
     test: {
       dir: "tests",
       setupFiles: "tests/setup.ts",
+      deps: {
+        inline: ["@fastify/autoload"],
+      },
     },
     e2e: {
       dir: "e2e",
