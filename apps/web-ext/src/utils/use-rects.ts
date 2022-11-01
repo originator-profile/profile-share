@@ -1,4 +1,4 @@
-import { useState, useEffect, startTransition } from "react";
+import { useState, useCallback, useEffect, startTransition } from "react";
 import { useEvent } from "react-use";
 import useIntersectingElements from "./use-intersecting-elements";
 
@@ -6,18 +6,7 @@ import useIntersectingElements from "./use-intersecting-elements";
 function useRects(elements: NodeListOf<HTMLElement>) {
   const { intersectingElements } = useIntersectingElements(elements);
   const [rects, setRects] = useState<DOMRect[]>([]);
-  const handler = () => {
-    startTransition(() => {
-      setRects(
-        intersectingElements.map((intersectingElement) =>
-          intersectingElement.getBoundingClientRect()
-        )
-      );
-    });
-  };
-  useEvent("resize", handler, window.parent);
-  useEvent("scroll", handler, window.parent);
-  useEffect(() => {
+  const handler = useCallback(() => {
     startTransition(() => {
       setRects(
         intersectingElements.map((intersectingElement) =>
@@ -26,6 +15,9 @@ function useRects(elements: NodeListOf<HTMLElement>) {
       );
     });
   }, [setRects, intersectingElements]);
+  useEvent("resize", handler, window.parent);
+  useEvent("scroll", handler, window.parent);
+  useEffect(handler, [handler]);
   return { rects };
 }
 
