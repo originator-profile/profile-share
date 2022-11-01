@@ -16,14 +16,18 @@ function useIntersectingElements(
           .map((entry) => entry.target)
       );
     };
-    const observer = new IntersectionObserver(handler, options);
+    const observer = new IntersectionObserver(handler, {
+      threshold: options.threshold,
+      root: options.root,
+      rootMargin: options.rootMargin,
+    });
     for (const element of elements) {
       observer.observe(element);
     }
     return () => {
       observer.disconnect();
     };
-  }, [elements, options, options.threshold, options.root, options.rootMargin]);
+  }, [elements, options.threshold, options.root, options.rootMargin]);
   return {
     intersectingElements,
   };
