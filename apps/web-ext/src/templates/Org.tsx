@@ -94,9 +94,9 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
                 width={80}
                 height={50}
               />
-              <p className="text-sm font-bold text-gray-700">
+              <span className="text-sm font-bold text-gray-700">
                 ブランドセーフティ認証 第三者検証
-              </p>
+              </span>
             </button>
           </li>
         </ul>
