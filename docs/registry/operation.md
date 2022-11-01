@@ -24,7 +24,7 @@ Web サイトに Originator Profile を導入するために様々な役割を�
 - [組織の会員登録](#組織の会員登録)
 - [鍵ペアの生成](#鍵ペアの生成)
 - [公開鍵の登録を行う](#公開鍵の登録を行う)
-- [Signed Originator Profile を作成する](#Signed-Originator-Profile-を作成する)
+- [Signed Originator Profile を作成する](#signed-originator-profile-を作成する)
 
 の作業が該当します。
 
@@ -41,8 +41,8 @@ OP 発行とは別の担当者になる可能性がある DP 発行者が存在�
 
 この人の役割として
 
-- [Signed Document Profile を作成する](#Signed-Document-Profile-を作成する)
-- [公開する Web サイトに Profiles Set を紐付ける](#公開する-Web-サイトに-Profiles-Set-を紐付ける)
+- [Signed Document Profile を作成する](#signed-document-profile-を作成する)
+- [公開する Web サイトに Profiles Set を紐付ける](#公開する-web-サイトに-profiles-set-を紐付ける)
 
 の作業が該当します。
 
@@ -84,9 +84,9 @@ Prisma Studio が起動します。現在レジストリ側に登録されてい
 1. [組織の会員登録](#組織の会員登録)
 2. [鍵ペアの生成](#鍵ペアの生成)
 3. [公開鍵の登録を行う](#公開鍵の登録を行う)
-4. [Signed Originator Profile を作成する](#Signed-Originator-Profile-を作成する)
-5. [Signed Document Profile を作成する](#Signed-Document-Profile-を作成する)
-6. [公開する Web サイトに Profiles Set を紐付ける](#公開する-Web-サイトに-Profiles-Set-を紐付ける)
+4. [Signed Originator Profile を作成する](#signed-originator-profile-を作成する)
+5. [Signed Document Profile を作成する](#signed-document-profile-を作成する)
+6. [公開する Web サイトに Profiles Set を紐付ける](#公開する-web-サイトに-profiles-set-を紐付ける)
 
 下記のコマンドは apps/registry ディレクトリで実行する。
 
