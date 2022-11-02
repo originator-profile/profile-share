@@ -75,8 +75,8 @@ function Publ({ dp, website, holder, paths, profileEndpoint }: Props) {
           </Disclosure>
         </div>
       </div>
-      <div className="jumpu-card">
-        <Link className="flex items-center gap-4 mx-4 my-3" to={paths.org}>
+      <Link className="jumpu-card block" to={paths.org}>
+        <div className="flex items-center gap-4 mx-4 my-3">
           <Image
             className="flex-shrink-0"
             src={logo?.url}
@@ -90,7 +90,7 @@ function Publ({ dp, website, holder, paths, profileEndpoint }: Props) {
             <p className="text-gray-700 text-sm">この記事を発行した組織</p>
             <p className="text-lg">{holder.name}</p>
           </div>
-        </Link>
+        </div>
         <div className="flex items-center gap-2 bg-blue-50 p-2 mx-4 my-3 rounded-sm">
           <Icon
             className="flex-shrink-0 text-blue-500 text-2xl"
@@ -100,7 +100,7 @@ function Publ({ dp, website, holder, paths, profileEndpoint }: Props) {
             この組織は認証を受けています
           </p>
         </div>
-        <div className="flex mx-4 my-3">
+        <div className="flex mx-4 my-3 gap-4">
           <Image
             className="flex-shrink-0"
             src={logoCertifierUrl}
@@ -144,14 +144,11 @@ function Publ({ dp, website, holder, paths, profileEndpoint }: Props) {
             </p>
           </a>
         )}
-        <Link
-          className="flex gap-2 justify-center items-center text-sm border-t boder-gray-100 px-4 py-3"
-          to={paths.org}
-        >
+        <div className="flex gap-2 justify-center items-center text-sm border-t boder-gray-100 px-4 py-3">
           <span className="text-sm font-bold">組織情報を見る</span>
           <Icon className="flex-shrink-0" icon="fa6-solid:chevron-right" />
-        </Link>
-      </div>
+        </div>
+      </Link>
     </div>
   );
 }
