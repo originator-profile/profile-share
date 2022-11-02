@@ -1,11 +1,39 @@
-import { useTitle } from "react-use";
+import { useTitle, useMount } from "react-use";
 import { Navigate } from "react-router-dom";
 import { isDp } from "@webdino/profile-core";
+import { Dp, Profile } from "../types/profile";
 import { sortDps } from "../utils/profile";
 import { routes } from "../utils/routes";
 import useProfiles from "../utils/use-profiles";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
+
+function Dp({
+  dp,
+  tabId,
+  profiles,
+}: {
+  dp: Dp;
+  tabId: number;
+  profiles: Profile[];
+}) {
+  useMount(() => {
+    chrome.tabs.sendMessage(tabId, {
+      type: "overlay-profiles",
+      profiles,
+      activeDp: dp,
+    });
+  });
+
+  return (
+    <Navigate
+      to={[
+        routes.base.build({ tabId: String(tabId) }),
+        routes.publ.build(dp),
+      ].join("/")}
+    />
+  );
+}
 
 function Base() {
   const { tabId, main = [], profiles, error, profileEndpoint } = useProfiles();
@@ -39,14 +67,7 @@ function Base() {
       </ErrorPlaceholder>
     );
   }
-  return (
-    <Navigate
-      to={[
-        routes.base.build({ tabId: String(tabId) }),
-        routes.publ.build(dp),
-      ].join("/")}
-    />
-  );
+  return <Dp dp={dp} tabId={tabId} profiles={profiles} />;
 }
 
 export default Base;
