@@ -28,6 +28,11 @@ function handleMessageResponse(
       activate(iframe);
       profiles = message.profiles;
       activeDp = message.activeDp;
+      iframe.contentWindow?.postMessage({
+        type: "enter-overlay",
+        profiles,
+        activeDp,
+      });
       return Promise.resolve({
         type: "overlay-profiles",
       });
