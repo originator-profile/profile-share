@@ -3,12 +3,12 @@ import {
   ContentScriptMessageResponse,
   ContentWindowPostMessageEvent,
 } from "./types/message";
-import { activate, deactivate } from "./utils/iframe";
+import { initialize, activate, deactivate } from "./utils/iframe";
 import { Profile, Dp } from "./types/profile";
 
 let profiles: Profile[] = [];
 let activeDp: Dp | null = null;
-const iframe = document.createElement("iframe");
+const iframe = initialize();
 
 function handleMessageResponse(
   message: ContentScriptMessageRequest
@@ -28,6 +28,11 @@ function handleMessageResponse(
       activate(iframe);
       profiles = message.profiles;
       activeDp = message.activeDp;
+      iframe.contentWindow?.postMessage({
+        type: "enter-overlay",
+        profiles,
+        activeDp,
+      });
       return Promise.resolve({
         type: "overlay-profiles",
       });

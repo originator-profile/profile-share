@@ -1,4 +1,5 @@
-export function activate(iframe: HTMLIFrameElement) {
+export function initialize(): HTMLIFrameElement {
+  const iframe = document.createElement("iframe");
   iframe.src = "about:blank";
   iframe.style.cssText = `
     background: transparent;
@@ -18,15 +19,27 @@ export function activate(iframe: HTMLIFrameElement) {
     outilne: 0;
     z-index: 2147483647;
   `;
-  document.body.appendChild(iframe);
+  return iframe;
+}
+
+export function activate(iframe: HTMLIFrameElement) {
+  if (!document.contains(iframe)) document.body.appendChild(iframe);
   if (!iframe.contentDocument) return;
-  const link = iframe.contentDocument.createElement("link");
-  link.rel = "stylesheet";
-  link.href = chrome.runtime.getURL("main.css");
-  iframe.contentDocument.head.appendChild(link);
-  const script = iframe.contentDocument.createElement("script");
-  script.src = chrome.runtime.getURL("content-script/iframe.js");
-  iframe.contentDocument.body.appendChild(script);
+  if (!iframe.contentDocument.querySelector("link[href$='main.css']")) {
+    const link = iframe.contentDocument.createElement("link");
+    link.rel = "stylesheet";
+    link.href = chrome.runtime.getURL("main.css");
+    iframe.contentDocument.head.appendChild(link);
+  }
+  if (
+    !iframe.contentDocument.querySelector(
+      "script[src$='content-script/iframe.js']"
+    )
+  ) {
+    const script = iframe.contentDocument.createElement("script");
+    script.src = chrome.runtime.getURL("content-script/iframe.js");
+    iframe.contentDocument.body.appendChild(script);
+  }
 }
 
 export function deactivate(iframe: HTMLIFrameElement) {
