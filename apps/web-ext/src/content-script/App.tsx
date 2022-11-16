@@ -63,7 +63,7 @@ function App() {
           afterLeave={handleLeave}
         >
           <DpArea
-            className="fill-black/25 stroke-black stroke-2"
+            className="fill-yellow-500/25 stroke-yellow-700 stroke-2"
             dps={profiles.filter(isDp)}
           />
         </Transition.Child>
