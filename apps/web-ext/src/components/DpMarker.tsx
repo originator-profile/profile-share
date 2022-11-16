@@ -1,14 +1,9 @@
 import { useEffect } from "react";
 import clsx from "clsx";
 import { OgWebsite, OpHolder } from "@webdino/profile-model";
-import {
-  isOgWebsite,
-  isDpText,
-  isDpVisibleText,
-  isDpHtml,
-  isOpHolder,
-} from "@webdino/profile-core";
+import { isOgWebsite, isOpHolder } from "@webdino/profile-core";
 import { Op, Dp, DpLocator } from "../types/profile";
+import { isDpLocator } from "../utils/dp-locator";
 import useElements from "../utils/use-elements";
 import useRects from "../utils/use-rects";
 import useVerifyBody from "../utils/use-verify-body";
@@ -135,12 +130,9 @@ function DpMarker({ dp, op, active, onClickDp }: Props) {
   const ogWebsite = dp.item.find(isOgWebsite);
   if (!ogWebsite) return null;
   const handleClick = () => onClickDp(dp);
-  const dpLocator =
-    dp.item.find(isDpVisibleText) ||
-    dp.item.find(isDpText) ||
-    dp.item.find(isDpHtml);
+  const dpLocator = dp.item.find(isDpLocator);
   if (!dpLocator) return null;
-  const opHolder = op?.item.find(isOpHolder);
+  const opHolder = op.item.find(isOpHolder);
   if (!opHolder) return null;
   return (
     <DpLocator op={op} dpLocator={dpLocator} active={active}>
