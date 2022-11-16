@@ -2,8 +2,10 @@ import { useState, Fragment } from "react";
 import { useMount, useEvent } from "react-use";
 import { Dialog, Transition } from "@headlessui/react";
 import { Profile, Dp } from "../types/profile";
+import { isDp } from "@webdino/profile-core";
 import { IFramePostMessageEvent } from "../types/message";
 import DpMap from "../components/DpMap";
+import DpArea from "../components/DpArea";
 
 function App() {
   const [isOpen, setIsOpen] = useState(true);
@@ -60,7 +62,10 @@ function App() {
           leaveTo="opacity-0"
           afterLeave={handleLeave}
         >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
+          <DpArea
+            className="fill-black/25 stroke-black stroke-2"
+            dps={profiles.filter(isDp)}
+          />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
