@@ -20,12 +20,6 @@ export default forwardRef<SVGSVGElement, Props>(function DpArea(
     dpLocators.map((dpLocator) => dpLocator.location)
   );
   const { rects } = useRects(elements);
-  const d = rects.reduce(
-    (prev, current) =>
-      prev +
-      `M${current.left},${current.top} L${current.right},${current.top} L${current.right},${current.bottom} L${current.left},${current.bottom} Z `,
-    `M0,0 V${height} H${width} V-${height} Z `
-  );
   return (
     <svg
       className={className}
@@ -35,7 +29,15 @@ export default forwardRef<SVGSVGElement, Props>(function DpArea(
       height={height}
       strokeDasharray="10 10"
     >
-      <path d={d} />
+      {rects.map((rect, index) => (
+        <rect
+          key={index}
+          x={rect.x}
+          y={rect.y}
+          width={rect.width}
+          height={rect.height}
+        />
+      ))}
     </svg>
   );
 });
