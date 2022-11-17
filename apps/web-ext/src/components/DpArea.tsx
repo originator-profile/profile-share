@@ -20,7 +20,7 @@ export default forwardRef<SVGSVGElement, Props>(function DpArea(
     dpLocators.map((dpLocator) => dpLocator.location)
   );
   const { rects } = useRects(elements);
-  const id = useId()
+  const id = useId();
   return (
     <svg
       className={className}
