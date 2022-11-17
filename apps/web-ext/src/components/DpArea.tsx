@@ -31,7 +31,7 @@ export default forwardRef<SVGSVGElement, Props>(function DpArea(
     >
       <defs>
         <mask id={id}>
-          <rect className="w-full h-full fill-white" x="0" y="0" />
+          <rect className="fill-white" x="0" y="0" width="100%" height="100%" />
           {rects.map((rect, index) => (
             <rect
               key={index}
@@ -45,9 +45,11 @@ export default forwardRef<SVGSVGElement, Props>(function DpArea(
         </mask>
       </defs>
       <rect
-        className="w-full h-full fill-black/25"
+        className="fill-black/25"
         x="0"
         y="0"
+        width="100%"
+        height="100%"
         mask={`url(#${id})`}
       />
       {rects.map((rect, index) => (
