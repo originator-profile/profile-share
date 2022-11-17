@@ -5,9 +5,10 @@ function useElements(location?: string | (string | undefined)[]) {
   const elements = useMemo<NodeListOf<HTMLElement>>(
     () =>
       window.parent.document.querySelectorAll(
-        (location instanceof Array
-          ? location.filter(Boolean).join(", ")
-          : location) || ":root"
+        [location]
+          .flat()
+          .map((l) => l ?? ":root")
+          .join(", ") || ":root"
       ),
     [location]
   );
