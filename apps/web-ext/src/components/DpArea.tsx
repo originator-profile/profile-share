@@ -27,15 +27,32 @@ export default forwardRef<SVGSVGElement, Props>(function DpArea(
       viewBox={`0 0 ${width} ${height}`}
       width={width}
       height={height}
-      strokeDasharray="10 10"
     >
+      <defs>
+        <mask id="mask">
+          <rect className="w-full h-full fill-white" x="0" y="0" />
+          {rects.map((rect, index) => (
+            <rect
+              key={index}
+              className="fill-black"
+              x={rect.x}
+              y={rect.y}
+              width={rect.width}
+              height={rect.height}
+            />
+          ))}
+        </mask>
+      </defs>
+      <rect className="w-full h-full fill-black/25" x="0" y="0" mask="url(#mask)" />
       {rects.map((rect, index) => (
         <rect
           key={index}
+          className="fill-transparent stroke-black stroke-2"
           x={rect.x}
           y={rect.y}
           width={rect.width}
           height={rect.height}
+          strokeDasharray="10 10"
         />
       ))}
     </svg>
