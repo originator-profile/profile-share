@@ -62,10 +62,7 @@ function App() {
           leaveTo="opacity-0"
           afterLeave={handleLeave}
         >
-          <DpArea
-            className="fill-black/25 stroke-black stroke-2"
-            dps={profiles.filter(isDp)}
-          />
+          <DpArea dps={profiles.filter(isDp)} />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
