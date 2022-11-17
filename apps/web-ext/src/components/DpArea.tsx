@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, useId } from "react";
 import { useWindowSize } from "react-use";
 import { Dp } from "../types/profile";
 import { isDpLocator } from "../utils/dp-locator";
@@ -20,6 +20,7 @@ export default forwardRef<SVGSVGElement, Props>(function DpArea(
     dpLocators.map((dpLocator) => dpLocator.location)
   );
   const { rects } = useRects(elements);
+  const id = useId()
   return (
     <svg
       className={className}
@@ -29,7 +30,7 @@ export default forwardRef<SVGSVGElement, Props>(function DpArea(
       height={height}
     >
       <defs>
-        <mask id="mask">
+        <mask id={id}>
           <rect className="w-full h-full fill-white" x="0" y="0" />
           {rects.map((rect, index) => (
             <rect
@@ -47,7 +48,7 @@ export default forwardRef<SVGSVGElement, Props>(function DpArea(
         className="w-full h-full fill-black/25"
         x="0"
         y="0"
-        mask="url(#mask)"
+        mask={`url(#${id})`}
       />
       {rects.map((rect, index) => (
         <rect
