@@ -66,7 +66,7 @@
     "esbuild-register": "^3.3.3",
     "eslint": "^8.26.0",
     "eslint-config-webdino-profile": "*",
-    "fastify": "^4.9.2",
+    "fastify": "^4.10.2",
     "fastify-http-errors-enhanced": "^4.0.5",
     "json-schema-to-ts": "^2.5.5",
     "just-omit": "^2.1.2",
