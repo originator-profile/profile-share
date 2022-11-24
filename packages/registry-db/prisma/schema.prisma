@@ -181,6 +181,10 @@ model websites {
   category        String?
   /// https://schema.org/editor
   editor          String?
+  /// https://schema.org/datePublished
+  datePublished   String?
+  /// https://schema.org/dateModified
+  dateModified    String?
   /// 対象の要素の場所 (CSS セレクター)
   location        String?
   /// 対象のテキストの形式
