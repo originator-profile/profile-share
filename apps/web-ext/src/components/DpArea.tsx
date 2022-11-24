@@ -55,12 +55,12 @@ export default forwardRef<SVGSVGElement, Props>(function DpArea(
       {rects.map((rect, index) => (
         <rect
           key={index}
-          className="fill-transparent stroke-black stroke-2"
+          className="fill-transparent stroke-[#bc15ac] stroke-1"
           x={rect.x}
           y={rect.y}
           width={rect.width}
           height={rect.height}
-          strokeDasharray="10 10"
+          strokeDasharray="4"
         />
       ))}
     </svg>
