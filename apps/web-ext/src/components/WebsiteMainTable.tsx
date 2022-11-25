@@ -15,7 +15,7 @@ function WebsiteMainTable({ className, website }: Props) {
           header="初回公開日"
           data={new Date(
             website["https://schema.org/datePublished"]
-          ).toLocaleString(navigator.language)}
+          ).toLocaleString()}
         />
       )}
       {typeof website["https://schema.org/dateModified"] === "string" && (
@@ -23,7 +23,7 @@ function WebsiteMainTable({ className, website }: Props) {
           header="最終更新日"
           data={new Date(
             website["https://schema.org/dateModified"]
-          ).toLocaleString(navigator.language)}
+          ).toLocaleString()}
         />
       )}
       {"https://schema.org/author" in website && (
