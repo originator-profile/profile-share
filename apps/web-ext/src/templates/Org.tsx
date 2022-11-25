@@ -68,7 +68,7 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
         <Table className="mb-3">
           <TableRow
             header="組織情報の発行日"
-            data={new Date(op.issuedAt).toLocaleString(navigator.language)}
+            data={new Date(op.issuedAt).toLocaleString()}
           />
         </Table>
         {roles.length > 0 && <Roles className="mb-3" roles={roles} />}
