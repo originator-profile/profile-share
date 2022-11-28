@@ -14,9 +14,9 @@
     "@webdino/profile-model": "*",
     "@webdino/profile-tsconfig": "*",
     "date-fns": "^2.29.3",
-    "eslint": "^8.26.0",
+    "eslint": "^8.28.0",
     "eslint-config-webdino-profile": "*",
-    "jose": "^4.10.4",
-    "vitest": "^0.24.3"
+    "jose": "^4.11.1",
+    "vitest": "^0.25.3"
   }
 }

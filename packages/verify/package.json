@@ -15,15 +15,15 @@
     "@webdino/profile-model": "*",
     "@webdino/profile-sign": "*",
     "@webdino/profile-tsconfig": "*",
-    "ajv": "^8.11.0",
+    "ajv": "^8.11.2",
     "ajv-formats": "^2.1.1",
     "date-fns": "^2.29.3",
-    "eslint": "^8.26.0",
+    "eslint": "^8.28.0",
     "eslint-config-webdino-profile": "*",
-    "happy-dom": "^7.6.6",
-    "jose": "^4.10.4",
+    "happy-dom": "^7.7.0",
+    "jose": "^4.11.1",
     "jsonld": "^8.1.0",
     "vi-fetch": "^0.8.0",
-    "vitest": "^0.24.3"
+    "vitest": "^0.25.3"
   }
 }
