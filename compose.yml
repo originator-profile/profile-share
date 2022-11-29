@@ -4,7 +4,7 @@ services:
     build:
       context: "."
       args:
-        NODE_VERSION: 16.17-alpine
+        NODE_VERSION: 16.18-alpine
     healthcheck:
       test: "wget -qO /dev/null http://localhost:8080/"
     environment:
@@ -12,7 +12,7 @@ services:
       ISSUER_UUID: ${ISSUER_UUID}
     ports: ["8080:8080"]
   db:
-    image: postgres:15.0-alpine
+    image: postgres:15.1-alpine
     healthcheck:
       test: pg_isready -U postgres
     environment:
