@@ -16,7 +16,7 @@
     "ajv": "^8.11.2",
     "eslint": "^8.28.0",
     "eslint-config-webdino-profile": "*",
-    "json-schema-to-ts": "2.6.0",
+    "json-schema-to-ts": "^2.6.2",
     "jsonld": "^8.1.0",
     "msw": "^0.49.1",
     "vitest": "^0.25.3"
