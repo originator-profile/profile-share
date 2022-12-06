@@ -32,7 +32,6 @@
     "esbuild-copy-static-files": "^0.1.0",
     "eslint": "^8.28.0",
     "eslint-config-webdino-profile": "*",
-    "jotai": "^1.11.0",
     "jsonld": "^8.1.0",
     "npm-run-all": "4.1.5",
     "playwright": "^1.28.1",
