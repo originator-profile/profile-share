@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./style.css";
 import { HashRouter } from "react-router-dom";
-import { Provider } from "jotai";
 import App from "./App";
 
 const init = () => {
@@ -10,11 +9,9 @@ const init = () => {
   if (!root) return;
   ReactDOM.createRoot(root).render(
     <React.StrictMode>
-      <Provider>
-        <HashRouter>
-          <App />
-        </HashRouter>
-      </Provider>
+      <HashRouter>
+        <App />
+      </HashRouter>
     </React.StrictMode>
   );
 };
