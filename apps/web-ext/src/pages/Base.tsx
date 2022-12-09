@@ -7,6 +7,8 @@ import { routes } from "../utils/routes";
 import useProfiles from "../utils/use-profiles";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
+import { ProfilesFetchFailed } from "@webdino/profile-verify";
+import ErrorNotFound from "../components/ErrorNotFound";
 
 function Dp({
   dp,
@@ -42,6 +44,9 @@ function Base() {
     ["コンテンツ情報", profileEndpoint?.origin].filter(Boolean).join(" ― ")
   );
 
+  if (error instanceof ProfilesFetchFailed) {
+    return <ErrorNotFound />;
+  }
   if (error) {
     return (
       <ErrorPlaceholder>
