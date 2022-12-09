@@ -5,10 +5,15 @@ import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Template from "../templates/Publ";
+import { ProfilesFetchFailed } from "@webdino/profile-verify";
+import ErrorNotFound from "../components/ErrorNotFound";
 
 function Publ() {
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
   const { profiles, error, profileEndpoint } = useProfiles();
+  if (error instanceof ProfilesFetchFailed) {
+    return <ErrorNotFound />;
+  }
   if (error) {
     return (
       <ErrorPlaceholder>

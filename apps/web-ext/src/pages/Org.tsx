@@ -5,6 +5,8 @@ import { toRoles } from "../utils/role";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Template from "../templates/Org";
+import { ProfilesFetchFailed } from "@webdino/profile-verify";
+import ErrorNotFound from "../components/ErrorNotFound";
 
 type Props = { back: string };
 
@@ -20,6 +22,9 @@ function Org(props: Props) {
     error,
     profileEndpoint,
   } = useProfiles();
+  if (error instanceof ProfilesFetchFailed) {
+    return <ErrorNotFound />;
+  }
   if (error) {
     return (
       <ErrorPlaceholder>
