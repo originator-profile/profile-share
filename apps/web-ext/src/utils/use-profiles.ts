@@ -18,7 +18,10 @@ import { routes } from "./routes";
 
 const key = "profiles";
 
-async function fetchVerifiedProfiles(_: typeof key, tabId: number) {
+async function fetchVerifiedProfiles([, tabId]: [
+  _: typeof key,
+  tabId: number
+]) {
   const { profileEndpoint }: FetchProfilesMessageResponse =
     await chrome.tabs.sendMessage(tabId, {
       type: "fetch-profiles",
