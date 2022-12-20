@@ -19,6 +19,7 @@ module.exports = {
   jsx: "automatic",
   loader: {
     ".png": "dataurl",
+    ".svg": "dataurl",
   },
   plugins: [
     require("esbuild-copy-static-files")({ src: "public", dest: "dist" }),
