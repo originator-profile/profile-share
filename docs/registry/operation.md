@@ -262,7 +262,7 @@ yarn dotenv -- -e .env -- bin/dev publisher:website \
 公開するサイトに配置する際には、トップディレクトリの .well-known に以下のファイルを配置します。
 
 - jwks.json
-- op-document
+- ps.json
 
 または、HTML 中に Profiles Set への \<link\> 要素を追加しても構いません。
 
@@ -285,7 +285,7 @@ yarn dotenv -- -e .env -- bin/dev publisher:website \
 }
 ```
 
-#### op-document
+#### ps.json
 
 Prisma Studio の画面上部のタブで、`ops`と`dps`それぞれ画面の中に、`jwt`列があります、その値をコピーして以下に貼り付けてください。
 

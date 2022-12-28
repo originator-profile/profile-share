@@ -21,7 +21,7 @@ function handleMessageResponse(
       return Promise.resolve({
         type: "fetch-profiles",
         profileEndpoint:
-          link ?? `${document.location.origin}/.well-known/op-document`,
+          link ?? `${document.location.origin}/.well-known/ps.json`,
       });
     }
     case "overlay-profiles":

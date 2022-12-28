@@ -298,7 +298,7 @@ Signed Document Profile の場合、署名の際に `location` として含ま�
 
 ```html
 <link
-  href="https://example.com/.well-known/op-document"
+  href="https://example.com/.well-known/ps.json"
   rel="alternate"
   type="application/ld+json"
 />
@@ -306,5 +306,5 @@ Signed Document Profile の場合、署名の際に `location` として含ま�
 
 ## Well-Known URL
 
-HTML に Profiles Set が記述されていない場合、対象のページの URL のパス `/.well-known/op-document` に配置できます。
+HTML に Profiles Set が記述されていない場合、対象のページの URL のパス `/.well-known/ps.json に配置できます。
 この Well-Known URL は対象のページと同一オリジンで、かつ HTTP(S) GET によってアクセスし Signed Originator Profile を取得できる必要があります。
