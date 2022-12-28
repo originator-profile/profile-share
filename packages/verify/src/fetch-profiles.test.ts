@@ -25,18 +25,15 @@ describe("fetch-profiles", async () => {
     main: ["http://sub.localhost:8080"],
     profile: [jwt],
   };
+  const profileEndpoint = "http://localhost:8080/.well-known/ps.json";
 
   beforeEach(() => {
     mockFetch.clearAll();
-    mockGet("http://localhost:8080/.well-known/op-document").willResolve(
-      profiles
-    );
+    mockGet(profileEndpoint).willResolve(profiles);
   });
 
   test("有効なエンドポイント指定時 Profiles Set が得られる", async () => {
-    const result = await fetchProfiles(
-      "http://localhost:8080/.well-known/op-document"
-    );
+    const result = await fetchProfiles(profileEndpoint);
     expect(result).toEqual(profiles);
   });
 
@@ -47,10 +44,8 @@ describe("fetch-profiles", async () => {
   });
 
   test("取得先に Profiles Set が存在しないとき Profiles Set の取得に失敗", async () => {
-    mockGet("http://localhost:8080/.well-known/op-document").willFail({}, 404);
-    expect(
-      fetchProfiles("http://localhost:8080/.well-known/op-document")
-    ).rejects.toThrowError(
+    mockGet(profileEndpoint).willFail({}, 404);
+    expect(fetchProfiles(profileEndpoint)).rejects.toThrowError(
       /^プロファイルを取得できませんでした:\nHTTP ステータスコード 404$/
     );
   });
