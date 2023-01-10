@@ -85,8 +85,9 @@ export const WebsiteService = ({ config, prisma }: Options) => ({
 
     const ops = data.account.publications.map((publication) => publication.op);
     const profiles: JsonLdDocument = {
-      "@context":
-        config.JSONLD_CONTEXT ?? Config.properties.JSONLD_CONTEXT.default,
+      "@context": `${
+        config.APP_URL ?? Config.properties.APP_URL.default
+      }/context`,
       main: data.url,
       profile: [...ops.map((op) => op.jwt), ...data.dps.map((dp) => dp.jwt)],
     };
