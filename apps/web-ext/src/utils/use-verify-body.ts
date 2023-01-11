@@ -10,7 +10,11 @@ import { DpLocator } from "../types/profile";
 
 const key = "verify-body" as const;
 
-async function fetcher(_: typeof key, dpLocator: DpLocator, jwks?: Jwks) {
+async function fetcher([, dpLocator, jwks]: [
+  _: typeof key,
+  dpLocator: DpLocator,
+  jwks?: Jwks
+]) {
   const body = extractBody(window.parent.document, dpLocator);
   if (body instanceof Error) return body;
   return verifyBody(body, dpLocator.proof.jws, LocalKeys(jwks ?? { keys: [] }));
