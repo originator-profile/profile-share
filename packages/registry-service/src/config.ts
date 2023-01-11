@@ -7,10 +7,6 @@ const Config = {
       type: "string",
       default: "",
     },
-    JSONLD_CONTEXT: {
-      type: "string",
-      default: "https://oprdev.herokuapp.com/context",
-    },
     APP_URL: {
       type: "string",
       default: "https://oprdev.herokuapp.com",
