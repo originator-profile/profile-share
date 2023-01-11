@@ -33,7 +33,9 @@ function ErrorNotFound() {
           </header>
           <article className="mb-12">
             <h1 className="text-lg mb-6 text-center">
-              出版物や組織の信頼性情報が正しく読み取れませんでした
+              組織の信頼性情報と出版物の流通経路が
+              <br />
+              正しく読み取れませんでした
             </h1>
             <p className="text-xs text-gray-700 text-center mb-8">
               以下のような原因が考えられます
@@ -59,7 +61,9 @@ function ErrorNotFound() {
           </article>
           <article className="prose">
             <h1 className="text-lg mb-6 text-center font-normal">
-              組織の信頼性情報と出版物の流通経路があることで以下の課題を解決できます
+              組織の信頼性情報と出版物の流通経路があることで
+              <br />
+              以下の課題を解決できます
             </h1>
             <section>
               <h2 className="after:content-[''] after:block after:absolute after:bg-sky-500 after:opacity-30 after:w-32 after:h-1 after:mt-1">
