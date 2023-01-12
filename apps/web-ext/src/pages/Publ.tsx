@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { isOp, isOpHolder, isDp, isOgWebsite } from "@webdino/profile-core";
 import useProfiles from "../utils/use-profiles";
 import { routes } from "../utils/routes";
+import findProfileGenericError from "../utils/find-profile-generic-error";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Template from "../templates/Publ";
@@ -29,6 +30,11 @@ function Publ() {
         </p>
       </LoadingPlaceholder>
     );
+  }
+  const result = findProfileGenericError(profiles);
+  // TODO: 禁止のケースの見た目を実装して
+  if (result) {
+    return <Unsupported error={result} />;
   }
   const dp = profiles
     .filter(isDp)
