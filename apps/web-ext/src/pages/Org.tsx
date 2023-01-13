@@ -6,7 +6,7 @@ import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Template from "../templates/Org";
 import { ProfilesFetchFailed } from "@webdino/profile-verify";
-import ErrorNotFound from "../components/ErrorNotFound";
+import Unsupported from "../components/Unsupported";
 
 type Props = { back: string };
 
@@ -23,7 +23,7 @@ function Org(props: Props) {
     profileEndpoint,
   } = useProfiles();
   if (error instanceof ProfilesFetchFailed) {
-    return <ErrorNotFound />;
+    return <Unsupported />;
   }
   if (error) {
     return (

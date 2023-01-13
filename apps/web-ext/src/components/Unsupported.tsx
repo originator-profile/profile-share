@@ -7,7 +7,7 @@ import figUser4Url from "../assets/fig-user-4.svg";
 import figUser5Url from "../assets/fig-user-5.svg";
 import figTraceabilityUrl from "../assets/fig-traceability.png";
 
-function ErrorNotFound() {
+function Unsupported() {
   const onClose = () => {
     // nop
   };
@@ -190,4 +190,4 @@ function ErrorNotFound() {
   );
 }
 
-export default ErrorNotFound;
+export default Unsupported;
