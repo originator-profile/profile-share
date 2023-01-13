@@ -7,7 +7,6 @@ import { routes } from "../utils/routes";
 import useProfiles from "../utils/use-profiles";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
-import { ProfilesFetchFailed } from "@webdino/profile-verify";
 import Unsupported from "../components/Unsupported";
 
 function Dp({
@@ -44,15 +43,8 @@ function Base() {
     ["コンテンツ情報", profileEndpoint?.origin].filter(Boolean).join(" ― ")
   );
 
-  if (error instanceof ProfilesFetchFailed) {
-    return <Unsupported />;
-  }
   if (error) {
-    return (
-      <ErrorPlaceholder>
-        <p className="whitespace-pre-wrap">{error.message}</p>
-      </ErrorPlaceholder>
-    );
+    return <Unsupported error={error} />;
   }
   if (!profiles) {
     return (

@@ -5,14 +5,13 @@ import { routes } from "../utils/routes";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Template from "../templates/Publ";
-import { ProfilesFetchFailed } from "@webdino/profile-verify";
 import Unsupported from "../components/Unsupported";
 
 function Publ() {
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
   const { profiles, error, profileEndpoint } = useProfiles();
-  if (error instanceof ProfilesFetchFailed) {
-    return <Unsupported />;
+  if (error) {
+    return <Unsupported error={error} />;
   }
   if (error) {
     return (

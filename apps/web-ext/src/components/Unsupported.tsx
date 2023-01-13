@@ -6,15 +6,20 @@ import figUser3Url from "../assets/fig-user-3.svg";
 import figUser4Url from "../assets/fig-user-4.svg";
 import figUser5Url from "../assets/fig-user-5.svg";
 import figTraceabilityUrl from "../assets/fig-traceability.png";
+import { ProfileGenericError } from "@webdino/profile-verify";
 
-function Unsupported() {
+type Props = {
+  error: Error;
+};
+
+function Unsupported({ error }: Props) {
   const onClose = () => {
     // nop
   };
   return (
     <Dialog open onClose={onClose}>
       <Dialog.Panel className="fixed top-0 left-0 z-10 bg-white w-screen h-screen overflow-y-auto">
-        <main className="px-4 py-12 mx-auto max-w-lg">
+        <main className="px-4 py-12">
           <header className="flex items-center flex-col gap-4 mb-12">
             <p className="text-gray-700 text-xs">
               良質な記事やメディアを容易に見分けられるようにする技術
@@ -31,7 +36,7 @@ function Unsupported() {
               </h1>
             </a>
           </header>
-          <article className="mb-12">
+          <article className="mb-12 max-w-sm mx-auto">
             <h1 className="text-lg mb-6 text-center">
               組織の信頼性情報と出版物の流通経路が
               <br />
@@ -40,7 +45,7 @@ function Unsupported() {
             <p className="text-xs text-gray-700 text-center mb-8">
               以下のような原因が考えられます
             </p>
-            <ul className="list-disc pl-8 text-sm mb-12 max-w-sm mx-auto">
+            <ul className="list-disc pl-8 text-sm mb-4">
               <li>組織の信頼性情報と出版物の流通経路がまだありません</li>
               <li>組織の信頼性情報と出版物の流通経路の取得に失敗しました</li>
               {/* TODO: 以下のケースを検知可能にして
@@ -51,6 +56,23 @@ function Unsupported() {
                 <li>出版物の流通経路が含まれていません</li>
                */}
             </ul>
+            <details className="text-gray-700 pl-4 mb-12">
+              <summary>エラーの詳細</summary>
+              <dl>
+                <dt>
+                  メッセージ<span aria-hidden>:</span>
+                </dt>
+                <dd>{error.message}</dd>
+                {error instanceof ProfileGenericError && (
+                  <>
+                    <dt>
+                      エラーコード<span aria-hidden>:</span>
+                    </dt>
+                    <dd>{error.code}</dd>
+                  </>
+                )}
+              </dl>
+            </details>
             <p className="text-xs text-gray-700 text-center leading-5">
               このページにおける組織の信頼性情報と出版物の流通経路について
               <br />
@@ -59,7 +81,7 @@ function Unsupported() {
               運営管理者にお問い合わせください
             </p>
           </article>
-          <article className="prose">
+          <article className="prose max-w-lg mx-auto">
             <h1 className="text-lg mb-6 text-center font-normal">
               組織の信頼性情報と出版物の流通経路があることで
               <br />
