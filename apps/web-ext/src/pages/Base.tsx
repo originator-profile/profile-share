@@ -8,7 +8,7 @@ import useProfiles from "../utils/use-profiles";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import { ProfilesFetchFailed } from "@webdino/profile-verify";
-import ErrorNotFound from "../components/ErrorNotFound";
+import Unsupported from "../components/Unsupported";
 
 function Dp({
   dp,
@@ -45,7 +45,7 @@ function Base() {
   );
 
   if (error instanceof ProfilesFetchFailed) {
-    return <ErrorNotFound />;
+    return <Unsupported />;
   }
   if (error) {
     return (

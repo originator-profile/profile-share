@@ -6,13 +6,13 @@ import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
 import Template from "../templates/Publ";
 import { ProfilesFetchFailed } from "@webdino/profile-verify";
-import ErrorNotFound from "../components/ErrorNotFound";
+import Unsupported from "../components/Unsupported";
 
 function Publ() {
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
   const { profiles, error, profileEndpoint } = useProfiles();
   if (error instanceof ProfilesFetchFailed) {
-    return <ErrorNotFound />;
+    return <Unsupported />;
   }
   if (error) {
     return (
