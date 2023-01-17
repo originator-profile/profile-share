@@ -7,6 +7,7 @@ import { routes } from "../utils/routes";
 import useProfiles from "../utils/use-profiles";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
 import ErrorPlaceholder from "../components/ErrorPlaceholder";
+import Unsupported from "../components/Unsupported";
 
 function Dp({
   dp,
@@ -43,11 +44,7 @@ function Base() {
   );
 
   if (error) {
-    return (
-      <ErrorPlaceholder>
-        <p className="whitespace-pre-wrap">{error.message}</p>
-      </ErrorPlaceholder>
-    );
+    return <Unsupported error={error} />;
   }
   if (!profiles) {
     return (

@@ -86,3 +86,10 @@ export class ProfilesVerifyFailed extends ProfileGenericError {
     this.result = result;
   }
 }
+
+export class ProfilesFetchFailed extends ProfileGenericError {
+  static get code() {
+    return "ERR_PROFILES_FETCH_FAILED" as const;
+  }
+  readonly code = ProfilesFetchFailed.code;
+}
