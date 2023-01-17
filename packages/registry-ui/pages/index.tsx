@@ -1,38 +1,32 @@
 import { For, createSignal } from "solid-js";
-import { expand } from "jsonld";
-import { RemoteKeys, ProfilesVerifier } from "@webdino/profile-verify";
+import {
+  RemoteKeys,
+  ProfilesVerifier,
+  expandProfiles,
+} from "@webdino/profile-verify";
 
 function useProfile() {
   const context = "https://github.com/webdino/profile#";
   const issuer = document.location.origin;
   const jwksEndpoint = new URL(`${issuer}/.well-known/jwks.json`);
   const targetOrigin = document.location.hash.slice(1) || issuer;
-  const opEndpoint = new URL(`${targetOrigin}/.well-known/op-document`);
+  const profileEndpoint = new URL(`${targetOrigin}/.well-known/ps.json`);
   const [values, setValues] = createSignal<[string, unknown][]>([
     ["context", context],
     ["issuer", issuer],
     ["jwksEndpoint", jwksEndpoint],
     ["targetOrigin", targetOrigin],
-    ["opEndpoint", opEndpoint],
+    ["profileEndpoint", profileEndpoint],
   ]);
   const verify = async () => {
-    const data = await fetch(opEndpoint.href)
+    const data = await fetch(profileEndpoint.href)
       .then((res) => res.json())
       .catch((e) => e);
     if (data instanceof Error) {
-      setValues([...values(), ["op", `invalid: ${data.message}`]]);
+      setValues([...values(), ["profile", `invalid: ${data.message}`]]);
       return;
     }
-    const [op] = await expand(data);
-    setValues([...values(), ["op", JSON.stringify(op)]]);
-    // @ts-expect-error assert
-    const main: string[] = op[`${context}main`].map(
-      (o: { "@value": string }) => o["@value"]
-    );
-    // @ts-expect-error assert
-    const profile: string[] = op[`${context}profile`].map(
-      (o: { "@value": string }) => o["@value"]
-    );
+    const { main, profile } = await expandProfiles(data);
     if (main.length > 0) {
       setValues([
         ...values(),

@@ -44,7 +44,7 @@ async function index(fastify: FastifyInstance): Promise<void> {
     getIssuerKeys
   );
   fastify.get<FromHandler<typeof getIssuerProfiles>>(
-    "/.well-known/op-document",
+    "/.well-known/ps.json",
     { ...getIssuerProfiles },
     getIssuerProfiles
   );
