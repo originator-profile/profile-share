@@ -13,13 +13,6 @@ function Publ() {
   if (error) {
     return <Unsupported error={error} />;
   }
-  if (error) {
-    return (
-      <ErrorPlaceholder>
-        <p className="whitespace-pre-wrap">{error.message}</p>
-      </ErrorPlaceholder>
-    );
-  }
   if (!profiles) {
     return (
       <LoadingPlaceholder>
