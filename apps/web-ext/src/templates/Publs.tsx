@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useParams, Link } from "react-router-dom";
 import { Profile, Dp } from "../types/profile";
 import { isOp, isDp, isOpHolder } from "@webdino/profile-core";
-import { sortDps } from "../utils/profile";
+import sortDps from "../utils/sort-dps";
 import { routes } from "../utils/routes";
 import Image from "../components/Image";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";

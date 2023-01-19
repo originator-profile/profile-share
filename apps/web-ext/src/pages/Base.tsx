@@ -2,7 +2,7 @@ import { useTitle, useMount } from "react-use";
 import { Navigate } from "react-router-dom";
 import { isDp } from "@webdino/profile-core";
 import { Dp, Profile } from "../types/profile";
-import { sortDps } from "../utils/profile";
+import sortDps from "../utils/sort-dps";
 import findProfileGenericError from "../utils/find-profile-generic-error";
 import { routes } from "../utils/routes";
 import useProfiles from "../utils/use-profiles";
