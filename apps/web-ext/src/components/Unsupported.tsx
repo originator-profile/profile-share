@@ -1,5 +1,4 @@
 import { Dialog } from "@headlessui/react";
-import logomarkUrl from "../assets/logomark.svg";
 import figUser1Url from "../assets/fig-user-1.svg";
 import figUser2Url from "../assets/fig-user-2.svg";
 import figUser3Url from "../assets/fig-user-3.svg";
@@ -11,6 +10,8 @@ import {
   ProfilesFetchFailed,
   ProfilesVerifyFailed,
 } from "@webdino/profile-verify";
+import ProjectTitle from "./ProjectTitle";
+import ProjectSummary from "./ProjectSummary";
 
 type Props = {
   error: Error;
@@ -24,22 +25,7 @@ function Unsupported({ error }: Props) {
     <Dialog open onClose={onClose}>
       <Dialog.Panel className="fixed top-0 left-0 z-10 bg-white w-screen h-screen overflow-y-auto">
         <main className="px-4 py-12">
-          <header className="flex items-center flex-col gap-4 mb-12">
-            <p className="text-gray-700 text-xs">
-              良質な記事やメディアを容易に見分けられるようにする技術
-            </p>
-            <a
-              className="flex justify-center items-center gap-2"
-              href="https://originator-profile.pages.dev"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              <img src={logomarkUrl} alt="" />
-              <h1 className="font-bold font-sans text-xl">
-                Originator Profile
-              </h1>
-            </a>
-          </header>
+          <ProjectTitle className="mb-12" as="header" />
           <article className="mb-12 max-w-sm mx-auto">
             <h1 className="text-lg mb-6 text-center">
               組織の信頼性情報と出版物の流通経路が
@@ -189,35 +175,7 @@ function Unsupported({ error }: Props) {
               </div>
             </section>
           </article>
-          <footer className="flex flex-col items-center gap-6 bg-gray-100 rounded-md p-8">
-            <a
-              className="flex justify-center items-center gap-2"
-              href="https://originator-profile.pages.dev"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              <img src={logomarkUrl} alt="" />
-              <h1 className="font-bold font-sans text-xl">
-                Originator Profile
-              </h1>
-            </a>
-            <p className="text-gray-700">
-              Originator Profile
-              技術は、ウェブコンテンツの作成者や広告主などの情報を検証可能な形で付与することで、第三者認証済みの良質な記事やメディアを容易に見分けられるようにする技術です。
-            </p>
-            <p className="text-gray-700">
-              コンテンツ作成者や流通経路の透明性を高め、信頼できる発信者を識別可能にすることで、責任ある良質な記事やメディアの増加と価値向上を助けます。
-            </p>
-            <p className="text-xs text-center underline">
-              <a
-                href="https://originator-profile.pages.dev"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                https://originator-profile.pages.dev
-              </a>
-            </p>
-          </footer>
+          <ProjectSummary as="footer" />
         </main>
       </Dialog.Panel>
     </Dialog>
