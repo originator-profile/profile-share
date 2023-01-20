@@ -8,7 +8,6 @@ import figUser5Url from "../assets/fig-user-5.svg";
 import figTraceabilityUrl from "../assets/fig-traceability.png";
 import {
   ProfileGenericError,
-  ProfilesFetchFailed,
   ProfilesVerifyFailed,
 } from "@webdino/profile-verify";
 
@@ -50,21 +49,20 @@ function Unsupported({ error }: Props) {
               以下のような原因が考えられます
             </p>
             <ul className="list-disc pl-8 text-sm mb-12 max-w-sm mx-auto">
-              {error instanceof ProfilesFetchFailed && (
-                <>
-                  <li>組織の信頼性情報と出版物の流通経路がまだありません</li>
-                  <li>
-                    組織の信頼性情報と出版物の流通経路の取得に失敗しました
-                  </li>
-                </>
-              )}
-              {error instanceof ProfilesVerifyFailed && (
+              {error instanceof ProfilesVerifyFailed ? (
                 <>
                   <li>
                     信頼性情報あるいは流通経路が仕様どおりに記述されていません
                   </li>
                   <li>組織の信頼性情報が含まれていません</li>
                   <li>出版物の流通経路が含まれていません</li>
+                </>
+              ) : (
+                <>
+                  <li>組織の信頼性情報と出版物の流通経路がまだありません</li>
+                  <li>
+                    組織の信頼性情報と出版物の流通経路の取得に失敗しました
+                  </li>
                 </>
               )}
             </ul>
