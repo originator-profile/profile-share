@@ -28,7 +28,7 @@
     "clsx": "^1.2.1",
     "commander": "^9.4.1",
     "dompurify": "^2.4.1",
-    "esbuild": "^0.15.16",
+    "esbuild": "^0.17.3",
     "esbuild-copy-static-files": "^0.1.0",
     "eslint": "^8.28.0",
     "eslint-config-webdino-profile": "*",
