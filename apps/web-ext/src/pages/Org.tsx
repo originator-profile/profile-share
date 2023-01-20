@@ -4,7 +4,7 @@ import useProfiles from "../utils/use-profiles";
 import { toRoles } from "../utils/role";
 import findProfileGenericError from "../utils/find-profile-generic-error";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
-import ErrorPlaceholder from "../components/ErrorPlaceholder";
+import NotFound from "../components/NotFound";
 import Template from "../templates/Org";
 import Unsupported from "../components/Unsupported";
 
@@ -47,19 +47,11 @@ function Org(props: Props) {
         profile.issuer === orgIssuer && profile.subject === orgSubject
     );
   if (!op) {
-    return (
-      <ErrorPlaceholder>
-        <p>プロファイルが見つかりませんでした</p>
-      </ErrorPlaceholder>
-    );
+    return <NotFound variant="op" />;
   }
   const holder = op.item.find(isOpHolder);
   if (!holder) {
-    return (
-      <ErrorPlaceholder>
-        <p>所有者情報が見つかりませんでした</p>
-      </ErrorPlaceholder>
-    );
+    return <NotFound variant="holder" />;
   }
   const roles = toRoles(op.subject, advertisers, publishers);
   const paths = {
