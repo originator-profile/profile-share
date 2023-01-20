@@ -26,7 +26,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  ctx?.close();
+  await ctx?.close();
   if (userDataDir) await rimraf(userDataDir);
 });
 
