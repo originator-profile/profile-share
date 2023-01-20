@@ -15,6 +15,6 @@
     "@webdino/profile-tsconfig": "*",
     "eslint": "^8.28.0",
     "eslint-config-webdino-profile": "*",
-    "vitest": "^0.25.3"
+    "vitest": "^0.27.2"
   }
 }
