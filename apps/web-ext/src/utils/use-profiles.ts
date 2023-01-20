@@ -13,7 +13,7 @@ import {
   PopupMessageRequest,
 } from "../types/message";
 import { Profile } from "../types/profile";
-import { toProfile } from "./profile";
+import toProfile from "./to-profile";
 import { routes } from "./routes";
 
 const key = "profiles";
