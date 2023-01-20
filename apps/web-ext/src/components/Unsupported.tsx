@@ -7,11 +7,28 @@ import figUser5Url from "../assets/fig-user-5.svg";
 import figTraceabilityUrl from "../assets/fig-traceability.png";
 import {
   ProfileGenericError,
-  ProfilesFetchFailed,
   ProfilesVerifyFailed,
 } from "@webdino/profile-verify";
 import ProjectTitle from "./ProjectTitle";
 import ProjectSummary from "./ProjectSummary";
+
+function Messages({ className, error }: { className?: string; error: Error }) {
+  if (error instanceof ProfilesVerifyFailed) {
+    return (
+      <ul className={className}>
+        <li>信頼性情報あるいは流通経路が仕様どおりに記述されていません</li>
+        <li>組織の信頼性情報が含まれていません</li>
+        <li>出版物の流通経路が含まれていません</li>
+      </ul>
+    );
+  }
+  return (
+    <ul className={className}>
+      <li>組織の信頼性情報と出版物の流通経路がまだありません</li>
+      <li>組織の信頼性情報と出版物の流通経路の取得に失敗しました</li>
+    </ul>
+  );
+}
 
 type Props = {
   error: Error;
@@ -35,25 +52,10 @@ function Unsupported({ error }: Props) {
             <p className="text-xs text-gray-700 text-center mb-8">
               以下のような原因が考えられます
             </p>
-            <ul className="list-disc pl-8 text-sm mb-12 max-w-sm mx-auto">
-              {error instanceof ProfilesFetchFailed && (
-                <>
-                  <li>組織の信頼性情報と出版物の流通経路がまだありません</li>
-                  <li>
-                    組織の信頼性情報と出版物の流通経路の取得に失敗しました
-                  </li>
-                </>
-              )}
-              {error instanceof ProfilesVerifyFailed && (
-                <>
-                  <li>
-                    信頼性情報あるいは流通経路が仕様どおりに記述されていません
-                  </li>
-                  <li>組織の信頼性情報が含まれていません</li>
-                  <li>出版物の流通経路が含まれていません</li>
-                </>
-              )}
-            </ul>
+            <Messages
+              className="list-disc pl-8 text-sm mb-12 max-w-sm mx-auto"
+              error={error}
+            />
             <details className="text-gray-700 pl-4 mb-12">
               <summary>エラーの詳細</summary>
               <dl>
