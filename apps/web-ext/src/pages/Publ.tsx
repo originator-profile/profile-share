@@ -4,7 +4,7 @@ import useProfiles from "../utils/use-profiles";
 import { routes } from "../utils/routes";
 import findProfileGenericError from "../utils/find-profile-generic-error";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
-import ErrorPlaceholder from "../components/ErrorPlaceholder";
+import NotFound from "../components/NotFound";
 import Template from "../templates/Publ";
 import Unsupported from "../components/Unsupported";
 
@@ -34,27 +34,15 @@ function Publ() {
     .find((dp) => dp.issuer === issuer && dp.subject === subject);
   const op = profiles.filter(isOp).find((op) => op.subject === issuer);
   if (!(dp && op)) {
-    return (
-      <ErrorPlaceholder>
-        <p>プロファイルが見つかりませんでした</p>
-      </ErrorPlaceholder>
-    );
+    return <NotFound variant="profile" />;
   }
   const website = dp.item.find(isOgWebsite);
   if (!website) {
-    return (
-      <ErrorPlaceholder>
-        <p>ウェブサイトが見つかりませんでした</p>
-      </ErrorPlaceholder>
-    );
+    return <NotFound variant="website" />;
   }
   const holder = op.item.find(isOpHolder);
   if (!holder) {
-    return (
-      <ErrorPlaceholder>
-        <p>所有者情報が見つかりませんでした</p>
-      </ErrorPlaceholder>
-    );
+    return <NotFound variant="holder" />;
   }
 
   const paths = {
