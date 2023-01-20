@@ -1,11 +1,11 @@
-import { expand, JsonLdDocument } from "jsonld";
+import jsonld, { JsonLdDocument } from "jsonld";
 
 /**
  * Profiles Set の JSON-LD 表現の Profile Set への展開
  * @param profiles Profiles Set の JSON-LD 表現
  */
 export async function expandProfiles(profiles: JsonLdDocument) {
-  const [expanded] = await expand(profiles);
+  const [expanded] = await jsonld.expand(profiles);
   const context = "https://github.com/webdino/profile#";
   if (!expanded)
     return { advertisers: [], publishers: [], main: [], profile: [] };

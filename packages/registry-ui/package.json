@@ -17,7 +17,7 @@
     "eslint-config-webdino-profile": "*",
     "jsonld": "^8.1.0",
     "solid-js": "^1.6.2",
-    "vite": "^3.2.4",
+    "vite": "^4.0.4",
     "vite-plugin-solid": "^2.4.0"
   }
 }

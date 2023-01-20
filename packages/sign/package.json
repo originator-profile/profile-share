@@ -17,6 +17,6 @@
     "eslint": "^8.28.0",
     "eslint-config-webdino-profile": "*",
     "jose": "^4.11.1",
-    "vitest": "^0.25.3"
+    "vitest": "^0.27.2"
   }
 }
