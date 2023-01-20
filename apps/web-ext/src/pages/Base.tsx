@@ -6,7 +6,7 @@ import sortDps from "../utils/sort-dps";
 import findProfileGenericError from "../utils/find-profile-generic-error";
 import { routes } from "../utils/routes";
 import useProfiles from "../utils/use-profiles";
-import LoadingPlaceholder from "../components/LoadingPlaceholder";
+import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
 
@@ -48,14 +48,7 @@ function Base() {
     return <Unsupported error={error} />;
   }
   if (!profiles) {
-    return (
-      <LoadingPlaceholder>
-        <p>
-          {profileEndpoint && `${profileEndpoint.origin} の`}
-          プロファイルを取得検証しています...
-        </p>
-      </LoadingPlaceholder>
-    );
+    return <Loading />;
   }
   const result = findProfileGenericError(profiles);
   // TODO: 禁止のケースの見た目を実装して

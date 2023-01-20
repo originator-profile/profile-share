@@ -3,7 +3,7 @@ import { isOp, isOpHolder } from "@webdino/profile-core";
 import useProfiles from "../utils/use-profiles";
 import { toRoles } from "../utils/role";
 import findProfileGenericError from "../utils/find-profile-generic-error";
-import LoadingPlaceholder from "../components/LoadingPlaceholder";
+import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Template from "../templates/Org";
 import Unsupported from "../components/Unsupported";
@@ -26,14 +26,7 @@ function Org(props: Props) {
     return <Unsupported error={error} />;
   }
   if (!profiles) {
-    return (
-      <LoadingPlaceholder>
-        <p>
-          {profileEndpoint && `${profileEndpoint.origin} の`}
-          プロファイルを取得検証しています...
-        </p>
-      </LoadingPlaceholder>
-    );
+    return <Loading />;
   }
   const result = findProfileGenericError(profiles);
   // TODO: 禁止のケースの見た目を実装して
