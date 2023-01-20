@@ -7,7 +7,7 @@ import findProfileGenericError from "../utils/find-profile-generic-error";
 import { routes } from "../utils/routes";
 import useProfiles from "../utils/use-profiles";
 import LoadingPlaceholder from "../components/LoadingPlaceholder";
-import ErrorPlaceholder from "../components/ErrorPlaceholder";
+import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
 
 function Dp({
@@ -64,11 +64,7 @@ function Base() {
   }
   const [dp] = sortDps(profiles.filter(isDp), main);
   if (!dp) {
-    return (
-      <ErrorPlaceholder>
-        <p>プロファイルが見つかりませんでした</p>
-      </ErrorPlaceholder>
-    );
+    return <NotFound variant="dp" />;
   }
   return <Dp dp={dp} tabId={tabId} profiles={profiles} />;
 }
