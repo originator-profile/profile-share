@@ -3,7 +3,7 @@ import { mock, mockDeep, mockClear } from "vitest-mock-extended";
 import { Prisma, PrismaClient } from "@prisma/client";
 import crypto from "node:crypto";
 import Ajv from "ajv";
-import { expand, JsonLdDocument } from "jsonld";
+import jsonld, { JsonLdDocument } from "jsonld";
 import { Jwks } from "@webdino/profile-model";
 import Config from "./config";
 import { AccountService } from "./account";
@@ -91,7 +91,7 @@ describe("AccountService", () => {
     });
     // @ts-expect-error assert
     const data: JsonLdDocument = await account.getProfiles(crypto.randomUUID());
-    const op = await expand(data);
+    const op = await jsonld.expand(data);
     expect("https://github.com/webdino/profile#main" in op[0]).toBe(true);
     expect("https://github.com/webdino/profile#profile" in op[0]).toBe(true);
   });

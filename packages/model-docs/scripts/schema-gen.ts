@@ -8,7 +8,7 @@ const out = "dist";
 const schemas = { Profile };
 
 async function main() {
-  rimraf.sync(out);
+  await rimraf(out);
   await fs.mkdir(out, { recursive: true });
 
   const ops = [...Object.entries(schemas)].map(async ([name, schema]) => {
