@@ -9,7 +9,6 @@ import rimraf from "rimraf";
 export let ctx: BrowserContext;
 
 const browserType = chromium;
-const clean = util.promisify(rimraf);
 const sleep = util.promisify(setTimeout);
 let userDataDir: string;
 
@@ -27,8 +26,8 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  ctx?.close();
-  if (userDataDir) await clean(userDataDir);
+  await ctx?.close();
+  if (userDataDir) await rimraf(userDataDir);
 });
 
 export async function popup(ctx: BrowserContext): Promise<Page> {

@@ -1,5 +1,6 @@
 const config = require("./esbuild.config");
 const { program, Option } = require("commander");
+const esbuild = require("esbuild");
 
 program
   .addOption(
@@ -23,7 +24,7 @@ program.parse(process.argv);
 const options = program.opts();
 
 async function dev() {
-  await require("esbuild").build({
+  const context = await esbuild.context({
     ...config,
     minify: false,
     sourcemap: true,
@@ -34,13 +35,8 @@ async function dev() {
         PROFILE_ISSUER: options.issuer,
       }),
     },
-    watch: {
-      onRebuild(error, result) {
-        if (error) console.error("watch build failed:", error);
-        else console.log("watch build succeeded:", result);
-      },
-    },
   });
+  await context.watch();
   console.log("watching...");
   const webExt = await import("web-ext");
   webExt.cmd.run({

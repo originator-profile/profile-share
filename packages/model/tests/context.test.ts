@@ -1,14 +1,14 @@
 import { test, expect } from "vitest";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { expand, JsonLdDocument } from "jsonld";
+import jsonld, { JsonLdDocument } from "jsonld";
 
 test("context.json is valid", async () => {
   const contextJson: Buffer = await fs.readFile(
     path.resolve(__dirname, "../context.json")
   );
   const context: JsonLdDocument = JSON.parse(contextJson.toString());
-  await expand(context);
+  await jsonld.expand(context);
 });
 
 test("sample profiles set", async () => {
@@ -23,6 +23,6 @@ test("sample profiles set", async () => {
     publisher: ["https://example.org"],
     advertiser: ["https://example.com"],
   };
-  const expanded = await expand(profiles);
+  const expanded = await jsonld.expand(profiles);
   expect(expanded).toMatchSnapshot();
 });
