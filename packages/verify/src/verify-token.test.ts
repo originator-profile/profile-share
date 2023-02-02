@@ -13,8 +13,8 @@ test("verify OP Token", async () => {
     type: "op",
     issuedAt: fromUnixTime(iat).toISOString(),
     expiredAt: fromUnixTime(exp).toISOString(),
-    issuer: "http://localhost:8080",
-    subject: "http://sub.localhost:8080",
+    issuer: "example.org",
+    subject: "example.com",
     item: [],
   };
   const { jwk, pkcs8 } = await generateKey();
@@ -34,8 +34,8 @@ test("verify DP Token", async () => {
     type: "dp",
     issuedAt: fromUnixTime(iat).toISOString(),
     expiredAt: fromUnixTime(exp).toISOString(),
-    issuer: "http://localhost:8080",
-    subject: "http://localhost:8080/article/42",
+    issuer: "example.com",
+    subject: "https://example.com/article/42",
     item: [],
   };
   const { jwk, pkcs8 } = await generateKey();

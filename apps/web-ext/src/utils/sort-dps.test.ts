@@ -9,16 +9,16 @@ const dp: Dp = {
   type: "dp",
   issuedAt: fromUnixTime(iat).toISOString(),
   expiredAt: fromUnixTime(exp).toISOString(),
-  issuer: "http://sub.localhost:8080",
-  subject: "http://sub.localhost:8080/article/42",
+  issuer: "example.com",
+  subject: "https://example.com/article/42",
   item: [],
 };
 const anotherDp: Dp = {
   type: "dp",
   issuedAt: fromUnixTime(iat).toISOString(),
   expiredAt: fromUnixTime(exp).toISOString(),
-  issuer: "http://sub.localhost:8080",
-  subject: "http://sub.localhost:8080/article/43",
+  issuer: "example.com",
+  subject: "https://example.com/article/43",
   item: [],
 };
 const dps: Dp[] = [anotherDp, dp];
