@@ -11,8 +11,8 @@ test("opValidate() return OP", () => {
     type: "op",
     issuedAt: issuedAt.toISOString(),
     expiredAt: expiredAt.toISOString(),
-    issuer: "http://localhost:8080",
-    subject: "http://sub.localhost:8080",
+    issuer: "example.org",
+    subject: "example.com",
     item: [],
   };
   const valid = validator.opValidate(op);

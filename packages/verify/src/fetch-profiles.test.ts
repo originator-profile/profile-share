@@ -14,18 +14,18 @@ describe("fetch-profiles", async () => {
     type: "op",
     issuedAt: fromUnixTime(iat).toISOString(),
     expiredAt: fromUnixTime(exp).toISOString(),
-    issuer: "http://localhost:8080",
-    subject: "http://sub.localhost:8080",
+    issuer: "example.org",
+    subject: "example.com",
     item: [],
   };
   const { pkcs8 } = await generateKey();
   const jwt = await signOp(op, pkcs8);
   const profiles: JsonLdDocument = {
     "@context": "https://oprdev.herokuapp.com/context",
-    main: ["http://sub.localhost:8080"],
+    main: ["example.com"],
     profile: [jwt],
   };
-  const profileEndpoint = "http://localhost:8080/.well-known/ps.json";
+  const profileEndpoint = "https://example.com/.well-known/ps.json";
 
   beforeEach(() => {
     mockFetch.clearAll();

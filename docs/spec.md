@@ -95,14 +95,12 @@ JSON Web Token (JWT) として署名します。
 ### `iss` (Issuer) クレーム
 
 `iss` クレームは、認証機関または組織を表す一義的な識別子です。
-必ず https スキームの URL でなければなりません。
+特別な理由がない限り、その認証機関または組織の保有するドメイン名であるべきです。
 Signed Document Profile ならば、必ずその組織の Signed Originator Profile の `sub` クレームの文字列と一致する必要があります。
 
 ### `sub` (Subject) クレーム
 
 `sub` クレームは、メディア・広告などに関わる組織の身元またはその組織の主要な出版物を表す一義的な識別子です。
-必ず URI でなければなりません。
-たとえば、その組織を代表する Web サイトの URL を記述します。
 
 ### `op` (Originator Profile) クレーム
 
@@ -113,8 +111,8 @@ Signed Document Profile ならば、必ずその組織の Signed Originator Prof
 
 ```json
 {
-  "iss": "https://opr.webdino.org",
-  "sub": "https://example.org",
+  "iss": "example.org",
+  "sub": "example.com",
   "https://opr.webdino.org/jwt/claims/op": {
     "item": [
       {
@@ -163,12 +161,12 @@ Signed Document Profile ならば、必ずその組織の Signed Originator Prof
 
 ```json
 {
-  "iss": "https://example.org",
+  "iss": "example.com",
   "https://opr.webdino.org/jwt/claims/dp": {
     "item": [
       {
         "type": "visibleText",
-        "url": "https://example.org/article/42",
+        "url": "https://example.com/article/42",
         "location": "h1[itemprop='headline']",
         "proof": {
           "jws": "eyJhbGciOiJIUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..0rtsrVk5MGzQx-Lvf6y-0i74Wx3n7gExd7QLCTDMbuU"
@@ -260,7 +258,7 @@ Signed Document Profile のためのプロパティです。
 ## 鍵
 
 複数の JSON Web Key (JWK) からなる JWK Set Format として表現されます。
-JWT `iss` クレームによって表明される認証機関の識別子の末尾に `/.well-known/jwks.json` を加えた URL に必ずアクセスできなければなりません。
+JWT `iss` クレームによって表明される認証機関の識別子の先頭に`https://`、末尾に `/.well-known/jwks.json` を加えた URL に必ずアクセスできなければなりません。
 Signed Document Profile ならば、その組織の Signed Originator Profile の `op` クレームの中の `jwks` プロパティとして持つ必要があります。
 
 ## HTML
@@ -306,5 +304,5 @@ Signed Document Profile の場合、署名の際に `location` として含ま�
 
 ## Well-Known URL
 
-HTML に Profiles Set が記述されていない場合、対象のページの URL のパス `/.well-known/ps.json に配置できます。
+HTML に Profiles Set が記述されていない場合、対象のページの URL のパス `/.well-known/ps.json` に配置できます。
 この Well-Known URL は対象のページと同一オリジンで、かつ HTTP(S) GET によってアクセスし Signed Originator Profile を取得できる必要があります。

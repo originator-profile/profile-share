@@ -7,15 +7,17 @@ import {
 
 function useProfile() {
   const context = "https://github.com/webdino/profile#";
-  const issuer = document.location.origin;
-  const jwksEndpoint = new URL(`${issuer}/.well-known/jwks.json`);
-  const targetOrigin = document.location.hash.slice(1) || issuer;
-  const profileEndpoint = new URL(`${targetOrigin}/.well-known/ps.json`);
+  const issuer = document.location.hostname;
+  const jwksEndpoint = new URL(
+    `${document.location.origin}/.well-known/jwks.json`
+  );
+  const profileEndpoint = new URL(
+    `${document.location.origin}/.well-known/ps.json`
+  );
   const [values, setValues] = createSignal<[string, unknown][]>([
     ["context", context],
     ["issuer", issuer],
     ["jwksEndpoint", jwksEndpoint],
-    ["targetOrigin", targetOrigin],
     ["profileEndpoint", profileEndpoint],
   ]);
   const verify = async () => {
@@ -30,10 +32,7 @@ function useProfile() {
     if (main.length > 0) {
       setValues([
         ...values(),
-        [
-          "main",
-          main.includes(targetOrigin) ? JSON.stringify(main) : "invalid",
-        ],
+        ["main", main.includes(issuer) ? JSON.stringify(main) : "invalid"],
       ]);
     }
     const keys = RemoteKeys(jwksEndpoint);

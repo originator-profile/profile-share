@@ -20,7 +20,8 @@ describe("PublisherService", () => {
 
   test("signDp() return a valid JWT", async () => {
     const accountId = crypto.randomUUID();
-    const url = "http://localhost:8080/";
+    const domainName = "example.com";
+    const url = "https://example.com/";
     const dummyWebsite: Partial<websites> = {
       accountId,
       url,
@@ -32,7 +33,7 @@ describe("PublisherService", () => {
     };
     prisma.accounts.findUnique.mockResolvedValue({
       id: accountId,
-      url: "http://localhost:8080",
+      domainName,
       // @ts-expect-error include websites
       websites: [dummyWebsite],
     });
@@ -41,7 +42,7 @@ describe("PublisherService", () => {
     // @ts-expect-error assert
     const valid: JwtDpPayload = decodeJwt(jwt);
     expect(valid).toMatchObject({
-      iss: "http://localhost:8080",
+      iss: domainName,
       sub: url,
       "https://opr.webdino.org/jwt/claims/dp": {},
     });
@@ -53,9 +54,9 @@ describe("PublisherService", () => {
 
   test("issueDp() calls prisma.dps.create()", async () => {
     const accountId = crypto.randomUUID();
-    const issuer = "http://iss.example.org";
+    const issuer = "example.com";
     const issuedAt = new Date();
-    const subject = "http://iss.example.com/article/42";
+    const subject = "https://example.com/article/42";
     const expiredAt = addYears(new Date(), 10);
     const { privateKey } = await generateKeyPair("ES256");
     const dpId: string = crypto.randomUUID();

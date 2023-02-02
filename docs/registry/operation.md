@@ -75,7 +75,7 @@ Prisma Studio が起動します。現在レジストリ側に登録されてい
 
 <img width="1552" alt="Prisma Studioの画面が起動した" src="https://user-images.githubusercontent.com/281424/193489958-76ffdb86-3e58-4442-a230-740402c5fcad.png" />
 
-今回は`roleValue`の列に`certifier`と役割を担っている`https://oprdev.herokuapp.com`に認証を受けるというシチュエーションを例に作業を解説します。
+今回は`roleValue`の列に`certifier`と役割を担っている`oprdev.herokuapp.com`に認証を受けるというシチュエーションを例に作業を解説します。
 
 ## Profiles Set 作成手順
 
@@ -107,9 +107,10 @@ Prisma Studio が起動します。現在レジストリ側に登録されてい
 
 ```jsonc
 {
-  "url": "https://toyota.demosites.pages.dev",
+  "domainName": "toyota.demosites.pages.dev",
   "roleValue": "group",
   "name": "トヨタ自動車株式会社",
+  "url": "https://global.toyota/",
   "description": "トヨタ自動車株式会社詳細",
   "email": null,
   "phoneNumber": "0565-28-2121",
@@ -185,7 +186,7 @@ yarn dotenv -- -e .env -- bin/dev account:register-key -k key.pub.json --id daab
 
 <img width="1552" alt="Signed Originator Profile の発行" src="https://user-images.githubusercontent.com/281424/193493119-5d092c32-7437-4ebe-a453-96457f2fda72.png" />
 
-例えば 認証してもらう組織が https://oprdev.herokuapp.com の場合であれば --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e となります。
+例えば 認証してもらう組織が oprdev.herokuapp.com の場合であれば --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e となります。
 
 さらに先程取得した秘密鍵のファイルパスも必要となります。例えば秘密鍵のファイル名が`key`だった場合、 `-i key` となります。
 
