@@ -12,8 +12,8 @@ test("signOp() return a valid JWT", async () => {
     type: "op",
     issuedAt: issuedAt.toISOString(),
     expiredAt: expiredAt.toISOString(),
-    issuer: "http://localhost:8080",
-    subject: "http://sub.localhost:8080",
+    issuer: "example.org",
+    subject: "example.com",
     item: [],
   };
   const { jwk, pkcs8 } = await generateKey();

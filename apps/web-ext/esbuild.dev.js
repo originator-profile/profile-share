@@ -17,7 +17,7 @@ program
   .addOption(
     new Option("-i, --issuer <issuer>", "Issuer trusted to sign")
       .env("PROFILE_ISSUER")
-      .default("http://localhost:8080")
+      .default("localhost")
   );
 
 program.parse(process.argv);
@@ -32,6 +32,7 @@ async function dev() {
       ...config.define,
       "import.meta.env": JSON.stringify({
         ...JSON.parse(config.define["import.meta.env"]),
+        MODE: "development",
         PROFILE_ISSUER: options.issuer,
       }),
     },

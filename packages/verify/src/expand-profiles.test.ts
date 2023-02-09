@@ -14,15 +14,15 @@ describe("expand-profiles", async () => {
     type: "op",
     issuedAt: fromUnixTime(iat).toISOString(),
     expiredAt: fromUnixTime(exp).toISOString(),
-    issuer: "http://localhost:8080",
-    subject: "http://sub.localhost:8080",
+    issuer: "example.org",
+    subject: "example.com",
     item: [],
   };
   const { pkcs8 } = await generateKey();
   const jwt = await signOp(op, pkcs8);
   const profiles: JsonLdDocument = {
     "@context": "https://oprdev.herokuapp.com/context",
-    main: ["http://sub.localhost:8080"],
+    main: ["https://example.com/"],
     profile: [jwt],
   };
 
@@ -45,7 +45,7 @@ describe("expand-profiles", async () => {
     expect(result).toEqual({
       advertisers: [],
       publishers: [],
-      main: ["http://sub.localhost:8080"],
+      main: ["https://example.com/"],
       profile: [jwt],
     });
   });
