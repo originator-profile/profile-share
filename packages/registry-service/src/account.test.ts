@@ -29,9 +29,10 @@ describe("AccountService", () => {
       validator,
     });
     const input: Prisma.accountsCreateInput = {
-      url: "http://localhost:8080",
+      domainName: "localhost",
       role: { connect: { value: "certifier" } },
       name: "一般社団法人 WebDINO Japan",
+      url: "https://www.webdino.org/",
       postalCode: "103-0006",
       addressCountry: "JP",
       addressRegion: "東京都",
@@ -43,7 +44,7 @@ describe("AccountService", () => {
       privacyPolicyUrl: "https://www.webdino.org/privacy/",
       logos: {
         create: [
-          { url: "http://localhost:8080/logos/horizontal-webdino.jpg" },
+          { url: "https://localhost:8080/logos/horizontal-webdino.jpg" },
           {
             url: "http://localhost:8080/logos/square-webdino.jpg",
             isMain: true,

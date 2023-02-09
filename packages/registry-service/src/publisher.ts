@@ -45,7 +45,7 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
       type: "dp",
       issuedAt: options.issuedAt.toISOString(),
       expiredAt: options.expiredAt.toISOString(),
-      issuer: publisher.url,
+      issuer: publisher.domainName,
       subject: website.url,
       item: [
         {

@@ -59,7 +59,9 @@ describe("CertificateService", () => {
     prisma.accounts.findUnique.mockImplementation(async (input) => ({
       id: input.where.id,
       ...dummyAccount,
-      url: input.where.id === id ? "http://iss.example" : "http://sub.example",
+      domainName: input.where.id === id ? "example.org" : "example.com",
+      url:
+        input.where.id === id ? "https://example.org/" : "https://example.com/",
     }));
     prisma.keys.findMany.mockResolvedValue([
       { id: 1, accountId, jwk: jwk as Prisma.JsonValue },
@@ -68,21 +70,21 @@ describe("CertificateService", () => {
     // @ts-expect-error assert
     const valid: JwtOpPayload = decodeJwt(jwt);
     expect(valid).toMatchObject({
-      iss: "http://iss.example",
-      sub: "http://sub.example",
+      iss: "example.org",
+      sub: "example.com",
       "https://opr.webdino.org/jwt/claims/op": { jwks: { keys: [jwk] } },
     });
     const holder = valid["https://opr.webdino.org/jwt/claims/op"].item.find(
       ({ type }) => type === "holder"
     );
-    expect(holder?.url).toBe("http://sub.example");
+    expect(holder?.url).toBe("https://example.com/");
     expect(holder).not.toHaveProperty("phoneNumber");
   });
 
   test("issue() calls prisma.ops.create()", async () => {
-    const issuer = "http://iss.example.org";
+    const issuer = "example.org";
     const issuedAt = new Date();
-    const subject = "http://sub.example.com";
+    const subject = "example.com";
     const expiredAt = addYears(new Date(), 10);
     const { privateKey } = await generateKeyPair("ES256");
     const opId: string = crypto.randomUUID();

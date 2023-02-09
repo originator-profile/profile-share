@@ -4,8 +4,8 @@ import { isJwtOpPayload, isJwtDpPayload } from "./jwt-payload";
 
 test("isJwtOpPayload() returns true if of type JwtOpPayload", () => {
   const payload: JwtOpPayload = {
-    iss: "http://iss.example",
-    sub: "http://sub.example",
+    iss: "example.org",
+    sub: "example.com",
     iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000 + 3600),
     "https://opr.webdino.org/jwt/claims/op": {
@@ -17,8 +17,8 @@ test("isJwtOpPayload() returns true if of type JwtOpPayload", () => {
 
 test("isJwtOpPayload() returns false if of type JwtDpPayload", () => {
   const payload: JwtDpPayload = {
-    iss: "http://iss.example",
-    sub: "http://sub.example",
+    iss: "example.com",
+    sub: "https://example.com/",
     iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000 + 3600),
     "https://opr.webdino.org/jwt/claims/dp": {
@@ -30,8 +30,8 @@ test("isJwtOpPayload() returns false if of type JwtDpPayload", () => {
 
 test("isJwtDpPayload() returns true if of type JwtDpPayload", () => {
   const payload: JwtDpPayload = {
-    iss: "http://iss.example",
-    sub: "http://sub.example",
+    iss: "example.com",
+    sub: "https://example.com/",
     iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000 + 3600),
     "https://opr.webdino.org/jwt/claims/dp": {

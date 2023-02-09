@@ -12,8 +12,8 @@ test("signDp() return a valid JWT", async () => {
     type: "dp",
     issuedAt: issuedAt.toISOString(),
     expiredAt: expiredAt.toISOString(),
-    issuer: "http://sub.localhost:8080",
-    subject: "http://sub.localhost:8080/article/42",
+    issuer: "example.com",
+    subject: "https://example.com/article/42",
     item: [],
   };
   const { jwk, pkcs8 } = await generateKey();

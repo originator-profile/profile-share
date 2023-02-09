@@ -48,8 +48,10 @@ model dps {
 /// 会員
 model accounts {
   id                       String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  /// ウェブサイトのURL*
-  url                      String                      @unique
+  /// 会員を一義的に識別するためのドメイン名
+  domainName               String                      @unique
+  /// ウェブサイトのURL
+  url                      String?
   /// 会員種別
   role                     roles                       @relation(fields: [roleValue], references: [value])
   roleValue                String                      @default("group")

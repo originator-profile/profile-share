@@ -73,8 +73,8 @@ export const CertificateService = ({
       type: "op",
       issuedAt: options.issuedAt.toISOString(),
       expiredAt: options.expiredAt.toISOString(),
-      issuer: certifier.url,
-      subject: holder.url,
+      issuer: certifier.domainName,
+      subject: holder.domainName,
       item: [
         { type: "credential", ...options.credential },
         // @ts-expect-error any properties

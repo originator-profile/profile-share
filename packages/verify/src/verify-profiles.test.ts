@@ -20,8 +20,8 @@ describe("verify-profiles", async () => {
     type: "op",
     issuedAt: fromUnixTime(iat).toISOString(),
     expiredAt: fromUnixTime(exp).toISOString(),
-    issuer: "http://localhost:8080",
-    subject: "http://sub.localhost:8080",
+    issuer: "example.org",
+    subject: "example.com",
     item: [],
     jwks: { keys: [subKeys.jwk] },
   };
@@ -29,8 +29,8 @@ describe("verify-profiles", async () => {
     type: "dp",
     issuedAt: fromUnixTime(iat).toISOString(),
     expiredAt: fromUnixTime(exp).toISOString(),
-    issuer: "http://sub.localhost:8080",
-    subject: "http://sub.localhost:8080/article/42",
+    issuer: "example.com",
+    subject: "https://example.com/article/42",
     item: [],
   };
   const opToken = await signOp(op, certKeys.pkcs8);
@@ -70,8 +70,8 @@ describe("verify-profiles", async () => {
     const invalidOp = {
       issuedAt: fromUnixTime(iat).toISOString(),
       expiredAt: fromUnixTime(exp).toISOString(),
-      issuer: "http://localhost:8080",
-      subject: "http://sub.localhost:8080",
+      issuer: "example.org",
+      subject: "example.com",
       item: ["invalid"],
       jwks: { keys: [subKeys.jwk] },
     };
@@ -93,8 +93,8 @@ describe("verify-profiles", async () => {
       type: "op",
       issuedAt: fromUnixTime(iat).toISOString(),
       expiredAt: fromUnixTime(exp).toISOString(),
-      issuer: "http://localhost:8080",
-      subject: "http://sub.localhost:8080",
+      issuer: "example.org",
+      subject: "example.com",
       item: [],
       jwks: { keys: [evilKeys.jwk] },
     };
