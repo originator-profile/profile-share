@@ -6,7 +6,7 @@ import { extractBody } from "./extract-body";
 const base = {
   url: "https://example.com",
   type: "text",
-  location: "p",
+  location: "body",
   proof: {
     jws: "",
   },
@@ -14,10 +14,8 @@ const base = {
 
 const window = new Window();
 const document = window.document as unknown as Document;
-document.body.innerHTML = `
-  <p>Hello, World!</p>
-  <p>Goodbye, World!</p>
-`;
+document.body.innerHTML =
+  '<p>Hello, World!</p><p style="display:none">None</p><p style="visibility:hidden">Hidden</p><p>Goodbye, World!</p>';
 document.location.href = "https://example.com/";
 
 test("extract body as visibleText type", () => {
@@ -27,7 +25,8 @@ test("extract body as visibleText type", () => {
   };
   const result = extractBody(document, item);
   expect(result).not.instanceOf(Error);
-  expect(result).toBe("Hello, World!Goodbye, World!");
+  // NOTE: 描画の有無についてブラウザの結果との差異があることに注意
+  expect(result).toBe("Hello, World!\nHidden\nGoodbye, World!");
 });
 
 test("extract body as text type", () => {
@@ -37,7 +36,7 @@ test("extract body as text type", () => {
   };
   const result = extractBody(document, item);
   expect(result).not.instanceOf(Error);
-  expect(result).toBe("Hello, World!Goodbye, World!");
+  expect(result).toBe("Hello, World!NoneHiddenGoodbye, World!");
 });
 
 test("extract body as html type", () => {
@@ -47,7 +46,9 @@ test("extract body as html type", () => {
   };
   const result = extractBody(document, item);
   expect(result).not.instanceOf(Error);
-  expect(result).toBe(`<p>Hello, World!</p><p>Goodbye, World!</p>`);
+  expect(result).toBe(
+    '<body><p>Hello, World!</p><p style="display:none">None</p><p style="visibility:hidden">Hidden</p><p>Goodbye, World!</p></body>'
+  );
 });
 
 test("extract body failure when url misatch", () => {
