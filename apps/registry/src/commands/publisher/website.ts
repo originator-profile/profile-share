@@ -68,7 +68,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     });
     if (data instanceof Error) this.error(data);
     this.log(JSON.stringify(data, null, 2));
-    if (operation !== "create") return;
+    if (!["create", "update"].includes(operation)) return;
 
     const issuedAt = flags["issued-at"]
       ? new Date(flags["issued-at"])
