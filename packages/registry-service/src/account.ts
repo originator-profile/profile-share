@@ -1,12 +1,9 @@
 import { PrismaClient, Prisma, accounts } from "@prisma/client";
-import { JsonLdDocument } from "jsonld";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
 import { Jwk, Jwks } from "@webdino/profile-model";
-import Config from "./config";
 import { ValidatorService } from "./validator";
 
 type Options = {
-  config: Config;
   prisma: PrismaClient;
   validator: ValidatorService;
 };
@@ -14,7 +11,7 @@ type Options = {
 type AccountId = string;
 type OpId = string;
 
-export const AccountService = ({ config, prisma, validator }: Options) => ({
+export const AccountService = ({ prisma, validator }: Options) => ({
   /**
    * 会員の作成
    * @param input 会員
@@ -68,29 +65,6 @@ export const AccountService = ({ config, prisma, validator }: Options) => ({
 
     const jwks: Jwks = { keys: data.map((key) => key.jwk as Jwk) };
     return jwks;
-  },
-  /**
-   * Profiles Set の取得
-   * @deprecated
-   * @param id 会員 ID
-   */
-  async getProfiles(id: AccountId): Promise<JsonLdDocument | Error> {
-    const data = await prisma.accounts
-      .findUnique({ where: { id } })
-      .publications({ include: { op: true, account: true } })
-      .catch((e: Error) => e);
-    if (!data) return new NotFoundError();
-    if (data instanceof Error) return data;
-
-    const ops = data.map((publication) => publication.op);
-    const profiles: JsonLdDocument = {
-      "@context": `${
-        config.APP_URL ?? Config.properties.APP_URL.default
-      }/context`,
-      main: data.map((publication) => publication.account.url),
-      profile: ops.map((op) => op.jwt),
-    };
-    return profiles;
   },
   /**
    * 公開鍵の登録
