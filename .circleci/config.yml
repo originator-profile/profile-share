@@ -6,7 +6,7 @@ commands:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["08:7a:c1:e7:e4:6c:7a:08:bb:6b:99:a8:78:5d:d8:47"]
+          fingerprints: ["3a:70:44:f3:42:83:3a:26:09:50:b5:42:6d:2c:87:82"]
       - run:
           name: Configure Git
           command: |
