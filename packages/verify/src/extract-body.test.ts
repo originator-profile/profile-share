@@ -25,7 +25,10 @@ test("extract body as visibleText type", () => {
   };
   const result = extractBody(document, item);
   expect(result).not.instanceOf(Error);
-  // NOTE: 描画の有無についてブラウザの結果との差異があることに注意
+  /**
+   * NOTE: 描画の有無についてブラウザの結果との差異があることに注意
+   * ブラウザで得られる結果: `"Hello, World!\n\nGoodnye, World!"`
+   */
   expect(result).toBe("Hello, World!\nHidden\nGoodbye, World!");
 });
 
