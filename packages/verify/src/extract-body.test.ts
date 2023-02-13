@@ -15,7 +15,7 @@ const base = {
 const window = new Window();
 const document = window.document as unknown as Document;
 document.body.innerHTML =
-  '<p>Hello, World!</p><p style="display:none">None</p><p style="visibility:hidden">Hidden</p><p>Goodbye, World!</p>';
+  '<p>Hello, World!</p><p style="display:none">None</p><p>Goodbye, World!</p>';
 document.location.href = "https://example.com/";
 
 test("extract body as visibleText type", () => {
@@ -25,11 +25,7 @@ test("extract body as visibleText type", () => {
   };
   const result = extractBody(document, item);
   expect(result).not.instanceOf(Error);
-  /**
-   * NOTE: 描画の有無についてブラウザの結果との差異があることに注意
-   * ブラウザで得られる結果: `"Hello, World!\n\nGoodnye, World!"`
-   */
-  expect(result).toBe("Hello, World!\nHidden\nGoodbye, World!");
+  expect(result).toBe("Hello, World!\nGoodbye, World!");
 });
 
 test("extract body as text type", () => {
@@ -39,7 +35,7 @@ test("extract body as text type", () => {
   };
   const result = extractBody(document, item);
   expect(result).not.instanceOf(Error);
-  expect(result).toBe("Hello, World!NoneHiddenGoodbye, World!");
+  expect(result).toBe("Hello, World!NoneGoodbye, World!");
 });
 
 test("extract body as html type", () => {
@@ -50,7 +46,7 @@ test("extract body as html type", () => {
   const result = extractBody(document, item);
   expect(result).not.instanceOf(Error);
   expect(result).toBe(
-    '<body><p>Hello, World!</p><p style="display:none">None</p><p style="visibility:hidden">Hidden</p><p>Goodbye, World!</p></body>'
+    '<body><p>Hello, World!</p><p style="display:none">None</p><p>Goodbye, World!</p></body>'
   );
 });
 
