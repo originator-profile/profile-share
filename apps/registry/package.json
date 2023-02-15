@@ -59,6 +59,7 @@
     "@webdino/profile-registry-ui": "*",
     "@webdino/profile-sign": "*",
     "@webdino/profile-tsconfig": "*",
+    "@webdino/profile-verify": "*",
     "ajv": "^8.12.0",
     "cross-fetch": "^3.1.5",
     "date-fns": "^2.29.3",

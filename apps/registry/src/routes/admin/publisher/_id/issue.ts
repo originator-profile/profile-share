@@ -12,7 +12,7 @@ const Body = {
       type: "string",
     },
   },
-  required: ["url", "jwt"],
+  required: ["jwt"],
 } as const;
 
 type Body = FromSchema<typeof Body>;

@@ -73,15 +73,26 @@ export const WebsiteService = ({ config, prisma }: Options) => ({
                 include: {
                   op: true,
                 },
+                orderBy: {
+                  publishedAt: "desc",
+                },
+                take: 1,
               },
             },
           },
-          dps: true,
+          dps: {
+            orderBy: {
+              issuedAt: "desc",
+            },
+            take: 1,
+          },
         },
       })
       .catch((e: Error) => e);
     if (!data) return new NotFoundError();
     if (data instanceof Error) return data;
+    if (data.dps.length === 0) return new NotFoundError();
+    if (data.account.publications.length === 0) return new NotFoundError();
 
     const ops = data.account.publications.map((publication) => publication.op);
     const profiles: JsonLdDocument = {
@@ -89,7 +100,7 @@ export const WebsiteService = ({ config, prisma }: Options) => ({
         config.APP_URL ?? Config.properties.APP_URL.default
       }/context`,
       main: data.url,
-      profile: [...ops.map((op) => op.jwt), ...data.dps.map((dp) => dp.jwt)],
+      profile: [...ops, ...data.dps].map((p) => p.jwt),
     };
     return profiles;
   },

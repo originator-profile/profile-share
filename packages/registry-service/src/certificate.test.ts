@@ -6,18 +6,16 @@ import { addYears, getUnixTime } from "date-fns";
 import { decodeJwt, generateKeyPair, SignJWT } from "jose";
 import { JwtOpPayload } from "@webdino/profile-model";
 import { generateKey } from "@webdino/profile-sign";
-import Config from "./config";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
 import { CertificateService } from "./certificate";
 
 const certifierId: string = crypto.randomUUID();
-const config: Config = { ISSUER_UUID: "d613c1d6-5312-41e9-98ad-2b99765955b6" };
 
 describe("CertificateService", () => {
   const prisma = mockDeep<PrismaClient>();
   const validator = ValidatorService();
-  const account = AccountService({ config, prisma, validator });
+  const account = AccountService({ prisma, validator });
   const certificate = CertificateService({ prisma, account, validator });
 
   afterEach(() => {

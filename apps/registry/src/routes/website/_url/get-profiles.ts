@@ -28,7 +28,6 @@ async function getProfiles(
   }>,
   reply: FastifyReply
 ) {
-  // TODO: Profiles Set は、Signed Originator Profile, Signed Document Profile を含むが、publisher, advertiser については仕様を満たしていない。
   const data: JsonLdDocument | Error =
     await server.services.website.getProfiles(params.url);
   if (data instanceof HttpError) return data;
