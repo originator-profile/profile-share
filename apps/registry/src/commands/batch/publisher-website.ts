@@ -1,5 +1,5 @@
-import { Command, Flags } from "@oclif/core";
-import { globbyStream } from "globby";
+import { Command, Flags, CliUx } from "@oclif/core";
+import { globby } from "globby";
 import { PublisherWebsite } from "../publisher/website";
 import { join } from "node:path";
 
@@ -38,7 +38,10 @@ export class BatchPublisherWebsite extends Command {
 
   async run(): Promise<void> {
     const { flags } = await this.parse(BatchPublisherWebsite);
-    for await (const path of globbyStream(join("**", flags.filename))) {
+    const paths = await globby(join("**", flags.filename));
+    const bar = CliUx.ux.progress();
+    bar.start(paths.length, 0);
+    for (const path of paths) {
       await PublisherWebsite.run([
         `--identity=${flags.identity}`,
         `--id=${flags.id}`,
@@ -47,6 +50,8 @@ export class BatchPublisherWebsite extends Command {
         `--issued-at=${flags["issued-at"]}`,
         `--expired-at=${flags["expired-at"]}`,
       ]);
+      bar.increment();
     }
+    bar.stop();
   }
 }

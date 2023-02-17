@@ -1,4 +1,4 @@
-import { Command, Flags } from "@oclif/core";
+import { Command, Flags, CliUx } from "@oclif/core";
 import { Prisma } from "@prisma/client";
 import { ExtractWebsite } from "../extract/website";
 import { readFile } from "node:fs/promises";
@@ -21,6 +21,8 @@ export class BatchExtractWebsite extends Command {
         output: string;
       }
     >;
+    const bar = CliUx.ux.progress();
+    bar.start(websites.length, 0);
     for (const website of websites) {
       await ExtractWebsite.run([
         `--url=${website.url}`,
@@ -29,6 +31,8 @@ export class BatchExtractWebsite extends Command {
         `--override=${JSON.stringify(website.override)}`,
         `--output=${website.output}`,
       ]);
+      bar.increment();
     }
+    bar.stop();
   }
 }
