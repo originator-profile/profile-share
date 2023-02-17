@@ -89,7 +89,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
       ...metadata,
       ...override,
     };
-    fs.writeFile(flags.output, JSON.stringify(website, null, 2));
+    await fs.writeFile(flags.output, JSON.stringify(website, null, 2));
     await context.close();
     await browser.close();
   }
