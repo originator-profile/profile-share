@@ -31,10 +31,13 @@ running command...
 * [`profile-registry account:register-key`](#profile-registry-accountregister-key)
 * [`profile-registry admin:create`](#profile-registry-admincreate)
 * [`profile-registry admin:delete`](#profile-registry-admindelete)
+* [`profile-registry batch:extract-website`](#profile-registry-batchextract-website)
+* [`profile-registry batch:publisher-website`](#profile-registry-batchpublisher-website)
 * [`profile-registry cert:issue`](#profile-registry-certissue)
 * [`profile-registry db:init`](#profile-registry-dbinit)
 * [`profile-registry db:prisma`](#profile-registry-dbprisma)
 * [`profile-registry db:seed`](#profile-registry-dbseed)
+* [`profile-registry extract:website`](#profile-registry-extractwebsite)
 * [`profile-registry help [COMMAND]`](#profile-registry-help-command)
 * [`profile-registry key-gen`](#profile-registry-key-gen)
 * [`profile-registry openapi-gen [OUTPUT]`](#profile-registry-openapi-gen-output)
@@ -111,6 +114,47 @@ DESCRIPTION
   管理者権限の削除
 ```
 
+## `profile-registry batch:extract-website`
+
+ウェブページの抽出の一括処理
+
+```
+USAGE
+  $ profile-registry batch:extract-website --input <value>
+
+FLAGS
+  --input=<value>  (required) ウェブページの抽出の入力 (JSON ファイル)
+
+DESCRIPTION
+  ウェブページの抽出の一括処理
+```
+
+## `profile-registry batch:publisher-website`
+
+ウェブページの作成・表示・更新・削除の一括処理
+
+```
+USAGE
+  $ profile-registry batch:publisher-website -i <value> --id <value> -o create|read|update|delete [-f <value>] [--issued-at
+    <value>] [--expired-at <value>]
+
+FLAGS
+  -f, --filename=<value>                       [default: .website.json] 入力ファイル名
+  -i, --identity=<value>                       (required) PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル
+  -o, --operation=(create|read|update|delete)  (required) 操作
+  --expired-at=<value>                         有効期限 (ISO 8601)
+  --id=<value>                                 (required) 会員 (UUID)
+  --issued-at=<value>                          発行日時 (ISO 8601)
+
+DESCRIPTION
+  ウェブページの作成・表示・更新・削除の一括処理
+
+FLAG DESCRIPTIONS
+  -f, --filename=<value>  入力ファイル名
+
+    ウェブサイトのデータを格納しているファイルの名称を指定してください。指定されたファイル名で再帰的に探索します。
+```
+
 ## `profile-registry cert:issue`
 
 OP の発行
@@ -171,6 +215,33 @@ USAGE
 
 DESCRIPTION
   Seed database
+```
+
+## `profile-registry extract:website`
+
+ウェブページの抽出
+
+```
+USAGE
+  $ profile-registry extract:website --url <value> -f visibleText|text|html -o <value> [-l <value>] [--override
+    <value>]
+
+FLAGS
+  -f, --body-format=(visibleText|text|html)  (required) 対象のテキストの形式
+  -l, --location=<value>                     対象の要素の場所を特定する CSS セレクター
+  -o, --output=<value>                       (required) ウェブサイトの保存先
+  --override=<value>                         ウェブサイトの上書き (JSON 文字列)
+  --url=<value>                              (required) ウェブページの URL
+
+DESCRIPTION
+  ウェブページの抽出
+
+FLAG DESCRIPTIONS
+  --override=<value>  ウェブサイトの上書き (JSON 文字列)
+
+    Prisma.websitesUpdateInput
+    詳細はTSDocを参照してください。
+    https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
 ```
 
 ## `profile-registry help [COMMAND]`

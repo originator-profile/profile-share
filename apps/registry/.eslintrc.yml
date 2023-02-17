@@ -1,5 +1,10 @@
 extends: webdino-profile
 overrides:
-  - files: src/seed.ts
+  - files: [src/seed.ts, src/commands/batch/*.ts]
     rules:
       no-await-in-loop: "off"
+  - files: [src/commands/extract/website.ts]
+    rules:
+      "@typescript-eslint/no-unused-vars":
+        - error
+        - varsIgnorePattern: ^_
