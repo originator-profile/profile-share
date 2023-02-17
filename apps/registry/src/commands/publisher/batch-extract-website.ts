@@ -23,16 +23,17 @@ export class PublisherBatchExtractWebsite extends Command {
     >;
     const bar = CliUx.ux.progress();
     bar.start(websites.length, 0);
-    for (const website of websites) {
-      await PublisherExtractWebsite.run([
-        `--url=${website.url}`,
-        `--body-format=${website.bodyFormat}`,
-        `--location=${website.location}`,
-        `--override=${JSON.stringify(website.override)}`,
-        `--output=${website.output}`,
-      ]);
-      bar.increment();
-    }
+    await Promise.all(
+      websites.map((website) =>
+        PublisherExtractWebsite.run([
+          `--url=${website.url}`,
+          `--body-format=${website.bodyFormat}`,
+          `--location=${website.location}`,
+          `--override=${JSON.stringify(website.override)}`,
+          `--output=${website.output}`,
+        ]).then(() => bar.increment())
+      )
+    );
     bar.stop();
   }
 }

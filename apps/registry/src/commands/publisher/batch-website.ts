@@ -41,17 +41,18 @@ export class PublisherBatchPublisherWebsite extends Command {
     const paths = await globby(join("**", flags.filename));
     const bar = CliUx.ux.progress();
     bar.start(paths.length, 0);
-    for (const path of paths) {
-      await PublisherWebsite.run([
-        `--identity=${flags.identity}`,
-        `--id=${flags.id}`,
-        `--input=${path}`,
-        `--operation=${flags.operation}`,
-        `--issued-at=${flags["issued-at"]}`,
-        `--expired-at=${flags["expired-at"]}`,
-      ]);
-      bar.increment();
-    }
+    await Promise.all(
+      paths.map((path) =>
+        PublisherWebsite.run([
+          `--identity=${flags.identity}`,
+          `--id=${flags.id}`,
+          `--input=${path}`,
+          `--operation=${flags.operation}`,
+          `--issued-at=${flags["issued-at"]}`,
+          `--expired-at=${flags["expired-at"]}`,
+        ]).then(() => bar.increment())
+      )
+    );
     bar.stop();
   }
 }
