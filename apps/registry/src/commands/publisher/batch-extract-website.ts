@@ -1,9 +1,9 @@
 import { Command, Flags, CliUx } from "@oclif/core";
 import { Prisma } from "@prisma/client";
-import { ExtractWebsite } from "../extract/website";
+import { PublisherExtractWebsite } from "./extract-website";
 import { readFile } from "node:fs/promises";
 
-export class BatchExtractWebsite extends Command {
+export class PublisherBatchExtractWebsite extends Command {
   static description = "ウェブページの抽出の一括処理";
   static flags = {
     input: Flags.string({
@@ -13,7 +13,7 @@ export class BatchExtractWebsite extends Command {
   };
 
   async run(): Promise<void> {
-    const { flags } = await this.parse(BatchExtractWebsite);
+    const { flags } = await this.parse(PublisherBatchExtractWebsite);
     const inputBuffer = await readFile(flags.input);
     const websites = JSON.parse(inputBuffer.toString()) as Array<
       (Prisma.websitesCreateInput & Prisma.websitesUpdateInput) & {
@@ -24,7 +24,7 @@ export class BatchExtractWebsite extends Command {
     const bar = CliUx.ux.progress();
     bar.start(websites.length, 0);
     for (const website of websites) {
-      await ExtractWebsite.run([
+      await PublisherExtractWebsite.run([
         `--url=${website.url}`,
         `--body-format=${website.bodyFormat}`,
         `--location=${website.location}`,

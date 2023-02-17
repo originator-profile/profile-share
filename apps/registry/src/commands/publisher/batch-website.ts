@@ -1,9 +1,9 @@
 import { Command, Flags, CliUx } from "@oclif/core";
 import { globby } from "globby";
-import { PublisherWebsite } from "../publisher/website";
+import { PublisherWebsite } from "./website";
 import { join } from "node:path";
 
-export class BatchPublisherWebsite extends Command {
+export class PublisherBatchPublisherWebsite extends Command {
   static description = "ウェブページの作成・表示・更新・削除の一括処理";
   static flags = {
     identity: Flags.string({
@@ -37,7 +37,7 @@ export class BatchPublisherWebsite extends Command {
   };
 
   async run(): Promise<void> {
-    const { flags } = await this.parse(BatchPublisherWebsite);
+    const { flags } = await this.parse(PublisherBatchPublisherWebsite);
     const paths = await globby(join("**", flags.filename));
     const bar = CliUx.ux.progress();
     bar.start(paths.length, 0);

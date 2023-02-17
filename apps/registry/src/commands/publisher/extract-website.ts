@@ -31,7 +31,7 @@ async function extractBody(
   }
 }
 
-export class ExtractWebsite extends Command {
+export class PublisherExtractWebsite extends Command {
   static description = "ウェブページの抽出";
   static flags = {
     url: Flags.string({
@@ -63,7 +63,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
   };
 
   async run(): Promise<void> {
-    const { flags } = await this.parse(ExtractWebsite);
+    const { flags } = await this.parse(PublisherExtractWebsite);
     const browser = await chromium.launch();
     const context = await browser.newContext();
     const page = await context.newPage();
