@@ -1,35 +1,13 @@
 import { Command, Flags } from "@oclif/core";
 import fs from "node:fs/promises";
-import { chromium, Locator } from "playwright";
+import { chromium } from "playwright";
 import metascraper from "metascraper";
 import author from "metascraper-author";
 import date from "metascraper-date";
 import description from "metascraper-description";
 import image from "metascraper-image";
 import title from "metascraper-title";
-
-async function extractBody(
-  locator: Locator,
-  type: "visibleText" | "text" | "html"
-): Promise<string> {
-  switch (type) {
-    case "visibleText": {
-      const result = await locator.allInnerTexts();
-      return result.join("");
-    }
-    case "text": {
-      const result = await locator.allTextContents();
-      return result.join("");
-    }
-    case "html": {
-      const locators = await locator.all();
-      const result = await Promise.all(
-        locators.map((locator) => locator.innerHTML())
-      );
-      return result.join("");
-    }
-  }
-}
+import { extractBody } from "@webdino/profile-verify";
 
 export class PublisherExtractWebsite extends Command {
   static description = "ウェブページの抽出";
@@ -68,7 +46,6 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto(flags.url);
-    const locator = page.locator(flags.location ?? ":root");
     const bodyFormat = flags["body-format"] as "visibleText" | "text" | "html";
     const {
       url: _url,
@@ -78,7 +55,25 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
       url: flags.url,
       html: await page.content(),
     });
-    const body = await extractBody(locator, bodyFormat);
+    const body = await extractBody(
+      page.url(),
+      (location: string) => page.locator(location),
+      async (locator, type) => {
+        switch (type) {
+          case "visibleText": {
+            return locator.allInnerTexts();
+          }
+          case "text": {
+            return locator.allTextContents();
+          }
+          case "html": {
+            const locators = await locator.all();
+            return Promise.all(locators.map((locator) => locator.innerHTML()));
+          }
+        }
+      },
+      { url: flags.url, location: flags.location, type: bodyFormat }
+    );
     const override = JSON.parse(flags.override ?? "{}");
     const website = {
       url: flags.url,

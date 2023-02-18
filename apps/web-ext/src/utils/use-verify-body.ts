@@ -15,7 +15,23 @@ async function fetcher([, dpLocator, jwks]: [
   dpLocator: DpLocator,
   jwks?: Jwks
 ]) {
-  const body = extractBody(window.parent.document, dpLocator);
+  const document = window.parent.document;
+  const body = await extractBody(
+    document.location.href,
+    (location) => document.querySelectorAll<HTMLElement>(location),
+    async (elements, type) => {
+      const elArray = Array.from(elements);
+      switch (type) {
+        case "visibleText":
+          return elArray.map((el) => el.innerText);
+        case "text":
+          return elArray.map((el) => el.textContent ?? "");
+        case "html":
+          return elArray.map((el) => el.outerHTML);
+      }
+    },
+    dpLocator
+  );
   if (body instanceof Error) return body;
   return verifyBody(body, dpLocator.proof.jws, LocalKeys(jwks ?? { keys: [] }));
 }
