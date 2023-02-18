@@ -1,6 +1,6 @@
 import { Command, Flags } from "@oclif/core";
 import fs from "node:fs/promises";
-import { chromium } from "playwright";
+import { chromium, Locator } from "playwright";
 import metascraper from "metascraper";
 import author from "metascraper-author";
 import date from "metascraper-date";
@@ -67,8 +67,10 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
             return locator.allTextContents();
           }
           case "html": {
-            const locators = await locator.all();
-            return Promise.all(locators.map((locator) => locator.innerHTML()));
+            const locators: Locator[] = await locator.all();
+            return Promise.all(
+              locators.map((locator) => locator.evaluate((e) => e.outerHTML))
+            );
           }
         }
       },
