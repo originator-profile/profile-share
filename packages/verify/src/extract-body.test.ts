@@ -17,45 +17,62 @@ const document = window.document as unknown as Document;
 document.body.innerHTML =
   '<p>Hello, World!</p><p style="display:none">None</p><p>Goodbye, World!</p>';
 document.location.href = "https://example.com/";
+const pageUrl = document.location.href;
+const locator = (location: string) =>
+  document.querySelectorAll<HTMLElement>(location);
+const extractor = async (
+  elements: ReturnType<typeof locator>,
+  type: (DpVisibleText | DpText | DpHtml)["type"]
+) => {
+  const elArray = Array.from(elements);
+  switch (type) {
+    case "visibleText":
+      return elArray.map((el) => el.innerText);
+    case "text":
+      return elArray.map((el) => el.textContent ?? "");
+    case "html":
+      return elArray.map((el) => el.outerHTML);
+  }
+};
 
-test("extract body as visibleText type", () => {
+test("extract body as visibleText type", async () => {
   const item: DpVisibleText = {
     ...base,
     type: "visibleText",
   };
-  const result = extractBody(document, item);
+  const result = await extractBody(pageUrl, locator, extractor, item);
   expect(result).not.instanceOf(Error);
   expect(result).toBe("Hello, World!\nGoodbye, World!");
 });
 
-test("extract body as text type", () => {
+test("extract body as text type", async () => {
   const item: DpText = {
     ...base,
     type: "text",
   };
-  const result = extractBody(document, item);
+  const result = await extractBody(pageUrl, locator, extractor, item);
   expect(result).not.instanceOf(Error);
   expect(result).toBe("Hello, World!NoneGoodbye, World!");
 });
 
-test("extract body as html type", () => {
+test("extract body as html type", async () => {
   const item: DpHtml = {
     ...base,
     type: "html",
   };
-  const result = extractBody(document, item);
+  const result = await extractBody(pageUrl, locator, extractor, item);
   expect(result).not.instanceOf(Error);
   expect(result).toBe(
     '<body><p>Hello, World!</p><p style="display:none">None</p><p>Goodbye, World!</p></body>'
   );
 });
 
-test("extract body failure when url misatch", () => {
+test("extract body failure when url misatch", async () => {
   const item: DpText = {
     ...base,
     url: "https://evil.com",
     type: "text",
   };
-  const result = extractBody(document, item);
+  const result = await extractBody(pageUrl, locator, extractor, item);
   expect(result).instanceOf(Error);
 });
