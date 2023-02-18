@@ -1,9 +1,9 @@
 extends: webdino-profile
 overrides:
-  - files: [src/seed.ts]
+  - files: src/seed.ts
     rules:
       no-await-in-loop: "off"
-  - files: [src/commands/publisher/extract-website.ts]
+  - files: src/commands/publisher/extract-website.ts
     rules:
       "@typescript-eslint/no-unused-vars":
         - error
