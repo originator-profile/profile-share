@@ -3,7 +3,7 @@ import { globby } from "globby";
 import { PublisherWebsite } from "./website";
 import { join } from "node:path";
 
-export class PublisherBatchPublisherWebsite extends Command {
+export class PublisherPublisherWebsites extends Command {
   static description = "ウェブページの作成・表示・更新・削除の一括処理";
   static flags = {
     identity: Flags.string({
@@ -37,7 +37,7 @@ export class PublisherBatchPublisherWebsite extends Command {
   };
 
   async run(): Promise<void> {
-    const { flags } = await this.parse(PublisherBatchPublisherWebsite);
+    const { flags } = await this.parse(PublisherPublisherWebsites);
     const paths = await globby(join("**", flags.filename));
     const bar = CliUx.ux.progress();
     bar.start(paths.length, 0);

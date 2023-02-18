@@ -38,10 +38,10 @@ running command...
 * [`profile-registry help [COMMAND]`](#profile-registry-help-command)
 * [`profile-registry key-gen`](#profile-registry-key-gen)
 * [`profile-registry openapi-gen [OUTPUT]`](#profile-registry-openapi-gen-output)
-* [`profile-registry publisher:batch-extract-website`](#profile-registry-publisherbatch-extract-website)
-* [`profile-registry publisher:batch-website`](#profile-registry-publisherbatch-website)
 * [`profile-registry publisher:extract-website`](#profile-registry-publisherextract-website)
+* [`profile-registry publisher:extract-websites`](#profile-registry-publisherextract-websites)
 * [`profile-registry publisher:website`](#profile-registry-publisherwebsite)
+* [`profile-registry publisher:websites`](#profile-registry-publisherwebsites)
 * [`profile-registry start`](#profile-registry-start)
 
 ## `profile-registry account`
@@ -226,47 +226,6 @@ DESCRIPTION
   OpenAPI ドキュメント生成
 ```
 
-## `profile-registry publisher:batch-extract-website`
-
-ウェブページの抽出の一括処理
-
-```
-USAGE
-  $ profile-registry publisher:batch-extract-website --input <value>
-
-FLAGS
-  --input=<value>  (required) ウェブページの抽出の入力 (JSON ファイル)
-
-DESCRIPTION
-  ウェブページの抽出の一括処理
-```
-
-## `profile-registry publisher:batch-website`
-
-ウェブページの作成・表示・更新・削除の一括処理
-
-```
-USAGE
-  $ profile-registry publisher:batch-website -i <value> --id <value> -o create|read|update|delete [-f <value>] [--issued-at
-    <value>] [--expired-at <value>]
-
-FLAGS
-  -f, --filename=<value>                       [default: .website.json] 入力ファイル名
-  -i, --identity=<value>                       (required) PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル
-  -o, --operation=(create|read|update|delete)  (required) 操作
-  --expired-at=<value>                         有効期限 (ISO 8601)
-  --id=<value>                                 (required) 会員 (UUID)
-  --issued-at=<value>                          発行日時 (ISO 8601)
-
-DESCRIPTION
-  ウェブページの作成・表示・更新・削除の一括処理
-
-FLAG DESCRIPTIONS
-  -f, --filename=<value>  入力ファイル名
-
-    ウェブサイトのデータを格納しているファイルの名称を指定してください。指定されたファイル名で再帰的に探索します。
-```
-
 ## `profile-registry publisher:extract-website`
 
 ウェブページの抽出
@@ -292,6 +251,21 @@ FLAG DESCRIPTIONS
     Prisma.websitesUpdateInput
     詳細はTSDocを参照してください。
     https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
+```
+
+## `profile-registry publisher:extract-websites`
+
+ウェブページの抽出の一括処理
+
+```
+USAGE
+  $ profile-registry publisher:extract-websites --input <value>
+
+FLAGS
+  --input=<value>  (required) ウェブページの抽出の入力 (JSON ファイル)
+
+DESCRIPTION
+  ウェブページの抽出の一括処理
 ```
 
 ## `profile-registry publisher:website`
@@ -320,6 +294,32 @@ FLAG DESCRIPTIONS
     Prisma.websitesCreateInput または Prisma.websitesUpdateInput
     詳細はTSDocを参照してください。
     https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
+```
+
+## `profile-registry publisher:websites`
+
+ウェブページの作成・表示・更新・削除の一括処理
+
+```
+USAGE
+  $ profile-registry publisher:websites -i <value> --id <value> -o create|read|update|delete [-f <value>] [--issued-at
+    <value>] [--expired-at <value>]
+
+FLAGS
+  -f, --filename=<value>                       [default: .website.json] 入力ファイル名
+  -i, --identity=<value>                       (required) PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル
+  -o, --operation=(create|read|update|delete)  (required) 操作
+  --expired-at=<value>                         有効期限 (ISO 8601)
+  --id=<value>                                 (required) 会員 (UUID)
+  --issued-at=<value>                          発行日時 (ISO 8601)
+
+DESCRIPTION
+  ウェブページの作成・表示・更新・削除の一括処理
+
+FLAG DESCRIPTIONS
+  -f, --filename=<value>  入力ファイル名
+
+    ウェブサイトのデータを格納しているファイルの名称を指定してください。指定されたファイル名で再帰的に探索します。
 ```
 
 ## `profile-registry start`

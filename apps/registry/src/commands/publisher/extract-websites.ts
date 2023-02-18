@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 import { PublisherExtractWebsite } from "./extract-website";
 import { readFile } from "node:fs/promises";
 
-export class PublisherBatchExtractWebsite extends Command {
+export class PublisherExtractWebsites extends Command {
   static description = "ウェブページの抽出の一括処理";
   static flags = {
     input: Flags.string({
@@ -13,7 +13,7 @@ export class PublisherBatchExtractWebsite extends Command {
   };
 
   async run(): Promise<void> {
-    const { flags } = await this.parse(PublisherBatchExtractWebsite);
+    const { flags } = await this.parse(PublisherExtractWebsites);
     const inputBuffer = await readFile(flags.input);
     const websites = JSON.parse(inputBuffer.toString()) as Array<
       (Prisma.websitesCreateInput & Prisma.websitesUpdateInput) & {
