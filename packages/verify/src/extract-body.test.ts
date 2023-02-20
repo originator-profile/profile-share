@@ -20,20 +20,8 @@ document.location.href = "https://example.com/";
 const pageUrl = document.location.href;
 const locator = (location: string) =>
   document.querySelectorAll<HTMLElement>(location);
-const extractor = async (
-  elements: ReturnType<typeof locator>,
-  type: (DpVisibleText | DpText | DpHtml)["type"]
-) => {
-  const elArray = Array.from(elements);
-  switch (type) {
-    case "visibleText":
-      return elArray.map((el) => el.innerText);
-    case "text":
-      return elArray.map((el) => el.textContent ?? "");
-    case "html":
-      return elArray.map((el) => el.outerHTML);
-  }
-};
+const extractor = async (elements: ReturnType<typeof locator>) =>
+  Array.from(elements);
 
 test("extract body as visibleText type", async () => {
   const item: DpVisibleText = {
