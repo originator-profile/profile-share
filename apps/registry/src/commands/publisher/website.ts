@@ -1,8 +1,10 @@
-import { Command, Flags } from "@oclif/core";
+import { Command, Flags, CliUx } from "@oclif/core";
 import { PrismaClient, Prisma } from "@prisma/client";
 import { addYears } from "date-fns";
 import { Services } from "@webdino/profile-registry-service";
 import fs from "node:fs/promises";
+import { join } from "node:path";
+import { globby } from "globby";
 
 export class PublisherWebsite extends Command {
   static description = "ウェブページの作成・表示・更新・削除";
@@ -25,6 +27,12 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
       default: "website.example.json",
       required: true,
     }),
+    "glob-input": Flags.string({
+      summary: "JSON files match with glob pattern",
+      exclusive: ["input"],
+      default: "**/.website.json",
+      required: true,
+    }),
     operation: Flags.enum({
       char: "o",
       description: "操作",
@@ -39,8 +47,9 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     }),
   };
 
-  async run(): Promise<void> {
-    const { flags } = await this.parse(PublisherWebsite);
+  private async website(
+    flags: Awaited<ReturnType<typeof this.parse>>["flags"]
+  ): Promise<void> {
     const prisma = new PrismaClient();
     const services = Services({
       config: { ISSUER_UUID: process.env.ISSUER_UUID ?? "" },
@@ -84,5 +93,22 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
 
     const dpId = await services.publisher.issueDp(flags.id, jwt);
     if (dpId instanceof Error) this.error(dpId);
+  }
+
+  async run(): Promise<void> {
+    const { flags } = await this.parse(PublisherWebsite);
+    if (flags["input"]) {
+      await this.website(flags);
+      this.exit();
+    }
+    const paths = await globby(join("**", flags["glob-input"]));
+    const bar = CliUx.ux.progress();
+    bar.start(paths.length, 0);
+    await Promise.all(
+      paths.map((path) =>
+        this.website({ ...flags, input: path }).then(() => bar.increment())
+      )
+    );
+    bar.stop();
   }
 }

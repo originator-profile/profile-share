@@ -39,9 +39,7 @@ running command...
 * [`profile-registry key-gen`](#profile-registry-key-gen)
 * [`profile-registry openapi-gen [OUTPUT]`](#profile-registry-openapi-gen-output)
 * [`profile-registry publisher:extract-website`](#profile-registry-publisherextract-website)
-* [`profile-registry publisher:extract-websites`](#profile-registry-publisherextract-websites)
 * [`profile-registry publisher:website`](#profile-registry-publisherwebsite)
-* [`profile-registry publisher:websites`](#profile-registry-publisherwebsites)
 * [`profile-registry start`](#profile-registry-start)
 
 ## `profile-registry account`
@@ -232,40 +230,35 @@ DESCRIPTION
 
 ```
 USAGE
-  $ profile-registry publisher:extract-website --url <value> -f visibleText|text|html -o <value> [-l <value>] [--override
-    <value>]
-
-FLAGS
-  -f, --body-format=(visibleText|text|html)  (required) 対象のテキストの形式
-  -l, --location=<value>                     対象の要素の場所を特定する CSS セレクター
-  -o, --output=<value>                       (required) ウェブサイトの保存先
-  --override=<value>                         ウェブサイトの上書き (JSON 文字列)
-  --url=<value>                              (required) ウェブページの URL
-
-DESCRIPTION
-  ウェブページの抽出
-
-FLAG DESCRIPTIONS
-  --override=<value>  ウェブサイトの上書き (JSON 文字列)
-
-    Prisma.websitesUpdateInput
-    詳細はTSDocを参照してください。
-    https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
-```
-
-## `profile-registry publisher:extract-websites`
-
-ウェブページの抽出の一括処理
-
-```
-USAGE
-  $ profile-registry publisher:extract-websites --input <value>
+  $ profile-registry publisher:extract-website --input <value>
 
 FLAGS
   --input=<value>  (required) ウェブページの抽出の入力 (JSON ファイル)
 
 DESCRIPTION
-  ウェブページの抽出の一括処理
+  ウェブページの抽出
+
+FLAG DESCRIPTIONS
+  --input=<value>  ウェブページの抽出の入力 (JSON ファイル)
+
+    以下のデータ形式を受け付けます。
+    [
+    {
+    // ウェブサイトの URL
+    "url": "https://oprdev.herokuapp.com",
+    // 対象のテキストの形式
+    "bodyFormat": "visibleText",
+    // 対象の要素の場所を特定する CSS セレクター (省略可)
+    "location": "h1",
+    // ウェブサイトの保存先
+    "output": "./path/to/.website.json"
+    // その他 Prisma.websitesUpdateInput を受け付けます
+    },
+    ...
+    ]
+    Prisma.websitesUpdateInput については
+    詳細はTSDocを参照してください。
+    https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
 ```
 
 ## `profile-registry publisher:website`
@@ -274,13 +267,14 @@ DESCRIPTION
 
 ```
 USAGE
-  $ profile-registry publisher:website -i <value> --id <value> --input <value> -o create|read|update|delete
-    [--issued-at <value>] [--expired-at <value>]
+  $ profile-registry publisher:website -i <value> --id <value> (--glob-input <value> | --input <value>) -o
+    create|read|update|delete [--issued-at <value>] [--expired-at <value>]
 
 FLAGS
   -i, --identity=<value>                       (required) PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル
   -o, --operation=(create|read|update|delete)  (required) 操作
   --expired-at=<value>                         有効期限 (ISO 8601)
+  --glob-input=<value>                         (required) [default: **/.website.json] JSON files match with glob pattern
   --id=<value>                                 (required) 会員 (UUID)
   --input=<value>                              (required) [default: website.example.json] JSON file
   --issued-at=<value>                          発行日時 (ISO 8601)
@@ -294,32 +288,6 @@ FLAG DESCRIPTIONS
     Prisma.websitesCreateInput または Prisma.websitesUpdateInput
     詳細はTSDocを参照してください。
     https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
-```
-
-## `profile-registry publisher:websites`
-
-ウェブページの作成・表示・更新・削除の一括処理
-
-```
-USAGE
-  $ profile-registry publisher:websites -i <value> --id <value> -o create|read|update|delete [-f <value>] [--issued-at
-    <value>] [--expired-at <value>]
-
-FLAGS
-  -f, --filename=<value>                       [default: .website.json] 入力ファイル名
-  -i, --identity=<value>                       (required) PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル
-  -o, --operation=(create|read|update|delete)  (required) 操作
-  --expired-at=<value>                         有効期限 (ISO 8601)
-  --id=<value>                                 (required) 会員 (UUID)
-  --issued-at=<value>                          発行日時 (ISO 8601)
-
-DESCRIPTION
-  ウェブページの作成・表示・更新・削除の一括処理
-
-FLAG DESCRIPTIONS
-  -f, --filename=<value>  入力ファイル名
-
-    ウェブサイトのデータを格納しているファイルの名称を指定してください。指定されたファイル名で再帰的に探索します。
 ```
 
 ## `profile-registry start`
