@@ -57,22 +57,13 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     });
     const body = await extractBody(
       page.url(),
-      (location: string) => page.locator(location),
-      async (locator, type) => {
-        switch (type) {
-          case "visibleText": {
-            return locator.allInnerTexts();
-          }
-          case "text": {
-            return locator.allTextContents();
-          }
-          case "html": {
-            const locators: Locator[] = await locator.all();
-            return Promise.all(
-              locators.map((locator) => locator.evaluate((e) => e.outerHTML))
-            );
-          }
-        }
+      (location) => page.locator(location),
+      async (locator) => {
+        const locators: Locator[] = await locator.all();
+        const elements = await Promise.all(
+          locators.map((locator) => locator.evaluate((el) => el))
+        );
+        return elements.filter((el): el is HTMLElement => "outerHTML" in el);
       },
       { url: flags.url, location: flags.location, type: bodyFormat }
     );

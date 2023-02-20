@@ -19,17 +19,7 @@ async function fetcher([, dpLocator, jwks]: [
   const body = await extractBody(
     document.location.href,
     (location) => document.querySelectorAll<HTMLElement>(location),
-    async (elements, type) => {
-      const elArray = Array.from(elements);
-      switch (type) {
-        case "visibleText":
-          return elArray.map((el) => el.innerText);
-        case "text":
-          return elArray.map((el) => el.textContent ?? "");
-        case "html":
-          return elArray.map((el) => el.outerHTML);
-      }
-    },
+    async (elements) => Array.from(elements),
     dpLocator
   );
   if (body instanceof Error) return body;
