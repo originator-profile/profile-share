@@ -1,7 +1,7 @@
 import { Command, Flags, CliUx } from "@oclif/core";
 import { Prisma } from "@prisma/client";
 import fs from "node:fs/promises";
-import { chromium, Locator } from "playwright";
+import { chromium } from "playwright";
 import metascraper from "metascraper";
 import author from "metascraper-author";
 import date from "metascraper-date";
@@ -65,16 +65,18 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
       url,
       html: await page.content(),
     });
-    const body = await extractBody<Locator>(
+    const body = await extractBody(
       page.url(),
       (location) => page.locator(location),
-      async (locator) => {
-        const locators: Locator[] = await locator.all();
-        const elements = await Promise.all(
-          locators.map((locator) => locator.evaluate((el) => el))
-        );
-        return elements.filter((el): el is HTMLElement => "outerHTML" in el);
-      },
+      async (locator, attribute) =>
+        locator.evaluateAll((elements, attribute) => {
+          const isHTMLElement = (
+            el: HTMLElement | SVGElement
+          ): el is HTMLElement => typeof el.outerHTML === "string";
+          return elements
+            .filter(isHTMLElement)
+            .map((el) => el[attribute] ?? "");
+        }, attribute),
       {
         url,
         location,
