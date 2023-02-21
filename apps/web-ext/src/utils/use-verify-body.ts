@@ -19,7 +19,8 @@ async function fetcher([, dpLocator, jwks]: [
   const body = await extractBody(
     document.location.href,
     (location) => document.querySelectorAll<HTMLElement>(location),
-    async (elements) => Array.from(elements),
+    async (elements, attribute) =>
+      Array.from(elements).map((el) => el[attribute] ?? ""),
     dpLocator
   );
   if (body instanceof Error) return body;
