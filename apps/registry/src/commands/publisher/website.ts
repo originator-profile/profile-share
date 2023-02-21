@@ -97,7 +97,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     const { flags } = await this.parse(PublisherWebsite);
     if (flags["input"]) {
       await this.website(flags);
-      this.exit();
+      return;
     }
     const paths = await globby(join("**", flags["glob-input"]));
     const bar = CliUx.ux.progress();
