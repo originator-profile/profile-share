@@ -276,7 +276,7 @@ FLAGS
   --expired-at=<value>                         有効期限 (ISO 8601)
   --glob-input=<value>                         (required) [default: **/.website.json] JSON files match with glob pattern
   --id=<value>                                 (required) 会員 (UUID)
-  --input=<value>                              (required) [default: website.example.json] JSON file
+  --input=<value>                              JSON file
   --issued-at=<value>                          発行日時 (ISO 8601)
 
 DESCRIPTION
