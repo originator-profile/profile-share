@@ -95,5 +95,10 @@
     "plugins": [
       "@oclif/plugin-help"
     ]
+  },
+  "tsup": {
+    "loader": {
+      ".key": "file"
+    }
   }
 }
