@@ -1,8 +1,8 @@
 import util from "node:util";
 import { PrismaClient } from "@prisma/client";
 import crypto from "node:crypto";
+import fs from "node:fs/promises";
 import { Services } from "@webdino/profile-registry-service";
-import { generateKey } from "@webdino/profile-sign";
 import exampleAccount from "./account.example.json";
 import exampleWebsite from "./website.example.json";
 import { Jwk } from "@webdino/profile-model";
@@ -75,7 +75,12 @@ export async function seed(): Promise<void> {
 
   const accountKeys = await services.account.getKeys(issuerUuid);
   if ("keys" in accountKeys && accountKeys.keys.length === 0) {
-    const { jwk, pkcs8 } = await generateKey();
+    const jwk = await fs
+      .readFile("./account-key.example.pem.pub.json")
+      .then((buffer) => JSON.parse(buffer.toString()));
+    const pkcs8 = await fs
+      .readFile("./account-key.example.pem")
+      .then((buffer) => buffer.toString());
     await issueOp(services, issuerUuid, jwk, pkcs8);
 
     const websiteExists = await services.website.read(exampleWebsite);

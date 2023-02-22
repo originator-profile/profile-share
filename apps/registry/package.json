@@ -41,6 +41,13 @@
     "@oclif/plugin-help": "^5",
     "@prisma/client": "^4.9.0",
     "jsonld": "^8.1.0",
+    "metascraper": "^5.33.8",
+    "metascraper-author": "^5.33.7",
+    "metascraper-date": "^5.33.7",
+    "metascraper-description": "^5.33.7",
+    "metascraper-image": "^5.33.7",
+    "metascraper-title": "^5.33.7",
+    "playwright": "^1.29.2",
     "prisma": "^4.9.0"
   },
   "devDependencies": {
@@ -69,6 +76,7 @@
     "eslint-config-webdino-profile": "*",
     "fastify": "^4.11.0",
     "fastify-http-errors-enhanced": "^4.1.0",
+    "globby": "^13.1.3",
     "json-schema-to-ts": "^2.6.2",
     "just-omit": "^2.2.0",
     "npm-run-all": "^4.1.5",

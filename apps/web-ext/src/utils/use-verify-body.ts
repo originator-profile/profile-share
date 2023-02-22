@@ -15,7 +15,13 @@ async function fetcher([, dpLocator, jwks]: [
   dpLocator: DpLocator,
   jwks?: Jwks
 ]) {
-  const body = extractBody(window.parent.document, dpLocator);
+  const document = window.parent.document;
+  const body = await extractBody(
+    document.location.href,
+    async (location) =>
+      Array.from(document.querySelectorAll<HTMLElement>(location)),
+    dpLocator
+  );
   if (body instanceof Error) return body;
   return verifyBody(body, dpLocator.proof.jws, LocalKeys(jwks ?? { keys: [] }));
 }
