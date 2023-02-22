@@ -18,19 +18,15 @@ document.body.innerHTML =
   '<p>Hello, World!</p><p style="display:none">None</p><p>Goodbye, World!</p>';
 document.location.href = "https://example.com/";
 const pageUrl = document.location.href;
-const locator = (location: string) =>
-  document.querySelectorAll<HTMLElement>(location);
-const extractor = async (
-  elements: ReturnType<typeof locator>,
-  attribute: "innerText" | "textContent" | "outerHTML"
-) => Array.from(elements).map((el) => el[attribute] ?? "");
+const locator = async (location: string) =>
+  Array.from(document.querySelectorAll<HTMLElement>(location));
 
 test("extract body as visibleText type", async () => {
   const item: DpVisibleText = {
     ...base,
     type: "visibleText",
   };
-  const result = await extractBody(pageUrl, locator, extractor, item);
+  const result = await extractBody(pageUrl, locator, item);
   expect(result).not.instanceOf(Error);
   expect(result).toBe("Hello, World!\nGoodbye, World!");
 });
@@ -40,7 +36,7 @@ test("extract body as text type", async () => {
     ...base,
     type: "text",
   };
-  const result = await extractBody(pageUrl, locator, extractor, item);
+  const result = await extractBody(pageUrl, locator, item);
   expect(result).not.instanceOf(Error);
   expect(result).toBe("Hello, World!NoneGoodbye, World!");
 });
@@ -50,7 +46,7 @@ test("extract body as html type", async () => {
     ...base,
     type: "html",
   };
-  const result = await extractBody(pageUrl, locator, extractor, item);
+  const result = await extractBody(pageUrl, locator, item);
   expect(result).not.instanceOf(Error);
   expect(result).toBe(
     '<body><p>Hello, World!</p><p style="display:none">None</p><p>Goodbye, World!</p></body>'
@@ -63,6 +59,6 @@ test("extract body failure when url misatch", async () => {
     url: "https://evil.com",
     type: "text",
   };
-  const result = await extractBody(pageUrl, locator, extractor, item);
+  const result = await extractBody(pageUrl, locator, item);
   expect(result).instanceOf(Error);
 });
