@@ -67,16 +67,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     });
     const body = await extractBody(
       page.url(),
-      (location) => page.locator(location),
-      async (locator, attribute) =>
-        locator.evaluateAll((elements, attribute) => {
-          const isHTMLElement = (
-            el: HTMLElement | SVGElement
-          ): el is HTMLElement => typeof el.outerHTML === "string";
-          return elements
-            .filter(isHTMLElement)
-            .map((el) => el[attribute] ?? "");
-        }, attribute),
+      (location) => page.locator(location).all(),
       {
         url,
         location,

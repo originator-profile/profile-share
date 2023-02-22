@@ -23,6 +23,7 @@
     "happy-dom": "^8.1.5",
     "jose": "^4.11.2",
     "jsonld": "^8.1.0",
+    "playwright": "^1.29.2",
     "vi-fetch": "^0.8.0",
     "vitest": "^0.27.2"
   }
