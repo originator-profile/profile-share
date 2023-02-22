@@ -45,7 +45,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     }),
   };
 
-  private async website(
+  async #website(
     flags: Awaited<ReturnType<typeof this.parse>>["flags"]
   ): Promise<void> {
     const prisma = new PrismaClient();
@@ -96,7 +96,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
   async run(): Promise<void> {
     const { flags } = await this.parse(PublisherWebsite);
     if (flags["input"]) {
-      await this.website(flags);
+      await this.#website(flags);
       return;
     }
     const paths = await globby(join("**", flags["glob-input"]));
@@ -104,7 +104,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     bar.start(paths.length, 0);
     await Promise.all(
       paths.map((path) =>
-        this.website({ ...flags, input: path }).then(() => bar.increment())
+        this.#website({ ...flags, input: path }).then(() => bar.increment())
       )
     );
     bar.stop();

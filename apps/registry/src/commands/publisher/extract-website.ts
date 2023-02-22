@@ -46,7 +46,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     }),
   };
 
-  private async extractWebsite({
+  async #extractWebsite({
     url,
     bodyFormat,
     location,
@@ -105,7 +105,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     bar.start(websites.length, 0);
     await Promise.all(
       websites.map((website) =>
-        this.extractWebsite(website).then(() => bar.increment())
+        this.#extractWebsite(website).then(() => bar.increment())
       )
     );
     bar.stop();
