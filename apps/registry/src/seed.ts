@@ -76,10 +76,10 @@ export async function seed(): Promise<void> {
   const accountKeys = await services.account.getKeys(issuerUuid);
   if ("keys" in accountKeys && accountKeys.keys.length === 0) {
     const jwk = await fs
-      .readFile("./account-key.example.key.pub.json")
+      .readFile("./account-key.example.pem.pub.json")
       .then((buffer) => JSON.parse(buffer.toString()));
     const pkcs8 = await fs
-      .readFile("./account-key.example.key")
+      .readFile("./account-key.example.pem")
       .then((buffer) => buffer.toString());
     await issueOp(services, issuerUuid, jwk, pkcs8);
 
