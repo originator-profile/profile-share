@@ -31,8 +31,8 @@ test("extract body as visibleText type", async () => {
   const browser = await chromium.launch();
   const context = await browser.newContext();
   const page = await context.newPage();
-  await page.evaluate((html) => {
-    document.body.innerHTML = html;
+  await page.locator("body").evaluate((el, html) => {
+    el.innerHTML = html;
   }, html);
   const result = await extractBody(
     item.url,
