@@ -2,6 +2,7 @@ import { test, expect } from "vitest";
 import { Window } from "happy-dom";
 import { DpVisibleText, DpText, DpHtml } from "@webdino/profile-model";
 import { extractBody } from "./extract-body";
+import { chromium } from "playwright";
 
 const base = {
   url: "https://example.com",
@@ -12,10 +13,11 @@ const base = {
   },
 };
 
+const html =
+  '<p>Hello, World!</p><p style="display:none">None</p><p>Goodbye, World!</p>';
 const window = new Window();
 const document = window.document as unknown as Document;
-document.body.innerHTML =
-  '<p>Hello, World!</p><p style="display:none">None</p><p>Goodbye, World!</p>';
+document.body.innerHTML = html;
 document.location.href = "https://example.com/";
 const pageUrl = document.location.href;
 const locator = async (location: string) =>
@@ -26,9 +28,19 @@ test("extract body as visibleText type", async () => {
     ...base,
     type: "visibleText",
   };
-  const result = await extractBody(pageUrl, locator, item);
+  const browser = await chromium.launch();
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  await page.evaluate((html) => {
+    document.body.innerHTML = html;
+  }, html);
+  const result = await extractBody(
+    item.url,
+    (location) => page.locator(location).all(),
+    item
+  );
   expect(result).not.instanceOf(Error);
-  expect(result).toBe("Hello, World!\nGoodbye, World!");
+  expect(result).toBe("Hello, World!\n\nGoodbye, World!");
 });
 
 test("extract body as text type", async () => {
