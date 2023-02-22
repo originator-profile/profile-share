@@ -41,13 +41,11 @@ describe("Publisher workflows", async () => {
   });
 
   test("Website updation to be success", async () => {
-    expect(
-      PublisherWebsite.run([
-        `--identity=${paths.key}`,
-        `--id=${accountId}`,
-        "--operation=update",
-        `--glob-input=${glob}`,
-      ])
-    ).resolves;
+    await PublisherWebsite.run([
+      `--identity=${paths.key}`,
+      `--id=${accountId}`,
+      "--operation=update",
+      `--glob-input=${glob}`,
+    ]);
   });
 });
