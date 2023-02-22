@@ -47,7 +47,7 @@
     "metascraper-description": "^5.33.7",
     "metascraper-image": "^5.33.7",
     "metascraper-title": "^5.33.7",
-    "playwright": "^1.30.0",
+    "playwright": "^1.29.2",
     "prisma": "^4.9.0"
   },
   "devDependencies": {
