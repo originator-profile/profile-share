@@ -99,6 +99,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
       return;
     }
     const paths = await globby(flags["glob-input"]);
+    if (paths.length === 0) this.error("Pattern does not match any files");
     const bar = CliUx.ux.progress();
     bar.start(paths.length, 0);
     await Promise.all(
