@@ -36,8 +36,7 @@ jobs:
       - git_checkout_and_config
       - node/install:
           install-yarn: true
-          # NOTE: Node.js v18.7.0 で @webdino/profile-model:test に失敗する問題 (#315) ので Node.js v16 を使う
-          node-version: "16.19.0"
+          node-version: lts
       - yarn_install_with_cache
       - run: yarn format
       - run:
