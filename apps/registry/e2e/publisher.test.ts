@@ -1,57 +1,75 @@
 import { afterAll, beforeAll, describe, test, expect } from "vitest";
+import fs from "node:fs/promises";
+import path from "node:path";
 import { PublisherExtractWebsite } from "../src/commands/publisher/extract-website";
 import { PublisherWebsite } from "../src/commands/publisher/website";
-import fs from "node:fs/promises";
-import { existsSync } from "node:fs";
-import path from "node:path";
-
-const paths = (tmpdir: string) =>
-  ({
-    extract: path.join(tmpdir, "extract.json"),
-    key: path.join(__dirname, "..", "account-key.example.key"),
-  } as const);
-const glob = "tmp/**/website.json";
-
-const extract = (tmpdir: string) =>
-  ({
-    url: "http://localhost:8080",
-    bodyFormat: "visibleText",
-    location: "h1",
-    output: path.join(tmpdir, "website.json"),
-  } as const);
 
 const accountId = "d613c1d6-5312-41e9-98ad-2b99765955b6";
+const keyPath = path.join(__dirname, "..", "account-key.example.pem");
 
 describe("Publisher workflows", async () => {
   let tmpdir: string;
+  let extractJsonPath: string;
+  let websiteJsonPath: string;
 
-  beforeAll(async () => {
-    tmpdir = await fs.mkdtemp(path.join(__dirname, "tmp"));
-    await fs.writeFile(
-      paths(tmpdir).extract,
-      JSON.stringify([extract(tmpdir)], null, 2)
-    );
+  describe("extract.jsonによる操作を行う場合", async () => {
+    beforeAll(async () => {
+      tmpdir = await fs.mkdtemp(`${path.join(__dirname, "tmp")}${path.sep}`);
+      extractJsonPath = path.join(tmpdir, "extract.json");
+      websiteJsonPath = path.join(tmpdir, "website.json");
+      await fs.writeFile(
+        extractJsonPath,
+        JSON.stringify([
+          {
+            url: "http://localhost:8080",
+            bodyFormat: "visibleText",
+            location: "h1",
+            output: websiteJsonPath,
+          },
+        ])
+      );
+    });
+
+    afterAll(async () => {
+      await fs.rm(tmpdir, { recursive: true });
+    });
+
+    test("Website extraction makes website.json", async () => {
+      await PublisherExtractWebsite.run([`--input=${extractJsonPath}`]);
+      const website = await fs
+        .readFile(websiteJsonPath)
+        .then((buffer) => JSON.parse(buffer.toString()));
+      expect(website.body).toBe("OP 確認くん");
+    });
+
+    test("Should succeed in updating from website.json", async () => {
+      await PublisherWebsite.run([
+        `--identity=${keyPath}`,
+        `--id=${accountId}`,
+        "--operation=update",
+        `--glob-input=${websiteJsonPath}`,
+      ]);
+    });
   });
 
-  afterAll(async () => {
-    await fs.rm(tmpdir, { recursive: true });
-  });
+  describe("globパターンに一致しない場合", async () => {
+    beforeAll(async () => {
+      tmpdir = await fs.mkdtemp(`${path.join(__dirname, "tmp")}${path.sep}`);
+    });
 
-  test("Website extraction makes website.json", async () => {
-    await PublisherExtractWebsite.run([`--input=${paths(tmpdir).extract}`]);
-    expect(existsSync(extract(tmpdir).output)).toBe(true);
-    const website = await fs
-      .readFile(extract(tmpdir).output)
-      .then((buffer) => JSON.parse(buffer.toString()));
-    expect(website.body).toBe("OP 確認くん");
-  });
+    afterAll(async () => {
+      await fs.rm(tmpdir, { recursive: true });
+    });
 
-  test("Website updation to be success", async () => {
-    await PublisherWebsite.run([
-      `--identity=${paths(tmpdir).key}`,
-      `--id=${accountId}`,
-      "--operation=update",
-      `--glob-input=${glob}`,
-    ]);
+    test("publisher:website操作に失敗する", async () => {
+      await expect(
+        PublisherWebsite.run([
+          `--identity=${keyPath}`,
+          `--id=${accountId}`,
+          "--operation=update",
+          `--glob-input=${tmpdir}/**/website.json`,
+        ])
+      ).rejects.toBeInstanceOf(Error);
+    });
   });
 });

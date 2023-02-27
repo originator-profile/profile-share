@@ -3,7 +3,6 @@ import { PrismaClient, Prisma } from "@prisma/client";
 import { addYears } from "date-fns";
 import { Services } from "@webdino/profile-registry-service";
 import fs from "node:fs/promises";
-import { join } from "node:path";
 import { globby } from "globby";
 
 export class PublisherWebsite extends Command {
@@ -99,7 +98,8 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
       await this.#website(flags);
       return;
     }
-    const paths = await globby(join("**", flags["glob-input"]));
+    const paths = await globby(flags["glob-input"]);
+    if (paths.length === 0) this.error("Pattern does not match any files");
     const bar = CliUx.ux.progress();
     bar.start(paths.length, 0);
     await Promise.all(
