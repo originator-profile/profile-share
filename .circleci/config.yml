@@ -1,7 +1,63 @@
 version: 2.1
+workflows:
+  test:
+    jobs:
+      - main
+jobs:
+  main:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large
+    steps:
+      - setup
+      - format
+      - lint
+      - build
+      - test
+      - e2e
 orbs:
   node: circleci/node@5.1.0
 commands:
+  setup:
+    steps:
+      - git_checkout_and_config
+      - node/install:
+          install-yarn: true
+          node-version: lts
+      - yarn_install_with_cache
+  format:
+    steps:
+      - run: yarn format
+      - run:
+          name: Commit
+          command: |
+            if git commit -am 'bot: format [skip ci]'; then
+              git push origin HEAD:"$CIRCLE_BRANCH"
+            fi
+  lint:
+    steps:
+      - run: yarn lint
+  build:
+    steps:
+      - run: yarn build
+      - store_artifacts:
+          path: apps/web-ext/web-ext-artifacts
+  test:
+    steps:
+      - run: yarn test
+  e2e:
+    steps:
+      - run:
+          name: E2Eテストの準備
+          command: sudo apt-get install -y fonts-noto-cjk
+      - run:
+          name: E2E tests
+          shell: /bin/bash -e
+          command: yarn e2e
+      - store_artifacts:
+          path: apps/web-ext/screenshots
+
+  # Helper commands
   git_checkout_and_config:
     steps:
       - checkout
@@ -27,38 +83,3 @@ commands:
           paths:
             - ~/.cache/yarn
             - ~/.cache/ms-playwright
-jobs:
-  main:
-    machine:
-      image: ubuntu-2204:current
-    resource_class: large
-    steps:
-      - git_checkout_and_config
-      - node/install:
-          install-yarn: true
-          node-version: lts
-      - yarn_install_with_cache
-      - run: yarn format
-      - run:
-          name: Commit
-          command: |
-            if git commit -am 'bot: format [skip ci]'; then
-              git push origin HEAD:"$CIRCLE_BRANCH"
-            fi
-      - run: yarn lint
-      - run: yarn test
-      - run: yarn build
-      - store_artifacts:
-          path: apps/web-ext/web-ext-artifacts
-      - run:
-          name: E2Eテストの準備
-          command: sudo apt-get install -y fonts-noto-cjk
-      - run:
-          name: E2E tests
-          shell: /bin/bash -e
-          command: yarn e2e
-      - store_artifacts:
-          path: apps/web-ext/screenshots
-workflows:
-  test:
-    jobs: [main]
