@@ -3,6 +3,10 @@ import { rest } from "msw";
 import { setupServer } from "msw/node";
 import context from "@webdino/profile-model/context.json";
 
+// TODO: `ReferenceError: location is not defined` になるので宣言しているが
+//        おそらくmsw側の不具合と思うので後で要修正
+globalThis.location = { origin: "https://oprdev.herokuapp.com" } as Location;
+
 const endpoints = [
   rest.get("https://oprdev.herokuapp.com/context", (_, res, ctx) => {
     return res(ctx.status(200), ctx.json(context));
