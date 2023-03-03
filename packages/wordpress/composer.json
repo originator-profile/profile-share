@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "help": "cat README.md",
+    "test": "phpunit",
+    "lint": "phpcs .",
+    "format": "phpcbf -v ."
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.0.12",
+    "wp-cli/wp-cli-bundle": "^2.7.1",
+    "wp-coding-standards/wpcs": "^2.3.0"
+  }
+}

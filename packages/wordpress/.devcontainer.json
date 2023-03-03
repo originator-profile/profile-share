@@ -1,0 +1,19 @@
+{
+  "service": "wordpress",
+  "dockerComposeFile": "compose.yml",
+  "workspaceFolder": "/workspaces/profile/packages/wordpress",
+  "postCreateCommand": "composer install",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "esbenp.prettier-vscode",
+        "wongjn.php-sniffer",
+        "xdebug.php-debug"
+      ]
+    }
+  }
+}
