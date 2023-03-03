@@ -1,4 +1,4 @@
-import { Command, Flags, CliUx } from "@oclif/core";
+import { Command, Flags, ux } from "@oclif/core";
 import { Prisma } from "@prisma/client";
 import fs from "node:fs/promises";
 import { chromium } from "playwright";
@@ -92,7 +92,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     const { flags } = await this.parse(PublisherExtractWebsite);
     const inputBuffer = await fs.readFile(flags.input);
     const websites = JSON.parse(inputBuffer.toString()) as Websites;
-    const bar = CliUx.ux.progress();
+    const bar = ux.progress();
     bar.start(websites.length, 0);
     await Promise.all(
       websites.map((website) =>

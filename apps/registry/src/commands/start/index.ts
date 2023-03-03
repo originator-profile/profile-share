@@ -1,4 +1,4 @@
-import { Command, Flags, CliUx } from "@oclif/core";
+import { Command, Flags, ux } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
 import path from "node:path";
 import { create, start } from "../../server";
@@ -30,7 +30,7 @@ export default class Start extends Command {
       routes: path.resolve(__dirname, "../../routes"),
     });
     await start(server, flags.port);
-    await CliUx.ux.anykey();
+    await ux.anykey();
     this.exit();
   }
 }

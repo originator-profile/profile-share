@@ -1,9 +1,10 @@
-import { Command, Flags, CliUx } from "@oclif/core";
+import { Command, Flags, ux } from "@oclif/core";
 import { PrismaClient, Prisma } from "@prisma/client";
 import { addYears } from "date-fns";
 import { Services } from "@webdino/profile-registry-service";
 import fs from "node:fs/promises";
 import { globby } from "globby";
+import { operation } from "../../flags";
 
 export class PublisherWebsite extends Command {
   static description = "ウェブページの作成・表示・更新・削除";
@@ -30,12 +31,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
       default: "**/.website.json",
       required: true,
     }),
-    operation: Flags.enum({
-      char: "o",
-      description: "操作",
-      options: ["create", "read", "update", "delete"],
-      required: true,
-    }),
+    operation: operation(),
     "issued-at": Flags.string({
       description: "発行日時 (ISO 8601)",
     }),
@@ -100,7 +96,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     }
     const paths = await globby(flags["glob-input"]);
     if (paths.length === 0) this.error("Pattern does not match any files");
-    const bar = CliUx.ux.progress();
+    const bar = ux.progress();
     bar.start(paths.length, 0);
     await Promise.all(
       paths.map((path) =>
