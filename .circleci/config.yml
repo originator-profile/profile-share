@@ -25,9 +25,11 @@ commands:
           install-yarn: true
           node-version: lts
       - yarn_install_with_cache
+      - wordpress_up
   format:
     steps:
       - run: yarn format
+      - wordpress_format
       - run:
           name: Commit
           command: |
@@ -37,6 +39,7 @@ commands:
   lint:
     steps:
       - run: yarn lint
+      - wordpress_lint
   build:
     steps:
       - run: yarn build
@@ -45,6 +48,7 @@ commands:
   test:
     steps:
       - run: yarn test
+      - wordpress_test
   e2e:
     steps:
       - run:
@@ -83,3 +87,39 @@ commands:
           paths:
             - ~/.cache/yarn
             - ~/.cache/ms-playwright
+  wordpress_up:
+    steps:
+      - restore_cache:
+          name: Restore Composer cache
+          keys:
+            - composer-v2-main
+      - run:
+          name: Install WordPress dependencies
+          command: |
+            cp .env.development .env
+            docker compose up -d
+            docker compose exec -w /var/www/html/wp-content/plugins/profile wordpress composer install
+          working_directory: packages/wordpress
+      - save_cache:
+          name: Save Composer cache
+          key: "composer-v2-main"
+          paths:
+            - packages/wordpress/vendor
+  wordpress_format:
+    steps:
+      - run:
+          name: composer run format
+          command: docker compose exec -w /var/www/html/wp-content/plugins/profile wordpress composer run format
+          working_directory: packages/wordpress
+  wordpress_lint:
+    steps:
+      - run:
+          name: composer run lint
+          command: docker compose exec -w /var/www/html/wp-content/plugins/profile wordpress composer run lint
+          working_directory: packages/wordpress
+  wordpress_test:
+    steps:
+      - run:
+          name: composer run test
+          command: docker compose exec -w /var/www/html/wp-content/plugins/profile wordpress composer run test
+          working_directory: packages/wordpress
