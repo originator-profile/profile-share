@@ -1,0 +1,29 @@
+services:
+  wordpress:
+    image: "${WORDPRESS_IMAGE:-wordpress}"
+    build:
+      dockerfile: "${WORDPRESS_IMAGE_DOCKERFILE:-}"
+    restart: unless-stopped
+    user: "${WORDPRESS_USER:-www-data}"
+    ports:
+      - "${WORDPRESS_PORT:-9000}:80"
+    volumes:
+      - ".:/var/www/html/wp-content/plugins/profile"
+      - "../..:/workspaces/profile"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
+      WORDPRESS_DEBUG: "${WORDPRESS_DEBUG:-}"
+  db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    volumes:
+      - mariadb_data_v10:/var/lib/mysql
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: "${WORDPRESS_DB_PASSWORD:?}"
+      MARIADB_ROOT_PASSWORD: "${WORDPRESS_DB_ROOT_PASSWORD:?}"
+volumes:
+  mariadb_data_v10:

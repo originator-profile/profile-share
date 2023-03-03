@@ -1,0 +1,9 @@
+FROM wordpress:6.1.1-php8.2
+
+# Install composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+    && php -r "unlink('composer-setup.php');"
+
+ENV SHELL=/bin/bash
+ENV PATH=/var/www/html/wp-content/plugins/profile/vendor/bin:${PATH}
