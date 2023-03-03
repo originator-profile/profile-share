@@ -2,6 +2,7 @@ import { Command, Flags } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
 import { Services } from "@webdino/profile-registry-service";
 import fs from "node:fs/promises";
+import { operation } from "../../flags";
 
 export class Account extends Command {
   static description = "会員の作成・表示・更新・削除";
@@ -16,12 +17,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
       default: "account.example.json",
       required: true,
     }),
-    operation: Flags.enum({
-      char: "o",
-      description: "操作",
-      options: ["create", "read", "update", "delete"],
-      required: true,
-    }),
+    operation: operation(),
   };
 
   async run(): Promise<void> {

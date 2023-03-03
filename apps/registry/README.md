@@ -51,8 +51,9 @@ USAGE
   $ profile-registry account -i <value> -o create|read|update|delete
 
 FLAGS
-  -i, --input=<value>                          (required) [default: account.example.json] JSON file
-  -o, --operation=(create|read|update|delete)  (required) 操作
+  -i, --input=<value>       (required) [default: account.example.json] JSON file
+  -o, --operation=<option>  (required) 操作
+                            <options: create|read|update|delete>
 
 DESCRIPTION
   会員の作成・表示・更新・削除
@@ -271,13 +272,14 @@ USAGE
     create|read|update|delete [--issued-at <value>] [--expired-at <value>]
 
 FLAGS
-  -i, --identity=<value>                       (required) PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル
-  -o, --operation=(create|read|update|delete)  (required) 操作
-  --expired-at=<value>                         有効期限 (ISO 8601)
-  --glob-input=<value>                         (required) [default: **/.website.json] JSON files match with glob pattern
-  --id=<value>                                 (required) 会員 (UUID)
-  --input=<value>                              JSON file
-  --issued-at=<value>                          発行日時 (ISO 8601)
+  -i, --identity=<value>    (required) PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル
+  -o, --operation=<option>  (required) 操作
+                            <options: create|read|update|delete>
+  --expired-at=<value>      有効期限 (ISO 8601)
+  --glob-input=<value>      (required) [default: **/.website.json] JSON files match with glob pattern
+  --id=<value>              (required) 会員 (UUID)
+  --input=<value>           JSON file
+  --issued-at=<value>       発行日時 (ISO 8601)
 
 DESCRIPTION
   ウェブページの作成・表示・更新・削除

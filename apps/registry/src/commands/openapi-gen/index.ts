@@ -1,4 +1,4 @@
-import { Command } from "@oclif/core";
+import { Args, Command } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
 import path from "node:path";
 import fs from "node:fs/promises";
@@ -6,13 +6,12 @@ import { create } from "../../server";
 
 export default class OpenapiGen extends Command {
   static description = "OpenAPI ドキュメント生成";
-  static args = [
-    {
-      name: "output",
+  static args = {
+    output: Args.string({
       description: `出力先ファイル ("-": 標準出力)`,
       default: "dist/openapi.json",
-    },
-  ];
+    }),
+  };
 
   async run(): Promise<void> {
     const { args } = await this.parse(OpenapiGen);
