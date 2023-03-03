@@ -16,7 +16,7 @@
     "e2e:run": "turbo run e2e --parallel",
     "test": "turbo run test",
     "lint": "turbo run lint",
-    "format": "prettier --ignore-path .gitignore --write .",
+    "format": "prettier --write .",
     "update": "run-s update:{npm,dedupe}",
     "update:npm": "npm-check-updates --deep --upgrade",
     "update:dedupe": "yarn-deduplicate",
