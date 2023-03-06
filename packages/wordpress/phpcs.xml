@@ -12,4 +12,7 @@
   <rule ref="Squiz.Commenting.FunctionComment.Missing">
     <exclude-pattern>tests</exclude-pattern>
   </rule>
+  <rule ref="Squiz.Commenting.FileComment.MissingPackageTag">
+    <exclude-pattern>includes</exclude-pattern>
+  </rule>
 </ruleset>
