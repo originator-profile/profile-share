@@ -58,6 +58,11 @@ lint
 format
 : コード整形
 
+## npm scripts
+
+e2e
+: E2E テスト
+
 ## 環境変数
 
 WORDPRESS_IMAGE

@@ -3,6 +3,7 @@
   <config name="installed_paths" value="vendor/wp-coding-standards/wpcs" />
   <rule ref="WordPress" />
   <exclude-pattern>vendor</exclude-pattern>
+  <exclude-pattern>node_modules</exclude-pattern>
   <rule ref="Squiz.Commenting.ClassComment.Missing">
     <exclude-pattern>tests</exclude-pattern>
   </rule>
@@ -14,5 +15,8 @@
   </rule>
   <rule ref="Squiz.Commenting.FileComment.MissingPackageTag">
     <exclude-pattern>includes</exclude-pattern>
+  </rule>
+  <rule ref="WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase">
+    <exclude-pattern>includes/issue.php</exclude-pattern>
   </rule>
 </ruleset>

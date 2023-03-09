@@ -1,0 +1,55 @@
+import { Page, test, expect } from "@playwright/test";
+import path from "node:path";
+import fs from "node:fs/promises";
+
+test.describe.configure({ mode: "serial" });
+
+let page: Page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto("http://localhost:9000/wp-login.php");
+
+  const wordpressAdminPassword = process.env.WORDPRESS_ADMIN_PASSWORD!;
+  await page.getByLabel("Username or Email Address").fill("admin");
+  await page
+    .getByLabel("Password", { exact: true })
+    .fill(wordpressAdminPassword);
+
+  await page.getByRole("button", { name: "Log In" }).click();
+});
+
+test("transition_post_status フックで得られる内容の同一性を検証", async () => {
+  await page.goto("http://localhost:9000/wp-admin/post-new.php");
+
+  const closeDialog = page.getByRole("button", { name: "Close dialog" });
+  if ((await closeDialog.count()) > 0) {
+    await closeDialog.click();
+  }
+
+  await page.getByRole("button", { name: "Add block" }).click();
+  await page.getByRole("option", { name: "Paragraph" }).click();
+  await page
+    .getByRole("document", {
+      name: "Empty block; start writing or type forward slash to choose a block",
+    })
+    .fill("海は昼眠る、夜も眠る。ごうごう、いびきをかいて眠る。");
+
+  await page.getByRole("button", { name: "Publish", exact: true }).click();
+  await page
+    .getByRole("region", { name: "Editor publish" })
+    .getByRole("button", { name: "Publish", exact: true })
+    .click();
+  await page.getByRole("link", { name: "(no title)", exact: true }).click();
+
+  const text = await (await page.$(".wp-block-post-content"))?.textContent();
+  expect(text).toMatchSnapshot("post.txt");
+
+  const postId = Number(new URL(page.url()).searchParams.get("p"));
+  const post = (
+    await fs.readFile(
+      path.join(__dirname, "..", "tmp", `${postId}.snapshot.txt`)
+    )
+  ).toString();
+  expect(text).toBe(post);
+});

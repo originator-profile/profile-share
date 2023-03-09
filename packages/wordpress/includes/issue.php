@@ -20,18 +20,21 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 		return;
 	}
 
-	$content = \apply_filters( 'the_content', $post->post_content );
+	$content  = \apply_filters( 'the_content', $post->post_content );
+	$document = new \DOMDocument();
+	$document->loadHTML( "<!DOCTYPE html><meta charset=\"UTF-8\">{$content}" );
+	$text = $document->textContent;
 
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 
 		if ( \WP_Filesystem() ) {
 			global $wp_filesystem;
-			$wp_filesystem->put_contents( __DIR__ . "/../tmp/{$post->ID}.snapshot.html", $content );
+			$wp_filesystem->put_contents( __DIR__ . "/../tmp/{$post->ID}.snapshot.txt", $text );
 		}
 	}
 
-	$jws = sign_body( $content );
+	$jws = sign_body( $text );
 	$jwt = sign_dp( $jws );
 	issue_dp( $jwt );
 }
