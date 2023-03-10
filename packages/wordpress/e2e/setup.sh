@@ -15,3 +15,5 @@ docker compose exec --user www-data -w /var/www/html wordpress \
   profile
 docker compose exec wordpress \
   chgrp www-data /var/www/html/wp-content/plugins/profile/tmp
+docker compose exec wordpress \
+  chmod g+w /var/www/html/wp-content/plugins/profile/tmp
