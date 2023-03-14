@@ -12,5 +12,6 @@ vendor
 /apps/web-ext/web-ext-artifacts
 /apps/web-ext/screenshots
 /docs/**/assets
+/packages/wordpress/credentials
 /pages
 /static/ts
