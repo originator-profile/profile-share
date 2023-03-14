@@ -1,5 +1,15 @@
 {
   "name": "@webdino/profile-wordpress",
   "version": "0.0.0",
-  "private": true
+  "private": true,
+  "scripts": {
+    "e2e": "start-test e2e:up 9000 e2e:run",
+    "e2e:up": "docker compose --env-file .env.development up || :",
+    "e2e:run": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.31.2",
+    "playwright": "^1.31.2",
+    "start-server-and-test": "^2.0.0"
+  }
 }

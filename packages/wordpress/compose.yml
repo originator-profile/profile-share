@@ -15,9 +15,14 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
       WORDPRESS_DEBUG: "${WORDPRESS_DEBUG:-}"
+    depends_on:
+      db:
+        condition: service_healthy
   db:
     image: mariadb:10.11
     restart: unless-stopped
+    healthcheck:
+      test: mariadb-admin ping
     volumes:
       - mariadb_data_v10:/var/lib/mysql
     environment:

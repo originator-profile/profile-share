@@ -11,17 +11,8 @@
 
 declare(strict_types=1);
 
-/**
- * 例
- *
- * @todo #228
- */
-function example(): void {
-	$messages = array(
-		'海は昼眠る、夜も眠る。',
-		'ごうごう、いびきをかいて眠る。',
-	);
-	echo esc_html( $messages[ array_rand( $messages ) ] );
-}
+require_once __DIR__ . '/includes/admin.php';
+\Profile\Admin\init();
 
-add_action( 'admin_notices', 'example' );
+require_once __DIR__ . '/includes/issue.php';
+\Profile\Issue\init();
