@@ -7,6 +7,11 @@ WordPress での記事の公開時の Signed Document Profile の発行に役立
 1. ダウンロード
 2. [プラグインのアップロード](https://ja.wordpress.org/support/article/plugins-add-new-screen/#%e3%83%97%e3%83%a9%e3%82%b0%e3%82%a4%e3%83%b3%e3%81%ae%e3%82%a2%e3%83%83%e3%83%97%e3%83%ad%e3%83%bc%e3%83%89)
 
+## ディレクトリ構成
+
+{WordPress directory}/wp-content/credentials/
+: 署名用プライベート鍵ファイルの配置場所
+
 ## 開発ガイド
 
 ```

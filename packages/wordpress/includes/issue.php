@@ -30,7 +30,7 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 
 		if ( \WP_Filesystem() ) {
 			global $wp_filesystem;
-			$wp_filesystem->put_contents( __DIR__ . "/../tmp/{$post->ID}.snapshot.txt", $text );
+			$wp_filesystem->put_contents( \get_temp_dir() . "/profile-test-snapshots/{$post->ID}.snapshot.txt", $text );
 		}
 	}
 

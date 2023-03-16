@@ -10,8 +10,9 @@ test.beforeAll(async ({ browser }) => {
   page = await browser.newPage();
   await page.goto("http://localhost:9000/wp-login.php");
 
+  const wordpressAdminUser = process.env.WORDPRESS_ADMIN_USER!;
   const wordpressAdminPassword = process.env.WORDPRESS_ADMIN_PASSWORD!;
-  await page.getByLabel("Username or Email Address").fill("admin");
+  await page.getByLabel("Username or Email Address").fill(wordpressAdminUser);
   await page
     .getByLabel("Password", { exact: true })
     .fill(wordpressAdminPassword);
@@ -48,7 +49,11 @@ test("transition_post_status フックで得られる内容の同一性を検証
   const postId = Number(new URL(page.url()).searchParams.get("p"));
   const post = (
     await fs.readFile(
-      path.join(__dirname, "..", "tmp", `${postId}.snapshot.txt`)
+      path.join(
+        __dirname,
+        "../tmp/profile-test-snapshots",
+        `${postId}.snapshot.txt`
+      )
     )
   ).toString();
   expect(text).toBe(post);
