@@ -4,7 +4,7 @@
 namespace Profile\Key;
 
 /** プライベート鍵ファイル */
-const PROFILE_PRIVATE_KEY_FILENAME = __DIR__ . '/../credentials/profile.key.pem';
+const PROFILE_PRIVATE_KEY_FILENAME = WP_CONTENT_DIR . '/credentials/profile.key.pem';
 
 /** 鍵の初期化 */
 function init() {
@@ -37,6 +37,7 @@ function key_exists() {
  * @return bool 生成に成功した場合はtrue、失敗した場合はfalse
  */
 function key_gen() {
+	\mkdir( \dirname( PROFILE_PRIVATE_KEY_FILENAME ), 0o750, true );
 	\touch( PROFILE_PRIVATE_KEY_FILENAME );
 	\chmod( PROFILE_PRIVATE_KEY_FILENAME, 0o600 );
 
@@ -50,7 +51,13 @@ function key_gen() {
 		return false;
 	}
 
-	return \openssl_pkey_export_to_file( $pkey, PROFILE_PRIVATE_KEY_FILENAME );
+	$ret = \openssl_pkey_export_to_file( $pkey, PROFILE_PRIVATE_KEY_FILENAME );
+
+	if ( $ret ) {
+		\chmod( PROFILE_PRIVATE_KEY_FILENAME, 0o400 );
+	}
+
+	return $ret;
 }
 
 /**

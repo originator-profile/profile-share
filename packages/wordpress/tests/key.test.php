@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
+const WP_CONTENT_DIR = '/tmp';
+
 require_once __DIR__ . '/../includes/key.php';
 
 use function Profile\Key\key_gen;
@@ -11,7 +13,7 @@ final class Key extends TestCase {
 	public function test_鍵の生成に成功() {
 		$success = key_gen();
 		$this->assertSame( true, $success );
-		$content = \file_get_contents( __DIR__ . '/../credentials/profile.key.pem' );
+		$content = \file_get_contents( WP_CONTENT_DIR . '/credentials/profile.key.pem' );
 		$match   = \preg_match( '/^-----BEGIN PRIVATE KEY-----$/', $content );
 		$this->assertNotSame( false, $match );
 	}
