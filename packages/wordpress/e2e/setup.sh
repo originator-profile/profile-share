@@ -14,6 +14,10 @@ docker compose exec --user www-data -w /var/www/html wordpress \
   wp plugin activate \
   profile
 docker compose exec wordpress \
-  chgrp www-data /var/www/html/wp-content/plugins/profile/tmp
+  chgrp www-data \
+  /var/www/html/wp-content/plugins/profile/tmp \
+  /var/www/html/wp-content/plugins/profile/credentials
 docker compose exec wordpress \
-  chmod g+w /var/www/html/wp-content/plugins/profile/tmp
+  chmod g+w \
+  /var/www/html/wp-content/plugins/profile/tmp \
+  /var/www/html/wp-content/plugins/profile/credentials
