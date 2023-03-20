@@ -76,8 +76,7 @@ function base64_urlsafe_encode( string $data ): string {
  * @return array|false 成功した場合はJWK公開鍵、失敗した場合はfalse
  */
 function get_jwk_from_file(): array|false {
-	$private_key = \file_get_contents( PROFILE_PRIVATE_KEY_FILENAME );
-	$jwk         = get_jwk( \openssl_pkey_get_private( $private_key ) );
+	$jwk = get_jwk( \openssl_pkey_get_private( 'file://' . PROFILE_PRIVATE_KEY_FILENAME ) );
 
 	return $jwk;
 }

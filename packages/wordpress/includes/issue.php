@@ -42,9 +42,8 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 		}
 	}
 
-	$pkcs8 = \file_get_contents( PROFILE_PRIVATE_KEY_FILENAME );
-	$jws   = sign_body( $text, $pkcs8 );
-	$jwt   = sign_dp( $jws );
+	$jws = sign_body( $text, 'file://' . PROFILE_PRIVATE_KEY_FILENAME );
+	$jwt = sign_dp( $jws );
 	issue_dp( $jwt );
 }
 
@@ -52,7 +51,7 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
  * 対象のテキストへの署名 (RFC 7797)
  *
  * @param string $body 対象のテキスト
- * @param string $pkcs8 PEM base64 でエンコードされた PKCS #8 秘密鍵
+ * @param string $pkcs8 PEM base64 でエンコードされた PKCS #8 秘密鍵またはそのファイルパス
  * @return string|false 成功した場合はDetached Compact JWS、失敗した場合はfalse
  */
 function sign_body( string $body, string $pkcs8 ): string|false {
