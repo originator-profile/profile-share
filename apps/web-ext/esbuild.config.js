@@ -5,7 +5,7 @@ const defaultEnv = {
 
 /** @type {import("esbuild").BuildOptions} */
 module.exports = {
-  target: "es2015",
+  target: "es2018",
   entryPoints: [
     "src/main.tsx",
     "src/background.ts",
