@@ -1,7 +1,11 @@
 import { afterAll, afterEach, beforeAll } from "vitest";
 import { rest } from "msw";
-import { setupServer } from "msw/node";
 import context from "@webdino/profile-model/context.json";
+
+// TODO: `SyntaxError: Named export 'Headers' not found. The requested module 'headers-polyfill' is a CommonJS module, which may not support all module.exports as named exports.`
+//        mswのCommonJS依存関係が取り取り除かれれば修正する
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { setupServer } = require("msw/node");
 
 // TODO: `ReferenceError: location is not defined` になるので宣言しているが
 //        おそらくmsw側の不具合と思うので後で要修正
