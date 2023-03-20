@@ -86,7 +86,7 @@
     "stdout-stderr": "^0.1.13",
     "tsup": "^6.5.0",
     "typescript": "^4.9.4",
-    "vitest": "^0.27.2",
+    "vitest": "^0.29.3",
     "widdershins": "^4.0.1"
   },
   "oclif": {
