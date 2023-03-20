@@ -67,14 +67,7 @@ function key_gen() {
  * @return string URL-safe Base64
  */
 function base64_urlsafe_encode( string $data ): string {
-	return strtr(
-		\base64_encode( $data ),
-		array(
-			'+' => '-',
-			'/' => '_',
-			'=' => '',
-		)
-	);
+	return \sodium_bin2base64( $data, SODIUM_BASE64_VARIANT_URLSAFE_NO_PADDING );
 }
 
 /**
