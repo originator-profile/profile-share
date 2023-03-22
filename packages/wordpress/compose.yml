@@ -25,6 +25,7 @@ services:
     restart: unless-stopped
     healthcheck:
       test: mariadb-admin ping
+      interval: 5s
     volumes:
       - mariadb_data_v10:/var/lib/mysql
     environment:

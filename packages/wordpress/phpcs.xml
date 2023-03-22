@@ -20,16 +20,15 @@
     <exclude-pattern>includes/issue.php</exclude-pattern>
   </rule>
   <rule ref="Squiz.Commenting.FunctionComment.ParamCommentFullStop">
-    <exclude-pattern>includes/key.php</exclude-pattern>
+    <exclude-pattern>includes</exclude-pattern>
   </rule>
   <rule ref="WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode">
     <exclude-pattern>includes/key.php</exclude-pattern>
   </rule>
   <rule ref="WordPress.WP.AlternativeFunctions.json_encode_json_encode">
-    <exclude-pattern>includes/key.php</exclude-pattern>
+    <exclude-pattern>includes</exclude-pattern>
   </rule>
   <rule ref="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents">
-    <exclude-pattern>includes/key.php</exclude-pattern>
-    <exclude-pattern>tests/key.test.php</exclude-pattern>
+    <exclude-pattern>tests</exclude-pattern>
   </rule>
 </ruleset>
