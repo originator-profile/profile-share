@@ -16,8 +16,8 @@ Web ブラウザーで Originator Profile と Document Profile の閲覧と検�
 ## 環境変数
 
 - `PROFILE_ISSUER`: プロファイルを発行しているレジストリ。プロファイルの署名検証時に使用する公開鍵の参照先のドメイン名。
-  - `yarn dev` 時のデフォルト値: `"http://localhost:8080"`
-  - `yarn build` 時のデフォルト値: `"https://oprdev.herokuapp.com"`
+  - `yarn dev` 時のデフォルト値: `"localhost"`
+  - `yarn build` 時のデフォルト値: `"oprdev.herokuapp.com"`
 
 ## npm スクリプト
 
