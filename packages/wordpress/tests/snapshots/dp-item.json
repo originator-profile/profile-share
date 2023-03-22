@@ -1,0 +1,14 @@
+[
+  {
+    "type": "website",
+    "url": "https://example.com/article/42"
+  },
+  {
+    "type": "text",
+    "url": "https://example.com/article/42",
+    "location": ".wp-block-post-content",
+    "proof": {
+      "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6Imx6djNGQjBickRUbmo2RjZTaUhMd24xbmtlNmo5Z05lWlV6SE94M0RKSXMiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..ue1DpS2ElWcWlFQrl6PzJsNdmv1w0uJJNxAMmu5IVp5tEOSm-ut-h1g6Rwo-05cOpo3aiJDrUnZboDsFtt3tMg"
+    }
+  }
+]

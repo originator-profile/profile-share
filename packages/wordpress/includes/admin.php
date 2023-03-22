@@ -26,12 +26,27 @@ function add_options_page() {
 
 /** 設定項目の追加 */
 function register_settings() {
+	\register_setting(
+		'profile',
+		'profile_registry_domain_name',
+		array(
+			'default' => 'oprdev.herokuapp.com',
+		)
+	);
 }
 
 /** 設定画面 */
 function settings_page() {
 	?>
 		<h1><?php \esc_html_e( 'Profile', 'profile' ); ?></h1>
+		<h2><?php \esc_html_e( '設定', 'settings' ); ?></h2>
+		<form method="post" action="options.php">
+			<?php \settings_fields( 'profile' ); ?>
+			<label><?php \esc_html_e( 'レジストリドメイン名', 'registry-domain-name' ); ?>
+				<input name="profile_registry_domain_name" required value="<?php echo \esc_html( \get_option( 'profile_registry_domain_name' ) ); ?>">
+			</label>
+			<?php \submit_button(); ?>
+		</form>
 		<h2><?php \esc_html_e( '構成', 'configuration' ); ?></h2>
 		<p>
 			<dl>
