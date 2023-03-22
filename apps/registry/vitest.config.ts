@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
       dir: "e2e",
       setupFiles: "e2e/setup.ts",
       testTimeout: 10_000,
-      threads: false,
+      singleThread: true,
     },
   } satisfies Record<string, UserConfig["test"]>;
   const config: UserConfig = {
