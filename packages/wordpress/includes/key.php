@@ -67,14 +67,7 @@ function key_gen() {
  * @return string URL-safe Base64
  */
 function base64_urlsafe_encode( string $data ): string {
-	return strtr(
-		\base64_encode( $data ),
-		array(
-			'+' => '-',
-			'/' => '_',
-			'=' => '',
-		)
-	);
+	return \sodium_bin2base64( $data, SODIUM_BASE64_VARIANT_URLSAFE_NO_PADDING );
 }
 
 /**
@@ -83,8 +76,7 @@ function base64_urlsafe_encode( string $data ): string {
  * @return array|false 成功した場合はJWK公開鍵、失敗した場合はfalse
  */
 function get_jwk_from_file(): array|false {
-	$private_key = \file_get_contents( PROFILE_PRIVATE_KEY_FILENAME );
-	$jwk         = get_jwk( \openssl_pkey_get_private( $private_key ) );
+	$jwk = get_jwk( \openssl_pkey_get_private( 'file://' . PROFILE_PRIVATE_KEY_FILENAME ) );
 
 	return $jwk;
 }
