@@ -11,11 +11,11 @@ Web ブラウザーで Originator Profile と Document Profile の閲覧と検�
 
 ### デモの Profile Registry で動作確認
 
-`yarn dev --issuer=https://oprdev.herokuapp.com --url=https://oprdev.herokuapp.com` で拡張機能の差分ビルドをプレビューします。
+`yarn dev --issuer=oprdev.herokuapp.com --url=https://oprdev.herokuapp.com` で拡張機能の差分ビルドをプレビューします。
 
 ## 環境変数
 
-- `PROFILE_ISSUER`: プロファイルを発行しているレジストリ。プロファイルの署名検証時に使用する公開鍵の参照先の URL オリジン。
+- `PROFILE_ISSUER`: プロファイルを発行しているレジストリ。プロファイルの署名検証時に使用する公開鍵の参照先のドメイン名。
   - `yarn dev` 時のデフォルト値: `"http://localhost:8080"`
   - `yarn build` 時のデフォルト値: `"https://oprdev.herokuapp.com"`
 
