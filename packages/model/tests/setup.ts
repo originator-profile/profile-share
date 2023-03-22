@@ -4,7 +4,7 @@ import path from "node:path";
 import { rest } from "msw";
 
 // TODO: `SyntaxError: Named export 'Headers' not found. The requested module 'headers-polyfill' is a CommonJS module, which may not support all module.exports as named exports.`
-//        mswのCommonJS依存関係が取り取り除かれれば修正する
+//        mswのCommonJS依存関係が取り除かれれば修正する
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { setupServer } = require("msw/node");
 
