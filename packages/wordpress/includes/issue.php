@@ -3,7 +3,6 @@
 
 namespace Profile\Issue;
 
-use Lcobucci\JWT\JwtFacade;
 use Lcobucci\JWT\Token\Builder;
 use Lcobucci\JWT\Encoding\ChainedFormatter;
 use Lcobucci\JWT\Encoding\JoseEncoder;
