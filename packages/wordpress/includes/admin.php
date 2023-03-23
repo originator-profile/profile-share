@@ -3,8 +3,11 @@
 
 namespace Profile\Admin;
 
+require_once __DIR__ . '/config.php';
+use const Profile\Config\PROFILE_PRIVATE_KEY_FILENAME;
+use const Profile\Config\PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME;
+
 require_once __DIR__ . '/key.php';
-use const Profile\Key\PROFILE_PRIVATE_KEY_FILENAME;
 use function Profile\Key\get_jwk_from_file;
 
 /** 管理者画面の初期化 */
@@ -30,7 +33,7 @@ function register_settings() {
 		'profile',
 		'profile_registry_domain_name',
 		array(
-			'default' => 'oprdev.herokuapp.com',
+			'default' => PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME,
 		)
 	);
 }
