@@ -3,8 +3,8 @@
 
 namespace Profile\Key;
 
-/** プライベート鍵ファイル */
-const PROFILE_PRIVATE_KEY_FILENAME = WP_CONTENT_DIR . '/credentials/profile.key.pem';
+require_once __DIR__ . '/config.php';
+use const Profile\Config\PROFILE_PRIVATE_KEY_FILENAME;
 
 /** 鍵の初期化 */
 function init() {
