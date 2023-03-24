@@ -1,9 +1,8 @@
 ---
 sidebar_position: 2
-sidebar_label: 操作説明書
 ---
 
-# Profile Registry 操作手順
+# 操作説明書
 
 ## 役割
 

@@ -310,3 +310,14 @@ DESCRIPTION
 ```
 <!-- commandsstop -->
 <!-- prettier-ignore-end -->
+
+## 環境変数
+
+DATABASE_URL
+: PostgreSQL 接続 URL (形式: `postgresql://<ホスト名または IP アドレス>[:<ポート>]/<データベース>`)
+
+APP_URL
+: デプロイ先オリジン
+
+PORT
+: リッスンポート
