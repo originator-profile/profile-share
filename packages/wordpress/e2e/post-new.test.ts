@@ -20,7 +20,7 @@ test.beforeAll(async ({ browser }) => {
   await page.getByRole("button", { name: "Log In" }).click();
 });
 
-test("transition_post_status フックで得られる内容の同一性を検証", async () => {
+test("投稿の検証", async () => {
   await page.goto("http://localhost:9000/wp-admin/post-new.php");
 
   const closeDialog = page.getByRole("button", { name: "Close dialog" });
@@ -56,5 +56,10 @@ test("transition_post_status フックで得られる内容の同一性を検証
       )
     )
   ).toString();
-  expect(text).toBe(post);
+  expect(text, "transition_post_statusフックで得られる内容と一致").toBe(post);
+
+  const link = await page.$$(
+    `link[rel="alternate"][type="application/ld+json"][href^="http"]`
+  );
+  expect(link, "link要素を含む").toHaveLength(1);
 });

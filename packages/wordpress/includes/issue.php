@@ -3,17 +3,18 @@
 
 namespace Profile\Issue;
 
-use Lcobucci\JWT\JwtFacade;
 use Lcobucci\JWT\Token\Builder;
 use Lcobucci\JWT\Encoding\ChainedFormatter;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Signer\Ecdsa\Sha256;
 use Lcobucci\JWT\Signer\Key\InMemory;
 
+require_once __DIR__ . '/config.php';
+use const Profile\Config\PROFILE_PRIVATE_KEY_FILENAME;
+
 require_once __DIR__ . '/key.php';
 use function Profile\Key\get_jwk;
 use function Profile\Key\base64_urlsafe_encode;
-use const Profile\Key\PROFILE_PRIVATE_KEY_FILENAME;
 
 /** 投稿への署名処理の初期化 */
 function init() {

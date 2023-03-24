@@ -21,3 +21,6 @@ require_once __DIR__ . '/includes/issue.php';
 
 require_once __DIR__ . '/includes/key.php';
 \Profile\Key\init();
+
+require_once __DIR__ . '/includes/post.php';
+\Profile\Post\init();
