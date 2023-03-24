@@ -166,7 +166,7 @@ function sign_dp( string $domain_name, string $url, string $jws, string $pkcs8 )
 				( new \DateTimeImmutable() )
 				->setTimestamp( \strtotime( $dp['expiredAt'] ) )
 			)
-			->withClaim( 'https://opr.webdino.org/jwt/claims/dp', $dp['item'] );
+			->withClaim( 'https://opr.webdino.org/jwt/claims/dp', array( 'item' => $dp['item'] ) );
 
 	$jwt = $builder->getToken( new Sha256(), InMemory::plainText( $pkcs8 ) );
 
