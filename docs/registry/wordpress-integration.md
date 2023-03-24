@@ -36,13 +36,18 @@ $ editor .env
 
 レジストリの管理者の作成を行います。
 
-<!-- TODO: 管理者作成コマンドの修正
-会員作成も行えるように変更したい
--->
+```
+$ bin/dev admin:create --id <レジストリドメイン名>
+```
+
+例
 
 ```
-$ bin/dev admin:create
+$ bin/dev admin:create --id example.com
+Secret: eb796625-51df-4ed7-b9b5-2d43d6fa639a:RglFDciAMO8qwVv3lb1exs_rCMGPEGeAE6Hxmz0NVLg
 ```
+
+<!-- NOTE: ローカルの開発環境では `--id=localhost` を使用できます。 -->
 
 このとき得られる認証情報は次項で使用します。
 

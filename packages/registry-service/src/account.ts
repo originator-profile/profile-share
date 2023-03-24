@@ -11,6 +11,17 @@ type Options = {
 type AccountId = string;
 type OpId = string;
 
+/**
+ * UUID文字列形式の判定
+ * @param id 会員 ID またはドメイン名
+ * @return UUID文字列形式の場合はtrue、それ以外の場合false
+ */
+function isUuid(id: string): boolean {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+    id
+  );
+}
+
 export const AccountService = ({ prisma, validator }: Options) => ({
   /**
    * 会員の作成
@@ -22,12 +33,12 @@ export const AccountService = ({ prisma, validator }: Options) => ({
   },
   /**
    * 会員の表示
-   * @param input.id 会員 ID
+   * @param input.id 会員 ID またはドメイン名
    * @return 会員
    */
   async read({ id }: { id: AccountId }): Promise<accounts | Error> {
     const data = await prisma.accounts
-      .findUnique({ where: { id } })
+      .findUnique({ where: isUuid(id) ? { id } : { domainName: id } })
       .catch((e: Error) => e);
     return data ?? new NotFoundError();
   },
@@ -46,11 +57,13 @@ export const AccountService = ({ prisma, validator }: Options) => ({
   },
   /**
    * 会員の削除
-   * @param input.id 会員 ID
+   * @param input.id 会員 ID またはドメイン名
    * @return 会員
    */
   async delete({ id }: { id: AccountId }): Promise<accounts | Error> {
-    return await prisma.accounts.delete({ where: { id } });
+    return await prisma.accounts.delete({
+      where: isUuid(id) ? { id } : { domainName: id },
+    });
   },
   /**
    * JWKS の取得

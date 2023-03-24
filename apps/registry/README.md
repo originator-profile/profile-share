@@ -88,10 +88,10 @@ DESCRIPTION
 
 ```
 USAGE
-  $ profile-registry admin:create [--id <value>] [--password <value>]
+  $ profile-registry admin:create --id <value> [--password <value>]
 
 FLAGS
-  --id=<value>        会員 (デフォルト: ISSUER_UUID)
+  --id=<value>        (required) 会員 ID またはドメイン名
   --password=<value>  パスフレーズ
 
 DESCRIPTION
@@ -104,10 +104,10 @@ DESCRIPTION
 
 ```
 USAGE
-  $ profile-registry admin:delete [--id <value>]
+  $ profile-registry admin:delete --id <value>
 
 FLAGS
-  --id=<value>  会員 (デフォルト: ISSUER_UUID)
+  --id=<value>  (required) 会員 ID またはドメイン名
 
 DESCRIPTION
   管理者権限の削除
