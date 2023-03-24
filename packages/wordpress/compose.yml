@@ -7,6 +7,9 @@ services:
     user: "${WORDPRESS_USER:-www-data}"
     ports:
       - "${WORDPRESS_PORT:-9000}:80"
+    extra_hosts:
+      # デバッグ・テスト用 (WP_DEBUG無効時不要)
+      host.docker.internal: host-gateway
     volumes:
       - ".:/var/www/html/wp-content/plugins/profile"
       - "../..:/workspaces/profile"
