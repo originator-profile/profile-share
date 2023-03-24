@@ -93,10 +93,16 @@ USAGE
 
 FLAGS
   --id=<value>  (required) 会員 ID またはドメイン名
-  --op=<value>  (required)
+  --op=<value>  (required) Signed Originator Profile ファイル
 
 DESCRIPTION
   Signed Originator Profile の登録 (Document Profile Registry 用)
+
+FLAG DESCRIPTIONS
+  --op=<value>  Signed Originator Profile ファイル
+
+    Originator Profile レジストリから受け取った Signed Originator Profile ファイルを指定します。
+    JWT の含まれないファイルは無効です。また JWT の Subject クレームは会員自身のドメイン名と一致しなければなりません。
 ```
 
 ## `profile-registry admin:create`

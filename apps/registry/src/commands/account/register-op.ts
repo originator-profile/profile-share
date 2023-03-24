@@ -12,7 +12,10 @@ export class AccountRegisterOp extends Command {
       required: true,
     }),
     op: Flags.string({
-      description: "",
+      summary: "Signed Originator Profile ファイル",
+      description: `\
+Originator Profile レジストリから受け取った Signed Originator Profile ファイルを指定します。
+JWT の含まれないファイルは無効です。また JWT の Subject クレームは会員自身のドメイン名と一致しなければなりません。`,
       required: true,
     }),
   };
