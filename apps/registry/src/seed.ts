@@ -52,7 +52,7 @@ async function issueDp(services: Services, issuerUuid: string, pkcs8: string) {
   if (website instanceof Error) throw website;
   const dpJwt = await services.publisher.signDp(issuerUuid, input.url, pkcs8);
   if (dpJwt instanceof Error) throw dpJwt;
-  await services.publisher.issueDp(issuerUuid, dpJwt);
+  await services.publisher.registerDp(issuerUuid, dpJwt);
   console.log(`Document Profile: ${dpJwt}`);
 }
 

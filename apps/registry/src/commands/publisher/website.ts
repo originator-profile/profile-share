@@ -84,7 +84,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     });
     if (jwt instanceof Error) this.error(jwt);
 
-    const dpId = await services.publisher.issueDp(flags.id, jwt);
+    const dpId = await services.publisher.registerDp(flags.id, jwt);
     if (dpId instanceof Error) this.error(dpId);
   }
 

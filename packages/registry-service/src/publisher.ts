@@ -3,6 +3,7 @@ import flush from "just-flush";
 import { addYears, fromUnixTime } from "date-fns";
 import { NotFoundError, BadRequestError } from "http-errors-enhanced";
 import { Dp } from "@webdino/profile-model";
+import { isJwtDpPayload } from "@webdino/profile-core";
 import { signDp } from "@webdino/profile-sign";
 import { ValidatorService } from "./validator";
 
@@ -80,14 +81,25 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
     return jwt;
   },
   /**
-   * DP の発行
-   * @param id 会員ID
-   * @param jwt JWT でエンコードされた DP
+   * Signed Document Profile の登録
+   * @param id 会員 ID
+   * @param jwt Signed Document Profile
    * @return dps.id
    */
-  async issueDp(id: AccountId, jwt: string): Promise<DpId | Error> {
+  async registerDp(id: AccountId, jwt: string): Promise<DpId | Error> {
+    const account = await prisma.accounts.findUnique({ where: { id } });
+    if (!account) return new BadRequestError();
+    if (account instanceof Error) return account;
     const decoded = validator.decodeToken(jwt);
     if (decoded instanceof Error) return decoded;
+    if (!isJwtDpPayload(decoded.payload)) {
+      return new BadRequestError("It is not Document Profile.");
+    }
+    if (decoded.payload.iss !== account.domainName) {
+      return new BadRequestError(
+        "It is not Signed Document Profile for the account."
+      );
+    }
     const issuedAt: Date = fromUnixTime(decoded.payload.iat);
     const expiredAt: Date = fromUnixTime(decoded.payload.exp);
     const websiteId = decoded.payload.sub;
