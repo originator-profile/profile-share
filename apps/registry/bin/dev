@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+require("dotenv").config();
 require("esbuild-register");
 
 // NOTE: command not found エラーを防ぐ
