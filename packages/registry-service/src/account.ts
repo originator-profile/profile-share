@@ -1,6 +1,8 @@
 import { PrismaClient, Prisma, accounts } from "@prisma/client";
+import { fromUnixTime } from "date-fns";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
 import { Jwk, Jwks } from "@webdino/profile-model";
+import { isJwtOpPayload } from "@webdino/profile-core";
 import { ValidatorService } from "./validator";
 
 type Options = {
@@ -95,6 +97,45 @@ export const AccountService = ({ prisma, validator }: Options) => ({
 
     const jwks: Jwks = { keys: [data.jwk as Jwk] };
     return jwks;
+  },
+  /**
+   * Signed Originator Profile の登録 (Document Profile Registry 用)
+   * @param id 会員 ID またはドメイン名
+   * @param jwt Signed Originator Profile
+   * @return 成功した場合はSigned Originator Profile、失敗した場合はError
+   */
+  async registerOp(id: AccountId, jwt: string): Promise<string | Error> {
+    const account = await this.read({ id });
+    if (account instanceof Error) return account;
+    const uuid = account.id;
+    const decoded = validator.decodeToken(jwt);
+    if (decoded instanceof Error) return decoded;
+    if (!isJwtOpPayload(decoded.payload)) {
+      return new BadRequestError("It is not Originator Profile.");
+    }
+    if (decoded.payload.sub !== account.domainName) {
+      return new BadRequestError(
+        "It is not Signed Originator Profile for the account."
+      );
+    }
+    const issuedAt: Date = fromUnixTime(decoded.payload.iat);
+    const expiredAt: Date = fromUnixTime(decoded.payload.exp);
+    const op = await prisma.ops
+      .create({
+        data: {
+          certifierId: uuid,
+          jwt,
+          issuedAt,
+          expiredAt,
+        },
+      })
+      .catch((e: Error) => e);
+    if (!op) return new BadRequestError();
+    if (op instanceof Error) return op;
+    const pub = await this.publishProfile(uuid, op.id);
+    if (!pub) return new BadRequestError();
+    if (pub instanceof Error) return pub;
+    return jwt;
   },
   /**
    * OP の公開

@@ -29,6 +29,7 @@ running command...
 <!-- commands -->
 * [`profile-registry account`](#profile-registry-account)
 * [`profile-registry account:register-key`](#profile-registry-accountregister-key)
+* [`profile-registry account:register-op`](#profile-registry-accountregister-op)
 * [`profile-registry admin:create`](#profile-registry-admincreate)
 * [`profile-registry admin:delete`](#profile-registry-admindelete)
 * [`profile-registry cert:issue`](#profile-registry-certissue)
@@ -80,6 +81,22 @@ FLAGS
 
 DESCRIPTION
   公開鍵の登録
+```
+
+## `profile-registry account:register-op`
+
+Signed Originator Profile の登録 (Document Profile Registry 用)
+
+```
+USAGE
+  $ profile-registry account:register-op --id <value> --op <value>
+
+FLAGS
+  --id=<value>  (required) 会員 ID またはドメイン名
+  --op=<value>  (required)
+
+DESCRIPTION
+  Signed Originator Profile の登録 (Document Profile Registry 用)
 ```
 
 ## `profile-registry admin:create`
