@@ -58,10 +58,9 @@ WordPress サイトに WordPress Profile Plugin をインストールします�
 
 Document Profile Registry のドメイン名は WordPress 管理者画面 > Settings > Profile > [レジストリドメイン名] に設定してください。
 
-<!-- TODO: 未実装
-
 Document Profile Registry の認証情報は WordPress 管理者画面 > Settings > Profile > [認証情報] に設定してください。
--->
+
+<!-- TODO: 登録API連携機能未実装 -->
 
 ## Originator Profile レジストリへの公開鍵の登録と Signed Originator Profile の発行依頼
 
