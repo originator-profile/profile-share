@@ -21,14 +21,30 @@ final class Dp {
 	/**
 	 * DP生成
 	 *
-	 * @param string $issuer レジストリドメイン名
-	 * @param string $subject 投稿のパーマリンクのリンク
-	 * @param string $jws 対象のテキストへの署名
+	 * @param string  $issuer レジストリドメイン名
+	 * @param string  $subject 投稿のパーマリンクのリンク
+	 * @param string  $jws 対象のテキストへの署名
+	 * @param ?string $title (optional) タイトル
+	 * @param ?string $image (optional) 画像URL
+	 * @param ?string $description (optional) 説明
+	 * @param ?string $author (optional) https://schema.org/author
+	 * @param ?string $category (optional) https://schema.org/category
+	 * @param ?string $editor (optional) https://schema.org/editor
+	 * @param ?string $date_published (optional) https://schema.org/datePublished
+	 * @param ?string $date_modified (optional) https://schema.org/dateModified
 	 */
 	public function __construct(
 		public string $issuer,
 		public string $subject,
 		public string $jws,
+		public ?string $title = null,
+		public ?string $image = null,
+		public ?string $description = null,
+		public ?string $author = null,
+		public ?string $category = null,
+		public ?string $editor = null,
+		public ?string $date_published = null,
+		public ?string $date_modified = null,
 	) {}
 
 
@@ -53,9 +69,19 @@ final class Dp {
 			'issuer'    => $this->issuer,
 			'subject'   => $this->subject,
 			'item'      => array(
-				array(
-					'type' => 'website',
-					'url'  => $this->subject,
+				array_filter(
+					array(
+						'type'                             => 'website',
+						'url'                              => $this->subject,
+						'title'                            => $this->title,
+						'image'                            => $this->image,
+						'description'                      => $this->description,
+						'https://schema.org/author'        => $this->author,
+						'https://schema.org/category'      => $this->category,
+						'https://schema.org/editor'        => $this->editor,
+						'https://schema.org/datePublished' => $this->date_published,
+						'https://schema.org/dateModified'  => $this->date_modified,
+					)
 				),
 				array(
 					'type'     => PROFILE_SIGN_TYPE,
