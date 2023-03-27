@@ -66,13 +66,23 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 		return;
 	}
 
-	$url = \get_permalink( $post->ID );
+	$url = \get_permalink( $post );
 
 	if ( ! $url ) {
 		return;
 	}
 
-	$dp  = new Dp( issuer: $domain_name, subject: $url, jws: $jws );
+	$dp  = new Dp(
+		issuer: $domain_name,
+		subject: $url,
+		jws: $jws,
+		title: $post->post_title,
+		image: \has_post_thumbnail( $post ) ? \get_the_post_thumbnail_url( $post ) : null,
+		description: \has_excerpt( $post ) ? \get_the_excerpt( $post ) : null,
+		author: \get_the_author_meta( 'display_name', $post->post_author ),
+		date_published: \get_the_date( \DateTimeInterface::RFC3339, $post ),
+		date_modified: \get_the_modified_date( \DateTimeInterface::RFC3339, $post ),
+	);
 	$jwt = issue_dp( $dp, \get_option( 'profile_registry_admin_secret' ), $filename );
 
 	if ( ! $jwt ) {
@@ -145,10 +155,18 @@ function issue_dp( Dp $dp, string $admin_secret, string $pkcs8 ): string|false {
 		'body'    => \wp_json_encode(
 			array(
 				'input' => array(
-					'url'        => $dp->subject,
-					'bodyFormat' => array( 'connect' => array( 'value' => PROFILE_SIGN_TYPE ) ),
-					'location'   => PROFILE_SIGN_LOCATION,
-					'proofJws'   => $dp->jws,
+					'url'           => $dp->subject,
+					'title'         => $dp->title,
+					'image'         => $dp->image,
+					'description'   => $dp->description,
+					'author'        => $dp->author,
+					'category'      => $dp->category,
+					'editor'        => $dp->editor,
+					'datePublished' => $dp->date_published,
+					'dateModified'  => $dp->date_modified,
+					'bodyFormat'    => array( 'connect' => array( 'value' => PROFILE_SIGN_TYPE ) ),
+					'location'      => PROFILE_SIGN_LOCATION,
+					'proofJws'      => $dp->jws,
 				),
 				'jwt'   => $jwt,
 			)

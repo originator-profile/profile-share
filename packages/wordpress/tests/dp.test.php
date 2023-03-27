@@ -21,7 +21,19 @@ EOF;
 		$jws         = 'eyJhbGciOiJFUzI1NiIsImtpZCI6Imx6djNGQjBickRUbmo2RjZTaUhMd24xbmtlNmo5Z05lWlV6SE94M0RKSXMiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..ue1DpS2ElWcWlFQrl6PzJsNdmv1w0uJJNxAMmu5IVp5tEOSm-ut-h1g6Rwo-05cOpo3aiJDrUnZboDsFtt3tMg';
 		$domain_name = 'example.com';
 		$url         = 'https://example.com/article/42';
-		$dp          = new DpClass( issuer: $domain_name, subject: $url, jws: $jws );
+		$dp          = new DpClass(
+			issuer: $domain_name,
+			subject: $url,
+			jws: $jws,
+			title: 'ブログはじめました',
+			image: 'https://example.com/image/hello.png',
+			description: 'こんにちは。今日からブログをはじめました。',
+			author: '○△ 太郎',
+			category: '日記',
+			editor: '○△ 編集',
+			date_published: '2023-03-23T02:00:00+00:00',
+			date_modified: '2023-03-24T02:33:44+00:00',
+		);
 		$jwt         = $dp->sign( $pkcs8 );
 		$token       = ( new Parser( new JoseEncoder() ) )->parse( $jwt );
 		assert( $token instanceof UnencryptedToken );
