@@ -3,9 +3,6 @@
 
 namespace Profile\Issue;
 
-use Lcobucci\JWT\Token\Builder;
-use Lcobucci\JWT\Encoding\ChainedFormatter;
-use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Signer\Ecdsa\Sha256;
 use Lcobucci\JWT\Signer\Key\InMemory;
 
@@ -17,6 +14,9 @@ use const Profile\Config\PROFILE_SIGN_LOCATION;
 require_once __DIR__ . '/key.php';
 use function Profile\Key\get_jwk;
 use function Profile\Key\base64_urlsafe_encode;
+
+require_once __DIR__ . '/class-dp.php';
+use Profile\Dp\Dp;
 
 /** 投稿への署名処理の初期化 */
 function init() {
@@ -72,7 +72,8 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 		return;
 	}
 
-	$jwt = issue_dp( $domain_name, \get_option( 'profile_registry_admin_secret' ), $url, $jws, $filename );
+	$dp  = new Dp( issuer: $domain_name, subject: $url, jws: $jws );
+	$jwt = issue_dp( $dp, \get_option( 'profile_registry_admin_secret' ), $filename );
 
 	if ( ! $jwt ) {
 		return;
@@ -121,17 +122,20 @@ function sign_body( string $body, string $pkcs8 ): string|false {
 /**
  * Signed Document Profileの発行
  *
- * @param string $domain_name レジストリドメイン名
+ * @param Dp     $dp Dp
  * @param string $admin_secret レジストリ認証情報
- * @param string $url 投稿のパーマリンクのリンク
- * @param string $jws 対象のテキストへの署名
  * @param string $pkcs8 PEM base64 でエンコードされた PKCS #8 秘密鍵またはそのファイルパス
  * @return string|false 成功した場合はSigned Document Profile、失敗した場合はfalse
  */
-function issue_dp( string $domain_name, string $admin_secret, string $url, string $jws, string $pkcs8 ): string|false {
-	$jwt           = sign_dp( $domain_name, $url, $jws, $pkcs8 );
+function issue_dp( Dp $dp, string $admin_secret, string $pkcs8 ): string|false {
+	$jwt = $dp->sign( pkcs8: $pkcs8 );
+
+	if ( ! $jwt ) {
+		return false;
+	}
+
 	list( $uuid, ) = \explode( ':', $admin_secret );
-	$endpoint      = "https://{$domain_name}/admin/publisher/{$uuid}";
+	$endpoint      = "https://{$dp->issuer}/admin/publisher/{$uuid}";
 	$args          = array(
 		'method'  => 'POST',
 		'headers' => array(
@@ -141,17 +145,17 @@ function issue_dp( string $domain_name, string $admin_secret, string $url, strin
 		'body'    => \wp_json_encode(
 			array(
 				'input' => array(
-					'url'        => $url,
+					'url'        => $dp->subject,
 					'bodyFormat' => array( 'connect' => array( 'value' => PROFILE_SIGN_TYPE ) ),
 					'location'   => PROFILE_SIGN_LOCATION,
-					'proofJws'   => $jws,
+					'proofJws'   => $dp->jws,
 				),
 				'jwt'   => $jwt,
 			)
 		),
 	);
 
-	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $domain_name ) {
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $dp->issuer ) {
 		$in_docker = \file_exists( '/.dockerenv' );
 		if ( $in_docker ) {
 			$endpoint = "http://host.docker.internal:8080/admin/publisher/{$uuid}";
@@ -177,61 +181,3 @@ function issue_dp( string $domain_name, string $admin_secret, string $url, strin
 	return $jwt;
 }
 
-/**
- * DPへの署名
- *
- * @param string $domain_name レジストリドメイン名
- * @param string $url 投稿のパーマリンクのリンク
- * @param string $jws 対象のテキストへの署名
- * @param string $pkcs8 PEM base64 でエンコードされた PKCS #8 秘密鍵またはそのファイルパス
- * @return string Signed DP
- */
-function sign_dp( string $domain_name, string $url, string $jws, string $pkcs8 ): string {
-	$pkey = \openssl_pkey_get_private( $pkcs8 );
-	$jwk  = get_jwk( $pkey );
-
-	if ( ! $jwk ) {
-		return false;
-	}
-
-	$dp = array(
-		'type'      => 'dp',
-		'issuedAt'  => \gmdate( 'c' ),
-		'expiredAt' => \gmdate( 'c', \strtotime( '+ 1 year' ) ),
-		'issuer'    => $domain_name,
-		'subject'   => $url,
-		'item'      => array(
-			array(
-				'type' => 'website',
-				'url'  => $url,
-			),
-			array(
-				'type'     => PROFILE_SIGN_TYPE,
-				'url'      => $url,
-				'location' => PROFILE_SIGN_LOCATION,
-				'proof'    => array( 'jws' => $jws ),
-			),
-		),
-	);
-
-	$builder = (
-			new Builder( new JoseEncoder(), ChainedFormatter::withUnixTimestampDates() )
-		)
-			->withHeader( 'alg', $jwk['alg'] )
-			->withHeader( 'kid', $jwk['kid'] )
-			->issuedBy( $dp['issuer'] )
-			->relatedTo( $dp['subject'] )
-			->issuedAt(
-				( new \DateTimeImmutable() )
-				->setTimestamp( \strtotime( $dp['issuedAt'] ) )
-			)
-			->expiresAt(
-				( new \DateTimeImmutable() )
-				->setTimestamp( \strtotime( $dp['expiredAt'] ) )
-			)
-			->withClaim( 'https://opr.webdino.org/jwt/claims/dp', array( 'item' => $dp['item'] ) );
-
-	$jwt = $builder->getToken( new Sha256(), InMemory::plainText( $pkcs8 ) );
-
-	return $jwt->toString();
-}
