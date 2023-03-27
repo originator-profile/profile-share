@@ -11,6 +11,7 @@ services:
       # デバッグ・テスト用 (WP_DEBUG無効時不要)
       host.docker.internal: host-gateway
     volumes:
+      - "wordpress_data:/var/www/html"
       - ".:/var/www/html/wp-content/plugins/profile"
       - "../..:/workspaces/profile"
       # デバッグ・テスト用 (WP_DEBUG無効時不要)
@@ -37,4 +38,5 @@ services:
       MARIADB_PASSWORD: "${WORDPRESS_DB_PASSWORD:?}"
       MARIADB_ROOT_PASSWORD: "${WORDPRESS_DB_ROOT_PASSWORD:?}"
 volumes:
+  wordpress_data:
   mariadb_data_v10:
