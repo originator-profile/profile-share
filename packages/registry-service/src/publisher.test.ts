@@ -52,7 +52,7 @@ describe("PublisherService", () => {
     expect(website?.url).toBe(url);
   });
 
-  test("issueDp() calls prisma.dps.create()", async () => {
+  test("registerDp() calls prisma.dps.create()", async () => {
     const accountId = crypto.randomUUID();
     const issuer = "example.com";
     const issuedAt = new Date();
@@ -69,6 +69,11 @@ describe("PublisherService", () => {
       .setIssuedAt(getUnixTime(issuedAt))
       .setExpirationTime(getUnixTime(expiredAt))
       .sign(privateKey);
+    // @ts-expect-error dummy account
+    prisma.accounts.findUnique.mockResolvedValue({
+      id: accountId,
+      domainName: issuer,
+    });
     prisma.dps.create.mockResolvedValue({
       id: dpId,
       issuerId: accountId,
@@ -77,7 +82,7 @@ describe("PublisherService", () => {
       expiredAt,
       websiteId: null,
     });
-    const data = await publisher.issueDp(accountId, jwt);
+    const data = await publisher.registerDp(accountId, jwt);
     // @ts-expect-error assert
     expect(prisma.dps.create.calls.length).toBe(1);
     expect(data).toBe(dpId);

@@ -16,6 +16,7 @@
     "@types/jsonld": "^1.5.8",
     "@types/ungap__structured-clone": "^0.3.0",
     "@ungap/structured-clone": "^1.0.2",
+    "@webdino/profile-core": "*",
     "@webdino/profile-model": "*",
     "@webdino/profile-registry-db": "*",
     "@webdino/profile-sign": "*",

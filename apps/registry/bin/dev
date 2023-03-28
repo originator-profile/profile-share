@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 
+require("dotenv").config();
 require("esbuild-register");
 
+// NOTE: command not found エラーを防ぐ
+process.env.NODE_ENV = "development";
+
+// NOTE: @fastify/autoload プラグインの読み込み失敗を防ぐ
 process.env.TS_NODE_DEV = "true";
 
 (async () => {

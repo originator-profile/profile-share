@@ -3,7 +3,6 @@ import omit from "just-omit";
 import { FromHandler } from "../../../../types";
 import Params from "./params";
 import website from "./website";
-import issue from "./issue";
 
 async function index(fastify: FastifyInstance): Promise<void> {
   fastify.post<FromHandler<typeof website, Params>>(
@@ -25,12 +24,6 @@ async function index(fastify: FastifyInstance): Promise<void> {
     "/",
     { schema: omit(website.schema, "body") },
     website
-  );
-
-  fastify.post<FromHandler<typeof issue, Params>>(
-    "/issue",
-    { ...issue },
-    issue
   );
 }
 

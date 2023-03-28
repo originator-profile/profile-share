@@ -29,6 +29,7 @@ running command...
 <!-- commands -->
 * [`profile-registry account`](#profile-registry-account)
 * [`profile-registry account:register-key`](#profile-registry-accountregister-key)
+* [`profile-registry account:register-op`](#profile-registry-accountregister-op)
 * [`profile-registry admin:create`](#profile-registry-admincreate)
 * [`profile-registry admin:delete`](#profile-registry-admindelete)
 * [`profile-registry cert:issue`](#profile-registry-certissue)
@@ -82,16 +83,38 @@ DESCRIPTION
   公開鍵の登録
 ```
 
+## `profile-registry account:register-op`
+
+Signed Originator Profile の登録 (Document Profile Registry 用)
+
+```
+USAGE
+  $ profile-registry account:register-op --id <value> --op <value>
+
+FLAGS
+  --id=<value>  (required) 会員 ID またはドメイン名
+  --op=<value>  (required) Signed Originator Profile ファイル
+
+DESCRIPTION
+  Signed Originator Profile の登録 (Document Profile Registry 用)
+
+FLAG DESCRIPTIONS
+  --op=<value>  Signed Originator Profile ファイル
+
+    Originator Profile レジストリから受け取った Signed Originator Profile ファイルを指定します。
+    JWT の含まれないファイルは無効です。また JWT の Subject クレームは会員自身のドメイン名と一致しなければなりません。
+```
+
 ## `profile-registry admin:create`
 
 管理者の作成
 
 ```
 USAGE
-  $ profile-registry admin:create [--id <value>] [--password <value>]
+  $ profile-registry admin:create --id <value> [--password <value>]
 
 FLAGS
-  --id=<value>        会員 (デフォルト: ISSUER_UUID)
+  --id=<value>        (required) 会員 ID またはドメイン名
   --password=<value>  パスフレーズ
 
 DESCRIPTION
@@ -104,10 +127,10 @@ DESCRIPTION
 
 ```
 USAGE
-  $ profile-registry admin:delete [--id <value>]
+  $ profile-registry admin:delete --id <value>
 
 FLAGS
-  --id=<value>  会員 (デフォルト: ISSUER_UUID)
+  --id=<value>  (required) 会員 ID またはドメイン名
 
 DESCRIPTION
   管理者権限の削除
@@ -310,3 +333,14 @@ DESCRIPTION
 ```
 <!-- commandsstop -->
 <!-- prettier-ignore-end -->
+
+## 環境変数
+
+DATABASE_URL
+: PostgreSQL 接続 URL (形式: `postgresql://<ホスト名または IP アドレス>[:<ポート>]/<データベース>`)
+
+APP_URL
+: デプロイ先オリジン
+
+PORT
+: リッスンポート

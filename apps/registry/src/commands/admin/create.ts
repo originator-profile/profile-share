@@ -1,14 +1,15 @@
-import { Command, Flags, ux } from "@oclif/core";
+import { Command, Flags } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
 import { Services } from "@webdino/profile-registry-service";
+import crypto from "node:crypto";
+import { NotFoundError } from "http-errors-enhanced";
 
 export class AdminCreate extends Command {
   static description = "管理者の作成";
   static flags = {
     id: Flags.string({
-      description: "会員 (デフォルト: ISSUER_UUID)",
-      env: "ISSUER_UUID",
-      default: "",
+      description: "会員 ID またはドメイン名",
+      required: true,
     }),
     password: Flags.string({
       description: "パスフレーズ",
@@ -18,11 +19,30 @@ export class AdminCreate extends Command {
   async run(): Promise<void> {
     const { flags } = await this.parse(AdminCreate);
     const prisma = new PrismaClient();
-    const services = Services({ config: { ISSUER_UUID: flags.id }, prisma });
+    const services = Services({ config: { ISSUER_UUID: "" }, prisma });
+    const account = await services.account.read({ id: flags.id });
+    let id: string;
+    if (account instanceof NotFoundError) {
+      const data = await services.account.create({
+        domainName: flags.id,
+        name: "REDACTED FOR PRIVACY",
+        postalCode: "REDACTED FOR PRIVACY",
+        addressCountry: "REDACTED FOR PRIVACY",
+        addressRegion: "REDACTED FOR PRIVACY",
+        addressLocality: "REDACTED FOR PRIVACY",
+        streetAddress: "REDACTED FOR PRIVACY",
+      });
+      if (data instanceof Error) this.error(data);
+      id = data.id;
+    } else if (!(account instanceof Error)) {
+      id = account.id;
+    } else {
+      this.error(account);
+    }
     const password =
-      flags.password ?? (await ux.prompt("Enter Password", { type: "hide" }));
-    const data = await services.admin.create(flags.id, password);
+      flags.password ?? crypto.randomBytes(32).toString("base64url");
+    const data = await services.admin.create(id, password);
     if (data instanceof Error) this.error(data);
-    this.log(`UUID: ${data.adminId}`);
+    this.log(`Secret: ${data.adminId}:${password}`);
   }
 }

@@ -1,3 +1,8 @@
+---
+sidebar_position: 1
+sidebar_label: 仕様
+---
+
 # Profile Registry 仕様
 
 ## API ドキュメント

@@ -8,3 +8,9 @@ const PROFILE_PRIVATE_KEY_FILENAME = WP_CONTENT_DIR . '/credentials/profile.key.
 
 /** デフォルトのレジストリドメイン名 */
 const PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME = 'oprdev.herokuapp.com';
+
+/** 署名型 */
+const PROFILE_SIGN_TYPE = 'text';
+
+/** 署名対象の要素 */
+const PROFILE_SIGN_LOCATION = '.wp-block-post-content';

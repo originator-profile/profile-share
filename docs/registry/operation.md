@@ -1,9 +1,8 @@
 ---
 sidebar_position: 2
-sidebar_label: 操作説明書
 ---
 
-# Profile Registry 操作手順
+# 操作説明書
 
 ## 役割
 
@@ -68,7 +67,7 @@ Prisma Studio を使用して DB の内容を参照する。
 
 ```console
 cd apps/registry
-yarn dotenv -- -e .env -- bin/dev db:prisma studio --schema=../../packages/registry-db/prisma/schema.prisma
+bin/dev db:prisma studio --schema=../../packages/registry-db/prisma/schema.prisma
 ```
 
 Prisma Studio が起動します。現在レジストリ側に登録されている OP / DP 情報が閲覧できます。
@@ -144,7 +143,7 @@ Prisma Studio が起動します。現在レジストリ側に登録されてい
 `apps/registry`にいることを確認したうえで
 
 ```console
-yarn dotenv -- -e .env -- bin/dev account -i account.json -o create
+bin/dev account -i account.json -o create
 ```
 
 と実行してください。 コマンド中の`account.json`の部分は先程の JSON ファイル名なので適宜置き換えることがあるかもしれません。
@@ -158,7 +157,7 @@ Prisma Studio を確認してみてください。組織が登録されていた
 Signed Originator Profile あるいは Signed Document Profile 発行の作業を行うために、鍵ペアを取得する作業が必要になります。 以下のコマンドを実行してください。
 
 ```console
-yarn dotenv -- -e .env -- bin/dev key-gen -o <keyのファイル名>
+bin/dev key-gen -o <keyのファイル名>
 ```
 
 `<keyのファイル名>` には出力ファイル名を指定します。例えば`key`にすると
@@ -174,7 +173,7 @@ yarn dotenv -- -e .env -- bin/dev key-gen -o <keyのファイル名>
 Prisma Studio の組織情報の行の `id` 列にある値をコピーして、以下の末尾に指定します。 `id`が `daab5a08-d513-400d-aaaa-e1c1493e0421` だった場合、以下のコマンドになります。
 
 ```console
-yarn dotenv -- -e .env -- bin/dev account:register-key -k key.pub.json --id daab5a08-d513-400d-aaaa-e1c1493e0421
+bin/dev account:register-key -k key.pub.json --id daab5a08-d513-400d-aaaa-e1c1493e0421
 ```
 
 ### Signed Originator Profile を作成する
@@ -193,7 +192,7 @@ yarn dotenv -- -e .env -- bin/dev account:register-key -k key.pub.json --id daab
 この情報をもとに、以下のコマンドを実行します。
 
 ```console
-yarn dotenv -- -e .env -- bin/dev cert:issue \
+bin/dev cert:issue \
   -i key \
   --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e \
   --holder daab5a08-d513-400d-aaaa-e1c1493e0421
@@ -244,7 +243,7 @@ Signed Originator Profile の登録が完了しました。
 --input は先程作成した`website.json`ファイル名です。
 
 ```console
-yarn dotenv -- -e .env -- bin/dev publisher:website \
+bin/dev publisher:website \
   -i key \
   --id daab5a08-d513-400d-aaaa-e1c1493e0421 \
   --input website.json \

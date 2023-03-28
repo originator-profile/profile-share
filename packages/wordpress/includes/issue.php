@@ -11,6 +11,8 @@ use Lcobucci\JWT\Signer\Key\InMemory;
 
 require_once __DIR__ . '/config.php';
 use const Profile\Config\PROFILE_PRIVATE_KEY_FILENAME;
+use const Profile\Config\PROFILE_SIGN_TYPE;
+use const Profile\Config\PROFILE_SIGN_LOCATION;
 
 require_once __DIR__ . '/key.php';
 use function Profile\Key\get_jwk;
@@ -70,7 +72,11 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 		return;
 	}
 
-	$jwt = sign_dp( $domain_name, $url, $jws, $filename );
+	$jwt = issue_dp( $domain_name, \get_option( 'profile_registry_admin_secret' ), $url, $jws, $filename );
+
+	if ( ! $jwt ) {
+		return;
+	}
 
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 		require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -80,8 +86,6 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 			$wp_filesystem->put_contents( \get_temp_dir() . "/profile-test-snapshots/{$post->ID}.snapshot.jwt", $jwt );
 		}
 	}
-
-	issue_dp( $domain_name, $jwt );
 }
 
 /**
@@ -115,6 +119,65 @@ function sign_body( string $body, string $pkcs8 ): string|false {
 }
 
 /**
+ * Signed Document Profileの発行
+ *
+ * @param string $domain_name レジストリドメイン名
+ * @param string $admin_secret レジストリ認証情報
+ * @param string $url 投稿のパーマリンクのリンク
+ * @param string $jws 対象のテキストへの署名
+ * @param string $pkcs8 PEM base64 でエンコードされた PKCS #8 秘密鍵またはそのファイルパス
+ * @return string|false 成功した場合はSigned Document Profile、失敗した場合はfalse
+ */
+function issue_dp( string $domain_name, string $admin_secret, string $url, string $jws, string $pkcs8 ): string|false {
+	$jwt           = sign_dp( $domain_name, $url, $jws, $pkcs8 );
+	list( $uuid, ) = \explode( ':', $admin_secret );
+	$endpoint      = "https://{$domain_name}/admin/publisher/{$uuid}";
+	$args          = array(
+		'method'  => 'POST',
+		'headers' => array(
+			'authorization' => 'Basic ' . \sodium_bin2base64( $admin_secret, SODIUM_BASE64_VARIANT_ORIGINAL ),
+			'content-type'  => 'application/json',
+		),
+		'body'    => \wp_json_encode(
+			array(
+				'input' => array(
+					'url'        => $url,
+					'bodyFormat' => array( 'connect' => array( 'value' => PROFILE_SIGN_TYPE ) ),
+					'location'   => PROFILE_SIGN_LOCATION,
+					'proofJws'   => $jws,
+				),
+				'jwt'   => $jwt,
+			)
+		),
+	);
+
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $domain_name ) {
+		$in_docker = \file_exists( '/.dockerenv' );
+		if ( $in_docker ) {
+			$endpoint = "http://host.docker.internal:8080/admin/publisher/{$uuid}";
+		} else {
+			$endpoint = "http://localhost:8080/admin/publisher/{$uuid}";
+		}
+	}
+
+	$res = \wp_remote_request( $endpoint, $args );
+	if ( \is_wp_error( $res ) ) {
+		return false;
+	}
+
+	if ( 200 !== $res['response']['code'] ) {
+		$args['method'] = 'PUT';
+		$res            = \wp_remote_request( $endpoint, $args );
+	}
+
+	if ( \is_wp_error( $res ) || 200 !== $res['response']['code'] ) {
+		return false;
+	}
+
+	return $jwt;
+}
+
+/**
  * DPへの署名
  *
  * @param string $domain_name レジストリドメイン名
@@ -143,9 +206,9 @@ function sign_dp( string $domain_name, string $url, string $jws, string $pkcs8 )
 				'url'  => $url,
 			),
 			array(
-				'type'     => 'text',
+				'type'     => PROFILE_SIGN_TYPE,
 				'url'      => $url,
-				'location' => '.wp-block-post-content',
+				'location' => PROFILE_SIGN_LOCATION,
 				'proof'    => array( 'jws' => $jws ),
 			),
 		),
@@ -166,18 +229,9 @@ function sign_dp( string $domain_name, string $url, string $jws, string $pkcs8 )
 				( new \DateTimeImmutable() )
 				->setTimestamp( \strtotime( $dp['expiredAt'] ) )
 			)
-			->withClaim( 'https://opr.webdino.org/jwt/claims/dp', $dp['item'] );
+			->withClaim( 'https://opr.webdino.org/jwt/claims/dp', array( 'item' => $dp['item'] ) );
 
 	$jwt = $builder->getToken( new Sha256(), InMemory::plainText( $pkcs8 ) );
 
 	return $jwt->toString();
 }
-
-/**
- * Signed Document Profileの発行
-
- * @todo WordPress連携用DP登録APIへリクエストを行い登録する
- * @param string $domain_name レジストリドメイン名
- * @param string $jwt Signed DP
- */
-function issue_dp( string $domain_name, string $jwt ): void {}

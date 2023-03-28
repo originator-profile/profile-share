@@ -18,6 +18,10 @@ const Body = {
  を与えます。`,
       additionalProperties: true,
     },
+    jwt: {
+      description: "登録する Signed Document Profile (作成・更新時のみ対応)",
+      type: "string",
+    },
   },
 } as const;
 
@@ -60,12 +64,23 @@ async function website({
   if (typeof input.url !== "string") {
     throw new BadRequestError("invalid url property");
   }
-  const data = await server.services.website[operation]({
+
+  const res = await server.services.website[operation]({
     ...input,
     account: { connect: { id: params.id } },
   });
-  if (data instanceof Error) throw new BadRequestError("invalid request");
-  return data;
+  if (res instanceof Error) throw new BadRequestError("invalid request");
+
+  if (!body?.jwt) return res;
+  if (!["create", "update"].includes(operation)) return res;
+
+  const dpId = await server.services.publisher.registerDp(params.id, body.jwt);
+  if (dpId instanceof Error) {
+    const details = dpId.message;
+    throw new BadRequestError(`Invalid issue request: ${details}`);
+  }
+
+  return res;
 }
 
 export default Object.assign(website, { schema });
