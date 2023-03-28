@@ -44,7 +44,7 @@ EOF;
 		assert( $token instanceof UnencryptedToken );
 		$this->assertEquals( true, $token->hasBeenIssuedBy( $domain_name ) );
 		$this->assertEquals( true, $token->isRelatedTo( $url ) );
-		$dp_item  = $token->claims()->get( 'https://opr.webdino.org/jwt/claims/dp' );
+		$dp_item  = $token->claims()->get( 'https://opr.webdino.org/jwt/claims/dp' )['item'];
 		$snapshot = \json_decode( \file_get_contents( __DIR__ . '/snapshots/dp-item.json' ), true );
 		$this->assertEquals( $snapshot, $dp_item );
 	}

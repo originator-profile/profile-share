@@ -36,6 +36,7 @@ function register_settings() {
 			'default' => PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME,
 		)
 	);
+	\register_setting( 'profile', 'profile_registry_admin_secret', );
 }
 
 /** 設定画面 */
@@ -45,9 +46,16 @@ function settings_page() {
 		<h2><?php \esc_html_e( '設定', 'settings' ); ?></h2>
 		<form method="post" action="options.php">
 			<?php \settings_fields( 'profile' ); ?>
-			<label><?php \esc_html_e( 'レジストリドメイン名', 'registry-domain-name' ); ?>
-				<input name="profile_registry_domain_name" required value="<?php echo \esc_html( \get_option( 'profile_registry_domain_name' ) ); ?>">
-			</label>
+			<fieldset>
+				<label><?php \esc_html_e( 'レジストリドメイン名', 'registry-domain-name' ); ?>
+					<input name="profile_registry_domain_name" required value="<?php echo \esc_html( \get_option( 'profile_registry_domain_name' ) ); ?>">
+				</label>
+			</fieldset>
+			<fieldset>
+				<label><?php \esc_html_e( '認証情報', 'registry-admin-secret' ); ?>
+					<input name="profile_registry_admin_secret" type="password" autocomplete="off" required value="<?php echo \esc_html( \get_option( 'profile_registry_admin_secret' ) ); ?>">
+				</label>
+			</fieldset>
 			<?php \submit_button(); ?>
 		</form>
 		<h2><?php \esc_html_e( '構成', 'configuration' ); ?></h2>
