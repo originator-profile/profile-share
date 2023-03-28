@@ -36,7 +36,7 @@ function register_settings() {
 			'default' => PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME,
 		)
 	);
-	\register_setting( 'profile', 'profile_registry_admin_secret', );
+	\register_setting( 'profile', 'profile_registry_admin_secret' );
 }
 
 /** 設定画面 */
