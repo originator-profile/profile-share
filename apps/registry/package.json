@@ -37,8 +37,8 @@
     "start": "bin/run start"
   },
   "dependencies": {
-    "@oclif/core": "^2",
-    "@oclif/plugin-help": "^5",
+    "@oclif/core": "^2.8.0",
+    "@oclif/plugin-help": "^5.2.8",
     "@prisma/client": "^4.11.0",
     "dotenv": "^16.0.3",
     "jsonld": "^8.1.1",

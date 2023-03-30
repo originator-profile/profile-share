@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
-require("dotenv").config();
+(async () => {
+  const dotenv = await import("dotenv");
+  dotenv.config();
 
-const oclif = require("@oclif/core");
-
-oclif.run().then(oclif.flush).catch(oclif.Errors.handle);
+  const oclif = await import("@oclif/core");
+  await oclif.execute({ type: "cjs", dir: __dirname });
+})();
