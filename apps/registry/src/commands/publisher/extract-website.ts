@@ -69,7 +69,7 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
   ): Promise<void> {
     const browser = await chromium.launch();
     const [, browserContextOptions] =
-      Object.entries(cliContext).find(([baseURL]) => baseURL.startsWith(url)) ??
+      Object.entries(cliContext).find(([baseURL]) => url.startsWith(baseURL)) ??
       [];
     const context = await browser.newContext(browserContextOptions);
     const page = await context.newPage();
