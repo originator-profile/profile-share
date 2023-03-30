@@ -1,15 +1,19 @@
 #!/usr/bin/env node
 
-require("dotenv").config();
 require("esbuild-register");
 
-// NOTE: command not found エラーを防ぐ
+// NOTE: 開発時の dist が存在しないケースでの command not found エラーを防ぐ
 process.env.NODE_ENV = "development";
 
 // NOTE: @fastify/autoload プラグインの読み込み失敗を防ぐ
 process.env.TS_NODE_DEV = "true";
 
 (async () => {
+  const dotenv = await import("dotenv");
+  const dotenvExpand = await import("dotenv-expand");
+  const env = dotenv.config();
+  dotenvExpand.expand(env);
+
   const oclif = await import("@oclif/core");
-  await oclif.execute({ type: "cjs", dir: __filename });
+  await oclif.execute({ type: "cjs", dir: __dirname });
 })();
