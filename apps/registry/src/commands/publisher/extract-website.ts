@@ -66,15 +66,16 @@ BrowserContextOptions については
 詳細はPlaywrightの公式ドキュメントを参照してください。
 https://playwright.dev/docs/api/class-browser#browser-new-context`,
     }),
-    "ignore-metadata": Flags.boolean({
-      description: "ウェブページのメタデータを無視",
-      default: false,
+    metadata: Flags.boolean({
+      description: "metascraper による OGP などのメタデータの取得",
+      default: true,
+      allowNo: true,
     }),
   };
 
   async #extractWebsite(
     { url, bodyFormat, location, output, ...override }: Website,
-    ignoreMetadata: boolean,
+    metadataRequired: boolean,
     cliContext: CliContext
   ): Promise<void> {
     const browser = await chromium.launch();
@@ -86,7 +87,7 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
     const page = await context.newPage();
     await page.goto(url);
     let metadata = {};
-    if (!ignoreMetadata) {
+    if (metadataRequired) {
       metadata = toWebsite(
         await metascraper([author(), date(), description(), image(), title()])({
           url,
@@ -129,8 +130,8 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
     bar.start(websites.length, 0);
     await Promise.all(
       websites.map((website) =>
-        this.#extractWebsite(website, flags["ignore-metadata"], context).then(
-          () => bar.increment()
+        this.#extractWebsite(website, flags.metadata, context).then(() =>
+          bar.increment()
         )
       )
     );

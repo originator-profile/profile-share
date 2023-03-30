@@ -254,12 +254,12 @@ DESCRIPTION
 
 ```
 USAGE
-  $ profile-registry publisher:extract-website --input <value> [--context <value>] [--ignore-metadata]
+  $ profile-registry publisher:extract-website --input <value> [--context <value>] [--metadata]
 
 FLAGS
   --context=<value>  ウェブページの抽出に必要なコンテキストのオプション（JSON ファイル）
-  --ignore-metadata  ウェブページのメタデータを無視
   --input=<value>    (required) ウェブページの抽出の入力 (JSON ファイル)
+  --[no-]metadata    metascraper による OGP などのメタデータの取得
 
 DESCRIPTION
   ウェブページの抽出
