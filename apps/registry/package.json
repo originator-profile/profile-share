@@ -41,6 +41,7 @@
     "@oclif/plugin-help": "^5.2.8",
     "@prisma/client": "^4.11.0",
     "dotenv": "^16.0.3",
+    "dotenv-expand": "^10.0.0",
     "jsonld": "^8.1.1",
     "metascraper": "^5.34.0",
     "metascraper-author": "^5.33.7",

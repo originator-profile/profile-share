@@ -2,7 +2,9 @@
 
 (async () => {
   const dotenv = await import("dotenv");
-  dotenv.config();
+  const dotenvExpand = await import("dotenv-expand");
+  const env = dotenv.config();
+  dotenvExpand.expand(env);
 
   const oclif = await import("@oclif/core");
   await oclif.execute({ type: "cjs", dir: __dirname });
