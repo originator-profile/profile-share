@@ -254,15 +254,30 @@ DESCRIPTION
 
 ```
 USAGE
-  $ profile-registry publisher:extract-website --input <value>
+  $ profile-registry publisher:extract-website --input <value> [--context <value>]
 
 FLAGS
-  --input=<value>  (required) ウェブページの抽出の入力 (JSON ファイル)
+  --context=<value>  ウェブページの抽出に必要なコンテキストのオプション（JSON ファイル）
+  --input=<value>    (required) ウェブページの抽出の入力 (JSON ファイル)
 
 DESCRIPTION
   ウェブページの抽出
 
 FLAG DESCRIPTIONS
+  --context=<value>  ウェブページの抽出に必要なコンテキストのオプション（JSON ファイル）
+
+    以下のデータ形式を受け付けます。
+    {
+    // ウェブサイトの URL の先頭の文字列
+    "https://oprdev.herokuapp.com": {
+    // BrowserContextOptions
+    },
+    ...
+    }
+    BrowserContextOptions については
+    詳細はPlaywrightの公式ドキュメントを参照してください。
+    https://playwright.dev/docs/api/class-browser#browser-new-context
+
   --input=<value>  ウェブページの抽出の入力 (JSON ファイル)
 
     以下のデータ形式を受け付けます。

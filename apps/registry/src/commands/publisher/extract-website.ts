@@ -1,7 +1,7 @@
 import { Command, Flags, ux } from "@oclif/core";
 import { Prisma } from "@prisma/client";
 import fs from "node:fs/promises";
-import { chromium } from "playwright";
+import { chromium, BrowserContextOptions } from "playwright";
 import metascraper from "metascraper";
 import author from "metascraper-author";
 import date from "metascraper-date";
@@ -17,6 +17,7 @@ type Website = Prisma.websitesUpdateInput & {
   output: string;
 };
 type Websites = Array<Website>;
+type CliContext = { [key: string]: BrowserContextOptions };
 
 export class PublisherExtractWebsite extends Command {
   static description = "ウェブページの抽出";
@@ -44,17 +45,34 @@ Prisma.websitesUpdateInput については
 https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma`,
       required: true,
     }),
+    context: Flags.string({
+      summary:
+        "ウェブページの抽出に必要なコンテキストのオプション（JSON ファイル）",
+      description: `\
+以下のデータ形式を受け付けます。
+{
+  // ウェブサイトの URL の先頭の文字列
+  "https://oprdev.herokuapp.com": {
+    // BrowserContextOptions
+  },
+  ...
+}
+BrowserContextOptions については
+詳細はPlaywrightの公式ドキュメントを参照してください。
+https://playwright.dev/docs/api/class-browser#browser-new-context`,
+    }),
   };
 
-  async #extractWebsite({
-    url,
-    bodyFormat,
-    location,
-    output,
-    ...override
-  }: Website): Promise<void> {
+  async #extractWebsite(
+    { url, bodyFormat, location, output, ...override }: Website,
+    cliContext: CliContext
+  ): Promise<void> {
     const browser = await chromium.launch();
-    const context = await browser.newContext();
+    const [, browserContextOptions] =
+      Object.entries(cliContext).find(([urlHead]) =>
+        new URL(url).href.startsWith(new URL(urlHead).href)
+      ) ?? [];
+    const context = await browser.newContext(browserContextOptions);
     const page = await context.newPage();
     await page.goto(url);
     const {
@@ -92,11 +110,16 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     const { flags } = await this.parse(PublisherExtractWebsite);
     const inputBuffer = await fs.readFile(flags.input);
     const websites = JSON.parse(inputBuffer.toString()) as Websites;
+    let context: CliContext = {};
+    if (flags.context) {
+      const contextBuffer = await fs.readFile(flags.context);
+      context = JSON.parse(contextBuffer.toString());
+    }
     const bar = ux.progress();
     bar.start(websites.length, 0);
     await Promise.all(
       websites.map((website) =>
-        this.#extractWebsite(website).then(() => bar.increment())
+        this.#extractWebsite(website, context).then(() => bar.increment())
       )
     );
     bar.stop();
