@@ -51,7 +51,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
       description: `\
 以下のデータ形式を受け付けます。
 {
-  // ウェブサイトのベース URL
+  // ウェブサイトの URL の先頭の文字列
   "https://oprdev.herokuapp.com": {
     // BrowserContextOptions
   },
@@ -69,8 +69,9 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
   ): Promise<void> {
     const browser = await chromium.launch();
     const [, browserContextOptions] =
-      Object.entries(cliContext).find(([baseURL]) => url.startsWith(baseURL)) ??
-      [];
+      Object.entries(cliContext).find(([urlHead]) =>
+        new URL(url).href.startsWith(new URL(urlHead).href)
+      ) ?? [];
     const context = await browser.newContext(browserContextOptions);
     const page = await context.newPage();
     await page.goto(url);

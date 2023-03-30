@@ -268,7 +268,7 @@ FLAG DESCRIPTIONS
 
     以下のデータ形式を受け付けます。
     {
-    // ウェブサイトのベース URL
+    // ウェブサイトの URL の先頭の文字列
     "https://oprdev.herokuapp.com": {
     // BrowserContextOptions
     },
