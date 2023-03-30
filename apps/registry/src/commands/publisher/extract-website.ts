@@ -2,7 +2,7 @@ import { Command, Flags, ux } from "@oclif/core";
 import { Prisma } from "@prisma/client";
 import fs from "node:fs/promises";
 import { chromium, BrowserContextOptions } from "playwright";
-import metascraper from "metascraper";
+import metascraper, { Metadata } from "metascraper";
 import author from "metascraper-author";
 import date from "metascraper-date";
 import description from "metascraper-description";
@@ -18,6 +18,11 @@ type Website = Prisma.websitesUpdateInput & {
 };
 type Websites = Array<Website>;
 type CliContext = { [key: string]: BrowserContextOptions };
+
+const toWebsite = (metadata: Metadata): Partial<Website> => {
+  const { url: _url, date: datePublished, ...other } = metadata;
+  return { datePublished, ...other };
+};
 
 export class PublisherExtractWebsite extends Command {
   static description = "ウェブページの抽出";
@@ -61,10 +66,16 @@ BrowserContextOptions については
 詳細はPlaywrightの公式ドキュメントを参照してください。
 https://playwright.dev/docs/api/class-browser#browser-new-context`,
     }),
+    metadata: Flags.boolean({
+      description: "metascraper による OGP などのメタデータの取得",
+      default: true,
+      allowNo: true,
+    }),
   };
 
   async #extractWebsite(
     { url, bodyFormat, location, output, ...override }: Website,
+    metadataRequired: boolean,
     cliContext: CliContext
   ): Promise<void> {
     const browser = await chromium.launch();
@@ -75,14 +86,15 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
     const context = await browser.newContext(browserContextOptions);
     const page = await context.newPage();
     await page.goto(url);
-    const {
-      url: _url,
-      date: datePublished,
-      ...metadata
-    } = await metascraper([author(), date(), description(), image(), title()])({
-      url,
-      html: await page.content(),
-    });
+    let metadata = {};
+    if (metadataRequired) {
+      metadata = toWebsite(
+        await metascraper([author(), date(), description(), image(), title()])({
+          url,
+          html: await page.content(),
+        })
+      );
+    }
     const body = await extractBody(
       page.url(),
       (location) => page.locator(location).all(),
@@ -97,7 +109,6 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
       location,
       bodyFormat: { connect: { value: bodyFormat } },
       body,
-      datePublished,
       ...metadata,
       ...override,
     };
@@ -119,7 +130,9 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
     bar.start(websites.length, 0);
     await Promise.all(
       websites.map((website) =>
-        this.#extractWebsite(website, context).then(() => bar.increment())
+        this.#extractWebsite(website, flags.metadata, context).then(() =>
+          bar.increment()
+        )
       )
     );
     bar.stop();
