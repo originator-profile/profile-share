@@ -101,7 +101,7 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
       ...metadata,
       ...override,
     };
-    await fs.writeFile(output, JSON.stringify(website, null, 2));
+    await fs.writeFile(output, JSON.stringify(website, null, 2) + "\n");
     await context.close();
     await browser.close();
   }
