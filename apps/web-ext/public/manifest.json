@@ -3,7 +3,7 @@
   "name": "Profile Web Extension",
   "description": "Profile Web Extension",
   "version": "1.0.0",
-  "homepage_url": "https://originator-profile.pages.dev/",
+  "homepage_url": "https://originator-profile.org/",
   "icons": {
     "48": "icons/48x48.png",
     "128": "icons/128x128.png"

@@ -16,7 +16,7 @@ function ProjectSummary({ as: As = "section", className }: Props) {
     >
       <a
         className="flex justify-center items-center gap-2"
-        href="https://originator-profile.pages.dev"
+        href="https://originator-profile.org/"
         target="_blank"
         rel="noreferrer noopener"
       >
@@ -32,11 +32,11 @@ function ProjectSummary({ as: As = "section", className }: Props) {
       </p>
       <p className="text-xs text-center underline">
         <a
-          href="https://originator-profile.pages.dev"
+          href="https://originator-profile.org/"
           target="_blank"
           rel="noreferrer noopener"
         >
-          https://originator-profile.pages.dev
+          https://originator-profile.org/
         </a>
       </p>
     </As>
