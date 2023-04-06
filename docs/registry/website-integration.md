@@ -151,8 +151,10 @@ $ bin/dev publisher:extract-website --input .extract.json
 
 .website.json から Signed Document Profile を発行し Document Profile レジストリに登録します。
 
+このとき使用するプライベート鍵は、[Originator Profile レジストリに登録した公開鍵](./document-profile-registry-creation#originator-profile-%E3%83%AC%E3%82%B8%E3%82%B9%E3%83%88%E3%83%AA%E3%81%B8%E3%81%AE%E5%85%AC%E9%96%8B%E9%8D%B5%E3%81%AE%E7%99%BB%E9%8C%B2%E3%81%A8-signed-originator-profile-%E3%81%AE%E7%99%BA%E8%A1%8C%E4%BE%9D%E9%A0%BC)とペアでなければなりません。
+
 ```
-$ bin/dev publisher:website --identity <秘密鍵> --id <管理者の UUID> --operation create
+$ bin/dev publisher:website --identity <プライベート鍵> --id <管理者の UUID> --operation create
 ```
 
 詳細は [Profile Registry ソースコード](https://github.com/webdino/profile/blob/main/apps/registry#readme)を参照してください。
