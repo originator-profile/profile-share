@@ -51,7 +51,7 @@ Document Profile レジストリ->>利用者: Profiles Set の取得
 
 利用者が記事の検証をおこなう際 Document Profile レジストリ API エンドポイントから Profiles Set が得られるようにします。
 
-クライアントサイドスクリプトの例:
+Document Profile レジストリのドメイン名を `"oprdev.herokuapp.com"` 、対象とするウェブサイトを `"originator-profile.org"` とした場合のクライアントサイドスクリプトの例:
 
 ```js
 function createProfilesLink() {
@@ -78,7 +78,7 @@ createProfilesLink();
 
 記事の URL、検証対象となるテキストの範囲、抽出結果の保存先を表明する JSON ファイルを作成します。
 
-.extract.json の例:
+対象とするウェブサイトを https://originator-profile.org とした場合の .extract.json の例:
 
 ```json
 [
@@ -125,7 +125,7 @@ createProfilesLink();
 $ bin/dev publisher:extract-website --input .extract.json
 ```
 
-得られる .website.json の例:
+前項で示した .extract.json から得られる .website.json の例:
 
 ```json
 {
