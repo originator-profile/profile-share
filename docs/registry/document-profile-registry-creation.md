@@ -22,8 +22,8 @@ Originator Profile レジストリ->>管理者: Signed Originator Profile の発
 ## 構築ガイド
 
 1. Document Profile レジストリの準備
-3. Originator Profile レジストリへの公開鍵の登録と Signed Originator Profile の発行依頼
-4. Document Profile レジストリへの Signed Originator Profile の登録
+2. Originator Profile レジストリへの公開鍵の登録と Signed Originator Profile の発行依頼
+3. Document Profile レジストリへの Signed Originator Profile の登録
 
 ## Document Profile レジストリの準備
 
@@ -86,7 +86,6 @@ JWK の例:
 ### それ以外の場合
 
 鍵ペアを生成する必要があります。[操作説明書](./operation#鍵ペアの生成)を参照してください。
-
 
 <!-- NOTE:
 Originator Profile レジストリ運用者は下記のコマンドで会員の公開鍵を登録します。
