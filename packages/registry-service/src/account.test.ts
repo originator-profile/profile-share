@@ -28,18 +28,18 @@ describe("AccountService", () => {
       domainName: "localhost",
       role: { connect: { value: "certifier" } },
       name: "Originator Profile 技術研究組合",
-      url: "https://originator-profile.pages.dev/",
+      url: "https://originator-profile.org/",
       postalCode: "108-0073",
       addressCountry: "JP",
       addressRegion: "東京都",
       addressLocality: "港区",
       streetAddress: "三田",
       contactTitle: "お問い合わせ",
-      contactUrl: "https://originator-profile.pages.dev/ja-JP/",
+      contactUrl: "https://originator-profile.org/ja-JP/",
       logos: {
         create: [
           {
-            url: "https://originator-profile.pages.dev/image/icon.svg",
+            url: "https://originator-profile.org/image/icon.svg",
             isMain: true,
           },
         ],
