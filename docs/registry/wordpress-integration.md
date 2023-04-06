@@ -35,6 +35,10 @@ WordPress Plugin->>利用者: HTML <link> element
 Document Profile レジストリ->>利用者: Profiles Set の取得
 ```
 
+## デモ
+
+[拡張機能を用意](../web-ext/experimental-use)して https://wppdev.herokuapp.com/2023/04/03/hello-world/ にアクセスし、拡張機能を起動してください。
+
 ## 構築ガイド
 
 1. Document Profile レジストリの準備

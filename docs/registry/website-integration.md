@@ -28,6 +28,10 @@ Document Profile レジストリ->>Document Profile レジストリ: Signed Docu
 Document Profile レジストリ->>利用者: Profiles Set の取得
 ```
 
+## デモ
+
+[拡張機能を用意](../web-ext/experimental-use)して https://originator-profile.org/ja-JP/ にアクセスし、拡張機能を起動してください。
+
 ## 構築ガイド
 
 1. Document Profile レジストリの準備
