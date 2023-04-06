@@ -14,7 +14,7 @@ function ProjectTitle({ as: As = "section", className }: Props) {
       </p>
       <a
         className="flex justify-center items-center gap-2"
-        href="https://originator-profile.pages.dev"
+        href="https://originator-profile.org/"
         target="_blank"
         rel="noreferrer noopener"
       >

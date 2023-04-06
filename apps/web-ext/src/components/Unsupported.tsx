@@ -168,7 +168,7 @@ function Unsupported({ error }: Props) {
               <div className="flex justify-center">
                 <a
                   className="jumpu-button text-white"
-                  href="https://originator-profile.pages.dev"
+                  href="https://originator-profile.org/"
                   target="_blank"
                   rel="noreferrer noopener"
                 >
