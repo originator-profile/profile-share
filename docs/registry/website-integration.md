@@ -1,12 +1,12 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # ウェブサイト連携
 
 Document Profile レジストリを構築しウェブサイトと連携する方法を説明します。
 
-以下の図は全体的なプロセスの概要を示しています。
+以下の図はウェブサイト連携に関するプロセスの概要を示しています。
 
 ```mermaid
 sequenceDiagram
@@ -14,12 +14,9 @@ actor 利用者
 actor 管理者
 participant ウェブサイト
 participant Document Profile レジストリ
-participant Originator Profile レジストリ
 
 管理者->>ウェブサイト: HTML <link> element の設置
-管理者->>Originator Profile レジストリ: ドメイン名と公開鍵の登録
-Originator Profile レジストリ->>管理者: Signed Originator Profile の発行
-管理者->>Document Profile レジストリ: Signed Originator Profile の登録
+管理者->>ウェブサイト: 記事の公開
 管理者->>ウェブサイト: Signed Document Profile の発行の準備
 管理者->>Document Profile レジストリ: Signed Document Profile の発行と登録
 Document Profile レジストリ->>Document Profile レジストリ: Signed Document Profile の検証
@@ -42,13 +39,9 @@ Document Profile レジストリ->>利用者: Profiles Set の取得
 
 ## Document Profile レジストリの準備
 
-[WordPress 連携](./wordpress-integration#document-profile-レジストリの準備)を参照してください。
+[Document Profile レジストリ構築](./document-profile-registry-creation)を参照してください。
 
-### レジストリの管理者の作成
-
-[WordPress 連携](./wordpress-integration#レジストリの管理者の作成)を参照してください。
-
-このとき得られる認証情報に含まれる UUID は[Signed Document Profile の発行・登録](#signed-document-profile-の発行登録)で使用します。
+[レジストリの管理者を作成](./document-profile-registry-creation#レジストリの管理者の作成)した際に得られる認証情報に含まれる UUID は [Signed Document Profile の発行・登録](#signed-document-profile-の発行登録)で使用します。
 
 ## HTML <link\> element の設置
 
@@ -75,21 +68,11 @@ function createProfilesLink() {
 createProfilesLink();
 ```
 
-## Originator Profile レジストリへの公開鍵の登録と Signed Originator Profile の発行依頼
-
-Originator Profile レジストリ運用者に依頼して行います。
-
-鍵ペアの生成については[操作説明書](./operation#鍵ペアの生成)を参照してください。
-
-## Document Profile レジストリへの Signed Originator Profile の登録
-
-[WordPress 連携](./wordpress-integration#document-profile-レジストリへの-signed-originator-profile-の登録)を参照してください。
-
 ## Signed Document Profile の発行の準備
 
 ### .extract.json の用意
 
-記事の URL 、検証対象となるテキストの範囲、抽出結果の保存先を表明する JSON ファイルを作成します。
+記事の URL、検証対象となるテキストの範囲、抽出結果の保存先を表明する JSON ファイルを作成します。
 
 .extract.json の例:
 
