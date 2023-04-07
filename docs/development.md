@@ -8,9 +8,9 @@ sidebar_position: 2
 
 ## はじめに
 
-1. Linux または macOS 環境を用意
+1. Linux, macOS またはWindows(+WSL2[^WSL2]+Chrome[^WslChrome])環境を用意
 2. [Node.js](https://nodejs.org/) のインストール
-3. [Docker](https://www.docker.com/get-started) と [Compose v2](https://docs.docker.com/compose/cli-command/) のインストール
+3. [Docker](https://www.docker.com/get-started) と [Compose v2](https://docs.docker.com/compose/cli-command/) のインストール(Windowsでは[^WslDocker]を参照)
 4. 下記のコマンドをターミナルで実行
 
 ```sh
@@ -21,6 +21,7 @@ yarn install
 yarn dev
 # => 開発用サーバーとWebブラウザーが起動します (<Ctrl-C>: 終了)
 ```
+(Windowsでは[^WslBrowser]を参照)
 
 あとはそれぞれのソースコードを編集することで開発を行うことができます。自由にカスタマイズしましょう。
 
@@ -72,11 +73,7 @@ yarn dev
 
 `yarn format` を行います。
 
-## 後付
-
-### Windows 環境での開発
-
-1. WSL のインストール ([WSL のインストール \| Microsoft Docs](https://docs.microsoft.com/ja-jp/windows/wsl/install))
-2. Chromium のインストール ([WSL で Linux GUI アプリを実行する \| Microsoft Docs](https://docs.microsoft.com/ja-jp/windows/wsl/tutorials/gui-apps)
-   )
-3. 以降「はじめに」を参照
+[^WSL2]: WSL2 のインストール ([WSL のインストール \| Microsoft Docs](https://docs.microsoft.com/ja-jp/windows/wsl/install))
+[^WslChrome]: Chrome のインストール ([WSL で Linux GUI アプリを実行する \| Microsoft Docs](https://learn.microsoft.com/ja-jp/windows/wsl/tutorials/gui-apps#install-google-chrome-for-linux))
+[^WslDocker]: WSL2 と Docker Desktop との連携([WSL 2 での Docker リモート コンテナーの概要 \| Microsoft Docs](https://learn.microsoft.com/ja-jp/windows/wsl/tutorials/wsl-containers))
+[^WslBrowser]: WSL2使用の場合、ホスト側ではなくWSL側のChromeを使用するためには`CHROME_PATH=/usr/bin/google-chrome yarn dev`とする必要があります
