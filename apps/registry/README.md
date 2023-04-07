@@ -36,7 +36,7 @@ running command...
 * [`profile-registry db:init`](#profile-registry-dbinit)
 * [`profile-registry db:prisma`](#profile-registry-dbprisma)
 * [`profile-registry db:seed`](#profile-registry-dbseed)
-* [`profile-registry help [COMMAND]`](#profile-registry-help-command)
+* [`profile-registry help [COMMANDS]`](#profile-registry-help-commands)
 * [`profile-registry key-gen`](#profile-registry-key-gen)
 * [`profile-registry openapi-gen [OUTPUT]`](#profile-registry-openapi-gen-output)
 * [`profile-registry publisher:extract-website`](#profile-registry-publisherextract-website)
@@ -198,16 +198,16 @@ DESCRIPTION
   Seed database
 ```
 
-## `profile-registry help [COMMAND]`
+## `profile-registry help [COMMANDS]`
 
 Display help for profile-registry.
 
 ```
 USAGE
-  $ profile-registry help [COMMAND] [-n]
+  $ profile-registry help [COMMANDS] [-n]
 
 ARGUMENTS
-  COMMAND  Command to show help for.
+  COMMANDS  Command to show help for.
 
 FLAGS
   -n, --nested-commands  Include all nested commands in the output.
@@ -216,7 +216,7 @@ DESCRIPTION
   Display help for profile-registry.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.19/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.8/src/commands/help.ts)_
 
 ## `profile-registry key-gen`
 
