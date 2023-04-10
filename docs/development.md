@@ -9,7 +9,7 @@ sidebar_position: 2
 ## はじめに
 
 1. Linux, macOS または Windows ([WSL2](https://docs.microsoft.com/ja-jp/windows/wsl/install)) 環境を用意
-2. [Google Chrome](https://support.google.com/chrome/answer/95346)のインストール [^WslChrome]
+2. [Google Chrome](https://support.google.com/chrome/answer/95346)のインストール
   - WSL2 使用の場合、ホスト側ではなく [WSL 側に Chrome をインストール](https://learn.microsoft.com/ja-jp/windows/wsl/tutorials/gui-apps#install-google-chrome-for-linux)する必要があります
 3. [Node.js](https://nodejs.org/) のインストール
 3. [Docker](https://www.docker.com/get-started) と [Compose v2](https://docs.docker.com/compose/cli-command/) のインストール(Windows では[^WslDocker]を参照)
@@ -78,7 +78,4 @@ CHROME_PATH=/usr/bin/google-chrome yarn dev
 
 `yarn format` を行います。
 
-[^WSL2]: WSL2 のインストール ([WSL のインストール \| Microsoft Docs](https://docs.microsoft.com/ja-jp/windows/wsl/install))
-[^WslChrome]: Chrome のインストール ([WSL で Linux GUI アプリを実行する \| Microsoft Docs](https://learn.microsoft.com/ja-jp/windows/wsl/tutorials/gui-apps#install-google-chrome-for-linux))
 [^WslDocker]: WSL2 と Docker Desktop との連携([WSL 2 での Docker リモート コンテナーの概要 \| Microsoft Docs](https://learn.microsoft.com/ja-jp/windows/wsl/tutorials/wsl-containers))
-[^WslBrowser]: WSL2 使用の場合、ホスト側ではなく WSL 側の Chrome を使用するためには`CHROME_PATH=/usr/bin/google-chrome yarn dev`とする必要があります
