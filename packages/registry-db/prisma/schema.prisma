@@ -103,10 +103,10 @@ model accounts {
   admins                   admins?
   /// 資格情報
   credentials              credentials[]
-  /// 認証情報
-  certificates             credentials[]               @relation("certificates")
-  /// 検証情報
-  verificates              credentials[]               @relation("verificates")
+  /// 資格情報の発行履歴
+  issuedCredentials        credentials[]               @relation("issuedCredentials")
+  /// 資格情報の検証履歴
+  verifiedCredentials      credentials[]               @relation("verifiedCredentials")
 }
 
 /// 会員種別
@@ -223,16 +223,16 @@ model admins {
 
 /// 資格情報
 model credentials {
-  id          Int       @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   /// 会員
-  account     accounts  @relation(fields: [accountId], references: [id], onDelete: Cascade)
-  accountId   String    @db.Uuid
+  account     accounts @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId   String   @db.Uuid
   /// 認証機関
-  certifier   accounts  @relation("certificates", fields: [certifierId], references: [id], onDelete: Cascade)
-  certifierId String    @db.Uuid
+  certifier   accounts @relation("issuedCredentials", fields: [certifierId], references: [id], onDelete: Cascade)
+  certifierId String   @db.Uuid
   /// 検証機関
-  verifier    accounts  @relation("verificates", fields: [verifierId], references: [id], onDelete: Cascade)
-  verifierId  String    @db.Uuid
+  verifier    accounts @relation("verifiedCredentials", fields: [verifierId], references: [id], onDelete: Cascade)
+  verifierId  String   @db.Uuid
   /// 資格名
   name        String
   /// 画像URL
