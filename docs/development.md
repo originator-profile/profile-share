@@ -21,6 +21,8 @@ cd profile
 corepack enable yarn
 yarn install
 yarn dev
+# WSL2 使用の場合、ホスト側ではなく WSL 側の Chrome を使用します
+CHROME_PATH=/usr/bin/google-chrome yarn dev
 # => 開発用サーバーとWebブラウザーが起動します (<Ctrl-C>: 終了)
 ```
 
