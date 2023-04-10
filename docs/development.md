@@ -8,10 +8,13 @@ sidebar_position: 2
 
 ## はじめに
 
-1. Linux または macOS 環境を用意
-2. [Node.js](https://nodejs.org/) のインストール
-3. [Docker](https://www.docker.com/get-started) と [Compose v2](https://docs.docker.com/compose/cli-command/) のインストール
-4. 下記のコマンドをターミナルで実行
+1. Linux, macOS または Windows ([WSL2](https://docs.microsoft.com/ja-jp/windows/wsl/install)) 環境を用意
+2. [Google Chrome](https://support.google.com/chrome/answer/95346)のインストール
+   - WSL2 使用の場合、ホスト側ではなく [WSL 側に Chrome をインストール](https://learn.microsoft.com/ja-jp/windows/wsl/tutorials/gui-apps#install-google-chrome-for-linux)する必要があります
+3. [Node.js](https://nodejs.org/) のインストール
+4. [Docker](https://www.docker.com/get-started) と [Compose v2](https://docs.docker.com/compose/cli-command/) のインストール
+   - Windows では[WSL 2 での Docker リモート コンテナーの概要 \| Microsoft Docs](https://learn.microsoft.com/ja-jp/windows/wsl/tutorials/wsl-containers)も参照してください
+5. 下記のコマンドをターミナルで実行
 
 ```sh
 git clone https://github.com/webdino/profile
@@ -19,8 +22,12 @@ cd profile
 corepack enable yarn
 yarn install
 yarn dev
+# WSL2 使用の場合、ホスト側ではなく WSL 側の Chrome を使用します
+CHROME_PATH=/usr/bin/google-chrome yarn dev
 # => 開発用サーバーとWebブラウザーが起動します (<Ctrl-C>: 終了)
 ```
+
+(Windows では[^WslBrowser]を参照)
 
 あとはそれぞれのソースコードを編集することで開発を行うことができます。自由にカスタマイズしましょう。
 
@@ -71,12 +78,3 @@ yarn dev
 ### format
 
 `yarn format` を行います。
-
-## 後付
-
-### Windows 環境での開発
-
-1. WSL のインストール ([WSL のインストール \| Microsoft Docs](https://docs.microsoft.com/ja-jp/windows/wsl/install))
-2. Chromium のインストール ([WSL で Linux GUI アプリを実行する \| Microsoft Docs](https://docs.microsoft.com/ja-jp/windows/wsl/tutorials/gui-apps)
-   )
-3. 以降「はじめに」を参照
