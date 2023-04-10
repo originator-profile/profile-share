@@ -9,11 +9,13 @@ sidebar_position: 2
 ## はじめに
 
 1. Linux, macOS または Windows ([WSL2](https://docs.microsoft.com/ja-jp/windows/wsl/install)) 環境を用意
-2. [Google Chrome](https://support.google.com/chrome/answer/95346)のインストール
-  - WSL2 使用の場合、ホスト側ではなく [WSL 側に Chrome をインストール](https://learn.microsoft.com/ja-jp/windows/wsl/tutorials/gui-apps#install-google-chrome-for-linux)する必要があります
+2. [Google Chrome](https://support.google.com/chrome/answer/95346)のインストール [^WslChrome]
+
+- WSL2 使用の場合、ホスト側ではなく [WSL 側に Chrome をインストール](https://learn.microsoft.com/ja-jp/windows/wsl/tutorials/gui-apps#install-google-chrome-for-linux)する必要があります
+
 3. [Node.js](https://nodejs.org/) のインストール
-3. [Docker](https://www.docker.com/get-started) と [Compose v2](https://docs.docker.com/compose/cli-command/) のインストール(Windows では[^WslDocker]を参照)
-4. 下記のコマンドをターミナルで実行
+4. [Docker](https://www.docker.com/get-started) と [Compose v2](https://docs.docker.com/compose/cli-command/) のインストール(Windows では[^WslDocker]を参照)
+5. 下記のコマンドをターミナルで実行
 
 ```sh
 git clone https://github.com/webdino/profile
