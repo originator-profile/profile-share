@@ -180,12 +180,12 @@ bin/dev account:register-key -k key.pub.json --id daab5a08-d513-400d-aaaa-e1c149
 
 ここで必要な情報は以下の 2 点です。
 
-- `--holder` に指定する自身の組織 id
-- `--certifier` に指定する認証してもらう組織の id
+- `--holder` に指定するSigned Originator Profileの対象となる組織の id
+- `--certifier` に指定する認証者となる組織の id
 
 <img width="1552" alt="Signed Originator Profile の発行" src="https://user-images.githubusercontent.com/281424/193493119-5d092c32-7437-4ebe-a453-96457f2fda72.png" />
 
-例えば 認証してもらう組織が oprdev.herokuapp.com の場合であれば --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e となります。
+例えば、認証の対象となる組織が前節で公開鍵を登録したid `daab5a08-d513-400d-aaaa-e1c1493e0421`、認証者となる組織が oprdev.herokuapp.com の場合であれば --holder daab5a08-d513-400d-aaaa-e1c1493e0421 --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e となります。
 
 さらに先程取得した秘密鍵のファイルパスも必要となります。例えば秘密鍵のファイル名が`key`だった場合、 `-i key` となります。
 
@@ -198,7 +198,7 @@ bin/dev cert:issue \
   --holder daab5a08-d513-400d-aaaa-e1c1493e0421
 ```
 
-Prisma Studio で組織の行を横スクロールすると、`issuedOps`という列があり、`1 ops`と表示されていれば成功です。
+Prisma Studio で組織の行を横スクロールすると、`issuedOps`という列があり、認証者となる組織に`1 ops`と表示されていれば成功です。
 クリックすると、画面が変わり、画面下に `Open new tab` のボタンがあるのでそれを押すと、画面上部に新しいタブができます。
 
 <img width="1549" alt="Prisma Studio画面内に OP が生成される" src="https://user-images.githubusercontent.com/281424/193494403-5b61796a-ea18-4499-b22d-596f63ad6f17.png" />
