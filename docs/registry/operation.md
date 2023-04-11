@@ -180,12 +180,12 @@ bin/dev account:register-key -k key.pub.json --id daab5a08-d513-400d-aaaa-e1c149
 
 ここで必要な情報は以下の 2 点です。
 
-- `--holder` に指定するSigned Originator Profileの対象となる組織の id
+- `--holder` に指定する Signed Originator Profile の対象となる組織の id
 - `--certifier` に指定する認証者となる組織の id
 
 <img width="1552" alt="Signed Originator Profile の発行" src="https://user-images.githubusercontent.com/281424/193493119-5d092c32-7437-4ebe-a453-96457f2fda72.png" />
 
-例えば、認証の対象となる組織が前節で公開鍵を登録したid `daab5a08-d513-400d-aaaa-e1c1493e0421`、認証者となる組織が oprdev.herokuapp.com の場合であれば --holder daab5a08-d513-400d-aaaa-e1c1493e0421 --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e となります。
+例えば、認証の対象となる組織が前節で公開鍵を登録した id `daab5a08-d513-400d-aaaa-e1c1493e0421`、認証者となる組織が oprdev.herokuapp.com の場合であれば --holder daab5a08-d513-400d-aaaa-e1c1493e0421 --certifier 48a40d8c-4fb0-4f32-9bf4-9e85f07ae54e となります。
 
 さらに先程取得した秘密鍵のファイルパスも必要となります。例えば秘密鍵のファイル名が`key`だった場合、 `-i key` となります。
 
