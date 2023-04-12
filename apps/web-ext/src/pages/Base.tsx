@@ -38,11 +38,9 @@ function Dp({
 }
 
 function Base() {
-  const { tabId, main = [], profiles, error, profileEndpoint } = useProfiles();
+  const { tabId, main = [], profiles, error, origin } = useProfiles();
 
-  useTitle(
-    ["コンテンツ情報", profileEndpoint?.origin].filter(Boolean).join(" ― ")
-  );
+  useTitle(["コンテンツ情報", origin].filter(Boolean).join(" ― "));
 
   if (error) {
     return <Unsupported error={error} />;

@@ -15,13 +15,7 @@ function Org(props: Props) {
     orgIssuer: string;
     orgSubject: string;
   }>();
-  const {
-    advertisers = [],
-    publishers = [],
-    profiles,
-    error,
-    profileEndpoint,
-  } = useProfiles();
+  const { advertisers = [], publishers = [], profiles, error } = useProfiles();
   if (error) {
     return <Unsupported error={error} />;
   }
@@ -50,15 +44,7 @@ function Org(props: Props) {
   const paths = {
     back: props.back,
   } as const;
-  return (
-    <Template
-      paths={paths}
-      op={op}
-      holder={holder}
-      roles={roles}
-      profileEndpoint={profileEndpoint}
-    />
-  );
+  return <Template paths={paths} op={op} holder={holder} roles={roles} />;
 }
 
 export default Org;
