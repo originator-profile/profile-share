@@ -1,17 +1,25 @@
 import { JsonLdDocument } from "jsonld";
 import { ProfilesFetchFailed } from "./errors";
 
+function getEndpoint(doc: Document): string {
+  const link = doc
+    .querySelector('link[rel="alternate"][type="application/ld+json"]')
+    ?.getAttribute("href");
+  const profileEndpoint = link ?? `${doc.location.origin}/.well-known/ps.json`;
+  return new URL(profileEndpoint).href;
+}
+
 /**
  * Profiles Set の取得
- * @param profileEndpoint 取得先エンドポイント
+ * @param doc Document オブジェクト
  */
 export async function fetchProfiles(
-  profileEndpoint: string
+  doc: Document
 ): Promise<JsonLdDocument | ProfilesFetchFailed> {
   let profiles;
   try {
-    const url = new URL(profileEndpoint);
-    const res = await fetch(url.href);
+    const profileEndpoint = getEndpoint(doc);
+    const res = await fetch(profileEndpoint);
     if (!res.ok) {
       throw new ProfilesFetchFailed(`HTTP ステータスコード ${res.status}`);
     }
