@@ -5,7 +5,12 @@ export type FetchProfilesMessageRequest = {
 };
 export type FetchProfilesMessageResponse = {
   type: "fetch-profiles";
-  profileEndpoint: string;
+  /** JsonLdDocument の場合 true、ProfilesFetchFailed の場合 false */
+  ok: boolean;
+  /** JSON 文字列 (JsonLdDocument または ProfilesFetchFailed) */
+  data: string;
+  /** 閲覧しているコンテンツの URL の origin 文字列 */
+  origin: string;
 };
 export type OverlayProfilesMessageRequest = {
   type: "overlay-profiles";

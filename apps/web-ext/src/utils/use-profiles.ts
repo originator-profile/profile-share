@@ -5,7 +5,6 @@ import { useEvent } from "react-use";
 import {
   RemoteKeys,
   ProfilesVerifier,
-  fetchProfiles,
   expandProfiles,
 } from "@webdino/profile-verify";
 import {
@@ -22,13 +21,14 @@ async function fetchVerifiedProfiles([, tabId]: [
   _: typeof key,
   tabId: number
 ]) {
-  const { profileEndpoint }: FetchProfilesMessageResponse =
+  const { ok, data, origin }: FetchProfilesMessageResponse =
     await chrome.tabs.sendMessage(tabId, {
       type: "fetch-profiles",
     });
-  const profiles = await fetchProfiles(profileEndpoint);
+  const parsed = JSON.parse(data);
+  if (!ok) throw Object.assign(new Error(parsed.message), parsed);
   const { advertisers, publishers, main, profile } = await expandProfiles(
-    profiles
+    parsed
   );
   const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(
@@ -44,7 +44,7 @@ async function fetchVerifiedProfiles([, tabId]: [
     publishers,
     main,
     profiles: verifyResults.map(toProfile),
-    profileEndpoint: new URL(profileEndpoint),
+    origin,
   };
 }
 
@@ -60,7 +60,7 @@ function useProfiles() {
     publishers: string[];
     main: string[];
     profiles: Profile[];
-    profileEndpoint: URL;
+    origin: string;
   }>([key, tabId], fetchVerifiedProfiles);
 
   useEvent("unload", async function () {

@@ -7,7 +7,7 @@ import { ProfilesFetchFailed } from "./errors";
  */
 export async function fetchProfiles(
   profileEndpoint: string
-): Promise<JsonLdDocument> {
+): Promise<JsonLdDocument | ProfilesFetchFailed> {
   let profiles;
   try {
     const url = new URL(profileEndpoint);
@@ -18,14 +18,14 @@ export async function fetchProfiles(
     profiles = await res.json();
   } catch (e) {
     if (e instanceof Error) {
-      throw new ProfilesFetchFailed(
+      return new ProfilesFetchFailed(
         `プロファイルを取得できませんでした:\n${e.message}`,
         {
           cause: e,
         }
       );
     } else {
-      throw e;
+      throw new Error("Unknown error", { cause: e });
     }
   }
   return profiles;

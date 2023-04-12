@@ -18,11 +18,10 @@ type Props = {
   op: Op;
   holder: OpHolder;
   roles: Role[];
-  profileEndpoint?: URL;
   paths: { back: string };
 };
 
-function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
+function Org({ op, holder, roles, paths }: Props) {
   const logo = holder.logos?.find(({ isMain }) => isMain);
   const handleClick = () => {
     const element = document.querySelector(
@@ -132,11 +131,7 @@ function Org({ op, holder, roles, paths, profileEndpoint }: Props) {
         </div>
         <h2 className="text-sm text-gray-600 font-bold mb-3">技術情報</h2>
         <div className="jumpu-card p-4">
-          <TechTable
-            className="p-4"
-            profile={op}
-            profileEndpoint={profileEndpoint}
-          />
+          <TechTable className="p-4" profile={op} />
         </div>
       </div>
     </>

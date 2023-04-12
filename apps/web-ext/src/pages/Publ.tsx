@@ -10,7 +10,7 @@ import Unsupported from "../components/Unsupported";
 
 function Publ() {
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
-  const { profiles, error, profileEndpoint } = useProfiles();
+  const { profiles, error } = useProfiles();
   if (error) {
     return <Unsupported error={error} />;
   }
@@ -41,15 +41,7 @@ function Publ() {
   const paths = {
     org: routes.org.build({ orgIssuer: op.issuer, orgSubject: op.subject }),
   } as const;
-  return (
-    <Template
-      dp={dp}
-      website={website}
-      holder={holder}
-      paths={paths}
-      profileEndpoint={profileEndpoint}
-    />
-  );
+  return <Template dp={dp} website={website} holder={holder} paths={paths} />;
 }
 
 export default Publ;

@@ -6,6 +6,7 @@ import { JsonLdDocument } from "jsonld";
 import { generateKey, signOp } from "@webdino/profile-sign";
 import { Op } from "@webdino/profile-model";
 import { fetchProfiles } from "./fetch-profiles";
+import { ProfilesFetchFailed } from "./errors";
 
 describe("fetch-profiles", async () => {
   const iat = getUnixTime(new Date());
@@ -38,15 +39,21 @@ describe("fetch-profiles", async () => {
   });
 
   test("無効なエンドポイント指定時 Profiles Set の取得に失敗", async () => {
-    expect(fetchProfiles("")).rejects.toThrowError(
-      /^プロファイルを取得できませんでした:\nInvalid URL$/
+    const result = await fetchProfiles("");
+    expect(result).toBeInstanceOf(ProfilesFetchFailed);
+    // @ts-expect-error result is ProfilesFetchFailed
+    expect(result.message).toBe(
+      `プロファイルを取得できませんでした:\nInvalid URL`
     );
   });
 
   test("取得先に Profiles Set が存在しないとき Profiles Set の取得に失敗", async () => {
     mockGet(profileEndpoint).willFail({}, 404);
-    expect(fetchProfiles(profileEndpoint)).rejects.toThrowError(
-      /^プロファイルを取得できませんでした:\nHTTP ステータスコード 404$/
+    const result = await fetchProfiles(profileEndpoint);
+    expect(result).toBeInstanceOf(ProfilesFetchFailed);
+    // @ts-expect-error result is ProfilesFetchFailed
+    expect(result.message).toBe(
+      `プロファイルを取得できませんでした:\nHTTP ステータスコード 404`
     );
   });
 });

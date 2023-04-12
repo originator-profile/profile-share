@@ -16,10 +16,9 @@ type Props = {
   website: OgWebsite;
   holder: OpHolder;
   paths: { org: string };
-  profileEndpoint?: URL;
 };
 
-function Publ({ dp, website, holder, paths, profileEndpoint }: Props) {
+function Publ({ dp, website, holder, paths }: Props) {
   const logo = holder.logos?.find(({ isMain }) => isMain);
   return (
     <div className="bg-gray-50 min-h-screen p-4">
@@ -67,7 +66,7 @@ function Publ({ dp, website, holder, paths, profileEndpoint }: Props) {
                     {website.description && (
                       <Description description={website.description} />
                     )}
-                    <TechTable profileEndpoint={profileEndpoint} profile={dp} />
+                    <TechTable profile={dp} />
                   </Disclosure.Panel>
                 </Transition>
               </>
