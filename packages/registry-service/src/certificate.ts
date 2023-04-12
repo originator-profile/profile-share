@@ -76,6 +76,7 @@ export const CertificateService = ({
       issuer: certifier.domainName,
       subject: holder.domainName,
       item: [
+        // @ts-expect-error TODO: OpCredential に適合した値を返して
         { type: "credential", ...options.credential },
         // @ts-expect-error any properties
         { type: "certifier", ...flush(certifier) },
