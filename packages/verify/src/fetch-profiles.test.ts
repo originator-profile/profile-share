@@ -1,6 +1,7 @@
 import "vi-fetch/setup";
 import { mockFetch, mockGet } from "vi-fetch";
 import { describe, beforeEach, test, expect } from "vitest";
+import { Window } from "happy-dom";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { JsonLdDocument } from "jsonld";
 import { generateKey, signOp } from "@webdino/profile-sign";
@@ -34,12 +35,26 @@ describe("fetch-profiles", async () => {
   });
 
   test("有効なエンドポイント指定時 Profiles Set が得られる", async () => {
-    const result = await fetchProfiles(profileEndpoint);
+    const window = new Window();
+    window.document.body.innerHTML = `
+<link
+  href="${profileEndpoint}"
+  rel="alternate"
+  type="application/ld+json"
+/>`;
+    const result = await fetchProfiles(window.document as unknown as Document);
     expect(result).toEqual(profiles);
   });
 
   test("無効なエンドポイント指定時 Profiles Set の取得に失敗", async () => {
-    const result = await fetchProfiles("");
+    const window = new Window();
+    window.document.body.innerHTML = `
+<link
+  href=""
+  rel="alternate"
+  type="application/ld+json"
+/>`;
+    const result = await fetchProfiles(window.document as unknown as Document);
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
     // @ts-expect-error result is ProfilesFetchFailed
     expect(result.message).toBe(
@@ -49,7 +64,14 @@ describe("fetch-profiles", async () => {
 
   test("取得先に Profiles Set が存在しないとき Profiles Set の取得に失敗", async () => {
     mockGet(profileEndpoint).willFail({}, 404);
-    const result = await fetchProfiles(profileEndpoint);
+    const window = new Window();
+    window.document.body.innerHTML = `
+<link
+  href="${profileEndpoint}"
+  rel="alternate"
+  type="application/ld+json"
+/>`;
+    const result = await fetchProfiles(window.document as unknown as Document);
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
     // @ts-expect-error result is ProfilesFetchFailed
     expect(result.message).toBe(

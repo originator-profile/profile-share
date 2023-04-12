@@ -16,12 +16,7 @@ async function handleMessageResponse(
 ): Promise<ContentScriptMessageResponse> {
   switch (message.type) {
     case "fetch-profiles": {
-      const link = document
-        .querySelector('link[rel="alternate"][type="application/ld+json"]')
-        ?.getAttribute("href");
-      const profileEndpoint =
-        link ?? `${document.location.origin}/.well-known/ps.json`;
-      const data = await fetchProfiles(profileEndpoint);
+      const data = await fetchProfiles(document);
       return {
         type: "fetch-profiles",
         ok: !(data instanceof Error),
