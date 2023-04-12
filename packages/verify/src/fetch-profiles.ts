@@ -1,12 +1,18 @@
 import { JsonLdDocument } from "jsonld";
 import { ProfilesFetchFailed } from "./errors";
 
-function getEndpoint(doc: Document): string {
-  const link = doc
-    .querySelector('link[rel="alternate"][type="application/ld+json"]')
-    ?.getAttribute("href");
-  const profileEndpoint = link ?? `${doc.location.origin}/.well-known/ps.json`;
-  return new URL(profileEndpoint).href;
+function getEndpoints(doc: Document): string[] {
+  const endpoints = [
+    ...doc.querySelectorAll(
+      `link[rel="alternate"][type="application/ld+json"]`
+    ),
+  ].map((e) => new URL(e.getAttribute("href") ?? "").href);
+
+  if (endpoints.length === 0) {
+    return [`${doc.location.origin}/.well-known/ps.json`];
+  }
+
+  return endpoints;
 }
 
 /**
@@ -18,12 +24,18 @@ export async function fetchProfiles(
 ): Promise<JsonLdDocument | ProfilesFetchFailed> {
   let profiles;
   try {
-    const profileEndpoint = getEndpoint(doc);
-    const res = await fetch(profileEndpoint);
-    if (!res.ok) {
-      throw new ProfilesFetchFailed(`HTTP ステータスコード ${res.status}`);
-    }
-    profiles = await res.json();
+    const profileEndpoints = getEndpoints(doc);
+    profiles = await Promise.all(
+      profileEndpoints.map(async (endpoint) => {
+        const res = await fetch(endpoint);
+
+        if (!res.ok) {
+          throw new ProfilesFetchFailed(`HTTP ステータスコード ${res.status}`);
+        }
+
+        return await res.json();
+      })
+    );
   } catch (e) {
     if (e instanceof Error) {
       return new ProfilesFetchFailed(

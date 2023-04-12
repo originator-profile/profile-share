@@ -20,7 +20,10 @@ async function handleMessageResponse(
       return {
         type: "fetch-profiles",
         ok: !(data instanceof Error),
-        data: JSON.stringify(data, Object.getOwnPropertyNames(data)),
+        data:
+          data instanceof Error
+            ? JSON.stringify(data, Object.getOwnPropertyNames(data))
+            : JSON.stringify(data),
         origin: document.location.origin,
       };
     }
