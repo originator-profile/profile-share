@@ -86,12 +86,12 @@ describe("fetch-profiles", async () => {
     beforeEach(() => {
       mockGet("https://example.com/1/ps.json").willResolve({
         "@context": "https://oprdev.herokuapp.com/context",
-        profiles: "{Singed Document Profile または Singed Originator Profile}",
+        profiles: "{Signed Document Profile または Signed Originator Profile}",
       });
       mockGet("https://example.com/2/ps.json").willResolve({
         "@context": "https://oprdev.herokuapp.com/context",
         profiles:
-          "{別の Singed Document Profile または Singed Originator Profile}",
+          "{別の Signed Document Profile または Signed Originator Profile}",
       });
     });
 
