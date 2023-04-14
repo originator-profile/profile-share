@@ -1,31 +1,51 @@
 import { JsonLdDocument } from "jsonld";
 import { ProfilesFetchFailed } from "./errors";
 
+function getEndpoints(doc: Document): string[] {
+  const endpoints = [
+    ...doc.querySelectorAll(
+      `link[rel="alternate"][type="application/ld+json"]`
+    ),
+  ].map((e) => new URL(e.getAttribute("href") ?? "").href);
+
+  if (endpoints.length === 0) {
+    return [`${doc.location.origin}/.well-known/ps.json`];
+  }
+
+  return endpoints;
+}
+
 /**
  * Profiles Set の取得
- * @param profileEndpoint 取得先エンドポイント
+ * @param doc Document オブジェクト
  */
 export async function fetchProfiles(
-  profileEndpoint: string
-): Promise<JsonLdDocument> {
+  doc: Document
+): Promise<JsonLdDocument | ProfilesFetchFailed> {
   let profiles;
   try {
-    const url = new URL(profileEndpoint);
-    const res = await fetch(url.href);
-    if (!res.ok) {
-      throw new ProfilesFetchFailed(`HTTP ステータスコード ${res.status}`);
-    }
-    profiles = await res.json();
+    const profileEndpoints = getEndpoints(doc);
+    profiles = await Promise.all(
+      profileEndpoints.map(async (endpoint) => {
+        const res = await fetch(endpoint);
+
+        if (!res.ok) {
+          throw new ProfilesFetchFailed(`HTTP ステータスコード ${res.status}`);
+        }
+
+        return await res.json();
+      })
+    );
   } catch (e) {
     if (e instanceof Error) {
-      throw new ProfilesFetchFailed(
+      return new ProfilesFetchFailed(
         `プロファイルを取得できませんでした:\n${e.message}`,
         {
           cause: e,
         }
       );
     } else {
-      throw e;
+      throw new Error("Unknown error", { cause: e });
     }
   }
   return profiles;

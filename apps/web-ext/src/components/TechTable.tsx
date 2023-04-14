@@ -6,10 +6,9 @@ import TableRow from "./TableRow";
 type Props = {
   className?: string;
   profile: Profile;
-  profileEndpoint?: URL;
 };
 
-function TechTable({ className, profile, profileEndpoint }: Props) {
+function TechTable({ className, profile }: Props) {
   return (
     <Table className={className}>
       <TableRow
@@ -21,9 +20,6 @@ function TechTable({ className, profile, profileEndpoint }: Props) {
           header="検証エラー"
           data={`${profile.error.name}: ${profile.error.message}`}
         />
-      )}
-      {profileEndpoint && (
-        <TableRow header="取得エンドポイント" data={profileEndpoint.href} />
       )}
       <TableRow
         header={`${isOp(profile) ? "OP" : "DP"} 識別子`}

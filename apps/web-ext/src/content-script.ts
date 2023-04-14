@@ -1,3 +1,4 @@
+import { fetchProfiles } from "@webdino/profile-verify";
 import {
   ContentScriptMessageRequest,
   ContentScriptMessageResponse,
@@ -10,19 +11,21 @@ let profiles: Profile[] = [];
 let activeDp: Dp | null = null;
 const iframe = initialize();
 
-function handleMessageResponse(
+async function handleMessageResponse(
   message: ContentScriptMessageRequest
 ): Promise<ContentScriptMessageResponse> {
   switch (message.type) {
     case "fetch-profiles": {
-      const link = document
-        .querySelector('link[rel="alternate"][type="application/ld+json"]')
-        ?.getAttribute("href");
-      return Promise.resolve({
+      const data = await fetchProfiles(document);
+      return {
         type: "fetch-profiles",
-        profileEndpoint:
-          link ?? `${document.location.origin}/.well-known/ps.json`,
-      });
+        ok: !(data instanceof Error),
+        data:
+          data instanceof Error
+            ? JSON.stringify(data, Object.getOwnPropertyNames(data))
+            : JSON.stringify(data),
+        origin: document.location.origin,
+      };
     }
     case "overlay-profiles":
       activate(iframe);
@@ -33,24 +36,24 @@ function handleMessageResponse(
         profiles,
         activeDp,
       });
-      return Promise.resolve({
+      return {
         type: "overlay-profiles",
-      });
+      };
     case "close-window":
       iframe.contentWindow?.postMessage({ type: "leave-overlay" });
-      return Promise.resolve({
+      return {
         type: "close-window",
-      });
+      };
   }
 }
 
-chrome.runtime.onMessage.addListener(async function (
+chrome.runtime.onMessage.addListener(function (
   message: ContentScriptMessageRequest,
   _,
-  sendResponse
-) {
-  const response = await handleMessageResponse(message);
-  sendResponse(response);
+  sendResponse: (response: ContentScriptMessageResponse) => void
+): true /* NOTE: Chrome の場合、Promise には非対応 */ {
+  handleMessageResponse(message).then(sendResponse);
+  return true;
 });
 
 function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
