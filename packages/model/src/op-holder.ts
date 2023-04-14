@@ -8,6 +8,10 @@ const OpHolder = {
   type: "object",
   properties: {
     type: { const: "holder" },
+    domainName: {
+      title: "ドメイン名",
+      type: "string",
+    },
     url: {
       title: "ウェブサイトのURL",
       type: "string",
@@ -79,6 +83,7 @@ const OpHolder = {
   },
   required: [
     "type",
+    "domainName",
     "name",
     "url",
     "postalCode",
