@@ -6,11 +6,11 @@ const OpCredential = {
   type: "object",
   properties: {
     type: { const: "credential" },
-    certifierId: {
+    certifier: {
       title: "認証機関を表す一義的な識別子",
       type: "string",
     },
-    verifierId: {
+    verifier: {
       title: "検証機関を表す一義的な識別子",
       type: "string",
     },
@@ -33,14 +33,7 @@ const OpCredential = {
       format: "date-time",
     },
   },
-  required: [
-    "type",
-    "certifierId",
-    "verifierId",
-    "name",
-    "issuedAt",
-    "expiredAt",
-  ],
+  required: ["type", "certifier", "verifier", "name", "issuedAt", "expiredAt"],
   additionalProperties: false,
 } as const;
 

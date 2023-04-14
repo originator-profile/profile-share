@@ -58,7 +58,20 @@ describe("CertificateService", () => {
       {
         id: 1,
         accountId,
+        // @ts-expect-error assert
+        certifier: {
+          id,
+          ...dummyAccount,
+          domainName: "example.com",
+          url: "https://example.",
+        },
         certifierId: id,
+        verifier: {
+          id,
+          ...dummyAccount,
+          domainName: "example.com",
+          url: "https://example.",
+        },
         verifierId: id,
         name: "セーフティブランド認証",
         image: null,

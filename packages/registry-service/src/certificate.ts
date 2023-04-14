@@ -54,6 +54,10 @@ export const CertificateService = ({
   ): Promise<string | Error> {
     const credentials = await prisma.credentials.findMany({
       where: { accountId },
+      include: {
+        certifier: true,
+        verifier: true,
+      },
     });
     if (credentials instanceof Error) return credentials;
     const data = await Promise.all([
@@ -91,14 +95,14 @@ export const CertificateService = ({
       subject: holder.domainName,
       item: [
         // @ts-expect-error any properties
-        ...credentials.map((credential) => {
-          return {
-            type: "credential",
-            ...flush(credential),
-            issuedAt: credential.issuedAt.toISOString(),
-            expiredAt: credential.expiredAt.toISOString(),
-          };
-        }),
+        ...credentials.map((credential) => ({
+          type: "credential",
+          ...flush(credential),
+          certifier: credential.certifier.domainName,
+          verifier: credential.verifier.domainName,
+          issuedAt: options.issuedAt.toISOString(),
+          expiredAt: options.expiredAt.toISOString(),
+        })),
         // @ts-expect-error any properties
         ...certifiers.map((certifier) => ({
           type: "certifier",
