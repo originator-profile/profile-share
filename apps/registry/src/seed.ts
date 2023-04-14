@@ -75,8 +75,8 @@ export async function seed(): Promise<void> {
       id: issuerUuid,
       credentials: {
         create: {
-          certifier: { connect: { domainName: "localhost" } },
-          verifier: { connect: { domainName: "localhost" } },
+          certifier: { connect: { domainName: exampleAccount.domainName } },
+          verifier: { connect: { domainName: exampleAccount.domainName } },
           name: "ブランドセーフティ認証",
           image: null,
           issuedAt: new Date(),
