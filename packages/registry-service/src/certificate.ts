@@ -52,13 +52,15 @@ export const CertificateService = ({
       expiredAt: addYears(new Date(), 10),
     }
   ): Promise<string | Error> {
-    const credentials = await prisma.credentials.findMany({
-      where: { accountId },
-      include: {
-        certifier: true,
-        verifier: true,
-      },
-    });
+    const credentials = await prisma.credentials
+      .findMany({
+        where: { accountId },
+        include: {
+          certifier: true,
+          verifier: true,
+        },
+      })
+      .catch((e: Error) => e);
     if (credentials instanceof Error) return credentials;
     const data = await Promise.all([
       prisma.accounts.findMany({
