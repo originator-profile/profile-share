@@ -5,6 +5,7 @@ export { default as OpItem } from "./op-item";
 export { default as OpHolder } from "./op-holder";
 export { default as OpCertifier } from "./op-certifier";
 export { default as OpCredential } from "./op-credential";
+export { default as OpVerifier } from "./op-verifier";
 export { default as Dp } from "./dp";
 export { default as DpItem } from "./dp-item";
 export { default as DpVisibleText } from "./dp-visible-text";
