@@ -69,6 +69,7 @@ export const CertificateService = ({
             in: [id, ...credentials.map(({ certifierId }) => certifierId)],
           },
         },
+        include: { logos: true },
       }),
       prisma.accounts.findMany({
         where: {
@@ -76,6 +77,7 @@ export const CertificateService = ({
             in: credentials.map(({ verifierId }) => verifierId),
           },
         },
+        include: { logos: true },
       }),
       prisma.accounts.findUnique({
         where: { id: accountId },
