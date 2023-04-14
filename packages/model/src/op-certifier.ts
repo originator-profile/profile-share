@@ -8,6 +8,10 @@ const OpCertifier = {
   type: "object",
   properties: {
     type: { const: "certifier" },
+    domainName: {
+      title: "ドメイン名",
+      type: "string",
+    },
     url: {
       title: "ウェブサイトのURL",
       type: "string",
@@ -79,6 +83,7 @@ const OpCertifier = {
   },
   required: [
     "type",
+    "domainName",
     "name",
     "url",
     "postalCode",

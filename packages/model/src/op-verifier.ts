@@ -8,6 +8,10 @@ const OpVerifier = {
   type: "object",
   properties: {
     type: { const: "verifier" },
+    domainName: {
+      title: "ドメイン名",
+      type: "string",
+    },
     url: {
       title: "ウェブサイトのURL",
       type: "string",
@@ -79,6 +83,7 @@ const OpVerifier = {
   },
   required: [
     "type",
+    "domainName",
     "name",
     "url",
     "postalCode",
