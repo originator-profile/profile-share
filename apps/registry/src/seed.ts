@@ -6,6 +6,7 @@ import { Services } from "@webdino/profile-registry-service";
 import exampleAccount from "./account.example.json";
 import exampleWebsite from "./website.example.json";
 import { Jwk } from "@webdino/profile-model";
+import addYears from "date-fns/addYears";
 
 export async function waitForDb(prisma: PrismaClient): Promise<void> {
   const sleep = util.promisify(setTimeout);
@@ -70,6 +71,19 @@ export async function seed(): Promise<void> {
   const issuerExists = await services.account.read({ id: issuerUuid });
   if (issuerExists instanceof Error) {
     await services.account.create({ id: issuerUuid, ...exampleAccount });
+    await services.account.update({
+      id: issuerUuid,
+      credentials: {
+        create: {
+          certifier: { connect: { domainName: "localhost" } },
+          verifier: { connect: { domainName: "localhost" } },
+          name: "ブランドセーフティ認証",
+          image: null,
+          issuedAt: new Date(),
+          expiredAt: addYears(new Date(), 1),
+        },
+      },
+    });
   }
   console.log(`UUID: ${issuerUuid}`);
 
