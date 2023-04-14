@@ -50,13 +50,26 @@ export const CertificateService = ({
     options = {
       issuedAt: new Date(),
       expiredAt: addYears(new Date(), 10),
-      credential: {},
     }
   ): Promise<string | Error> {
+    const credentials = await prisma.credentials.findMany({
+      where: { accountId },
+    });
+    if (credentials instanceof Error) return credentials;
     const data = await Promise.all([
-      prisma.accounts.findUnique({
-        where: { id },
-        include: { logos: true },
+      prisma.accounts.findMany({
+        where: {
+          id: {
+            in: [id, ...credentials.map(({ certifierId }) => certifierId)],
+          },
+        },
+      }),
+      prisma.accounts.findMany({
+        where: {
+          id: {
+            in: credentials.map(({ verifierId }) => verifierId),
+          },
+        },
       }),
       prisma.accounts.findUnique({
         where: { id: accountId },
@@ -65,7 +78,8 @@ export const CertificateService = ({
     ]).catch((e: Error) => e);
     if (data instanceof Error) return data;
 
-    const [certifier, holder] = data;
+    const [certifiers, verifiers, holder] = data;
+    const certifier = certifiers.find((certifier) => certifier.id === id);
     if (!certifier) return new NotFoundError();
     if (!holder) return new NotFoundError();
 
@@ -76,10 +90,25 @@ export const CertificateService = ({
       issuer: certifier.domainName,
       subject: holder.domainName,
       item: [
-        // @ts-expect-error TODO: OpCredential に適合した値を返して
-        { type: "credential", ...options.credential },
         // @ts-expect-error any properties
-        { type: "certifier", ...flush(certifier) },
+        ...credentials.map((credential) => {
+          return {
+            type: "credential",
+            ...flush(credential),
+            issuedAt: credential.issuedAt.toISOString(),
+            expiredAt: credential.expiredAt.toISOString(),
+          };
+        }),
+        // @ts-expect-error any properties
+        ...certifiers.map((certifier) => ({
+          type: "certifier",
+          ...flush(certifier),
+        })),
+        // @ts-expect-error any properties
+        ...verifiers.map((verifier) => ({
+          type: "verifier",
+          ...flush(verifier),
+        })),
         // @ts-expect-error any properties
         { type: "holder", ...flush(holder) },
       ],
