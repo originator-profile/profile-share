@@ -73,7 +73,7 @@ describe("CertificateService", () => {
           url: "https://example.",
         },
         verifierId: id,
-        name: "セーフティブランド認証",
+        name: "ブランドセーフティ認証",
         image: null,
         issuedAt: new Date(),
         expiredAt: new Date(),
@@ -110,7 +110,7 @@ describe("CertificateService", () => {
     expect(holder).not.toHaveProperty("phoneNumber");
     const credential =
       valid["https://opr.webdino.org/jwt/claims/op"].item.find(isOpCredential);
-    expect(credential?.name).toBe("セーフティブランド認証");
+    expect(credential?.name).toBe("ブランドセーフティ認証");
   });
 
   test("issue() calls prisma.ops.create()", async () => {
