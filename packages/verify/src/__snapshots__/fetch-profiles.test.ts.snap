@@ -1,0 +1,14 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`fetch-profiles > <link> 要素が2つ以上存在するとき > 有効な Profiles Set が得られる 1`] = `
+[
+  {
+    "@context": "https://oprdev.herokuapp.com/context",
+    "profiles": "{Signed Document Profile または Signed Originator Profile}",
+  },
+  {
+    "@context": "https://oprdev.herokuapp.com/context",
+    "profiles": "{別の Signed Document Profile または Signed Originator Profile}",
+  },
+]
+`;
