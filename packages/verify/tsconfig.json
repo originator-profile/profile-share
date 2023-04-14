@@ -1,6 +1,7 @@
 {
   "extends": "@webdino/profile-tsconfig/tsconfig.json",
   "compilerOptions": {
-    "types": ["vi-fetch/matchers"]
+    "types": ["vi-fetch/matchers"],
+    "resolveJsonModule": true
   }
 }
