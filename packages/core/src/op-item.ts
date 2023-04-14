@@ -3,6 +3,7 @@ import {
   OpHolder,
   OpCertifier,
   OpCredential,
+  OpVerifier,
 } from "@webdino/profile-model";
 
 /**
@@ -28,3 +29,11 @@ export const isOpCertifier = (opItem: OpItem): opItem is OpCertifier =>
  */
 export const isOpCredential = (opItem: OpItem): opItem is OpCredential =>
   opItem.type === OpCredential.properties.type.const;
+
+/**
+ * OpItem が OpVerifier 型であるか否か
+ * @param opItem
+ * @return OpVerifier 型であれば true、それ以外ならば false
+ */
+export const isOpVerifier = (opItem: OpItem): opItem is OpVerifier =>
+  opItem.type === OpVerifier.properties.type.const;
