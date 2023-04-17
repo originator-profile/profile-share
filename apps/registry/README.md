@@ -29,7 +29,7 @@ running command...
 ## Development Guide
 
 ```
-# 差分ビルドの実行
+# 自動ビルドの実行と開発用サーバーの起動
 $ yarn dev
 # CLI の実行 (ドキュメントを参照する際は　bin/dev を profile-registry に読み替えてください)
 $ bin/dev COMMAND
