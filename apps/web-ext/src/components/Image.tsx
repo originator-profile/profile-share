@@ -26,7 +26,7 @@ function Image({
         { "bg-white": !rounded },
         className
       )}
-      style={{ height }}
+      style={{ height, minWidth: width }}
     >
       <img
         className={clsx("w-auto", { ["rounded-full"]: rounded })}
