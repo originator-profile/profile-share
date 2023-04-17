@@ -17,18 +17,22 @@ Originator Profile と Document Profile の管理を行うシステムです。
 ## Usage
 
 ```
-$ bin/dev COMMAND
+# CLI を含む Profile レジストリのビルド
+$ yarn build
+# CLI のグローバルインストール
+$ npm i -g .
+# CLI の実行
+$ profile-registry COMMAND
 running command...
 ```
 
-以降、`bin/dev` は `profile-registry` と表記します。
-
-## Installation
+## Development Guide
 
 ```
-$ yarn build
-$ npm i -g .
-$ profile-registry COMMAND
+# 差分ビルドの実行
+$ yarn dev
+# CLI の実行 (ドキュメントを参照する際は　bin/dev を profile-registry に読み替えてください)
+$ bin/dev COMMAND
 running command...
 ```
 
