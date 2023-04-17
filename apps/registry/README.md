@@ -31,7 +31,7 @@ running command...
 ```
 # 自動ビルドの実行と開発用サーバーの起動
 $ yarn dev
-# CLI の実行 (ドキュメントを参照する際は　bin/dev を profile-registry に読み替えてください)
+# CLI の実行 (本ドキュメント内の profile-registry は bin/dev で置き換え可能です)
 $ bin/dev COMMAND
 running command...
 ```
