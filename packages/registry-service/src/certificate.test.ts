@@ -6,6 +6,7 @@ import { addYears, getUnixTime } from "date-fns";
 import { decodeJwt, generateKeyPair, SignJWT } from "jose";
 import { JwtOpPayload } from "@webdino/profile-model";
 import { generateKey } from "@webdino/profile-sign";
+import { isOpHolder, isOpCredential } from "@webdino/profile-core";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
 import { CertificateService } from "./certificate";
@@ -53,14 +54,45 @@ describe("CertificateService", () => {
       publishingPrincipleTitle: "編集ガイドライン",
       publishingPrincipleUrl: "https://www.webdino.org/publishing-principle/",
     };
-    // @ts-expect-error assert
-    prisma.accounts.findUnique.mockImplementation(async (input) => ({
-      id: input.where.id,
+    prisma.credentials.findMany.mockResolvedValue([
+      {
+        id: 1,
+        accountId,
+        // @ts-expect-error assert
+        certifier: {
+          id,
+          ...dummyAccount,
+          domainName: "example.com",
+          url: "https://example.",
+        },
+        certifierId: id,
+        verifier: {
+          id,
+          ...dummyAccount,
+          domainName: "example.com",
+          url: "https://example.",
+        },
+        verifierId: id,
+        name: "ブランドセーフティ認証",
+        image: null,
+        issuedAt: new Date(),
+        expiredAt: new Date(),
+      },
+    ]);
+    prisma.accounts.findMany.mockResolvedValue([
+      {
+        id,
+        ...dummyAccount,
+        domainName: "example.org",
+        url: "https://example.org/",
+      },
+    ]);
+    prisma.accounts.findUnique.mockResolvedValue({
+      id: accountId,
       ...dummyAccount,
-      domainName: input.where.id === id ? "example.org" : "example.com",
-      url:
-        input.where.id === id ? "https://example.org/" : "https://example.com/",
-    }));
+      domainName: "example.com",
+      url: "https://example.com/",
+    });
     prisma.keys.findMany.mockResolvedValue([
       { id: 1, accountId, jwk: jwk as Prisma.JsonValue },
     ]);
@@ -72,11 +104,13 @@ describe("CertificateService", () => {
       sub: "example.com",
       "https://opr.webdino.org/jwt/claims/op": { jwks: { keys: [jwk] } },
     });
-    const holder = valid["https://opr.webdino.org/jwt/claims/op"].item.find(
-      ({ type }) => type === "holder"
-    );
+    const holder =
+      valid["https://opr.webdino.org/jwt/claims/op"].item.find(isOpHolder);
     expect(holder?.url).toBe("https://example.com/");
     expect(holder).not.toHaveProperty("phoneNumber");
+    const credential =
+      valid["https://opr.webdino.org/jwt/claims/op"].item.find(isOpCredential);
+    expect(credential?.name).toBe("ブランドセーフティ認証");
   });
 
   test("issue() calls prisma.ops.create()", async () => {

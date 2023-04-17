@@ -22,9 +22,6 @@ export class CertIssue extends Command {
       description: "発行対象の会員 (UUID)",
       required: true,
     }),
-    credential: Flags.string({
-      description: "認証機関の報告書 JSON ファイル",
-    }),
     "issued-at": Flags.string({
       description: "発行日時 (ISO 8601)",
     }),
@@ -43,12 +40,6 @@ export class CertIssue extends Command {
 
     const pkcs8File = await fs.readFile(flags.identity);
     const pkcs8 = pkcs8File.toString();
-    const credentialFile = flags.credential
-      ? await fs.readFile(flags.credential)
-      : undefined;
-    const credential = credentialFile
-      ? JSON.parse(credentialFile.toString())
-      : {};
     const issuedAt = flags["issued-at"]
       ? new Date(flags["issued-at"])
       : new Date();
@@ -59,7 +50,7 @@ export class CertIssue extends Command {
       flags.certifier,
       flags.holder,
       pkcs8,
-      { issuedAt, expiredAt, credential }
+      { issuedAt, expiredAt }
     );
     if (jwt instanceof Error) this.error(jwt);
 

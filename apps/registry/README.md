@@ -142,13 +142,12 @@ OP の発行
 
 ```
 USAGE
-  $ profile-registry cert:issue -i <value> --certifier <value> --holder <value> [--credential <value>]
-    [--issued-at <value>] [--expired-at <value>]
+  $ profile-registry cert:issue -i <value> --certifier <value> --holder <value> [--issued-at <value>]
+    [--expired-at <value>]
 
 FLAGS
   -i, --identity=<value>  (required) PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル
   --certifier=<value>     (required) 認証機関 (UUID)
-  --credential=<value>    認証機関の報告書 JSON ファイル
   --expired-at=<value>    有効期限 (ISO 8601)
   --holder=<value>        (required) 発行対象の会員 (UUID)
   --issued-at=<value>     発行日時 (ISO 8601)

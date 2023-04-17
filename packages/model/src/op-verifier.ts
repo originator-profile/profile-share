@@ -2,12 +2,12 @@ import { FromSchema } from "json-schema-to-ts";
 import BusinessCategory from "./business-category";
 import Logo from "./logo";
 
-const OpCertifier = {
-  title: "Originator Profile Certifier",
-  description: "資格情報を発行する認証機関",
+const OpVerifier = {
+  title: "Originator Profile Verifier",
+  description: "資格情報を検証する検証機関",
   type: "object",
   properties: {
-    type: { const: "certifier" },
+    type: { const: "verifier" },
     domainName: {
       title: "ドメイン名",
       type: "string",
@@ -95,6 +95,6 @@ const OpCertifier = {
   additionalProperties: false,
 } as const;
 
-type OpCertifier = FromSchema<typeof OpCertifier>;
+type OpVerifier = FromSchema<typeof OpVerifier>;
 
-export default OpCertifier;
+export default OpVerifier;
