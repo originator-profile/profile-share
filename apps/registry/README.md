@@ -23,6 +23,15 @@ running command...
 
 以降、`bin/dev` は `profile-registry` と表記します。
 
+## Installation
+
+```
+$ yarn build
+$ npm i -g .
+$ profile-registry COMMAND
+running command...
+```
+
 ## Commands
 
 <!-- prettier-ignore-start -->
