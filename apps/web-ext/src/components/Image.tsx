@@ -35,6 +35,7 @@ function Image({
         alt={alt}
         width={width}
         height={height}
+        crossOrigin="anonymous"
       />
     </figure>
   );
