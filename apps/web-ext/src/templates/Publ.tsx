@@ -105,8 +105,8 @@ function Publ({ dp, website, holder, paths }: Props) {
             src={logoCertifierUrl}
             placeholderSrc={placeholderLogoMainUrl}
             alt=""
-            width={80}
-            height={50}
+            width={55}
+            height={35}
           />
           <div>
             <p className="text-sm text-gray-500 mb-1">
