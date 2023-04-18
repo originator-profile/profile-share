@@ -90,8 +90,8 @@ function Org({ op, holder, roles, paths }: Props) {
                 src={logoCertifierUrl}
                 placeholderSrc={placeholderLogoMainUrl}
                 alt=""
-                width={80}
-                height={50}
+                width={55}
+                height={35}
               />
               <span className="text-sm font-bold text-gray-700">
                 ブランドセーフティ認証 第三者検証
@@ -115,8 +115,8 @@ function Org({ op, holder, roles, paths }: Props) {
             src={logoCertifierUrl}
             placeholderSrc={placeholderLogoMainUrl}
             alt=""
-            width={160}
-            height={99}
+            width={110}
+            height={70}
           />
           <div className="inline-flex items-center gap-2 bg-blue-50 px-2 py-1 mb-3 rounded-sm">
             <Icon
