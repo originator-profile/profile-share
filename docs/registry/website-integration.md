@@ -36,10 +36,8 @@ Document Profile レジストリ->>利用者: Profiles Set の取得
 
 1. Document Profile レジストリの準備
 2. HTML <link\> element の設置
-3. Originator Profile レジストリへの公開鍵の登録と Signed Originator Profile の発行依頼
-4. Document Profile レジストリへの Signed Originator Profile の登録
-5. Signed Document Profile の発行の準備
-6. Signed Document Profile の発行と登録
+3. Signed Document Profile の発行の準備
+4. Signed Document Profile の発行と登録
 
 ## Document Profile レジストリの準備
 
