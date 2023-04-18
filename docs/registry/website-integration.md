@@ -45,7 +45,7 @@ Document Profile レジストリ->>利用者: Profiles Set の取得
 
 [Document Profile レジストリ構築](./document-profile-registry-creation)を参照してください。
 
-[レジストリの管理者を作成](./document-profile-registry-creation#レジストリの管理者の作成)した際に得られる認証情報に含まれる UUID は [Signed Document Profile の発行・登録](#signed-document-profile-の発行登録)で使用します。
+[レジストリの管理者を作成](./document-profile-registry-creation#レジストリの管理者の作成)した際に得られる認証情報に含まれる UUID は [Signed Document Profile の発行と登録](#signed-document-profile-の発行と登録)で使用します。
 
 ## HTML <link\> element の設置
 
