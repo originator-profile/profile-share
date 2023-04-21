@@ -33,7 +33,7 @@
     "json-schema-to-ts": "^2.7.2",
     "jsonld": "^8.1.1",
     "just-flush": "^2.3.0",
-    "msw": "^1.1.0",
+    "msw": "^1.2.1",
     "vitest": "^0.29.3",
     "vitest-mock-extended": "^1.1.3"
   }
