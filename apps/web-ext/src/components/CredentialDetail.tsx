@@ -1,24 +1,40 @@
 import clsx from "clsx";
 import { Icon } from "@iconify/react";
-import { Op } from "../types/profile";
+import {
+  OpCredential,
+  OpHolder,
+  OpCertifier,
+  OpVerifier,
+} from "@webdino/profile-model";
+import { getVerificationType } from "../utils/credential";
 import Image from "../components/Image";
-import CertifierTable from "../components/CertifierTable";
-import logoCertifierUrl from "../assets/logo-certifier.png";
+import Table from "./Table";
+import TableRow from "./TableRow";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
 
 type Props = {
+  id: string;
   className?: string;
-  op: Op;
+  credential: OpCredential;
+  holder: OpHolder;
+  certifier?: OpCertifier;
+  verifier?: OpVerifier;
 };
 
-function CredentialDetail({ className, op }: Props) {
+function CredentialDetail({
+  id,
+  className,
+  credential,
+  holder,
+  certifier,
+  verifier,
+}: Props) {
+  const verificationType = getVerificationType(credential, holder);
   return (
-    <div
-      id="ブランドセーフティ認証 第三者検証"
-      className={clsx("jumpu-card p-4", className)}
-    >
+    <div id={id} className={clsx("jumpu-card p-4", className)}>
       <Image
-        src={logoCertifierUrl}
+        className="mb-4"
+        src={credential.image}
         placeholderSrc={placeholderLogoMainUrl}
         alt=""
         width={110}
@@ -30,10 +46,28 @@ function CredentialDetail({ className, op }: Props) {
           icon="akar-icons:circle-check-fill"
         />
         <p className="flex-1 font-bold text-blue-500 text-xs">
-          第三者検証による認定です
+          {verificationType}による認定です
         </p>
       </div>
-      <CertifierTable op={op} />
+      <Table>
+        <TableRow header="資格名" data={credential.name} />
+        <TableRow
+          header="認証機関"
+          data={certifier?.name ?? credential.certifier}
+        />
+        <TableRow
+          header="検証機関"
+          data={verifier?.name ?? credential.verifier}
+        />
+        <TableRow
+          header="発行日"
+          data={new Date(credential.issuedAt).toLocaleString()}
+        />
+        <TableRow
+          header="有効期限"
+          data={new Date(credential.expiredAt).toLocaleString()}
+        />
+      </Table>
     </div>
   );
 }

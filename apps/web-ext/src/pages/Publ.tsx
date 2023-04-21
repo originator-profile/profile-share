@@ -41,7 +41,9 @@ function Publ() {
   const paths = {
     org: routes.org.build({ orgIssuer: op.issuer, orgSubject: op.subject }),
   } as const;
-  return <Template dp={dp} website={website} holder={holder} paths={paths} />;
+  return (
+    <Template op={op} dp={dp} website={website} holder={holder} paths={paths} />
+  );
 }
 
 export default Publ;

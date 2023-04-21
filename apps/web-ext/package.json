@@ -27,6 +27,7 @@
     "autoprefixer": "^10.4.14",
     "clsx": "^1.2.1",
     "commander": "^10.0.0",
+    "date-fns": "^2.29.3",
     "dompurify": "^3.0.1",
     "esbuild": "^0.17.12",
     "esbuild-copy-static-files": "^0.1.0",

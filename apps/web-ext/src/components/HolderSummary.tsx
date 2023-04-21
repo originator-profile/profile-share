@@ -1,19 +1,74 @@
 import clsx from "clsx";
+import isAfter from "date-fns/isAfter";
 import { Link, LinkProps } from "react-router-dom";
 import { Icon } from "@iconify/react";
-import { OpHolder } from "@webdino/profile-model";
+import { OpHolder, OpCredential } from "@webdino/profile-model";
 import Image from "../components/Image";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
-import logoCertifierUrl from "../assets/logo-certifier.png";
+import { getVerificationType } from "../utils/credential";
+
+function Credential({
+  className,
+  credentials,
+  credential,
+  holder,
+}: {
+  className?: string;
+  credentials: OpCredential[];
+  credential: OpCredential;
+  holder: OpHolder;
+}) {
+  const isExists = isAfter(new Date(credential.expiredAt), new Date());
+  return (
+    <div className={clsx("flex gap-4", className)}>
+      <Image
+        className="flex-shrink-0"
+        src={credential.image}
+        placeholderSrc={placeholderLogoMainUrl}
+        alt=""
+        width={55}
+        height={35}
+      />
+      <div>
+        <p className="text-sm text-gray-500 mb-1">
+          <span className="font-bold text-gray-700 mr-1">
+            {credential.name} {getVerificationType(credential, holder)}
+          </span>
+          {credentials.length > 1 &&
+            `その他${credentials.length - 1}件の認証情報`}
+        </p>
+        {isExists ? (
+          <p className="text-xs">
+            <Icon
+              className="inline text-blue-600 mr-1"
+              icon="akar-icons:check"
+            />
+            有効期限内
+          </p>
+        ) : (
+          <p className="text-xs">
+            <Icon
+              className="inline text-red-600 mr-1"
+              icon="akar-icons:cross"
+            />
+            有効期限切れ
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
 
 type Props = {
   className?: string;
   to: LinkProps["to"];
   holder: OpHolder;
+  credentials: OpCredential[];
 };
 
-function HolderSummary({ className, to, holder }: Props) {
+function HolderSummary({ className, to, holder, credentials }: Props) {
   const logo = holder.logos?.find(({ isMain }) => isMain);
+  const [credential] = credentials;
   return (
     <Link className={clsx("jumpu-card block", className)} to={to}>
       <div className="flex items-center gap-4 mx-4 my-3">
@@ -40,31 +95,14 @@ function HolderSummary({ className, to, holder }: Props) {
           この組織は認証を受けています
         </p>
       </div>
-      <div className="flex mx-4 my-3 gap-4">
-        <Image
-          className="flex-shrink-0"
-          src={logoCertifierUrl}
-          placeholderSrc={placeholderLogoMainUrl}
-          alt=""
-          width={55}
-          height={35}
+      {credential && (
+        <Credential
+          className="mx-4 my-3"
+          credentials={credentials}
+          credential={credential}
+          holder={holder}
         />
-        <div>
-          <p className="text-sm text-gray-500 mb-1">
-            <span className="font-bold text-gray-700 mr-1">
-              無効トラフィック対策認証 第三者検証
-            </span>
-            その他2件の認証情報
-          </p>
-          <p className="text-xs">
-            <Icon
-              className="inline text-blue-600 mr-1"
-              icon="akar-icons:check"
-            />
-            有効期限内
-          </p>
-        </div>
-      </div>
+      )}
       {holder.publishingPrincipleUrl && (
         <a
           className="block bg-gray-50 rounded-lg px-4 py-2 mx-4 my-3"

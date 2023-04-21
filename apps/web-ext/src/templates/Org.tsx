@@ -1,6 +1,12 @@
+import { useId } from "react";
 import { Icon } from "@iconify/react";
-import { OpHolder } from "@webdino/profile-model";
+import { OpHolder, OpCertifier, OpVerifier } from "@webdino/profile-model";
 import { Op } from "../types/profile";
+import {
+  isOpCredential,
+  isOpCertifier,
+  isOpVerifier,
+} from "@webdino/profile-core";
 import { Role } from "../types/role";
 import Image from "../components/Image";
 import BackHeader from "../components/BackHeader";
@@ -23,6 +29,18 @@ type Props = {
 
 function Org({ op, holder, roles, paths }: Props) {
   const logo = holder.logos?.find(({ isMain }) => isMain);
+  const credentials = op.item.filter(isOpCredential);
+  const certifiers = new Map<string, OpCertifier>(
+    op.item.filter(isOpCertifier).map((c) => [c.domainName, c])
+  );
+  const verifiers = new Map<string, OpVerifier>(
+    op.item.filter(isOpVerifier).map((v) => [v.domainName, v])
+  );
+  const handleClick = (id: string) => () => {
+    const element = document.querySelector("#" + CSS.escape(id));
+    element?.scrollIntoView({ behavior: "smooth" });
+  };
+  const id = useId();
   return (
     <>
       <BackHeader className="sticky top-0" to={paths.back}>
@@ -75,9 +93,16 @@ function Org({ op, holder, roles, paths }: Props) {
           </p>
         </div>
         <ul className="mb-4 -mx-2">
-          <li className="mb-2">
-            <CredentialSummary className="w-full" />
-          </li>
+          {credentials.map((credential, index) => (
+            <li className="mb-2" key={index}>
+              <CredentialSummary
+                className="w-full"
+                credential={credential}
+                holder={holder}
+                onClick={handleClick(id + index)}
+              />
+            </li>
+          ))}
         </ul>
         <h2 className="text-sm text-gray-600 font-bold mb-3">所有者情報</h2>
         <div className="jumpu-card p-4 mb-4">
@@ -87,7 +112,17 @@ function Org({ op, holder, roles, paths }: Props) {
           )}
         </div>
         <h2 className="text-sm text-gray-600 font-bold mb-3">認定内容</h2>
-        <CredentialDetail className="mb-4" op={op} />
+        {credentials.map((credential, index) => (
+          <CredentialDetail
+            key={index}
+            id={id + index}
+            className="mb-4"
+            credential={credential}
+            holder={holder}
+            certifier={certifiers.get(credential.certifier)}
+            verifier={verifiers.get(credential.verifier)}
+          />
+        ))}
         <h2 className="text-sm text-gray-600 font-bold mb-3">技術情報</h2>
         <div className="jumpu-card p-4">
           <TechTable className="p-4" profile={op} />
