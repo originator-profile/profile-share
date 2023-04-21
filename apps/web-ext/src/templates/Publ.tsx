@@ -1,7 +1,8 @@
 import { Icon } from "@iconify/react";
 import { Disclosure, Transition } from "@headlessui/react";
 import { OgWebsite, OpHolder } from "@webdino/profile-model";
-import { Dp } from "../types/profile";
+import { isOpCredential } from "@webdino/profile-core";
+import { Op, Dp } from "../types/profile";
 import Image from "../components/Image";
 import WebsiteMainTable from "../components/WebsiteMainTable";
 import WebsiteSubTable from "../components/WebsiteSubTable";
@@ -11,13 +12,15 @@ import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
 import HolderSummary from "../components/HolderSummary";
 
 type Props = {
+  op: Op;
   dp: Dp;
   website: OgWebsite;
   holder: OpHolder;
   paths: { org: string };
 };
 
-function Publ({ dp, website, holder, paths }: Props) {
+function Publ({ op, dp, website, holder, paths }: Props) {
+  const credentials = op.item.filter(isOpCredential);
   return (
     <div className="bg-gray-50 min-h-screen p-4">
       <div className="flex gap-4">
@@ -72,7 +75,7 @@ function Publ({ dp, website, holder, paths }: Props) {
           </Disclosure>
         </div>
       </div>
-      <HolderSummary to={paths.org} holder={holder} />
+      <HolderSummary to={paths.org} holder={holder} credentials={credentials} />
     </div>
   );
 }
