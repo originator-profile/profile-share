@@ -46,7 +46,7 @@ function CredentialDetail({
           icon="akar-icons:circle-check-fill"
         />
         <p className="flex-1 font-bold text-blue-500 text-xs">
-          {verificationType}による認定です
+          {verificationType}による認証です
         </p>
       </div>
       <Table>

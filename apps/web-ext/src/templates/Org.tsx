@@ -111,7 +111,7 @@ function Org({ op, holder, roles, paths }: Props) {
             <Description description={holder.description} />
           )}
         </div>
-        <h2 className="text-sm text-gray-600 font-bold mb-3">認定内容</h2>
+        <h2 className="text-sm text-gray-600 font-bold mb-3">資格情報</h2>
         {credentials.map((credential, index) => (
           <CredentialDetail
             key={index}
