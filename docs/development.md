@@ -27,8 +27,6 @@ CHROME_PATH=/usr/bin/google-chrome yarn dev
 # => 開発用サーバーとWebブラウザーが起動します (<Ctrl-C>: 終了)
 ```
 
-(Windows では[^WslBrowser]を参照)
-
 あとはそれぞれのソースコードを編集することで開発を行うことができます。自由にカスタマイズしましょう。
 
 ## 全体構成
