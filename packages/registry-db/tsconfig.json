@@ -1,1 +1,1 @@
-{}
+{ "extends": "@webdino/profile-tsconfig" }

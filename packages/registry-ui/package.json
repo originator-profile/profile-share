@@ -2,9 +2,6 @@
   "name": "@webdino/profile-registry-ui",
   "version": "0.0.0",
   "private": true,
-  "typedoc": {
-    "readmeFile": "README.md"
-  },
   "scripts": {
     "build": "vite build",
     "lint": "eslint --fix ."

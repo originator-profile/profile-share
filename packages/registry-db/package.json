@@ -3,9 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "main": "src/index.ts",
-  "typedoc": {
-    "readmeFile": "README.md"
-  },
   "scripts": {
     "build": "prisma generate",
     "dev": "prisma generate --watch"
@@ -13,6 +10,7 @@
   "devDependencies": {
     "@prisma/client": "^4.11.0",
     "@prisma/generator-helper": "^4.13.0",
+    "@webdino/profile-tsconfig": "*",
     "prisma": "^4.11.0",
     "prisma-erd-generator": "^1.5.4"
   }
