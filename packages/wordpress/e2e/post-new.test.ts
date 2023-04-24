@@ -23,7 +23,7 @@ test.beforeAll(async ({ browser }) => {
 test("投稿の検証", async () => {
   await page.goto("http://localhost:9000/wp-admin/post-new.php");
 
-  const closeDialog = page.getByRole("button", { name: "Close dialog" });
+  const closeDialog = page.getByRole("button", { name: /Close/ });
   if ((await closeDialog.count()) > 0) {
     await closeDialog.click();
   }
