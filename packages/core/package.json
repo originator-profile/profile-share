@@ -10,7 +10,7 @@
   "devDependencies": {
     "@webdino/profile-model": "*",
     "@webdino/profile-tsconfig": "*",
-    "eslint": "^8.36.0",
+    "eslint": "^8.39.0",
     "eslint-config-webdino-profile": "*",
     "vitest": "^0.30.1"
   }
