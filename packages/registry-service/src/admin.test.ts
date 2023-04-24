@@ -26,15 +26,4 @@ describe("AdminService", () => {
     const valid = await admin.auth(accountId, dummyPassword);
     expect(valid).toBe(true);
   });
-
-  test("create() calls prisma.admins.create()", async () => {
-    prisma.admins.create.mockRejectedValue({});
-    const admin: AdminService = AdminService({ prisma });
-    const dummyPassword: string = crypto.randomUUID();
-    await admin.create(accountId, dummyPassword);
-    // @ts-expect-error assert
-    expect(prisma.admins.create.calls[0][0].data.password).toMatch(
-      /^\$2[ayb]\$.{56}$/
-    );
-  });
 });

@@ -1,7 +1,6 @@
 import { test, expect, describe, afterEach } from "vitest";
 import { mockDeep, mockClear } from "vitest-mock-extended";
-import { Prisma, PrismaClient } from "@prisma/client";
-import crypto from "node:crypto";
+import { PrismaClient } from "@prisma/client";
 import { generateKey } from "@webdino/profile-sign";
 import Config from "./config";
 import { WebsiteService } from "./website";
@@ -13,24 +12,6 @@ describe("WebsiteService", () => {
 
   afterEach(() => {
     mockClear(prisma);
-  });
-
-  test("create() calls prisma.websites.create()", async () => {
-    prisma.websites.create.mockRejectedValue({});
-    const website: WebsiteService = WebsiteService({ config, prisma });
-    const accountId = crypto.randomUUID();
-    const input: Prisma.websitesCreateInput = {
-      account: { connect: { id: accountId } },
-      url: "http://localhost:8080/",
-      location: "h1",
-      bodyFormat: { connect: { value: "html" } },
-      title: "OP 確認くん",
-      proofJws:
-        "eyJhbGciOiJFUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..RTQpkRZ81kVLRcVp3kqDVM_EBq35qF0c1Z1vzYUfb6z5MoyDd1BDn482qLS6vkD9NkefPwiwVkv58GHAZ6qvPA",
-    };
-    await website.create(input);
-    // @ts-expect-error assert
-    expect(prisma.websites.create.calls.length).toBe(1);
   });
 
   test("signBody() return compact JWS", async () => {

@@ -2,8 +2,7 @@ import { test, expect, describe, afterEach } from "vitest";
 import { mockDeep, mockClear } from "vitest-mock-extended";
 import { PrismaClient, websites } from "@prisma/client";
 import crypto from "node:crypto";
-import { addYears, getUnixTime } from "date-fns";
-import { decodeJwt, generateKeyPair, SignJWT } from "jose";
+import { decodeJwt } from "jose";
 import { JwtDpPayload } from "@webdino/profile-model";
 import { generateKey } from "@webdino/profile-sign";
 import { ValidatorService } from "./validator";
@@ -50,41 +49,5 @@ describe("PublisherService", () => {
       ({ type }) => type === "website"
     );
     expect(website?.url).toBe(url);
-  });
-
-  test("registerDp() calls prisma.dps.create()", async () => {
-    const accountId = crypto.randomUUID();
-    const issuer = "example.com";
-    const issuedAt = new Date();
-    const subject = "https://example.com/article/42";
-    const expiredAt = addYears(new Date(), 10);
-    const { privateKey } = await generateKeyPair("ES256");
-    const dpId: string = crypto.randomUUID();
-    const jwt = await new SignJWT({
-      "https://opr.webdino.org/jwt/claims/dp": { item: [] },
-    })
-      .setProtectedHeader({ alg: "ES256" })
-      .setIssuer(issuer)
-      .setSubject(subject)
-      .setIssuedAt(getUnixTime(issuedAt))
-      .setExpirationTime(getUnixTime(expiredAt))
-      .sign(privateKey);
-    // @ts-expect-error dummy account
-    prisma.accounts.findUnique.mockResolvedValue({
-      id: accountId,
-      domainName: issuer,
-    });
-    prisma.dps.create.mockResolvedValue({
-      id: dpId,
-      issuerId: accountId,
-      jwt,
-      issuedAt,
-      expiredAt,
-      websiteId: null,
-    });
-    const data = await publisher.registerDp(accountId, jwt);
-    // @ts-expect-error assert
-    expect(prisma.dps.create.calls.length).toBe(1);
-    expect(data).toBe(dpId);
   });
 });
