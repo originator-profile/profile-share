@@ -12,7 +12,8 @@
   },
   "devDependencies": {
     "@prisma/client": "^4.11.0",
+    "@prisma/generator-helper": "^4.13.0",
     "prisma": "^4.11.0",
-    "prisma-erd-generator": "^1.2.5"
+    "prisma-erd-generator": "^1.5.4"
   }
 }
