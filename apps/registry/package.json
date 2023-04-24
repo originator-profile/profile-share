@@ -59,7 +59,7 @@
     "@fastify/env": "^4.2.0",
     "@fastify/helmet": "^10.1.0",
     "@fastify/swagger": "^8.3.1",
-    "@fastify/swagger-ui": "^1.5.0",
+    "@fastify/swagger-ui": "^1.8.0",
     "@types/jsonld": "^1.5.8",
     "@types/serve-handler": "^6.1.1",
     "@webdino/profile-model": "*",

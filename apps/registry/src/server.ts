@@ -42,7 +42,11 @@ export function create(options: Options): Server {
 
   if (options.isDev) {
     app.register(swagger, { openapi });
-    app.register(swaggerUi);
+    app.register(swaggerUi, {
+      // NOTE: esbuild でのバンドルに失敗する問題の回避策
+      //       ロゴが失われる代わりに require.resolve() を呼び出さないようにする
+      logo: { type: "text/plain", content: "" },
+    });
   }
   app.register(autoload, {
     dir: options.routes,
