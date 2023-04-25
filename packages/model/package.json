@@ -3,9 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "main": "src/index.ts",
-  "typedoc": {
-    "readmeFile": "README.md"
-  },
   "scripts": {
     "test": "vitest run",
     "lint": "eslint --fix ."
@@ -14,11 +11,11 @@
     "@types/jsonld": "^1.5.8",
     "@webdino/profile-tsconfig": "*",
     "ajv": "^8.12.0",
-    "eslint": "^8.36.0",
+    "eslint": "^8.39.0",
     "eslint-config-webdino-profile": "*",
-    "json-schema-to-ts": "^2.7.2",
+    "json-schema-to-ts": "^2.8.0",
     "jsonld": "^8.1.1",
     "msw": "^1.2.1",
-    "vitest": "^0.29.3"
+    "vitest": "^0.30.1"
   }
 }

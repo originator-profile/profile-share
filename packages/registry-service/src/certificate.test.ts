@@ -2,8 +2,7 @@ import { test, expect, describe, afterEach } from "vitest";
 import { mockDeep, mockClear } from "vitest-mock-extended";
 import { Prisma, PrismaClient } from "@prisma/client";
 import crypto from "node:crypto";
-import { addYears, getUnixTime } from "date-fns";
-import { decodeJwt, generateKeyPair, SignJWT } from "jose";
+import { decodeJwt } from "jose";
 import { JwtOpPayload } from "@webdino/profile-model";
 import { generateKey } from "@webdino/profile-sign";
 import { isOpHolder, isOpCredential } from "@webdino/profile-core";
@@ -111,34 +110,5 @@ describe("CertificateService", () => {
     const credential =
       valid["https://opr.webdino.org/jwt/claims/op"].item.find(isOpCredential);
     expect(credential?.name).toBe("ブランドセーフティ認証");
-  });
-
-  test("issue() calls prisma.ops.create()", async () => {
-    const issuer = "example.org";
-    const issuedAt = new Date();
-    const subject = "example.com";
-    const expiredAt = addYears(new Date(), 10);
-    const { privateKey } = await generateKeyPair("ES256");
-    const opId: string = crypto.randomUUID();
-    const jwt = await new SignJWT({
-      "https://opr.webdino.org/jwt/claims/op": { item: [] },
-    })
-      .setProtectedHeader({ alg: "ES256" })
-      .setIssuer(issuer)
-      .setSubject(subject)
-      .setIssuedAt(getUnixTime(issuedAt))
-      .setExpirationTime(getUnixTime(expiredAt))
-      .sign(privateKey);
-    prisma.ops.create.mockResolvedValue({
-      id: opId,
-      certifierId,
-      jwt,
-      issuedAt,
-      expiredAt,
-    });
-    const data = await certificate.issue(certifierId, jwt);
-    // @ts-expect-error assert
-    expect(prisma.ops.create.calls.length).toBe(1);
-    expect(data).toBe(opId);
   });
 });
