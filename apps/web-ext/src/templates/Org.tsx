@@ -40,7 +40,7 @@ function Org({ op, holder, roles, paths }: Props) {
     const element = document.querySelector("#" + CSS.escape(id));
     element?.scrollIntoView({ behavior: "smooth" });
   };
-  const id = useId();
+  const credentialIdFragment = useId();
   return (
     <>
       <BackHeader className="sticky top-0" to={paths.back}>
@@ -99,7 +99,7 @@ function Org({ op, holder, roles, paths }: Props) {
                 className="w-full"
                 credential={credential}
                 holder={holder}
-                onClick={handleClick(id + index)}
+                onClick={handleClick(credentialIdFragment + index)}
               />
             </li>
           ))}
@@ -115,7 +115,7 @@ function Org({ op, holder, roles, paths }: Props) {
         {credentials.map((credential, index) => (
           <CredentialDetail
             key={index}
-            id={id + index}
+            id={credentialIdFragment + index}
             className="mb-4"
             credential={credential}
             holder={holder}
