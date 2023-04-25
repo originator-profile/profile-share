@@ -90,10 +90,15 @@ USAGE
 
 FLAGS
   -k, --key=<value>  (required) JWK 公開鍵ファイル
-  --id=<value>       (required) 会員 (UUID)
+  --id=<value>       (required) 会員 ID またはドメイン名
 
 DESCRIPTION
   公開鍵の登録
+
+FLAG DESCRIPTIONS
+  --id=<value>  会員 ID またはドメイン名
+
+    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
 ```
 
 ## `profile-registry account:register-op`
@@ -112,6 +117,10 @@ DESCRIPTION
   Signed Originator Profile の登録 (Document Profile Registry 用)
 
 FLAG DESCRIPTIONS
+  --id=<value>  会員 ID またはドメイン名
+
+    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+
   --op=<value>  Signed Originator Profile ファイル
 
     Originator Profile レジストリから受け取った Signed Originator Profile ファイルを指定します。
@@ -132,6 +141,12 @@ FLAGS
 
 DESCRIPTION
   管理者の作成
+
+FLAG DESCRIPTIONS
+  --id=<value>  会員 ID またはドメイン名
+
+    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+    会員を新規登録する場合、ドメイン名でなければなりません。
 ```
 
 ## `profile-registry admin:delete`
@@ -147,6 +162,11 @@ FLAGS
 
 DESCRIPTION
   管理者権限の削除
+
+FLAG DESCRIPTIONS
+  --id=<value>  会員 ID またはドメイン名
+
+    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
 ```
 
 ## `profile-registry cert:issue`
@@ -160,13 +180,22 @@ USAGE
 
 FLAGS
   -i, --identity=<value>  (required) PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル
-  --certifier=<value>     (required) 認証機関 (UUID)
+  --certifier=<value>     (required) 認証機関 ID またはドメイン名
   --expired-at=<value>    有効期限 (ISO 8601)
-  --holder=<value>        (required) 発行対象の会員 (UUID)
+  --holder=<value>        (required) 所有者となる会員 ID またはドメイン名
   --issued-at=<value>     発行日時 (ISO 8601)
 
 DESCRIPTION
   OP の発行
+
+FLAG DESCRIPTIONS
+  --certifier=<value>  認証機関 ID またはドメイン名
+
+    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+
+  --holder=<value>  所有者となる会員 ID またはドメイン名
+
+    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
 ```
 
 ## `profile-registry db:init`
@@ -328,7 +357,7 @@ FLAGS
                             <options: create|read|update|delete>
   --expired-at=<value>      有効期限 (ISO 8601)
   --glob-input=<value>      (required) [default: **/.website.json] JSON files match with glob pattern
-  --id=<value>              (required) 会員 (UUID)
+  --id=<value>              (required) 会員 ID またはドメイン名
   --input=<value>           JSON file
   --issued-at=<value>       発行日時 (ISO 8601)
 
@@ -336,6 +365,10 @@ DESCRIPTION
   ウェブページの作成・表示・更新・削除
 
 FLAG DESCRIPTIONS
+  --id=<value>  会員 ID またはドメイン名
+
+    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+
   --input=<value>  JSON file
 
     Prisma.websitesCreateInput または Prisma.websitesUpdateInput

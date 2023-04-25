@@ -2,13 +2,13 @@ import { Command, Flags } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
 import { Services } from "@webdino/profile-registry-service";
 import fs from "node:fs/promises";
+import { accountId } from "../../flags";
 
 export class AccountRegisterOp extends Command {
   static description =
     "Signed Originator Profile の登録 (Document Profile Registry 用)";
   static flags = {
-    id: Flags.string({
-      description: "会員 ID またはドメイン名",
+    id: accountId({
       required: true,
     }),
     op: Flags.string({

@@ -3,12 +3,16 @@ import { PrismaClient } from "@prisma/client";
 import { Services } from "@webdino/profile-registry-service";
 import crypto from "node:crypto";
 import { NotFoundError } from "http-errors-enhanced";
+import { parseAccountId } from "../../flags";
 
 export class AdminCreate extends Command {
   static description = "管理者の作成";
   static flags = {
     id: Flags.string({
-      description: "会員 ID またはドメイン名",
+      summary: "会員 ID またはドメイン名",
+      description: `\
+UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+会員を新規登録する場合、ドメイン名でなければなりません。`,
       required: true,
     }),
     password: Flags.string({
@@ -20,7 +24,9 @@ export class AdminCreate extends Command {
     const { flags } = await this.parse(AdminCreate);
     const prisma = new PrismaClient();
     const services = Services({ config: { ISSUER_UUID: "" }, prisma });
-    const account = await services.account.read({ id: flags.id });
+    const account = await services.account.read({
+      id: parseAccountId(flags.id),
+    });
     let id: string;
     if (account instanceof NotFoundError) {
       const data = await services.account.create({

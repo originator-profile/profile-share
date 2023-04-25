@@ -13,17 +13,6 @@ type Options = {
 type AccountId = string;
 type OpId = string;
 
-/**
- * UUID文字列形式の判定
- * @param id 会員 ID またはドメイン名
- * @return UUID文字列形式の場合はtrue、それ以外の場合false
- */
-function isUuid(id: string): boolean {
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
-    id
-  );
-}
-
 export const AccountService = ({ prisma, validator }: Options) => ({
   /**
    * 会員の作成
@@ -38,12 +27,12 @@ export const AccountService = ({ prisma, validator }: Options) => ({
   },
   /**
    * 会員の表示
-   * @param input.id 会員 ID またはドメイン名
+   * @param input.id 会員 ID
    * @return 会員
    */
   async read({ id }: { id: AccountId }): Promise<accounts | Error> {
     const data = await prisma.accounts
-      .findUnique({ where: isUuid(id) ? { id } : { domainName: id } })
+      .findUnique({ where: { id } })
       .catch((e: Error) => e);
     return data ?? new NotFoundError();
   },
@@ -65,12 +54,12 @@ export const AccountService = ({ prisma, validator }: Options) => ({
   },
   /**
    * 会員の削除
-   * @param input.id 会員 ID またはドメイン名
+   * @param input.id 会員 ID
    * @return 会員
    */
   async delete({ id }: { id: AccountId }): Promise<accounts | Error> {
     return await prisma.accounts.delete({
-      where: isUuid(id) ? { id } : { domainName: id },
+      where: { id },
     });
   },
   /**
@@ -106,7 +95,7 @@ export const AccountService = ({ prisma, validator }: Options) => ({
   },
   /**
    * Signed Originator Profile の登録 (Document Profile Registry 用)
-   * @param id 会員 ID またはドメイン名
+   * @param id 会員 ID
    * @param jwt Signed Originator Profile
    * @return 成功した場合はSigned Originator Profile、失敗した場合はError
    */

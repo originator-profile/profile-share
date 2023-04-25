@@ -2,6 +2,7 @@ import { Command, Flags } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
 import { Services } from "@webdino/profile-registry-service";
 import fs from "node:fs/promises";
+import { accountId } from "../../flags";
 
 export class AccountRegisterKey extends Command {
   static description = "公開鍵の登録";
@@ -11,8 +12,7 @@ export class AccountRegisterKey extends Command {
       description: "JWK 公開鍵ファイル",
       required: true,
     }),
-    id: Flags.string({
-      description: "会員 (UUID)",
+    id: accountId({
       required: true,
     }),
   };
