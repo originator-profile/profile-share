@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { Services } from "@webdino/profile-registry-service";
 import fs from "node:fs/promises";
 import { operation } from "../../flags";
+import { parseAccountId } from "@webdino/profile-core";
 
 export class Account extends Command {
   static description = "会員の作成・表示・更新・削除";
@@ -13,7 +14,8 @@ export class Account extends Command {
       description: `\
 Prisma.accountsCreateInput または Prisma.accountsUpdateInput
 詳細はTSDocを参照してください。
-https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma`,
+https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
+"id" フィールドの値には会員 ID またはドメイン名を指定可能です。`,
       default: "account.example.json",
       required: true,
     }),
@@ -34,6 +36,9 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
       | "read"
       | "update"
       | "delete";
+    if (typeof input.id === "string") {
+      input.id = parseAccountId(input.id);
+    }
     const data = await services.account[operation](input);
     if (data instanceof Error) this.error(data);
     this.log(JSON.stringify(data, null, 2));

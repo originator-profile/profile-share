@@ -18,7 +18,7 @@ type DpId = string;
 export const PublisherService = ({ prisma, validator }: Options) => ({
   /**
    * DP への署名
-   * @param id 会員ID
+   * @param id 会員 ID
    * @param url ウェブページ URL
    * @param pkcs8 PEM base64 でエンコードされた PKCS #8 秘密鍵
    * @param options 署名オプション

@@ -1,12 +1,12 @@
-import { Command, Flags } from "@oclif/core";
+import { Command } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
 import { Services } from "@webdino/profile-registry-service";
+import { accountId } from "../../flags";
 
 export class AdminDelete extends Command {
   static description = "管理者権限の削除";
   static flags = {
-    id: Flags.string({
-      description: "会員 ID またはドメイン名",
+    id: accountId({
       required: true,
     }),
   };

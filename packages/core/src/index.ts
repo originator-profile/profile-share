@@ -4,3 +4,4 @@ export * from "./dp";
 export * from "./dp-item";
 export * from "./profile";
 export * from "./jwt-payload";
+export * from "./account";

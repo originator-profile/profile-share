@@ -54,7 +54,7 @@ $ bin/dev admin:create --id <レジストリドメイン名>
 
 ```
 $ bin/dev admin:create --id example.com
-Secret: eb796625-51df-4ed7-b9b5-2d43d6fa639a:RglFDciAMO8qwVv3lb1exs_rCMGPEGeAE6Hxmz0NVLg
+Secret: cfbff0d1-9375-5685-968c-48ce8b15ae17:GVWoXikZIqzdxzB3CieDHL-FefBT31IfpjdbtAJtBcU
 ```
 
 <!-- NOTE: ローカルの開発環境では `--id=localhost` を使用できます。 -->
@@ -88,20 +88,7 @@ JWK の例:
 鍵ペアを生成する必要があります。[操作説明書](./operation#鍵ペアの生成)を参照してください。
 
 <!-- NOTE:
-Originator Profile レジストリ運用者は下記のコマンドで会員の公開鍵を登録します。
-
-```
-USAGE
-  $ profile-registry account:register-key -k <value> --id <value>
-
-FLAGS
-  -k, --key=<value>  (required) JWK 公開鍵ファイル
-  --id=<value>       (required) 会員 (UUID)
-
-DESCRIPTION
-  公開鍵の登録
-```
-
+Originator Profile レジストリ運用者によって公開鍵を登録します。
 詳細は[操作説明書](./operation.md)と[Profile Registry ソースコード](https://github.com/webdino/profile/blob/main/apps/registry#readme)を参照してください。
 -->
 
