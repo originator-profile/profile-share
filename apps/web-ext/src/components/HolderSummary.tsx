@@ -18,7 +18,7 @@ function Credential({
   credential: OpCredential;
   holder: OpHolder;
 }) {
-  const isExists = isAfter(new Date(credential.expiredAt), new Date());
+  const isValid = isAfter(new Date(credential.expiredAt), new Date());
   return (
     <div className={clsx("flex gap-4", className)}>
       <Image
@@ -37,7 +37,7 @@ function Credential({
           {credentials.length > 1 &&
             `その他${credentials.length - 1}件の認証情報`}
         </p>
-        {isExists ? (
+        {isValid ? (
           <p className="text-xs">
             <Icon
               className="inline text-blue-600 mr-1"
