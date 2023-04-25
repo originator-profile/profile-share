@@ -8,10 +8,12 @@
     "lint": "eslint --fix ."
   },
   "devDependencies": {
+    "@types/uuid": "^9.0.1",
     "@webdino/profile-model": "*",
     "@webdino/profile-tsconfig": "*",
     "eslint": "^8.39.0",
     "eslint-config-webdino-profile": "*",
+    "uuid": "^9.0.0",
     "vitest": "^0.30.1"
   }
 }

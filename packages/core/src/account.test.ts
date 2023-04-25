@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { parseAccountId } from "../src/flags";
+import { parseAccountId } from "./account";
 import crypto from "node:crypto";
 
 describe("parseAccountId", () => {

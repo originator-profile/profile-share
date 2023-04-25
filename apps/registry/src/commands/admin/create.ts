@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { Services } from "@webdino/profile-registry-service";
 import crypto from "node:crypto";
 import { NotFoundError } from "http-errors-enhanced";
-import { parseAccountId } from "../../flags";
+import { parseAccountId } from "@webdino/profile-core";
 
 export class AdminCreate extends Command {
   static description = "管理者の作成";

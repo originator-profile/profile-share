@@ -2,7 +2,8 @@ import { Command, Flags } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
 import { Services } from "@webdino/profile-registry-service";
 import fs from "node:fs/promises";
-import { operation, parseAccountId } from "../../flags";
+import { operation } from "../../flags";
+import { parseAccountId } from "@webdino/profile-core";
 
 export class Account extends Command {
   static description = "会員の作成・表示・更新・削除";

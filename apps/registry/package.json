@@ -62,7 +62,7 @@
     "@fastify/swagger-ui": "^1.8.0",
     "@types/jsonld": "^1.5.8",
     "@types/serve-handler": "^6.1.1",
-    "@types/uuid": "^9.0.1",
+    "@webdino/profile-core": "*",
     "@webdino/profile-model": "*",
     "@webdino/profile-registry-db": "*",
     "@webdino/profile-registry-service": "*",
@@ -89,7 +89,6 @@
     "stdout-stderr": "^0.1.13",
     "tsup": "^6.7.0",
     "typescript": "^5.0.4",
-    "uuid": "^9.0.0",
     "vitest": "^0.30.1",
     "widdershins": "^4.0.1"
   },
