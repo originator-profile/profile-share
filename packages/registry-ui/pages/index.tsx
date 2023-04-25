@@ -64,9 +64,14 @@ export default function Pages() {
     setValues((values) => ({ ...values, expanded }));
     if (expanded instanceof Error) return;
 
+    const jwksEndpoint = new URL(
+      import.meta.env.DEV && registry === "localhost"
+        ? `http://localhost:8080/.well-known/jwks.json`
+        : `https://${registry}/.well-known/jwks.json`
+    );
     const results = await ProfilesVerifier(
       expanded,
-      RemoteKeys(new URL(`https://${registry}/.well-known/jwks.json`)),
+      RemoteKeys(jwksEndpoint),
       registry,
       null
     )();
