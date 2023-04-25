@@ -74,7 +74,7 @@ export default function Pages() {
   }
 
   return (
-    <main>
+    <>
       <h1>{document.title}</h1>
       <form onSubmit={onSubmit}>
         <label style={{ display: "flex", flexDirection: "column" }}>
@@ -122,6 +122,6 @@ export default function Pages() {
           </Fragment>
         ))}
       </dl>
-    </main>
+    </>
   );
 }
