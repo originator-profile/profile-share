@@ -1,7 +1,1 @@
-{
-  "extends": "@webdino/profile-tsconfig/tsconfig.json",
-  "compilerOptions": {
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js"
-  }
-}
+{ "extends": "@webdino/profile-tsconfig/tsconfig.json" }
