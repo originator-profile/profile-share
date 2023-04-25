@@ -30,7 +30,10 @@ export const AccountService = ({ prisma, validator }: Options) => ({
    * @param input 会員
    * @return 会員
    */
-  async create(input: Prisma.accountsCreateInput): Promise<accounts | Error> {
+  async create({
+    id: _,
+    ...input
+  }: Prisma.accountsCreateInput): Promise<accounts | Error> {
     return await prisma.accounts.create({ data: input }).catch((e: Error) => e);
   },
   /**
@@ -49,11 +52,14 @@ export const AccountService = ({ prisma, validator }: Options) => ({
    * @param input 会員
    * @return 会員
    */
-  async update(
-    input: Prisma.accountsUpdateInput & { id: AccountId }
-  ): Promise<accounts | Error> {
+  async update({
+    id,
+    ...input
+  }: Prisma.accountsUpdateInput & { id: AccountId }): Promise<
+    accounts | Error
+  > {
     return await prisma.accounts.update({
-      where: { id: input.id },
+      where: { id },
       data: input,
     });
   },

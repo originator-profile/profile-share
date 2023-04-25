@@ -1,6 +1,5 @@
 import util from "node:util";
 import { PrismaClient } from "@prisma/client";
-import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import { Services } from "@webdino/profile-registry-service";
 import exampleAccount from "./account.example.json";
@@ -58,7 +57,8 @@ async function issueDp(services: Services, issuerUuid: string, pkcs8: string) {
 }
 
 export async function seed(): Promise<void> {
-  const issuerUuid: string = process.env.ISSUER_UUID ?? crypto.randomUUID();
+  const issuerUuid: string =
+    process.env.ISSUER_UUID ?? "cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc";
   const appUrl: string = process.env.APP_URL ?? "http://localhost:8080";
   const prisma: PrismaClient = new PrismaClient();
   const services = Services({
