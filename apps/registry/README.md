@@ -78,6 +78,7 @@ FLAG DESCRIPTIONS
     Prisma.accountsCreateInput または Prisma.accountsUpdateInput
     詳細はTSDocを参照してください。
     https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
+    "id" フィールドの値には会員 ID またはドメイン名を指定可能です。
 ```
 
 ## `profile-registry account:register-key`
