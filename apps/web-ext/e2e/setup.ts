@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import os from "node:os";
 import util from "node:util";
-import rimraf from "rimraf";
+import { rimraf } from "rimraf";
 
 export let ctx: BrowserContext;
 
