@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import fs from "node:fs/promises";
 import { addYears } from "date-fns";
 import { Services } from "@webdino/profile-registry-service";
+import { accountId } from "../../flags";
 
 const config = { ISSUER_UUID: process.env.ISSUER_UUID ?? "" };
 
@@ -14,12 +15,12 @@ export class CertIssue extends Command {
       description: "PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル",
       required: true,
     }),
-    certifier: Flags.string({
-      description: "認証機関 (UUID)",
+    certifier: accountId({
+      summary: "認証機関 ID またはドメイン名",
       required: true,
     }),
-    holder: Flags.string({
-      description: "発行対象の会員 (UUID)",
+    holder: accountId({
+      summary: "所有者となる会員 ID またはドメイン名",
       required: true,
     }),
     "issued-at": Flags.string({

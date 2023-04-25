@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 import { AdminCreate } from "../src/commands/admin/create";
 import { AdminDelete } from "../src/commands/admin/delete";
 
-const accountId = "d613c1d6-5312-41e9-98ad-2b99765955b6";
+const accountId = "cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc";
 
 test("/admin/account/{id} response is an unauthorized error", async () => {
   const endpoint = `http://localhost:8080/admin/account/${accountId}`;

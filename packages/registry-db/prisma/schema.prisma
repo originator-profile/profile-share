@@ -16,7 +16,7 @@ generator erd {
 model ops {
   id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   /// 認証機関
-  certifier   accounts      @relation(fields: [certifierId], references: [id], onDelete: Cascade)
+  certifier   accounts      @relation(fields: [certifierId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   certifierId String        @db.Uuid
   /// 発行日
   issuedAt    DateTime
@@ -32,7 +32,7 @@ model ops {
 model dps {
   id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   /// 発行者
-  issuer    accounts  @relation(fields: [issuerId], references: [id], onDelete: Cascade)
+  issuer    accounts  @relation(fields: [issuerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   issuerId  String    @db.Uuid
   /// 発行日
   issuedAt  DateTime
@@ -47,8 +47,9 @@ model dps {
 
 /// 会員
 model accounts {
-  id                       String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  /// 会員を一義的に識別するためのドメイン名
+  /// 会員 ID (UUID v5 for domain names)
+  id                       String                      @id @default(dbgenerated()) @db.Uuid
+  /// ドメイン名
   domainName               String                      @unique
   /// ウェブサイトのURL
   url                      String?
@@ -128,7 +129,7 @@ model businessCategories {
 /// 会員・事業種目リレーション
 model accountBusinessCategories {
   /// 会員
-  account               accounts           @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  account               accounts           @relation(fields: [accountId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   accountId             String             @db.Uuid
   /// 事業種目
   businessCategory      businessCategories @relation(fields: [businessCategoryValue], references: [value])
@@ -144,7 +145,7 @@ model logos {
   /// 主なロゴ画像か否か (true: 主なロゴ画像、それ以外: ロゴ画像の候補)
   isMain    Boolean  @default(false)
   /// 会員
-  account   accounts @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  account   accounts @relation(fields: [accountId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   accountId String   @db.Uuid
 }
 
@@ -154,7 +155,7 @@ model publications {
   op          ops      @relation(fields: [opId], references: [id], onDelete: Cascade)
   opId        String   @id @db.Uuid
   /// 会員
-  account     accounts @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  account     accounts @relation(fields: [accountId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   accountId   String   @db.Uuid
   /// 公開日
   publishedAt DateTime @default(now())
@@ -164,7 +165,7 @@ model publications {
 model keys {
   id        Int      @id @default(autoincrement())
   /// 会員
-  account   accounts @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  account   accounts @relation(fields: [accountId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   accountId String   @db.Uuid
   /// JWK
   jwk       Json
@@ -215,7 +216,7 @@ model bodyFormats {
 /// 管理者
 model admins {
   /// 管理者
-  admin    accounts @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  admin    accounts @relation(fields: [adminId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   adminId  String   @id @db.Uuid
   /// パスワード
   password String
@@ -225,13 +226,13 @@ model admins {
 model credentials {
   id          Int      @id @default(autoincrement())
   /// 会員
-  account     accounts @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  account     accounts @relation(fields: [accountId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   accountId   String   @db.Uuid
   /// 認証機関
-  certifier   accounts @relation("issuedCredentials", fields: [certifierId], references: [id], onDelete: Cascade)
+  certifier   accounts @relation("issuedCredentials", fields: [certifierId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   certifierId String   @db.Uuid
   /// 検証機関
-  verifier    accounts @relation("verifiedCredentials", fields: [verifierId], references: [id], onDelete: Cascade)
+  verifier    accounts @relation("verifiedCredentials", fields: [verifierId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   verifierId  String   @db.Uuid
   /// 資格名
   name        String

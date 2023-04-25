@@ -3,18 +3,17 @@
   "version": "0.0.0",
   "private": true,
   "main": "src/index.ts",
-  "typedoc": {
-    "readmeFile": "README.md"
-  },
   "scripts": {
     "test": "vitest run",
     "lint": "eslint --fix ."
   },
   "devDependencies": {
+    "@types/uuid": "^9.0.1",
     "@webdino/profile-model": "*",
     "@webdino/profile-tsconfig": "*",
-    "eslint": "^8.36.0",
+    "eslint": "^8.39.0",
     "eslint-config-webdino-profile": "*",
-    "vitest": "^0.29.3"
+    "uuid": "^9.0.0",
+    "vitest": "^0.30.1"
   }
 }

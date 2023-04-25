@@ -4,7 +4,7 @@ import { addYears } from "date-fns";
 import { Services } from "@webdino/profile-registry-service";
 import fs from "node:fs/promises";
 import { globby } from "globby";
-import { operation } from "../../flags";
+import { accountId, operation } from "../../flags";
 
 export class PublisherWebsite extends Command {
   static description = "ウェブページの作成・表示・更新・削除";
@@ -14,8 +14,7 @@ export class PublisherWebsite extends Command {
       description: "PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル",
       required: true,
     }),
-    id: Flags.string({
-      description: "会員 (UUID)",
+    id: accountId({
       required: true,
     }),
     input: Flags.string({

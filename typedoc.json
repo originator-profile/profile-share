@@ -2,7 +2,13 @@
   "$schema": "https://typedoc.org/schema.json",
   "readme": "src/pages/ts.md",
   "out": "static/ts",
-  "entryPoints": ["."],
   "entryPointStrategy": "packages",
-  "exclude": ["apps/*"]
+  "entryPoints": [
+    "packages/core",
+    "packages/model",
+    "packages/registry-db",
+    "packages/registry-service",
+    "packages/sign",
+    "packages/verify"
+  ]
 }

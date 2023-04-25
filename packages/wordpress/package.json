@@ -8,10 +8,10 @@
     "e2e:run": "playwright test"
   },
   "devDependencies": {
-    "@playwright/test": "^1.31.2",
+    "@playwright/test": "^1.32.3",
     "@webdino/profile-sign": "*",
     "@webdino/profile-verify": "*",
-    "playwright": "^1.31.2",
+    "playwright": "^1.32.3",
     "start-server-and-test": "^2.0.0"
   }
 }

@@ -36,16 +36,14 @@ Document Profile レジストリ->>利用者: Profiles Set の取得
 
 1. Document Profile レジストリの準備
 2. HTML <link\> element の設置
-3. Originator Profile レジストリへの公開鍵の登録と Signed Originator Profile の発行依頼
-4. Document Profile レジストリへの Signed Originator Profile の登録
-5. Signed Document Profile の発行の準備
-6. Signed Document Profile の発行と登録
+3. Signed Document Profile の発行の準備
+4. Signed Document Profile の発行と登録
 
 ## Document Profile レジストリの準備
 
 [Document Profile レジストリ構築](./document-profile-registry-creation)を参照してください。
 
-[レジストリの管理者を作成](./document-profile-registry-creation#レジストリの管理者の作成)した際に得られる認証情報に含まれる UUID は [Signed Document Profile の発行・登録](#signed-document-profile-の発行登録)で使用します。
+[レジストリの管理者を作成](./document-profile-registry-creation#レジストリの管理者の作成)した際に得られる認証情報に含まれる UUID は [Signed Document Profile の発行と登録](#signed-document-profile-の発行と登録)で使用します。
 
 ## HTML <link\> element の設置
 

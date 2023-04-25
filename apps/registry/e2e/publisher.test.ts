@@ -4,7 +4,7 @@ import path from "node:path";
 import { PublisherExtractWebsite } from "../src/commands/publisher/extract-website";
 import { PublisherWebsite } from "../src/commands/publisher/website";
 
-const accountId = "d613c1d6-5312-41e9-98ad-2b99765955b6";
+const accountId = "cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc";
 const keyPath = path.join(__dirname, "..", "account-key.example.pem");
 
 describe("Publisher workflows", async () => {

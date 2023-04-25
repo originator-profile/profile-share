@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import rimraf from "rimraf";
+import { rimraf } from "rimraf";
 import kebabCase from "just-kebab-case";
 import { Profile } from "@webdino/profile-model";
 
