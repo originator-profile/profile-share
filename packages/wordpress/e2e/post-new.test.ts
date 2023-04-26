@@ -23,9 +23,11 @@ test.beforeAll(async ({ browser }) => {
 test("投稿の検証", async () => {
   await page.goto("http://localhost:9000/wp-admin/post-new.php");
 
-  const closeDialog = page.getByRole("button", { name: /Close/ });
-  if ((await closeDialog.count()) > 0) {
-    await closeDialog.click();
+  try {
+    // NOTE: 初回のダイアログの表示によって以降の処理が阻まれるのでそれを防ぐために待機して閉じます
+    await page.getByRole("button", { name: /Close/ }).click({ timeout: 3_000 });
+  } catch {
+    // nop
   }
 
   await page.getByRole("button", { name: "Add block" }).click();
