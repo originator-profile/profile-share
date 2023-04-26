@@ -73,7 +73,7 @@ function Org({ op, holder, roles, paths }: Props) {
         </Table>
         {roles.length > 0 && <Roles className="mb-3" roles={roles} />}
         <div className="inline-flex items-center gap-2 bg-blue-50 px-2 py-1 mb-3 rounded-sm">
-          <img src={logomarkUrl} alt="" width={15} />
+          <img src={logomarkUrl} alt="" width={16} height={14} />
           <p className="flex-1 text-blue-500 text-xs font-bold">
             この組織は認証を受けています
           </p>
