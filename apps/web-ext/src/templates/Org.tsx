@@ -1,19 +1,26 @@
+import { useId } from "react";
 import { Icon } from "@iconify/react";
-import { OpHolder } from "@webdino/profile-model";
+import { OpHolder, OpCertifier, OpVerifier } from "@webdino/profile-model";
 import { Op } from "../types/profile";
+import {
+  isOpCredential,
+  isOpCertifier,
+  isOpVerifier,
+} from "@webdino/profile-core";
 import { Role } from "../types/role";
 import Image from "../components/Image";
 import BackHeader from "../components/BackHeader";
 import Roles from "../components/Roles";
 import HolderTable from "../components/HolderTable";
 import Description from "../components/Description";
-import CertifierTable from "../components/CertifierTable";
 import TechTable from "../components/TechTable";
 import Table from "../components/Table";
 import TableRow from "../components/TableRow";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
 import logoCertifierUrl from "../assets/logo-certifier.png";
 import logomarkUrl from "../assets/logomark.svg";
+import CredentialSummary from "../components/CredentialSummary";
+import CredentialDetail from "../components/CredentialDetail";
 
 type Props = {
   op: Op;
@@ -24,12 +31,18 @@ type Props = {
 
 function Org({ op, holder, roles, paths }: Props) {
   const logo = holder.logos?.find(({ isMain }) => isMain);
-  const handleClick = () => {
-    const element = document.querySelector(
-      "#" + CSS.escape("ブランドセーフティ認証 第三者検証")
-    );
+  const credentials = op.item.filter(isOpCredential);
+  const certifiers = new Map<string, OpCertifier>(
+    op.item.filter(isOpCertifier).map((c) => [c.domainName, c])
+  );
+  const verifiers = new Map<string, OpVerifier>(
+    op.item.filter(isOpVerifier).map((v) => [v.domainName, v])
+  );
+  const handleClick = (id: string) => () => {
+    const element = document.querySelector("#" + CSS.escape(id));
     element?.scrollIntoView({ behavior: "smooth" });
   };
+  const credentialIdFragment = useId();
   return (
     <>
       <BackHeader className="sticky top-0" to={paths.back}>
@@ -79,23 +92,16 @@ function Org({ op, holder, roles, paths }: Props) {
           </p>
         </div>
         <ul className="mb-4 -mx-2">
-          <li className="mb-2">
-            <button
-              className="flex items-center gap-4 hover:bg-primary-50 p-2 w-full rounded-sm"
-              onClick={handleClick}
-            >
-              <Image
-                src={logoCertifierUrl}
-                placeholderSrc={placeholderLogoMainUrl}
-                alt=""
-                width={80}
-                height={50}
+          {credentials.map((credential, index) => (
+            <li className="mb-2" key={index}>
+              <CredentialSummary
+                className="w-full"
+                credential={credential}
+                holder={holder}
+                onClick={handleClick(credentialIdFragment + index)}
               />
-              <span className="text-sm font-bold text-gray-700">
-                ブランドセーフティ認証 第三者検証
-              </span>
-            </button>
-          </li>
+            </li>
+          ))}
         </ul>
         <h2 className="text-sm text-gray-600 font-bold mb-3">所有者情報</h2>
         <div className="jumpu-card p-4 mb-4">
@@ -104,29 +110,18 @@ function Org({ op, holder, roles, paths }: Props) {
             <Description description={holder.description} />
           )}
         </div>
-        <h2 className="text-sm text-gray-600 font-bold mb-3">認定内容</h2>
-        <div
-          id="ブランドセーフティ認証 第三者検証"
-          className="jumpu-card p-4 mb-4"
-        >
-          <Image
-            src={logoCertifierUrl}
-            placeholderSrc={placeholderLogoMainUrl}
-            alt=""
-            width={160}
-            height={99}
+        <h2 className="text-sm text-gray-600 font-bold mb-3">資格情報</h2>
+        {credentials.map((credential, index) => (
+          <CredentialDetail
+            key={index}
+            id={credentialIdFragment + index}
+            className="mb-4"
+            credential={credential}
+            holder={holder}
+            certifier={certifiers.get(credential.certifier)}
+            verifier={verifiers.get(credential.verifier)}
           />
-          <div className="inline-flex items-center gap-2 bg-blue-50 px-2 py-1 mb-3 rounded-sm">
-            <Icon
-              className="flex-shrink-0 text-blue-500 text-base"
-              icon="akar-icons:circle-check-fill"
-            />
-            <p className="flex-1 font-bold text-blue-500 text-xs">
-              第三者検証による認定です
-            </p>
-          </div>
-          <CertifierTable op={op} />
-        </div>
+        ))}
         <h2 className="text-sm text-gray-600 font-bold mb-3">技術情報</h2>
         <div className="jumpu-card p-4">
           <TechTable className="p-4" profile={op} />
