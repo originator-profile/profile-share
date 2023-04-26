@@ -92,7 +92,7 @@ function Publ({ dp, website, holder, paths }: Props) {
           </div>
         </div>
         <div className="flex items-center gap-2 bg-blue-50 p-2 mx-4 my-3 rounded-sm">
-          <img src={logomarkUrl} alt="" width={24} />
+          <img src={logomarkUrl} alt="" width={24} height={21} />
           <p className="flex-1 text-blue-500 text-base font-bold">
             この組織は認証を受けています
           </p>
