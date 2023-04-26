@@ -19,7 +19,7 @@ function ProjectTitle({ as: As = "section", className }: Props) {
         rel="noreferrer noopener"
       >
         <img src={logomarkUrl} alt="" />
-        <h1 className="font-bold font-sans text-xl">Originator Profile</h1>
+        <h1 className="font-bold font-sans text-xl">ORIGINATOR PROFILE</h1>
       </a>
     </As>
   );
