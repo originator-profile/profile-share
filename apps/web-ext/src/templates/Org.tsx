@@ -17,7 +17,6 @@ import TechTable from "../components/TechTable";
 import Table from "../components/Table";
 import TableRow from "../components/TableRow";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
-import logoCertifierUrl from "../assets/logo-certifier.png";
 import logomarkUrl from "../assets/logomark.svg";
 import CredentialSummary from "../components/CredentialSummary";
 import CredentialDetail from "../components/CredentialDetail";
