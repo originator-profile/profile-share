@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 import { OpHolder, OpCredential } from "@webdino/profile-model";
 import Image from "../components/Image";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
+import logomarkUrl from "../assets/logomark.svg";
 import { getVerificationType } from "../utils/credential";
 
 function Credential({
@@ -87,10 +88,7 @@ function HolderSummary({ className, to, holder, credentials }: Props) {
         </div>
       </div>
       <div className="flex items-center gap-2 bg-blue-50 p-2 mx-4 my-3 rounded-sm">
-        <Icon
-          className="flex-shrink-0 text-blue-500 text-2xl"
-          icon="akar-icons:circle-check-fill"
-        />
+        <img src={logomarkUrl} alt="" width={24} height={21} />
         <p className="flex-1 text-blue-500 text-base font-bold">
           この組織は認証を受けています
         </p>
