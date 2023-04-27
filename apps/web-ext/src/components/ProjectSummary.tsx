@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import logomarkUrl from "../assets/logomark.svg";
+import logoUrl from "../assets/logo.svg";
 
 type Props = {
   as?: keyof JSX.IntrinsicElements;
@@ -20,8 +20,7 @@ function ProjectSummary({ as: As = "section", className }: Props) {
         target="_blank"
         rel="noreferrer noopener"
       >
-        <img src={logomarkUrl} alt="" />
-        <h1 className="font-bold font-sans text-xl">ORIGINATOR PROFILE</h1>
+        <img src={logoUrl} alt="" />
       </a>
       <p className="text-gray-700">
         Originator Profile
