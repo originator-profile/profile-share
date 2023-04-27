@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { Icon } from "@iconify/react";
 import {
   OpCredential,
   OpHolder,
@@ -11,6 +10,7 @@ import Image from "../components/Image";
 import Table from "./Table";
 import TableRow from "./TableRow";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
+import logomarkUrl from "../assets/logomark.svg";
 
 type Props = {
   id: string;
@@ -41,10 +41,7 @@ function CredentialDetail({
         height={70}
       />
       <div className="inline-flex items-center gap-2 bg-blue-50 px-2 py-1 mb-3 rounded-sm">
-        <Icon
-          className="flex-shrink-0 text-blue-500 text-base"
-          icon="akar-icons:circle-check-fill"
-        />
+        <img src={logomarkUrl} alt="" width={16} height={14} />
         <p className="flex-1 font-bold text-blue-500 text-xs">
           {verificationType}による認証です
         </p>

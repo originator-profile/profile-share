@@ -17,6 +17,7 @@ import TechTable from "../components/TechTable";
 import Table from "../components/Table";
 import TableRow from "../components/TableRow";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
+import logomarkUrl from "../assets/logomark.svg";
 import CredentialSummary from "../components/CredentialSummary";
 import CredentialDetail from "../components/CredentialDetail";
 
@@ -84,10 +85,7 @@ function Org({ op, holder, roles, paths }: Props) {
         </Table>
         {roles.length > 0 && <Roles className="mb-3" roles={roles} />}
         <div className="inline-flex items-center gap-2 bg-blue-50 px-2 py-1 mb-3 rounded-sm">
-          <Icon
-            className="flex-shrink-0 text-blue-500 text-base"
-            icon="akar-icons:circle-check-fill"
-          />
+          <img src={logomarkUrl} alt="" width={16} height={14} />
           <p className="flex-1 text-blue-500 text-xs font-bold">
             この組織は認証を受けています
           </p>
