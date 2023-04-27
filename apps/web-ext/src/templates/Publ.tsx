@@ -9,7 +9,6 @@ import WebsiteSubTable from "../components/WebsiteSubTable";
 import TechTable from "../components/TechTable";
 import Description from "../components/Description";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
-import logoCertifierUrl from "../assets/logo-certifier.png";
 import HolderSummary from "../components/HolderSummary";
 
 type Props = {
