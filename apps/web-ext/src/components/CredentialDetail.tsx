@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { Icon } from "@iconify/react";
 import {
   OpCredential,
   OpHolder,
