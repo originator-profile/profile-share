@@ -20,7 +20,7 @@ function ProjectSummary({ as: As = "section", className }: Props) {
         target="_blank"
         rel="noreferrer noopener"
       >
-        <img src={logoUrl} alt="" />
+        <img src={logoUrl} alt="Originator Profile" />
       </a>
       <p className="text-gray-700">
         Originator Profile
