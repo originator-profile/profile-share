@@ -57,10 +57,10 @@
   "repository": "git@github.com:webdino/profile.git",
   "scripts": {
     "build": "run-s clean build:{esbuild,web-ext}",
-    "build:esbuild": "node esbuild.build.js",
+    "build:esbuild": "node esbuild.build.cjs",
     "build:web-ext": "web-ext build --source-dir dist --overwrite-dest",
     "clean": "rimraf dist",
-    "dev": "node esbuild.dev.js",
+    "dev": "node esbuild.dev.cjs",
     "lint": "eslint --fix .",
     "start:chromium": "web-ext run --source-dir dist --target=chromium --no-reload",
     "e2e": "vitest --mode e2e run",

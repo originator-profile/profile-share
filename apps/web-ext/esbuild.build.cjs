@@ -1,4 +1,4 @@
-const config = require("./esbuild.config");
+const config = require("./esbuild.config.cjs");
 
 require("esbuild")
   .build(config)
