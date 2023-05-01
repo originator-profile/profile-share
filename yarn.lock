@@ -5316,7 +5316,7 @@ commander@7.1.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-7.1.0.tgz#f2eaecf131f10e36e07d894698226e36ae0eb5ff"
   integrity sha512-pRxBna3MJe6HKnBGsDyMv8ETbptw3axEdYHoqNh7gu5oDcew8fs0xnivZGm06Ogk8zGAJ9VX+OPEr2GXEQK4dg==
 
-commander@^10.0.0:
+commander@^10.0.0, commander@^10.0.1:
   version "10.0.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-10.0.1.tgz#881ee46b4f77d1c1dccc5823433aa39b022cbe06"
   integrity sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==
@@ -6528,7 +6528,7 @@ dompurify@2.4.5:
   resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-2.4.5.tgz#0e89a27601f0bad978f9a924e7a05d5d2cccdd87"
   integrity sha512-jggCCd+8Iqp4Tsz0nIvpcb22InKEBrGz5dw3EQJMs8HPJDsKbFIO3STYtAvCfDx26Muevn1MHVI0XxjgFfmiSA==
 
-dompurify@^3.0.1:
+dompurify@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.0.2.tgz#bc4c7c011c825e7704341a285461d8d407d9429a"
   integrity sha512-B8c6JdiEpxAKnd8Dm++QQxJL4lfuc757scZtcapj6qjTjrQzyq5iAyznLKVvK+77eYNiFblHBlt7MM0fOeqoKw==
@@ -6860,7 +6860,7 @@ esbuild-register@^3.4.2:
   dependencies:
     debug "^4.3.4"
 
-esbuild@^0.17.12, esbuild@^0.17.5, esbuild@^0.17.6:
+esbuild@^0.17.18, esbuild@^0.17.5, esbuild@^0.17.6:
   version "0.17.18"
   resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.17.18.tgz#f4f8eb6d77384d68cd71c53eb6601c7efe05e746"
   integrity sha512-z1lix43jBs6UKjcZVKOw2xx69ffE2aG0PygLL5qJ9OS/gy0Ewd1gW/PUQIOIQGXBHWNywSc0floSKoMFF8aK2w==
