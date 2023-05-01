@@ -1,11 +1,2 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ["./**/*.{html,tsx}"],
-  theme: {
-    extend: {},
-  },
-  plugins: [
-    ...require("@jumpu-ui/tailwindcss"),
-    require("@tailwindcss/typography"),
-  ],
-};
+module.exports = require("tailwind-config-webdino-profile");
