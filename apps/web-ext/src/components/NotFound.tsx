@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
+import { ProjectTitle, ProjectSummary } from "@webdino/profile-ui";
 import useProfiles from "../utils/use-profiles";
 import { routes } from "../utils/routes";
-import ProjectTitle from "./ProjectTitle";
-import ProjectSummary from "./ProjectSummary";
 
 type Props = {
   variant: "profile" | "op" | "dp" | "holder" | "website";

@@ -6,7 +6,7 @@ import {
   ProfileBodyExtractFailed,
 } from "@webdino/profile-verify";
 import { Jwks } from "@webdino/profile-model";
-import { DpLocator } from "../types/profile";
+import { DpLocator } from "../types/dp-locator";
 
 const key = "verify-body" as const;
 

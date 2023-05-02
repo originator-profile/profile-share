@@ -1,5 +1,5 @@
 import useProfiles from "../utils/use-profiles";
-import Spinner from "./Spinner";
+import { Spinner } from "@webdino/profile-ui";
 
 function Loading() {
   const { origin } = useProfiles();

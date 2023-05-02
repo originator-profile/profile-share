@@ -2,13 +2,15 @@ import { Icon } from "@iconify/react";
 import { Disclosure, Transition } from "@headlessui/react";
 import { OgWebsite, OpHolder } from "@webdino/profile-model";
 import { isOpCredential } from "@webdino/profile-core";
-import { Op, Dp } from "../types/profile";
-import Image from "../components/Image";
-import WebsiteMainTable from "../components/WebsiteMainTable";
-import WebsiteSubTable from "../components/WebsiteSubTable";
-import TechTable from "../components/TechTable";
-import Description from "../components/Description";
-import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
+import {
+  Image,
+  WebsiteMainTable,
+  WebsiteSubTable,
+  TechTable,
+  Description,
+} from "@webdino/profile-ui";
+import { Op, Dp } from "@webdino/profile-ui/src/types";
+import placeholderLogoMainUrl from "@webdino/profile-ui/src/assets/placeholder-logo-main.png";
 import HolderSummary from "../components/HolderSummary";
 
 type Props = {

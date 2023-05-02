@@ -1,9 +1,11 @@
 import { useTitle, useMount } from "react-use";
 import { Navigate } from "react-router-dom";
 import { isDp } from "@webdino/profile-core";
-import { Dp, Profile } from "../types/profile";
-import sortDps from "../utils/sort-dps";
-import findProfileGenericError from "../utils/find-profile-generic-error";
+import { Dp, Profile } from "@webdino/profile-ui/src/types";
+import {
+  sortDps,
+  findProfileGenericError,
+} from "@webdino/profile-ui/src/utils";
 import { routes } from "../utils/routes";
 import useProfiles from "../utils/use-profiles";
 import Loading from "../components/Loading";

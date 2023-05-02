@@ -1,12 +1,14 @@
 import { useParams } from "react-router-dom";
 import { isOp, isOpHolder } from "@webdino/profile-core";
+import {
+  toRoles,
+  findProfileGenericError,
+} from "@webdino/profile-ui/src/utils";
 import useProfiles from "../utils/use-profiles";
-import { toRoles } from "../utils/role";
-import findProfileGenericError from "../utils/find-profile-generic-error";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
-import Template from "../templates/Org";
 import Unsupported from "../components/Unsupported";
+import Template from "../templates/Org";
 
 type Props = { back: string };
 

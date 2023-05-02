@@ -21,6 +21,7 @@
     "@webdino/profile-core": "*",
     "@webdino/profile-model": "*",
     "@webdino/profile-tsconfig": "*",
+    "@webdino/profile-ui": "*",
     "@webdino/profile-verify": "*",
     "autoprefixer": "^10.4.14",
     "clsx": "^1.2.1",

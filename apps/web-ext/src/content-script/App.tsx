@@ -1,7 +1,7 @@
 import { useState, Fragment } from "react";
 import { useMount, useEvent } from "react-use";
 import { Dialog, Transition } from "@headlessui/react";
-import { Profile, Dp } from "../types/profile";
+import { Profile, Dp } from "@webdino/profile-ui/src/types";
 import { isDp } from "@webdino/profile-core";
 import { IFramePostMessageEvent } from "../types/message";
 import DpMap from "../components/DpMap";
