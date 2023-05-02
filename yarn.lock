@@ -1855,11 +1855,6 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.39.0.tgz#58b536bcc843f4cd1e02a7e6171da5c040f4d44b"
   integrity sha512-kf9RB0Fg7NZfap83B3QOqOGg9QmD9yBudqQXzzOtn3i4y7ZUXe5ONeW34Gwi+TxhH4mvj72R1Zc300KUMa9Bng==
 
-"@exampledev/new.css@^1.1.3":
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@exampledev/new.css/-/new.css-1.1.3.tgz#fcc1f15629db8cd105ad2e8c649095ca10623007"
-  integrity sha512-qhbGfqBRwUlM6MCSaJdUfjq86opNCMvM+6kVvs6S0kYhy0V8dKbe4rDMIklEJGuMc5QH5OuPjdCReu9I0tim2w==
-
 "@exodus/schemasafe@^1.0.0-rc.2":
   version "1.0.0-rc.6"
   resolved "https://registry.yarnpkg.com/@exodus/schemasafe/-/schemasafe-1.0.0-rc.6.tgz#7985f681564cff4ffaebb5896eb4be20af3aae7a"
@@ -9968,6 +9963,11 @@ just-diff@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/just-diff/-/just-diff-5.0.1.tgz#db8fe1cfeea1156f2374bfb289826dca28e7e390"
   integrity sha512-X00TokkRIDotUIf3EV4xUm6ELc/IkqhS/vPSHdWnsM5y0HoNMfEqrazizI7g78lpHvnRSRt/PFfKtRqJCOGIuQ==
+
+just-extend@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/just-extend/-/just-extend-6.2.0.tgz#b816abfb3d67ee860482e7401564672558163947"
+  integrity sha512-cYofQu2Xpom82S6qD778jBDpwvvy39s1l/hrYij2u9AMdQcGRpaBu6kY4mVhuno5kJVi1DAz4aiphA2WI1/OAw==
 
 just-flush@^2.3.0:
   version "2.3.0"
