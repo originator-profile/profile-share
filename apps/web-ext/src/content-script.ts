@@ -1,11 +1,11 @@
 import { fetchProfiles } from "@webdino/profile-verify";
+import { Profile, Dp } from "@webdino/profile-ui/src/types";
 import {
   ContentScriptMessageRequest,
   ContentScriptMessageResponse,
   ContentWindowPostMessageEvent,
 } from "./types/message";
 import { initialize, activate, deactivate } from "./utils/iframe";
-import { Profile, Dp } from "./types/profile";
 
 let profiles: Profile[] = [];
 let activeDp: Dp | null = null;

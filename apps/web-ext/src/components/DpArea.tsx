@@ -1,6 +1,6 @@
 import { forwardRef, useId } from "react";
 import { useWindowSize } from "react-use";
-import { Dp } from "../types/profile";
+import { Dp } from "@webdino/profile-ui/src/types";
 import { isDpLocator } from "../utils/dp-locator";
 import useElements from "../utils/use-elements";
 import useRects from "../utils/use-rects";
