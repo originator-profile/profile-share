@@ -297,7 +297,7 @@ profile には `ops` と `dps` が混在しているように見えますが、 
 
 ```jsonc
 {
-  "@context": "https://oprdev.herokuapp.com/context",
+  "@context": "https://originator-profile.org/context.jsonld",
   "main": ["https://examples.demosites.pages.dev"],
   "profile": [
     // <- 発行した Signed Originator Profile の値 ops - jwt の値

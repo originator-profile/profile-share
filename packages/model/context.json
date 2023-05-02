@@ -1,6 +1,6 @@
 {
   "@context": {
-    "op": "https://github.com/webdino/profile#",
+    "op": "https://originator-profile.org/context#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "main": {
       "@id": "op:main",

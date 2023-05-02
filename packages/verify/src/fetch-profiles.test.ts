@@ -23,7 +23,7 @@ describe("fetch-profiles", async () => {
   const { pkcs8 } = await generateKey();
   const jwt = await signOp(op, pkcs8);
   const profiles: JsonLdDocument = {
-    "@context": "https://oprdev.herokuapp.com/context",
+    "@context": "https://originator-profile.org/context.jsonld",
     main: ["example.com"],
     profile: [jwt],
   };
@@ -85,11 +85,11 @@ describe("fetch-profiles", async () => {
   describe("<link> 要素が2つ以上存在するとき", async () => {
     beforeEach(() => {
       mockGet("https://example.com/1/ps.json").willResolve({
-        "@context": "https://oprdev.herokuapp.com/context",
+        "@context": "https://originator-profile.org/context.jsonld",
         profiles: "{Signed Document Profile または Signed Originator Profile}",
       });
       mockGet("https://example.com/2/ps.json").willResolve({
-        "@context": "https://oprdev.herokuapp.com/context",
+        "@context": "https://originator-profile.org/context.jsonld",
         profiles:
           "{別の Signed Document Profile または Signed Originator Profile}",
       });

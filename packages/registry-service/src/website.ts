@@ -2,14 +2,12 @@ import { PrismaClient, Prisma, websites } from "@prisma/client";
 import { JsonLdDocument } from "jsonld";
 import { NotFoundError } from "http-errors-enhanced";
 import { signBody } from "@webdino/profile-sign";
-import Config from "./config";
 
 type Options = {
-  config: Config;
   prisma: PrismaClient;
 };
 
-export const WebsiteService = ({ config, prisma }: Options) => ({
+export const WebsiteService = ({ prisma }: Options) => ({
   /**
    * ウェブページの作成
    * @param input ウェブページ
@@ -96,9 +94,7 @@ export const WebsiteService = ({ config, prisma }: Options) => ({
 
     const ops = data.account.publications.map((publication) => publication.op);
     const profiles: JsonLdDocument = {
-      "@context": `${
-        config.APP_URL ?? Config.properties.APP_URL.default
-      }/context`,
+      "@context": "https://originator-profile.org/context.jsonld",
       main: data.url,
       profile: [...ops, ...data.dps].map((p) => p.jwt),
     };

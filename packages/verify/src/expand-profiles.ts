@@ -1,7 +1,7 @@
 import jsonld, { JsonLdDocument, NodeObject } from "jsonld";
 
 function nodeToObj(node: NodeObject) {
-  const context = "https://github.com/webdino/profile#";
+  const context = "https://originator-profile.org/context#";
   const advertisers: string[] =
     // @ts-expect-error assert
     node[`${context}advertiser`]?.map(

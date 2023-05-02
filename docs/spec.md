@@ -48,7 +48,7 @@ JSON Web Token (JWT) として署名され、それらの集合を JSON-LD に�
 
 ```json
 {
-  "@context": "https://oprdev.herokuapp.com/context",
+  "@context": "https://originator-profile.org/context.jsonld",
   "main": ["https://example.org/article/42"],
   "profile": [
     "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL29wci53ZWJkaW5vLm9yZyIsInN1YiI6Imh0dHBzOi8vZXhhbXBsZS5jb20ifQ.xK1KL0pDWdDTyvL1VSuvnPfDZ6zAIJM_Jn8wbNzIi-0",
@@ -275,7 +275,7 @@ HTML では、`<script>` 要素を使用する内部的な表現と `<link>` 要
 ```html
 <script type="application/ld+json">
   {
-    "@context": "https://oprdev.herokuapp.com/context",
+    "@context": "https://originator-profile.org/context.jsonld",
     "main": ["https://example.org"],
     "profile": [
       "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL29wci53ZWJkaW5vLm9yZyIsInN1YiI6Imh0dHBzOi8vZXhhbXBsZS5jb20ifQ.xK1KL0pDWdDTyvL1VSuvnPfDZ6zAIJM_Jn8wbNzIi-0",
