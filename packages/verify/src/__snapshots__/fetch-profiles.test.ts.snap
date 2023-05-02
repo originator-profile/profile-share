@@ -3,11 +3,11 @@
 exports[`fetch-profiles > <link> 要素が2つ以上存在するとき > 有効な Profiles Set が得られる 1`] = `
 [
   {
-    "@context": "https://oprdev.herokuapp.com/context",
+    "@context": "https://originator-profile.org/context.jsonld",
     "profiles": "{Signed Document Profile または Signed Originator Profile}",
   },
   {
-    "@context": "https://oprdev.herokuapp.com/context",
+    "@context": "https://originator-profile.org/context.jsonld",
     "profiles": "{別の Signed Document Profile または Signed Originator Profile}",
   },
 ]

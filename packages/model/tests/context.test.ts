@@ -13,7 +13,7 @@ test("context.json is valid", async () => {
 
 test("sample profiles set", async () => {
   const profiles: JsonLdDocument = {
-    "@context": "https://oprdev.herokuapp.com/context",
+    "@context": "https://originator-profile.org/context.jsonld",
     main: ["https://example.org"],
     profile: [
       "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL29wci53ZWJkaW5vLm9yZyIsInN1YiI6Imh0dHBzOi8vZXhhbXBsZS5jb20ifQ.xK1KL0pDWdDTyvL1VSuvnPfDZ6zAIJM_Jn8wbNzIi-0",
