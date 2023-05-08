@@ -30,7 +30,7 @@ const JwtOpPayload = {
         "[RFC7519#section-4.1.6](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.6)",
       type: "number",
     },
-    "https://opr.webdino.org/jwt/claims/op": {
+    "https://originator-profile.org/op": {
       type: "object",
       properties: {
         item: { type: "array", items: OpItem },
@@ -40,13 +40,7 @@ const JwtOpPayload = {
       additionalProperties: false,
     },
   },
-  required: [
-    "iss",
-    "sub",
-    "exp",
-    "iat",
-    "https://opr.webdino.org/jwt/claims/op",
-  ],
+  required: ["iss", "sub", "exp", "iat", "https://originator-profile.org/op"],
   additionalProperties: false,
 } as const;
 

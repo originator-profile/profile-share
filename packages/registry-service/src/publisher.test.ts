@@ -43,9 +43,9 @@ describe("PublisherService", () => {
     expect(valid).toMatchObject({
       iss: domainName,
       sub: url,
-      "https://opr.webdino.org/jwt/claims/dp": {},
+      "https://originator-profile.org/dp": {},
     });
-    const website = valid["https://opr.webdino.org/jwt/claims/dp"].item.find(
+    const website = valid["https://originator-profile.org/dp"].item.find(
       ({ type }) => type === "website"
     );
     expect(website?.url).toBe(url);

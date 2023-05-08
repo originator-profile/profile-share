@@ -101,14 +101,14 @@ describe("CertificateService", () => {
     expect(valid).toMatchObject({
       iss: "example.org",
       sub: "example.com",
-      "https://opr.webdino.org/jwt/claims/op": { jwks: { keys: [jwk] } },
+      "https://originator-profile.org/op": { jwks: { keys: [jwk] } },
     });
     const holder =
-      valid["https://opr.webdino.org/jwt/claims/op"].item.find(isOpHolder);
+      valid["https://originator-profile.org/op"].item.find(isOpHolder);
     expect(holder?.url).toBe("https://example.com/");
     expect(holder).not.toHaveProperty("phoneNumber");
     const credential =
-      valid["https://opr.webdino.org/jwt/claims/op"].item.find(isOpCredential);
+      valid["https://originator-profile.org/op"].item.find(isOpCredential);
     expect(credential?.name).toBe("ブランドセーフティ認証");
   });
 });

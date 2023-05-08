@@ -113,7 +113,7 @@ Signed Document Profile ならば、必ずその組織の Signed Originator Prof
 {
   "iss": "example.org",
   "sub": "example.com",
-  "https://opr.webdino.org/jwt/claims/op": {
+  "https://originator-profile.org/op": {
     "item": [
       {
         "type": "holder",
@@ -162,7 +162,7 @@ Signed Document Profile ならば、必ずその組織の Signed Originator Prof
 ```json
 {
   "iss": "example.com",
-  "https://opr.webdino.org/jwt/claims/dp": {
+  "https://originator-profile.org/dp": {
     "item": [
       {
         "type": "visibleText",

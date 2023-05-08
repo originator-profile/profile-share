@@ -23,7 +23,7 @@ test("signOp() return a valid JWT", async () => {
   expect(valid).toMatchObject({
     iss: op.issuer,
     sub: op.subject,
-    "https://opr.webdino.org/jwt/claims/op": {
+    "https://originator-profile.org/op": {
       item: op.item,
     },
   });

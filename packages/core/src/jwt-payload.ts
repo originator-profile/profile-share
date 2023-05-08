@@ -7,7 +7,7 @@ import { JwtOpPayload, JwtDpPayload } from "@webdino/profile-model";
  * @return JwtOpPayload 型であれば true、それ以外ならば false
  */
 export function isJwtOpPayload(payload: JWTPayload): payload is JwtOpPayload {
-  return "https://opr.webdino.org/jwt/claims/op" in payload;
+  return "https://originator-profile.org/op" in payload;
 }
 
 /**
@@ -16,5 +16,5 @@ export function isJwtOpPayload(payload: JWTPayload): payload is JwtOpPayload {
  * @return JwtDpPayload 型であれば true、それ以外ならば false
  */
 export function isJwtDpPayload(payload: JWTPayload): payload is JwtDpPayload {
-  return "https://opr.webdino.org/jwt/claims/dp" in payload;
+  return "https://originator-profile.org/dp" in payload;
 }

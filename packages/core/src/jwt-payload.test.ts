@@ -8,7 +8,7 @@ test("isJwtOpPayload() returns true if of type JwtOpPayload", () => {
     sub: "example.com",
     iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000 + 3600),
-    "https://opr.webdino.org/jwt/claims/op": {
+    "https://originator-profile.org/op": {
       item: [],
     },
   };
@@ -21,7 +21,7 @@ test("isJwtOpPayload() returns false if of type JwtDpPayload", () => {
     sub: "https://example.com/",
     iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000 + 3600),
-    "https://opr.webdino.org/jwt/claims/dp": {
+    "https://originator-profile.org/dp": {
       item: [],
     },
   };
@@ -34,7 +34,7 @@ test("isJwtDpPayload() returns true if of type JwtDpPayload", () => {
     sub: "https://example.com/",
     iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000 + 3600),
-    "https://opr.webdino.org/jwt/claims/dp": {
+    "https://originator-profile.org/dp": {
       item: [],
     },
   };
