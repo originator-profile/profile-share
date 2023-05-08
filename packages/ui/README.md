@@ -2,7 +2,7 @@
 
 Originator Profile プロジェクトに一貫性のある見た目を提供するためのパッケージです。
 
-## Prerequsites
+## Prerequisites
 
 TailwindCSS によってスタイルを生成するため、[TailwindCSS をインストール](https://tailwindcss.com/docs/installation)したのち、以下のような設定に更新する必要があります。
 
