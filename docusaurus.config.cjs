@@ -32,8 +32,8 @@ module.exports = {
   themeConfig: {
     navbar: {
       logo: {
-        alt: 'Originator Profile Logo',
-        src: 'logo.svg',
+        alt: "Originator Profile Logo",
+        src: "logo.svg",
       },
       items: [
         {
