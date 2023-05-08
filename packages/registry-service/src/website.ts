@@ -1,5 +1,5 @@
 import { PrismaClient, Prisma, websites } from "@prisma/client";
-import { JsonLdDocument } from "jsonld";
+import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { NotFoundError } from "http-errors-enhanced";
 import { signBody } from "@webdino/profile-sign";
 
@@ -59,8 +59,14 @@ export const WebsiteService = ({ prisma }: Options) => ({
   /**
    * Profiles Set の取得
    * @param url ウェブページ URL
+   * @param contextDefinition https://www.w3.org/TR/json-ld11/#context-definitions
    */
-  async getProfiles(url: string): Promise<JsonLdDocument | Error> {
+  async getProfiles(
+    url: string,
+    contextDefinition:
+      | ContextDefinition
+      | string = "https://originator-profile.org/context.jsonld"
+  ): Promise<JsonLdDocument | Error> {
     const data = await prisma.websites
       .findUnique({
         where: { url },
@@ -94,7 +100,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
 
     const ops = data.account.publications.map((publication) => publication.op);
     const profiles: JsonLdDocument = {
-      "@context": "https://originator-profile.org/context.jsonld",
+      "@context": contextDefinition,
       main: data.url,
       profile: [...ops, ...data.dps].map((p) => p.jwt),
     };

@@ -1,6 +1,7 @@
 import { FastifySchema, FastifyRequest, FastifyReply } from "fastify";
 import { HttpError, BadRequestError } from "http-errors-enhanced";
-import { JsonLdDocument } from "jsonld";
+import { ContextDefinition, JsonLdDocument } from "jsonld";
+import context from "@webdino/profile-model/context.json" assert { type: "json" };
 import { ErrorResponse } from "../../../error";
 import Params from "./params";
 
@@ -28,8 +29,10 @@ async function getProfiles(
   }>,
   reply: FastifyReply
 ) {
+  const contextDefinition: ContextDefinition | undefined =
+    server.config.NODE_ENV === "development" ? context["@context"] : undefined;
   const data: JsonLdDocument | Error =
-    await server.services.website.getProfiles(params.url);
+    await server.services.website.getProfiles(params.url, contextDefinition);
   if (data instanceof HttpError) return data;
   if (data instanceof Error) {
     return new BadRequestError("invalid params.url", data);

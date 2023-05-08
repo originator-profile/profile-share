@@ -12,7 +12,7 @@ async function index(fastify: FastifyInstance): Promise<void> {
     { schema: { operationId: "frontend" } },
     async (req, res) => {
       await serveHandler(req.raw, res.raw, {
-        public: path.resolve(__dirname, "../public"),
+        public: path.resolve(__dirname, "../../dist/public"),
         directoryListing: false,
       });
     }
