@@ -20,8 +20,8 @@ export async function signDp(
     kid: await createThumbprint(pkcs8, alg),
     typ: "JWT",
   };
-  const payload: Pick<JwtDpPayload, "https://opr.webdino.org/jwt/claims/dp"> = {
-    "https://opr.webdino.org/jwt/claims/dp": {
+  const payload: Pick<JwtDpPayload, "https://originator-profile.org/dp"> = {
+    "https://originator-profile.org/dp": {
       item: dp.item,
     },
   };

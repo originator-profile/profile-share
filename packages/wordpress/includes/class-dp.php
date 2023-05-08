@@ -107,7 +107,7 @@ final class Dp {
 					( new \DateTimeImmutable() )
 					->setTimestamp( \strtotime( $dp['expiredAt'] ) )
 				)
-				->withClaim( 'https://opr.webdino.org/jwt/claims/dp', array( 'item' => $dp['item'] ) );
+				->withClaim( 'https://originator-profile.org/dp', array( 'item' => $dp['item'] ) );
 
 		$jwt = $builder->getToken( new Sha256(), InMemory::plainText( $pkcs8 ) );
 

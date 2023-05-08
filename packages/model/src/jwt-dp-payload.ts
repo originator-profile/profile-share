@@ -29,7 +29,7 @@ const JwtDpPayload = {
         "[RFC7519#section-4.1.6](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.6)",
       type: "number",
     },
-    "https://opr.webdino.org/jwt/claims/dp": {
+    "https://originator-profile.org/dp": {
       type: "object",
       properties: {
         item: { type: "array", items: DpItem },
@@ -38,13 +38,7 @@ const JwtDpPayload = {
       additionalProperties: false,
     },
   },
-  required: [
-    "iss",
-    "sub",
-    "exp",
-    "iat",
-    "https://opr.webdino.org/jwt/claims/dp",
-  ],
+  required: ["iss", "sub", "exp", "iat", "https://originator-profile.org/dp"],
   additionalProperties: false,
 } as const;
 

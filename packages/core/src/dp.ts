@@ -12,6 +12,6 @@ export function fromJwtDpPayload(payload: JwtDpPayload): Dp {
     subject: payload.sub,
     issuedAt: new Date(payload.iat * 1000).toISOString(),
     expiredAt: new Date(payload.exp * 1000).toISOString(),
-    ...payload["https://opr.webdino.org/jwt/claims/dp"],
+    ...payload["https://originator-profile.org/dp"],
   };
 }
