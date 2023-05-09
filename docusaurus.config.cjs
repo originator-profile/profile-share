@@ -31,7 +31,10 @@ module.exports = {
   ],
   themeConfig: {
     navbar: {
-      title,
+      logo: {
+        alt: "Originator Profile Logo",
+        src: "logo.svg",
+      },
       items: [
         {
           href: `${url}/ts/`,
