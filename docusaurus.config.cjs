@@ -34,6 +34,7 @@ module.exports = {
       logo: {
         alt: "Originator Profile Logo",
         src: "logo.svg",
+        srcDark: "logoDark.svg",
       },
       items: [
         {
