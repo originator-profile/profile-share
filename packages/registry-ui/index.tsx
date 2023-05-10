@@ -1,4 +1,4 @@
-import "@exampledev/new.css";
+import "./style.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import Pages from "./pages/index";

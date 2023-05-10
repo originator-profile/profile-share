@@ -1,5 +1,5 @@
 import { isDp, isOp } from "@webdino/profile-core";
-import { Profile, Dp, Op } from "../types/profile";
+import { Profile, Dp, Op } from "@webdino/profile-ui/src/types";
 import DpMarker from "../components/DpMarker";
 
 function DpMapFragment({

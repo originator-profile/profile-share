@@ -1,4 +1,4 @@
-const config = require("./esbuild.config");
+const config = require("./esbuild.config.cjs");
 const { program, Option } = require("commander");
 const esbuild = require("esbuild");
 

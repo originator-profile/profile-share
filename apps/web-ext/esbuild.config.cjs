@@ -24,6 +24,6 @@ module.exports = {
   },
   plugins: [
     require("esbuild-copy-static-files")({ src: "public", dest: "dist" }),
-    require("./esbuild.postcss"),
+    require("./esbuild.postcss.cjs"),
   ],
 };

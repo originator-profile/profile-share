@@ -7,16 +7,22 @@
     "lint": "eslint --fix ."
   },
   "devDependencies": {
-    "@exampledev/new.css": "^1.1.3",
     "@types/react": "^18.0.38",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^4.0.0",
     "@webdino/profile-tsconfig": "*",
+    "@webdino/profile-ui": "*",
     "@webdino/profile-verify": "*",
+    "autoprefixer": "^10.4.14",
+    "clsx": "^1.2.1",
     "eslint": "^8.39.0",
     "eslint-config-webdino-profile": "*",
+    "just-extend": "^6.2.0",
+    "postcss": "^8.4.23",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "tailwind-config-webdino-profile": "*",
+    "tailwindcss": "^3.3.1",
     "vite": "^4.3.1"
   }
 }

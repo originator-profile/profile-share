@@ -1,9 +1,12 @@
-import { type FormEvent, Fragment, useState } from "react";
+import { type ChangeEvent, type FormEvent, Fragment, useState } from "react";
+import clsx from "clsx";
 import {
   RemoteKeys,
   ProfilesVerifier,
   expandProfiles,
 } from "@webdino/profile-verify";
+import { ProjectSummary } from "@webdino/profile-ui";
+import FormRow from "../components/FormRow";
 
 type InitialValues = {
   registry: string;
@@ -30,6 +33,11 @@ const initialValues = loadInitialValues();
 
 export default function Pages() {
   const [values, setValues] = useState<Record<string, unknown>>({});
+  const [presentation, setPresentation] = useState(
+    "profilesSet" in initialValues ? "direct" : "url"
+  );
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
+    setPresentation(event.target.value);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -40,24 +48,33 @@ export default function Pages() {
     const jsonld = String(formData.get("jsonld"));
 
     let profilesSet;
-    try {
-      profilesSet = JSON.parse(jsonld);
 
-      setValues({ registry, profilesSet });
-      saveInitialValues({ registry, endpoint, profilesSet });
-    } catch {
-      setValues({ registry, endpoint });
-      saveInitialValues({ registry, endpoint });
+    switch (presentation) {
+      case "direct":
+        try {
+          profilesSet = JSON.parse(jsonld);
+        } catch {
+          profilesSet = jsonld;
+        }
+        setValues({ registry, profilesSet });
+        saveInitialValues({ registry, endpoint, profilesSet });
+        break;
+      case "url":
+        {
+          setValues({ registry, endpoint });
+          saveInitialValues({ registry, endpoint });
 
-      const response = await fetch(endpoint)
-        .then((res) =>
-          res.ok ? res.json() : new Error(`${res.status} ${res.statusText}`)
-        )
-        .catch((e: Error) => e);
-      setValues((values) => ({ ...values, response }));
-      if (response instanceof Error) return;
+          const response = await fetch(endpoint)
+            .then((res) =>
+              res.ok ? res.json() : new Error(`${res.status} ${res.statusText}`)
+            )
+            .catch((e: Error) => e);
+          setValues((values) => ({ ...values, response }));
+          if (response instanceof Error) return;
 
-      profilesSet = response;
+          profilesSet = response;
+        }
+        break;
     }
 
     const expanded = await expandProfiles(profilesSet).catch((e) => e);
@@ -79,30 +96,61 @@ export default function Pages() {
   }
 
   return (
-    <>
-      <h1>{document.title}</h1>
-      <form onSubmit={onSubmit}>
-        <label style={{ display: "flex", flexDirection: "column" }}>
-          Registry
+    <article className="max-w-3xl px-4 pt-12 pb-8 mx-auto">
+      <h1 className="text-4xl font-bold mb-8">{document.title}</h1>
+      <form className="mb-8" onSubmit={onSubmit}>
+        <FormRow className="mb-4" label="Registry">
           <input
+            className="jumpu-input flex-1"
             name="registry"
             required
             defaultValue={initialValues.registry}
           />
-        </label>
-        <label style={{ display: "flex", flexDirection: "column" }}>
-          Endpoint
+        </FormRow>
+        <FormRow as="span" className="mb-4" label="Profiles Set Presentation">
+          <label className="flex gap-1 items-center py-1">
+            <input
+              name="presentation"
+              type="radio"
+              value="url"
+              checked={presentation === "url"}
+              onChange={handleChange}
+            />
+            URL
+          </label>
+          <label className="flex gap-1 items-center py-1">
+            <input
+              name="presentation"
+              type="radio"
+              value="direct"
+              checked={presentation === "direct"}
+              onChange={handleChange}
+            />
+            Direct Input
+          </label>
+        </FormRow>
+        <FormRow
+          className={clsx("mb-4", { hidden: presentation !== "url" })}
+          label="Endpoint"
+        >
           <input
+            className="jumpu-input flex-1"
             name="endpoint"
+            hidden={presentation !== "url"}
             type="url"
             defaultValue={initialValues.endpoint}
           />
-        </label>
-        or
-        <label style={{ display: "flex", flexDirection: "column" }}>
-          Profiles Set
+        </FormRow>
+        <FormRow
+          className={clsx("mb-4", { hidden: presentation !== "direct" })}
+          label="Profiles Set"
+        >
           <textarea
+            className="jumpu-textarea resize flex-1"
             name="jsonld"
+            hidden={presentation !== "direct"}
+            cols={12}
+            rows={18}
             style={{ fontFamily: "monospace" }}
             defaultValue={
               initialValues.profilesSet
@@ -110,15 +158,18 @@ export default function Pages() {
                 : ""
             }
           />
-        </label>
-        <input type="submit" value="Verify" />
+        </FormRow>
+        <input className="jumpu-button" type="submit" value="Verify" />
       </form>
+      {Object.entries(values).length > 0 && (
+        <h2 className="text-2xl font-bold mb-4">Result</h2>
+      )}
       <dl>
         {[...Object.entries(values)].map(([key, value]: [string, unknown]) => (
           <Fragment key={key}>
-            <dt>{key}</dt>
-            <dd>
-              <pre>
+            <dt className="text-sm font-bold mb-2">{key}</dt>
+            <dd className="ml-4 mb-6">
+              <pre className="jumpu-card block text-sm font-mono bg-gray-50 px-3 py-2 overflow-auto">
                 {typeof value === "string" || value instanceof Error
                   ? String(value)
                   : JSON.stringify(value, null, "  ")}
@@ -127,6 +178,7 @@ export default function Pages() {
           </Fragment>
         ))}
       </dl>
-    </>
+      <ProjectSummary />
+    </article>
   );
 }

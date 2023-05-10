@@ -3,10 +3,10 @@ import isAfter from "date-fns/isAfter";
 import { Link, LinkProps } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import { OpHolder, OpCredential } from "@webdino/profile-model";
-import Image from "../components/Image";
-import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
-import logomarkUrl from "../assets/logomark.svg";
-import { getVerificationType } from "../utils/credential";
+import { Image } from "@webdino/profile-ui";
+import { getVerificationType } from "@webdino/profile-ui/src/utils";
+import placeholderLogoMainUrl from "@webdino/profile-ui/src/assets/placeholder-logo-main.png";
+import logomarkUrl from "@webdino/profile-ui/src/assets/logomark.svg";
 
 function Credential({
   className,

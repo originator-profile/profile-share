@@ -1,25 +1,26 @@
 import { useId } from "react";
 import { Icon } from "@iconify/react";
 import { OpHolder, OpCertifier, OpVerifier } from "@webdino/profile-model";
-import { Op } from "../types/profile";
 import {
   isOpCredential,
   isOpCertifier,
   isOpVerifier,
 } from "@webdino/profile-core";
-import { Role } from "../types/role";
-import Image from "../components/Image";
+import {
+  Image,
+  Roles,
+  HolderTable,
+  Description,
+  TechTable,
+  Table,
+  TableRow,
+  CredentialSummary,
+  CredentialDetail,
+} from "@webdino/profile-ui";
+import { Op, Role } from "@webdino/profile-ui/src/types";
+import placeholderLogoMainUrl from "@webdino/profile-ui/src/assets/placeholder-logo-main.png";
+import logomarkUrl from "@webdino/profile-ui/src/assets/logomark.svg";
 import BackHeader from "../components/BackHeader";
-import Roles from "../components/Roles";
-import HolderTable from "../components/HolderTable";
-import Description from "../components/Description";
-import TechTable from "../components/TechTable";
-import Table from "../components/Table";
-import TableRow from "../components/TableRow";
-import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
-import logomarkUrl from "../assets/logomark.svg";
-import CredentialSummary from "../components/CredentialSummary";
-import CredentialDetail from "../components/CredentialDetail";
 
 type Props = {
   op: Op;

@@ -1,5 +1,5 @@
 extends: webdino-profile
 overrides:
-  - files: components/*.tsx
+  - files: "*.tsx"
     rules:
       filenames/match-exported: ["error", "pascal"]

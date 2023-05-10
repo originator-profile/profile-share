@@ -9,6 +9,7 @@
     "packages/registry-db",
     "packages/registry-service",
     "packages/sign",
+    "packages/ui",
     "packages/verify"
   ]
 }

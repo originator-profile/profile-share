@@ -1,4 +1,4 @@
-import { Profile, Dp } from "./profile";
+import { Profile, Dp } from "@webdino/profile-ui/src/types";
 
 export type FetchProfilesMessageRequest = {
   type: "fetch-profiles";

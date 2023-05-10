@@ -1,16 +1,18 @@
 import { useTitle, useMount } from "react-use";
 import { Navigate } from "react-router-dom";
 import { isDp } from "@webdino/profile-core";
-import { Dp, Profile } from "../types/profile";
-import sortDps from "../utils/sort-dps";
-import findProfileGenericError from "../utils/find-profile-generic-error";
+import { Dp, Profile } from "@webdino/profile-ui/src/types";
+import {
+  sortDps,
+  findProfileGenericError,
+} from "@webdino/profile-ui/src/utils";
 import { routes } from "../utils/routes";
 import useProfiles from "../utils/use-profiles";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
 
-function Dp({
+function Redirect({
   dp,
   tabId,
   profiles,
@@ -57,7 +59,7 @@ function Base() {
   if (!dp) {
     return <NotFound variant="dp" />;
   }
-  return <Dp dp={dp} tabId={tabId} profiles={profiles} />;
+  return <Redirect dp={dp} tabId={tabId} profiles={profiles} />;
 }
 
 export default Base;

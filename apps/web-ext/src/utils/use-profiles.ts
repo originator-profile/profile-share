@@ -7,12 +7,12 @@ import {
   ProfilesVerifier,
   expandProfiles,
 } from "@webdino/profile-verify";
+import { Profile } from "@webdino/profile-ui/src/types";
+import { toProfile } from "@webdino/profile-ui/src/utils";
 import {
   FetchProfilesMessageResponse,
   PopupMessageRequest,
 } from "../types/message";
-import { Profile } from "../types/profile";
-import toProfile from "./to-profile";
 import { routes } from "./routes";
 
 const key = "profiles";
