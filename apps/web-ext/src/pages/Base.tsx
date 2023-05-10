@@ -12,7 +12,7 @@ import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
 
-function Dp({
+function Redirect({
   dp,
   tabId,
   profiles,
@@ -59,7 +59,7 @@ function Base() {
   if (!dp) {
     return <NotFound variant="dp" />;
   }
-  return <Dp dp={dp} tabId={tabId} profiles={profiles} />;
+  return <Redirect dp={dp} tabId={tabId} profiles={profiles} />;
 }
 
 export default Base;
