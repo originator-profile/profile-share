@@ -45,7 +45,7 @@ describe("PublisherService", () => {
       sub: url,
       "https://originator-profile.org/dp": {},
     });
-    const website = valid["https://originator-profile.org/dp"].item.find(
+    const website = valid["https://originator-profile.org/dp"]?.item.find(
       ({ type }) => type === "website"
     );
     expect(website?.url).toBe(url);

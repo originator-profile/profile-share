@@ -104,11 +104,11 @@ describe("CertificateService", () => {
       "https://originator-profile.org/op": { jwks: { keys: [jwk] } },
     });
     const holder =
-      valid["https://originator-profile.org/op"].item.find(isOpHolder);
+      valid["https://originator-profile.org/op"]?.item.find(isOpHolder);
     expect(holder?.url).toBe("https://example.com/");
     expect(holder).not.toHaveProperty("phoneNumber");
     const credential =
-      valid["https://originator-profile.org/op"].item.find(isOpCredential);
+      valid["https://originator-profile.org/op"]?.item.find(isOpCredential);
     expect(credential?.name).toBe("ブランドセーフティ認証");
   });
 });
