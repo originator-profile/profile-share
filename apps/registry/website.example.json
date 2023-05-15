@@ -1,7 +1,7 @@
 {
   "url": "http://localhost:8080",
   "location": "h1",
-  "bodyFormat": { "connect": { "value": "html" } },
-  "body": "<h1>OP 確認くん</h1>",
+  "bodyFormat": { "connect": { "value": "visibleText" } },
+  "body": "OP 確認くん",
   "title": "OP 確認くん"
 }
