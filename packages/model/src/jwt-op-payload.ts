@@ -30,7 +30,18 @@ const JwtOpPayload = {
         "[RFC7519#section-4.1.6](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.6)",
       type: "number",
     },
+    "https://originator-profile.org/op": {
+      type: "object",
+      properties: {
+        item: { type: "array", items: OpItem },
+        jwks: Jwks,
+      },
+      required: ["item"],
+      additionalProperties: false,
+    },
+    /** @deprecated Use "https://originator-profile.org/op" */
     "https://opr.webdino.org/jwt/claims/op": {
+      deprecated: true,
       type: "object",
       properties: {
         item: { type: "array", items: OpItem },
@@ -40,12 +51,10 @@ const JwtOpPayload = {
       additionalProperties: false,
     },
   },
-  required: [
-    "iss",
-    "sub",
-    "exp",
-    "iat",
-    "https://opr.webdino.org/jwt/claims/op",
+  required: ["iss", "sub", "exp", "iat"],
+  oneOf: [
+    { required: ["https://originator-profile.org/op"] },
+    { required: ["https://opr.webdino.org/jwt/claims/op"] },
   ],
   additionalProperties: false,
 } as const;
