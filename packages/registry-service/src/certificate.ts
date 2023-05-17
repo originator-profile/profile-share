@@ -1,8 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import flush from "just-flush";
 import { addYears, fromUnixTime } from "date-fns";
 import { NotFoundError, BadRequestError } from "http-errors-enhanced";
-import { Op } from "@webdino/profile-model";
+import { Op, OpHolder, OpVerifier, OpCertifier } from "@webdino/profile-model";
 import { signOp } from "@webdino/profile-sign";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
@@ -62,6 +62,10 @@ export const CertificateService = ({
       })
       .catch((e: Error) => e);
     if (credentials instanceof Error) return credentials;
+    const accountsInclude: Prisma.accountsInclude = {
+      logos: true,
+      businessCategories: true,
+    };
     const data = await Promise.all([
       prisma.accounts.findMany({
         where: {
@@ -69,7 +73,7 @@ export const CertificateService = ({
             in: [id, ...credentials.map(({ certifierId }) => certifierId)],
           },
         },
-        include: { logos: true },
+        include: accountsInclude,
       }),
       prisma.accounts.findMany({
         where: {
@@ -77,11 +81,11 @@ export const CertificateService = ({
             in: credentials.map(({ verifierId }) => verifierId),
           },
         },
-        include: { logos: true },
+        include: accountsInclude,
       }),
       prisma.accounts.findUnique({
         where: { id: accountId },
-        include: { logos: true },
+        include: accountsInclude,
       }),
     ]).catch((e: Error) => e);
     if (data instanceof Error) return data;
@@ -91,6 +95,16 @@ export const CertificateService = ({
     if (!certifier) return new NotFoundError();
     if (!holder) return new NotFoundError();
 
+    const toAccountModel = (
+      accounts: Prisma.accountsGetPayload<{
+        include: typeof accountsInclude;
+      }>
+    ): Partial<OpHolder | OpVerifier | OpCertifier> => ({
+      ...flush(accounts),
+      businessCategory: accounts.businessCategories?.map(
+        ({ businessCategoryValue }) => businessCategoryValue
+      ),
+    });
     const input: Op = {
       type: "op",
       issuedAt: options.issuedAt.toISOString(),
@@ -110,15 +124,18 @@ export const CertificateService = ({
         // @ts-expect-error any properties
         ...certifiers.map((certifier) => ({
           type: "certifier",
-          ...flush(certifier),
+          ...toAccountModel(certifier),
         })),
         // @ts-expect-error any properties
         ...verifiers.map((verifier) => ({
           type: "verifier",
-          ...flush(verifier),
+          ...toAccountModel(verifier),
         })),
-        // @ts-expect-error any properties
-        { type: "holder", ...flush(holder) },
+        {
+          // @ts-expect-error any properties
+          type: "holder",
+          ...toAccountModel(holder),
+        },
       ],
     };
 
