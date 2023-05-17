@@ -7,7 +7,9 @@ import { expandProfiles } from "./expand-profiles";
 
 describe("expand-profiles", async () => {
   beforeEach(() => {
-    mockGet("https://oprdev.herokuapp.com/context").willResolve(context);
+    mockGet("https://originator-profile.org/context.jsonld").willResolve(
+      context
+    );
   });
 
   afterEach(() => {
@@ -17,14 +19,14 @@ describe("expand-profiles", async () => {
   test("expand Profiles Set JSON-LD Document", async () => {
     const profiles: JsonLdDocument = [
       {
-        "@context": "https://oprdev.herokuapp.com/context",
+        "@context": "https://originator-profile.org/context.jsonld",
         advertiser: [],
         publisher: "example.com",
         main: "example.com",
         profile: ["sop1...", "sdp1..."],
       },
       {
-        "@context": "https://oprdev.herokuapp.com/context",
+        "@context": "https://originator-profile.org/context.jsonld",
         advertiser: "example",
         profile: ["sop2...", "sdp2..."],
       },

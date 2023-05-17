@@ -21,7 +21,7 @@ test("signDp() return a valid JWT", async () => {
   expect(decodeProtectedHeader(jwt).kid).toBe(jwk.kid);
   const valid = decodeJwt(jwt);
   expect(valid).toMatchObject({
-    "https://opr.webdino.org/jwt/claims/dp": {
+    "https://originator-profile.org/dp": {
       item: dp.item,
     },
   });

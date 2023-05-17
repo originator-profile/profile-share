@@ -14,7 +14,7 @@ test("妥当なDocument Profile Itemであることを検証", async () => {
     sub: "https://example.com/article/42",
     iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000 + 3600),
-    "https://opr.webdino.org/jwt/claims/dp": {
+    "https://originator-profile.org/dp": {
       item: JSON.parse(snapshotFile.toString()),
     },
   };

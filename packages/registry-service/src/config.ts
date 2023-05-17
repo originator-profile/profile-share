@@ -11,6 +11,9 @@ const Config = {
       type: "string",
       default: "https://oprdev.herokuapp.com",
     },
+    NODE_ENV: {
+      type: "string",
+    },
   },
   required: ["ISSUER_UUID"],
 } as const;

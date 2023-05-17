@@ -1,27 +1,33 @@
 import jsonld, { JsonLdDocument, NodeObject } from "jsonld";
 
+const context = "https://originator-profile.org/context#";
+
+/** @deprecated use context */
+const deprecatedContext = "https://github.com/webdino/profile#";
+
+function Values(node: NodeObject) {
+  function values<Key extends "advertiser" | "publisher" | "main" | "profile">(
+    key: Key
+  ): string[] {
+    return (
+      (node[`${context}${key}`] ?? node[`${deprecatedContext}${key}`] ?? [])
+        // @ts-expect-error assert
+        .map((value: { "@value": string }) => value["@value"])
+    );
+  }
+
+  return values;
+}
+
 function nodeToObj(node: NodeObject) {
-  const context = "https://github.com/webdino/profile#";
-  const advertisers: string[] =
-    // @ts-expect-error assert
-    node[`${context}advertiser`]?.map(
-      (advertiser: { "@value": string }) => advertiser["@value"]
-    ) ?? [];
-  const publishers: string[] =
-    // @ts-expect-error assert
-    node[`${context}publisher`]?.map(
-      (publisher: { "@value": string }) => publisher["@value"]
-    ) ?? [];
-  const main: string[] =
-    // @ts-expect-error assert
-    node[`${context}main`]?.map(
-      (main: { "@value": string }) => main["@value"]
-    ) ?? [];
-  // @ts-expect-error assert
-  const profile: string[] = node[`${context}profile`].map(
-    (profile: { "@value": string }) => profile["@value"]
-  );
-  return { advertisers, publishers, main, profile };
+  const values = Values(node);
+
+  return {
+    advertisers: values("advertiser"),
+    publishers: values("publisher"),
+    main: values("main"),
+    profile: values("profile"),
+  };
 }
 
 /**

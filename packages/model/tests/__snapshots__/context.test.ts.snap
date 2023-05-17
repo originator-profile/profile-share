@@ -3,19 +3,19 @@
 exports[`sample profiles set 1`] = `
 [
   {
-    "https://github.com/webdino/profile#advertiser": [
+    "https://originator-profile.org/context#advertiser": [
       {
         "@type": "http://www.w3.org/2001/XMLSchema#string",
         "@value": "https://example.com",
       },
     ],
-    "https://github.com/webdino/profile#main": [
+    "https://originator-profile.org/context#main": [
       {
         "@type": "http://www.w3.org/2001/XMLSchema#string",
         "@value": "https://example.org",
       },
     ],
-    "https://github.com/webdino/profile#profile": [
+    "https://originator-profile.org/context#profile": [
       {
         "@type": "http://www.w3.org/2001/XMLSchema#string",
         "@value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL29wci53ZWJkaW5vLm9yZyIsInN1YiI6Imh0dHBzOi8vZXhhbXBsZS5jb20ifQ.xK1KL0pDWdDTyvL1VSuvnPfDZ6zAIJM_Jn8wbNzIi-0",
@@ -29,7 +29,7 @@ exports[`sample profiles set 1`] = `
         "@value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL29wci53ZWJkaW5vLm9yZyIsInN1YiI6Imh0dHBzOi8vZXhhbXBsZS5uZXQifQ.FSEFDg_Qk0-1xQbaTg0407qFXHer1qJNSfI6vuiJTS8",
       },
     ],
-    "https://github.com/webdino/profile#publisher": [
+    "https://originator-profile.org/context#publisher": [
       {
         "@type": "http://www.w3.org/2001/XMLSchema#string",
         "@value": "https://example.org",
