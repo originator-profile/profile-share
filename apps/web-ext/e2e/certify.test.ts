@@ -14,11 +14,13 @@ describe("certify", () => {
   });
 
   afterEach(async ({ meta }) => {
-    await page?.screenshot({ path: `screenshots/${meta.name}.png` });
+    await page?.screenshot({ path: `screenshots/${meta.name}-本体.png` });
+    await ext?.screenshot({ path: `screenshots/${meta.name}-拡張機能.png` });
     await Promise.all(ctx.pages().map((page) => page.close()));
   });
 
-  test("拡張機能画面で認証を確認", async () => {
+  test("拡張機能画面での認証および対象ページのマークを確認", async () => {
+    // 拡張機能ウィンドウの状態
     expect(await ext?.title()).toMatch(/コンテンツ情報/);
     expect(
       await ext?.locator(':text("この記事を発行した組織") + p').textContent()
@@ -36,9 +38,8 @@ describe("certify", () => {
         ?.locator('p:has-text("ブランドセーフティ認証") + p')
         .textContent()
     ).toMatch("有効期限内");
-  });
 
-  test("対象ページにマークが表示されているか確認", async () => {
+    // 対象Webページにマークは表示されているか
     expect(await page?.title()).toMatch(/OP 確認くん/);
     expect(
       await page
