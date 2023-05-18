@@ -18,7 +18,7 @@ function ProjectTitle({ as: As = "section", className }: Props) {
         target="_blank"
         rel="noreferrer noopener"
       >
-        <img src={logoUrl} alt="Originator Profile" />
+        <img width={186} height={40} src={logoUrl} alt="Originator Profile" />
       </a>
     </As>
   );
