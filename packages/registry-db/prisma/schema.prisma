@@ -120,7 +120,7 @@ model roles {
 
 /// 事業種目
 model businessCategories {
-  /// 事業種目
+  /// https://imi.go.jp/ns/core/Core242.html#ic:事業種目
   value    String                      @id
   /// 会員
   accounts accountBusinessCategories[]
