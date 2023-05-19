@@ -2,7 +2,7 @@ import { test, expect } from "vitest";
 import { Window } from "happy-dom";
 import { DpVisibleText, DpText, DpHtml } from "@webdino/profile-model";
 import { extractBody } from "./extract-body";
-import { chromium } from "playwright";
+import { chromium, firefox, webkit, Page } from "playwright";
 
 const base = {
   url: "https://example.com",
@@ -23,14 +23,11 @@ const pageUrl = document.location.href;
 const locator = async (location: string) =>
   Array.from(document.querySelectorAll<HTMLElement>(location));
 
-test("extract body as visibleText type", async () => {
+const extractTest = async function(page:Page) {
   const item: DpVisibleText = {
     ...base,
     type: "visibleText",
   };
-  const browser = await chromium.launch();
-  const context = await browser.newContext();
-  const page = await context.newPage();
   await page.locator("body").evaluate((el, html) => {
     el.innerHTML = html;
   }, html);
@@ -41,6 +38,24 @@ test("extract body as visibleText type", async () => {
   );
   expect(result).not.instanceOf(Error);
   expect(result).toBe("Hello, World!\n\nGoodbye, World!");
+}
+
+test("extract body as visibleText type on chromium", async () => {
+  const browser = await chromium.launch();
+  const context = await browser.newContext();
+  await extractTest(await context.newPage());
+});
+
+test("extract body as visibleText type on firefox", async () => {
+  const browser = await firefox.launch();
+  const context = await browser.newContext();
+  await extractTest(await context.newPage());
+});
+
+test("extract body as visibleText type on webkit", async () => {
+  const browser = await webkit.launch();
+  const context = await browser.newContext();
+  await extractTest(await context.newPage());
 });
 
 test("extract body as text type", async () => {
