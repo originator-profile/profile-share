@@ -73,7 +73,7 @@ const extractText = async function (page: Page) {
   );
   expect(result).not.instanceOf(Error);
   expect(result).toBe("Hello, World!NoneGoodbye, World!");
-}
+};
 
 test("extract body as text type on chromium", async () => {
   const browser = await chromium.launch();
@@ -110,7 +110,7 @@ const extractHtml = async function (page: Page) {
   expect(result).toBe(
     '<body><p>Hello, World!</p><p style="display:none">None</p><p>Goodbye, World!</p></body>'
   );
-}
+};
 
 test("extract body as html type on chromium", async () => {
   const browser = await chromium.launch();
@@ -145,7 +145,7 @@ const extractEvil = async function (page: Page) {
     item
   );
   expect(result).instanceOf(Error);
-}
+};
 
 test("extract body failure when url mismatch on chromium", async () => {
   const browser = await chromium.launch();
