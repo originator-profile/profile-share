@@ -23,7 +23,7 @@ const pageUrl = document.location.href;
 const locator = async (location: string) =>
   Array.from(document.querySelectorAll<HTMLElement>(location));
 
-const extractTest = async function(page:Page) {
+const extractTest = async function (page: Page) {
   const item: DpVisibleText = {
     ...base,
     type: "visibleText",
@@ -38,7 +38,7 @@ const extractTest = async function(page:Page) {
   );
   expect(result).not.instanceOf(Error);
   expect(result).toBe("Hello, World!\n\nGoodbye, World!");
-}
+};
 
 test("extract body as visibleText type on chromium", async () => {
   const browser = await chromium.launch();
