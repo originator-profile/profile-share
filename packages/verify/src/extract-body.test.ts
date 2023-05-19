@@ -23,7 +23,7 @@ const pageUrl = document.location.href;
 const locator = async (location: string) =>
   Array.from(document.querySelectorAll<HTMLElement>(location));
 
-const extractVisibleText = async function(page:Page) {
+const extractVisibleText = async function (page: Page) {
   const item: DpVisibleText = {
     ...base,
     type: "visibleText",
@@ -38,7 +38,7 @@ const extractVisibleText = async function(page:Page) {
   );
   expect(result).not.instanceOf(Error);
   expect(result).toBe("Hello, World!\n\nGoodbye, World!");
-}
+};
 
 test("extract body as visibleText type on chromium", async () => {
   const browser = await chromium.launch();
@@ -58,7 +58,7 @@ test("extract body as visibleText type on webkit", async () => {
   await extractVisibleText(await context.newPage());
 });
 
-const extractText = async function(page:Page) {
+const extractText = async function (page: Page) {
   const item: DpText = {
     ...base,
     type: "text",
@@ -93,7 +93,7 @@ test("extract body as text type on webkit", async () => {
   await extractText(await context.newPage());
 });
 
-const extractHtml = async function(page:Page) {
+const extractHtml = async function (page: Page) {
   const item: DpHtml = {
     ...base,
     type: "html",
@@ -130,7 +130,7 @@ test("extract body as html type on webkit", async () => {
   await extractHtml(await context.newPage());
 });
 
-const extractEvil = async function(page:Page) {
+const extractEvil = async function (page: Page) {
   const item: DpText = {
     ...base,
     url: "https://evil.com",
