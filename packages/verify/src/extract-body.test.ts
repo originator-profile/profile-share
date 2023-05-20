@@ -20,8 +20,6 @@ const document = window.document as unknown as Document;
 document.body.innerHTML = html;
 document.location.href = "https://example.com/";
 const pageUrl = document.location.href;
-const locator = async (location: string) =>
-  Array.from(document.querySelectorAll<HTMLElement>(location));
 
 const extractVisibleText = async function (page: Page) {
   const item: DpVisibleText = {
