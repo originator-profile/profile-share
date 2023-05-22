@@ -20,11 +20,13 @@ Cu9W8v6HPsAZ8GI9/oVUlsGLge0SEDtDku2K4fkNIQVpPfX8zjm8jMGO
 EOF;
 		$jws         = 'eyJhbGciOiJFUzI1NiIsImtpZCI6Imx6djNGQjBickRUbmo2RjZTaUhMd24xbmtlNmo5Z05lWlV6SE94M0RKSXMiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..ue1DpS2ElWcWlFQrl6PzJsNdmv1w0uJJNxAMmu5IVp5tEOSm-ut-h1g6Rwo-05cOpo3aiJDrUnZboDsFtt3tMg';
 		$domain_name = 'example.com';
+		$subject     = '55150c0a-4020-4233-8e77-880b2da55414';
 		$url         = 'https://example.com/article/42';
 		$dp          = new DpClass(
 			issuer: $domain_name,
-			subject: $url,
+			url: $url,
 			jws: $jws,
+			subject: $subject,
 			title: 'ブログはじめました',
 			image: 'https://example.com/image/hello.png',
 			description: 'こんにちは。今日からブログをはじめました。',
@@ -38,7 +40,7 @@ EOF;
 		$token       = ( new Parser( new JoseEncoder() ) )->parse( $jwt );
 		assert( $token instanceof UnencryptedToken );
 		$this->assertEquals( true, $token->hasBeenIssuedBy( $domain_name ) );
-		$this->assertEquals( true, $token->isRelatedTo( $url ) );
+		$this->assertEquals( true, $token->isRelatedTo( $subject ) );
 		$dp_item  = $token->claims()->get( 'https://originator-profile.org/dp' )['item'];
 		$snapshot = \json_decode( \file_get_contents( __DIR__ . '/snapshots/dp-item.json' ), true );
 		$this->assertEquals( $snapshot, $dp_item );

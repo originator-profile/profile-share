@@ -2,6 +2,7 @@ import { PrismaClient, Prisma, websites } from "@prisma/client";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { NotFoundError } from "http-errors-enhanced";
 import { signBody } from "@webdino/profile-sign";
+import { validate } from "uuid";
 
 type Options = {
   prisma: PrismaClient;
@@ -18,12 +19,12 @@ export const WebsiteService = ({ prisma }: Options) => ({
   },
   /**
    * ウェブページの表示
-   * @param input.url ウェブページ URL
+   * @param input.id ウェブページ ID
    * @return ウェブページ
    */
-  async read({ url }: { url: string }): Promise<websites | Error> {
+  async read({ id }: { id: string }): Promise<websites | Error> {
     const data = await prisma.websites
-      .findUnique({ where: { url } })
+      .findUnique({ where: { id } })
       .catch((e: Error) => e);
     return data ?? new NotFoundError();
   },
@@ -33,20 +34,20 @@ export const WebsiteService = ({ prisma }: Options) => ({
    * @return ウェブページ
    */
   async update(
-    input: Prisma.websitesUpdateInput & { url: string }
+    input: Prisma.websitesUpdateInput & { id: string }
   ): Promise<websites | Error> {
     return await prisma.websites.update({
-      where: { url: input.url },
+      where: { id: input.id },
       data: input,
     });
   },
   /**
    * ウェブページの削除
-   * @param input.url ウェブページ URL
+   * @param input.id ウェブページ ID
    * @return ウェブページ
    */
-  async delete({ url }: { url: string }): Promise<websites | Error> {
-    return await prisma.websites.delete({ where: { url } });
+  async delete({ id }: { id: string }): Promise<websites | Error> {
+    return await prisma.websites.delete({ where: { id } });
   },
   /**
    * 対象のテキストへの署名
@@ -58,18 +59,18 @@ export const WebsiteService = ({ prisma }: Options) => ({
   },
   /**
    * Profiles Set の取得
-   * @param url ウェブページ URL
+   * @param id ウェブページ ID または URL (非推奨)
    * @param contextDefinition https://www.w3.org/TR/json-ld11/#context-definitions
    */
   async getProfiles(
-    url: string,
+    id: string,
     contextDefinition:
       | ContextDefinition
       | string = "https://originator-profile.org/context.jsonld"
   ): Promise<JsonLdDocument | Error> {
     const data = await prisma.websites
-      .findUnique({
-        where: { url },
+      .findFirstOrThrow({
+        where: validate(id) ? { id } : { url: id },
         include: {
           account: {
             include: {
@@ -101,7 +102,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
     const ops = data.account.publications.map((publication) => publication.op);
     const profiles: JsonLdDocument = {
       "@context": contextDefinition,
-      main: data.url,
+      main: data.id,
       profile: [...ops, ...data.dps].map((p) => p.jwt),
     };
     return profiles;

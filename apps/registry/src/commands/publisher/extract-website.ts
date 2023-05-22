@@ -1,5 +1,6 @@
 import { Command, Flags, ux } from "@oclif/core";
 import { Prisma } from "@prisma/client";
+import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import { chromium, BrowserContextOptions } from "playwright";
 import metascraper, { Metadata } from "metascraper";
@@ -105,6 +106,7 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
       }
     );
     const website = {
+      id: crypto.randomUUID(),
       url,
       location,
       bodyFormat: { connect: { value: bodyFormat } },

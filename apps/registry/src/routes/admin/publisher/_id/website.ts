@@ -60,9 +60,11 @@ async function website({
 }>) {
   const operation =
     operations[method as Extract<HTTPMethods, keyof typeof operations>];
-  const input = (body?.input ?? {}) as Prisma.websitesCreateInput;
-  if (typeof input.url !== "string") {
-    throw new BadRequestError("invalid url property");
+  const input = (body?.input ?? {}) as Prisma.websitesCreateInput & {
+    id: string;
+  };
+  if (typeof input.id !== "string") {
+    throw new BadRequestError("invalid id property");
   }
 
   const res = await server.services.website[operation]({

@@ -20,9 +20,11 @@ describe("PublisherService", () => {
   test("signDp() return a valid JWT", async () => {
     const accountId = crypto.randomUUID();
     const domainName = "example.com";
+    const webpageId = crypto.randomUUID();
     const url = "https://example.com/";
     const dummyWebsite: Partial<websites> = {
       accountId,
+      id: webpageId,
       url,
       location: "h1",
       bodyFormatValue: "html",
@@ -37,12 +39,12 @@ describe("PublisherService", () => {
       websites: [dummyWebsite],
     });
     const { pkcs8 } = await generateKey();
-    const jwt = await publisher.signDp(accountId, url, pkcs8);
+    const jwt = await publisher.signDp(accountId, webpageId, pkcs8);
     // @ts-expect-error assert
     const valid: JwtDpPayload = decodeJwt(jwt);
     expect(valid).toMatchObject({
       iss: domainName,
-      sub: url,
+      sub: webpageId,
       "https://originator-profile.org/dp": {},
     });
     const website = valid["https://originator-profile.org/dp"]?.item.find(

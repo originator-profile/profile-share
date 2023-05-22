@@ -162,6 +162,7 @@ Signed Document Profile ならば、必ずその組織の Signed Originator Prof
 ```json
 {
   "iss": "example.com",
+  "sub": "78550fa7-f846-4e0f-ad5c-8d34461cb95b",
   "https://originator-profile.org/dp": {
     "item": [
       {
