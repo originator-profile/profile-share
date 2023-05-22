@@ -1,5 +1,4 @@
 import { test, expect } from "vitest";
-import { Window } from "happy-dom";
 import { DpVisibleText, DpText, DpHtml } from "@webdino/profile-model";
 import { extractBody } from "./extract-body";
 import { chromium, firefox, webkit, Page } from "playwright";
@@ -15,11 +14,7 @@ const base = {
 
 const html =
   '<p>Hello, World!</p><p style="display:none">None</p><p>Goodbye, World!</p>';
-const window = new Window();
-const document = window.document as unknown as Document;
-document.body.innerHTML = html;
-document.location.href = "https://example.com/";
-const pageUrl = document.location.href;
+const pageUrl = "https://example.com/";
 
 const extractVisibleText = async function (page: Page) {
   const item: DpVisibleText = {
