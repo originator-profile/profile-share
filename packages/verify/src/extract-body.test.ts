@@ -60,7 +60,9 @@ test("extract body as visibleText type on webkit", async () => {
   await extractVisibleText(await context.newPage());
 });
 
-const extractText = async function (locator: (location: string) => Promise<Locale[]>) {
+const extractText = async function (
+  locator: (location: string) => Promise<Locale[]>
+) {
   const item: DpText = {
     ...base,
     type: "text",
@@ -68,7 +70,7 @@ const extractText = async function (locator: (location: string) => Promise<Local
   const result = await extractBody(pageUrl, locator, item);
   expect(result).not.instanceOf(Error);
   expect(result).toBe("Hello, World!NoneGoodbye, World!");
-}
+};
 
 test("extract body as text type on happy-dom", async () => {
   await extractText(locator);
@@ -104,7 +106,9 @@ test("extract body as text type on webkit", async () => {
   await extractText((location) => page.locator(location).all());
 });
 
-const extractHtml = async function (locator: (location: string) => Promise<Locale[]>) {
+const extractHtml = async function (
+  locator: (location: string) => Promise<Locale[]>
+) {
   const item: DpHtml = {
     ...base,
     type: "html",
@@ -114,7 +118,7 @@ const extractHtml = async function (locator: (location: string) => Promise<Local
   expect(result).toBe(
     '<body><p>Hello, World!</p><p style="display:none">None</p><p>Goodbye, World!</p></body>'
   );
-}
+};
 
 test("extract body as html type on happy-dom", async () => {
   await extractHtml(locator);
@@ -150,7 +154,9 @@ test("extract body as html type on webkit", async () => {
   await extractHtml((location) => page.locator(location).all());
 });
 
-const extractEvil = async function (locator: (location: string) => Promise<Locale[]>) {
+const extractEvil = async function (
+  locator: (location: string) => Promise<Locale[]>
+) {
   const item: DpText = {
     ...base,
     url: "https://evil.com",
@@ -158,7 +164,7 @@ const extractEvil = async function (locator: (location: string) => Promise<Local
   };
   const result = await extractBody(pageUrl, locator, item);
   expect(result).instanceOf(Error);
-}
+};
 
 test("extract body failure when url mismatch on happy-dom", async () => {
   await extractEvil(locator);
