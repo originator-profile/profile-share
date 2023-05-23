@@ -74,7 +74,7 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 
 	$dp  = new Dp(
 		issuer: $domain_name,
-		subject: $url,
+		url: $url,
 		jws: $jws,
 		title: $post->post_title,
 		image: \has_post_thumbnail( $post ) ? \get_the_post_thumbnail_url( $post ) : null,
@@ -155,7 +155,8 @@ function issue_dp( Dp $dp, string $admin_secret, string $pkcs8 ): string|false {
 		'body'    => \wp_json_encode(
 			array(
 				'input' => array(
-					'url'           => $dp->subject,
+					'id'            => $dp->subject,
+					'url'           => $dp->url,
 					'title'         => $dp->title,
 					'image'         => $dp->image,
 					'description'   => $dp->description,

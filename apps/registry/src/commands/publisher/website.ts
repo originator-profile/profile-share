@@ -51,6 +51,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     const { body, ...input } = JSON.parse(
       inputBuffer.toString()
     ) as (Prisma.websitesCreateInput & Prisma.websitesUpdateInput) & {
+      id: string;
       body: string;
     };
     const pkcs8File = await fs.readFile(flags.identity);

@@ -32,10 +32,10 @@ async function getProfiles(
   const contextDefinition: ContextDefinition | undefined =
     server.config.NODE_ENV === "development" ? context["@context"] : undefined;
   const data: JsonLdDocument | Error =
-    await server.services.website.getProfiles(params.url, contextDefinition);
+    await server.services.website.getProfiles(params.id, contextDefinition);
   if (data instanceof HttpError) return data;
   if (data instanceof Error) {
-    return new BadRequestError("invalid params.url", data);
+    return new BadRequestError("invalid params.id", data);
   }
 
   reply.type("application/ld+json");

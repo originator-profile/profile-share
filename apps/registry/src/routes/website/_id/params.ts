@@ -3,9 +3,9 @@ import { FromSchema } from "json-schema-to-ts";
 const Params = {
   type: "object",
   properties: {
-    url: { type: "string" },
+    id: { type: "string" },
   },
-  required: ["url"],
+  required: ["id"],
 } as const;
 
 type Params = FromSchema<typeof Params>;

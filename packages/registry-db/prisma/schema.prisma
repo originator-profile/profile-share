@@ -41,8 +41,10 @@ model dps {
   /// JWT
   jwt       String
   /// ウェブページ
-  website   websites? @relation(fields: [websiteId], references: [url], onDelete: Cascade)
-  websiteId String?
+  website   websites? @relation(fields: [websiteId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  websiteId String?   @db.Uuid
+  /// ウェブページのURL
+  url       String?
 }
 
 /// 会員
@@ -173,8 +175,9 @@ model keys {
 
 /// ウェブページ
 model websites {
+  id              String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   /// ウェブページ URL
-  url             String      @id
+  url             String
   /// 会員
   account         accounts    @relation(fields: [accountId], references: [id], onDelete: Cascade)
   accountId       String      @db.Uuid

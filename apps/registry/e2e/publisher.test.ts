@@ -42,11 +42,11 @@ describe("Publisher workflows", async () => {
       expect(website.body).toBe("OP 確認くん");
     });
 
-    test("Should succeed in updating from website.json", async () => {
+    test("Should succeed in creating from website.json", async () => {
       await PublisherWebsite.run([
         `--identity=${keyPath}`,
         `--id=${accountId}`,
-        "--operation=update",
+        "--operation=create",
         `--glob-input=${websiteJsonPath}`,
       ]);
     });

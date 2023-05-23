@@ -3,6 +3,8 @@
 
 namespace Profile\Post;
 
+use Ramsey\Uuid\Uuid;
+
 require_once __DIR__ . '/config.php';
 use const Profile\Config\PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME;
 
@@ -33,11 +35,11 @@ function profile_link() {
 		return;
 	}
 
-	$encoded_url = \rawurlencode( $url );
-	$endpoint    = "https://{$registry}/website/{$encoded_url}/profiles";
+	$id       = Uuid::uuid5( Uuid::NAMESPACE_URL, $url );
+	$endpoint = "https://{$registry}/website/{$id}/profiles";
 
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $registry ) {
-		$endpoint = "http://localhost:8080/website/{$encoded_url}/profiles";
+		$endpoint = "http://localhost:8080/website/{$id}/profiles";
 	}
 
 	echo '<link href="' . \esc_html( $endpoint ) . '" rel="alternate" type="application/ld+json">' . PHP_EOL;
