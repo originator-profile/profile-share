@@ -25,6 +25,7 @@ commands:
           install-yarn: true
           node-version: lts
       - yarn_install_with_cache
+      - playwright_install
       - wordpress_up
   format:
     steps:
@@ -87,6 +88,9 @@ commands:
           paths:
             - ~/.cache/yarn
             - ~/.cache/ms-playwright
+  playwright_install:
+    steps:
+      - run: npx playwright install --with-deps
   wordpress_up:
     steps:
       - restore_cache:
