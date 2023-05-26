@@ -37,7 +37,7 @@ describe("fetch-profiles", async () => {
     mockFetch.clearAll();
   });
 
-  test("有効なエンドポイント指定時 Profiles Set が得られる", async () => {
+  test("有効なエンドポイント指定時 Profile Set が得られる", async () => {
     const window = new Window();
     window.document.body.innerHTML = `
 <link
@@ -49,7 +49,7 @@ describe("fetch-profiles", async () => {
     expect(result).toEqual([profiles]);
   });
 
-  test("無効なエンドポイント指定時 Profiles Set の取得に失敗", async () => {
+  test("無効なエンドポイント指定時 Profile Set の取得に失敗", async () => {
     const window = new Window();
     window.document.body.innerHTML = `
 <link
@@ -65,7 +65,7 @@ describe("fetch-profiles", async () => {
     );
   });
 
-  test("取得先に Profiles Set が存在しないとき Profiles Set の取得に失敗", async () => {
+  test("取得先に Profile Set が存在しないとき Profile Set の取得に失敗", async () => {
     mockGet(profileEndpoint).willFail({}, 404);
     const window = new Window();
     window.document.body.innerHTML = `
@@ -95,7 +95,7 @@ describe("fetch-profiles", async () => {
       });
     });
 
-    test("有効な Profiles Set が得られる", async () => {
+    test("有効な Profile Set が得られる", async () => {
       const window = new Window();
       const profileEndpoints = [
         "https://example.com/1/ps.json",

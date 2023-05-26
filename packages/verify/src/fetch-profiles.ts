@@ -16,7 +16,7 @@ function getEndpoints(doc: Document): string[] {
 }
 
 /**
- * Profiles Set の取得
+ * Profile Set の取得
  * @param doc Document オブジェクト
  */
 export async function fetchProfiles(

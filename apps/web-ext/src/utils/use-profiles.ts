@@ -49,7 +49,7 @@ async function fetchVerifiedProfiles([, tabId]: [
 }
 
 /**
- * Profiles Set 取得 (要 Base コンポーネント)
+ * Profile Set 取得 (要 Base コンポーネント)
  */
 function useProfiles() {
   const params = useParams<{ tabId: string }>();

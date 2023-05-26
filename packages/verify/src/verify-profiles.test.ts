@@ -109,7 +109,7 @@ describe("verify-profiles", async () => {
     expect(results[1]).instanceOf(ProfileTokenVerifyFailed);
   });
 
-  test("重複するJWTが含まれるときProfiles Setの検証に失敗", async () => {
+  test("重複するJWTが含まれるときProfile Setの検証に失敗", async () => {
     const verifier = ProfilesVerifier(
       { profile: [opToken, opToken, dpToken] },
       registryKeys,
@@ -122,7 +122,7 @@ describe("verify-profiles", async () => {
     expect(results[0]).toBe(results[1]);
   });
 
-  test("DPの持たないOPが存在するときProfiles Setの検証に失敗", async () => {
+  test("DPの持たないOPが存在するときProfile Setの検証に失敗", async () => {
     const verifier = ProfilesVerifier(
       { profile: [opToken] },
       registryKeys,
