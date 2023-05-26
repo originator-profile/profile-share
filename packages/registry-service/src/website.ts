@@ -62,7 +62,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
    * @param id ウェブページ ID または URL (非推奨)
    * @param contextDefinition https://www.w3.org/TR/json-ld11/#context-definitions
    */
-  async getProfiles(
+  async getDocumentProfileSet(
     id: string,
     contextDefinition:
       | ContextDefinition

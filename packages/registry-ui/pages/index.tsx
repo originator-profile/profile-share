@@ -24,7 +24,7 @@ function loadInitialValues() {
   } catch {
     return {
       registry: document.location.hostname,
-      endpoint: `${document.location.origin}/.well-known/ps.json`,
+      endpoint: `${document.location.origin}/ps.json`,
     };
   }
 }

@@ -35,8 +35,8 @@ describe("複数のSigned Document Profilesが存在する場合", async () => {
     await AdminDelete.run([`--id=${accountId}`]);
   });
 
-  test("/.well-known/ps.json response is a valid Profile Set", async () => {
-    const res = await fetch("http://localhost:8080/.well-known/ps.json");
+  test("/ps.json response is a valid Profile Set", async () => {
+    const res = await fetch("http://localhost:8080/ps.json");
     const profiles = await res.json();
     const { profile } = await expandProfiles(profiles);
     const registry = "localhost";
