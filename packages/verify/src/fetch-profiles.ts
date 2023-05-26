@@ -6,10 +6,10 @@ function getEndpoints(doc: Document): string[] {
     ...doc.querySelectorAll(
       `link[rel="alternate"][type="application/ld+json"]`
     ),
-  ].map((e) => new URL(e.getAttribute("href") ?? "").href);
+  ].map((e) => new URL(e.getAttribute("href") ?? "", doc.location.href).href);
 
   if (endpoints.length === 0) {
-    return [`${doc.location.origin}/.well-known/ps.json`];
+    throw new ProfilesFetchFailed("Invalid endpoints");
   }
 
   return endpoints;

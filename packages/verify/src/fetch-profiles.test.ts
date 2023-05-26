@@ -27,7 +27,7 @@ describe("fetch-profiles", async () => {
     main: ["example.com"],
     profile: [jwt],
   };
-  const profileEndpoint = "https://example.com/.well-known/ps.json";
+  const profileEndpoint = "https://example.com/ps.json";
 
   beforeEach(() => {
     mockGet(profileEndpoint).willResolve(profiles);
@@ -118,5 +118,11 @@ describe("fetch-profiles", async () => {
       expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
       expect(result).toMatchSnapshot();
     });
+  });
+
+  test("エンドポイントを指定しない時 Profile Set の取得に失敗", async () => {
+    const window = new Window();
+    const result = await fetchProfiles(window.document as unknown as Document);
+    expect(result).toBeInstanceOf(ProfilesFetchFailed);
   });
 });
