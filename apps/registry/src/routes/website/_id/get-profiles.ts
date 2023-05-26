@@ -11,7 +11,7 @@ const schema: FastifySchema = {
   produces: ["application/ld+json"],
   response: {
     200: {
-      title: "Profiles Set",
+      title: "Profile Set",
       type: "object",
       additionalProperties: true,
     },

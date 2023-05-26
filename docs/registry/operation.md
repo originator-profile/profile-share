@@ -41,7 +41,7 @@ OP 発行とは別の担当者になる可能性がある DP 発行者が存在�
 この人の役割として
 
 - [Signed Document Profile を作成する](#signed-document-profile-を作成する)
-- [公開する Web サイトに Profiles Set を紐付ける](#公開する-web-サイトに-profiles-set-を紐付ける)
+- [公開する Web サイトに Profile Set を紐付ける](#公開する-web-サイトに-profiles-set-を紐付ける)
 
 の作業が該当します。
 
@@ -76,7 +76,7 @@ Prisma Studio が起動します。現在レジストリ側に登録されてい
 
 今回は`roleValue`の列に`certifier`と役割を担っている`oprdev.herokuapp.com`に認証を受けるというシチュエーションを例に作業を解説します。
 
-## Profiles Set 作成手順
+## Profile Set 作成手順
 
 最初の手順には大きくこのような流れがあります。
 
@@ -85,7 +85,7 @@ Prisma Studio が起動します。現在レジストリ側に登録されてい
 3. [公開鍵の登録を行う](#公開鍵の登録を行う)
 4. [Signed Originator Profile を作成する](#signed-originator-profile-を作成する)
 5. [Signed Document Profile を作成する](#signed-document-profile-を作成する)
-6. [公開する Web サイトに Profiles Set を紐付ける](#公開する-web-サイトに-profiles-set-を紐付ける)
+6. [公開する Web サイトに Profile Set を紐付ける](#公開する-web-サイトに-profile-set-を紐付ける)
 
 下記のコマンドは apps/registry ディレクトリで実行する。
 
@@ -256,15 +256,15 @@ bin/dev publisher:website \
 
 オプションについては、[apps/registry/README.md](https://github.com/webdino/profile/tree/main/apps/registry) を参照してください。
 
-### 公開する Web サイトに Profiles Set を紐付ける
+### 公開する Web サイトに Profile Set を紐付ける
 
-最後にデプロイ用 Profiles Set の作成を行います。
+最後にデプロイ用 Profile Set の作成を行います。
 公開するサイトに配置する際には、トップディレクトリの .well-known に以下のファイルを配置します。
 
 - jwks.json
 - ps.json
 
-または、HTML 中に Profiles Set への \<link\> 要素を追加しても構いません。
+または、HTML 中に Profile Set への \<link\> 要素を追加しても構いません。
 
 #### jwks.json
 

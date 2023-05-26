@@ -25,7 +25,7 @@ Document Profile レジストリ->>Document Profile レジストリ: Signed Docu
 ウェブサイト->>利用者: HTML <link> element
 
 利用者->>Document Profile レジストリ: 記事の検証
-Document Profile レジストリ->>利用者: Profiles Set の取得
+Document Profile レジストリ->>利用者: Profile Set の取得
 ```
 
 ## デモ
@@ -47,7 +47,7 @@ Document Profile レジストリ->>利用者: Profiles Set の取得
 
 ## HTML <link\> element の設置
 
-利用者が記事の検証をおこなう際 Document Profile レジストリ API エンドポイントから Profiles Set が得られるようにします。
+利用者が記事の検証をおこなう際 Document Profile レジストリ API エンドポイントから Profile Set が得られるようにします。
 
 Document Profile レジストリのドメイン名を `"oprdev.herokuapp.com"` 、対象とするウェブサイトを `"originator-profile.org"` とした場合のクライアントサイドスクリプトの例:
 

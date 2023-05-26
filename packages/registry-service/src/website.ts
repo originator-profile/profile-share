@@ -58,7 +58,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
     return await signBody(body, pkcs8).catch((e: Error) => e);
   },
   /**
-   * Profiles Set の取得
+   * Profile Set の取得
    * @param id ウェブページ ID または URL (非推奨)
    * @param contextDefinition https://www.w3.org/TR/json-ld11/#context-definitions
    */

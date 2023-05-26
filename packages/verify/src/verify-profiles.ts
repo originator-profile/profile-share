@@ -23,8 +23,8 @@ function getToken(res: DecodeResult | VerifyTokenResult) {
 type Token = ReturnType<typeof getToken>;
 
 /**
- * Profiles Set の検証者の生成
- * @param profiles Profiles Set
+ * Profile Set の検証者の生成
+ * @param profiles Profile Set
  * @param registryKeys OPレジストリの公開鍵
  * @param registry OPレジストリ
  * @param validator ペイロード確認のためのバリデーター (null: 無効)
@@ -69,7 +69,7 @@ export function ProfilesVerifier(
   }
 
   /**
-   * Profiles Set の検証
+   * Profile Set の検証
    * @return 検証結果
    */
   async function verifyProfiles(): Promise<VerifyResults> {

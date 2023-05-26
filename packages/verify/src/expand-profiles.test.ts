@@ -16,7 +16,7 @@ describe("expand-profiles", async () => {
     mockFetch.clearAll();
   });
 
-  test("expand Profiles Set JSON-LD Document", async () => {
+  test("expand Profile Set JSON-LD Document", async () => {
     const profiles: JsonLdDocument = [
       {
         "@context": "https://originator-profile.org/context.jsonld",

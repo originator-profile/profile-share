@@ -11,7 +11,7 @@ test("context.json is valid", async () => {
   await jsonld.expand(context);
 });
 
-test("sample profiles set", async () => {
+test("sample Profile Set", async () => {
   const profiles: JsonLdDocument = {
     "@context": "https://originator-profile.org/context.jsonld",
     main: ["https://example.org"],

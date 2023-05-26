@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`sample profiles set 1`] = `
+exports[`sample Profile Set 1`] = `
 [
   {
     "https://originator-profile.org/context#advertiser": [
