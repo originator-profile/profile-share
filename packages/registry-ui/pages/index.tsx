@@ -3,7 +3,7 @@ import clsx from "clsx";
 import {
   RemoteKeys,
   ProfilesVerifier,
-  expandProfiles,
+  expandProfileSet,
 } from "@webdino/profile-verify";
 import { ProjectSummary } from "@webdino/profile-ui";
 import FormRow from "../components/FormRow";
@@ -11,7 +11,7 @@ import FormRow from "../components/FormRow";
 type InitialValues = {
   registry: string;
   endpoint: string;
-  profilesSet?: unknown;
+  profileSet?: unknown;
 };
 
 function saveInitialValues(val: InitialValues) {
@@ -24,7 +24,7 @@ function loadInitialValues() {
   } catch {
     return {
       registry: document.location.hostname,
-      endpoint: `${document.location.origin}/.well-known/ps.json`,
+      endpoint: `${document.location.origin}/ps.json`,
     };
   }
 }
@@ -34,7 +34,7 @@ const initialValues = loadInitialValues();
 export default function Pages() {
   const [values, setValues] = useState<Record<string, unknown>>({});
   const [presentation, setPresentation] = useState(
-    "profilesSet" in initialValues ? "direct" : "url"
+    "profileSet" in initialValues ? "direct" : "url"
   );
   const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
     setPresentation(event.target.value);
@@ -47,17 +47,17 @@ export default function Pages() {
     const endpoint = String(formData.get("endpoint"));
     const jsonld = String(formData.get("jsonld"));
 
-    let profilesSet;
+    let profileSet;
 
     switch (presentation) {
       case "direct":
         try {
-          profilesSet = JSON.parse(jsonld);
+          profileSet = JSON.parse(jsonld);
         } catch {
-          profilesSet = jsonld;
+          profileSet = jsonld;
         }
-        setValues({ registry, profilesSet });
-        saveInitialValues({ registry, endpoint, profilesSet });
+        setValues({ registry, profileSet });
+        saveInitialValues({ registry, endpoint, profileSet });
         break;
       case "url":
         {
@@ -72,12 +72,12 @@ export default function Pages() {
           setValues((values) => ({ ...values, response }));
           if (response instanceof Error) return;
 
-          profilesSet = response;
+          profileSet = response;
         }
         break;
     }
 
-    const expanded = await expandProfiles(profilesSet).catch((e) => e);
+    const expanded = await expandProfileSet(profileSet).catch((e) => e);
     setValues((values) => ({ ...values, expanded }));
     if (expanded instanceof Error) return;
 
@@ -107,7 +107,7 @@ export default function Pages() {
             defaultValue={initialValues.registry}
           />
         </FormRow>
-        <FormRow as="span" className="mb-4" label="Profiles Set Presentation">
+        <FormRow as="span" className="mb-4" label="Profile Set Presentation">
           <label className="flex gap-1 items-center py-1">
             <input
               name="presentation"
@@ -143,7 +143,7 @@ export default function Pages() {
         </FormRow>
         <FormRow
           className={clsx("mb-4", { hidden: presentation !== "direct" })}
-          label="Profiles Set"
+          label="Profile Set"
         >
           <textarea
             className="jumpu-textarea resize flex-1"
@@ -153,8 +153,8 @@ export default function Pages() {
             rows={18}
             style={{ fontFamily: "monospace" }}
             defaultValue={
-              initialValues.profilesSet
-                ? JSON.stringify(initialValues.profilesSet)
+              initialValues.profileSet
+                ? JSON.stringify(initialValues.profileSet)
                 : ""
             }
           />

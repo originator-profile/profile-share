@@ -1,4 +1,5 @@
 import { PrismaClient, Prisma, accounts } from "@prisma/client";
+import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { fromUnixTime } from "date-fns";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
 import { Jwk, Jwks } from "@webdino/profile-model";
@@ -147,6 +148,44 @@ export const AccountService = ({ prisma, validator }: Options) => ({
 
     const jwt = data.op.jwt;
     return jwt;
+  },
+  /**
+   * Profile Set の取得
+   * @param id 会員 ID
+   * @param contextDefinition https://www.w3.org/TR/json-ld11/#context-definitions
+   */
+  async getProfileSet(
+    id: string,
+    contextDefinition:
+      | ContextDefinition
+      | string = "https://originator-profile.org/context.jsonld"
+  ): Promise<JsonLdDocument | Error> {
+    const data = await prisma.accounts
+      .findUnique({
+        where: { id },
+        include: {
+          publications: {
+            include: {
+              op: true,
+            },
+            orderBy: {
+              publishedAt: "desc",
+            },
+            take: 1,
+          },
+        },
+      })
+      .catch((e: Error) => e);
+    if (!data) return new NotFoundError();
+    if (data instanceof Error) return data;
+    if (data.publications.length === 0) return new NotFoundError();
+
+    const ops = data.publications.map((publication) => publication.op);
+    const profiles: JsonLdDocument = {
+      "@context": contextDefinition,
+      profile: ops.map((p) => p.jwt),
+    };
+    return profiles;
   },
 });
 

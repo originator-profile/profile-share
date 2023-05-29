@@ -7,7 +7,7 @@ import {
   findProfileGenericError,
 } from "@webdino/profile-ui/src/utils";
 import { routes } from "../utils/routes";
-import useProfiles from "../utils/use-profiles";
+import useProfileSet from "../utils/use-profile-set";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
@@ -40,7 +40,7 @@ function Redirect({
 }
 
 function Base() {
-  const { tabId, main = [], profiles, error, origin } = useProfiles();
+  const { tabId, main = [], profiles, error, origin } = useProfileSet();
 
   useTitle(["コンテンツ情報", origin].filter(Boolean).join(" ― "));
 

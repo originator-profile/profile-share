@@ -6,7 +6,7 @@ import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { JsonLdDocument } from "jsonld";
 import { generateKey, signOp } from "@webdino/profile-sign";
 import { Op } from "@webdino/profile-model";
-import { fetchProfiles } from "./fetch-profiles";
+import { fetchProfileSet } from "./fetch-profile-set";
 import { ProfilesFetchFailed } from "./errors";
 
 describe("fetch-profiles", async () => {
@@ -27,7 +27,7 @@ describe("fetch-profiles", async () => {
     main: ["example.com"],
     profile: [jwt],
   };
-  const profileEndpoint = "https://example.com/.well-known/ps.json";
+  const profileEndpoint = "https://example.com/ps.json";
 
   beforeEach(() => {
     mockGet(profileEndpoint).willResolve(profiles);
@@ -37,7 +37,7 @@ describe("fetch-profiles", async () => {
     mockFetch.clearAll();
   });
 
-  test("有効なエンドポイント指定時 Profiles Set が得られる", async () => {
+  test("有効なエンドポイント指定時 Profile Set が得られる", async () => {
     const window = new Window();
     window.document.body.innerHTML = `
 <link
@@ -45,11 +45,13 @@ describe("fetch-profiles", async () => {
   rel="alternate"
   type="application/ld+json"
 />`;
-    const result = await fetchProfiles(window.document as unknown as Document);
+    const result = await fetchProfileSet(
+      window.document as unknown as Document
+    );
     expect(result).toEqual([profiles]);
   });
 
-  test("無効なエンドポイント指定時 Profiles Set の取得に失敗", async () => {
+  test("無効なエンドポイント指定時 Profile Set の取得に失敗", async () => {
     const window = new Window();
     window.document.body.innerHTML = `
 <link
@@ -57,7 +59,9 @@ describe("fetch-profiles", async () => {
   rel="alternate"
   type="application/ld+json"
 />`;
-    const result = await fetchProfiles(window.document as unknown as Document);
+    const result = await fetchProfileSet(
+      window.document as unknown as Document
+    );
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
     // @ts-expect-error result is ProfilesFetchFailed
     expect(result.message).toBe(
@@ -65,7 +69,7 @@ describe("fetch-profiles", async () => {
     );
   });
 
-  test("取得先に Profiles Set が存在しないとき Profiles Set の取得に失敗", async () => {
+  test("取得先に Profile Set が存在しないとき Profile Set の取得に失敗", async () => {
     mockGet(profileEndpoint).willFail({}, 404);
     const window = new Window();
     window.document.body.innerHTML = `
@@ -74,7 +78,9 @@ describe("fetch-profiles", async () => {
   rel="alternate"
   type="application/ld+json"
 />`;
-    const result = await fetchProfiles(window.document as unknown as Document);
+    const result = await fetchProfileSet(
+      window.document as unknown as Document
+    );
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
     // @ts-expect-error result is ProfilesFetchFailed
     expect(result.message).toBe(
@@ -95,7 +101,7 @@ describe("fetch-profiles", async () => {
       });
     });
 
-    test("有効な Profiles Set が得られる", async () => {
+    test("有効な Profile Set が得られる", async () => {
       const window = new Window();
       const profileEndpoints = [
         "https://example.com/1/ps.json",
@@ -112,11 +118,19 @@ describe("fetch-profiles", async () => {
   `
         )
         .join("");
-      const result = await fetchProfiles(
+      const result = await fetchProfileSet(
         window.document as unknown as Document
       );
       expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
       expect(result).toMatchSnapshot();
     });
+  });
+
+  test("エンドポイントを指定しない時 Profile Set の取得に失敗", async () => {
+    const window = new Window();
+    const result = await fetchProfileSet(
+      window.document as unknown as Document
+    );
+    expect(result).toBeInstanceOf(ProfilesFetchFailed);
   });
 });

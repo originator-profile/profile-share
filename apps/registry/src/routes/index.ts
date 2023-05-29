@@ -3,8 +3,9 @@ import path from "node:path";
 import serveHandler from "serve-handler";
 import context from "@webdino/profile-model/context.json";
 import { FromHandler } from "../types";
+import getFrontendProfileSet from "./get-frontend-profile-set";
 import getIssuerKeys from "./get-issuer-keys";
-import getIssuerProfiles from "./get-issuer-profiles";
+import getIssuerProfileSet from "./get-issuer-profile-set";
 
 async function index(fastify: FastifyInstance): Promise<void> {
   fastify.get(
@@ -16,6 +17,11 @@ async function index(fastify: FastifyInstance): Promise<void> {
         directoryListing: false,
       });
     }
+  );
+  fastify.get<FromHandler<typeof getFrontendProfileSet>>(
+    "/ps.json",
+    { ...getFrontendProfileSet },
+    getFrontendProfileSet
   );
   fastify.get(
     "/context",
@@ -43,10 +49,10 @@ async function index(fastify: FastifyInstance): Promise<void> {
     { ...getIssuerKeys },
     getIssuerKeys
   );
-  fastify.get<FromHandler<typeof getIssuerProfiles>>(
+  fastify.get<FromHandler<typeof getIssuerProfileSet>>(
     "/.well-known/ps.json",
-    { ...getIssuerProfiles },
-    getIssuerProfiles
+    { ...getIssuerProfileSet },
+    getIssuerProfileSet
   );
 }
 

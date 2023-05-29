@@ -21,7 +21,7 @@ export type VerifyTokenResult =
   | ProfileClaimsValidationFailed
   | ProfileTokenVerifyFailed;
 
-/** Profiles Set */
+/** Profile Set */
 export type Profiles = { profile: string[] };
 
 /** Profile の検証結果 */
@@ -30,5 +30,5 @@ export type VerifyResult =
   | ProfilesResolveFailed
   | ProfilesVerifyFailed;
 
-/** Profiles Set の検証結果 */
+/** Profile Set の検証結果 */
 export type VerifyResults = VerifyResult[];

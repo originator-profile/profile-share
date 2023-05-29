@@ -5,12 +5,12 @@ import { useEvent } from "react-use";
 import {
   RemoteKeys,
   ProfilesVerifier,
-  expandProfiles,
+  expandProfileSet,
 } from "@webdino/profile-verify";
 import { Profile } from "@webdino/profile-ui/src/types";
 import { toProfile } from "@webdino/profile-ui/src/utils";
 import {
-  FetchProfilesMessageResponse,
+  fetchProfileSetMessageResponse,
   PopupMessageRequest,
 } from "../types/message";
 import { routes } from "./routes";
@@ -21,13 +21,13 @@ async function fetchVerifiedProfiles([, tabId]: [
   _: typeof key,
   tabId: number
 ]) {
-  const { ok, data, origin }: FetchProfilesMessageResponse =
+  const { ok, data, origin }: fetchProfileSetMessageResponse =
     await chrome.tabs.sendMessage(tabId, {
       type: "fetch-profiles",
     });
   const parsed = JSON.parse(data);
   if (!ok) throw Object.assign(new Error(parsed.message), parsed);
-  const { advertisers, publishers, main, profile } = await expandProfiles(
+  const { advertisers, publishers, main, profile } = await expandProfileSet(
     parsed
   );
   const registry = import.meta.env.PROFILE_ISSUER;
@@ -49,9 +49,9 @@ async function fetchVerifiedProfiles([, tabId]: [
 }
 
 /**
- * Profiles Set 取得 (要 Base コンポーネント)
+ * Profile Set 取得 (要 Base コンポーネント)
  */
-function useProfiles() {
+function useProfileSet() {
   const params = useParams<{ tabId: string }>();
   const tabId = Number(params.tabId);
   // TODO: 自動再検証する場合は取得エンドポイントが変わりうることをUIの振る舞いで考慮して
@@ -94,4 +94,4 @@ function useProfiles() {
   };
 }
 
-export default useProfiles;
+export default useProfileSet;

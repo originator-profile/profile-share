@@ -1,4 +1,4 @@
-import { fetchProfiles } from "@webdino/profile-verify";
+import { fetchProfileSet } from "@webdino/profile-verify";
 import { Profile, Dp } from "@webdino/profile-ui/src/types";
 import {
   ContentScriptMessageRequest,
@@ -16,7 +16,7 @@ async function handleMessageResponse(
 ): Promise<ContentScriptMessageResponse> {
   switch (message.type) {
     case "fetch-profiles": {
-      const data = await fetchProfiles(document);
+      const data = await fetchProfileSet(document);
       return {
         type: "fetch-profiles",
         ok: !(data instanceof Error),

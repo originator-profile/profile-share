@@ -6,12 +6,12 @@ import { ErrorResponse } from "../../../error";
 import Params from "./params";
 
 const schema: FastifySchema = {
-  operationId: "getProfiles",
+  operationId: "getDocumentProfileSet",
   params: Params,
   produces: ["application/ld+json"],
   response: {
     200: {
-      title: "Profiles Set",
+      title: "Profile Set",
       type: "object",
       additionalProperties: true,
     },
@@ -20,7 +20,7 @@ const schema: FastifySchema = {
   },
 };
 
-async function getProfiles(
+async function getDocumentProfileSet(
   {
     server,
     params,
@@ -32,7 +32,10 @@ async function getProfiles(
   const contextDefinition: ContextDefinition | undefined =
     server.config.NODE_ENV === "development" ? context["@context"] : undefined;
   const data: JsonLdDocument | Error =
-    await server.services.website.getProfiles(params.id, contextDefinition);
+    await server.services.website.getDocumentProfileSet(
+      params.id,
+      contextDefinition
+    );
   if (data instanceof HttpError) return data;
   if (data instanceof Error) {
     return new BadRequestError("invalid params.id", data);
@@ -42,4 +45,4 @@ async function getProfiles(
   return data;
 }
 
-export default Object.assign(getProfiles, { schema });
+export default Object.assign(getDocumentProfileSet, { schema });

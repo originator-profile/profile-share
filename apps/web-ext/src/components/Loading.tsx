@@ -1,8 +1,8 @@
-import useProfiles from "../utils/use-profiles";
+import useProfileSet from "../utils/use-profile-set";
 import { Spinner } from "@webdino/profile-ui";
 
 function Loading() {
-  const { origin } = useProfiles();
+  const { origin } = useProfileSet();
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <div className="p-2 flex flex-col items-center gap-4">

@@ -4,7 +4,7 @@ import {
   toRoles,
   findProfileGenericError,
 } from "@webdino/profile-ui/src/utils";
-import useProfiles from "../utils/use-profiles";
+import useProfileSet from "../utils/use-profile-set";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
@@ -17,7 +17,12 @@ function Org(props: Props) {
     orgIssuer: string;
     orgSubject: string;
   }>();
-  const { advertisers = [], publishers = [], profiles, error } = useProfiles();
+  const {
+    advertisers = [],
+    publishers = [],
+    profiles,
+    error,
+  } = useProfileSet();
   if (error) {
     return <Unsupported error={error} />;
   }

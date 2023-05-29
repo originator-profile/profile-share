@@ -38,11 +38,10 @@ Signed Document Profile によって記述します。
 - 出版物は、組織の主要な出版物を表明するオブジェクトです。
 - 署名と鍵は、組織とその組織の Originator Profile によって与えられ、Document Profile を検証するために使用されるデータです。
 
-## Profiles Set
+## Profile Set
 
 メディア・広告などに関わる組織の身元またはその組織の主要な出版物を表明し検証可能にするためのデータ表現です。
 JSON Web Token (JWT) として署名され、それらの集合を JSON-LD によって表現します。
-必ず Signed Document Profile と共にその Signed Document Profile を発行した組織の Signed Originator Profile を含めなければなりません。
 
 例:
 
@@ -59,6 +58,36 @@ JSON Web Token (JWT) として署名され、それらの集合を JSON-LD に�
 ```
 
 `profile` プロパティの JWT をデコードして、組織の身元をまたは出版物を取得します。
+
+> **Note**
+>
+> JWT のデコードを伴わない Originator Profile と Document Profile の区別や、あるドメインでの絞り込みなど、最適化の余地はありますがそういった仕様はまだありません。
+
+### Originator Profile の検証
+
+Originator Profile の検証は次のようにして行われます。
+
+1. 組織の識別子の先頭に `https://`、末尾に `/.well-known/ps.json` を加えた URL にアクセスし Profile Set を取得
+2. `profile` プロパティの JWT をデコードして、組織の識別子と `sub` クレームの文字列が一致するものを絞り込み、組織の身元の情報を取得
+3. その `iss` クレームによって表明される認証機関の識別子の先頭に`https://`、末尾に `/.well-known/jwks.json` を加えた URL にアクセスして鍵を取得
+4. 検証
+
+### Document Profile の検証
+
+Document Profile の検証は次のようにして行われます。
+
+1. HTML 文書の中に含まれる `<script>` 要素や `<link>` 要素などによって表明された Profile Set を取得
+2. `profile` プロパティの中から Signed Document Profile と発行した組織の Signed Originator Profile を取得
+3. Originator Profile によって組織の身元の情報を検証
+4. Signed Document Profile をデコードして、文書の内容への署名を取得
+5. 検証
+
+> **Note**
+>
+> HTML 文書そのものやサイトへの付帯情報を表現する仕様はまだありません。
+>
+> - [ページ全体の付帯情報を表現する仕様の検討](https://github.com/webdino/profile/issues/353)
+> - [サイトの付帯情報を表現する仕様の検討](https://github.com/webdino/profile/issues/613)
 
 ### `profile` プロパティ
 
@@ -80,11 +109,18 @@ JSON Web Token (JWT) として署名され、それらの集合を JSON-LD に�
 広告主を表明するためのプロパティです。
 必ず `profile` プロパティの JWT をデコードして得られる `sub` クレームの文字列のいずれかでなければなりません。
 
+### Profile Set の分割
+
+Profile Set は HTML の中に `<script>` 要素や `<link>` 要素などを複数記述することによって分割することが可能です。
+このとき、JSON-LD ドキュメントは、複数のノードオブジェクトで構成される配列形式で表現されます。
+配列は順番に処理され、各ノードオブジェクトの定義されたプロパティは結合して 1 つの Profile Set として扱われます。
+
 ### Signed Originator Profile
 
 メディア・広告などに関わる組織の身元を表明し検証可能にするためのデータ表現です。
 JSON Web Token (JWT) として署名します。
 必ず `op` クレームを含めなければなりません。
+必ず Profile Set には署名した組織の Signed Originator Profile を含めなければなりません (MUST)。
 
 ### Signed Document Profile
 
@@ -95,7 +131,7 @@ JSON Web Token (JWT) として署名します。
 ### `iss` (Issuer) クレーム
 
 `iss` クレームは、認証機関または組織を表す一義的な識別子です。
-特別な理由がない限り、その認証機関または組織の保有するドメイン名であるべきです。
+必ずその認証機関または組織の保有するドメイン名でなければなりません (MUST)。
 Signed Document Profile ならば、必ずその組織の Signed Originator Profile の `sub` クレームの文字列と一致する必要があります。
 
 ### `sub` (Subject) クレーム
@@ -269,7 +305,7 @@ HTML では、`<script>` 要素を使用する内部的な表現と `<link>` 要
 
 ### &lt;script&gt;
 
-`<script>` 要素の `type` 属性として `application/ld+json` を指定し、Profiles Set を記述します。
+`<script>` 要素の `type` 属性として `application/ld+json` を指定し、Profile Set を記述します。
 
 例:
 
@@ -291,13 +327,13 @@ Signed Document Profile の場合、署名の際に `location` として含ま�
 
 ### &lt;link&gt;
 
-`<link>` 要素の `rel` 属性として `alternate`、`type` 属性として `application/ld+json` を指定し、`href` 属性として Profiles Set の URL を記述します。
+`<link>` 要素の `rel` 属性として `alternate`、`type` 属性として `application/ld+json` を指定し、`href` 属性として Profile Set の URL を記述します。
 
 例:
 
 ```html
 <link
-  href="https://example.com/.well-known/ps.json"
+  href="https://example.com/ps.json"
   rel="alternate"
   type="application/ld+json"
 />
@@ -305,5 +341,7 @@ Signed Document Profile の場合、署名の際に `location` として含ま�
 
 ## Well-Known URL
 
-HTML に Profiles Set が記述されていない場合、対象のページの URL のパス `/.well-known/ps.json` に配置できます。
-この Well-Known URL は対象のページと同一オリジンで、かつ HTTP(S) GET によってアクセスし Signed Originator Profile を取得できる必要があります。
+### `ps.json`
+
+組織の身元を表明にするためのエンドポイントです。
+組織の識別子の先頭に `https://`、末尾に `/.well-known/ps.json` を加えた URL に必ずアクセスできなければなりません (MUST)。

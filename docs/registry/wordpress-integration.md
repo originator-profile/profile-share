@@ -32,7 +32,7 @@ WordPress->>WordPress Plugin: wp_head hook
 WordPress Plugin->>利用者: HTML <link> element
 
 利用者->>Document Profile レジストリ: 記事の検証
-Document Profile レジストリ->>利用者: Profiles Set の取得
+Document Profile レジストリ->>利用者: Profile Set の取得
 ```
 
 ## デモ
