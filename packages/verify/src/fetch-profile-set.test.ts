@@ -6,7 +6,7 @@ import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { JsonLdDocument } from "jsonld";
 import { generateKey, signOp } from "@webdino/profile-sign";
 import { Op } from "@webdino/profile-model";
-import { fetchProfiles } from "./fetch-profiles";
+import { fetchProfileSet } from "./fetch-profile-set";
 import { ProfilesFetchFailed } from "./errors";
 
 describe("fetch-profiles", async () => {
@@ -45,7 +45,9 @@ describe("fetch-profiles", async () => {
   rel="alternate"
   type="application/ld+json"
 />`;
-    const result = await fetchProfiles(window.document as unknown as Document);
+    const result = await fetchProfileSet(
+      window.document as unknown as Document
+    );
     expect(result).toEqual([profiles]);
   });
 
@@ -57,7 +59,9 @@ describe("fetch-profiles", async () => {
   rel="alternate"
   type="application/ld+json"
 />`;
-    const result = await fetchProfiles(window.document as unknown as Document);
+    const result = await fetchProfileSet(
+      window.document as unknown as Document
+    );
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
     // @ts-expect-error result is ProfilesFetchFailed
     expect(result.message).toBe(
@@ -74,7 +78,9 @@ describe("fetch-profiles", async () => {
   rel="alternate"
   type="application/ld+json"
 />`;
-    const result = await fetchProfiles(window.document as unknown as Document);
+    const result = await fetchProfileSet(
+      window.document as unknown as Document
+    );
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
     // @ts-expect-error result is ProfilesFetchFailed
     expect(result.message).toBe(
@@ -112,7 +118,7 @@ describe("fetch-profiles", async () => {
   `
         )
         .join("");
-      const result = await fetchProfiles(
+      const result = await fetchProfileSet(
         window.document as unknown as Document
       );
       expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
@@ -122,7 +128,9 @@ describe("fetch-profiles", async () => {
 
   test("エンドポイントを指定しない時 Profile Set の取得に失敗", async () => {
     const window = new Window();
-    const result = await fetchProfiles(window.document as unknown as Document);
+    const result = await fetchProfileSet(
+      window.document as unknown as Document
+    );
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
   });
 });

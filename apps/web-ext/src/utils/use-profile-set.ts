@@ -10,7 +10,7 @@ import {
 import { Profile } from "@webdino/profile-ui/src/types";
 import { toProfile } from "@webdino/profile-ui/src/utils";
 import {
-  FetchProfilesMessageResponse,
+  fetchProfileSetMessageResponse,
   PopupMessageRequest,
 } from "../types/message";
 import { routes } from "./routes";
@@ -21,7 +21,7 @@ async function fetchVerifiedProfiles([, tabId]: [
   _: typeof key,
   tabId: number
 ]) {
-  const { ok, data, origin }: FetchProfilesMessageResponse =
+  const { ok, data, origin }: fetchProfileSetMessageResponse =
     await chrome.tabs.sendMessage(tabId, {
       type: "fetch-profiles",
     });

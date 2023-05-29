@@ -19,7 +19,7 @@ function getEndpoints(doc: Document): string[] {
  * Profile Set の取得
  * @param doc Document オブジェクト
  */
-export async function fetchProfiles(
+export async function fetchProfileSet(
   doc: Document
 ): Promise<JsonLdDocument | ProfilesFetchFailed> {
   let profiles;

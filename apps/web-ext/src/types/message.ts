@@ -1,9 +1,9 @@
 import { Profile, Dp } from "@webdino/profile-ui/src/types";
 
-export type FetchProfilesMessageRequest = {
+export type fetchProfileSetMessageRequest = {
   type: "fetch-profiles";
 };
-export type FetchProfilesMessageResponse = {
+export type fetchProfileSetMessageResponse = {
   type: "fetch-profiles";
   /** JsonLdDocument の場合 true、ProfilesFetchFailed の場合 false */
   ok: boolean;
@@ -31,11 +31,11 @@ export type SelectOverlayDpMessageRequest = {
   dp: Dp;
 };
 export type ContentScriptMessageRequest =
-  | FetchProfilesMessageRequest
+  | fetchProfileSetMessageRequest
   | OverlayProfilesMessageRequest
   | CloseWindowMessageRequest;
 export type ContentScriptMessageResponse =
-  | FetchProfilesMessageResponse
+  | fetchProfileSetMessageResponse
   | OverlayProfilesMessageResponse
   | CloseWindowMessageResponse;
 export type BackgroundMessageRequest = SelectOverlayDpMessageRequest;
