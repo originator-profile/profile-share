@@ -1,4 +1,4 @@
-FROM wordpress:6.2.0-php8.2
+FROM wordpress:6.2.2-php8.2
 
 # Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
