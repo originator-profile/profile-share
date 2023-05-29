@@ -10,19 +10,19 @@
   "devDependencies": {
     "@headlessui/react": "^1.7.14",
     "@iconify/react": "^4.1.0",
-    "@types/react": "^18.0.38",
-    "@types/react-dom": "^18.0.11",
+    "@types/react": "^18.2.7",
+    "@types/react-dom": "^18.2.4",
     "@webdino/profile-core": "*",
     "@webdino/profile-model": "*",
     "@webdino/profile-tsconfig": "*",
     "@webdino/profile-verify": "*",
     "clsx": "^1.2.1",
-    "date-fns": "^2.29.3",
-    "eslint": "^8.39.0",
+    "date-fns": "^2.30.0",
+    "eslint": "^8.41.0",
     "eslint-config-webdino-profile": "*",
-    "dompurify": "^3.0.2",
+    "dompurify": "^3.0.3",
     "react-use": "^17.4.0",
     "typescript": "^5.0.4",
-    "vitest": "^0.30.1"
+    "vitest": "^0.31.1"
   }
 }
