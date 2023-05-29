@@ -3,7 +3,7 @@ import { mockFetch, mockGet } from "vi-fetch";
 import { describe, beforeEach, afterEach, test, expect } from "vitest";
 import { JsonLdDocument } from "jsonld";
 import context from "@webdino/profile-model/context.json";
-import { expandProfiles } from "./expand-profiles";
+import { expandProfileSet } from "./expand-profile-set";
 
 describe("expand-profiles", async () => {
   beforeEach(() => {
@@ -16,7 +16,7 @@ describe("expand-profiles", async () => {
     mockFetch.clearAll();
   });
 
-  test("expand Profiles Set JSON-LD Document", async () => {
+  test("expand Profile Set JSON-LD Document", async () => {
     const profiles: JsonLdDocument = [
       {
         "@context": "https://originator-profile.org/context.jsonld",
@@ -31,7 +31,7 @@ describe("expand-profiles", async () => {
         profile: ["sop2...", "sdp2..."],
       },
     ];
-    const result = await expandProfiles(profiles);
+    const result = await expandProfileSet(profiles);
     expect(result).toEqual({
       advertisers: ["example"],
       publishers: ["example.com"],

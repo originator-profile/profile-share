@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ProjectTitle, ProjectSummary } from "@webdino/profile-ui";
-import useProfiles from "../utils/use-profiles";
+import useProfileSet from "../utils/use-profile-set";
 import { routes } from "../utils/routes";
 
 type Props = {
@@ -16,7 +16,7 @@ const label: { [key in Props["variant"]]: string } = {
 } as const;
 
 function NotFound({ variant }: Props) {
-  const { tabId } = useProfiles();
+  const { tabId } = useProfileSet();
   return (
     <div className="px-4 py-12">
       <ProjectTitle as="header" />
