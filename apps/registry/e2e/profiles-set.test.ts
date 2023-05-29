@@ -2,7 +2,7 @@ import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import crypto from "node:crypto";
 import jsonld from "jsonld";
 import {
-  expandProfiles,
+  expandProfileSet,
   ProfilesVerifier,
   RemoteKeys,
 } from "@webdino/profile-verify";
@@ -38,7 +38,7 @@ describe("複数のSigned Document Profilesが存在する場合", async () => {
   test("/ps.json response is a valid Profile Set", async () => {
     const res = await fetch("http://localhost:8080/ps.json");
     const profiles = await res.json();
-    const { profile } = await expandProfiles(profiles);
+    const { profile } = await expandProfileSet(profiles);
     const registry = "localhost";
     const keys = RemoteKeys(
       new URL("http://localhost:8080/.well-known/jwks.json")

@@ -3,7 +3,7 @@ import clsx from "clsx";
 import {
   RemoteKeys,
   ProfilesVerifier,
-  expandProfiles,
+  expandProfileSet,
 } from "@webdino/profile-verify";
 import { ProjectSummary } from "@webdino/profile-ui";
 import FormRow from "../components/FormRow";
@@ -77,7 +77,7 @@ export default function Pages() {
         break;
     }
 
-    const expanded = await expandProfiles(profileSet).catch((e) => e);
+    const expanded = await expandProfileSet(profileSet).catch((e) => e);
     setValues((values) => ({ ...values, expanded }));
     if (expanded instanceof Error) return;
 

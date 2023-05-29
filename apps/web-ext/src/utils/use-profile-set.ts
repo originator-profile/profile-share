@@ -5,7 +5,7 @@ import { useEvent } from "react-use";
 import {
   RemoteKeys,
   ProfilesVerifier,
-  expandProfiles,
+  expandProfileSet,
 } from "@webdino/profile-verify";
 import { Profile } from "@webdino/profile-ui/src/types";
 import { toProfile } from "@webdino/profile-ui/src/utils";
@@ -27,7 +27,7 @@ async function fetchVerifiedProfiles([, tabId]: [
     });
   const parsed = JSON.parse(data);
   if (!ok) throw Object.assign(new Error(parsed.message), parsed);
-  const { advertisers, publishers, main, profile } = await expandProfiles(
+  const { advertisers, publishers, main, profile } = await expandProfileSet(
     parsed
   );
   const registry = import.meta.env.PROFILE_ISSUER;
