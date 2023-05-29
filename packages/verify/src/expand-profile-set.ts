@@ -34,7 +34,7 @@ function nodeToObj(node: NodeObject) {
  * Profile Set の JSON-LD 表現の Profile Set への展開
  * @param profiles Profile Set の JSON-LD 表現
  */
-export async function expandProfiles(profiles: JsonLdDocument) {
+export async function expandProfileSet(profiles: JsonLdDocument) {
   const expanded = await jsonld.expand(profiles);
   const res: {
     advertisers: string[];
