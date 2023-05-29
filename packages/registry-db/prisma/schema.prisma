@@ -189,8 +189,8 @@ model websites {
   description     String?
   /// https://schema.org/author
   author          String?
-  /// https://schema.org/category (例えば IAB 2.0 モデル)
-  category        String?
+  /// 情報カテゴリー
+  contentCategories      websiteContentCategories[]
   /// https://schema.org/editor
   editor          String?
   /// https://schema.org/datePublished
@@ -206,6 +206,31 @@ model websites {
   proofJws        String
   /// Signed Document Profile
   dps             dps[]
+}
+
+/// 情報カテゴリー
+model contentCategories {
+  /// 情報カテゴリー (使用タクソノミーでのカテゴリー文字列)
+  cat       String
+  /// 使用タクソノミー (https://github.com/InteractiveAdvertisingBureau/AdCOM/blob/master/AdCOM%20v1.0%20FINAL.md#list_categorytaxonomies)
+  cattax    Int     @default(1)
+  /// 会員
+  websites websiteContentCategories[]
+
+  @@id([cat, cattax])
+}
+
+/// ウェブページ・情報カテゴリーリレーション
+model websiteContentCategories {
+  /// 会員
+  website               websites           @relation(fields: [websiteId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  websiteId             String             @db.Uuid
+  /// 事業種目
+  contentCategory       contentCategories         @relation(fields: [contentCategoryCat, contentCategoryCattax], references: [cat, cattax])
+  contentCategoryCat    String
+  contentCategoryCattax Int
+
+  @@id([websiteId, contentCategoryCat, contentCategoryCattax])
 }
 
 /// 本文の形式
