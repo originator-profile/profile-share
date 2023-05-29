@@ -41,7 +41,7 @@ OP 発行とは別の担当者になる可能性がある DP 発行者が存在�
 この人の役割として
 
 - [Signed Document Profile を作成する](#signed-document-profile-を作成する)
-- [公開する Web サイトに Profile Set を紐付ける](#公開する-web-サイトに-profiles-set-を紐付ける)
+- [公開する Web サイトに Profile Set を紐付ける](#公開する-web-サイトに-profile-set-を紐付ける)
 
 の作業が該当します。
 
