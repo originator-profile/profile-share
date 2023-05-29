@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { isOp, isOpHolder, isDp, isOgWebsite } from "@webdino/profile-core";
 import { findProfileGenericError } from "@webdino/profile-ui/src/utils";
-import useProfiles from "../utils/use-profiles";
+import useProfileSet from "../utils/use-profile-set";
 import { routes } from "../utils/routes";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
@@ -10,7 +10,7 @@ import Unsupported from "../components/Unsupported";
 
 function Publ() {
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
-  const { profiles, error } = useProfiles();
+  const { profiles, error } = useProfileSet();
   if (error) {
     return <Unsupported error={error} />;
   }
