@@ -8,10 +8,10 @@
     "dev": "prisma generate --watch"
   },
   "devDependencies": {
-    "@prisma/client": "^4.13.0",
-    "@prisma/generator-helper": "^4.13.0",
+    "@prisma/client": "^4.14.1",
+    "@prisma/generator-helper": "^4.14.1",
     "@webdino/profile-tsconfig": "*",
-    "prisma": "^4.13.0",
-    "prisma-erd-generator": "^1.5.4"
+    "prisma": "^4.14.1",
+    "prisma-erd-generator": "^1.6.0"
   }
 }
