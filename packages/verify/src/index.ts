@@ -2,7 +2,7 @@ export * from "./decode";
 export * from "./errors";
 export * from "./expand-profiles";
 export * from "./extract-body";
-export * from "./fetch-profiles";
+export * from "./fetch-profile-set";
 export * from "./keys";
 export * from "./types";
 export * from "./verify-body";
