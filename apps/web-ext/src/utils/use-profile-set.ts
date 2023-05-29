@@ -51,7 +51,7 @@ async function fetchVerifiedProfiles([, tabId]: [
 /**
  * Profile Set 取得 (要 Base コンポーネント)
  */
-function useProfiles() {
+function useProfileSet() {
   const params = useParams<{ tabId: string }>();
   const tabId = Number(params.tabId);
   // TODO: 自動再検証する場合は取得エンドポイントが変わりうることをUIの振る舞いで考慮して
@@ -94,4 +94,4 @@ function useProfiles() {
   };
 }
 
-export default useProfiles;
+export default useProfileSet;
