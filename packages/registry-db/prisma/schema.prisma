@@ -190,7 +190,7 @@ model websites {
   /// https://schema.org/author
   author          String?
   /// 情報カテゴリー
-  contentCategories      websiteContentCategories[]
+  categories      websiteCategories[]
   /// https://schema.org/editor
   editor          String?
   /// https://schema.org/datePublished
@@ -209,28 +209,28 @@ model websites {
 }
 
 /// 情報カテゴリー
-model contentCategories {
+model categories {
   /// 情報カテゴリー (使用タクソノミーでのカテゴリー文字列)
   cat       String
   /// 使用タクソノミー (https://github.com/InteractiveAdvertisingBureau/AdCOM/blob/master/AdCOM%20v1.0%20FINAL.md#list_categorytaxonomies)
   cattax    Int     @default(1)
   /// ウェブページ
-  websites websiteContentCategories[]
+  websites websiteCategories[]
 
   @@id([cat, cattax])
 }
 
 /// ウェブページ・情報カテゴリーリレーション
-model websiteContentCategories {
+model websiteCategories {
   /// ウェブページ
   website               websites           @relation(fields: [websiteId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   websiteId             String             @db.Uuid
   /// 情報カテゴリー
-  contentCategory       contentCategories         @relation(fields: [contentCategoryCat, contentCategoryCattax], references: [cat, cattax])
-  contentCategoryCat    String
-  contentCategoryCattax Int
+  category              categories         @relation(fields: [categoryCat, categoryCattax], references: [cat, cattax])
+  categoryCat           String
+  categoryCattax        Int
 
-  @@id([websiteId, contentCategoryCat, contentCategoryCattax])
+  @@id([websiteId, categoryCat, categoryCattax])
 }
 
 /// 本文の形式
