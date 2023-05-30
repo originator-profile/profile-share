@@ -214,7 +214,7 @@ model contentCategories {
   cat       String
   /// 使用タクソノミー (https://github.com/InteractiveAdvertisingBureau/AdCOM/blob/master/AdCOM%20v1.0%20FINAL.md#list_categorytaxonomies)
   cattax    Int     @default(1)
-  /// 会員
+  /// ウェブページ
   websites websiteContentCategories[]
 
   @@id([cat, cattax])
@@ -222,10 +222,10 @@ model contentCategories {
 
 /// ウェブページ・情報カテゴリーリレーション
 model websiteContentCategories {
-  /// 会員
+  /// ウェブページ
   website               websites           @relation(fields: [websiteId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   websiteId             String             @db.Uuid
-  /// 事業種目
+  /// 情報カテゴリー
   contentCategory       contentCategories         @relation(fields: [contentCategoryCat, contentCategoryCattax], references: [cat, cattax])
   contentCategoryCat    String
   contentCategoryCattax Int
