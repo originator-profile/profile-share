@@ -210,8 +210,10 @@ model websites {
 
 /// 情報カテゴリー
 model categories {
-  /// 情報カテゴリー (使用タクソノミーでのカテゴリー文字列)
+  /// 情報カテゴリー (使用タクソノミーにおけるCodeまたはUnique ID)
   cat       String
+  /// 情報カテゴリー名(使用タクソノミーにおけるCategoryまたはName)
+  name      String
   /// 使用タクソノミー (https://github.com/InteractiveAdvertisingBureau/AdCOM/blob/master/AdCOM%20v1.0%20FINAL.md#list_categorytaxonomies)
   cattax    Int     @default(1)
   /// ウェブページ
