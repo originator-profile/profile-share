@@ -1,4 +1,5 @@
 import { FromSchema } from "json-schema-to-ts";
+import Category from "./category";
 
 const OgWebsite = {
   title: "Website",
@@ -11,7 +12,11 @@ const OgWebsite = {
     image: { title: "Image URL", type: "string" },
     description: { title: "Description", type: "string" },
     "https://schema.org/author": { title: "Author", type: "string" },
-    "https://schema.org/category": { title: "Category", type: "string" },
+    "https://schema.org/category": {
+      title: Category.title,
+      type: "array",
+      items: Category,
+    },
     "https://schema.org/editor": { title: "Editor", type: "string" },
     "https://schema.org/datePublished": {
       title: "DatePublished",
