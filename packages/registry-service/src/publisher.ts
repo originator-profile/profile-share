@@ -41,16 +41,19 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
               cat: true,
               cattax: true,
               name: true,
-            }
-          }
-        }
-      }
+            },
+          },
+        },
+      },
     };
     const websitesWithCategories = Prisma.validator<Prisma.websitesArgs>()({
-      include: websitesInclude
+      include: websitesInclude,
     });
     const publisher = await prisma.accounts
-      .findUnique({ where: { id }, include: { websites: { where: { url }, include: websitesInclude }}})
+      .findUnique({
+        where: { id },
+        include: { websites: { where: { url }, include: websitesInclude } },
+      })
       .catch((e: Error) => e);
     if (publisher instanceof Error) return publisher;
     if (!publisher) return new NotFoundError();
@@ -59,23 +62,22 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
     if (!website) return new NotFoundError();
 
     const websiteWithCategory = ((
-      websites: Prisma.websitesGetPayload<
-        typeof websitesWithCategories
-      >
+      websites: Prisma.websitesGetPayload<typeof websitesWithCategories>
     ): Partial<OgWebsite> => ({
       ...flush({
         ...website,
         "https://schema.org/author": website.author,
         "https://schema.org/category": websites.categories?.map(
           ({ category }) => ({
-             cat: category.cat,
-             cattax: category.cattax,
-             name: category.name,
-          })),
+            cat: category.cat,
+            cattax: category.cattax,
+            name: category.name,
+          })
+        ),
         "https://schema.org/editor": website.editor,
         "https://schema.org/datePublished": website.datePublished,
         "https://schema.org/dateModified": website.dateModified,
-        }),
+      }),
     }))(website);
 
     const input: Dp = {

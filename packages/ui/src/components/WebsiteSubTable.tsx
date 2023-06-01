@@ -28,7 +28,9 @@ function WebsiteSubTable({ className, website }: Props) {
       {"https://schema.org/category" in website && (
         <TableRow
           header="カテゴリー"
-          data={website["https://schema.org/category"]?.filter((e) => e.name).join(", ")}
+          data={website["https://schema.org/category"]
+            ?.filter((e) => e.name)
+            .join(", ")}
         />
       )}
     </Table>

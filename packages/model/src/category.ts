@@ -16,7 +16,7 @@ const Category = {
       title: "情報カテゴリー名",
       type: "string",
     },
-  }
+  },
 } as const;
 
 type Category = FromSchema<typeof Category>;
