@@ -30,7 +30,7 @@ final class Dp {
 	 * @param ?string $image (optional) 画像URL
 	 * @param ?string $description (optional) 説明
 	 * @param ?string $author (optional) https://schema.org/author
-	 * @param ?string $category (optional) https://schema.org/category
+	 * @param ?array  $category (optional) https://schema.org/category
 	 * @param ?string $editor (optional) https://schema.org/editor
 	 * @param ?string $date_published (optional) https://schema.org/datePublished
 	 * @param ?string $date_modified (optional) https://schema.org/dateModified
@@ -44,7 +44,7 @@ final class Dp {
 		public ?string $image = null,
 		public ?string $description = null,
 		public ?string $author = null,
-		public ?string $category = null,
+		public ?array $category = null,
 		public ?string $editor = null,
 		public ?string $date_published = null,
 		public ?string $date_modified = null,
