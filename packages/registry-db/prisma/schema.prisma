@@ -189,7 +189,7 @@ model websites {
   description     String?
   /// https://schema.org/author
   author          String?
-  /// 情報カテゴリー
+  /// https://schema.org/category
   categories      websiteCategories[]
   /// https://schema.org/editor
   editor          String?

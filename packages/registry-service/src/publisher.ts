@@ -1,8 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import flush from "just-flush";
 import { addYears, fromUnixTime } from "date-fns";
 import { NotFoundError, BadRequestError } from "http-errors-enhanced";
-import { Dp } from "@webdino/profile-model";
+import { Dp, OgWebsite } from "@webdino/profile-model";
 import { isJwtDpPayload } from "@webdino/profile-core";
 import { signDp } from "@webdino/profile-sign";
 import { ValidatorService } from "./validator";
@@ -33,14 +33,50 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
       expiredAt: addYears(new Date(), 10),
     }
   ): Promise<string | Error> {
+    const websitesInclude = {
+      categories: {
+        select: {
+          category: {
+            select: {
+              cat: true,
+              cattax: true,
+              name: true,
+            }
+          }
+        }
+      }
+    };
+    const websitesWithCategories = Prisma.validator<Prisma.websitesArgs>()({
+      include: websitesInclude
+    });
     const publisher = await prisma.accounts
-      .findUnique({ where: { id }, include: { websites: { where: { url } } } })
+      .findUnique({ where: { id }, include: { websites: { where: { url }, include: websitesInclude }}})
       .catch((e: Error) => e);
     if (publisher instanceof Error) return publisher;
     if (!publisher) return new NotFoundError();
 
     const [website] = publisher.websites;
     if (!website) return new NotFoundError();
+
+    const websiteWithCategory = ((
+      websites: Prisma.websitesGetPayload<
+        typeof websitesWithCategories
+      >
+    ): Partial<OgWebsite> => ({
+      ...flush({
+        ...website,
+        "https://schema.org/author": website.author,
+        "https://schema.org/category": websites.categories?.map(
+          ({ category }) => ({
+             cat: category.cat,
+             cattax: category.cattax,
+             name: category.name,
+          })),
+        "https://schema.org/editor": website.editor,
+        "https://schema.org/datePublished": website.datePublished,
+        "https://schema.org/dateModified": website.dateModified,
+        }),
+    }))(website);
 
     const input: Dp = {
       type: "dp",
@@ -51,17 +87,7 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
       item: [
         {
           type: "website",
-          ...flush({
-            url: website.url,
-            title: website.title,
-            image: website.image,
-            description: website.description,
-            "https://schema.org/author": website.author,
-            "https://schema.org/category": website.category,
-            "https://schema.org/editor": website.editor,
-            "https://schema.org/datePublished": website.datePublished,
-            "https://schema.org/dateModified": website.dateModified,
-          }),
+          ...flush(websiteWithCategory),
         },
         {
           // @ts-expect-error bodyFormatValue is string type
