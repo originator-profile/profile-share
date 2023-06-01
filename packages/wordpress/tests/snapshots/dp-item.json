@@ -6,11 +6,13 @@
     "image": "https://example.com/image/hello.png",
     "description": "こんにちは。今日からブログをはじめました。",
     "https://schema.org/author": "○△ 太郎",
-    "https://schema.org/category": [ {
-      "cat": "IAB1-1",
-      "cattax": 1,
-      "name": "Books & Literature"
-    }],
+    "https://schema.org/category": [
+      {
+        "cat": "IAB1-1",
+        "cattax": 1,
+        "name": "Books & Literature"
+      }
+    ],
     "https://schema.org/editor": "○△ 編集",
     "https://schema.org/datePublished": "2023-03-23T02:00:00+00:00",
     "https://schema.org/dateModified": "2023-03-24T02:33:44+00:00"
