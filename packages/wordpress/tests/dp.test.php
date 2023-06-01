@@ -31,7 +31,13 @@ EOF;
 			image: 'https://example.com/image/hello.png',
 			description: 'こんにちは。今日からブログをはじめました。',
 			author: '○△ 太郎',
-			category: '日記',
+			category: array(
+				array(
+					'cat'    => 'IAB1-1',
+					'cattax' => 1,
+					'name'   => 'Books & Literature',
+				),
+			),
 			editor: '○△ 編集',
 			date_published: '2023-03-23T02:00:00+00:00',
 			date_modified: '2023-03-24T02:33:44+00:00',
