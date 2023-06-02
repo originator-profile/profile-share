@@ -33,9 +33,7 @@ EOF;
 			author: '○△ 太郎',
 			category: array(
 				array(
-					'cat'    => 'IAB1-1',
-					'cattax' => 1,
-					'name'   => 'Books & Literature',
+					'cat' => 'IAB1-1',
 				),
 			),
 			editor: '○△ 編集',

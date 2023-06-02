@@ -8,9 +8,7 @@
     "https://schema.org/author": "○△ 太郎",
     "https://schema.org/category": [
       {
-        "cat": "IAB1-1",
-        "cattax": 1,
-        "name": "Books & Literature"
+        "cat": "IAB1-1"
       }
     ],
     "https://schema.org/editor": "○△ 編集",

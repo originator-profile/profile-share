@@ -17,6 +17,7 @@ const Category = {
       type: "string",
     },
   },
+  required: ["cat"],
 } as const;
 
 type Category = FromSchema<typeof Category>;
