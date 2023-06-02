@@ -25,14 +25,15 @@ function WebsiteSubTable({ className, website }: Props) {
           }
         />
       )}
-      {"https://schema.org/category" in website && (website["https://schema.org/category"]?.length ?? 0) > 0 && (
-        <TableRow
-          header="カテゴリー"
-          data={website["https://schema.org/category"]
-            ?.map((e) => e.name)
-            .join(", ")}
-        />
-      )}
+      {"https://schema.org/category" in website &&
+        (website["https://schema.org/category"]?.length ?? 0) > 0 && (
+          <TableRow
+            header="カテゴリー"
+            data={website["https://schema.org/category"]
+              ?.map((e) => e.name)
+              .join(", ")}
+          />
+        )}
     </Table>
   );
 }
