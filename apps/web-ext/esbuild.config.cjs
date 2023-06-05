@@ -1,6 +1,6 @@
 const defaultEnv = {
   MODE: "production",
-  PROFILE_ISSUER: process.env.PROFILE_ISSUER ?? "oprdev.herokuapp.com",
+  PROFILE_ISSUER: process.env.PROFILE_ISSUER ?? "oprdev.originator-profile.org",
 };
 
 /** @type {import("esbuild").BuildOptions} */
