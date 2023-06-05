@@ -9,7 +9,7 @@ const Config = {
     },
     APP_URL: {
       type: "string",
-      default: "https://oprdev.herokuapp.com",
+      default: "https://oprdev.originator-profile.org",
     },
     NODE_ENV: {
       type: "string",

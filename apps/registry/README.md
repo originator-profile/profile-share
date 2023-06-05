@@ -2,7 +2,7 @@
 
 Originator Profile と Document Profile の管理を行うシステムです。
 
-デモ: https://oprdev.herokuapp.com/
+デモ: https://oprdev.originator-profile.org/
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/webdino/profile)
 
@@ -312,7 +312,7 @@ FLAG DESCRIPTIONS
     以下のデータ形式を受け付けます。
     {
     // ウェブサイトの URL の先頭の文字列
-    "https://oprdev.herokuapp.com": {
+    "https://oprdev.originator-profile.org": {
     // BrowserContextOptions
     },
     ...
@@ -327,7 +327,7 @@ FLAG DESCRIPTIONS
     [
     {
     // ウェブサイトの URL
-    "url": "https://oprdev.herokuapp.com",
+    "url": "https://oprdev.originator-profile.org",
     // 対象のテキストの形式
     "bodyFormat": "visibleText",
     // 対象の要素の場所を特定する CSS セレクター (省略可)
