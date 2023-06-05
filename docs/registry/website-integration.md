@@ -49,11 +49,11 @@ Document Profile レジストリ->>利用者: Profile Set の取得
 
 利用者が記事の検証をおこなう際 Document Profile レジストリ API エンドポイントから Profile Set が得られるようにします。
 
-Document Profile レジストリのドメイン名を `"oprdev.herokuapp.com"` 、対象とするウェブサイトを `"originator-profile.org"` とした場合のクライアントサイドスクリプトの例:
+Document Profile レジストリのドメイン名を `"oprdev.originator-profile.org"` 、対象とするウェブサイトを `"originator-profile.org"` とした場合のクライアントサイドスクリプトの例:
 
 ```js
 function createProfilesLink() {
-  const registry = "oprdev.herokuapp.com";
+  const registry = "oprdev.originator-profile.org";
   const origin = "originator-profile.org";
   const url =
     document.location.origin === origin
