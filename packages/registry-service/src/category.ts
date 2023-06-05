@@ -11,8 +11,12 @@ export const CategoryService = ({ prisma }: Options) => ({
    * @param input カテゴリー
    * @return カテゴリー
    */
-  async create(input: Prisma.categoriesCreateInput): Promise<categories | Error> {
-    return await prisma.categories.create({ data: input }).catch((e: Error) => e);
+  async create(
+    input: Prisma.categoriesCreateInput
+  ): Promise<categories | Error> {
+    return await prisma.categories
+      .create({ data: input })
+      .catch((e: Error) => e);
   },
   /**
    * カテゴリーの表示
@@ -20,9 +24,15 @@ export const CategoryService = ({ prisma }: Options) => ({
    * @param cattax 使用タクソノミー https://github.com/InteractiveAdvertisingBureau/AdCOM/blob/master/AdCOM%20v1.0%20FINAL.md#list_categorytaxonomies
    * @return カテゴリー
    */
-  async read({ cat, cattax }: { cat: string, cattax: number }): Promise<categories | Error> {
+  async read({
+    cat,
+    cattax,
+  }: {
+    cat: string;
+    cattax: number;
+  }): Promise<categories | Error> {
     const data = await prisma.categories
-      .findUnique({ where: { cat_cattax: { cat, cattax }}})
+      .findUnique({ where: { cat_cattax: { cat, cattax } } })
       .catch((e: Error) => e);
     return data ?? new NotFoundError();
   },
@@ -32,10 +42,10 @@ export const CategoryService = ({ prisma }: Options) => ({
    * @return カテゴリー
    */
   async update(
-    input: Prisma.categoriesUpdateInput & { cat: string, cattax: number }
+    input: Prisma.categoriesUpdateInput & { cat: string; cattax: number }
   ): Promise<categories | Error> {
     return await prisma.categories.update({
-      where: { cat_cattax: { cat: input.cat, cattax: input.cattax }},
+      where: { cat_cattax: { cat: input.cat, cattax: input.cattax } },
       data: input,
     });
   },
@@ -45,8 +55,16 @@ export const CategoryService = ({ prisma }: Options) => ({
    * @param cattax 使用タクソノミー https://github.com/InteractiveAdvertisingBureau/AdCOM/blob/master/AdCOM%20v1.0%20FINAL.md#list_categorytaxonomies
    * @return ウェブページ
    */
-  async delete({ cat, cattax }: { cat: string, cattax: number }): Promise<categories | Error> {
-    return await prisma.categories.delete({ where: { cat_cattax: { cat, cattax } }});
+  async delete({
+    cat,
+    cattax,
+  }: {
+    cat: string;
+    cattax: number;
+  }): Promise<categories | Error> {
+    return await prisma.categories.delete({
+      where: { cat_cattax: { cat, cattax } },
+    });
   },
 });
 

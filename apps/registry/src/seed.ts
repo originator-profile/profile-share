@@ -53,7 +53,12 @@ async function issueDp(services: Services, issuerUuid: string, pkcs8: string) {
   const website = await services.website.create({
     ...input,
     account: { connect: { id: issuerUuid } },
-    categories: { create: { categoryCat: exampleCategory.cat, categoryCattax: exampleCategory.cattax }},
+    categories: {
+      create: {
+        categoryCat: exampleCategory.cat,
+        categoryCattax: exampleCategory.cattax,
+      },
+    },
     proofJws,
   });
   if (website instanceof Error) throw website;
