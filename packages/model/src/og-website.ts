@@ -12,7 +12,7 @@ const OgWebsite = {
     image: { title: "Image URL", type: "string" },
     description: { title: "Description", type: "string" },
     "https://schema.org/author": { title: "Author", type: "string" },
-    "https://schema.org/category": {
+    category: {
       title: Category.title,
       type: "array",
       items: Category,

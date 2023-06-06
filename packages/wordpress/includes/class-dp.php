@@ -30,7 +30,7 @@ final class Dp {
 	 * @param ?string $image (optional) 画像URL
 	 * @param ?string $description (optional) 説明
 	 * @param ?string $author (optional) https://schema.org/author
-	 * @param ?array  $category (optional) https://schema.org/category
+	 * @param ?array  $category (optional) 情報カテゴリー
 	 * @param ?string $editor (optional) https://schema.org/editor
 	 * @param ?string $date_published (optional) https://schema.org/datePublished
 	 * @param ?string $date_modified (optional) https://schema.org/dateModified
@@ -83,7 +83,7 @@ final class Dp {
 						'image'                            => $this->image,
 						'description'                      => $this->description,
 						'https://schema.org/author'        => $this->author,
-						'https://schema.org/category'      => $this->category,
+						'category'                         => $this->category,
 						'https://schema.org/editor'        => $this->editor,
 						'https://schema.org/datePublished' => $this->date_published,
 						'https://schema.org/dateModified'  => $this->date_modified,

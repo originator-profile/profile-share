@@ -6,7 +6,7 @@
     "image": "https://example.com/image/hello.png",
     "description": "こんにちは。今日からブログをはじめました。",
     "https://schema.org/author": "○△ 太郎",
-    "https://schema.org/category": [
+    "category": [
       {
         "cat": "IAB1-1"
       }
