@@ -25,15 +25,12 @@ function WebsiteSubTable({ className, website }: Props) {
           }
         />
       )}
-      {"category" in website &&
-        (website.category?.length ?? 0) > 0 && (
-          <TableRow
-            header="カテゴリー"
-            data={website.category
-              ?.map((e) => e.name)
-              .join(", ")}
-          />
-        )}
+      {"category" in website && (website.category?.length ?? 0) > 0 && (
+        <TableRow
+          header="カテゴリー"
+          data={website.category?.map((e) => e.name).join(", ")}
+        />
+      )}
     </Table>
   );
 }
