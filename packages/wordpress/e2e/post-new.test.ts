@@ -10,6 +10,8 @@ test.beforeAll(async ({ browser }) => {
   page = await browser.newPage();
   await page.goto("http://localhost:9000/wp-login.php");
 
+  await page.waitForSelector('input[id="user_login"]:focus');
+
   const wordpressAdminUser = process.env.WORDPRESS_ADMIN_USER!;
   const wordpressAdminPassword = process.env.WORDPRESS_ADMIN_PASSWORD!;
   await page.getByLabel("Username or Email Address").fill(wordpressAdminUser);
@@ -18,6 +20,9 @@ test.beforeAll(async ({ browser }) => {
     .fill(wordpressAdminPassword);
 
   await page.getByRole("button", { name: "Log In" }).click();
+
+  // ログインが成功したことの確認
+  expect(page.url()).not.toContain("wp-login.php");
 });
 
 test("投稿の検証", async () => {
