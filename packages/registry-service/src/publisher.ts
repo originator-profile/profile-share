@@ -73,13 +73,11 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
             image: website.image,
             description: website.description,
             "https://schema.org/author": website.author,
-            category: website.categories?.map(
-              ({ category }) => ({
-                cat: category.cat,
-                cattax: category.cattax,
-                name: category.name,
-              })
-            ),
+            category: website.categories?.map(({ category }) => ({
+              cat: category.cat,
+              cattax: category.cattax,
+              name: category.name,
+            })),
             "https://schema.org/editor": website.editor,
             "https://schema.org/datePublished": website.datePublished,
             "https://schema.org/dateModified": website.dateModified,
