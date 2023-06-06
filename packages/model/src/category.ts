@@ -1,5 +1,6 @@
 import { FromSchema } from "json-schema-to-ts";
 
+// OpenRTB 2.6に基づく情報カテゴリー https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf
 const Category = {
   title: "情報カテゴリー",
   type: "object",

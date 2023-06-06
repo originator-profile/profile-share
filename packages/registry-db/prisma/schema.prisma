@@ -189,7 +189,7 @@ model websites {
   description     String?
   /// https://schema.org/author
   author          String?
-  /// https://schema.org/category
+  /// 情報カテゴリー (https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf)
   categories      websiteCategories[]
   /// https://schema.org/editor
   editor          String?

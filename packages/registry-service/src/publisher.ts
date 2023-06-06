@@ -73,7 +73,7 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
             image: website.image,
             description: website.description,
             "https://schema.org/author": website.author,
-            "https://schema.org/category": website.categories?.map(
+            category: website.categories?.map(
               ({ category }) => ({
                 cat: category.cat,
                 cattax: category.cattax,
