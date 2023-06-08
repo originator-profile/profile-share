@@ -33,8 +33,24 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
       expiredAt: addYears(new Date(), 10),
     }
   ): Promise<string | Error> {
+    const websitesInclude = {
+      categories: {
+        select: {
+          category: {
+            select: {
+              cat: true,
+              cattax: true,
+              name: true,
+            },
+          },
+        },
+      },
+    };
     const publisher = await prisma.accounts
-      .findUnique({ where: { id }, include: { websites: { where: { url } } } })
+      .findUnique({
+        where: { id },
+        include: { websites: { where: { url }, include: websitesInclude } },
+      })
       .catch((e: Error) => e);
     if (publisher instanceof Error) return publisher;
     if (!publisher) return new NotFoundError();
@@ -57,7 +73,11 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
             image: website.image,
             description: website.description,
             "https://schema.org/author": website.author,
-            "https://schema.org/category": website.category,
+            category: website.categories?.map(({ category }) => ({
+              cat: category.cat,
+              cattax: category.cattax,
+              name: category.name,
+            })),
             "https://schema.org/editor": website.editor,
             "https://schema.org/datePublished": website.datePublished,
             "https://schema.org/dateModified": website.dateModified,

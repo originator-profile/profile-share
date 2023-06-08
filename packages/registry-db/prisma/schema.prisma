@@ -189,8 +189,8 @@ model websites {
   description     String?
   /// https://schema.org/author
   author          String?
-  /// https://schema.org/category (例えば IAB 2.0 モデル)
-  category        String?
+  /// 情報カテゴリー (https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf)
+  categories      websiteCategories[]
   /// https://schema.org/editor
   editor          String?
   /// https://schema.org/datePublished
@@ -206,6 +206,33 @@ model websites {
   proofJws        String
   /// Signed Document Profile
   dps             dps[]
+}
+
+/// 情報カテゴリー
+model categories {
+  /// 情報カテゴリー (使用タクソノミーにおけるCodeまたはUnique ID)
+  cat       String
+  /// 情報カテゴリー名(使用タクソノミーにおけるCategoryまたはName)
+  name      String
+  /// 使用タクソノミー (https://github.com/InteractiveAdvertisingBureau/AdCOM/blob/master/AdCOM%20v1.0%20FINAL.md#list_categorytaxonomies)
+  cattax    Int     @default(1)
+  /// ウェブページ
+  websites websiteCategories[]
+
+  @@id([cat, cattax])
+}
+
+/// ウェブページ・情報カテゴリーリレーション
+model websiteCategories {
+  /// ウェブページ
+  website               websites           @relation(fields: [websiteId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  websiteId             String             @db.Uuid
+  /// 情報カテゴリー
+  category              categories         @relation(fields: [categoryCat, categoryCattax], references: [cat, cattax])
+  categoryCat           String
+  categoryCattax        Int
+
+  @@id([websiteId, categoryCat, categoryCattax])
 }
 
 /// 本文の形式

@@ -25,10 +25,10 @@ function WebsiteSubTable({ className, website }: Props) {
           }
         />
       )}
-      {"https://schema.org/category" in website && (
+      {(website.category?.length ?? 0) > 0 && (
         <TableRow
           header="カテゴリー"
-          data={website["https://schema.org/category"]}
+          data={website.category?.map((e) => e.name).join(", ")}
         />
       )}
     </Table>
