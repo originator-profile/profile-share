@@ -1,9 +1,9 @@
 import { FromSchema } from "json-schema-to-ts";
 
-// OpenRTB 2.6の Object: Site にあるcat, cattax 類似の情報カテゴリーを持つ
-// https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf
 const Category = {
   title: "情報カテゴリー",
+  description:
+    "OpenRTB 2.6の Object: Site にあるcat, cattax 類似の情報カテゴリーを持つ。https://iabtechlab.com/wp-content/uploads/2022/04/OpenRTB-2-6_FINAL.pdf",
   type: "object",
   properties: {
     cat: {
