@@ -8,17 +8,20 @@ const Category = {
   properties: {
     cat: {
       title: "情報カテゴリーID",
-      description: "情報カテゴリータクソノミーcattaxで示される分類におけるコードまたはID",
+      description:
+        "情報カテゴリータクソノミーcattaxで示される分類におけるコードまたはID",
       type: "string",
     },
     cattax: {
       title: "情報カテゴリータクソノミー",
-      description: "https://github.com/InteractiveAdvertisingBureau/AdCOM/blob/master/AdCOM%20v1.0%20FINAL.md#list_categorytaxonomies",
+      description:
+        "https://github.com/InteractiveAdvertisingBureau/AdCOM/blob/master/AdCOM%20v1.0%20FINAL.md#list_categorytaxonomies",
       type: "number",
     },
     name: {
       title: "情報カテゴリー名",
-      description: "情報カテゴリータクソノミーcattaxで示される分類におけるカテゴリー名",
+      description:
+        "情報カテゴリータクソノミーcattaxで示される分類におけるカテゴリー名",
       type: "string",
     },
   },
