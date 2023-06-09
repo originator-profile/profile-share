@@ -78,7 +78,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     const expiredAt = flags["expired-at"]
       ? new Date(flags["expired-at"])
       : addYears(new Date(), 1);
-    const jwt = await services.publisher.signDp(flags.id, input.url, pkcs8, {
+    const jwt = await services.publisher.signDp(flags.id, input.id, pkcs8, {
       issuedAt,
       expiredAt,
     });

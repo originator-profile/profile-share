@@ -59,6 +59,54 @@ export const WebsiteService = ({ prisma }: Options) => ({
   },
   /**
    * Profile Set の取得
+   * @param url ウェブページのURL
+   */
+  async getProfileSet(url: string): Promise<JsonLdDocument | Error> {
+    const data = await prisma.websites
+      .findMany({
+        where: { url },
+        include: {
+          account: {
+            include: {
+              publications: {
+                include: {
+                  op: true,
+                },
+                orderBy: {
+                  publishedAt: "desc",
+                },
+                take: 1,
+              },
+            },
+          },
+          dps: {
+            orderBy: {
+              issuedAt: "desc",
+            },
+            take: 1,
+          },
+        },
+      })
+      .catch((e: Error) => e);
+    if (data instanceof Error) return data;
+    if (data.length === 0) return new NotFoundError();
+
+    const sops = [
+      ...new Set(
+        data.flatMap(({ account }) =>
+          account.publications.map((publication) => publication.op.jwt)
+        )
+      ),
+    ];
+    const sdps = data.flatMap(({ dps }) => dps.map((dp) => dp.jwt));
+    const profiles: JsonLdDocument = {
+      "@context": "https://originator-profile.org/context.jsonld",
+      profile: [...sops, ...sdps],
+    };
+    return profiles;
+  },
+  /**
+   * 特定のウェブページ ID の Profile Set の取得
    * @param id ウェブページ ID または URL (非推奨)
    * @param contextDefinition https://www.w3.org/TR/json-ld11/#context-definitions
    */

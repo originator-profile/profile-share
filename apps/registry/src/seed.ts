@@ -62,7 +62,7 @@ async function issueDp(services: Services, issuerUuid: string, pkcs8: string) {
     proofJws,
   });
   if (website instanceof Error) throw website;
-  const dpJwt = await services.publisher.signDp(issuerUuid, input.url, pkcs8);
+  const dpJwt = await services.publisher.signDp(issuerUuid, input.id, pkcs8);
   if (dpJwt instanceof Error) throw dpJwt;
   await services.publisher.registerDp(issuerUuid, dpJwt);
   console.log(`Document Profile: ${dpJwt}`);
