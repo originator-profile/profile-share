@@ -15,7 +15,10 @@ export const WebsiteService = ({ prisma }: Options) => ({
    * @return ウェブページ
    */
   async create(input: Prisma.websitesCreateInput): Promise<websites | Error> {
-    return await prisma.websites.create({ data: input }).catch((e: Error) => e);
+    return await prisma.websites.create({
+      data: input,
+      include: { categories: true }
+    }).catch((e: Error) => e);
   },
   /**
    * ウェブページの表示
@@ -24,7 +27,10 @@ export const WebsiteService = ({ prisma }: Options) => ({
    */
   async read({ id }: { id: string }): Promise<websites | Error> {
     const data = await prisma.websites
-      .findUnique({ where: { id } })
+      .findUnique({
+        where: { id },
+        include: { categories: true }
+      })
       .catch((e: Error) => e);
     return data ?? new NotFoundError();
   },
@@ -39,6 +45,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
     return await prisma.websites.update({
       where: { id: input.id },
       data: input,
+      include: { categories: true }
     });
   },
   /**
