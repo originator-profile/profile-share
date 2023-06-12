@@ -6,7 +6,7 @@ import { globby } from "globby";
 import { operation } from "../../../flags";
 
 export class PublisherWebsiteCategory extends Command {
-  static description = "ウェブページの作成・表示・更新・削除";
+  static description = "カテゴリーの作成・表示・更新・削除";
   static flags = {
     input: Flags.string({
       summary: "JSON file",
