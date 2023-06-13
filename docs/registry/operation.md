@@ -169,11 +169,11 @@ bin/dev key-gen -o <keyのファイル名>
 
 ### 公開鍵の登録を行う
 
-取得した公開鍵の方を使って登録します。前回で鍵のファイル名を`key`とした前提で下記に例を示します。
+取得した公開鍵の方を使って登録します。前回で鍵のファイル名を`key.holder`とした前提で下記に例を示します。
 Prisma Studio の組織情報の行の `id` 列にある値をコピーして、以下の末尾に指定します。 `id`が `daab5a08-d513-400d-aaaa-e1c1493e0421` だった場合、以下のコマンドになります。
 
 ```console
-bin/dev account:register-key -k key.pub.json --id daab5a08-d513-400d-aaaa-e1c1493e0421
+bin/dev account:register-key -k key.holder.pub.json --id daab5a08-d513-400d-aaaa-e1c1493e0421
 ```
 
 ### Signed Originator Profile を作成する
@@ -187,13 +187,13 @@ bin/dev account:register-key -k key.pub.json --id daab5a08-d513-400d-aaaa-e1c149
 
 例えば、所有者となる組織が前節で公開鍵を登録した id `daab5a08-d513-400d-aaaa-e1c1493e0421`、発行者となる組織が oprdev.originator-profile.org の場合であれば --holder daab5a08-d513-400d-aaaa-e1c1493e0421 --certifier 9b376064-7b71-53bf-8371-dd7701411710 となります。
 
-さらに先程取得した秘密鍵のファイルパスも必要となります。例えば秘密鍵のファイル名が`key`だった場合、 `-i key` となります。
+さらに先程取得した発行者の秘密鍵のファイルパスも必要となります。例えば秘密鍵のファイル名が`key.certifier`だった場合、 `-i key.certifier` となります。
 
 この情報をもとに、以下のコマンドを実行します。
 
 ```console
 bin/dev cert:issue \
-  -i key \
+  -i key.certifier \
   --certifier 9b376064-7b71-53bf-8371-dd7701411710 \
   --holder daab5a08-d513-400d-aaaa-e1c1493e0421
 ```
@@ -244,7 +244,7 @@ Signed Originator Profile の登録が完了しました。
 
 ```console
 bin/dev publisher:website \
-  -i key \
+  -i key.holder \
   --id daab5a08-d513-400d-aaaa-e1c1493e0421 \
   --input website.json \
   -o create
