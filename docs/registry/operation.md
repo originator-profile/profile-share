@@ -162,7 +162,7 @@ bin/dev key-gen -o <keyのファイル名>
 
 `<keyのファイル名>` には出力ファイル名を指定します。例えば`key`にすると
 
-- `key` （秘密鍵）
+- `key` （プライベート鍵）
 - `key.pub.json` （公開鍵）
 
 の鍵ペアが取得できます。
@@ -187,7 +187,7 @@ bin/dev account:register-key -k key.holder.pub.json --id daab5a08-d513-400d-aaaa
 
 例えば、所有者となる組織が前節で公開鍵を登録した id `daab5a08-d513-400d-aaaa-e1c1493e0421`、発行者となる組織が oprdev.originator-profile.org の場合であれば --holder daab5a08-d513-400d-aaaa-e1c1493e0421 --certifier 9b376064-7b71-53bf-8371-dd7701411710 となります。
 
-さらに先程取得した発行者の秘密鍵のファイルパスも必要となります。例えば秘密鍵のファイル名が`key.certifier`だった場合、 `-i key.certifier` となります。
+さらに先程取得した発行者のプライベート鍵のファイルパスも必要となります。例えばプライベート鍵のファイル名が`key.certifier`だった場合、 `-i key.certifier` となります。
 
 この情報をもとに、以下のコマンドを実行します。
 
