@@ -261,29 +261,9 @@ bin/dev publisher:website \
 最後にデプロイ用 Profile Set の作成を行います。
 公開するサイトに配置する際には、トップディレクトリの .well-known に以下のファイルを配置します。
 
-- jwks.json
 - ps.json
 
 または、HTML 中に Profile Set への \<link\> 要素を追加しても構いません。
-
-#### jwks.json
-
-先程取得した公開鍵の内容を以下のように入力します。
-
-```jsonc
-{
-  "keys": [
-    {
-      // <- 鍵作成の手順で作成した公開鍵
-      "kid": "GP-uyA8obPkrU6Ksav_09VBrVE8ucXWOtW48dw6V4rY",
-      "kty": "EC",
-      "crv": "P-256",
-      "x": "RgL8PBexMWj8IC813OJQDBgrv9V13KyzHifkzZv4RzM",
-      "y": "-gyrOp0An5EzvdoBqNxkutBUqDhLMbWODyUERNz6ckk"
-    }
-  ]
-}
-```
 
 #### ps.json
 
