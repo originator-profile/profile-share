@@ -3,9 +3,9 @@ import { PrismaClient, Prisma } from "@prisma/client";
 import { Services } from "@webdino/profile-registry-service";
 import fs from "node:fs/promises";
 import { globby } from "globby";
-import { operation } from "../../../flags";
+import { operation } from "../../flags";
 
-export class PublisherWebsiteCategory extends Command {
+export class PublisherCategory extends Command {
   static description = "カテゴリーの作成・表示・更新・削除";
   static flags = {
     input: Flags.string({
@@ -50,7 +50,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
   }
 
   async run(): Promise<void> {
-    const { flags } = await this.parse(PublisherWebsiteCategory);
+    const { flags } = await this.parse(PublisherCategory);
     if (flags["input"]) {
       await this.#category(flags);
       return;
