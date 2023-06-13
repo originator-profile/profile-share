@@ -14,6 +14,7 @@ type Options = {
 };
 
 type CertifierId = string;
+type VerifierId = string;
 type AccountId = string;
 type OpId = string;
 
@@ -34,6 +35,20 @@ export const CertificateService = ({
     if (!data) return new NotFoundError();
     if (data instanceof Error) return data;
     return data.roleValue === "certifier";
+  },
+
+  /**
+   * 検証機関か否かを判定する
+   * @param id 検証機関 ID
+   * @return 検証機関であれば true, そうでなければ false
+   */
+  async isVerifier(id: VerifierId): Promise<boolean | Error> {
+    const data = await prisma.accounts
+      .findUnique({ where: { id }, select: { roleValue: true } })
+      .catch((e: Error) => e);
+    if (!data) return new NotFoundError();
+    if (data instanceof Error) return data;
+    return data.roleValue === "verifier";
   },
   /**
    * OP への署名
