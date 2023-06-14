@@ -60,8 +60,14 @@ export const WebsiteService = ({ prisma }: Options) => ({
   /**
    * Profile Set の取得
    * @param url ウェブページのURL
+   * @param contextDefinition https://www.w3.org/TR/json-ld11/#context-definitions
    */
-  async getProfileSet(url: string): Promise<JsonLdDocument | Error> {
+  async getProfileSet(
+    url: string,
+    contextDefinition:
+      | ContextDefinition
+      | string = "https://originator-profile.org/context.jsonld"
+  ): Promise<JsonLdDocument | Error> {
     const data = await prisma.websites
       .findMany({
         where: { url },
@@ -100,7 +106,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
     ];
     const sdps = data.flatMap(({ dps }) => dps.map((dp) => dp.jwt));
     const profiles: JsonLdDocument = {
-      "@context": "https://originator-profile.org/context.jsonld",
+      "@context": contextDefinition,
       profile: [...sops, ...sdps],
     };
     return profiles;
