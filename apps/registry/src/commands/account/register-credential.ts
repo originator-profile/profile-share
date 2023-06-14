@@ -58,7 +58,7 @@ export class RegisterCredential extends Command {
       flags.name,
       issuedAt,
       expiredAt,
-      flags.image?.toString(),
+      flags.image?.toString()
     );
 
     console.log(JSON.stringify(result, null, 2));

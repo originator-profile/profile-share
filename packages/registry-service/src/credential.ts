@@ -12,23 +12,23 @@ export const CredentialService = ({ prisma }: Options) => ({
     name: string,
     issuedAt: Date,
     expiredAt: Date,
-    imageUrl?: string,
+    imageUrl?: string
   ): Promise<credentials | Error> {
     const input: Prisma.credentialsCreateInput = {
       account: {
-        connect: {id: accountId}
+        connect: { id: accountId },
       },
       certifier: {
-        connect: {id: certifierId}
+        connect: { id: certifierId },
       },
       verifier: {
-        connect: {id: verifierId}
+        connect: { id: verifierId },
       },
       name: name,
       image: imageUrl,
       issuedAt,
-      expiredAt
-    }
+      expiredAt,
+    };
 
     return prisma.credentials.create({ data: input }).catch((e: Error) => e);
   },
