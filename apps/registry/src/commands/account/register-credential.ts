@@ -57,7 +57,7 @@ export class RegisterCredential extends Command {
       : addYears(new Date(), 1);
 
     const input: Prisma.credentialsCreateInput = {
-      accountId: flags["id"],
+      accountId: flags.id,
       certifierId: flags.certifier,
       verifierId: flags.verifier,
       name: flags.name,
