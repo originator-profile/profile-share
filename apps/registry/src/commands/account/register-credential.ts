@@ -27,7 +27,6 @@ export class RegisterCredential extends Command {
     }),
     image: Flags.url({
       description: "画像URL",
-      required: true,
     }),
     "issued-at": Flags.string({
       description: "発行日時 (ISO 8601)",
@@ -57,9 +56,9 @@ export class RegisterCredential extends Command {
       flags.certifier,
       flags.verifier,
       flags.name,
-      flags.image.toString(),
       issuedAt,
-      expiredAt
+      expiredAt,
+      flags.image?.toString(),
     );
 
     console.log(JSON.stringify(result, null, 2));

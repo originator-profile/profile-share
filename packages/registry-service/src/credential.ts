@@ -10,9 +10,9 @@ export const CredentialService = ({ prisma }: Options) => ({
     certifierId: string,
     verifierId: string,
     name: string,
-    imageUrl: string,
     issuedAt: Date,
-    expiredAt: Date
+    expiredAt: Date,
+    imageUrl?: string,
   ): Promise<credentials | Error> {
     const input: Prisma.credentialsCreateInput = {
       account: {
