@@ -16,7 +16,7 @@ const Body = {
 type Body = FromSchema<typeof Body>;
 
 const schema: FastifySchema = {
-  operationId: "getProfileSet",
+  operationId: "website.getProfileSet",
   description: "Profile Set の取得",
   body: Body,
   produces: ["application/ld+json"],

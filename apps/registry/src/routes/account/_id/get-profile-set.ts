@@ -6,7 +6,7 @@ import { ErrorResponse } from "../../../error";
 import Params from "./params";
 
 const schema: FastifySchema = {
-  operationId: "getProfileSet",
+  operationId: "account.getProfileSet",
   params: Params,
   produces: ["application/ld+json"],
   response: {
