@@ -1,5 +1,5 @@
 import { Command, Flags } from "@oclif/core";
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { addYears } from "date-fns";
 import { Services } from "@webdino/profile-registry-service";
 import { accountId } from "../../flags";

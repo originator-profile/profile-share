@@ -14,7 +14,6 @@ type Options = {
 };
 
 type CertifierId = string;
-type VerifierId = string;
 type AccountId = string;
 type OpId = string;
 
@@ -36,7 +35,6 @@ export const CertificateService = ({
     if (data instanceof Error) return data;
     return data.roleValue === "certifier";
   },
-
   /**
    * OP への署名
    * @param id 認証機関 ID
