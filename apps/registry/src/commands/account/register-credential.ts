@@ -60,7 +60,7 @@ export class RegisterCredential extends Command {
       expiredAt,
       flags.image?.toString()
     );
-
-    console.log(JSON.stringify(result, null, 2));
+    if (result instanceof Error) this.error(result);
+    this.log(JSON.stringify(result, null, 2));
   }
 }
