@@ -1,13 +1,24 @@
 import { FastifySchema, FastifyRequest, FastifyReply } from "fastify";
+import { FromSchema } from "json-schema-to-ts";
 import { HttpError, BadRequestError } from "http-errors-enhanced";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 import context from "@webdino/profile-model/context.json" assert { type: "json" };
-import { ErrorResponse } from "../../../error";
-import Params from "./params";
+import { ErrorResponse } from "../../error";
+
+const Body = {
+  type: "object",
+  properties: {
+    url: { type: "string", format: "uri" },
+  },
+  required: ["url"],
+} as const;
+
+type Body = FromSchema<typeof Body>;
 
 const schema: FastifySchema = {
-  operationId: "account.getProfileSet",
-  params: Params,
+  operationId: "website.getProfileSet",
+  description: "Profile Set の取得",
+  body: Body,
   produces: ["application/ld+json"],
   response: {
     200: {
@@ -23,19 +34,19 @@ const schema: FastifySchema = {
 async function getProfileSet(
   {
     server,
-    params,
+    body,
   }: FastifyRequest<{
-    Params: Params;
+    Body: Body;
   }>,
   reply: FastifyReply
 ) {
   const contextDefinition: ContextDefinition | undefined =
     server.config.NODE_ENV === "development" ? context["@context"] : undefined;
   const data: JsonLdDocument | Error =
-    await server.services.account.getProfileSet(params.id, contextDefinition);
+    await server.services.website.getProfileSet(body.url, contextDefinition);
   if (data instanceof HttpError) return data;
   if (data instanceof Error) {
-    return new BadRequestError("invalid params.id", data);
+    return new BadRequestError("invalid body.url", data);
   }
 
   reply.type("application/ld+json");

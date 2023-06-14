@@ -53,6 +53,7 @@ running command...
 * [`profile-registry key-gen`](#profile-registry-key-gen)
 * [`profile-registry openapi-gen [OUTPUT]`](#profile-registry-openapi-gen-output)
 * [`profile-registry publisher:extract-website`](#profile-registry-publisherextract-website)
+* [`profile-registry publisher:profile-set`](#profile-registry-publisherprofile-set)
 * [`profile-registry publisher:website`](#profile-registry-publisherwebsite)
 * [`profile-registry start`](#profile-registry-start)
 
@@ -341,6 +342,22 @@ FLAG DESCRIPTIONS
     Prisma.websitesUpdateInput については
     詳細はTSDocを参照してください。
     https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
+```
+
+## `profile-registry publisher:profile-set`
+
+Profile Set の生成
+
+```
+USAGE
+  $ profile-registry publisher:profile-set --url <value> [-o <value>]
+
+FLAGS
+  -o, --output=<value>  [default: -] 出力先ファイル ("-": 標準出力)
+  --url=<value>         (required) ウェブページのURL
+
+DESCRIPTION
+  Profile Set の生成
 ```
 
 ## `profile-registry publisher:website`

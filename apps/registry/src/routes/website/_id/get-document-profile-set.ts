@@ -7,6 +7,7 @@ import Params from "./params";
 
 const schema: FastifySchema = {
   operationId: "getDocumentProfileSet",
+  description: "特定のウェブページ ID の Profile Set の取得",
   params: Params,
   produces: ["application/ld+json"],
   response: {

@@ -18,15 +18,15 @@ type DpId = string;
 export const PublisherService = ({ prisma, validator }: Options) => ({
   /**
    * DP への署名
-   * @param id 会員 ID
-   * @param url ウェブページ URL
+   * @param accountId 会員 ID
+   * @param id ウェブページ ID
    * @param pkcs8 PEM base64 でエンコードされた PKCS #8 秘密鍵
    * @param options 署名オプション
    * @return JWT でエンコードされた DP
    */
   async signDp(
-    id: AccountId,
-    url: string,
+    accountId: AccountId,
+    id: string,
     pkcs8: string,
     options = {
       issuedAt: new Date(),
@@ -48,8 +48,8 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
     };
     const publisher = await prisma.accounts
       .findUnique({
-        where: { id },
-        include: { websites: { where: { url }, include: websitesInclude } },
+        where: { id: accountId },
+        include: { websites: { where: { id }, include: websitesInclude } },
       })
       .catch((e: Error) => e);
     if (publisher instanceof Error) return publisher;
@@ -102,12 +102,14 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
   },
   /**
    * Signed Document Profile の登録
-   * @param id 会員 ID
+   * @param accountId 会員 ID
    * @param jwt Signed Document Profile
    * @return dps.id
    */
-  async registerDp(id: AccountId, jwt: string): Promise<DpId | Error> {
-    const account = await prisma.accounts.findUnique({ where: { id } });
+  async registerDp(accountId: AccountId, jwt: string): Promise<DpId | Error> {
+    const account = await prisma.accounts.findUnique({
+      where: { id: accountId },
+    });
     if (!account) return new BadRequestError();
     if (account instanceof Error) return account;
     const decoded = validator.decodeToken(jwt);
@@ -126,7 +128,7 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
     const data = await prisma.dps
       .create({
         data: {
-          issuerId: id,
+          issuerId: accountId,
           jwt,
           issuedAt,
           expiredAt,
