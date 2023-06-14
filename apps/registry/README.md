@@ -41,6 +41,7 @@ running command...
 <!-- prettier-ignore-start -->
 <!-- commands -->
 * [`profile-registry account`](#profile-registry-account)
+* [`profile-registry account:register-credential`](#profile-registry-accountregister-credential)
 * [`profile-registry account:register-key`](#profile-registry-accountregister-key)
 * [`profile-registry account:register-op`](#profile-registry-accountregister-op)
 * [`profile-registry admin:create`](#profile-registry-admincreate)
@@ -79,6 +80,41 @@ FLAG DESCRIPTIONS
     詳細はTSDocを参照してください。
     https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
     "id" フィールドの値には会員 ID またはドメイン名を指定可能です。
+```
+
+## `profile-registry account:register-credential`
+
+資格情報を登録します
+
+```
+USAGE
+  $ profile-registry account:register-credential --id <value> --certifier <value> --verifier <value> --name <value> [--image
+    <value>] [--issued-at <value>] [--expired-at <value>]
+
+FLAGS
+  --certifier=<value>   (required) 認証機関の ID またはドメイン名
+  --expired-at=<value>  有効期限 (ISO 8601)
+  --id=<value>          (required) アカウントの ID またはドメイン名
+  --image=<value>       画像URL
+  --issued-at=<value>   発行日時 (ISO 8601)
+  --name=<value>        (required) 資格名
+  --verifier=<value>    (required) 検証期間の ID またはドメイン名
+
+DESCRIPTION
+  資格情報を登録します
+
+FLAG DESCRIPTIONS
+  --certifier=<value>  認証機関の ID またはドメイン名
+
+    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+
+  --id=<value>  アカウントの ID またはドメイン名
+
+    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+
+  --verifier=<value>  検証期間の ID またはドメイン名
+
+    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
 ```
 
 ## `profile-registry account:register-key`
