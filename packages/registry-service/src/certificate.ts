@@ -38,19 +38,6 @@ export const CertificateService = ({
   },
 
   /**
-   * 検証機関か否かを判定する
-   * @param id 検証機関 ID
-   * @return 検証機関であれば true, そうでなければ false
-   */
-  async isVerifier(id: VerifierId): Promise<boolean | Error> {
-    const data = await prisma.accounts
-      .findUnique({ where: { id }, select: { roleValue: true } })
-      .catch((e: Error) => e);
-    if (!data) return new NotFoundError();
-    if (data instanceof Error) return data;
-    return data.roleValue === "verifier";
-  },
-  /**
    * OP への署名
    * @param id 認証機関 ID
    * @param accountId 会員 ID

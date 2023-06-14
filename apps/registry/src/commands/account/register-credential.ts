@@ -45,10 +45,6 @@ export class RegisterCredential extends Command {
     if (isCertifier instanceof Error) this.error(isCertifier);
     if (!isCertifier) this.error("Invalid certifier.");
 
-    const isVerifier = await services.certificate.isVerifier(flags.verifier);
-    if (isVerifier instanceof Error) this.error(isVerifier);
-    if (!isVerifier) this.error("Invalid verifier.");
-
     const issuedAt = flags["issued-at"]
       ? new Date(flags["issued-at"])
       : new Date();
