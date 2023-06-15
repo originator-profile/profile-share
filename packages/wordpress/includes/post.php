@@ -29,13 +29,8 @@ function profile_link() {
 		return;
 	}
 
-	$url = \get_permalink();
-
-	if ( ! $url ) {
-		return;
-	}
-
-	$id       = Uuid::uuid5( Uuid::NAMESPACE_URL, $url );
+	$guid     = \get_the_guid();
+	$id       = Uuid::uuid5( Uuid::NAMESPACE_URL, $guid );
 	$endpoint = "https://{$registry}/website/{$id}/profiles";
 
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $registry ) {
