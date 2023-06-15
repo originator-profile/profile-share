@@ -8,7 +8,6 @@ use Lcobucci\JWT\Encoding\ChainedFormatter;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Signer\Ecdsa\Sha256;
 use Lcobucci\JWT\Signer\Key\InMemory;
-use Ramsey\Uuid\Uuid;
 
 require_once __DIR__ . '/config.php';
 use const Profile\Config\PROFILE_SIGN_TYPE;
@@ -23,9 +22,9 @@ final class Dp {
 	 * DP生成
 	 *
 	 * @param string  $issuer レジストリドメイン名
-	 * @param string  $url 投稿のパーマリンクのリンク
+	 * @param string  $subject ウェブページ ID
+	 * @param string  $url 投稿のパーマリンクURL
 	 * @param string  $jws 対象のテキストへの署名
-	 * @param ?string $subject ウェブページ ID
 	 * @param ?string $title (optional) タイトル
 	 * @param ?string $image (optional) 画像URL
 	 * @param ?string $description (optional) 説明
@@ -37,9 +36,9 @@ final class Dp {
 	 */
 	public function __construct(
 		public string $issuer,
+		public string $subject,
 		public string $url,
 		public string $jws,
-		public ?string $subject = null,
 		public ?string $title = null,
 		public ?string $image = null,
 		public ?string $description = null,
@@ -48,11 +47,7 @@ final class Dp {
 		public ?string $editor = null,
 		public ?string $date_published = null,
 		public ?string $date_modified = null,
-	) {
-		if ( ! $this->subject ) {
-			$this->subject = Uuid::uuid5( Uuid::NAMESPACE_URL, $this->url );
-		}
-	}
+	) {}
 
 	/**
 	 * DPへの署名
