@@ -7,7 +7,7 @@ import exampleWebsite from "./website.example.json";
 import exampleCategory from "./category.example.json";
 import { Jwk } from "@webdino/profile-model";
 import addYears from "date-fns/addYears";
-import { domainName2Uuid } from "@webdino/profile-core";
+import { parseAccountId } from "@webdino/profile-core";
 
 export async function waitForDb(prisma: PrismaClient): Promise<void> {
   const sleep = util.promisify(setTimeout);
@@ -84,7 +84,7 @@ export async function seed(): Promise<void> {
   const issuerExists = await services.account.read({ id: issuerUuid });
   if (issuerExists instanceof Error) {
     await services.account.create({ id: issuerUuid, ...exampleAccount });
-    const certifier = domainName2Uuid(exampleAccount.domainName);
+    const certifier = parseAccountId(exampleAccount.domainName);
     await services.credential.create(
       issuerUuid,
       certifier,
