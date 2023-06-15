@@ -18,7 +18,7 @@ export class RegisterCredential extends Command {
       required: true,
     }),
     verifier: accountId({
-      summary: "検証期間の ID またはドメイン名",
+      summary: "検証機関の ID またはドメイン名",
       required: true,
     }),
     name: Flags.string({
