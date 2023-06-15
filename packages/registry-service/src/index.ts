@@ -7,6 +7,7 @@ import { CertificateService } from "./certificate";
 import { ValidatorService } from "./validator";
 import { PublisherService } from "./publisher";
 import { WebsiteService } from "./website";
+import { CredentialService } from "./credential";
 
 type Options = {
   config: Config;
@@ -23,6 +24,7 @@ export const Services = (options: Options) => {
   const certificate = CertificateService({ ...options, account, validator });
   const publisher = PublisherService({ ...options, validator });
   const website = WebsiteService(options);
+  const credential = CredentialService(options);
   return {
     prisma: options.prisma,
     validator,
@@ -32,6 +34,7 @@ export const Services = (options: Options) => {
     certificate,
     publisher,
     website,
+    credential,
   };
 };
 
