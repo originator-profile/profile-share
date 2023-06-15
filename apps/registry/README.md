@@ -98,7 +98,7 @@ FLAGS
   --image=<value>       画像URL
   --issued-at=<value>   発行日時 (ISO 8601)
   --name=<value>        (required) 資格名
-  --verifier=<value>    (required) 検証期間の ID またはドメイン名
+  --verifier=<value>    (required) 検証機関の ID またはドメイン名
 
 DESCRIPTION
   資格情報を登録します
@@ -112,7 +112,7 @@ FLAG DESCRIPTIONS
 
     UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
 
-  --verifier=<value>  検証期間の ID またはドメイン名
+  --verifier=<value>  検証機関の ID またはドメイン名
 
     UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
 ```
