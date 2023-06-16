@@ -44,7 +44,9 @@ ${pkcs8}`);
 async function issueDp(services: Services, issuerUuid: string, pkcs8: string) {
   const count = await services.category.createMany(exampleCategories);
   if (count instanceof Error) throw count;
-  const exampleCategory = Array.isArray(exampleCategories)? exampleCategories[0]: exampleCategories;
+  const exampleCategory = Array.isArray(exampleCategories)
+    ? exampleCategories[0]
+    : exampleCategories;
 
   const { body, ...input } = exampleWebsite;
   const proofJws = await services.website.signBody(pkcs8, body);

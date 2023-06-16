@@ -25,7 +25,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
       description: "操作",
       options: ["create", "createMany", "read", "delete"],
       required: true,
-    })
+    }),
   };
 
   async #category(
@@ -39,7 +39,8 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     const inputBuffer = await fs.readFile(flags.input);
     const input = JSON.parse(
       inputBuffer.toString()
-    ) as (Prisma.categoriesCreateInput & Prisma.Enumerable<Prisma.categoriesCreateInput>) & {
+    ) as (Prisma.categoriesCreateInput &
+      Prisma.Enumerable<Prisma.categoriesCreateInput>) & {
       cat: string;
       cattax: number;
     };

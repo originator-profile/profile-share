@@ -29,9 +29,9 @@ export const CategoryService = ({ prisma }: Options) => ({
     return await prisma.categories
       .createMany({
         data: input,
-        skipDuplicates: true
+        skipDuplicates: true,
       })
-      .catch((e: Error) => e)
+      .catch((e: Error) => e);
   },
   /**
    * カテゴリーの表示
