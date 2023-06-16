@@ -3,25 +3,29 @@ import { PrismaClient, Prisma } from "@prisma/client";
 import { Services } from "@webdino/profile-registry-service";
 import fs from "node:fs/promises";
 import { globby } from "globby";
-import { operation } from "../../flags";
 
 export class PublisherCategory extends Command {
-  static description = "カテゴリーの作成・表示・更新・削除";
+  static description = "カテゴリーの作成・表示・削除";
   static flags = {
     input: Flags.string({
       summary: "JSON file",
       description: `\
-Prisma.categoriesCreateInput または Prisma.categoriesUpdateInput
+Prisma.categoriesCreateInput またはその配列
 詳細はTSDocを参照してください。
 https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma`,
     }),
     "glob-input": Flags.string({
       summary: "JSON files match with glob pattern",
       exclusive: ["input"],
-      default: "**/.category.json",
+      default: "**/category.json",
       required: true,
     }),
-    operation: operation(),
+    operation: Flags.string({
+      char: "o",
+      description: "操作",
+      options: ["create", "createMany", "read", "delete"],
+      required: true,
+    })
   };
 
   async #category(
@@ -35,14 +39,14 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     const inputBuffer = await fs.readFile(flags.input);
     const input = JSON.parse(
       inputBuffer.toString()
-    ) as (Prisma.categoriesCreateInput & Prisma.categoriesUpdateInput) & {
+    ) as (Prisma.categoriesCreateInput & Prisma.Enumerable<Prisma.categoriesCreateInput>) & {
       cat: string;
       cattax: number;
     };
     const operation = flags.operation as
       | "create"
+      | "createMany"
       | "read"
-      | "update"
       | "delete";
     const data = await services.category[operation](input);
     if (data instanceof Error) this.error(data);

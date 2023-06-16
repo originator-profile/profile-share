@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import { Services } from "@webdino/profile-registry-service";
 import exampleAccount from "./account.example.json";
 import exampleWebsite from "./website.example.json";
-import exampleCategory from "./category.example.json";
+import exampleCategories from "./category.example.json";
 import { Jwk } from "@webdino/profile-model";
 import addYears from "date-fns/addYears";
 
@@ -42,10 +42,9 @@ ${pkcs8}`);
 }
 
 async function issueDp(services: Services, issuerUuid: string, pkcs8: string) {
-  const categoryExists = await services.category.read(exampleCategory);
-  if (categoryExists instanceof Error) {
-    await services.category.create(exampleCategory);
-  }
+  const count = await services.category.createMany(exampleCategories);
+  if (count instanceof Error) throw count;
+  const exampleCategory = Array.isArray(exampleCategories)? exampleCategories[0]: exampleCategories;
 
   const { body, ...input } = exampleWebsite;
   const proofJws = await services.website.signBody(pkcs8, body);
@@ -53,7 +52,7 @@ async function issueDp(services: Services, issuerUuid: string, pkcs8: string) {
   const website = await services.website.create({
     ...input,
     account: { connect: { id: issuerUuid } },
-    categories: {
+    categories: exampleCategory && {
       create: {
         categoryCat: exampleCategory.cat,
         categoryCattax: exampleCategory.cattax,

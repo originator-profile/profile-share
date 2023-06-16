@@ -52,6 +52,7 @@ running command...
 * [`profile-registry help [COMMANDS]`](#profile-registry-help-commands)
 * [`profile-registry key-gen`](#profile-registry-key-gen)
 * [`profile-registry openapi-gen [OUTPUT]`](#profile-registry-openapi-gen-output)
+* [`profile-registry publisher:category`](#profile-registry-publishercategory)
 * [`profile-registry publisher:extract-website`](#profile-registry-publisherextract-website)
 * [`profile-registry publisher:website`](#profile-registry-publisherwebsite)
 * [`profile-registry start`](#profile-registry-start)
@@ -288,6 +289,31 @@ ARGUMENTS
 
 DESCRIPTION
   OpenAPI ドキュメント生成
+```
+
+## `profile-registry publisher:category`
+
+カテゴリーの作成・表示・削除
+
+```
+USAGE
+  $ profile-registry publisher:category (--glob-input <value> | --input <value>) -o create|createMany|read|delete
+
+FLAGS
+  -o, --operation=<option>  (required) 操作
+                            <options: create|createMany|read|delete>
+  --glob-input=<value>      (required) [default: **/category.json] JSON files match with glob pattern
+  --input=<value>           JSON file
+
+DESCRIPTION
+  カテゴリーの作成・表示・削除
+
+FLAG DESCRIPTIONS
+  --input=<value>  JSON file
+
+    Prisma.categoriesCreateInput またはその配列
+    詳細はTSDocを参照してください。
+    https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
 ```
 
 ## `profile-registry publisher:extract-website`
