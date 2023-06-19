@@ -144,6 +144,42 @@ function issue_dp( Dp $dp, string $admin_secret, string $pkcs8 ): string|false {
 		return false;
 	}
 
+	/**
+	 * カテゴリーの接続あるいは作成
+	 *
+	 * @param string $website_id ウェブサイトの識別子
+	 * @param ?array $category カテゴリー
+	 */
+	function connect_or_create_categories( string $website_id, ?array $category ): object|array {
+		if ( ! $category ) {
+			return (object) array();
+		}
+		$callback = function( $value ) {
+			return array(
+				'where'  => array(
+					'websiteCategoriesWhereUniqueInput' => array(
+						'categoryCat'    => $value->cat,
+						'categoryCattax' => $value->cattax ?? 1,
+						'websiteId'      => $website_id,
+					),
+				),
+				'create' => array(
+					'category' => array(
+						'connect' => array(
+							'cat_cattax' => array(
+								cat    => $value->cat,
+								cattax => $value->cattax ?? 1,
+							),
+						),
+					),
+				),
+			);
+		};
+		return array(
+			'connectOrCreate' => array_map( $callback, $category ),
+		);
+	}
+
 	list( $uuid, ) = \explode( ':', $admin_secret );
 	$endpoint      = "https://{$dp->issuer}/admin/publisher/{$uuid}";
 	$args          = array(
@@ -161,7 +197,7 @@ function issue_dp( Dp $dp, string $admin_secret, string $pkcs8 ): string|false {
 					'image'         => $dp->image,
 					'description'   => $dp->description,
 					'author'        => $dp->author,
-					'category'      => $dp->category,
+					'categories'    => connect_or_create_categories( $dp->subject, $dp->category ),
 					'editor'        => $dp->editor,
 					'datePublished' => $dp->date_published,
 					'dateModified'  => $dp->date_modified,
