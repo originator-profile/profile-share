@@ -311,7 +311,7 @@ DESCRIPTION
 FLAG DESCRIPTIONS
   --input=<value>  JSON file
 
-    Prisma.categoriesCreateInput またはその配列
+    Prisma.categoriesCreateInput または Prisma.Enumerable<Prisma.categoriesCreateManyInput>
     詳細はTSDocを参照してください。
     https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
 ```

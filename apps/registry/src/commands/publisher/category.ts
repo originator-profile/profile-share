@@ -10,7 +10,7 @@ export class PublisherCategory extends Command {
     input: Flags.string({
       summary: "JSON file",
       description: `\
-Prisma.categoriesCreateInput またはその配列
+Prisma.categoriesCreateInput または Prisma.Enumerable<Prisma.categoriesCreateManyInput>
 詳細はTSDocを参照してください。
 https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma`,
     }),
@@ -40,7 +40,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     const input = JSON.parse(
       inputBuffer.toString()
     ) as (Prisma.categoriesCreateInput &
-      Prisma.Enumerable<Prisma.categoriesCreateInput>) & {
+      Prisma.Enumerable<Prisma.categoriesCreateManyInput>) & {
       cat: string;
       cattax: number;
     };
