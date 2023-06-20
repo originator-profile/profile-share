@@ -149,6 +149,9 @@ function issue_dp( Dp $dp, string $admin_secret, string $pkcs8 ): string|false {
 	 *
 	 * @param string $website_id ウェブサイトの識別子
 	 * @param ?array $category カテゴリー
+	 * @remarks
+	 * 不要な websiteCategories レコードの削除はおこなわれません
+	 * 必要に応じて別途 Prisma Studio あるいは profile-registry publisher:website CLI を使用して削除してください
 	 */
 	function connect_or_create_categories( string $website_id, ?array $category ): object|array {
 		if ( ! $category ) {
