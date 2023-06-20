@@ -297,11 +297,11 @@ DESCRIPTION
 
 ```
 USAGE
-  $ profile-registry publisher:category (--glob-input <value> | --input <value>) -o create|createMany|read|delete
+  $ profile-registry publisher:category (--glob-input <value> | --input <value>) -o createMany
 
 FLAGS
   -o, --operation=<option>  (required) 操作
-                            <options: create|createMany|read|delete>
+                            <options: createMany>
   --glob-input=<value>      (required) [default: **/category.json] JSON files match with glob pattern
   --input=<value>           JSON file
 
@@ -311,7 +311,7 @@ DESCRIPTION
 FLAG DESCRIPTIONS
   --input=<value>  JSON file
 
-    Prisma.categoriesCreateInput または Prisma.Enumerable<Prisma.categoriesCreateManyInput>
+    Prisma.Enumerable<Prisma.categoriesCreateManyInput>
     詳細はTSDocを参照してください。
     https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
 ```

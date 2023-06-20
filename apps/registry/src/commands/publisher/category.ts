@@ -10,7 +10,7 @@ export class PublisherCategory extends Command {
     input: Flags.string({
       summary: "JSON file",
       description: `\
-Prisma.categoriesCreateInput または Prisma.Enumerable<Prisma.categoriesCreateManyInput>
+Prisma.Enumerable<Prisma.categoriesCreateManyInput>
 詳細はTSDocを参照してください。
 https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma`,
     }),
@@ -23,7 +23,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     operation: Flags.string({
       char: "o",
       description: "操作",
-      options: ["create", "createMany", "read", "delete"],
+      options: ["createMany"],
       required: true,
     }),
   };
@@ -39,16 +39,8 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     const inputBuffer = await fs.readFile(flags.input);
     const input = JSON.parse(
       inputBuffer.toString()
-    ) as (Prisma.categoriesCreateInput &
-      Prisma.Enumerable<Prisma.categoriesCreateManyInput>) & {
-      cat: string;
-      cattax: number;
-    };
-    const operation = flags.operation as
-      | "create"
-      | "createMany"
-      | "read"
-      | "delete";
+    ) as Prisma.Enumerable<Prisma.categoriesCreateManyInput>;
+    const operation = flags.operation as "createMany";
     const data = await services.category[operation](input);
     if (data instanceof Error) this.error(data);
     this.log(JSON.stringify(data, null, 2));
