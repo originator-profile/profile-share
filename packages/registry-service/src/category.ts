@@ -19,6 +19,21 @@ export const CategoryService = ({ prisma }: Options) => ({
       .catch((e: Error) => e);
   },
   /**
+   * 複数のカテゴリーの作成
+   * @param input カテゴリーまたはその配列
+   * @return 作成数
+   */
+  async createMany(
+    input: Prisma.Enumerable<Prisma.categoriesCreateManyInput>
+  ): Promise<Prisma.BatchPayload | Error> {
+    return await prisma.categories
+      .createMany({
+        data: input,
+        skipDuplicates: true,
+      })
+      .catch((e: Error) => e);
+  },
+  /**
    * カテゴリーの表示
    * @param cat カテゴリーコードまたはID
    * @param cattax 使用タクソノミー https://github.com/InteractiveAdvertisingBureau/AdCOM/blob/master/AdCOM%20v1.0%20FINAL.md#list_categorytaxonomies
