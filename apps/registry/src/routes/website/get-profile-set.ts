@@ -38,17 +38,14 @@ async function getProfileSet(
     body,
     method,
   }: FastifyRequest<{
-    Querystring?: Query;
-    Body?: Query;
+    Querystring: Query;
+    Body: Query;
   }>,
   reply: FastifyReply
 ) {
   const contextDefinition: ContextDefinition | undefined =
     server.config.NODE_ENV === "development" ? context["@context"] : undefined;
   const params = method === "POST" ? body : query;
-  if (typeof params === "undefined") {
-    return new BadRequestError("no parameters specified");
-  }
   const data: JsonLdDocument | Error =
     await server.services.website.getProfileSet(params.url, contextDefinition);
   if (data instanceof HttpError) return data;
