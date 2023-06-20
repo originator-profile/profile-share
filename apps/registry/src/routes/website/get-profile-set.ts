@@ -45,7 +45,7 @@ async function getProfileSet(
 ) {
   const contextDefinition: ContextDefinition | undefined =
     server.config.NODE_ENV === "development" ? context["@context"] : undefined;
-  const params = method == "POST" ? body : query;
+  const params = method === "POST" ? body : query;
   const data: JsonLdDocument | Error =
     await server.services.website.getProfileSet(params.url, contextDefinition);
   if (data instanceof HttpError) return data;
