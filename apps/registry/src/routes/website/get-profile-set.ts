@@ -18,6 +18,7 @@ type Query = FromSchema<typeof Query>;
 const schema: FastifySchema = {
   // operationId: "website.getProfileSet",
   description: "Profile Set の取得",
+  body: Query,
   querystring: Query,
   produces: ["application/ld+json"],
   response: {
