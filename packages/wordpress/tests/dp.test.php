@@ -24,9 +24,9 @@ EOF;
 		$url         = 'https://example.com/article/42';
 		$dp          = new DpClass(
 			issuer: $domain_name,
+			subject: $subject,
 			url: $url,
 			jws: $jws,
-			subject: $subject,
 			title: 'ブログはじめました',
 			image: 'https://example.com/image/hello.png',
 			description: 'こんにちは。今日からブログをはじめました。',

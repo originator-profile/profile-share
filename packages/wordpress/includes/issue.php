@@ -5,6 +5,7 @@ namespace Profile\Issue;
 
 use Lcobucci\JWT\Signer\Ecdsa\Sha256;
 use Lcobucci\JWT\Signer\Key\InMemory;
+use Ramsey\Uuid\Uuid;
 
 require_once __DIR__ . '/config.php';
 use const Profile\Config\PROFILE_PRIVATE_KEY_FILENAME;
@@ -74,6 +75,7 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 
 	$dp  = new Dp(
 		issuer: $domain_name,
+		subject: Uuid::uuid5( Uuid::NAMESPACE_URL, $post->guid ),
 		url: $url,
 		jws: $jws,
 		title: $post->post_title,
