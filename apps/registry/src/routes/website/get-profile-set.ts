@@ -16,8 +16,8 @@ const Query = {
 type Query = FromSchema<typeof Query>;
 
 const schema: FastifySchema = {
+  operationId: "website.getProfileSet",
   description: "Profile Set の取得",
-  body: Query,
   querystring: Query,
   produces: ["application/ld+json"],
   response: {
@@ -35,22 +35,18 @@ async function getProfileSet(
   {
     server,
     query,
-    body,
-    method,
   }: FastifyRequest<{
     Querystring: Query;
-    Body: Query;
   }>,
   reply: FastifyReply
 ) {
   const contextDefinition: ContextDefinition | undefined =
     server.config.NODE_ENV === "development" ? context["@context"] : undefined;
-  const params = method === "POST" ? body : query;
   const data: JsonLdDocument | Error =
-    await server.services.website.getProfileSet(params.url, contextDefinition);
+    await server.services.website.getProfileSet(query.url, contextDefinition);
   if (data instanceof HttpError) return data;
   if (data instanceof Error) {
-    return new BadRequestError("invalid parameter: url", data);
+    return new BadRequestError("invalid query.url", data);
   }
 
   reply.type("application/ld+json");
