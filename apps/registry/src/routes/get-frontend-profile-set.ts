@@ -10,7 +10,7 @@ const schema: FastifySchema = {
 async function getFrontendProfileSet(req: FastifyRequest, res: FastifyReply) {
   const data: JsonLdDocument | Error = await getProfileSet(
     Object.assign(req, {
-      body: {
+      query: {
         url: req.server.config.APP_URL ?? "http://localhost:8080",
       },
     }),

@@ -5,7 +5,7 @@ import { ContextDefinition, JsonLdDocument } from "jsonld";
 import context from "@webdino/profile-model/context.json" assert { type: "json" };
 import { ErrorResponse } from "../../error";
 
-const Body = {
+const Query = {
   type: "object",
   properties: {
     url: { type: "string", format: "uri" },
@@ -13,12 +13,12 @@ const Body = {
   required: ["url"],
 } as const;
 
-type Body = FromSchema<typeof Body>;
+type Query = FromSchema<typeof Query>;
 
 const schema: FastifySchema = {
   operationId: "website.getProfileSet",
   description: "Profile Set の取得",
-  body: Body,
+  querystring: Query,
   produces: ["application/ld+json"],
   response: {
     200: {
@@ -34,19 +34,19 @@ const schema: FastifySchema = {
 async function getProfileSet(
   {
     server,
-    body,
+    query,
   }: FastifyRequest<{
-    Body: Body;
+    Querystring: Query;
   }>,
   reply: FastifyReply
 ) {
   const contextDefinition: ContextDefinition | undefined =
     server.config.NODE_ENV === "development" ? context["@context"] : undefined;
   const data: JsonLdDocument | Error =
-    await server.services.website.getProfileSet(body.url, contextDefinition);
+    await server.services.website.getProfileSet(query.url, contextDefinition);
   if (data instanceof HttpError) return data;
   if (data instanceof Error) {
-    return new BadRequestError("invalid body.url", data);
+    return new BadRequestError("invalid query.url", data);
   }
 
   reply.type("application/ld+json");
