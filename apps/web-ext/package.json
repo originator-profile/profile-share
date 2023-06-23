@@ -2,7 +2,6 @@
   "name": "profile-web-ext",
   "description": "Profile Web Extension",
   "version": "0.0.0",
-  "author": "Kimiaki Kuno <knokmki612@gmail.com>",
   "bugs": {
     "url": "https://github.com/webdino/profile/issues"
   },
