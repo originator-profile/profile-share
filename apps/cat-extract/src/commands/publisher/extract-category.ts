@@ -18,6 +18,11 @@ export class PublisherExtractCategory extends Command {
 IAB Tech Lab Content Category Taxonomy 1.0の定義ファイル
 詳しくは当該ファイル https://iabtechlab.com/wp-content/uploads/2023/03/Content-Taxonomy-1.0-1.xlsx を参照してください`,
       required: true
+    }),
+    header: Flags.integer({
+      summary: "Header position",
+      description: "Excelファイル中のヘッダーの行番号",
+      default: 2
     })
   };
 
@@ -25,9 +30,10 @@ IAB Tech Lab Content Category Taxonomy 1.0の定義ファイル
     const { args, flags } = await this.parse(PublisherExtractCategory);
     const input: string = flags.input;
     const output: string = args.output;
+    const range: number = flags.header - 1;
     const workbook = readFile(input);
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    const fromJson = utils.sheet_to_json(worksheet, { range: 1 }) as {
+    const fromJson = utils.sheet_to_json(worksheet, { range: range }) as {
       "IAB Code": string,
       "IAB Category": string
     }[];
