@@ -50,18 +50,23 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.2.9
 
 ```
 USAGE
-  $ cat-extract publisher:extract-category [OUTPUT] --input <value>
+  $ cat-extract publisher:extract-category [OUTPUT] --input <value> [--header <value>]
 
 ARGUMENTS
   OUTPUT  [default: category.json] 出力先ファイル ("-": 標準出力)
 
 FLAGS
-  --input=<value>  (required) Excel file
+  --header=<value>  [default: 2] Header position
+  --input=<value>   (required) Excel file
 
 DESCRIPTION
   カテゴリー情報の抽出 ("profile-registry publisher:category -o createMany"用)
 
 FLAG DESCRIPTIONS
+  --header=<value>  Header position
+
+    Excelファイル中のヘッダーの行番号
+
   --input=<value>  Excel file
 
     IAB Tech Lab Content Category Taxonomy 1.0の定義ファイル
