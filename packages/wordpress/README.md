@@ -10,7 +10,31 @@ WordPress での記事の公開時の Signed Document Profile の発行に役立
 ## ディレクトリ構成
 
 {WordPress directory}/wp-content/credentials/
-: 署名用プライベート鍵ファイルの配置場所
+: 署名用プライベート鍵ファイルの配置場所 (デフォルト)
+
+### config.php
+
+`includes` ディレクトリの中に置かれている `config.php` ファイルには、このプラグインの設定値が含まれています。
+
+#### PROFILE_PRIVATE_KEY_FILENAME
+
+署名に使うプライベート鍵ファイルのパスです。
+もし仮にプライベート鍵が存在しない場合、プラグインを有効化した際に自動的に生成されます。
+
+#### PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME
+
+デフォルトの DP レジストリのドメイン名です。
+ドメイン名は設定画面から変更することも可能です。
+このドメイン名のエンドポイントを介して Signed Document Profile の登録と取得を行います。
+
+#### PROFILE_SIGN_TYPE
+
+署名の型です。現在、対象の要素の子孫のテキストへの署名を表す `text` 型のみサポートしています。
+
+#### PROFILE_SIGN_LOCATION
+
+検証する際に対象の要素の場所を特定する CSS セレクターです。
+このプラグインは、投稿の各ページの内容から子要素の Node: textContent プロパティを結合した結果のテキストを対象として署名を行います。
 
 ## 開発ガイド
 
