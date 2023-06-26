@@ -38,9 +38,22 @@ WordPress での記事の公開時の Signed Document Profile の発行に役立
 
 ## 開発ガイド
 
+開発用 WordPress サーバーを利用して動作を確認できます。
+Docker を利用し、ローカル環境に開発用の WordPress サーバーを構築します。
+
+開発環境の構築
+
 ```
-cd packages/wordpress
+$ cd packages/wordpress
+$ cp .env.development .env
+$ docker compose up -d
+$ WORDPRESS_ADMIN_USER=tester WORDPRESS_ADMIN_PASSWORD=$(openssl rand --hex 16 | tee /dev/stderr) e2e/docker-setup.sh
+: http://localhost:9000 にアクセスし、下記の認証情報でログインできます。
+:   Username: tester
+:   Password: {上のコマンドの実行時に表示された32文字の16進数文字列}
 ```
+
+コマンドの詳細は下記の通りです。
 
 .env ファイルの配置
 
@@ -64,13 +77,13 @@ $ docker compose down
 Composer 依存関係の解決
 
 ```
-$ docker compose exec -w /var/www/html/wp-content/plugins/profile wordpress composer install
+$ docker compose run --rm -w /var/www/html/wp-content/plugins/profile wordpress composer install
 ```
 
 Composer スクリプトの実行
 
 ```
-$ docker compose exec -w /var/www/html/wp-content/plugins/profile wordpress composer run
+$ docker compose run --rm -w /var/www/html/wp-content/plugins/profile wordpress composer run
 ```
 
 ## Composer スクリプト
