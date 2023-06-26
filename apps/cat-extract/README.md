@@ -1,10 +1,9 @@
 # Cat Extract
 
-profile-registryのpublisher:categoryコマンドの入力用JSONファイルを作成するコマンドです。
+profile-registry の publisher:category コマンドの入力用 JSON ファイルを作成するコマンドです。
 
 - [Usage](#usage)
 - [Commands](#commands)
-
 
 ## Usage
 
