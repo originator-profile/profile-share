@@ -50,7 +50,12 @@ test("投稿の検証", async () => {
     .click();
   await page.getByRole("link", { name: "(no title)", exact: true }).click();
 
-  const text = await (await page.$(".wp-block-post-content"))?.textContent();
+  const elements = await page.$$(
+    ".wp-block-post-content>*:not(.post-nav-links)"
+  );
+  const text = (await Promise.all(elements.map((e) => e.textContent()))).join(
+    ""
+  );
   expect(text).toMatchSnapshot("post.txt");
 
   const postId = Number(new URL(page.url()).searchParams.get("p"));
@@ -59,7 +64,7 @@ test("投稿の検証", async () => {
       path.join(
         __dirname,
         "../tmp/profile-test-snapshots",
-        `${postId}.snapshot.txt`
+        `${postId}.1.snapshot.txt`
       )
     )
   ).toString();

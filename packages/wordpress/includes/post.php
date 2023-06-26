@@ -29,12 +29,18 @@ function profile_link() {
 		return;
 	}
 
-	$guid     = \get_the_guid();
-	$id       = Uuid::uuid5( Uuid::NAMESPACE_URL, $guid );
-	$endpoint = "https://{$registry}/website/{$id}/profiles";
+	$uri  = \get_the_guid();
+	$page = \max( 1, \get_query_var( 'page' ) );
+
+	if ( $page > 1 ) {
+		$uri .= \wp_parse_url( $uri, \PHP_URL_QUERY ) ? "&page={$page}" : "?page={$page}";
+	}
+
+	$uuid     = Uuid::uuid5( Uuid::NAMESPACE_URL, $uri );
+	$endpoint = "https://{$registry}/website/{$uuid}/profiles";
 
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $registry ) {
-		$endpoint = "http://localhost:8080/website/{$id}/profiles";
+		$endpoint = "http://localhost:8080/website/{$uuid}/profiles";
 	}
 
 	echo '<link href="' . \esc_html( $endpoint ) . '" rel="alternate" type="application/ld+json">' . PHP_EOL;
