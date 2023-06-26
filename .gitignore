@@ -8,6 +8,7 @@ dist
 tmp
 composer.lock
 vendor
+/apps/cat-extract/oclif.manifest.json
 /apps/registry/oclif.manifest.json
 /apps/web-ext/web-ext-artifacts
 /apps/web-ext/screenshots
