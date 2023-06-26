@@ -38,8 +38,26 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 
 	$content  = \apply_filters( 'the_content', $post->post_content );
 	$document = new \DOMDocument();
-	$document->loadHTML( "<!DOCTYPE html><meta charset=\"UTF-8\">{$content}" );
-	$text = $document->textContent;
+	$document->loadHTML(
+		<<<EOD
+<!DOCTYPE html>
+<html>
+	<head><meta charset="UTF-8"></head>
+	<body>{$content}</body>
+</html>
+EOD
+	);
+	$xpath    = new \DOMXpath( $document );
+	$elements = $xpath->query( '/html/body/*' );
+
+	if ( ! $elements ) {
+		return;
+	}
+
+	$text = '';
+	foreach ( $elements as $element ) {
+		$text .= $element->textContent;
+	}
 
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 		require_once ABSPATH . 'wp-admin/includes/file.php';

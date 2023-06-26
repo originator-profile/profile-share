@@ -13,4 +13,4 @@ const PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME = 'oprdev.originator-profile.
 const PROFILE_SIGN_TYPE = 'text';
 
 /** 署名対象の要素 */
-const PROFILE_SIGN_LOCATION = '.wp-block-post-content';
+const PROFILE_SIGN_LOCATION = '.wp-block-post-content>*:not(.post-nav-links)';
