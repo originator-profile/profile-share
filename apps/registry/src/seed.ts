@@ -92,7 +92,9 @@ export async function seed(): Promise<void> {
       certifier,
       "ブランドセーフティ認証",
       new Date(),
-      addYears(new Date(), 1)
+      addYears(new Date(), 1),
+      new URL("/credential-brand-safety-certified.png", process.env.APP_URL)
+        .href
     );
   }
   console.log(`UUID: ${issuerUuid}`);
