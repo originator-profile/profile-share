@@ -10,8 +10,8 @@ use Lcobucci\JWT\Signer\Ecdsa\Sha256;
 use Lcobucci\JWT\Signer\Key\InMemory;
 
 require_once __DIR__ . '/config.php';
-use const Profile\Config\PROFILE_SIGN_TYPE;
-use const Profile\Config\PROFILE_SIGN_LOCATION;
+use const Profile\Config\PROFILE_VERIFICATION_TYPE;
+use const Profile\Config\PROFILE_VERIFICATION_LOCATION;
 
 require_once __DIR__ . '/key.php';
 use function Profile\Key\get_jwk;
@@ -85,9 +85,9 @@ final class Dp {
 					)
 				),
 				array(
-					'type'     => PROFILE_SIGN_TYPE,
+					'type'     => PROFILE_VERIFICATION_TYPE,
 					'url'      => $this->url,
-					'location' => PROFILE_SIGN_LOCATION,
+					'location' => PROFILE_VERIFICATION_LOCATION,
 					'proof'    => array( 'jws' => $this->jws ),
 				),
 			),

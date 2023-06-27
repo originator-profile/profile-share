@@ -10,8 +10,8 @@ use Ramsey\Uuid\Uuid;
 require_once __DIR__ . '/config.php';
 use const Profile\Config\PROFILE_PRIVATE_KEY_FILENAME;
 use const Profile\Config\PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME;
-use const Profile\Config\PROFILE_SIGN_TYPE;
-use const Profile\Config\PROFILE_SIGN_LOCATION;
+use const Profile\Config\PROFILE_VERIFICATION_TYPE;
+use const Profile\Config\PROFILE_VERIFICATION_LOCATION;
 
 require_once __DIR__ . '/key.php';
 use function Profile\Key\get_jwk;
@@ -251,8 +251,8 @@ function issue_dp( Dp $dp, string $admin_secret, string $pkcs8 ): string|false {
 					'editor'        => $dp->editor,
 					'datePublished' => $dp->date_published,
 					'dateModified'  => $dp->date_modified,
-					'bodyFormat'    => array( 'connect' => array( 'value' => PROFILE_SIGN_TYPE ) ),
-					'location'      => PROFILE_SIGN_LOCATION,
+					'bodyFormat'    => array( 'connect' => array( 'value' => PROFILE_VERIFICATION_TYPE ) ),
+					'location'      => PROFILE_VERIFICATION_LOCATION,
 					'proofJws'      => $dp->jws,
 				),
 				'jwt'   => $jwt,

@@ -27,13 +27,13 @@ WordPress での記事の公開時の Signed Document Profile の発行に役立
 ドメイン名は設定画面から変更することも可能です。
 このドメイン名のエンドポイントを介して Signed Document Profile の登録と取得を行います。
 
-#### PROFILE_SIGN_TYPE
+#### PROFILE_VERIFICATION_TYPE
 
-署名の型です。現在、対象の要素の子孫のテキストへの署名を表す `text` 型のみサポートしています。
+検証する対象の型です。現在、対象の要素の子孫のテキストへの署名を表す `text` 型のみサポートしています。
 
-#### PROFILE_SIGN_LOCATION
+#### PROFILE_VERIFICATION_LOCATION
 
-検証する際に対象の要素の場所を特定する CSS セレクターです。
+検証する対象の要素の場所を特定するための CSS セレクターです。
 このプラグインは、投稿の各ページの内容から子要素の Node: textContent プロパティを結合した結果のテキストを対象として署名を行います。
 
 ## 開発ガイド
