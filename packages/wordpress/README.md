@@ -23,9 +23,9 @@ WordPress での記事の公開時の Signed Document Profile の発行に役立
 
 #### PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME
 
-デフォルトの DP レジストリのドメイン名です。
-ドメイン名は設定画面から変更することも可能です。
+DP レジストリのドメイン名の設定の初期値です。
 このドメイン名のエンドポイントを介して Signed Document Profile の登録と取得を行います。
+もし設定画面から DP レジストリのドメイン名の設定を変更した場合、この値は参照されません。
 
 #### PROFILE_VERIFICATION_TYPE
 
