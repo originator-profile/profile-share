@@ -1,5 +1,3 @@
-# Originator Profile 技術研究組合 メディア側実証実験 (202307)
-
 note: ある程度書けたら https://profile-docs.pages.dev/docs/media-study-202307 に入れる想定。
 
 
@@ -71,15 +69,19 @@ WordPress ではないシステムをご利用の方は WordPress の実装を�
 - 6月30日
     - 実験参加/参加検討企業の担当者向け説明会
     - 実際の実験参加に際しての確認が出来るよう技術担当者もご参加ください
-- 7月前半
+- 7月前半〜8月頭
     - 実験参加企業から必要情報の聞き取り
     - OP レジストリへの実験参加企業の登録
-    - DP レジストリを利用可能な権限の付与
+    - DP レジストリを利用可能なアクセス情報の付与
     - 各社において CMS の改修の実装開始
-- 7月後半〜8月中頃
+- 7月28日
+    - 実験参加申込期日
+- 7月後半
     - 記事に SDP を発行可能なシステムの準備が出来たメディアから順次実験開始
+- 〜8月中頃
+    - 初回実験期間
     - 実際のシステムへの導入に際しての具体的な課題やデータを収集
-    - CMS 改修等の実装がこの期間に間に合わない企業はこの期間は課題の共有などのみを行い、準備が出来次第、9 月中頃までの期間で実験を実施
+    - CMS 改修等が間に合わない企業は課題抽出・共有などのみを行い、準備出来次第、9 月中頃までの期間で実験を実施
 - 8月中頃〜8月末
     - 実験参画企業からの課題抽出結果・フィードバック・データの取り纏め
 - 9月頭頃
@@ -379,7 +381,7 @@ Document Profile レジストリ->>Document Profile レジストリ: Signed Docu
 Document Profile レジストリ->>利用者: Profile Set の取得
 ```
 WordPress以外のWebサイトで実装する場合、手順が異なり下記のような内容の実施が必要となります。
-- HTML <link> element の設置
+- `HTML <link> element` の設置
 - Signed Document Profile の発行準備
 - Signed Document Profile の発行と登録
 
@@ -389,7 +391,7 @@ Document Profile レジストリのドメイン名："oprdev.originator-profile.
 対象とするウェブサイト："https://originator-profile.org"
 ```
 
-#### HTML <link> element の設置
+#### `HTML <link> element` の設置
 設置するHTMLは下記になります
 ```
 <link
