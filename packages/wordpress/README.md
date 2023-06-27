@@ -47,7 +47,7 @@ Docker を利用し、ローカル環境に開発用の WordPress サーバー�
 $ cd packages/wordpress
 $ cp .env.development .env
 $ docker compose up -d
-$ WORDPRESS_ADMIN_USER=tester WORDPRESS_ADMIN_PASSWORD=$(openssl rand --hex 16 | tee /dev/stderr) e2e/docker-setup.sh
+$ WORDPRESS_ADMIN_USER=tester WORDPRESS_ADMIN_PASSWORD=$(openssl rand -hex 16 | tee /dev/stderr) e2e/docker-setup.sh
 : http://localhost:9000 にアクセスし、下記の認証情報でログインできます。
 :   Username: tester
 :   Password: {上のコマンドの実行時に表示された32文字の16進数文字列}
