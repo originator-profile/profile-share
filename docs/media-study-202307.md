@@ -212,7 +212,7 @@ TODO: 丁寧に説明する
 今回の実証実験でご利用いただく API エンドポイントは次の 2 つです。
 
 - `/admin/publisher/{アカウントID}` エンドポイント
-  - 公開する記事を DP レジストリに登録するためのエンドポイントです。POST メソッドをサポートします。記事の情報と署名付き DP を登録します。
+  - 署名付き DP を DP レジストリに登録するためのエンドポイントです。POST メソッドをサポートします。
 - `/website/profiles` エンドポイント
   - プロファイルセットを取得するためのエンドポイントです。GET メソッドをサポートします。今回の実証実験では、 `<link>` 要素の `href` 属性にこのエンドポイントへの URL を記載することになります。
 
@@ -220,17 +220,19 @@ TODO: 丁寧に説明する
 
 #### `/admin/publisher/{アカウントID}` エンドポイント
 
-公開する記事を DP レジストリに登録するためのエンドポイントです。記事の情報と署名付き DP を登録します。必要なパラメータをリクエストのボディーに付与して、 POST メソッドを送ることで、登録ができます。
+署名付き DP を DP レジストリに登録するためのエンドポイントです。必要なパラメータをリクエストのボディーに付与して、 POST メソッドを送ることで、登録ができます。
 
 このエンドポイントは、呼び出しに Basic 認証による認証が必要です。必要な認証情報は CIP から受け取ってください。受け取った認証情報は、 Basic 認証及び、このエンドポイントの URL の中の `{アカウントID}` で使用します。
+
+今回の実証実験では、いくつかのパラメータが不要なため、それらには以下に示す固定値を入れてください。今回必要なのは `jwt`, `input.id`, `input.url` の3つだけです。パラメータは JSON 形式で与えてください。
 
 リクエスト例（必須の値のみをリクエストに入れています）:
 
 ```shell
 curl -X POST https://oprdev.originator-profile.org/admin/publisher/732e0c2d-179e-5190-a7e1-a9c5caa43eca/ \
     -u 732e0c2d-179e-5190-a7e1-a9c5caa43eca:KEg5GvSQLASQphVqARs-xcyyIaKz7f21W2ZySMdlgnU \
-    -H Content-Type:application/json \
-    -d '{"input":{"id":"403cc6d4-53d6-4286-9f42-930e0bf7bd3f","bodyFormat":{"connect":{"value":"visibleText"}},"url":"http://example.com","proofJws":"eyJhbGciOiJFUzI1NiIsImtpZCI6Im5Senc0VzdFVXJSMmlZdGlMbkFick5QOVVEdFFneE96OGZnX3poRjBmTkEiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..mar5uHtOc9kaSjBTrR7SMz9qPzBaxHPV1hw5u6BKKfKe1DWS9j04Ytz2CSY7Ll7Dt33_Dvmyemn8XJFnK5xpZA"},"jwt":"eyJhbGciOiJFUzI1NiIsImtpZCI6Im5Senc0VzdFVXJSMmlZdGlMbkFick5QOVVEdFFneE96OGZnX3poRjBmTkEiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJ0aXRsZSI6Ik9QIOeiuuiqjeOBj-OCkyIsImNhdGVnb3J5IjpbXX0seyJ0eXBlIjoidmlzaWJsZVRleHQiLCJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJsb2NhdGlvbiI6ImgxIiwicHJvb2YiOnsiandzIjoiZXlKaGJHY2lPaUpGVXpJMU5pSXNJbXRwWkNJNkltNVNlbmMwVnpkRlZYSlNNbWxaZEdsTWJrRmljazVRT1ZWRWRGRm5lRTk2T0dablgzcG9SakJtVGtFaUxDSmlOalFpT21aaGJITmxMQ0pqY21sMElqcGJJbUkyTkNKZGZRLi5tYXI1dUh0T2M5a2FTakJUclI3U016OXFQekJheEhQVjFodzV1NkJLS2ZLZTFEV1M5ajA0WXR6MkNTWTdMbDdEdDMzX0R2bXllbW44WEpGbks1eHBaQSJ9fV19LCJpc3MiOiJrYWtpa3VrZWtvLmRlbW9zaXRlcy5wYWdlcy5kZXYiLCJzdWIiOiJlZjlkNzhlMC1kODFhLTRlMzktYjdhMC0yN2UxNTQwNWVkYzgiLCJpYXQiOjE2ODc4Mjc0NTgsImV4cCI6MTcxOTQ0OTg1OH0.bgIE8VMFit4HOFkBKrU9TwGGQuLHt2ZuOCS2C9MCZ4yAapf-1QupUYb3iYZcd-BjBwtgVupq9xzydC9cO25rQQ"}'
+    -H Content-Type: application/json \
+    -d '{"input":{"id":"403cc6d4-53d6-4286-9f42-930e0bf7bd3f","url":"http://example.com","bodyFormat":{"connect":{"value":"text"}},"proofJws":""},"jwt":"eyJhbGciOiJFUzI1NiIsImtpZCI6Im5Senc0VzdFVXJSMmlZdGlMbkFick5QOVVEdFFneE96OGZnX3poRjBmTkEiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJ0aXRsZSI6Ik9QIOeiuuiqjeOBj-OCkyIsImNhdGVnb3J5IjpbXX0seyJ0eXBlIjoidmlzaWJsZVRleHQiLCJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJsb2NhdGlvbiI6ImgxIiwicHJvb2YiOnsiandzIjoiZXlKaGJHY2lPaUpGVXpJMU5pSXNJbXRwWkNJNkltNVNlbmMwVnpkRlZYSlNNbWxaZEdsTWJrRmljazVRT1ZWRWRGRm5lRTk2T0dablgzcG9SakJtVGtFaUxDSmlOalFpT21aaGJITmxMQ0pqY21sMElqcGJJbUkyTkNKZGZRLi5tYXI1dUh0T2M5a2FTakJUclI3U016OXFQekJheEhQVjFodzV1NkJLS2ZLZTFEV1M5ajA0WXR6MkNTWTdMbDdEdDMzX0R2bXllbW44WEpGbks1eHBaQSJ9fV19LCJpc3MiOiJrYWtpa3VrZWtvLmRlbW9zaXRlcy5wYWdlcy5kZXYiLCJzdWIiOiJlZjlkNzhlMC1kODFhLTRlMzktYjdhMC0yN2UxNTQwNWVkYzgiLCJpYXQiOjE2ODc4Mjc0NTgsImV4cCI6MTcxOTQ0OTg1OH0.bgIE8VMFit4HOFkBKrU9TwGGQuLHt2ZuOCS2C9MCZ4yAapf-1QupUYb3iYZcd-BjBwtgVupq9xzydC9cO25rQQ"}'
 ```
 
 レスポンス例（見やすく整形しています）:
@@ -248,28 +250,30 @@ curl -X POST https://oprdev.originator-profile.org/admin/publisher/732e0c2d-179e
   "datePublished": null,
   "dateModified": null,
   "location": null,
-  "bodyFormatValue": "visibleText",
-  "proofJws": "eyJhbGciOiJFUzI1NiIsImtpZCI6Im5Senc0VzdFVXJSMmlZdGlMbkFick5QOVVEdFFneE96OGZnX3poRjBmTkEiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..mar5uHtOc9kaSjBTrR7SMz9qPzBaxHPV1hw5u6BKKfKe1DWS9j04Ytz2CSY7Ll7Dt33_Dvmyemn8XJFnK5xpZA"
+  "bodyFormatValue": "text",
+  "proofJws": ""
 }
 ```
 
-必須のパラメータは、`jwt` 及び、 `input` の中の `id`, `url`, `bodyFormat`, `proofJws` です。他のパラメータは任意になります。
+必須のパラメータは、`jwt` 及び、 `input` の中の `id`, `url` です。`bodyFormat`, `proofJws` は、システム上は必須ですが、今回の実験には使わないため、以下に記載する固定値を入れてください。他のパラメータは任意になります。
 
 ##### パラメータ
 
-パラメータの一覧は以下になります。これらを POST リクエストのボディーに与えてください。
+パラメータの一覧は以下になります。これらを POST リクエストのボディーに JSON 形式で与えてください。
 
 | パラメータ名 | 型                         | 必須/任意 | 説明                       |
 | ------------ | -------------------------- | --------- | -------------------------- |
 | jwt          | 文字列                     | 必須      | DP を与えてください        |
 | input        | 下記テーブルや上記の例参照 | 必須      | 記事の情報を与えてください |
 
+input パラメータの内部には、以下のパラメータを入れてください。
+
 | パラメータ名 | 型                                           | 必須/任意 | 説明                                                                                           |
 | ------------ | -------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------- |
-| id           | 文字列                                       | 必須      | 記事の ID を与えてください                                                                     |
+| id           | 文字列                                       | 必須      | 記事の ID を与えてください。リクエストを送る側が生成する必要があり、 UUID 形式である必要があります。                                                                     |
 | url          | 文字列                                       | 必須      | 記事の URL を与えてください                                                                    |
-| bodyFormat   | `{"connect":{"value":"<コンテンツの種類>"}}` | 必須      | DP で検証するコンテンツの種類を指定してください。 `visibleText`, `text`, `html` のどれかです。 |
-| proofJws     | 文字列                                       | 必須      | `jwt` パラメータの中の `jws` 署名の値を与えてください。                                        |
+| bodyFormat   | JSON オブジェクト | 必須      | `{"connect":{"value":"text"}}` という値を入れてください。 |
+| proofJws     | 文字列                                       | 必須      | 空文字列 `""` を入れてください。                                        |
 
 #### `/website/profiles` エンドポイント
 
