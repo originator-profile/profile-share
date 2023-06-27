@@ -249,11 +249,13 @@ curl -X POST https://oprdev.originator-profile.org/admin/publisher/732e0c2d-179e
     "dateModified": null,
     "location": null,
     "bodyFormatValue": "visibleText",
-    "proofJws": "dummy"
+    "proofJws": "eyJhbGciOiJFUzI1NiIsImtpZCI6Im5Senc0VzdFVXJSMmlZdGlMbkFick5QOVVEdFFneE96OGZnX3poRjBmTkEiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..mar5uHtOc9kaSjBTrR7SMz9qPzBaxHPV1hw5u6BKKfKe1DWS9j04Ytz2CSY7Ll7Dt33_Dvmyemn8XJFnK5xpZA"
 }
 ```
 
 必須のパラメータは、`jwt` 及び、 `input` の中の `id`, `url`, `bodyFormat`, `proofJws` です。他のパラメータは任意になります。
+
+##### パラメータ
 
 パラメータの一覧は以下になります。これらを POST リクエストのボディーに与えてください。
 
@@ -330,6 +332,14 @@ url パラメータには、 DP 登録時に指定した URL と**完全に一�
     "message": ""
 }
 ```
+
+##### パラメータ
+
+パラメータの一覧は以下になります。これらを GET リクエストのクエリパラメータに与えてください。
+
+| パラメータ名 | 型 | 必須/任意 | 説明 |
+| -------- | -------- | -------- | -------- |
+| url | 文字列 | 必須 | 記事の URL を与えてください。記事登録時に指定した URL を RFC 3986 の形式でエンコーディングしてください。 |
 
 ### DP の作成と DP レジストリへの登録
 
