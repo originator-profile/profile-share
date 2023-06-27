@@ -20,6 +20,9 @@ use function Profile\Key\base64_urlsafe_encode;
 require_once __DIR__ . '/class-dp.php';
 use Profile\Dp\Dp;
 
+require_once __DIR__ . '/url.php';
+use function Profile\Url\add_page_query;
+
 /** 投稿への署名処理の初期化 */
 function init() {
 	\add_action( 'transition_post_status', '\Profile\Issue\sign_post', 10, 3 );
@@ -119,14 +122,14 @@ function create_dp_list( \WP_Post $post, string $domain_name, string $privatekey
 		$permalink = \get_permalink( $post );
 
 		if ( $page > 1 ) {
-			$uri .= \wp_parse_url( $uri, \PHP_URL_QUERY ) ? "&page={$page}" : "?page={$page}";
+			$uri = add_page_query( $uri, $page );
 
 			// ページのパーマリンクの形式は設定によって異なる.
 			if ( $wp_rewrite->using_permalinks() ) {
 				$permalink .= $wp_rewrite->use_trailing_slashes ? '' : '/';
 				$permalink .= \user_trailingslashit( $page );
 			} else {
-				$permalink .= \wp_parse_url( $permalink, \PHP_URL_QUERY ) ? "&page={$page}" : "?page={$page}";
+				$permalink = add_page_query( $permalink, $page );
 			}
 		}
 

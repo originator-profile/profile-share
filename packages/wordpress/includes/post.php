@@ -8,6 +8,9 @@ use Ramsey\Uuid\Uuid;
 require_once __DIR__ . '/config.php';
 use const Profile\Config\PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME;
 
+require_once __DIR__ . '/url.php';
+use function Profile\Url\add_page_query;
+
 /** 投稿閲覧画面の初期化 */
 function init() {
 	\add_action( 'wp_head', '\Profile\Post\profile_link' );
@@ -33,7 +36,7 @@ function profile_link() {
 	$page = \max( 1, \get_query_var( 'page' ) );
 
 	if ( $page > 1 ) {
-		$uri .= \wp_parse_url( $uri, \PHP_URL_QUERY ) ? "&page={$page}" : "?page={$page}";
+		$uri = add_page_query( $uri, $page );
 	}
 
 	$uuid     = Uuid::uuid5( Uuid::NAMESPACE_URL, $uri );
