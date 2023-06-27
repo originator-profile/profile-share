@@ -5,7 +5,7 @@ import fs from "node:fs/promises";
 
 export class PublisherExtractCategory extends Command {
   static description =
-    'カテゴリー情報の抽出 ("profile-registry publisher:category -o createMany"用)';
+    'カテゴリー情報の抽出 ("publisher:category -o createMany"用)';
   static args = {
     output: Args.string({
       description: `出力先ファイル ("-": 標準出力)`,

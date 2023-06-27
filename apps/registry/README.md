@@ -54,6 +54,7 @@ running command...
 * [`profile-registry key-gen`](#profile-registry-key-gen)
 * [`profile-registry openapi-gen [OUTPUT]`](#profile-registry-openapi-gen-output)
 * [`profile-registry publisher:category`](#profile-registry-publishercategory)
+* [`profile-registry publisher:extract-category [OUTPUT]`](#profile-registry-publisherextract-category-output)
 * [`profile-registry publisher:extract-website`](#profile-registry-publisherextract-website)
 * [`profile-registry publisher:profile-set`](#profile-registry-publisherprofile-set)
 * [`profile-registry publisher:website`](#profile-registry-publisherwebsite)
@@ -351,6 +352,36 @@ FLAG DESCRIPTIONS
     Prisma.Enumerable<Prisma.categoriesCreateManyInput>
     詳細はTSDocを参照してください。
     https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
+```
+
+## `profile-registry publisher:extract-category [OUTPUT]`
+
+カテゴリー情報の抽出 ("publisher:category -o createMany"用)
+
+```
+USAGE
+  $ profile-registry publisher:extract-category [OUTPUT] --input <value> [--header <value>]
+
+ARGUMENTS
+  OUTPUT  [default: category.json] 出力先ファイル ("-": 標準出力)
+
+FLAGS
+  --header=<value>  [default: 2] Header position
+  --input=<value>   (required) Excel file
+
+DESCRIPTION
+  カテゴリー情報の抽出 ("publisher:category -o createMany"用)
+
+FLAG DESCRIPTIONS
+  --header=<value>  Header position
+
+    Excelファイル中のヘッダーの行番号
+
+  --input=<value>  Excel file
+
+    IAB Tech Lab Content Category Taxonomy 1.0の定義ファイル
+    詳しくは当該ファイル https://iabtechlab.com/wp-content/uploads/2023/03/Content-Taxonomy-1.0-1.xlsx
+    を参照してください
 ```
 
 ## `profile-registry publisher:extract-website`
