@@ -222,13 +222,15 @@ TODO: 丁寧に説明する
 
 公開する記事をDPレジストリに登録するためのエンドポイントです。記事の情報と署名付きDPを登録します。必要なパラメータをリクエストのボディーに付与して、 POST メソッドを送ることで、登録ができます。
 
-リクエスト例
+このエンドポイントは、呼び出しにBasic認証による認証が必要です。必要な認証情報は CIP から受け取ってください。受け取った認証情報は、 Basic認証及び、このエンドポイントの URL の中の `{アカウントID}` で使用します。
+
+リクエスト例（必須の値のみをリクエストに入れています）:
 
 ```shell
-curl -X POST localhost:8080/admin/publisher/732e0c2d-179e-5190-a7e1-a9c5caa43eca/ \
+curl -X POST https://oprdev.originator-profile.org/admin/publisher/732e0c2d-179e-5190-a7e1-a9c5caa43eca/ \
     -u 732e0c2d-179e-5190-a7e1-a9c5caa43eca:KEg5GvSQLASQphVqARs-xcyyIaKz7f21W2ZySMdlgnU \
-    -H content-type:application/json \
-    -d '{"input":{"id":"403cc6d4-53d6-4286-9f42-930e0bf7bd3f","bodyFormat":{"connect":{"value":"visibleText"}},"url":"http://example.com","proofJws":"dummy"},"jwt":"eyJhbGciOiJFUzI1NiIsImtpZCI6Im5Senc0VzdFVXJSMmlZdGlMbkFick5QOVVEdFFneE96OGZnX3poRjBmTkEiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJ0aXRsZSI6Ik9QIOeiuuiqjeOBj-OCkyIsImNhdGVnb3J5IjpbXX0seyJ0eXBlIjoidmlzaWJsZVRleHQiLCJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJsb2NhdGlvbiI6ImgxIiwicHJvb2YiOnsiandzIjoiZXlKaGJHY2lPaUpGVXpJMU5pSXNJbXRwWkNJNkltNVNlbmMwVnpkRlZYSlNNbWxaZEdsTWJrRmljazVRT1ZWRWRGRm5lRTk2T0dablgzcG9SakJtVGtFaUxDSmlOalFpT21aaGJITmxMQ0pqY21sMElqcGJJbUkyTkNKZGZRLi5tYXI1dUh0T2M5a2FTakJUclI3U016OXFQekJheEhQVjFodzV1NkJLS2ZLZTFEV1M5ajA0WXR6MkNTWTdMbDdEdDMzX0R2bXllbW44WEpGbks1eHBaQSJ9fV19LCJpc3MiOiJrYWtpa3VrZWtvLmRlbW9zaXRlcy5wYWdlcy5kZXYiLCJzdWIiOiJlZjlkNzhlMC1kODFhLTRlMzktYjdhMC0yN2UxNTQwNWVkYzgiLCJpYXQiOjE2ODc4Mjc0NTgsImV4cCI6MTcxOTQ0OTg1OH0.bgIE8VMFit4HOFkBKrU9TwGGQuLHt2ZuOCS2C9MCZ4yAapf-1QupUYb3iYZcd-BjBwtgVupq9xzydC9cO25rQQ"}'
+    -H Content-Type:application/json \
+    -d '{"input":{"id":"403cc6d4-53d6-4286-9f42-930e0bf7bd3f","bodyFormat":{"connect":{"value":"visibleText"}},"url":"http://example.com","proofJws":"eyJhbGciOiJFUzI1NiIsImtpZCI6Im5Senc0VzdFVXJSMmlZdGlMbkFick5QOVVEdFFneE96OGZnX3poRjBmTkEiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..mar5uHtOc9kaSjBTrR7SMz9qPzBaxHPV1hw5u6BKKfKe1DWS9j04Ytz2CSY7Ll7Dt33_Dvmyemn8XJFnK5xpZA"},"jwt":"eyJhbGciOiJFUzI1NiIsImtpZCI6Im5Senc0VzdFVXJSMmlZdGlMbkFick5QOVVEdFFneE96OGZnX3poRjBmTkEiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJ0aXRsZSI6Ik9QIOeiuuiqjeOBj-OCkyIsImNhdGVnb3J5IjpbXX0seyJ0eXBlIjoidmlzaWJsZVRleHQiLCJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJsb2NhdGlvbiI6ImgxIiwicHJvb2YiOnsiandzIjoiZXlKaGJHY2lPaUpGVXpJMU5pSXNJbXRwWkNJNkltNVNlbmMwVnpkRlZYSlNNbWxaZEdsTWJrRmljazVRT1ZWRWRGRm5lRTk2T0dablgzcG9SakJtVGtFaUxDSmlOalFpT21aaGJITmxMQ0pqY21sMElqcGJJbUkyTkNKZGZRLi5tYXI1dUh0T2M5a2FTakJUclI3U016OXFQekJheEhQVjFodzV1NkJLS2ZLZTFEV1M5ajA0WXR6MkNTWTdMbDdEdDMzX0R2bXllbW44WEpGbks1eHBaQSJ9fV19LCJpc3MiOiJrYWtpa3VrZWtvLmRlbW9zaXRlcy5wYWdlcy5kZXYiLCJzdWIiOiJlZjlkNzhlMC1kODFhLTRlMzktYjdhMC0yN2UxNTQwNWVkYzgiLCJpYXQiOjE2ODc4Mjc0NTgsImV4cCI6MTcxOTQ0OTg1OH0.bgIE8VMFit4HOFkBKrU9TwGGQuLHt2ZuOCS2C9MCZ4yAapf-1QupUYb3iYZcd-BjBwtgVupq9xzydC9cO25rQQ"}'
 ```
 
 レスポンス例
@@ -237,17 +239,27 @@ curl -X POST localhost:8080/admin/publisher/732e0c2d-179e-5190-a7e1-a9c5caa43eca
 {"id":"403cc6d4-53d6-4286-9f42-930e0bf7bd3f","url":"http://example.com","accountId":"732e0c2d-179e-5190-a7e1-a9c5caa43eca","title":null,"image":null,"description":null,"author":null,"editor":null,"datePublished":null,"dateModified":null,"location":null,"bodyFormatValue":"visibleText","proofJws":"dummy"}
 ```
 
+必須のパラメータは、`jwt` 及び、 `input` の中の `id`, `url`, `bodyFormat`, `proofJws` です。他のパラメータは任意になります。
+
 パラメータの一覧は以下になります。これらを POST リクエストのボディーに与えてください。
 
 | パラメータ名 | 型 | 必須/任意 | 説明 |
 | -------- | -------- | -------- | -------- |
-|  | Row 1, Column 2 | Row 1, Column 3 | Row 1, Column 4 |
-| | Row 2, Column 2 | Row 2, Column 3 | Row 2, Column 4 |
-|  | Row 3, Column 2 | Row 3, Column 3 | Row 3, Column 4 |
+| jwt | 文字列 | 必須 | DPを与えてください |
+| input | 下記テーブルや上記の例参照 | 必須 | 記事の情報を与えてください |
+
+| パラメータ名 | 型 | 必須/任意 | 説明 |
+| -------- | -------- | -------- | -------- |
+| id | 文字列 | 必須 | 記事のIDを与えてください |
+| url | 文字列 | 必須 | 記事のURLを与えてください |
+| bodyFormat | `{"connect":{"value":"<コンテンツの種類>"}}` | 必須 | DP で検証するコンテンツの種類を指定してください。 `visibleText`, `text`, `html` のどれかです。 |
+| proofJws | 文字列 | 必須 | `jwt` パラメータの中の `jws` 署名の値を与えてください。 |
 
 #### `/website/profiles` エンドポイント
 
 プロファイルセットを取得するためのエンドポイントです。クエリパラメータ `url` を付与して、 GET リクエストを送ってください。 `url` には、記事の URL を指定してください。記事に紐づいたプロファイルセットが JSON-LD 形式で返ってきます。`url` は RFC 3986 の形式でエンコーディングしてください（通常のクエリパラメータのエンコーディング方式です）。
+
+このエンドポイントは認証は不要であり、記事を閲覧した全てのユーザーがプロファイルセットを検証することができます。
 
 リクエスト例:
 
