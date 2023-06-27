@@ -385,7 +385,9 @@ Document Profile レジストリ->>Document Profile レジストリ: Signed Docu
 利用者->>Document Profile レジストリ: 記事の検証
 Document Profile レジストリ->>利用者: Profile Set の取得
 ```
-WordPress以外のWebサイトで実装する場合、手順が異なり下記のような内容の実施が必要となります。
+
+WordPress 以外の Web サイトで実装する場合、手順が異なり下記のような内容の実施が必要となります。
+
 - `HTML <link> element` の設置
 - Signed Document Profile の発行準備
 - Signed Document Profile の発行と登録
@@ -398,7 +400,9 @@ Document Profile レジストリのドメイン名："oprdev.originator-profile.
 ```
 
 #### `HTML <link> element` の設置
-設置するHTMLは下記になります
+
+設置する HTML は下記になります
+
 ```
 <link
   href="https://oprdev.originator-profile.org/website/profiles?url=https%3A%2F%2Foriginator-profile.org"
