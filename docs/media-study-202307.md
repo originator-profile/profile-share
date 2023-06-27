@@ -1,6 +1,5 @@
 note: ある程度書けたら https://profile-docs.pages.dev/docs/media-study-202307 に入れる想定。
 
-
 本ページでは Originator Profile 技術研究組合において 2023/07 より準備・実施する「メディア側実証実験」の概要および参加に際して必要な準備や手順などについて説明します。
 
 ## 目的
@@ -17,7 +16,7 @@ note: ある程度書けたら https://profile-docs.pages.dev/docs/media-study-2
 
 ### 設計と実装
 
-現プロトタイプでは、OP CIP 加盟組織の情報を OP レジストリに登録し、WordPressで記事ページの HTML を生成する際に、レジストリに登録された組織情報と共に**個別の記事に署名付きで記事の情報もデジタルデータとして付与**し、ブラウザ(拡張機能)で閲覧時に記事と発行元組織の情報を確認できる仕組みを提案・実装しております。
+現プロトタイプでは、OP CIP 加盟組織の情報を OP レジストリに登録し、WordPress で記事ページの HTML を生成する際に、レジストリに登録された組織情報と共に**個別の記事に署名付きで記事の情報もデジタルデータとして付与**し、ブラウザ(拡張機能)で閲覧時に記事と発行元組織の情報を確認できる仕組みを提案・実装しております。
 
 従来の Web においてページやコンテンツの情報をデジタル化する仕組みは [OGP](https://ogp.me/) や [JSON-LD](https://json-ld.org/) [構造化データ](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data) のようなものがありましたが、記載情報に対して発信者の署名がなされている仕組みではなく、発信者に関する信頼性を機械的に検証可能なデータ及び実装ではありませんでした。
 
@@ -38,13 +37,13 @@ OP においては公開鍵・秘密鍵を用いた署名技術や [Verifiable C
 以下のような点については初回の実験である今回のスコープには含めず、次回以降の継続実験において随時検証範囲の拡大を行っていくことを想定しています。
 
 - メディアコンテンツへの署名検証
-    - テキストや HTML ではない画像・動画などのメディアコンテンツに対する署名検証アルゴリズムの選定と実装は現時点では検討段階・未実装であり、テキストを含まない写真や動画など**だけ**を対象とする SDP の発行についてはスコープ外とします。
-    - 画像や動画を**含む**ニュース記事においては、テキスト部分だけを抽出して署名するアルゴリズムを利用頂く事で、画像に対しての署名は含まないが当該記事に対しての SDP を発行頂く事は可能です
+  - テキストや HTML ではない画像・動画などのメディアコンテンツに対する署名検証アルゴリズムの選定と実装は現時点では検討段階・未実装であり、テキストを含まない写真や動画など**だけ**を対象とする SDP の発行についてはスコープ外とします。
+  - 画像や動画を**含む**ニュース記事においては、テキスト部分だけを抽出して署名するアルゴリズムを利用頂く事で、画像に対しての署名は含まないが当該記事に対しての SDP を発行頂く事は可能です
 - 複数組織による共同作成コンテンツ
-    - 今回は単一の組織が発行するコンテンツを対象として SOP, SDP を発行・利用するユースケースに限って検証します。
+  - 今回は単一の組織が発行するコンテンツを対象として SOP, SDP を発行・利用するユースケースに限って検証します。
 - サイト運営者とコンテンツ作成者が別組織であるケース
-    - 今回は各組織が自社コンテンツに対して署名・配信する最も単純なケースを対象としています。別組織が運用するサイトに署名済みの記事を入れて再配信する場合、再配信に伴って記事本文の変換・書き換えが生じる場合がありますが、その場合の対応を検討・検証するのは次回以降の想定です。
-    - また、サイト運営者とコンテンツ作成者が別の場合、ユーザにはコンテンツ発信元の組織情報だけではなく、配信者(場合によっては各経路)組織の情報も併せて確認し関係性が分かる形でお見せする必要があると考えます。表示側の仕組みと実装は既にプロトタイプがありますが、複数組織間で連携したシステムと調整が必要であるため初回実験のスコープからは外しております。
+  - 今回は各組織が自社コンテンツに対して署名・配信する最も単純なケースを対象としています。別組織が運用するサイトに署名済みの記事を入れて再配信する場合、再配信に伴って記事本文の変換・書き換えが生じる場合がありますが、その場合の対応を検討・検証するのは次回以降の想定です。
+  - また、サイト運営者とコンテンツ作成者が別の場合、ユーザにはコンテンツ発信元の組織情報だけではなく、配信者(場合によっては各経路)組織の情報も併せて確認し関係性が分かる形でお見せする必要があると考えます。表示側の仕組みと実装は既にプロトタイプがありますが、複数組織間で連携したシステムと調整が必要であるため初回実験のスコープからは外しております。
 
 これらはあくまでも今回の検証対象外とするのみで、本組合と OP 技術では中長期的に解決・対応する想定であり、参画事業者の皆様と共に議論・設計・社会実装を進めさせて頂きます。該当するケースについて技術詳細を把握されている方には今後の実験に向けて助言や協力を頂きますようお願い致します。
 
@@ -66,29 +65,25 @@ WordPress ではないシステムをご利用の方は WordPress の実装を�
 
 現時点では以下のスケジュールにて実証実験の進行を想定しております:
 
-- 6月30日
-    - 実験参加/参加検討企業の担当者向け説明会
-    - 実際の実験参加に際しての確認が出来るよう技術担当者もご参加ください
-- 7月前半〜8月頭
-    - 実験参加企業から必要情報の聞き取り
-    - OP レジストリへの実験参加企業の登録
-    - DP レジストリを利用可能なアクセス情報の付与
-    - 各社において CMS の改修の実装開始
-- 7月28日
-    - 実験参加申込期日
-- 7月後半
-    - 記事に SDP を発行可能なシステムの準備が出来たメディアから順次実験開始
-- 〜8月中頃
-    - 初回実験期間
-    - 実際のシステムへの導入に際しての具体的な課題やデータを収集
-    - CMS 改修等が間に合わない企業は課題抽出・共有などのみを行い、準備出来次第、9 月中頃までの期間で実験を実施
-- 8月中頃〜8月末
-    - 実験参画企業からの課題抽出結果・フィードバック・データの取り纏め
-- 9月頭頃
-    - 実験結果(初期)報告
-- 10頭頃
-    - 実験結果(追加)報告
-    - 8 月中頃までに実施できなかったが 9 月中頃までに実施できた参加企業分
+- 6 月 30 日
+  - 実験参加/参加検討企業の担当者向け説明会
+  - 実際の実験参加に際しての確認が出来るよう技術担当者もご参加ください
+- 7 月前半
+  - 実験参加企業から必要情報の聞き取り
+  - OP レジストリへの実験参加企業の登録
+  - DP レジストリを利用可能な権限の付与
+  - 各社において CMS の改修の実装開始
+- 7 月後半〜8 月中頃
+  - 記事に SDP を発行可能なシステムの準備が出来たメディアから順次実験開始
+  - 実際のシステムへの導入に際しての具体的な課題やデータを収集
+  - CMS 改修等の実装がこの期間に間に合わない企業はこの期間は課題の共有などのみを行い、準備が出来次第、9 月中頃までの期間で実験を実施
+- 8 月中頃〜8 月末
+  - 実験参画企業からの課題抽出結果・フィードバック・データの取り纏め
+- 9 月頭頃
+  - 実験結果(初期)報告
+- 10 頭頃
+  - 実験結果(追加)報告
+  - 8 月中頃までに実施できなかったが 9 月中頃までに実施できた参加企業分
 
 本初回実験に続く実験や連続的な実験については、実験期間中に得られた課題やフィードバックに応じて随時調整・ご連絡をさせて頂きます。
 
@@ -135,7 +130,7 @@ https://forms.gle/udirHux1TFs5ctyu6
 
 ##### ブラウザへのインストール
 
-想定しているブラウザは Google Chromeです
+想定しているブラウザは Google Chrome です
 
 1. ZIP ファイルを展開します。
 2. chrome://extensions にアクセスします。
@@ -145,14 +140,14 @@ https://forms.gle/udirHux1TFs5ctyu6
 
 #### 利用法の確認
 
-ブラウザで CIP 公式サイトにアクセスします: 
+ブラウザで CIP 公式サイトにアクセスします:
 https://originator-profile.org/ja-JP/
 
-右上の拡張機能ボタンからProfile web Extentionを選択
-画像1
+右上の拡張機能ボタンから Profile web Extention を選択
+画像 1
 
 ウィンドウが開き、認証の有無や各種情報を確認できます
-画像2
+画像 2
 
 メディアサイトへの埋め込み例としては読売新聞オンラインのスナップショットに OP 埋め込みを行ったサンプルサイトでも同様にご確認頂けます。
 
@@ -163,7 +158,7 @@ https://originator-profile.org/ja-JP/
 ### 公開鍵、秘密鍵の作成と公開鍵の共有
 
 Signed Originator Profile あるいは Signed Document Profile 発行作業には鍵ペアが必要です。
-今回はKeyファイルと紐づける組織情報の例として下記を使用して、
+今回は Key ファイルと紐づける組織情報の例として下記を使用して、
 鍵ペアの作成～公開鍵の共有までの手順例を説明します。
 実行するディレクトリは`apps/registry`です
 
@@ -172,13 +167,13 @@ Keyファイル名：key.pem
 紐づける組織情報のID：daab5a08-d513-400d-aaaa-e1c1493e0421
 ```
 
-Keyファイルの作成は下記コマンドを実行します。
+Key ファイルの作成は下記コマンドを実行します。
 
 ```
 bin/dev key-gen -o key.pem
 ```
 
-実行結果として得られる、Keyファイル名は下記となります。
+実行結果として得られる、Key ファイル名は下記となります。
 
 ```
 key.pem （プライベート鍵）
@@ -186,20 +181,19 @@ key.pem.pub.json （公開鍵）
 ```
 
 次に公開鍵の共有手順を説明します。
-必要な情報としては下記となるので事前に確認してから実行します。
-1.　公開鍵のパス
-2.　紐づける組織情報のID
+必要な情報としては下記となるので事前に確認してから実行します。 1.　公開鍵のパス 2.　紐づける組織情報の ID
 
 公開鍵の共有は下記コマンドを実行します。
+
 ```
 bin/dev account:register-key -k key.pem.pub.json --id daab5a08-d513-400d-aaaa-e1c1493e0421
 ```
 
 実行結果としてコンソールに下記のように表示されます
+
 ```
 Done.
 ```
-
 
 ### 実験対象サイトとコンテンツの選定
 
@@ -209,21 +203,20 @@ TODO: 丁寧に説明する
 - 複数ページ対応などはオプショナル、課題の把握が出来れば今期実装は最小限で可
 - 選定ガイド・FAQ 的なものは必要
 
-### CMSへのDP発行機能の実装とデプロイ
+### CMS への DP 発行機能の実装とデプロイ
 
 - 後述
 
 ### DP レジストリ API の確認
 
 TODO: 今の API 一覧は内部向けで実験参加者向けに適正な内容と説明になっていない。あくまでも使ってもらう 2 API をここで説明する。
-使用するAPIは下記2つです
+使用する API は下記 2 つです
 
 - ウェブページの作成
-`post_admin_publisher{id}_`
-
-
+  `post_admin_publisher{id}_`
 
 リクエスト例
+
 ```
 curl -X POST localhost:8080/admin/publisher/732e0c2d-179e-5190-a7e1-a9c5caa43eca/ \
     -u 732e0c2d-179e-5190-a7e1-a9c5caa43eca:KEg5GvSQLASQphVqARs-xcyyIaKz7f21W2ZySMdlgnU \
@@ -232,24 +225,28 @@ curl -X POST localhost:8080/admin/publisher/732e0c2d-179e-5190-a7e1-a9c5caa43eca
 ```
 
 レスポンス例
+
 ```
 {"id":"403cc6d4-53d6-4286-9f42-930e0bf7bd3f","url":"dummy","accountId":"732e0c2d-179e-5190-a7e1-a9c5caa43eca","title":null,"image":null,"description":null,"author":null,"editor":null,"datePublished":null,"dateModified":null,"location":null,"bodyFormatValue":"visibleText","proofJws":"dummy"}
 ```
 
-- Profile Setの取得
-website.getProfileSet
+- Profile Set の取得
+  website.getProfileSet
 
 ### DP の作成と DP レジストリへの登録
 
 #### DP の作成
-DPの作成のため、Signed Document Profile を作成する必要があります。
+
+DP の作成のため、Signed Document Profile を作成する必要があります。
 前提条件として組織情報の登録、公開鍵の登録、Signed Originator Profile 発行を行う必要があります。
 今回は下記を使用して実行します。
+
 ```
 公開鍵のパス：key.pem
 登録する組織情報のID：daab5a08-d513-400d-aaaa-e1c1493e0421
 ```
-また、Webページの情報も必要になるため`website.json`というファイルを用意します。
+
+また、Web ページの情報も必要になるため`website.json`というファイルを用意します。
 雛形は[website.example.json](https://github.com/webdino/profile/blob/main/apps/registry/website.example.json)というファイルを編集して下記のような内容を使用します。
 
 ```json
@@ -265,7 +262,7 @@ DPの作成のため、Signed Document Profile を作成する必要がありま
 
 「読売新聞社」は、株式会社読売新聞東京本社の登録商標です。
 
-公開鍵のパス、登録する組織情報のID、webページの情報を引数として使用して下記のように実行します。
+公開鍵のパス、登録する組織情報の ID、web ページの情報を引数として使用して下記のように実行します。
 
 ```shell
 bin/dev publisher:website \
@@ -276,6 +273,7 @@ bin/dev publisher:website \
 ```
 
 実行結果として下記のようにコンソールに表示され
+
 ```
 {
   "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc8",
@@ -300,8 +298,10 @@ bin/dev publisher:website \
 
 オプションは[README.md](https://github.com/webdino/profile/tree/main/apps/registry#profile-registry-publisherwebsite)を参照ください。
 
-#### DPレジストリへの登録
+#### DP レジストリへの登録
+
 Originator Profile レジストリ運用者から受け取った Signed Originator Profile を Document Profile レジストリに登録します。
+
 ```
 bin/dev account:register-op --id <ドメイン名> --op <Signed Originator Profileファイル>
 ```
@@ -310,13 +310,14 @@ DP の作成が可能になったら、DP 発行処理を CMS 側に組み込み
 
 ## CMS の実装ガイド
 
-### 全体の流れ (HTML の一部を CSS Selector で選択、署名、SDP 生成、DPレジストリ登録、Link付与)
-CMSへの実装としてWordPressでの手順を例に説明します。
+### 全体の流れ (HTML の一部を CSS Selector で選択、署名、SDP 生成、DP レジストリ登録、Link 付与)
+
+CMS への実装として WordPress での手順を例に説明します。
 
 #### 事前準備
-Document Profile レジストリ へのアクセス情報は事前にお渡しします
-その情報をWordPressでの実装に使用いたします
 
+Document Profile レジストリ へのアクセス情報は事前にお渡しします
+その情報を WordPress での実装に使用いたします
 
 :::danger
 注意
@@ -324,15 +325,18 @@ DP レジストリは各社共同使用となっています
 案内に記載された方法以外での使用は避けてください
 :::
 
-#### WordPress　連携
+#### WordPress 　連携
+
 ##### プラグインのインストール
+
 - WordPress サイトに WordPress Profile Plugin をインストールします
 - Document Profile レジストリのドメイン名は WordPress 管理者画面 > Settings > Profile > [レジストリドメイン名] に設定してください。
 - Document Profile レジストリの認証情報は WordPress 管理者画面 > Settings > Profile > [認証情報] に設定してください。
 
-### 署名付与のWP,一般web実装のプロトの説明
+### 署名付与の WP,一般 web 実装のプロトの説明
 
 #### WordPress
+
 ```mermaid
 sequenceDiagram
 actor 利用者
@@ -357,10 +361,12 @@ WordPress Plugin->>利用者: HTML <link> element
 利用者->>Document Profile レジストリ: 記事の検証
 Document Profile レジストリ->>利用者: Profile Set の取得
 ```
-管理者がプラグインのインストール、登録したレジストリの管理者情報を記載することで
-記事の公開時にSigned Document Profile の発行～検証を自動で行い、Profile setを取得できる。
 
-#### 他のWebサイト
+管理者がプラグインのインストール、登録したレジストリの管理者情報を記載することで
+記事の公開時に Signed Document Profile の発行～検証を自動で行い、Profile set を取得できる。
+
+#### 他の Web サイト
+
 ```mermaid
 sequenceDiagram
 actor 利用者
@@ -386,6 +392,7 @@ WordPress以外のWebサイトで実装する場合、手順が異なり下記�
 - Signed Document Profile の発行と登録
 
 Document Profile レジストリのドメイン名、対象とするウェブサイトについて以下を例として説明します
+
 ```
 Document Profile レジストリのドメイン名："oprdev.originator-profile.org"
 対象とするウェブサイト："https://originator-profile.org"
@@ -402,7 +409,9 @@ Document Profile レジストリのドメイン名："oprdev.originator-profile.
 ```
 
 #### Signed Document Profile の発行準備
+
 記事の URL、検証対象となるテキストの範囲、抽出結果の保存先を表明する .extract.json を作成します。
+
 ```
 [
   {
@@ -438,7 +447,7 @@ Document Profile レジストリのドメイン名："oprdev.originator-profile.
 ]
 ```
 
-作成した.extract.jsonからOGP 等メタデータ、検証対象となるテキストの抽出するため、
+作成した.extract.json から OGP 等メタデータ、検証対象となるテキストの抽出するため、
 下記コマンドを実行します。
 
 ```
@@ -446,6 +455,7 @@ $ bin/dev publisher:extract-website --input .extract.json
 ```
 
 出力結果が下記です
+
 ```
 {
   "url": "https://originator-profile.org/ja-JP/",
@@ -465,13 +475,13 @@ $ bin/dev publisher:extract-website --input .extract.json
 ```
 
 #### Signed Document Profile の発行と登録
+
 .website.json から Signed Document Profile を発行し Document Profile レジストリに登録します。
-この際、--identity で指定するプライベート鍵はOriginator Profile レジストリに登録した公開鍵を使用してください。
+この際、--identity で指定するプライベート鍵は Originator Profile レジストリに登録した公開鍵を使用してください。
 
 ```
 $ bin/dev publisher:website --identity <プライベート鍵> --id <管理者の UUID> --operation create
 ```
-
 
 #### ブラウザでの表示結果確認
 
@@ -483,21 +493,22 @@ CMS (WordPress または他の CMS) 側の実装が終わったら出力 HTML �
 
 完了！
 
-## CIP提供DPレジストリについて
+## CIP 提供 DP レジストリについて
 
 **TODO: 現状の開発チーム内ドキュメントは実験に必要ない情報を含む/振る舞いについての説明が足りない部分があるため、今回利用してもらう最小限の API 2 点について利用する範囲のみで詳細を説明する。登録と応答の req/res 例示も含める。**
 
-DPレジストリはCIP提供のものを使う、使い方説明。
+DP レジストリは CIP 提供のものを使う、使い方説明。
 
-登録は post_admin_publisher{id}_ を使うだけでよい:
+登録は post*admin_publisher{id}* を使うだけでよい:
 
 https://profile-docs.pages.dev/docs/registry/assets/api#post_admin_publisherid_
 
-但し使うのは jwt 送る機能だけなので、その最小限の使い方の API の使い方をここに書く。今回使わない機能を含めた上記 URLはあくまで参考として扱う。
+但し使うのは jwt 送る機能だけなので、その最小限の使い方の API の使い方をここに書く。今回使わない機能を含めた上記 URL はあくまで参考として扱う。
 
-登録に使用するAPIの`post_admin_publisher{id}_`について
+登録に使用する API の`post_admin_publisher{id}_`について
 
 リクエスト例
+
 ```
 curl -X POST localhost:8080/admin/publisher/732e0c2d-179e-5190-a7e1-a9c5caa43eca/ \
     -u 732e0c2d-179e-5190-a7e1-a9c5caa43eca:KEg5GvSQLASQphVqARs-xcyyIaKz7f21W2ZySMdlgnU \
@@ -506,6 +517,7 @@ curl -X POST localhost:8080/admin/publisher/732e0c2d-179e-5190-a7e1-a9c5caa43eca
 ```
 
 レスポンス例
+
 ```
 {"id":"403cc6d4-53d6-4286-9f42-930e0bf7bd3f","url":"dummy","accountId":"732e0c2d-179e-5190-a7e1-a9c5caa43eca","title":null,"image":null,"description":null,"author":null,"editor":null,"datePublished":null,"dateModified":null,"location":null,"bodyFormatValue":"visibleText","proofJws":"dummy"}
 ```
@@ -525,35 +537,41 @@ URL 末尾 / 付けても付けなくとも、上記で登録したものと完�
 TODO: リポジトリや開発ドキュメントのリンク集
 
 ### 全般
+
 - [全体サマリ](https://profile-docs.pages.dev/docs)
 - [オリジネータープロファイル リポジトリ](https://github.com/webdino/profile/tree/main)
 - [仕様](https://profile-docs.pages.dev/docs/spec)
-    - リポジトリ全体での仕様
+  - リポジトリ全体での仕様
 - [環境構築手順書](https://profile-docs.pages.dev/docs/development)
-    - Linux, macOS または Windows (WSL2)で開発環境を構築するための手順 
+  - Linux, macOS または Windows (WSL2)で開発環境を構築するための手順
 
 ### Profile Registry
+
 - [サマリ](https://profile-docs.pages.dev/docs/registry/)
 - [仕様](https://profile-docs.pages.dev/docs/registry/spec)
-    - Profile Registryに関する仕様 
+  - Profile Registry に関する仕様
 - [操作説明書](https://profile-docs.pages.dev/docs/registry/operation)
-    - Originator Profile、Document Profileの発行手順とWebサイトへの紐づけ方法 
+  - Originator Profile、Document Profile の発行手順と Web サイトへの紐づけ方法
 - [Document Profile レジストリ構築](https://profile-docs.pages.dev/docs/registry/document-profile-registry-creation)
-    - Document Profile　レジストリの構築手順 
+  - Document Profile 　レジストリの構築手順
 - [WordPress 連携](https://profile-docs.pages.dev/docs/registry/wordpress-integration)
-    - WordPressサイト と Document Profile　レジストリとの連携方法
-    - 前提としてDocument Profile　レジストリの構築が完了していること
+  - WordPress サイト と Document Profile 　レジストリとの連携方法
+  - 前提として Document Profile 　レジストリの構築が完了していること
 - [ウェブサイト　連携](https://profile-docs.pages.dev/docs/registry/website-integration)
-    - ウェブサイト　と　Document Profile レジストリとの連携方法
-    - 前提としてDocument Profile　レジストリの構築が完了していること
+  - ウェブサイト　と　 Document Profile レジストリとの連携方法
+  - 前提として Document Profile 　レジストリの構築が完了していること
 - [API](https://profile-docs.pages.dev/docs/registry/assets/api)
-    - Profile Registryで使用されているAPI一覧
-- [ER図](https://profile-docs.pages.dev/docs/registry/assets/erd)
-    - データベーススキーマのER図
+  - Profile Registry で使用されている API 一覧
+- [ER 図](https://profile-docs.pages.dev/docs/registry/assets/erd)
+  - データベーススキーマの ER 図
+
 ### Profile Web Extension
+
 - [サマリ](https://profile-docs.pages.dev/docs/web-ext/)
 - [拡張機能の実験的利用](https://profile-docs.pages.dev/docs/web-ext/experimental-use)
+
 ### Profile Model
+
 - [サマリ](https://profile-docs.pages.dev/docs/model/)
 - [スキーマ](https://profile-docs.pages.dev/docs/model/assets/)
 
@@ -563,8 +581,8 @@ TODO: リポジトリや開発ドキュメントのリンク集
 
 - OP レジストリ
 - DP レジストリ
-    - Signed Profile Set を保存、ブラウザのリクエストに応じて返す
-    - OP レジストリから Signed Originator Profile を受け取り(更新などもしつつ) DP (SPS) 発行時に使う
+  - Signed Profile Set を保存、ブラウザのリクエストに応じて返す
+  - OP レジストリから Signed Originator Profile を受け取り(更新などもしつつ) DP (SPS) 発行時に使う
 - Signed Originator Profile
 - Signed Document Profile
 - Profile Set
@@ -577,5 +595,5 @@ TODO: 事前に質問を頂いたものから抜粋・回答する
 
 以下、頂いた質問メモ
 
-- １）サイト生成システムへの組み込みについて、もう少し詳細に教えていただけますでしょうか。当社の場合、CMSはアウトワード社開発のものを使用しており、組み込みにOW社の開発が必要か、社内エンジニアの対応のみで可能かを判断するためです。
-- ２）当社のサイトでは、中日新聞WEBは有料域・ページ送りの対応が必要ですが、東京新聞WEBでは有料域がなく、ページ送りのみの対応となります。どちらか一方でテストしたほうがいいでしょうか、または両方の環境でテストしたほうがいいでしょうか。
+- １）サイト生成システムへの組み込みについて、もう少し詳細に教えていただけますでしょうか。当社の場合、CMS はアウトワード社開発のものを使用しており、組み込みに OW 社の開発が必要か、社内エンジニアの対応のみで可能かを判断するためです。
+- ２）当社のサイトでは、中日新聞 WEB は有料域・ページ送りの対応が必要ですが、東京新聞 WEB では有料域がなく、ページ送りのみの対応となります。どちらか一方でテストしたほうがいいでしょうか、または両方の環境でテストしたほうがいいでしょうか。
