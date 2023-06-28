@@ -1,7 +1,5 @@
 # Originator Profile 技術研究組合 メディア側実証実験 (202307)
 
-note: ある程度書けたら https://profile-docs.pages.dev/docs/media-study-202307 に入れる想定。
-
 本ページでは Originator Profile 技術研究組合において 2023/07 より準備・実施する「メディア側実証実験」の概要および参加に際して必要な準備や手順などについて説明します。
 
 ## 目的
@@ -121,8 +119,7 @@ https://forms.gle/udirHux1TFs5ctyu6
 
 技術開発 WG 側で事前にビルド済みの拡張機能をダウンロード頂くか、ご自身で最新のコードからビルドしてご利用ください。
 
-ビルド済み拡張機能: **用意して TODO URL 入れる**
-⇒ github releases にリンクする
+ビルド済み拡張機能: https://github.com/webdino/profile/releases/latest
 
 参考: [拡張機能の実験的利用](https://profile-docs.pages.dev/docs/web-ext/experimental-use)
 
