@@ -592,7 +592,6 @@ Document Profile レジストリのドメイン名、対象とするウェブサ
 - Document Profile レジストリのドメイン名："oprdev.originator-profile.org"
 - 対象とするウェブサイト："https://originator-profile.org"
 
-
 #### `HTML <link> element` の設置
 
 設置する HTML は下記になります
