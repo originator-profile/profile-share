@@ -369,11 +369,11 @@ url パラメータには、 DP 登録時に指定した URL と**完全に一�
 
 例:
 
-登録時に URL `https://example.com` を与えた場合、
+登録時に URL `https://example.com/` を与えた場合、
 
-- 正しいリクエスト: `https://oprdev.originator-profile.org/website/profiles?url=http%3A%2F%2Fexample.com`
+- 正しいリクエスト: `https://oprdev.originator-profile.org/website/profiles?url=https%3A%2F%2Fexample.com%2F`
 
-- 間違ったリクエスト 1（末尾の`/`）: `https://oprdev.originator-profile.org/website/profiles?url=https%3A%2F%2Fexample.com%2F`
+- 間違ったリクエスト 1（末尾の`/`がない）: `https://oprdev.originator-profile.org/website/profiles?url=http%3A%2F%2Fexample.com`
 - 間違ったリクエスト 2（大文字小文字）: `https://oprdev.originator-profile.org/website/profiles?url=https%3A%2F%2FEXAMPLE.COM%2F`
 
 :::
