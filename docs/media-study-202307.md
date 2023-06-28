@@ -1,3 +1,5 @@
+# Originator Profile 技術研究組合 メディア側実証実験 (202307)
+
 note: ある程度書けたら https://profile-docs.pages.dev/docs/media-study-202307 に入れる想定。
 
 本ページでは Originator Profile 技術研究組合において 2023/07 より準備・実施する「メディア側実証実験」の概要および参加に際して必要な準備や手順などについて説明します。
@@ -144,10 +146,12 @@ https://forms.gle/udirHux1TFs5ctyu6
 https://originator-profile.org/ja-JP/
 
 右上の拡張機能ボタンから Profile web Extention を選択
-画像 1
+
+![利用法の確認1](assets/how_to_use_ext01.png)
 
 ウィンドウが開き、認証の有無や各種情報を確認できます
-画像 2
+
+![利用法の確認2](assets/how_to_use_ext02.png)
 
 メディアサイトへの埋め込み例としては読売新聞オンラインのスナップショットに OP 埋め込みを行ったサンプルサイトでも同様にご確認頂けます。
 
@@ -272,7 +276,7 @@ bin/dev publisher:website \
   -o create
 ```
 
-実行結果として下記のようにコンソールに表示され
+実行結果として下記のようにコンソールに表示されます。
 
 ```
 {
@@ -291,10 +295,6 @@ bin/dev publisher:website \
   "proofJws": "eyJhbGciOiJFUzI1NiIsImtpZCI6Im5Senc0VzdFVXJSMmlZdGlMbkFick5QOVVEdFFneE96OGZnX3poRjBmTkEiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..Y_IlLjScpDwO3cfBPLSgh0mPVAw8xgU00DcPmL-e2ZD8Mpf6QkzH6raX_Anh0YWJRLWaS3US80MRHZmxfcmPpw"
 }
 ```
-
-指定した組織情報の`issuedDps `列がインクリメントされて表示されていれば成功です。
-
-画像
 
 オプションは[README.md](https://github.com/webdino/profile/tree/main/apps/registry#profile-registry-publisherwebsite)を参照ください。
 
@@ -320,7 +320,6 @@ Document Profile レジストリ へのアクセス情報は事前にお渡し�
 その情報を WordPress での実装に使用いたします
 
 :::danger
-注意
 DP レジストリは各社共同使用となっています
 案内に記載された方法以外での使用は避けてください
 :::
@@ -490,10 +489,12 @@ $ bin/dev publisher:website --identity <プライベート鍵> --id <管理者�
 #### ブラウザでの表示結果確認
 
 CMS (WordPress または他の CMS) 側の実装が終わったら出力 HTML に SDP への link タグが含まれていることを確認
-画像
+
+![ブラウザでの確認1](assets/check_browser01.png)
 
 拡張機能を起動して読み込まれることを確認
-画像
+
+![ブラウザでの確認2](assets/check_browser02.png)
 
 完了！
 
