@@ -365,7 +365,7 @@ curl -X GET https://oprdev.originator-profile.org/website/profiles?url=http%3A%2
 
 :::caution
 
-url パラメータには、 DP 登録時に指定した URL と**完全に一致する**ものを与えてください。例えば、登録時に URL の末尾に `/` を付与しなかった場合には、このエンドポイントにも、末尾に `/` のない URL を与えてください。その他、[URLの仕様]((https://url.spec.whatwg.org/#url-serializing)上は無視すべき違いであっても、プロファイルセットが返ってこない原因となります。
+url パラメータには、 DP 登録時に指定した URL と**完全に一致する**ものを与えてください。例えば、登録時に URL の末尾に `/` を付与しなかった場合には、このエンドポイントにも、末尾に `/` のない URL を与えてください。その他、[URL の仕様]((https://url.spec.whatwg.org/#url-serializing)上は無視すべき違いであっても、プロファイルセットが返ってこない原因となります。
 
 例:
 
@@ -373,9 +373,8 @@ url パラメータには、 DP 登録時に指定した URL と**完全に一�
 
 - 正しいリクエスト: `https://oprdev.originator-profile.org/website/profiles?url=http%3A%2F%2Fexample.com`
 
-- 間違ったリクエスト1（末尾の`/`）: `https://oprdev.originator-profile.org/website/profiles?url=https%3A%2F%2Fexample.com%2F`
-- 間違ったリクエスト2（大文字小文字）: `https://oprdev.originator-profile.org/website/profiles?url=https%3A%2F%2FEXAMPLE.COM%2F`
-
+- 間違ったリクエスト 1（末尾の`/`）: `https://oprdev.originator-profile.org/website/profiles?url=https%3A%2F%2Fexample.com%2F`
+- 間違ったリクエスト 2（大文字小文字）: `https://oprdev.originator-profile.org/website/profiles?url=https%3A%2F%2FEXAMPLE.COM%2F`
 
 :::
 
