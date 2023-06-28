@@ -168,10 +168,9 @@ Signed Originator Profile あるいは Signed Document Profile 発行作業に�
 鍵ペアの作成～公開鍵の共有までの手順例を説明します。
 実行するディレクトリは`apps/registry`です
 
-```
-Keyファイル名：key.pem
-紐づける組織情報のID：daab5a08-d513-400d-aaaa-e1c1493e0421
-```
+- Keyファイル名：key.pem
+- 紐づける組織情報のID：daab5a08-d513-400d-aaaa-e1c1493e0421
+
 
 Key ファイルの作成は下記コマンドを実行します。
 
@@ -181,18 +180,15 @@ bin/dev key-gen -o key.pem
 
 実行結果として得られる、Key ファイル名は下記となります。
 
-```
-key.pem （プライベート鍵）
-key.pem.pub.json （公開鍵）
-```
+
+- key.pem （プライベート鍵）
+- key.pem.pub.json （公開鍵）
 
 次に公開鍵の共有手順を説明します。
 必要な情報としては下記となるので事前に確認してから実行します。 
 
-```
-1.　公開鍵のパス 
-2.　紐づける組織情報の ID
-```
+1. 公開鍵のパス 
+2. 紐づける組織情報の ID
 
 公開鍵の共有は下記コマンドを実行します。
 
@@ -450,10 +446,8 @@ DP の作成のため、Signed Document Profile を作成する必要があり�
 前提条件として組織情報の登録、公開鍵の登録、Signed Originator Profile 発行を行う必要があります。
 今回は下記を使用して実行します。
 
-```
-公開鍵のパス：key.pem
-登録する組織情報のID：daab5a08-d513-400d-aaaa-e1c1493e0421
-```
+- 公開鍵のパス：key.pem
+- 登録する組織情報のID：daab5a08-d513-400d-aaaa-e1c1493e0421
 
 また、Web ページの情報も必要になるため`website.json`というファイルを用意します。
 雛形は[website.example.json](https://github.com/webdino/profile/blob/main/apps/registry/website.example.json)というファイルを編集して下記のような内容を使用します。
@@ -500,8 +494,6 @@ bin/dev publisher:website \
   "proofJws": "eyJhbGciOiJFUzI1NiIsImtpZCI6Im5Senc0VzdFVXJSMmlZdGlMbkFick5QOVVEdFFneE96OGZnX3poRjBmTkEiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..Y_IlLjScpDwO3cfBPLSgh0mPVAw8xgU00DcPmL-e2ZD8Mpf6QkzH6raX_Anh0YWJRLWaS3US80MRHZmxfcmPpw"
 }
 ```
-
-オプションは[README.md](https://github.com/webdino/profile/tree/main/apps/registry#profile-registry-publisherwebsite)を参照ください。
 
 #### DP レジストリへの登録
 
@@ -659,7 +651,7 @@ Document Profile レジストリのドメイン名："oprdev.originator-profile.
 下記コマンドを実行します。
 
 ```
-$ bin/dev publisher:extract-website --input .extract.json
+bin/dev publisher:extract-website --input .extract.json
 ```
 
 出力結果が下記です
@@ -688,7 +680,7 @@ $ bin/dev publisher:extract-website --input .extract.json
 この際、--identity で指定するプライベート鍵は Originator Profile レジストリに登録した公開鍵を使用してください。
 
 ```
-$ bin/dev publisher:website --identity <プライベート鍵> --id <管理者の UUID> --operation create
+bin/dev publisher:website --identity <プライベート鍵> --id <管理者の UUID> --operation create
 ```
 
 #### ブラウザでの表示結果確認
