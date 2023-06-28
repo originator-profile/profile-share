@@ -365,7 +365,7 @@ curl -X GET https://oprdev.originator-profile.org/website/profiles?url=http%3A%2
 
 :::caution
 
-url パラメータには、 DP 登録時に指定した URL と**完全に一致する**ものを与えてください。例えば、登録時に URL の末尾に `/` を付与しなかった場合には、このエンドポイントにも、末尾に `/` のない URL を与えてください。その他、[URL の仕様]((https://url.spec.whatwg.org/#url-serializing)上は無視すべき違いであっても、プロファイルセットが返ってこない原因となります。
+url パラメータには、 DP 登録時に指定した URL と**完全に一致する**ものを与えてください。例えば、登録時に URL の末尾に `/` を付与しなかった場合には、このエンドポイントにも、末尾に `/` のない URL を与えてください。その他、[URL の仕様](https://url.spec.whatwg.org/#url-serializing)上は無視すべき違いであっても、プロファイルセットが返ってこない原因となります。
 
 例:
 
