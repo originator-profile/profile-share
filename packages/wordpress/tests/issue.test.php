@@ -4,9 +4,22 @@ use PHPUnit\Framework\TestCase;
 const WP_CONTENT_DIR = '/tmp';
 
 require_once __DIR__ . '/../includes/issue.php';
+use function Profile\Issue\content_to_text;
 use function Profile\Issue\sign_body;
 
 final class Issue extends TestCase {
+	public function test_content_to_text_関数は子要素のtextContentの結合した結果を返す() {
+		$content = <<<'EOD'
+<p>本文1</p>
+
+
+<p>本文2</p>
+EOD;
+
+		$text = content_to_text( $content );
+		$this->assertSame( '本文1本文2', $text );
+	}
+
 	public function test_sign_body_関数はDetached_Compact_JWSを返す() {
 		$body  = 'Hello, world!';
 		$pkcs8 = <<<'EOF'
