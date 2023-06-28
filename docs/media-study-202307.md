@@ -591,10 +591,9 @@ WordPress 以外の Web サイトで実装する場合、手順が異なり下�
 
 Document Profile レジストリのドメイン名、対象とするウェブサイトについて以下を例として説明します
 
-```
-Document Profile レジストリのドメイン名："oprdev.originator-profile.org"
-対象とするウェブサイト："https://originator-profile.org"
-```
+- Document Profile レジストリのドメイン名："oprdev.originator-profile.org"
+- 対象とするウェブサイト："https://originator-profile.org"
+
 
 #### `HTML <link> element` の設置
 
