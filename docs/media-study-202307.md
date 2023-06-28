@@ -235,28 +235,28 @@ curl -X POST https://oprdev.originator-profile.org/admin/publisher/732e0c2d-179e
     -d '{"input":{"id":"403cc6d4-53d6-4286-9f42-930e0bf7bd3f","url":"http://example.com","bodyFormat":{"connect":{"value":"text"}},"proofJws":""},"jwt":"eyJhbGciOiJFUzI1NiIsImtpZCI6Im5Senc0VzdFVXJSMmlZdGlMbkFick5QOVVEdFFneE96OGZnX3poRjBmTkEiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJ0aXRsZSI6Ik9QIOeiuuiqjeOBj-OCkyIsImNhdGVnb3J5IjpbXX0seyJ0eXBlIjoidmlzaWJsZVRleHQiLCJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJsb2NhdGlvbiI6ImgxIiwicHJvb2YiOnsiandzIjoiZXlKaGJHY2lPaUpGVXpJMU5pSXNJbXRwWkNJNkltNVNlbmMwVnpkRlZYSlNNbWxaZEdsTWJrRmljazVRT1ZWRWRGRm5lRTk2T0dablgzcG9SakJtVGtFaUxDSmlOalFpT21aaGJITmxMQ0pqY21sMElqcGJJbUkyTkNKZGZRLi5tYXI1dUh0T2M5a2FTakJUclI3U016OXFQekJheEhQVjFodzV1NkJLS2ZLZTFEV1M5ajA0WXR6MkNTWTdMbDdEdDMzX0R2bXllbW44WEpGbks1eHBaQSJ9fV19LCJpc3MiOiJrYWtpa3VrZWtvLmRlbW9zaXRlcy5wYWdlcy5kZXYiLCJzdWIiOiJlZjlkNzhlMC1kODFhLTRlMzktYjdhMC0yN2UxNTQwNWVkYzgiLCJpYXQiOjE2ODc4Mjc0NTgsImV4cCI6MTcxOTQ0OTg1OH0.bgIE8VMFit4HOFkBKrU9TwGGQuLHt2ZuOCS2C9MCZ4yAapf-1QupUYb3iYZcd-BjBwtgVupq9xzydC9cO25rQQ"}'
 ```
 
-上記の例は、 curl コマンドで DP レジストリ (`oprdev.originator-profile.org`) の DP登録エンドポイントへ HTTP POST リクエストを送っています。
+上記の例は、 curl コマンドで DP レジストリ (`oprdev.originator-profile.org`) の DP 登録エンドポイントへ HTTP POST リクエストを送っています。
 
-CIP から受け取った認証情報がアカウントID `732e0c2d-179e-5190-a7e1-a9c5caa43eca:KEg5GvSQLASQphVqARs-xcyyIaKz7f21W2ZySMdlgnU` 、パスワード `KEg5GvSQLASQphVqARs-xcyyIaKz7f21W2ZySMdlgnU` だとしています。
+CIP から受け取った認証情報がアカウント ID `732e0c2d-179e-5190-a7e1-a9c5caa43eca:KEg5GvSQLASQphVqARs-xcyyIaKz7f21W2ZySMdlgnU` 、パスワード `KEg5GvSQLASQphVqARs-xcyyIaKz7f21W2ZySMdlgnU` だとしています。
 
-エンドポイントの URL は、アカウントID を入れて `https://oprdev.originator-profile.org/admin/publisher/732e0c2d-179e-5190-a7e1-a9c5caa43eca/` とし、 `-u` オプションで上記アカウントID とパスワードを `:` で連結した値を Basic 認証の認証情報として利用するようにしています。
+エンドポイントの URL は、アカウント ID を入れて `https://oprdev.originator-profile.org/admin/publisher/732e0c2d-179e-5190-a7e1-a9c5caa43eca/` とし、 `-u` オプションで上記アカウント ID とパスワードを `:` で連結した値を Basic 認証の認証情報として利用するようにしています。
 
 `-d` オプションでパラメータを指定しています。これらのパラメータはリクエストのボディ部に JSON 形式で渡されます。各パラメータについては下記の JSON のコメントで説明します。
 
 ```json
 {
-    "input": {
-        "id": "403cc6d4-53d6-4286-9f42-930e0bf7bd3f",  // 記事の ID（DP の main プロパティの値）を渡してください。必ず UUID 文字列表現 (RFC 4122) でなければなりません。
-        "url": "http://example.com", // 記事の URL です。
-        // bodyFormat 内は、このままの値を入力してください。
-        "bodyFormat": {
-            "connect": {
-                "value": "text"
-            }
-        },
-        "proofJws": "" // 空文字列を入力してください。
+  "input": {
+    "id": "403cc6d4-53d6-4286-9f42-930e0bf7bd3f", // 記事の ID（DP の main プロパティの値）を渡してください。必ず UUID 文字列表現 (RFC 4122) でなければなりません。
+    "url": "http://example.com", // 記事の URL です。
+    // bodyFormat 内は、このままの値を入力してください。
+    "bodyFormat": {
+      "connect": {
+        "value": "text"
+      }
     },
-    "jwt": "eyJhbGciOiJFUzI1NiIsImtp（略）"  // 署名付きDPを渡してください。
+    "proofJws": "" // 空文字列を入力してください。
+  },
+  "jwt": "eyJhbGciOiJFUzI1NiIsImtp（略）" // 署名付きDPを渡してください。
 }
 ```
 
@@ -289,15 +289,15 @@ CIP から受け取った認証情報がアカウントID `732e0c2d-179e-5190-a7
 
 `id`, `url`, `accountId` 以外のフィールドは無視して構いません。今回の実験では使用しない部分です。
 
-DPの登録に失敗した場合、以下のようなレスポンスが返ってきます。
+DP の登録に失敗した場合、以下のようなレスポンスが返ってきます。
 
 失敗レスポンス（リクエストのパラメータが間違っていた場合）:
 
 ```json
 {
-    "statusCode": 400,
-    "error": "Bad Request",
-    "message": "invalid request"
+  "statusCode": 400,
+  "error": "Bad Request",
+  "message": "invalid request"
 }
 ```
 
@@ -305,9 +305,9 @@ DPの登録に失敗した場合、以下のようなレスポンスが返って
 
 ```json
 {
-    "statusCode": 400,
-    "error": "Bad Request",
-    "message": "Invalid issue request: It is not Document Profile."
+  "statusCode": 400,
+  "error": "Bad Request",
+  "message": "Invalid issue request: It is not Document Profile."
 }
 ```
 
@@ -315,10 +315,10 @@ DPの登録に失敗した場合、以下のようなレスポンスが返って
 
 ```json
 {
-    "statusCode": 401,
-    "code": "HTTP_ERROR_UNAUTHORIZED",
-    "error": "Unauthorized",
-    "message": "Invalid password"
+  "statusCode": 401,
+  "code": "HTTP_ERROR_UNAUTHORIZED",
+  "error": "Unauthorized",
+  "message": "Invalid password"
 }
 ```
 
@@ -326,19 +326,19 @@ DPの登録に失敗した場合、以下のようなレスポンスが返って
 
 パラメータの一覧は以下になります。これらを POST リクエストのボディーに JSON 形式で与えてください。全て必須パラメータになります。
 
-| パラメータ名 | 型                          | 説明                       |
-| ------------ | --------------------------  | -------------------------- |
-| jwt          | 文字列                      | DP を与えてください        |
-| input        | 下記テーブルや上記の例参照  | 記事の情報を与えてください |
+| パラメータ名 | 型                         | 説明                       |
+| ------------ | -------------------------- | -------------------------- |
+| jwt          | 文字列                     | DP を与えてください        |
+| input        | 下記テーブルや上記の例参照 | 記事の情報を与えてください |
 
 `input` パラメータの内部には、以下のパラメータを入れてください。
 
-| パラメータ名 | 型                | | 説明                                                                                                                            |
-| ------------ | ----------------- |  ------------------------------------------------------------------------------------------------------------------------------- |
-| id           | 文字列                | 記事の ID （DPの`main`プロパティ）を与えてください。必ず UUID 文字列表現 (RFC 4122) でなければなりません (MUST)。 |
-| url          | 文字列                | 記事の URL を与えてください                                                                                                     |
-| bodyFormat   | JSON オブジェクト     | `{"connect":{"value":"text"}}` を入れてください。                                                                       |
-| proofJws     | 文字列                 | 空文字列 `""` を入れてください。                                                                                                |
+| パラメータ名 | 型                |                                                                                                                    | 説明 |
+| ------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------ | ---- |
+| id           | 文字列            | 記事の ID （DP の`main`プロパティ）を与えてください。必ず UUID 文字列表現 (RFC 4122) でなければなりません (MUST)。 |
+| url          | 文字列            | 記事の URL を与えてください                                                                                        |
+| bodyFormat   | JSON オブジェクト | `{"connect":{"value":"text"}}` を入れてください。                                                                  |
+| proofJws     | 文字列            | 空文字列 `""` を入れてください。                                                                                   |
 
 #### `/website/profiles` エンドポイント
 
@@ -353,7 +353,7 @@ curl -X GET https://oprdev.originator-profile.org/website/profiles?url=http%3A%2
 -H 'Accept: application/ld+json'
 ```
 
-上記の例は、curl コマンドで DP レジストリ (`oprdev.originator-profile.org`) のエンドポイントに　GET リクエストを送っています。
+上記の例は、curl コマンドで DP レジストリ (`oprdev.originator-profile.org`) のエンドポイントに　 GET リクエストを送っています。
 `url` クエリパラメータに `http%3A%2F%2Fexample.com` を付与し、 `http://example.com` に紐づくプロファイルセットを取得しようとしています。
 プロファイルセットは JSON-LD 形式なため、 `Accept` ヘッダーに `application/ld+json` を渡しています。
 
