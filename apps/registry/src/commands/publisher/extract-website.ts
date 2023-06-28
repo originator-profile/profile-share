@@ -35,7 +35,7 @@ export class PublisherExtractWebsite extends Command {
 [
   {
     // ウェブサイトの URL
-    "url": "https://oprdev.originator-profile.org",
+    "url": "https://originator-profile.org/",
     // 対象のテキストの形式
     "bodyFormat": "visibleText",
     // 対象の要素の場所を特定する CSS セレクター (省略可)
@@ -58,7 +58,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
 以下のデータ形式を受け付けます。
 {
   // ウェブサイトの URL の先頭の文字列
-  "https://oprdev.originator-profile.org": {
+  "https://originator-profile.org/": {
     // BrowserContextOptions
   },
   ...

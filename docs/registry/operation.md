@@ -74,7 +74,7 @@ Prisma Studio が起動します。現在レジストリ側に登録されてい
 
 <img width="1552" alt="Prisma Studioの画面が起動した" src="https://user-images.githubusercontent.com/281424/193489958-76ffdb86-3e58-4442-a230-740402c5fcad.png" />
 
-今回は`roleValue`の列に`certifier`と役割を担っている`oprdev.originator-profile.org`に認証を受けるというシチュエーションを例に作業を解説します。
+今回は`roleValue`の列に`certifier`と役割を担っている`oprexpt.originator-profile.org`に認証を受けるというシチュエーションを例に作業を解説します。
 
 ## Profile Set 作成手順
 
@@ -185,7 +185,7 @@ bin/dev account:register-key -k holder-key.pem.pub.json --id daab5a08-d513-400d-
 
 <img width="1552" alt="Signed Originator Profile の発行" src="https://user-images.githubusercontent.com/281424/193493119-5d092c32-7437-4ebe-a453-96457f2fda72.png" />
 
-例えば、所有者となる組織が前節で公開鍵を登録した id `daab5a08-d513-400d-aaaa-e1c1493e0421`、発行者となる組織が oprdev.originator-profile.org の場合であれば --holder daab5a08-d513-400d-aaaa-e1c1493e0421 --certifier 9b376064-7b71-53bf-8371-dd7701411710 となります。
+例えば、所有者となる組織が前節で公開鍵を登録した id `daab5a08-d513-400d-aaaa-e1c1493e0421`、発行者となる組織が oprexpt.originator-profile.org の場合であれば --holder daab5a08-d513-400d-aaaa-e1c1493e0421 --certifier 9b376064-7b71-53bf-8371-dd7701411710 となります。
 
 さらに先程取得した発行者のプライベート鍵のファイルパスも必要となります。例えばプライベート鍵のファイル名が`certifier-key.pem`だった場合、 `-i certifier-key.pem` となります。
 

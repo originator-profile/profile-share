@@ -9,7 +9,7 @@ const Config = {
     },
     APP_URL: {
       type: "string",
-      default: "https://oprdev.originator-profile.org",
+      default: "https://oprexpt.originator-profile.org",
     },
     NODE_ENV: {
       type: "string",
