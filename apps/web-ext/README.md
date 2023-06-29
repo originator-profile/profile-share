@@ -4,14 +4,43 @@ Web ブラウザーで Originator Profile と Document Profile の閲覧と検�
 
 ## 使い方
 
-### ローカルの Profile Registry で動作確認
+Step 1
+: ダウンロード
+
+[GitHub Releases](https://github.com/webdino/profile/releases/latest) から最新版をダウンロードします。
+
+Step 2
+: インストール
+
+1. ZIP ファイルを展開します。
+2. chrome://extensions にアクセスします。
+3. デベロッパーモードを有効にします。
+4. 「パッケージ化されていない拡張機能を読み込む」を選択します。
+5. ZIP ファイルから展開されたディレクトリを選択します。
+
+Step 3
+: Web ページにアクセス
+
+例えば、https://originator-profile.org/ja-JP/ など、拡張機能の対応している Web ページにアクセスします。
+
+Step 4
+: コンテンツ情報の閲覧と検証
+
+拡張機能をクリックすることで、現在閲覧中の Web ページに関するコンテンツ情報の閲覧と検証することができます。
+
+## 動作確認
+
+次のコマンドをターミナルで実行し、拡張機能をプレビューします。
+
+```
+$ yarn dev --issuer=oprexpt.originator-profile.org --url=https://oprexpt.originator-profile.org/
+```
+
+### ローカル環境での動作確認
 
 1. プロジェクトのルートディレクトリに移動します。
-2. `yarn dev` でローカルの Profile Registry の起動と拡張機能の差分ビルドをプレビューします。
-
-### デモの Profile Registry で動作確認
-
-`yarn dev --issuer=oprexpt.originator-profile.org --url=https://oprexpt.originator-profile.org/` で拡張機能の差分ビルドをプレビューします。
+2. `yarn dev` コマンドを実行し、ローカル環境で拡張機能をプレビューします。
+   - http://localhost:8080/ にアクセスし、ローカル環境の開発用サーバー http://localhost:8080/ での動作を確認できます。
 
 ## 環境変数
 
