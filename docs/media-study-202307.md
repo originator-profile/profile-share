@@ -490,18 +490,18 @@ WordPress 以外の Web サイトで実装する場合、手順が異なり下�
 - Signed Document Profile の発行準備
 - Signed Document Profile の発行と登録
 
-Document Profile レジストリのドメイン名、対象とするウェブサイトについて以下を例として説明します
+以降では、Document Profile レジストリとウェブサイトそれぞれ下記の場合を例として説明します。
 
-- Document Profile レジストリのドメイン名："oprdev.originator-profile.org"
-- 対象とするウェブサイト："https://originator-profile.org"
+- Document Profile レジストリのドメイン名: dprexpt.originator-profile.org
+- 対象のウェブサイト: https://originator-profile.org/
 
 #### `HTML <link> element` の設置
 
-設置する HTML は下記になります
+設置する HTML は下記になります。
 
 ```
 <link
-  href="https://oprdev.originator-profile.org/website/profiles?url=https%3A%2F%2Foriginator-profile.org"
+  href="https://dprexpt.originator-profile.org/website/profiles?url=https%3A%2F%2Foriginator-profile.org%2F"
   rel="alternate"
   type="application/ld+json"
 />

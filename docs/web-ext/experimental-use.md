@@ -21,5 +21,5 @@
 
 ## 利用
 
-1. https://oprdev.originator-profile.org にアクセスします。
+1. https://originator-profile.org にアクセスします。
 2. 拡張機能を起動します。

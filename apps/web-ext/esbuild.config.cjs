@@ -1,6 +1,7 @@
 const defaultEnv = {
   MODE: "production",
-  PROFILE_ISSUER: process.env.PROFILE_ISSUER ?? "oprdev.originator-profile.org",
+  PROFILE_ISSUER:
+    process.env.PROFILE_ISSUER ?? "oprexpt.originator-profile.org",
 };
 
 /** @type {import("esbuild").BuildOptions} */

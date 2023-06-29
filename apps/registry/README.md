@@ -2,13 +2,22 @@
 
 Originator Profile と Document Profile の管理を行うシステムです。
 
-デモ: https://oprdev.originator-profile.org/
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/webdino/profile)
-
+- [Deployment](#deployment)
 - [Dependencies](#dependencies)
 - [Usage](#usage)
 - [Commands](#commands)
+
+## Deployment
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/webdino/profile)
+
+### 公式デプロイ
+
+- OP レジストリサーバー: [oprexpt.originator-profile.org](https://oprexpt.originator-profile.org/)
+- DP レジストリサーバー: [dprexpt.originator-profile.org](https://dprexpt.originator-profile.org/)
+- 試験運用版: [oprdev.originator-profile.org](https://oprdev.originator-profile.org/) (本リポジトリの `main` ブランチへのコミットごとにデプロイされています)
+
+不具合の報告・脆弱性の報告は [GitHub Issues](https://github.com/webdino/profile/issues) にてお寄せください。
 
 ## Dependencies
 
@@ -406,7 +415,7 @@ FLAG DESCRIPTIONS
     以下のデータ形式を受け付けます。
     {
     // ウェブサイトの URL の先頭の文字列
-    "https://oprdev.originator-profile.org": {
+    "https://originator-profile.org/": {
     // BrowserContextOptions
     },
     ...
@@ -421,7 +430,7 @@ FLAG DESCRIPTIONS
     [
     {
     // ウェブサイトの URL
-    "url": "https://oprdev.originator-profile.org",
+    "url": "https://originator-profile.org/",
     // 対象のテキストの形式
     "bodyFormat": "visibleText",
     // 対象の要素の場所を特定する CSS セレクター (省略可)

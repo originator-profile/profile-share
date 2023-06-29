@@ -49,11 +49,11 @@ Document Profile レジストリ->>利用者: Profile Set の取得
 
 利用者が記事の検証をおこなう際 Document Profile レジストリ API エンドポイントから Profile Set が得られるようにします。
 
-Document Profile レジストリのドメイン名を `"oprdev.originator-profile.org"` 、対象とするウェブサイトを `"https://originator-profile.org"` とした場合の link 要素による設置の例:
+例えば、Document Profile レジストリのドメイン名が dprexpt.originator-profile.org、検証する対象のウェブサイトが https://originator-profile.org/ であれば、link 要素は下記のように書き表せます。
 
 ```html
 <link
-  href="https://oprdev.originator-profile.org/website/profiles?url=https%3A%2F%2Foriginator-profile.org"
+  href="https://dprexpt.originator-profile.org/website/profiles?url=https%3A%2F%2Foriginator-profile.org%2F"
   rel="alternate"
   type="application/ld+json"
 />
