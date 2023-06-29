@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Profile Web Extension",
   "description": "Profile Web Extension",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "homepage_url": "https://originator-profile.org/",
   "icons": {
     "48": "icons/48x48.png",
