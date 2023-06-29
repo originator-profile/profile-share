@@ -4,6 +4,20 @@ sidebar_position: 1
 
 # 仕様
 
+:::note
+
+この文書は仕様の草案です。
+最終的な仕様とは異なる可能性があります。
+
+- [Verifiable Credentials Data Model v2.0](https://www.w3.org/TR/vc-data-model-2.0/) 準拠
+- 署名方法
+- 署名鍵の更新方法 (Key Rollover)
+- 資格情報の失効方法
+- データのシリアライゼーション
+- 語彙
+
+:::
+
 ## データモデル
 
 ![model](assets/model.dio.png)
