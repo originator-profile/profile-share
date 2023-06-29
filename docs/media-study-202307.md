@@ -137,7 +137,7 @@ Step 4
 
 拡張機能をクリックすることで、現在閲覧中の Web ページに関するコンテンツ情報の閲覧と検証することができます。
 
-右上の拡張機能ボタンから Profile web Extention を選択します。
+右上の拡張機能ボタンから Profile Web Extention を選択します。
 
 ![利用法の確認1](assets/how_to_use_ext01.png)
 
