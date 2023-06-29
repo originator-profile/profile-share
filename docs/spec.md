@@ -122,7 +122,7 @@ Originator Profile レジストリサーバー-->>検証者: Originator Profile 
 ```
 
 1. 組織の識別子の先頭に `https://`、末尾に `/.well-known/ps.json` を加えた URL にアクセスし Profile Set を取得
-2. Profile Set の `profile` プロパティに含まれるの JWT をデコードして、組織の識別子と `sub` クレームの文字列が一致するものを絞り込み、Signed Originator Profile を抽出
+2. Profile Set の `profile` プロパティに含まれる JWT をデコードして、組織の識別子と `sub` クレームの文字列が一致するものを絞り込み、Signed Originator Profile を抽出
 3. その `iss` クレームによって表明される認証機関の識別子の先頭に`https://`、末尾に `/.well-known/jwks.json` を加えた URL にアクセスして公開鍵を取得
 4. Signed Originator Profile の署名を検証
 
