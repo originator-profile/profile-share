@@ -3,7 +3,7 @@
   "description": "Originator Profile",
   "homepage": "https://profile-docs.pages.dev",
   "repository": "https://github.com/webdino/profile",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "workspaces": [
     "apps/*",
