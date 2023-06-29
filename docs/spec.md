@@ -104,24 +104,61 @@ JWT のデコードを伴わない Originator Profile と Document Profile の�
 
 Originator Profile の検証は次のようにして行われます。
 
+```mermaid
+sequenceDiagram
+actor 検証者
+participant Web サーバー
+participant Originator Profile レジストリサーバー
+
+検証者->>Web サーバー: GET /.well-known/ps.json
+Web サーバー-->>検証者: Profile Set
+
+検証者->>検証者: Profile Set から Signed Originator Profile を抽出
+
+検証者->>Originator Profile レジストリサーバー: GET /.well-known/jwks.json
+Originator Profile レジストリサーバー-->>検証者: Originator Profile 発行者の公開鍵
+
+検証者->>検証者: Signed Originator Profile の署名を検証
+```
+
 1. 組織の識別子の先頭に `https://`、末尾に `/.well-known/ps.json` を加えた URL にアクセスし Profile Set を取得
-2. `profile` プロパティの JWT をデコードして、組織の識別子と `sub` クレームの文字列が一致するものを絞り込み、組織の身元の情報を取得
-3. その `iss` クレームによって表明される認証機関の識別子の先頭に`https://`、末尾に `/.well-known/jwks.json` を加えた URL にアクセスして鍵を取得
-4. 検証
+2. Profile Set の `profile` プロパティに含まれるの JWT をデコードして、組織の識別子と `sub` クレームの文字列が一致するものを絞り込み、Signed Originator Profile を抽出
+3. その `iss` クレームによって表明される認証機関の識別子の先頭に`https://`、末尾に `/.well-known/jwks.json` を加えた URL にアクセスして公開鍵を取得
+4. Signed Originator Profile の署名を検証
 
 ### Document Profile の検証
 
 Document Profile の検証は次のようにして行われます。
 
-1. HTML 文書の中に含まれる `<script>` 要素や `<link>` 要素などによって表明された Profile Set を取得
-2. `profile` プロパティの中から Signed Document Profile と発行した組織の Signed Originator Profile を取得
-3. Originator Profile によって組織の身元の情報を検証
-4. Signed Document Profile をデコードして、文書の内容への署名を取得
-5. 検証
+```mermaid
+sequenceDiagram
+actor 検証者
+participant Web サーバー
+
+検証者->>Web サーバー: GET /index.html
+Web サーバー-->>検証者: HTML 文書
+
+検証者->>Web サーバー: GET /ps.json
+Web サーバー-->>検証者: Profile Set
+
+検証者->>検証者: Profile Set から Signed Originator Profile を抽出
+
+検証者->>Originator Profile レジストリサーバー: GET /.well-known/jwks.json
+Originator Profile レジストリサーバー-->>検証者: Originator Profile 発行者の公開鍵
+
+検証者->>検証者: Signed Originator Profile の署名を検証
+検証者->>検証者: Signed Document Profile を抽出
+検証者->>検証者: Signed Document Profile の署名を検証
+```
+
+1. HTML 文書の中に含まれる `<script>` 要素または `<link>` 要素によって表明された URL にアクセスし Profile Set を取得
+2. Originator Profile を検証
+3. Profile Set の `profile` プロパティの中から Signed Document Profile を抽出
+4. Signed Document Profile の署名を検証
 
 :::note
 
-HTML 文書そのものやサイトへの付帯情報を表現する仕様はまだありません。
+HTML 文書全体や Web サイト全体への付帯情報を表現する仕様は未定義です。
 
 - [ページ全体の付帯情報を表現する仕様の検討](https://github.com/webdino/profile/issues/353)
 - [サイトの付帯情報を表現する仕様の検討](https://github.com/webdino/profile/issues/613)
