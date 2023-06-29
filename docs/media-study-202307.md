@@ -113,21 +113,13 @@ https://forms.gle/udirHux1TFs5ctyu6
 
 ### OP 拡張機能の導入と確認
 
-#### インストール
+Step 1
+: ダウンロード
 
-技術開発 WG 側で事前にビルド済みの拡張機能をダウンロード頂くか、ご自身で最新のコードからビルドしてご利用ください。
+[GitHub Releases](https://github.com/webdino/profile/releases/latest) から最新版をダウンロードします。
 
-ビルド済み拡張機能: https://github.com/webdino/profile/releases/latest
-
-参考: [拡張機能の実験的利用](https://profile-docs.pages.dev/docs/web-ext/experimental-use)
-
-##### ビルド
-
-プロジェクトのルートディレクトリで `yarn && yarn build` を実行すると `apps/web-ext/web-ext-artifacts/profile_web_extension-0.0.0.zip` のような ZIP ファイル が生成されます
-
-##### ブラウザへのインストール
-
-想定しているブラウザは Google Chrome です
+Step 2
+: インストール
 
 1. ZIP ファイルを展開します。
 2. chrome://extensions にアクセスします。
@@ -135,22 +127,32 @@ https://forms.gle/udirHux1TFs5ctyu6
 4. 「パッケージ化されていない拡張機能を読み込む」を選択します。
 5. ZIP ファイルから展開されたディレクトリを選択します。
 
-#### 利用法の確認
+Step 3
+: Web ページにアクセス
 
-ブラウザで CIP 公式サイトにアクセスします:
-https://originator-profile.org/ja-JP/
+例えば、[本組合の公式サイト](https://originator-profile.org/ja-JP/)など、拡張機能の対応している Web ページにアクセスします。
 
-右上の拡張機能ボタンから Profile web Extention を選択
+Step 4
+: コンテンツ情報の閲覧と検証
+
+拡張機能をクリックすることで、現在閲覧中の Web ページに関するコンテンツ情報の閲覧と検証することができます。
+
+右上の拡張機能ボタンから Profile Web Extention を選択します。
 
 ![利用法の確認1](assets/how_to_use_ext01.png)
 
-ウィンドウが開き、認証の有無や各種情報を確認できます
+ウィンドウが開き、認証の有無や各種情報を確認できます。
 
 ![利用法の確認2](assets/how_to_use_ext02.png)
 
-メディアサイトへの埋め込み例としては読売新聞オンラインのスナップショットに OP 埋め込みを行ったサンプルサイトでも同様にご確認頂けます。
+### サンプルサイト
 
-**TODO: アクセス情報記載**
+本組合の公式サイトの他に、下記のサンプルサイトを提供しています。本組合の公式サイトと同様にご確認いただけます。
+
+- 読売新聞オンラインのスナップショット: https://yomiuri.demosites.pages.dev/
+- 認証情報
+  - ユーザー名: `yomiuri`
+  - パスワード: `HzGIyYkTKEM9`
 
 :::note
 こちらはあくまでもプロトタイプ実装に際して参照用のサンプルとして部分的に DP を埋め込んだ例を用意したものであり、今回の実験でどのような記事・コンテンツに対し SDP を発行するべきかを示すものではありません
