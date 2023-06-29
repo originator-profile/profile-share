@@ -773,23 +773,24 @@ DP の登録に失敗した場合、以下のようなレスポンスが返っ�
 
 **TODO: 独自定義している用語の説明を書く**
 
-- OP レジストリ
-  - 下記のような役割を持つレジストリサーバ
+- Originator Profile(OP) レジストリ
+  - 下記のような役割を持つレジストリ
     -  OP CIP 加盟組織の情報を用いて組織情報の登録を行う
     -  登録したい組織情報、認証機関、プライベート鍵を用いてSigned Originator Profile を発行
-- DP レジストリ
-  - 下記のような役割を持つレジストリサーバ
-    - Signed Profile Set を保存、ブラウザのリクエストに応じて返す
+- Document Profile(DP) レジストリ
+  - 下記のような役割を持つレジストリ
+    - Signed Profile Set(SPS) を保存、ブラウザのリクエストに応じて返す
     - OP レジストリから Signed Originator Profile を受け取り(更新などもしつつ) DP (SPS) 発行時に使う
-- Signed Originator Profile
+- Signed Originator Profile(SOP)
   -  署名付き組織情報
-  -  この組織情報を用いてSigned Document Profile を発行する
-- Signed Document Profile
+  -  この組織情報を用いて SOP を発行する
+- Signed Document Profile(SDP)
   - 署名付きWebページ情報
-  - Signed Originator Profileを持つ組織によって作成されたWebページに付与される
-- Profile Set
-  - Webページ発行組織単位で管理されているSigned Originator Profile と Signed Document Profile の総称
+  - SOPを持つ組織によって作成されたWebページに付与される
+- Signed Profile Set(SPS)
+  - Webページ発行組織単位で管理されている SOP と SDP の総称
   - この情報を用いてWebサイトの信頼性を判断する
+  - Profile Set という名称もこの用語と同義
 
 ...and more...
 
