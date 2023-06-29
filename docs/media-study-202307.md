@@ -787,7 +787,7 @@ DP の登録に失敗した場合、以下のようなレスポンスが返っ�
 - Signed Document Profile(SDP)
   - 署名付きWebページ情報
   - SOPを持つ組織によって作成されたWebページに付与される
-- Profile Set(SPS)
+- Profile Set(PS)
   - Webページ発行組織単位で管理されている SOP と SDP の総称
   - この情報を用いてWebサイトの信頼性を判断する
   - Signed Profile Set という名称もこの用語と同義
