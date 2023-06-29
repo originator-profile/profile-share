@@ -80,9 +80,11 @@ JSON Web Token (JWT) として署名され、それらの集合を JSON-LD に�
 
 `profile` プロパティの JWT をデコードして、組織の身元をまたは出版物を取得します。
 
-> **Note**
->
-> JWT のデコードを伴わない Originator Profile と Document Profile の区別や、あるドメインでの絞り込みなど、最適化の余地はありますがそういった仕様はまだありません。
+:::note
+
+JWT のデコードを伴わない Originator Profile と Document Profile の区別や、あるドメインでの絞り込みなど、最適化の余地はありますがそういった仕様はまだありません。
+
+:::
 
 ### Originator Profile の検証
 
@@ -103,12 +105,14 @@ Document Profile の検証は次のようにして行われます。
 4. Signed Document Profile をデコードして、文書の内容への署名を取得
 5. 検証
 
-> **Note**
->
-> HTML 文書そのものやサイトへの付帯情報を表現する仕様はまだありません。
->
-> - [ページ全体の付帯情報を表現する仕様の検討](https://github.com/webdino/profile/issues/353)
-> - [サイトの付帯情報を表現する仕様の検討](https://github.com/webdino/profile/issues/613)
+:::note
+
+HTML 文書そのものやサイトへの付帯情報を表現する仕様はまだありません。
+
+- [ページ全体の付帯情報を表現する仕様の検討](https://github.com/webdino/profile/issues/353)
+- [サイトの付帯情報を表現する仕様の検討](https://github.com/webdino/profile/issues/613)
+
+:::
 
 ### `profile` プロパティ
 
