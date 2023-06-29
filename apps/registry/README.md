@@ -17,7 +17,7 @@ Originator Profile と Document Profile の管理を行うシステムです。
 - DP レジストリサーバー: [dprexpt.originator-profile.org](https://dprexpt.originator-profile.org/)
 - 試験運用版: [oprdev.originator-profile.org](https://oprdev.originator-profile.org/) (本リポジトリの `main` ブランチへのコミットごとにデプロイされています)
 
-不具合の報告・脆弱性の報告は GitHub Issues にてお寄せください。
+不具合の報告・脆弱性の報告は [GitHub Issues](https://github.com/webdino/profile/issues) にてお寄せください。
 
 ## Dependencies
 
