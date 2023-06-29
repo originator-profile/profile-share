@@ -111,8 +111,6 @@ https://forms.gle/udirHux1TFs5ctyu6
 
 こちらに入力頂いた情報を元に OP レジストリへの登録を行います。登録された情報は具体的には次のような形でブラウザの拡張機能の UI に表示・確認できるようになります:
 
-**TODO: 拡張機能のスクショを入れる**
-
 ### OP 拡張機能の導入と確認
 
 #### インストール
@@ -732,8 +730,6 @@ DP の登録に失敗した場合、以下のようなレスポンスが返っ�
 
 プロトタイプ実装の仕様と実装の詳細は以下をご覧ください:
 
-TODO: リポジトリや開発ドキュメントのリンク集
-
 ### 全般
 
 - [全体サマリ](https://profile-docs.pages.dev/docs)
@@ -777,13 +773,24 @@ TODO: リポジトリや開発ドキュメントのリンク集
 
 **TODO: 独自定義している用語の説明を書く**
 
-- OP レジストリ
-- DP レジストリ
-  - Signed Profile Set を保存、ブラウザのリクエストに応じて返す
-  - OP レジストリから Signed Originator Profile を受け取り(更新などもしつつ) DP (SPS) 発行時に使う
-- Signed Originator Profile
-- Signed Document Profile
-- Profile Set
+- Originator Profile(OP) レジストリ
+  - 下記のような役割を持つレジストリ
+    - OP CIP 加盟組織の情報を用いて組織情報の登録を行う
+    - 登録したい組織情報、認証機関、プライベート鍵を用いて Signed Originator Profile を発行
+- Document Profile(DP) レジストリ
+  - 下記のような役割を持つレジストリ
+    - Profile Set(PS) を保存、ブラウザのリクエストに応じて返す
+    - OP レジストリから SOP を受け取り(更新などもしつつ) DP 発行時に使う
+- Signed Originator Profile(SOP)
+  - 署名付き組織情報
+  - この組織情報を用いて SOP を発行する
+- Signed Document Profile(SDP)
+  - 署名付き Web ページ情報
+  - SOP を持つ組織によって作成された Web ページに付与される
+- Profile Set(PS)
+  - Web ページ発行組織単位で管理されている SOP と SDP の総称
+  - この情報を用いて Web サイトの信頼性を判断する
+  - Signed Profile Set という名称もこの用語と同義
 
 ...and more...
 
