@@ -1,7 +1,7 @@
 {
   "name": "profile-web-ext",
   "description": "Profile Web Extension",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "bugs": {
     "url": "https://github.com/webdino/profile/issues"
   },

@@ -1,6 +1,6 @@
 {
   "name": "@webdino/profile-wordpress",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "e2e": "start-test e2e:up 9000 e2e:run",

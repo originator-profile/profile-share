@@ -1,7 +1,7 @@
 {
   "name": "@webdino/profile-registry",
   "description": "Profile Registry API",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "bin": "bin/run",
   "files": [
