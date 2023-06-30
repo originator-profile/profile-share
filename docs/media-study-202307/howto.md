@@ -77,7 +77,7 @@ Step 4
 
 ここでは実験に必要な準備手順と全体を理解・把握頂くための確認操作について説明します。全体としては次の流れになります。
 
-- 各社: 対象サイトコンテンツの選定、Github アカウントの連絡、OP 組織情報登録内容の提出
+- 各社: 対象サイトコンテンツの選定、GitHub アカウントの連絡、OP 組織情報登録内容の提出
 - 事務局: OP レジストリへの登録、OP ID の発行・連絡、DP レジストリアクセス情報の連絡
 - 各社: 実際に DP を生成・登録してブラウザで表示を確認
   - CLI などを用いて手作業で SDP を生成して DP レジストリに登録、HTML にリンクを埋め込み
@@ -94,7 +94,7 @@ Step 4
 
 本実証実験での対象サイトおよびコンテンツは自社提供のもととしており、他社提供コンテンツは次回以降を想定しております。今回は各社で個別に OP の対応を検討・実装頂く最初のステップであり、複数社のシステムを横断し OP 対応コンテンツの流通を試験するのは今後段階的に進行していく予定です。
 
-### Github アカウント
+### GitHub アカウント
 
 本実験で利用頂く参照実装コードやレジストリ・拡張機能などのコードを収めた [オリジネータープロファイル リポジトリ](https://github.com/webdino/profile/tree/main) は private リポジトリであり、Read 権限を付与する CIP 加盟企業の github アカウントが必要です。
 
@@ -121,50 +121,70 @@ https://forms.gle/udirHux1TFs5ctyu6
 
 ### 公開鍵、秘密鍵の作成と公開鍵の登録
 
-フォーム入力後に事務局側で OP レジストリに組織の登録が完了したら、OP ID などの連絡が届きます。手元で**公開鍵署名に用いる鍵ペアを生成し、公開鍵をレジストリに登録**してください。
+フォーム入力後に事務局側で OP レジストリに組織の登録が完了したら、OP ID などの連絡が届きます。手元で**公開鍵署名に用いる鍵ペアを生成し、事務局 OP レジストリに公開鍵の登録を依頼**してください。
 
 ここで生成した秘密鍵でコンテンツに対して Signed Document Profile (SDP) を生成しコンテンツと共に配信すると、ブラウザは公開鍵を用いて署名を検証した上で SOP/SDP に記載された情報を表示します。
 
-ここでは Key ファイルと紐づける組織情報の例として下記を使用して、鍵ペアの作成～公開鍵の登録までの手順例を説明します。実行するディレクトリは`apps/registry`です
+公開鍵は下記のいずれかの方法で用意します。
 
-- Key ファイル名：`key.pem`
-- 紐づける組織情報の ID 例: `daab5a08-d513-400d-aaaa-e1c1493e0421`
+<!-- 下記は docs/registry/document-profile-registry-creation.md を改変して利用 -->
+
+### WordPress プラグインを使用する方法
+
+WordPress の参照実装のプラグインをインストールし、有効化したあと、WordPress 管理者画面 > Settings > Profile 設定画面にアクセスすると公開鍵を確認できます。
+
+JWK の例:
+
+```json
+{
+  "crv": "P-256",
+  "kty": "EC",
+  "x": "6OBp79JZKOaSFbjGaUrlcv17FdyGz-bUUYdW2xPgRBE",
+  "y": "TeTGAWf_OrdUmC9UUYn7x6aZx39g-Qk98XmMpwXW_ew",
+  "kid": "j9L_Qji2BC4vj1AaDCdzpurXSpM7cKBbtWO-W5a0SK4",
+  "alg": "ES256",
+  "use": "sig"
+}
+```
+
+公開鍵は、事務局 OP レジストリに登録する必要があります。
+事務局に公開鍵の登録を依頼してください。
+
+### profile-registry CLI を使用する方法
+
+profile-registry CLI を使用して、鍵ペアを生成することが可能です。
 
 :::note
-組織情報の ID は前述の OP 組織情報登録内容フォーム記載内容を元に OP レジストリへの登録後、各社の ID をお知らせします。本実験時点の仕様・実装では、組織情報の ID は DNS 名前空間で各社の代表 Web サイトのドメイン名を名前として生成した [UUIDv5](https://www.uuidtools.com/generate/v5) です。
+あらかじめ profile-registry CLI をインストールする必要があります。
+
+開発ガイド: https://profile-docs.pages.dev/development
 :::
-
-Key ファイルの作成は下記コマンドを実行します。
-
-```
-bin/dev key-gen -o key.pem
-```
-
-実行結果として得られる、Key ファイル名は下記となります。
-
-- key.pem (秘密鍵)
-- key.pem.pub.json (公開鍵)
 
 :::warning
 秘密鍵は適切に管理してください。秘密鍵が漏洩するとあなたの組織を詐称してコンテンツに署名をされる恐れがあります
 :::
 
-次に公開鍵の登録手順を説明します。必要なパラメータは次の通りです。
-
-- 公開鍵のパス
-- 紐づける組織情報の ID (事務局から連絡)
-
-公開鍵の登録には下記コマンドを実行します。
+例:
 
 ```
-bin/dev account:register-key -k key.pem.pub.json --id daab5a08-d513-400d-aaaa-e1c1493e0421
+$ profile-registry key-gen -o key.pem
+$ cat key.pem.pub.json | jq
+{
+  "kty": "EC",
+  "kid": "x6pZlFXlKvbV69GZf8xW-lqb6tg0_ERuNHHgTTvmQ70",
+  "x": "cnbjjr-SEPqyh2bMzqSPE2DdrEMFzDygPmCwkSkqnmk",
+  "y": "LV4Xc5HilgrTNxSGMXUBgSmVvQgUB-bxP79LaoXOfFA",
+  "crv": "P-256"
+}
 ```
 
-実行結果としてコンソールに下記のように表示されます
+実行結果として得られる、鍵ファイルは下記となります。
 
-```
-Done.
-```
+- key.pem (秘密鍵)
+- key.pem.pub.json (公開鍵)
+
+公開鍵は事務局 OP レジストリに登録する必要があります。
+事務局に公開鍵の登録を依頼してください。
 
 ### CMS の OP 対応と SDP の発行・登録
 
@@ -177,7 +197,7 @@ Done.
 - `/admin/publisher/{アカウントID}` エンドポイント
   - 署名付き DP を DP レジストリに登録するためのエンドポイントです。POST メソッドをサポートします。
 - `/website/profiles` エンドポイント
-  - プロファイルセットを取得するためのエンドポイントです。GET メソッドをサポートします。今回の実証実験では、 `<link>` 要素の `href` 属性にこのエンドポイントへの URL を記載することになります。
+  - プロファイルセットを取得するためのエンドポイントです。GET メソッドをサポートします。今回の実証実験では、 <link\> 要素の `href` 属性にこのエンドポイントへの URL を記載することになります。
 
 各エンドポイントの使い方を説明します。
 
@@ -250,7 +270,7 @@ CIP から受け取った認証情報がアカウント ID `732e0c2d-179e-5190-a
 
 `id`, `url`, `accountId` 以外のフィールドは無視して構いません。今回の実験では使用しない部分です。
 
-SDP の登録が出来たら、ページからその SDP を参照させましょう。これは、次に説明するエンドポイントの URL を、記事ページの HTML 内に `<link>` 要素で指定することで実現します。
+SDP の登録が出来たら、ページからその SDP を参照させましょう。これは、次に説明するエンドポイントの URL を、記事ページの HTML 内に <link\> 要素で指定することで実現します。
 
 API の詳細については、[CIP 提供 DP レジストリについて](#cip-提供-dp-レジストリについて) も参照ください。
 
@@ -332,8 +352,8 @@ SDP 生成対象を定義する `website.json` ファイルは[website.example.j
 
 公開鍵のパス、登録する組織情報の ID、web ページの情報を引数として使用して下記のように実行します。
 
-```shell
-bin/dev publisher:website \
+```
+$ profile-registry publisher:website \
   -i key.pem \
   --id daab5a08-d513-400d-aaaa-e1c1493e0421 \
   --input website.json \
@@ -365,12 +385,12 @@ bin/dev publisher:website \
 Originator Profile レジストリ運用者から受け取った Signed Originator Profile (SOP) を Document Profile レジストリに登録します。
 
 ```
-bin/dev account:register-op --id <ドメイン名> --op <Signed Originator Profileファイル>
+$ profile-registry account:register-op --id <ドメイン名> --op <Signed Originator Profileファイル>
 ```
 
 これにより DP レジストリは `/website/profiles` エンドポイントで SOP と SDP をまとめて返せるようになります。
 
-DP の作成が可能になったら、DP 発行処理を CMS 側に組み込み、記事の編集後に自動で DP の発行と link タグの埋め込みがされるようにします。
+DP の作成が可能になったら、DP 発行処理を CMS 側に組み込み、記事の編集後に自動で DP の発行と <link\> 要素の埋め込みがされるようにします。
 
 ## CMS の実装ガイド
 
@@ -388,13 +408,33 @@ DP レジストリは各社共同使用となっています
 案内に記載された方法以外での使用は避けてください
 :::
 
-#### WordPress 　連携
+#### WordPress 連携
 
 ##### プラグインのインストール
 
-- WordPress サイトに WordPress Profile Plugin をインストールします
-- Document Profile レジストリのドメイン名は WordPress 管理者画面 > Settings > Profile > [レジストリドメイン名] に設定してください。
-- Document Profile レジストリの認証情報は WordPress 管理者画面 > Settings > Profile > [認証情報] に設定してください。
+WordPress サイトに WordPress Profile Plugin をインストールします。
+詳細は [WordPress 参照実装のソースコード](https://github.com/webdino/profile/tree/main/packages/wordpress#readme)をご確認ください。
+
+Document Profile レジストリのドメイン名を、WordPress 管理者画面 > Settings > Profile > [レジストリドメイン名] に入力します。
+
+例:
+
+```
+dprexpt.originator-profile.org
+```
+
+[レジストリの管理者を作成](/registry/document-profile-registry-creation#レジストリの管理者の作成)した際の認証情報、WordPress 管理者画面 > Settings > Profile > [認証情報] に入力します。
+
+例:
+
+```
+cfbff0d1-9375-5685-968c-48ce8b15ae17:GVWoXikZIqzdxzB3CieDHL-FefBT31IfpjdbtAJtBcU
+```
+
+それぞれ適切な値を入力したら、保存を選択し、設定を反映します。
+設定が反映されれば、それ以降公開される投稿で Profile Set が配信されるようになります。
+
+<!-- docs/registry/wordpress-integration.md より -->
 
 ### 署名付与の WordPress,それ以外の Web サイトのプロトタイプに関する説明
 
@@ -403,69 +443,84 @@ DP レジストリは各社共同使用となっています
 ```mermaid
 sequenceDiagram
 actor 利用者
-actor 管理者
+actor WordPress 管理者
 participant WordPress
 participant WordPress Plugin
 participant Document Profile レジストリ
+participant Originator Profile レジストリ
 
-管理者->>WordPress: WordPress Plugin のインストール
+WordPress 管理者->>WordPress: WordPress Plugin のインストール
 WordPress->>WordPress Plugin: activated_plugin hook
-WordPress Plugin->>管理者: 公開鍵の取得
-管理者->>WordPress: 記事の公開
+WordPress Plugin-->>WordPress 管理者: 公開鍵
+
+WordPress 管理者->>Originator Profile レジストリ: Originator Profile の発行依頼
+Originator Profile レジストリ-->>WordPress 管理者: Signed Originator Profile
+WordPress 管理者->>Document Profile レジストリ: Signed Originator Profile の登録
+
+WordPress 管理者->>WordPress: 記事の公開
 WordPress->>WordPress Plugin: transition_post_status hook
 WordPress Plugin->>WordPress Plugin: Signed Document Profile の発行
 WordPress Plugin->>Document Profile レジストリ: Signed Document Profile の登録
-Document Profile レジストリ->>Document Profile レジストリ: Signed Document Profile の検証
 
-利用者->>WordPress: 記事の閲覧
+利用者->>WordPress: 投稿の閲覧
 WordPress->>WordPress Plugin: wp_head hook
-WordPress Plugin->>利用者: HTML <link> element
+WordPress Plugin-->>利用者: HTML <link> 要素
 
-利用者->>Document Profile レジストリ: 記事の検証
-Document Profile レジストリ->>利用者: Profile Set の取得
+利用者->>Document Profile レジストリ: 拡張機能をクリック
+Document Profile レジストリ-->>利用者: Profile Set
+
+利用者->>利用者: コンテンツ情報の閲覧と検証
 ```
 
-管理者がプラグインのインストール、登録したレジストリの管理者情報を記載することで
-記事の公開時に Signed Document Profile の発行～検証を自動で行い、Profile set を取得できる。
+<!-- docs/registry/wordpress-integration.md より -->
 
 #### 他の Web サイト
 
 ```mermaid
 sequenceDiagram
 actor 利用者
-actor 管理者
-participant ウェブサイト
+actor Web サイト管理者
+participant Web サイト
 participant Document Profile レジストリ
 
-管理者->>ウェブサイト: HTML <link> element の設置
-管理者->>ウェブサイト: 記事の公開
-管理者->>ウェブサイト: Signed Document Profile の発行の準備
-管理者->>Document Profile レジストリ: Signed Document Profile の発行と登録
-Document Profile レジストリ->>Document Profile レジストリ: Signed Document Profile の検証
+Web サイト管理者->>Web サイト管理者: 鍵ペアの生成
 
-利用者->>ウェブサイト: 記事の閲覧
-ウェブサイト->>利用者: HTML <link> element
+Web サイト管理者->>Originator Profile レジストリ: Originator Profile の発行依頼
+Originator Profile レジストリ-->>Web サイト管理者: Signed Originator Profile
+Web サイト管理者->>Document Profile レジストリ: Signed Originator Profile の登録
 
-利用者->>Document Profile レジストリ: 記事の検証
-Document Profile レジストリ->>利用者: Profile Set の取得
+Web サイト管理者->>Web サイト: HTML <link> 要素の設置
+Web サイト管理者->>Web サイト: 記事本文の抽出
+Web サイト-->>Web サイト管理者: 記事本文
+Web サイト管理者->>Document Profile レジストリ: Signed Document Profile の発行
+
+利用者->>Web サイト: 記事の閲覧
+Web サイト-->>利用者: HTML <link> 要素
+
+利用者->>Document Profile レジストリ: 拡張機能をクリック
+Document Profile レジストリ-->>利用者: Profile Set
+
+利用者->>利用者: コンテンツ情報の閲覧と検証
 ```
+
+<!-- docs/registry/website-integration.md より -->
 
 WordPress 以外の Web サイトで実装する場合、手順が異なり下記のような内容の実施が必要となります。
 
-- `HTML <link> element` の設置
-- Signed Document Profile の発行準備
-- Signed Document Profile の発行と登録
+1. HTML <link\> 要素の設置
+2. 記事本文の抽出
+3. Signed Document Profile の発行
 
 以降では、Document Profile レジストリとウェブサイトそれぞれ下記の場合を例として説明します。
 
 - Document Profile レジストリのドメイン名: dprexpt.originator-profile.org
 - 対象のウェブサイト: https://originator-profile.org/
 
-#### `HTML <link> element` の設置
+#### HTML <link\> 要素の設置
 
-設置する HTML は下記になります。
+設置する <link\> 要素は下記のように書き表します。
 
-```
+```html
 <link
   href="https://dprexpt.originator-profile.org/website/profiles?url=https%3A%2F%2Foriginator-profile.org%2F"
   rel="alternate"
@@ -473,7 +528,14 @@ WordPress 以外の Web サイトで実装する場合、手順が異なり下�
 />
 ```
 
-#### Signed Document Profile の発行準備
+#### 記事本文の抽出
+
+:::note
+profile-registry CLI によって署名対象の記事の本文を抽出します。
+あらかじめ profile-registry CLI をインストールする必要があります。
+
+開発ガイド: https://profile-docs.pages.dev/development
+:::
 
 記事の URL、検証対象となるテキストの範囲、抽出結果の保存先を表明する .extract.json を作成します。
 
@@ -516,7 +578,7 @@ WordPress 以外の Web サイトで実装する場合、手順が異なり下�
 下記コマンドを実行します。
 
 ```
-bin/dev publisher:extract-website --input .extract.json
+$ profile-registry publisher:extract-website --input .extract.json
 ```
 
 出力結果が下記です
@@ -539,22 +601,23 @@ bin/dev publisher:extract-website --input .extract.json
 }
 ```
 
-#### Signed Document Profile の発行と登録
+#### Signed Document Profile の発行
 
 .website.json から Signed Document Profile を発行し Document Profile レジストリに登録します。
-この際、--identity で指定する秘密鍵は Originator Profile レジストリに登録した公開鍵を使用してください。
+あらかじめ Document Profile レジストリのデータベースの接続情報が必要です。
+この際、--identity で指定する秘密鍵は Originator Profile レジストリに登録した公開鍵とペアでなければなりません。
 
 ```
-bin/dev publisher:website --identity <秘密鍵> --id <管理者の UUID> --operation create
+$ profile-registry publisher:website --identity <秘密鍵> --id <管理者の UUID> --operation create
 ```
 
 #### ブラウザでの表示結果確認
 
-CMS (WordPress または他の CMS) 側の実装が終わったら出力 HTML に SDP への link タグが含まれていることを確認
+CMS (WordPress または他の CMS) 側の実装が終わったら出力 HTML に SDP への <link\> 要素が含まれていることを確認します。
 
 ![ブラウザでの確認1](assets/check_browser01.png)
 
-拡張機能を起動して読み込まれることを確認
+拡張機能を起動して読み込まれることを確認します。
 
 ![ブラウザでの確認2](assets/check_browser02.png)
 
@@ -566,7 +629,7 @@ DP レジストリが提供する API のうち、次の 2 つのエンドポイ
 - `/admin/publisher/{アカウントID}` エンドポイント
   - 署名付き DP を DP レジストリに登録するためのエンドポイントです。POST メソッドをサポートします。
 - `/website/profiles` エンドポイント
-  - プロファイルセットを取得するためのエンドポイントです。GET メソッドをサポートします。今回の実証実験では、 `<link>` 要素の `href` 属性にこのエンドポイントへの URL を記載することになります。
+  - プロファイルセットを取得するためのエンドポイントです。GET メソッドをサポートします。今回の実証実験では、 <link\> 要素の `href` 属性にこのエンドポイントへの URL を記載することになります。
 
 各エンドポイントのおおまかな使い方については [DP レジストリ API の確認](#dp-レジストリ-api-の確認) を参照ください。
 
