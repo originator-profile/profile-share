@@ -23,7 +23,7 @@ sidebar_position: 1
 OP においては公開鍵・秘密鍵を用いた署名技術や [Verifiable Credential](https://w3c.github.io/vc-data-model/) のような Web 標準技術を活用し、署名付きの組織情報 **Signed Originator Profile (SOP)** および署名付きの記事の情報 **Signed Document Profile (SDP)** という形で付与することにより、検証可能で信頼できる形式でメディアおよびニュースの情報を流通可能にします。
 
 :::note
-本実験において OP 仕様の詳細の理解は不要ですが、詳しくは[仕様](/docs/spec.md)や[開発ガイド](/docs/development.md)などをご覧ください。
+本実験において OP 仕様の詳細の理解は不要ですが、詳しくは[仕様](/spec)や[開発ガイド](/development)などをご覧ください。
 :::
 
 ## 検証要素

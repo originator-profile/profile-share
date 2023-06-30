@@ -48,7 +48,7 @@ OP 発行とは別の担当者になる可能性がある DP 発行者が存在�
 ## 準備
 
 現状は前述した役割が誰であっても、このリポジトリを clone して コマンドラインで作業を行うことになります。
-詳しくは[ドキュメント](https://github.com/webdino/profile/tree/main/docs)を参照してください。
+詳しくは[開発ガイド](/development)を参照してください。
 
 あらかじめ以下の環境変数を apps/registry/.env に設定します。
 
@@ -289,4 +289,4 @@ profile には `ops` と `dps` が混在しているように見えますが、 
 }
 ```
 
-[\<link\>](https://github.com/webdino/profile/blob/main/docs/spec.md#link) 要素の追加方法についてはリンク先を参照してください。
+[\<link\>](/spec.md#link) 要素の追加方法についてはリンク先を参照してください。

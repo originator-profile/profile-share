@@ -10,42 +10,42 @@ sidebar_position: 11
 
 ## 全般
 
-- [全体サマリ](https://profile-docs.pages.dev/docs)
-- [オリジネータープロファイル リポジトリ](https://github.com/webdino/profile/tree/main)
-- [仕様](https://profile-docs.pages.dev/docs/spec)
+- [全体サマリ](/)
+- [オリジネータープロファイル リポジトリ](https://github.com/webdino/profile)
+- [仕様](/spec)
   - リポジトリ全体での仕様
-- [環境構築手順書](https://profile-docs.pages.dev/docs/development)
+- [環境構築手順書](/development)
   - Linux, macOS または Windows (WSL2)で開発環境を構築するための手順
 
 ## Profile Registry
 
-- [サマリ](https://profile-docs.pages.dev/docs/registry/)
-- [仕様](https://profile-docs.pages.dev/docs/registry/spec)
+- [サマリ](/registry/)
+- [仕様](/registry/spec)
   - Profile Registry に関する仕様
-- [操作説明書](https://profile-docs.pages.dev/docs/registry/operation)
+- [操作説明書](/registry/operation)
   - Originator Profile、Document Profile の発行手順と Web サイトへの紐づけ方法
-- [Document Profile レジストリ構築](https://profile-docs.pages.dev/docs/registry/document-profile-registry-creation)
+- [Document Profile レジストリ構築](/registry/document-profile-registry-creation)
   - Document Profile 　レジストリの構築手順
-- [WordPress 連携](https://profile-docs.pages.dev/docs/registry/wordpress-integration)
+- [WordPress 連携](/registry/wordpress-integration)
   - WordPress サイト と Document Profile 　レジストリとの連携方法
   - 前提として Document Profile 　レジストリの構築が完了していること
-- [ウェブサイト　連携](https://profile-docs.pages.dev/docs/registry/website-integration)
+- [ウェブサイト　連携](/registry/website-integration)
   - ウェブサイト　と　 Document Profile レジストリとの連携方法
   - 前提として Document Profile 　レジストリの構築が完了していること
-- [API](https://profile-docs.pages.dev/docs/registry/assets/api)
+- [API](/registry/assets/api)
   - Profile Registry で使用されている API 一覧
-- [ER 図](https://profile-docs.pages.dev/docs/registry/assets/erd)
+- [ER 図](/registry/assets/erd)
   - データベーススキーマの ER 図
 
 ## Profile Web Extension
 
-- [サマリ](https://profile-docs.pages.dev/docs/web-ext/)
-- [拡張機能の実験的利用](https://profile-docs.pages.dev/docs/web-ext/experimental-use)
+- [サマリ](/web-ext/)
+- [拡張機能の実験的利用](/web-ext/experimental-use)
 
 ## Profile Model
 
-- [サマリ](https://profile-docs.pages.dev/docs/model/)
-- [スキーマ](https://profile-docs.pages.dev/docs/model/assets/)
+- [サマリ](/model/)
+- [スキーマ](/model/assets/)
 
 # 用語集
 
