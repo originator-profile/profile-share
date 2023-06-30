@@ -22,17 +22,13 @@ git clone https://github.com/webdino/profile
 cd profile
 corepack enable yarn
 yarn install
+# profile-registry CLIのインストール
+npm i -g ./apps/registry
+# 開発用サーバーの起動
 yarn dev
 # WSL2 使用の場合、ホスト側ではなく WSL 側の Chrome を使用します
 CHROME_PATH=/usr/bin/google-chrome yarn dev
 # => 開発用サーバーとWebブラウザーが起動します (<Ctrl-C>: 終了)
-```
-
-6. Composer 依存関係の解決
-
-```
-cd ~/work/profile/packages/wordpress
-docker compose run --rm -w /var/www/html/wp-content/plugins/profile wordpress composer install
 ```
 
 あとはそれぞれのソースコードを編集することで開発を行うことができます。自由にカスタマイズしましょう。
@@ -63,7 +59,14 @@ docker compose run --rm -w /var/www/html/wp-content/plugins/profile wordpress co
 
 ### `yarn e2e`
 
-開発用サーバーを起動し E2E テストを行います。
+開発用サーバーを起動し E2E テストを行います。ただし、実行するにはあらかじめ Composer 依存関係の解決する必要があります。
+
+#### Composer 依存関係の解決
+
+```
+cd packages/wordpress
+docker compose run --rm -w /var/www/html/wp-content/plugins/profile wordpress composer install
+```
 
 ### `yarn build`
 

@@ -65,9 +65,10 @@ PostgreSQL 接続 URL は、 [Heroku Data][heroku_data_url] の Settings -> Admi
 
 Prisma Studio を使用して DB の内容を参照する。
 
-```console
+```sh
 cd apps/registry
-bin/dev db:prisma studio --schema=../../packages/registry-db/prisma/schema.prisma
+npm i -g .
+profile-registry db:prisma studio --schema=../../packages/registry-db/prisma/schema.prisma
 ```
 
 Prisma Studio が起動します。現在レジストリ側に登録されている OP / DP 情報が閲覧できます。
@@ -143,7 +144,7 @@ Prisma Studio が起動します。現在レジストリ側に登録されてい
 `apps/registry`にいることを確認したうえで
 
 ```console
-bin/dev account -i account.json -o create
+profile-registry account -i account.json -o create
 ```
 
 と実行してください。 コマンド中の`account.json`の部分は先程の JSON ファイル名なので適宜置き換えることがあるかもしれません。
@@ -157,7 +158,7 @@ Prisma Studio を確認してみてください。組織が登録されていた
 Signed Originator Profile あるいは Signed Document Profile 発行の作業を行うために、鍵ペアを取得する作業が必要になります。 以下のコマンドを実行してください。
 
 ```console
-bin/dev key-gen -o <keyのファイル名>
+profile-registry key-gen -o <keyのファイル名>
 ```
 
 `<keyのファイル名>` には出力ファイル名を指定します。例えば`key.pem`にすると
@@ -173,7 +174,7 @@ bin/dev key-gen -o <keyのファイル名>
 Prisma Studio の組織情報の行の `id` 列にある値をコピーして、以下の末尾に指定します。 `id`が `daab5a08-d513-400d-aaaa-e1c1493e0421` だった場合、以下のコマンドになります。
 
 ```console
-bin/dev account:register-key -k holder-key.pem.pub.json --id daab5a08-d513-400d-aaaa-e1c1493e0421
+profile-registry account:register-key -k holder-key.pem.pub.json --id daab5a08-d513-400d-aaaa-e1c1493e0421
 ```
 
 ### Signed Originator Profile を作成する
@@ -192,7 +193,7 @@ bin/dev account:register-key -k holder-key.pem.pub.json --id daab5a08-d513-400d-
 この情報をもとに、以下のコマンドを実行します。
 
 ```console
-bin/dev cert:issue \
+profile-registry cert:issue \
   -i certifier-key.pem \
   --certifier 9b376064-7b71-53bf-8371-dd7701411710 \
   --holder daab5a08-d513-400d-aaaa-e1c1493e0421
@@ -243,7 +244,7 @@ Signed Originator Profile の登録が完了しました。
 --input は先程作成した`website.json`ファイル名です。
 
 ```console
-bin/dev publisher:website \
+profile-registry publisher:website \
   -i holder-key.pem \
   --id daab5a08-d513-400d-aaaa-e1c1493e0421 \
   --input website.json \
