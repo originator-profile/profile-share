@@ -30,7 +30,7 @@ Document Profile レジストリ管理者->>Document Profile レジストリ: Si
 Heroku などを利用して Profile Registry のデプロイを行います。
 
 このリポジトリを clone してコマンドラインで作業を行うことになります。
-[開発ガイド](https://github.com/webdino/profile/blob/main/docs/development.md)を参照してください。
+[開発ガイド](/development)を参照してください。
 
 ### レジストリの管理者の作成
 

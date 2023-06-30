@@ -1,6 +1,6 @@
 <!-- https://profile-docs.pages.dev/ts/ -->
 
-[ドキュメント](/docs)
+[ドキュメント](/)
 
 # TSDoc
 

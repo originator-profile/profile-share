@@ -21,6 +21,7 @@ module.exports = {
       /** @type {import("@docusaurus/preset-classic").Options} */
       ({
         docs: {
+          routeBasePath: "/",
           editUrl: `${githubUrl}/blob/main`,
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
