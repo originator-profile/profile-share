@@ -264,7 +264,7 @@ profile-registry publisher:website \
 
 - ps.json
 
-または、HTML 中に Profile Set への \<link\> 要素を追加しても構いません。
+または、HTML 中に Profile Set への <link\> 要素を追加しても構いません。
 
 #### ps.json
 
@@ -289,4 +289,4 @@ profile には `ops` と `dps` が混在しているように見えますが、 
 }
 ```
 
-[\<link\>](/spec.md#link) 要素の追加方法についてはリンク先を参照してください。
+[<link\>](/spec#link) 要素の追加方法についてはリンク先を参照してください。
