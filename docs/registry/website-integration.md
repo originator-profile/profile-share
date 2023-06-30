@@ -2,30 +2,37 @@
 sidebar_position: 5
 ---
 
-# ウェブサイト連携
+# Web サイト連携
 
-Document Profile レジストリを構築しウェブサイトと連携する方法を説明します。
+Document Profile レジストリを任意の Web サイトに連携する方法を説明します。
 
-以下の図はウェブサイト連携に関するプロセスの概要を示しています。
+以下の図は Web サイト連携に関するプロセスの概要を示しています。
 
 ```mermaid
 sequenceDiagram
 actor 利用者
-actor 管理者
-participant ウェブサイト
+actor Web サイト管理者
+participant Web サイト
 participant Document Profile レジストリ
 
-管理者->>ウェブサイト: HTML <link> element の設置
-管理者->>ウェブサイト: 記事の公開
-管理者->>ウェブサイト: Signed Document Profile の発行の準備
-管理者->>Document Profile レジストリ: Signed Document Profile の発行と登録
-Document Profile レジストリ->>Document Profile レジストリ: Signed Document Profile の検証
+Web サイト管理者->>Web サイト管理者: 鍵ペアの生成
 
-利用者->>ウェブサイト: 記事の閲覧
-ウェブサイト->>利用者: HTML <link> element
+Web サイト管理者->>Originator Profile レジストリ: Originator Profile の発行依頼
+Originator Profile レジストリ-->>Web サイト管理者: Signed Originator Profile
+Web サイト管理者->>Document Profile レジストリ: Signed Originator Profile の登録
 
-利用者->>Document Profile レジストリ: 記事の検証
-Document Profile レジストリ->>利用者: Profile Set の取得
+Web サイト管理者->>Web サイト: HTML <link> 要素の設置
+Web サイト管理者->>Web サイト: 記事本文の抽出
+Web サイト-->>Web サイト管理者: 記事本文
+Web サイト管理者->>Document Profile レジストリ: Signed Document Profile の発行
+
+利用者->>Web サイト: 記事の閲覧
+Web サイト-->>利用者: HTML <link> 要素
+
+利用者->>Document Profile レジストリ: 拡張機能をクリック
+Document Profile レジストリ-->>利用者: Profile Set
+
+利用者->>利用者: コンテンツ情報の閲覧と検証
 ```
 
 ## デモ
@@ -34,22 +41,16 @@ Document Profile レジストリ->>利用者: Profile Set の取得
 
 ## 構築ガイド
 
-1. Document Profile レジストリの準備
-2. HTML <link\> element の設置
-3. Signed Document Profile の発行の準備
-4. Signed Document Profile の発行と登録
+1. [Document Profile レジストリの構築](./document-profile-registry-creation)
+2. HTML <link\> 要素の設置
+3. 記事本文の抽出
+4. Signed Document Profile の発行
 
-## Document Profile レジストリの準備
-
-[Document Profile レジストリ構築](./document-profile-registry-creation)を参照してください。
-
-[レジストリの管理者を作成](./document-profile-registry-creation#レジストリの管理者の作成)した際に得られる認証情報に含まれる UUID は [Signed Document Profile の発行と登録](#signed-document-profile-の発行と登録)で使用します。
-
-## HTML <link\> element の設置
+## HTML <link\> 要素の設置
 
 利用者が記事の検証をおこなう際 Document Profile レジストリ API エンドポイントから Profile Set が得られるようにします。
 
-例えば、Document Profile レジストリのドメイン名が dprexpt.originator-profile.org、検証する対象のウェブサイトが https://originator-profile.org/ であれば、link 要素は下記のように書き表せます。
+例えば、Document Profile レジストリのドメイン名が dprexpt.originator-profile.org、検証する対象の Web サイトが https://originator-profile.org/ であれば、<link\> 要素は下記のように書き表します。
 
 ```html
 <link
@@ -59,13 +60,15 @@ Document Profile レジストリ->>利用者: Profile Set の取得
 />
 ```
 
-## Signed Document Profile の発行の準備
+<link\> 要素の設置後、記事を公開し、記事本文を抽出できるようにします。
+
+## 記事本文の抽出
 
 ### .extract.json の用意
 
 記事の URL、検証対象となるテキストの範囲、抽出結果の保存先を表明する JSON ファイルを作成します。
 
-対象とするウェブサイトを https://originator-profile.org とした場合の .extract.json の例:
+対象とする Web サイトを https://originator-profile.org とした場合の .extract.json の例:
 
 ```json
 [
@@ -109,7 +112,7 @@ Document Profile レジストリ->>利用者: Profile Set の取得
 記事の OGP 等メタデータ、検証対象となるテキストの抽出をおこないます。
 
 ```
-$ bin/dev publisher:extract-website --input .extract.json
+$ profile-registry publisher:extract-website --input .extract.json
 ```
 
 前項で示した .extract.json から得られる .website.json の例:
@@ -134,14 +137,14 @@ $ bin/dev publisher:extract-website --input .extract.json
 
 詳細は [Profile Registry ソースコード](https://github.com/webdino/profile/blob/main/apps/registry#readme)を参照してください。
 
-## Signed Document Profile の発行と登録
+## Signed Document Profile の発行
 
-.website.json から Signed Document Profile を発行し Document Profile レジストリに登録します。
+.website.json から Signed Document Profile を発行し Document Profile レジストリに登録します。あらかじめ Document Profile レジストリのデータベースの接続情報が必要です。
 
 このとき使用するプライベート鍵は、[Originator Profile レジストリに登録した公開鍵](./document-profile-registry-creation#originator-profile-%E3%83%AC%E3%82%B8%E3%82%B9%E3%83%88%E3%83%AA%E3%81%B8%E3%81%AE%E5%85%AC%E9%96%8B%E9%8D%B5%E3%81%AE%E7%99%BB%E9%8C%B2%E3%81%A8-signed-originator-profile-%E3%81%AE%E7%99%BA%E8%A1%8C%E4%BE%9D%E9%A0%BC)とペアでなければなりません。
 
 ```
-$ bin/dev publisher:website --identity <プライベート鍵> --id <管理者の UUID> --operation create
+$ profile-registry publisher:website --identity <プライベート鍵> --id <管理者の UUID> --operation create
 ```
 
 詳細は [Profile Registry ソースコード](https://github.com/webdino/profile/blob/main/apps/registry#readme)を参照してください。
