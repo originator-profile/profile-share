@@ -1,0 +1,73 @@
+---
+sidebar_position: 11
+---
+
+# リンクと用語集
+
+本実験に参加する上で必ずしも必要な情報ではありませんが、各社 CMS の対応をしたり動作を確認する上で仕様や実装の詳細を確認する必要がある場合などに参照頂く情報をまとめました。
+
+プロトタイプ実装の仕様と実装の詳細は以下をご覧ください:
+
+## 全般
+
+- [全体サマリ](https://profile-docs.pages.dev/docs)
+- [オリジネータープロファイル リポジトリ](https://github.com/webdino/profile/tree/main)
+- [仕様](https://profile-docs.pages.dev/docs/spec)
+  - リポジトリ全体での仕様
+- [環境構築手順書](https://profile-docs.pages.dev/docs/development)
+  - Linux, macOS または Windows (WSL2)で開発環境を構築するための手順
+
+## Profile Registry
+
+- [サマリ](https://profile-docs.pages.dev/docs/registry/)
+- [仕様](https://profile-docs.pages.dev/docs/registry/spec)
+  - Profile Registry に関する仕様
+- [操作説明書](https://profile-docs.pages.dev/docs/registry/operation)
+  - Originator Profile、Document Profile の発行手順と Web サイトへの紐づけ方法
+- [Document Profile レジストリ構築](https://profile-docs.pages.dev/docs/registry/document-profile-registry-creation)
+  - Document Profile 　レジストリの構築手順
+- [WordPress 連携](https://profile-docs.pages.dev/docs/registry/wordpress-integration)
+  - WordPress サイト と Document Profile 　レジストリとの連携方法
+  - 前提として Document Profile 　レジストリの構築が完了していること
+- [ウェブサイト　連携](https://profile-docs.pages.dev/docs/registry/website-integration)
+  - ウェブサイト　と　 Document Profile レジストリとの連携方法
+  - 前提として Document Profile 　レジストリの構築が完了していること
+- [API](https://profile-docs.pages.dev/docs/registry/assets/api)
+  - Profile Registry で使用されている API 一覧
+- [ER 図](https://profile-docs.pages.dev/docs/registry/assets/erd)
+  - データベーススキーマの ER 図
+
+## Profile Web Extension
+
+- [サマリ](https://profile-docs.pages.dev/docs/web-ext/)
+- [拡張機能の実験的利用](https://profile-docs.pages.dev/docs/web-ext/experimental-use)
+
+## Profile Model
+
+- [サマリ](https://profile-docs.pages.dev/docs/model/)
+- [スキーマ](https://profile-docs.pages.dev/docs/model/assets/)
+
+# 用語集
+
+Originator Profile 技術研究組合またはその配下の技術開発 WG において OP 技術開発に際して独自に定義している用語について説明します。
+
+- Document Profile (DP) レジストリ
+  - 下記のような役割を持つレジストリ
+    - Profile Set (PS) を保存、ブラウザのリクエストに応じて返す
+    - OP レジストリから SOP を受け取り(更新などもしつつ) DP 発行時に使う
+- Originator Profile (OP) レジストリ
+  - 下記のような役割を持つレジストリ
+    - OP CIP 加盟組織の情報を用いて組織情報の登録を行う
+    - 登録したい組織情報、認証機関、秘密鍵を用いて Signed Originator Profile を発行
+- Profile Set (PS)
+  - Web ページ発行組織単位で管理されている SOP と SDP の総称
+  - この情報を用いて Web サイトの信頼性を判断する
+  - Signed Profile Set という名称もこの用語と同義
+- Signed Document Profile (SDP)
+  - 署名付き Web ページ情報
+  - SOP を持つ組織によって作成された Web ページに付与される
+- Signed Originator Profile (SOP)
+  - 署名付き組織情報
+  - この組織情報を用いて SOP を発行する
+
+(随時追記します)
