@@ -10,22 +10,22 @@ Document Profile レジストリを構築する方法を説明します。
 
 ```mermaid
 sequenceDiagram
-actor 管理者
+actor Document Profile レジストリ管理者
 participant Document Profile レジストリ
 participant Originator Profile レジストリ
 
-管理者->>Originator Profile レジストリ: ドメイン名と公開鍵の登録
-Originator Profile レジストリ->>管理者: Signed Originator Profile の発行
-管理者->>Document Profile レジストリ: Signed Originator Profile の登録
+Document Profile レジストリ管理者->>Originator Profile レジストリ: Originator Profile の発行依頼
+Originator Profile レジストリ-->>Document Profile レジストリ管理者: Signed Originator Profile
+Document Profile レジストリ管理者->>Document Profile レジストリ: Signed Originator Profile の登録
 ```
 
 ## 構築ガイド
 
-1. Document Profile レジストリの準備
-2. Originator Profile レジストリへの公開鍵の登録と Signed Originator Profile の発行依頼
+1. Document Profile レジストリのデプロイ
+2. Originator Profile の発行依頼
 3. Document Profile レジストリへの Signed Originator Profile の登録
 
-## Document Profile レジストリの準備
+## Document Profile レジストリのデプロイ
 
 Heroku などを利用して Profile Registry のデプロイを行います。
 
@@ -34,7 +34,7 @@ Heroku などを利用して Profile Registry のデプロイを行います。
 
 ### レジストリの管理者の作成
 
-PostgreSQL 接続 URL など `bin/dev` コマンドの実行に必要な情報を .env ファイルに指定します。
+PostgreSQL 接続 URL など `profile-registry` コマンドの実行に必要な情報を .env ファイルに指定します。
 [Profile Registry ソースコード](https://github.com/webdino/profile/blob/main/apps/registry#環境変数)を参照してください。
 
 ```
@@ -47,27 +47,29 @@ $ editor .env
 レジストリの管理者の作成を行います。
 
 ```
-$ bin/dev admin:create --id <レジストリドメイン名>
+$ profile-registry admin:create --id <レジストリドメイン名>
 ```
 
 例
 
 ```
-$ bin/dev admin:create --id example.com
+$ profile-registry admin:create --id example.com
 Secret: cfbff0d1-9375-5685-968c-48ce8b15ae17:GVWoXikZIqzdxzB3CieDHL-FefBT31IfpjdbtAJtBcU
 ```
 
+この認証情報はメモしておいてください。[WordPress 連携](./wordpress-integration.md)などで必要になります。
+
 <!-- NOTE: ローカルの開発環境では `--id=localhost` を使用できます。 -->
 
-## Originator Profile レジストリへの公開鍵の登録と Signed Originator Profile の発行依頼
+## Originator Profile の発行依頼
 
 Originator Profile レジストリ運用者に依頼して行います。
 
-公開鍵は次にあるいずれかの方法で用意します。
+公開鍵は下記のいずれかの方法で用意します。
 
-### WordPress Plugin の場合
+### WordPress プラグインを使用する方法
 
-JWK 公開鍵は WordPress 管理者画面 > Settings > Profile 設定画面にアクセスすると確認できます。
+プラグインをインストールし、有効化したあと、WordPress 管理者画面 > Settings > Profile 設定画面にアクセスすると公開鍵を確認できます。
 
 JWK の例:
 
@@ -83,9 +85,23 @@ JWK の例:
 }
 ```
 
-### それ以外の場合
+### profile-registry CLI を使用する方法
 
-鍵ペアを生成する必要があります。[操作説明書](./operation#鍵ペアの生成)を参照してください。
+profile-registry CLI を使用して、鍵ペアを生成することが可能です。[操作説明書](./operation#鍵ペアの生成)を参照してください。
+
+例:
+
+```
+$ profile-registry key-gen -o key.pem
+$ cat key.pem.pub.json | jq
+{
+  "kty": "EC",
+  "kid": "x6pZlFXlKvbV69GZf8xW-lqb6tg0_ERuNHHgTTvmQ70",
+  "x": "cnbjjr-SEPqyh2bMzqSPE2DdrEMFzDygPmCwkSkqnmk",
+  "y": "LV4Xc5HilgrTNxSGMXUBgSmVvQgUB-bxP79LaoXOfFA",
+  "crv": "P-256"
+}
+```
 
 <!-- NOTE:
 Originator Profile レジストリ運用者によって公開鍵を登録します。
@@ -97,7 +113,13 @@ Originator Profile レジストリ運用者によって公開鍵を登録しま�
 Originator Profile レジストリ運用者から受け取った Signed Originator Profile を Document Profile レジストリに登録します。
 
 ```
-$ bin/dev account:register-op --id <ドメイン名> --op <Signed Originator Profileファイル>
+$ profile-registry account:register-op --id <ドメイン名> --op <Signed Originator Profileファイル>
+```
+
+例:
+
+```
+$ profile-registry account:register-op --id example.com --op sop.jwt
 ```
 
 詳細は [Profile Registry ソースコード](https://github.com/webdino/profile/blob/main/apps/registry#readme)を参照してください。
