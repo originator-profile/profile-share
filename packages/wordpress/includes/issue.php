@@ -189,7 +189,7 @@ EOD
  * 対象のテキストへの署名 (RFC 7797)
  *
  * @param string $body 対象のテキスト
- * @param string $pkcs8 PEM base64 でエンコードされた PKCS #8 秘密鍵またはそのファイルパス
+ * @param string $pkcs8 PEM base64 でエンコードされた PKCS #8 プライベート鍵またはそのファイルパス
  * @return string|false 成功した場合はDetached Compact JWS、失敗した場合はfalse
  */
 function sign_body( string $body, string $pkcs8 ): string|false {
@@ -220,7 +220,7 @@ function sign_body( string $body, string $pkcs8 ): string|false {
  *
  * @param Dp     $dp Dp
  * @param string $admin_secret レジストリ認証情報
- * @param string $pkcs8 PEM base64 でエンコードされた PKCS #8 秘密鍵またはそのファイルパス
+ * @param string $pkcs8 PEM base64 でエンコードされた PKCS #8 プライベート鍵またはそのファイルパス
  * @return string|false 成功した場合はSigned Document Profile、失敗した場合はfalse
  */
 function issue_dp( Dp $dp, string $admin_secret, string $pkcs8 ): string|false {

@@ -60,7 +60,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
   },
   /**
    * 対象のテキストへの署名
-   * @param pkcs8 PEM base64 でエンコードされた PKCS #8 秘密鍵
+   * @param pkcs8 PEM base64 でエンコードされた PKCS #8 プライベート鍵
    * @param body 対象のテキスト
    * @return Detached Compact JWS
    */ async signBody(pkcs8: string, body: string): Promise<string | Error> {

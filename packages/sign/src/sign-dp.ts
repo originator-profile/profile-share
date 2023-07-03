@@ -6,7 +6,7 @@ import { createThumbprint } from "./thumbprint";
 /**
  * DP への署名
  * @param dp DP オブジェクト
- * @param pkcs8 PEM base64 でエンコードされた PKCS #8 秘密鍵
+ * @param pkcs8 PEM base64 でエンコードされた PKCS #8 プライベート鍵
  * @param alg Algorithm identifier
  * @return JWT でエンコードされた DP
  */

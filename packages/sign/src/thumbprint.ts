@@ -3,8 +3,8 @@ import { calculateJwkThumbprint, exportJWK, importPKCS8, JWK } from "jose";
 /**
  * SHA-256ハッシュで計算されるJWK Thumbprintの作成
  * https://datatracker.ietf.org/doc/html/rfc7638
- * @param jwkOrPkcs8 JWKまたはPKCS#8秘密鍵
- * @param alg PKCS#8秘密鍵のアルゴリズム識別子
+ * @param jwkOrPkcs8 JWKまたはPKCS#8プライベート鍵
+ * @param alg PKCS#8プライベート鍵のアルゴリズム識別子
  * @return SHA-256ハッシュで計算されるJWK Thumbprint
  */
 export async function createThumbprint(

@@ -52,7 +52,7 @@ final class Dp {
 	/**
 	 * DPへの署名
 	 *
-	 * @param string $pkcs8 PEM base64 でエンコードされた PKCS #8 秘密鍵またはそのファイルパス
+	 * @param string $pkcs8 PEM base64 でエンコードされた PKCS #8 プライベート鍵またはそのファイルパス
 	 * @return string|false 成功した場合Signed DP、失敗した場合はfalse
 	 */
 	public function sign( string $pkcs8 ): string|false {

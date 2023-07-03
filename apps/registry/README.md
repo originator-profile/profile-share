@@ -228,7 +228,7 @@ USAGE
     [--expired-at <value>]
 
 FLAGS
-  -i, --identity=<value>  (required) PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル
+  -i, --identity=<value>  (required) PEM base64 でエンコードされた PKCS #8 プライベート鍵ファイル
   --certifier=<value>     (required) 認証機関 ID またはドメイン名
   --expired-at=<value>    有効期限 (ISO 8601)
   --holder=<value>        (required) 所有者となる会員 ID またはドメイン名
@@ -317,7 +317,7 @@ USAGE
   $ profile-registry key-gen -o <value>
 
 FLAGS
-  -o, --output=<value>  (required) 秘密鍵の保存先
+  -o, --output=<value>  (required) プライベート鍵の保存先
 
 DESCRIPTION
   鍵ペアの生成
@@ -472,7 +472,7 @@ USAGE
     create|read|update|delete [--issued-at <value>] [--expired-at <value>]
 
 FLAGS
-  -i, --identity=<value>    (required) PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル
+  -i, --identity=<value>    (required) PEM base64 でエンコードされた PKCS #8 プライベート鍵ファイル
   -o, --operation=<option>  (required) 操作
                             <options: create|read|update|delete>
   --expired-at=<value>      有効期限 (ISO 8601)

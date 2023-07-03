@@ -7,7 +7,7 @@ export class KeyGen extends Command {
   static flags = {
     output: Flags.string({
       char: "o",
-      description: "秘密鍵の保存先",
+      description: "プライベート鍵の保存先",
       required: true,
     }),
   };

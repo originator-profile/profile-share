@@ -20,7 +20,7 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
    * DP への署名
    * @param accountId 会員 ID
    * @param id ウェブページ ID
-   * @param pkcs8 PEM base64 でエンコードされた PKCS #8 秘密鍵
+   * @param pkcs8 PEM base64 でエンコードされた PKCS #8 プライベート鍵
    * @param options 署名オプション
    * @return JWT でエンコードされた DP
    */

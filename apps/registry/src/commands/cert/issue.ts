@@ -12,7 +12,8 @@ export class CertIssue extends Command {
   static flags = {
     identity: Flags.string({
       char: "i",
-      description: "PEM base64 でエンコードされた PKCS #8 秘密鍵ファイル",
+      description:
+        "PEM base64 でエンコードされた PKCS #8 プライベート鍵ファイル",
       required: true,
     }),
     certifier: accountId({
