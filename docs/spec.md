@@ -377,13 +377,12 @@ Signed Document Profile ならば、その組織の Signed Originator Profile �
 
 鍵の参照方法に URL と `op` クレームの 2 種類が存在する背景として、当初 Document Profile レジストリはドメインを持たない懸念がありました。そのため、DNS を利用しない手段として `op` クレームから鍵を参照する仕様が定義されました。この仕様には、次に挙げられるメリットがあります。
 
-- HTTPS プロトコルに依存しない
-- DNSSEC に依存しない
+- ドメイン名の名前解決の信頼性に依らず真正性が担保される
 - ドメインの連絡先情報等へのアクセスが生じず秘匿性がある
 
 一方で次に挙げられるデメリットがあり、将来的に `op` クレームから鍵を参照する仕様については廃止することが検討されています。
 
-- Signed Document Profile 発行組織のドメイン名による認証がされず、Originator Profile レジストリによってのみ真正性が担保されている
+- Signed Document Profile 発行組織のドメイン名による認証がされず、Originator Profile レジストリによってのみ真正性が担保される
 - キーローテーションに Signed Originator Profile 再発行が必要
 
 :::
