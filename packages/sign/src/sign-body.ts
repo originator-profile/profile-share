@@ -4,7 +4,7 @@ import { createThumbprint } from "./thumbprint";
 /**
  * 対象のテキストへの署名
  * @param body 対象のテキスト
- * @param pkcs8 PEM base64 でエンコードされた PKCS #8 秘密鍵
+ * @param pkcs8 PEM base64 でエンコードされた PKCS #8 プライベート鍵
  * @param alg Algorithm identifier
  * @return Detached Compact JWS
  */
