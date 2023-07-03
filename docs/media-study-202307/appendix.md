@@ -58,7 +58,7 @@ Originator Profile 技術研究組合またはその配下の技術開発 WG に
 - Originator Profile (OP) レジストリ
   - 下記のような役割を持つレジストリ
     - OP CIP 加盟組織の情報を用いて組織情報の登録を行う
-    - 登録したい組織情報、認証機関、秘密鍵を用いて Signed Originator Profile を発行
+    - 登録したい組織情報、認証機関、プライベート鍵を用いて Signed Originator Profile を発行
 - Profile Set (PS)
   - Web ページ発行組織単位で管理されている SOP と SDP の総称
   - この情報を用いて Web サイトの信頼性を判断する

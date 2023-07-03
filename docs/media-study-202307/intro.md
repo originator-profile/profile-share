@@ -20,7 +20,7 @@ sidebar_position: 1
 
 従来の Web においてページやコンテンツの情報をデジタル化する仕組みは [OGP](https://ogp.me/) や [JSON-LD](https://json-ld.org/) [構造化データ](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data) のようなものがありましたが、記載情報に対して発信者の署名がなされている仕組みではなく、発信者に関する信頼性を機械的に検証可能なデータ及び実装ではありませんでした。
 
-OP においては公開鍵・秘密鍵を用いた署名技術や [Verifiable Credential](https://w3c.github.io/vc-data-model/) のような Web 標準技術を活用し、署名付きの組織情報 **Signed Originator Profile (SOP)** および署名付きの記事の情報 **Signed Document Profile (SDP)** という形で付与することにより、検証可能で信頼できる形式でメディアおよびニュースの情報を流通可能にします。
+OP においては公開鍵・プライベート鍵を用いた署名技術や [Verifiable Credential](https://w3c.github.io/vc-data-model/) のような Web 標準技術を活用し、署名付きの組織情報 **Signed Originator Profile (SOP)** および署名付きの記事の情報 **Signed Document Profile (SDP)** という形で付与することにより、検証可能で信頼できる形式でメディアおよびニュースの情報を流通可能にします。
 
 :::note
 本実験において OP 仕様の詳細の理解は不要ですが、詳しくは[仕様](/spec)や[開発ガイド](/development)などをご覧ください。

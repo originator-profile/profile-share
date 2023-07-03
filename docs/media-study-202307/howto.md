@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## はじめに
 
-全体の構成はこちらの図にまとめていますが、セットアップ作業として組織情報を用意、OP レジストリに登録、公開鍵・秘密鍵のペアを生成して公開鍵を登録をした上で、各 CMS でコンテンツ・記事に対して署名をした DP すなわち Signed Document Profile (SDP) を発行・登録・リンクすることで利用者のブラウザから Profile Set (SOP と SDP 一式) を記事と共に表示可能になります。
+全体の構成はこちらの図にまとめていますが、セットアップ作業として組織情報を用意、OP レジストリに登録、公開鍵・プライベート鍵のペアを生成して公開鍵を登録をした上で、各 CMS でコンテンツ・記事に対して署名をした DP すなわち Signed Document Profile (SDP) を発行・登録・リンクすることで利用者のブラウザから Profile Set (SOP と SDP 一式) を記事と共に表示可能になります。
 
 ![概要説明図](assets/abstract.png)
 
@@ -119,11 +119,11 @@ https://forms.gle/udirHux1TFs5ctyu6
 現在の拡張機能の UI はあくまで検討段階のものです。今後も変更が予定されていますが、お気づきの点がありましたら遠慮なくフィードバックをお願い致します。
 :::
 
-### 公開鍵、秘密鍵の生成と公開鍵の登録
+### 公開鍵、プライベート鍵の生成と公開鍵の登録
 
 フォーム入力後に事務局側で OP レジストリに組織の登録が完了したら、OP ID などの連絡が届きます。手元で**デジタル署名に用いる鍵ペアを生成し、事務局 OP レジストリに公開鍵の登録を依頼**してください。
 
-ここで生成した秘密鍵でコンテンツに対して Signed Document Profile (SDP) を生成しコンテンツと共に配信すると、ブラウザは公開鍵を用いて署名を検証した上で SOP/SDP に記載された情報を表示します。
+ここで生成したプライベート鍵でコンテンツに対して Signed Document Profile (SDP) を生成しコンテンツと共に配信すると、ブラウザは公開鍵を用いて署名を検証した上で SOP/SDP に記載された情報を表示します。
 
 公開鍵は下記のいずれかの方法で用意します。
 
@@ -161,7 +161,7 @@ profile-registry CLI を使用して、鍵ペアを生成することが可能�
 :::
 
 :::warning
-秘密鍵は適切に管理してください。秘密鍵が漏洩するとあなたの組織を詐称してコンテンツに署名をされる恐れがあります
+プライベート鍵は適切に管理してください。プライベート鍵が漏洩するとあなたの組織を詐称してコンテンツに署名をされる恐れがあります
 :::
 
 例:
@@ -180,7 +180,7 @@ $ cat key.pem.pub.json | jq
 
 実行結果として得られる、鍵ファイルは下記となります。
 
-- key.pem (秘密鍵)
+- key.pem (プライベート鍵)
 - key.pem.pub.json (公開鍵)
 
 公開鍵は事務局 OP レジストリに登録する必要があります。
@@ -605,10 +605,10 @@ $ profile-registry publisher:extract-website --input .extract.json
 
 .website.json から Signed Document Profile を発行し Document Profile レジストリに登録します。
 あらかじめ Document Profile レジストリのデータベースの接続情報が必要です。
-この際、--identity で指定する秘密鍵は Originator Profile レジストリに登録した公開鍵とペアでなければなりません。
+この際、--identity で指定するプライベート鍵は Originator Profile レジストリに登録した公開鍵とペアでなければなりません。
 
 ```
-$ profile-registry publisher:website --identity <秘密鍵> --id <管理者の UUID> --operation create
+$ profile-registry publisher:website --identity <プライベート鍵> --id <管理者の UUID> --operation create
 ```
 
 #### ブラウザでの表示結果確認

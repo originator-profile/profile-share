@@ -4,7 +4,7 @@ import { createThumbprint } from "./thumbprint";
 
 /**
  * 鍵の生成
- * JWK 形式の公開鍵と PEM base64 でエンコードされた PKCS #8 秘密鍵を生成する
+ * JWK 形式の公開鍵と PEM base64 でエンコードされた PKCS #8 プライベート鍵を生成する
  * @param alg Algorithm identifier
  */
 export async function generateKey(
