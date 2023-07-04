@@ -20,15 +20,15 @@ interface Website {
   dateModified?: string | null;
   location?: string | null;
   proofJws: string;
-  // account: Prisma.accountsCreateNestedOneWithoutWebsitesInput
+  accountId: string;
   categories?: [{ cat: string; cattax: number }];
   bodyFormat: string;
   // dps?: Prisma.dpsCreateNestedManyWithoutWebsiteInput  // jwt パラメータで代用
 }
 
 export const WebsiteService = ({ prisma }: Options) => ({
-  async create2(accountId: string, input: Website): Promise<websites | Error> {
-    const { categories, bodyFormat, ...createInput } = input;
+  async create(input: Website): Promise<websites | Error> {
+    const { categories, bodyFormat, accountId, ...createInput } = input;
 
     if (
       bodyFormat !== "text" &&
@@ -56,7 +56,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
       },
       ...createInput,
     } as Prisma.websitesCreateInput;
-    return this.create(input2);
+    return this.create_old(input2);
   },
 
   /**
@@ -64,7 +64,9 @@ export const WebsiteService = ({ prisma }: Options) => ({
    * @param input ウェブページ
    * @return ウェブページ
    */
-  async create(input: Prisma.websitesCreateInput): Promise<websites | Error> {
+  async create_old(
+    input: Prisma.websitesCreateInput
+  ): Promise<websites | Error> {
     return await prisma.websites
       .create({
         data: input,
@@ -91,12 +93,33 @@ export const WebsiteService = ({ prisma }: Options) => ({
    * @param input ウェブページ
    * @return ウェブページ
    */
-  async update(
-    input: Prisma.websitesUpdateInput & { id: string }
-  ): Promise<websites | Error> {
+  async update(input: Website): Promise<websites | Error> {
+    const { categories, bodyFormat, accountId, id, ...input2 } = input;
+    const categories2 = categories?.map((c) => {
+      return {
+        category: { connect: { cat_cattax: { cat: c.cat, cattax: c.cattax } } },
+      };
+    });
+
+    // account の更新
+    // bodyFormat, categories が入力されなかったときに、更新しないようにする
+
+    const input3 = {
+      account: {
+        connect: { id: accountId },
+      },
+      bodyFormat: {
+        connect: { value: bodyFormat },
+      },
+      categories: {
+        create: categories2,
+      },
+      ...input2,
+    } as Prisma.websitesCreateInput;
+
     return await prisma.websites.update({
-      where: { id: input.id },
-      data: input,
+      where: { id: id },
+      data: input3,
       include: { categories: true },
     });
   },

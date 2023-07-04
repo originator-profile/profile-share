@@ -6,6 +6,24 @@ import fs from "node:fs/promises";
 import { globby } from "globby";
 import { accountId, operation } from "../../flags";
 
+interface Website {
+  id: string;
+  url: string;
+  title?: string | null;
+  image?: string | null;
+  description?: string | null;
+  author?: string | null;
+  editor?: string | null;
+  datePublished?: string | null;
+  dateModified?: string | null;
+  location?: string | null;
+  proofJws: string;
+  accountId: string;
+  categories?: [{ cat: string; cattax: number }];
+  bodyFormat: string;
+  // dps?: Prisma.dpsCreateNestedManyWithoutWebsiteInput  // jwt パラメータで代用
+}
+
 export class PublisherWebsite extends Command {
   static description = "ウェブページの作成・表示・更新・削除";
   static flags = {
@@ -49,26 +67,30 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
       prisma,
     });
     const inputBuffer = await fs.readFile(flags.input);
-    const { body, ...input } = JSON.parse(
-      inputBuffer.toString()
-    ) as (Prisma.websitesCreateInput & Prisma.websitesUpdateInput) & {
+    const { body, ...input } = JSON.parse(inputBuffer.toString()) as Website & {
       id: string;
       body: string;
     };
+
+    // body に署名して proofJws パラメータを生成
     const pkcs8File = await fs.readFile(flags.identity);
     const pkcs8 = pkcs8File.toString();
     const proofJws = await services.website.signBody(pkcs8, body);
     if (proofJws instanceof Error) throw proofJws;
+
+    // website サービスを呼び出す
     const operation = flags.operation as
       | "create"
       | "read"
       | "update"
       | "delete";
+
     const data = await services.website[operation]({
       ...input,
-      account: { connect: { id: flags.id } },
+      accountId: flags.id,
       proofJws,
     });
+
     if (data instanceof Error) this.error(data);
     this.log(JSON.stringify(data, null, 2));
     if (!["create", "update"].includes(operation)) return;
@@ -79,12 +101,15 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     const expiredAt = flags["expired-at"]
       ? new Date(flags["expired-at"])
       : addYears(new Date(), 1);
+
+    // 受け取った情報から SDP を生成
     const jwt = await services.publisher.signDp(flags.id, input.id, pkcs8, {
       issuedAt,
       expiredAt,
     });
     if (jwt instanceof Error) this.error(jwt);
 
+    // SDP をレジストリに登録
     const dpId = await services.publisher.registerDp(flags.id, jwt);
     if (dpId instanceof Error) this.error(dpId);
   }
