@@ -423,7 +423,7 @@ Document Profile レジストリのドメイン名を、WordPress 管理者画�
 dprexpt.originator-profile.org
 ```
 
-[レジストリの管理者を作成](/registry/document-profile-registry-creation#レジストリの管理者の作成)した際の認証情報、WordPress 管理者画面 > Settings > Profile > [認証情報] に入力します。
+[レジストリの管理者を作成](/registry/document-profile-registry-creation.md#レジストリの管理者の作成)した際の認証情報、WordPress 管理者画面 > Settings > Profile > [認証情報] に入力します。
 
 例:
 

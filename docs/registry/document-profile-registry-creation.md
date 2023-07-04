@@ -30,7 +30,7 @@ Document Profile レジストリ管理者->>Document Profile レジストリ: Si
 Heroku などを利用して Profile Registry のデプロイを行います。
 
 このリポジトリを clone してコマンドラインで作業を行うことになります。
-[開発ガイド](/development)を参照してください。
+[開発ガイド](/development/)を参照してください。
 
 ### レジストリの管理者の作成
 
@@ -87,7 +87,7 @@ JWK の例:
 
 ### profile-registry CLI を使用する方法
 
-profile-registry CLI を使用して、鍵ペアを生成することが可能です。[操作説明書](./operation#鍵ペアの生成)を参照してください。
+profile-registry CLI を使用して、鍵ペアを生成することが可能です。[操作説明書](./operation.md#鍵ペアの生成)を参照してください。
 
 例:
 
