@@ -8,7 +8,54 @@ type Options = {
   prisma: PrismaClient;
 };
 
+interface Website {
+  id: string
+  url: string
+  title?: string | null
+  image?: string | null
+  description?: string | null
+  author?: string | null
+  editor?: string | null
+  datePublished?: string | null
+  dateModified?: string | null
+  location?: string | null
+  proofJws: string
+  // account: Prisma.accountsCreateNestedOneWithoutWebsitesInput
+  categories?: [
+    {cat: string, cattax: number}
+  ]
+  bodyFormat: string
+  // dps?: Prisma.dpsCreateNestedManyWithoutWebsiteInput  // jwt パラメータで代用
+}
+
+
 export const WebsiteService = ({ prisma }: Options) => ({
+
+
+  async create2(accountId: string, input: Website): Promise<websites | Error> {
+    const {categories, bodyFormat, ...createInput} = input
+
+    if (bodyFormat !== "text" && bodyFormat !== 'visibleText' && bodyFormat !== 'html') {
+      throw new Error("invalid bodyFormat")
+    }
+
+    const categories2 = categories?.map((c) => {return {category: {connect: {cat_cattax: {cat: c.cat, cattax: c.cattax}}}}});
+
+    const input2  = {
+      account: {
+        connect: {id: accountId}
+      },
+      bodyFormat: {
+        connect: {value: bodyFormat}
+      },
+      categories: {
+        create: categories2
+      },
+      ...createInput
+    } as Prisma.websitesCreateInput;
+    return this.create(input2);
+  },
+
   /**
    * ウェブページの作成
    * @param input ウェブページ

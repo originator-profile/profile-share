@@ -52,15 +52,12 @@ async function issueDp(services: Services, issuerUuid: string, pkcs8: string) {
   const { body, ...input } = exampleWebsite;
   const proofJws = await services.website.signBody(pkcs8, body);
   if (proofJws instanceof Error) throw proofJws;
-  const website = await services.website.create({
+  const website = await services.website.create2(issuerUuid, {
     ...input,
-    account: { connect: { id: issuerUuid } },
-    categories: exampleCategory && {
-      create: {
-        categoryCat: exampleCategory.cat,
-        categoryCattax: exampleCategory.cattax,
-      },
-    },
+    categories: [exampleCategory && {
+        cat: exampleCategory.cat,
+        cattax: exampleCategory.cattax,
+    }],
     proofJws,
   });
   if (website instanceof Error) throw website;
