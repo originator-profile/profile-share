@@ -52,8 +52,9 @@ async function issueDp(services: Services, issuerUuid: string, pkcs8: string) {
   const { body, ...input } = exampleWebsite;
   const proofJws = await services.website.signBody(pkcs8, body);
   if (proofJws instanceof Error) throw proofJws;
-  const website = await services.website.create2(issuerUuid, {
+  const website = await services.website.create({
     ...input,
+    accountId: issuerUuid,
     categories: [
       exampleCategory && {
         cat: exampleCategory.cat,
