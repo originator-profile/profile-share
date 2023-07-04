@@ -54,10 +54,12 @@ async function issueDp(services: Services, issuerUuid: string, pkcs8: string) {
   if (proofJws instanceof Error) throw proofJws;
   const website = await services.website.create2(issuerUuid, {
     ...input,
-    categories: [exampleCategory && {
+    categories: [
+      exampleCategory && {
         cat: exampleCategory.cat,
         cattax: exampleCategory.cattax,
-    }],
+      },
+    ],
     proofJws,
   });
   if (website instanceof Error) throw website;
