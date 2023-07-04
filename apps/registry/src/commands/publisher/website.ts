@@ -17,11 +17,8 @@ interface Website {
   datePublished?: string | null;
   dateModified?: string | null;
   location?: string | null;
-  proofJws: string;
-  accountId: string;
   categories?: [{ cat: string; cattax: number }];
   bodyFormat: string;
-  // dps?: Prisma.dpsCreateNestedManyWithoutWebsiteInput  // jwt パラメータで代用
 }
 
 export class PublisherWebsite extends Command {
@@ -39,9 +36,25 @@ export class PublisherWebsite extends Command {
     input: Flags.string({
       summary: "JSON file",
       description: `\
-Prisma.websitesCreateInput または Prisma.websitesUpdateInput
-詳細はTSDocを参照してください。
-https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma`,
+ファイル名。ファイルには次のようなフォーマットの JSON を書いてください。
+
+{
+  "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc7",
+  "url": "http://localhost:8080",
+  "location": "h1",
+  "bodyFormat": "visibleText",
+  "body": "OP 確認くん",
+  "title": "OP 確認くん",
+
+  "image": "https://example.com/image.png",
+  "description": "このウェブページの説明です。",
+  "author": "山田太郎",
+  "editor": "山田花子",
+  "datePublished": "2023-07-04T19:14+09:00",
+  "dateModified": "2023-07-04T19:14+09:00",
+  "categories: [{"cat": "カテゴリー名", "cattax": 1}, {"cat": "カテゴリー名2", "cattax": 1}]
+}
+`,
     }),
     "glob-input": Flags.string({
       summary: "JSON files match with glob pattern",
@@ -68,7 +81,6 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     });
     const inputBuffer = await fs.readFile(flags.input);
     const { body, ...input } = JSON.parse(inputBuffer.toString()) as Website & {
-      id: string;
       body: string;
     };
 
