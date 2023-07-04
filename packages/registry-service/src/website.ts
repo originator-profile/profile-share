@@ -56,7 +56,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
       },
       ...createInput,
     } as Prisma.websitesCreateInput;
-    return this.create_old(input2);
+    return this.createForOldAPI(input2);
   },
 
   /**
@@ -64,7 +64,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
    * @param input ウェブページ
    * @return ウェブページ
    */
-  async create_old(
+  async createForOldAPI(
     input: Prisma.websitesCreateInput
   ): Promise<websites | Error> {
     return await prisma.websites
@@ -120,6 +120,21 @@ export const WebsiteService = ({ prisma }: Options) => ({
     return await prisma.websites.update({
       where: { id: id },
       data: input3,
+      include: { categories: true },
+    });
+  },
+
+  /**
+   * ウェブページの更新
+   * @param input ウェブページ
+   * @return ウェブページ
+   */
+  async updateForOldAPI(
+    input: Prisma.websitesUpdateInput & { id: string }
+  ): Promise<websites | Error> {
+    return await prisma.websites.update({
+      where: { id: input.id },
+      data: input,
       include: { categories: true },
     });
   },

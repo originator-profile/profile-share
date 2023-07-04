@@ -43,9 +43,9 @@ const schema: FastifySchema = {
 };
 
 const operations = {
-  POST: "create",
+  POST: "createForOldAPI",
   GET: "read",
-  PUT: "update",
+  PUT: "updateForOldAPI",
   DELETE: "delete",
 } as const;
 
