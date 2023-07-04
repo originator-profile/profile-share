@@ -141,7 +141,7 @@ $ profile-registry publisher:extract-website --input .extract.json
 
 .website.json から Signed Document Profile を発行し Document Profile レジストリに登録します。あらかじめ Document Profile レジストリのデータベースの接続情報が必要です。
 
-このとき使用するプライベート鍵は、[Originator Profile レジストリに登録した公開鍵](./document-profile-registry-creation.md(#originator-profile-レジストリへの公開鍵の登録と-signed-originator-profile-の発行依頼)とペアでなければなりません。
+このとき使用するプライベート鍵は、[Originator Profile レジストリに登録した公開鍵](./document-profile-registry-creation.md#originator-profile-レジストリへの公開鍵の登録と-signed-originator-profile-の発行依頼)とペアでなければなりません。
 
 ```
 $ profile-registry publisher:website --identity <プライベート鍵> --id <管理者の UUID> --operation create
