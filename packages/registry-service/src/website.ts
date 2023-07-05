@@ -8,7 +8,7 @@ type Options = {
   prisma: PrismaClient;
 };
 
-interface Website {
+export interface Website {
   id: string;
   url: string;
   title?: string | null;

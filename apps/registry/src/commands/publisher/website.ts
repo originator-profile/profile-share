@@ -1,25 +1,15 @@
 import { Command, Flags, ux } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
 import { addYears } from "date-fns";
-import { Services } from "@webdino/profile-registry-service";
+import {
+  Services,
+  type Website as WebsiteType,
+} from "@webdino/profile-registry-service";
 import fs from "node:fs/promises";
 import { globby } from "globby";
 import { accountId, operation } from "../../flags";
 
-interface Website {
-  id: string;
-  url: string;
-  title?: string | null;
-  image?: string | null;
-  description?: string | null;
-  author?: string | null;
-  editor?: string | null;
-  datePublished?: string | null;
-  dateModified?: string | null;
-  location?: string | null;
-  categories?: [{ cat: string; cattax: number }];
-  bodyFormat: string;
-}
+type Website = Omit<Omit<WebsiteType, "accountId">, "proofJws">;
 
 export class PublisherWebsite extends Command {
   static description = "ウェブページの作成・表示・更新・削除";
