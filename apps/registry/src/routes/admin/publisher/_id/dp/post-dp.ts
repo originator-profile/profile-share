@@ -35,7 +35,7 @@ export const schema: FastifySchema = {
   },
 };
 
-export async function postSdp({
+export async function postDp({
   server,
   params,
   body,
@@ -90,4 +90,4 @@ export async function postSdp({
   return res;
 }
 
-export default Object.assign(postSdp, { schema });
+export default Object.assign(postDp, { schema });
