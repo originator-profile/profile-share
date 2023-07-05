@@ -21,7 +21,7 @@ Originator Profile と Document Profile の管理を行うシステムです。
 
 ## Dependencies
 
-[開発ガイド](https://profile-docs.pages.dev/development)を参照してください。
+[開発ガイド](https://profile-docs.pages.dev/development/)を参照してください。
 
 ## Usage
 

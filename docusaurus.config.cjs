@@ -14,6 +14,7 @@ module.exports = {
   favicon: "favicon.png",
   title,
   tagline: description,
+  trailingSlash: true,
   i18n: { locales, defaultLocale: locales[0] },
   presets: [
     [

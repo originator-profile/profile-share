@@ -44,11 +44,11 @@ Document Profile レジストリ-->>利用者: Profile Set
 
 ## デモ
 
-[拡張機能を用意](../web-ext/experimental-use)し、 https://wppdev.herokuapp.com/2023/06/29/hello-world/ にアクセスして参照実装の実際の動作を確認できます。
+[拡張機能を用意](../web-ext/experimental-use.md)し、 https://wppdev.herokuapp.com/2023/06/29/hello-world/ にアクセスして参照実装の実際の動作を確認できます。
 
 ## 構築ガイド
 
-1. [Document Profile レジストリの構築](./document-profile-registry-creation)
+1. [Document Profile レジストリの構築](./document-profile-registry-creation.md)
 2. プラグインのインストール
 
 ## プラグインのインストール
@@ -64,7 +64,7 @@ Document Profile レジストリのドメイン名を、WordPress 管理者画�
 dprexpt.originator-profile.org
 ```
 
-[レジストリの管理者を作成](./document-profile-registry-creation#レジストリの管理者の作成)した際の認証情報、WordPress 管理者画面 > Settings > Profile > [認証情報] に入力します。
+[レジストリの管理者を作成](./document-profile-registry-creation.md#レジストリの管理者の作成)した際の認証情報、WordPress 管理者画面 > Settings > Profile > [認証情報] に入力します。
 
 例:
 
