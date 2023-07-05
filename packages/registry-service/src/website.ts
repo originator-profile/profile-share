@@ -26,8 +26,13 @@ interface Website {
 }
 
 export const WebsiteService = ({ prisma }: Options) => ({
-  async create(input: Website): Promise<websites | Error> {
-    const { categories, bodyFormat, accountId, ...createInput } = input;
+  /**
+   * ウェブページの作成
+   * @param website ウェブページ
+   * @return 作成したウェブページ
+   */
+  async create(website: Website): Promise<websites | Error> {
+    const { categories, bodyFormat, accountId, ...createInput } = website;
 
     if (
       bodyFormat !== "text" &&
@@ -37,25 +42,25 @@ export const WebsiteService = ({ prisma }: Options) => ({
       throw new Error("invalid bodyFormat");
     }
 
-    const categories2 = categories?.map((c) => {
+    const categoriesConnect = categories?.map((c) => {
       return {
         category: { connect: { cat_cattax: { cat: c.cat, cattax: c.cattax } } },
       };
     });
 
-    const input2 = {
+    const input = {
       account: {
         connect: { id: accountId },
       },
       bodyFormat: {
         connect: { value: bodyFormat },
       },
-      categories: {
-        create: categories2,
+      categories: categoriesConnect && {
+        create: categoriesConnect,
       },
       ...createInput,
     } as Prisma.websitesCreateInput;
-    return this.createForOldAPI(input2);
+    return this.createForOldAPI(input);
   },
 
   /**
@@ -89,36 +94,31 @@ export const WebsiteService = ({ prisma }: Options) => ({
   },
   /**
    * ウェブページの更新
-   * @param input ウェブページ
+   * @param website ウェブページ
    * @return ウェブページ
    */
-  async update(input: Website): Promise<websites | Error> {
-    const { categories, bodyFormat, accountId, id, ...input2 } = input;
-    const categories2 = categories?.map((c) => {
+  async update(website: Website): Promise<websites | Error> {
+    const { categories, bodyFormat, accountId, id, ...rest } = website;
+    const categoriesConnect = categories?.map((c) => {
       return {
         category: { connect: { cat_cattax: { cat: c.cat, cattax: c.cattax } } },
       };
     });
 
-    // account の更新
-    // bodyFormat, categories が入力されなかったときに、更新しないようにする
-
-    const input3 = {
-      account: {
-        connect: { id: accountId },
-      },
-      bodyFormat: {
+    // accountId の更新はサポートしない。
+    const input = {
+      bodyFormat: bodyFormat && {
         connect: { value: bodyFormat },
       },
-      categories: {
-        create: categories2,
+      categories: categoriesConnect && {
+        create: categoriesConnect,
       },
-      ...input2,
+      ...rest,
     } as Prisma.websitesCreateInput;
 
     return await prisma.websites.update({
-      where: { id: id },
-      data: input3,
+      where: { id: id},
+      data: input,
       include: { categories: true },
     });
   },
