@@ -491,7 +491,7 @@ FLAG DESCRIPTIONS
 
   --input=<value>  JSON file
 
-    ファイル名。ファイルには次のようなフォーマットの JSON を書いてください。
+    ファイル名。ファイルには次のようなフォーマットの JSON を入れてください。空白行より上が必須プロパティです。
 
     {
     "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc7",
@@ -499,15 +499,15 @@ FLAG DESCRIPTIONS
     "location": "h1",
     "bodyFormat": "visibleText",
     "body": "OP 確認くん",
-    "title": "OP 確認くん",
 
+    "title": "OP 確認くん",
     "image": "https://example.com/image.png",
     "description": "このウェブページの説明です。",
     "author": "山田太郎",
     "editor": "山田花子",
-    "datePublished": "2023-07-04T19:14+09:00",
-    "dateModified": "2023-07-04T19:14+09:00",
-    "categories: [{"cat": "カテゴリー名", "cattax": 1}, {"cat": "カテゴリー名2", "cattax": 1}]
+    "datePublished": "2023-07-04T19:14:00Z",
+    "dateModified": "2023-07-04T19:14:00Z",
+    "categories": [{"cat": "IAB1", "cattax": 1}, {"cat": "IAB1-1", "cattax": 1}]
     }
 ```
 
