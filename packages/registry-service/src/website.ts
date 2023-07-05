@@ -64,6 +64,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
   },
 
   /**
+   * @deprecated
    * ウェブページの作成
    * @param input ウェブページ
    * @return ウェブページ
@@ -124,6 +125,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
   },
 
   /**
+   * @deprecated
    * ウェブページの更新
    * @param input ウェブページ
    * @return ウェブページ
