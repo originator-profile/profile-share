@@ -1,7 +1,6 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 import { FromSchema } from "json-schema-to-ts";
 import { BadRequestError } from "http-errors-enhanced";
-import { Prisma } from "@prisma/client";
 import { ErrorResponse } from "../../../../../error";
 import Params from "./params";
 import { DecodeResult } from "@webdino/profile-verify";
