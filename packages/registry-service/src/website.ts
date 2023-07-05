@@ -106,7 +106,15 @@ export const WebsiteService = ({ prisma }: Options) => ({
       };
     });
 
-    // accountId の更新はサポートしない。
+    // 該当する website がないか、紐づいている account が違う場合はエラーを返す。
+    const recordToUpdate = await prisma.websites.findUnique({
+      where: { id: id },
+      include: { account: true },
+    });
+    if (!recordToUpdate || recordToUpdate.account.id !== accountId) {
+      return new NotFoundError("Not Found");
+    }
+
     const input = {
       bodyFormat: bodyFormat && {
         connect: { value: bodyFormat },
@@ -117,11 +125,13 @@ export const WebsiteService = ({ prisma }: Options) => ({
       ...rest,
     } as Prisma.websitesCreateInput;
 
-    return await prisma.websites.update({
-      where: { id: id },
-      data: input,
-      include: { categories: true },
-    });
+    return await prisma.websites
+      .update({
+        where: { id: id },
+        data: input,
+        include: { categories: true },
+      })
+      .catch((e: Error) => e);
   },
 
   /**
