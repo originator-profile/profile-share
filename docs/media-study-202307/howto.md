@@ -345,7 +345,7 @@ SDP 生成対象を定義する `website.json` ファイルは[website.example.j
 }
 ```
 
-公開鍵のパス、登録する組織情報の ID、web ページの情報を引数として使用して下記のように実行します。
+公開鍵のパス、登録する組織、Web ページの情報を引数として使用して下記のように実行します。
 
 ```
 $ profile-registry publisher:website \
@@ -777,25 +777,25 @@ $ curl https://dprexpt.originator-profile.org/website/profiles?url=https%3A%2F%2
 CIP 提供 DP レジストリでは、試用のために下記のアカウント情報が登録されています。
 このアカウント情報を使って実際に API を確認することもできます。
 
-OP ID の例
+試験用 OP ID
 
 ```
 media.example.com
 ```
 
-アカウント ID の例
+試験用アカウント ID
 
 ```
 8fe1b860-558c-5107-a9af-21c376a6a27c
 ```
 
-API 認証情報の例 (**本実験以外では決して使用しないでください**)
+試験用 API 認証情報 (**本実験以外では決して使用しないでください**)
 
 ```
 8fe1b860-558c-5107-a9af-21c376a6a27c:eqjyPR--HaS0mMj0wiDP1HA7yT1WGgYpHcUjDia3py8
 ```
 
-鍵ペアの例 (**本実験以外では決して使用しないでください**)
+試験用鍵ペア (**本実験以外では決して使用しないでください**)
 
 プライベート鍵
 
