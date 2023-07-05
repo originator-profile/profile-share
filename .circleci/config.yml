@@ -96,7 +96,7 @@ commands:
       - restore_cache:
           name: Restore Composer cache
           keys:
-            - composer-v2-main
+            - composer-v2-main-2023-07-05
       - run:
           name: Install WordPress dependencies
           command: |
@@ -106,7 +106,7 @@ commands:
           working_directory: packages/wordpress
       - save_cache:
           name: Save Composer cache
-          key: "composer-v2-main"
+          key: "composer-v2-main-2023-07-05"
           paths:
             - packages/wordpress/vendor
   wordpress_format:
