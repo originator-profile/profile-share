@@ -23,7 +23,6 @@ interface Website {
   accountId: string;
   categories?: [{ cat: string; cattax: number }];
   bodyFormat: string;
-  // dps?: Prisma.dpsCreateNestedManyWithoutWebsiteInput  // jwt パラメータで代用
 }
 
 export const WebsiteService = ({ prisma }: Options) => ({
