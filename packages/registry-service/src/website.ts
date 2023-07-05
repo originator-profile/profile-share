@@ -118,7 +118,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
     } as Prisma.websitesCreateInput;
 
     return await prisma.websites.update({
-      where: { id: id},
+      where: { id: id },
       data: input,
       include: { categories: true },
     });
