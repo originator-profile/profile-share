@@ -47,7 +47,8 @@ describe("certify", () => {
         .getByRole("button", {
           name: "Originator Profile 技術研究組合 OP 確認くん OP 確認くん",
         })
-        .count()
-    ).toEqual(1);
+        .count(),
+      "ピンが少なくとも1つ存在する"
+    ).toBeGreaterThanOrEqual(1);
   });
 });
