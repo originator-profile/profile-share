@@ -3,7 +3,7 @@ import { FromSchema } from "json-schema-to-ts";
 const Params = {
   type: "object",
   properties: {
-    id: { type: "string" },
+    id: { type: "string", description: "アカウントID" },
   },
   required: ["id"],
 } as const;

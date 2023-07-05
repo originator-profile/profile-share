@@ -10,7 +10,7 @@ const Body = {
   type: "object",
   properties: {
     jwt: {
-      description: "登録する Signed Document Profile (作成・更新時のみ対応)",
+      description: "登録する Signed Document Profile",
       type: "string",
     },
   },
@@ -20,9 +20,10 @@ const Body = {
 type Body = FromSchema<typeof Body>;
 
 export const schema: FastifySchema = {
+  operationId: "registerSignedDocumentProfile",
   params: Params,
   body: Body,
-  description: "SDP によるウェブページの作成",
+  description: "Signed Document Profile (SDP) をレジストリに登録します",
   security: [{ basicAuth: [] }],
   response: {
     200: {
