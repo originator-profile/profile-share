@@ -33,10 +33,10 @@ function Org({ op, holder, roles, paths }: Props) {
   const logo = holder.logos?.find(({ isMain }) => isMain);
   const credentials = op.item.filter(isOpCredential);
   const certifiers = new Map<string, OpCertifier>(
-    op.item.filter(isOpCertifier).map((c) => [c.domainName, c])
+    op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
   );
   const verifiers = new Map<string, OpVerifier>(
-    op.item.filter(isOpVerifier).map((v) => [v.domainName, v])
+    op.item.filter(isOpVerifier).map((v) => [v.domainName, v]),
   );
   const handleClick = (id: string) => () => {
     const element = document.querySelector("#" + CSS.escape(id));

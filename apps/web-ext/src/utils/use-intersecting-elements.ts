@@ -3,17 +3,17 @@ import { useState, useEffect } from "react";
 /** 交差中の要素を返すフック関数 */
 function useIntersectingElements(
   elements: NodeListOf<Element>,
-  options: IntersectionObserverInit = {}
+  options: IntersectionObserverInit = {},
 ) {
   const [intersectingElements, setIntersectingElements] = useState<Element[]>(
-    []
+    [],
   );
   useEffect(() => {
     const handler = (entries: IntersectionObserverEntry[]) => {
       setIntersectingElements(
         entries
           .filter((entry) => entry.isIntersecting)
-          .map((entry) => entry.target)
+          .map((entry) => entry.target),
       );
     };
     const observer = new IntersectionObserver(handler, {

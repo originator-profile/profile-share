@@ -15,13 +15,13 @@ describe("parseAccountId", () => {
 
   test("FQDNを指定したとき、UUID文字列形式に変換", () => {
     expect(parseAccountId("example.com")).toBe(
-      "cfbff0d1-9375-5685-968c-48ce8b15ae17"
+      "cfbff0d1-9375-5685-968c-48ce8b15ae17",
     );
   });
 
   test("DNS URNを指定したとき、UUID文字列形式に変換", () => {
     expect(parseAccountId("dns:example.com")).toBe(
-      "cfbff0d1-9375-5685-968c-48ce8b15ae17"
+      "cfbff0d1-9375-5685-968c-48ce8b15ae17",
     );
   });
 });

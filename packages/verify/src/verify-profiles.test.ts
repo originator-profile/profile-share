@@ -42,7 +42,7 @@ describe("verify-profiles", async () => {
       { profile: [opToken, dpToken] },
       registryKeys,
       op.issuer,
-      null
+      null,
     );
     const verified = await verifier();
     expect(verified[0]).toMatchObject({ op });
@@ -56,7 +56,7 @@ describe("verify-profiles", async () => {
       { profile: [evilOpToken, dpToken] },
       registryKeys,
       op.issuer,
-      null
+      null,
     );
     const results = await verifier();
     expect(results[0]).instanceOf(Error);
@@ -81,7 +81,7 @@ describe("verify-profiles", async () => {
       { profile: [invalidOpToken] },
       registryKeys,
       op.issuer,
-      signedProfileValidator
+      signedProfileValidator,
     );
     const results = await verifier();
     expect(results[0]).instanceOf(ProfileClaimsValidationFailed);
@@ -103,7 +103,7 @@ describe("verify-profiles", async () => {
       { profile: [evilOpToken, dpToken] },
       registryKeys,
       op.issuer,
-      null
+      null,
     );
     const results = await verifier();
     expect(results[1]).instanceOf(ProfileTokenVerifyFailed);
@@ -114,7 +114,7 @@ describe("verify-profiles", async () => {
       { profile: [opToken, opToken, dpToken] },
       registryKeys,
       op.issuer,
-      null
+      null,
     );
     const results = await verifier();
     expect(results.length).toBe(3);
@@ -127,7 +127,7 @@ describe("verify-profiles", async () => {
       { profile: [opToken] },
       registryKeys,
       op.issuer,
-      null
+      null,
     );
     const results = await verifier();
     expect(results[0]).instanceOf(ProfilesVerifyFailed);
@@ -140,7 +140,7 @@ describe("verify-profiles", async () => {
       { profile: [opToken, evilDpToken] },
       registryKeys,
       op.issuer,
-      null
+      null,
     );
     const results = await verifier();
     expect(results[0]).instanceOf(Error);

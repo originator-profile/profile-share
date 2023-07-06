@@ -46,7 +46,7 @@ function Marker({
       <button
         className={clsx(
           "relative border-4 rounded-full shadow-xl",
-          active ? "bg-blue-500 border-blue-500" : "bg-white border-white"
+          active ? "bg-blue-500 border-blue-500" : "bg-white border-white",
         )}
         title={`${opHolder.name} ${ogWebsite.title} ${
           result &&
@@ -73,7 +73,7 @@ function Marker({
             isTopOverflow
               ? "top-0 -translate-y-full rotate-180"
               : " bottom-0 translate-y-full",
-            active ? "fill-blue-500" : "fill-white"
+            active ? "fill-blue-500" : "fill-white",
           )}
         >
           <polygon

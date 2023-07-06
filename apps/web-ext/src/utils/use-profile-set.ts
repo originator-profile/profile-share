@@ -19,7 +19,7 @@ const key = "profiles";
 
 async function fetchVerifiedProfiles([, tabId]: [
   _: typeof key,
-  tabId: number
+  tabId: number,
 ]) {
   const { ok, data, origin }: fetchProfileSetMessageResponse =
     await chrome.tabs.sendMessage(tabId, {
@@ -28,13 +28,13 @@ async function fetchVerifiedProfiles([, tabId]: [
   const parsed = JSON.parse(data);
   if (!ok) throw Object.assign(new Error(parsed.message), parsed);
   const { advertisers, publishers, main, profile } = await expandProfileSet(
-    parsed
+    parsed,
   );
   const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(
     import.meta.env.MODE === "development" && registry === "localhost"
       ? `http://localhost:8080/.well-known/jwks.json`
-      : `https://${registry}/.well-known/jwks.json`
+      : `https://${registry}/.well-known/jwks.json`,
   );
   const keys = RemoteKeys(jwksEndpoint);
   const verify = ProfilesVerifier({ profile }, keys, registry, null);
@@ -77,7 +77,7 @@ function useProfileSet() {
             [
               routes.base.build({ tabId: String(tabId) }),
               routes.publ.build(message.dp),
-            ].join("/")
+            ].join("/"),
           );
       }
     };

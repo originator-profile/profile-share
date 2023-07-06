@@ -23,20 +23,20 @@ describe("certify", () => {
     // 拡張機能ウィンドウの状態
     expect(await ext?.title()).toMatch(/コンテンツ情報/);
     expect(
-      await ext?.locator(':text("この記事を発行した組織") + p').textContent()
+      await ext?.locator(':text("この記事を発行した組織") + p').textContent(),
     ).toMatch("Originator Profile 技術研究組合");
     expect(
-      await ext?.locator(':text("この組織は認証を受けています")').count()
+      await ext?.locator(':text("この組織は認証を受けています")').count(),
     ).toEqual(1);
     expect(
       await ext
         ?.locator('span:has-text("ブランドセーフティ認証")')
-        .textContent()
+        .textContent(),
     ).toMatch(/自己検証/);
     expect(
       await ext
         ?.locator('p:has-text("ブランドセーフティ認証") + p')
-        .textContent()
+        .textContent(),
     ).toMatch("有効期限内");
 
     // 対象Webページにマークは表示されているか
@@ -48,7 +48,7 @@ describe("certify", () => {
           name: "Originator Profile 技術研究組合 OP 確認くん OP 確認くん",
         })
         .count(),
-      "ピンが少なくとも1つ存在する"
+      "ピンが少なくとも1つ存在する",
     ).toBeGreaterThanOrEqual(1);
   });
 });

@@ -12,12 +12,12 @@ type Props = {
 
 export default forwardRef<SVGSVGElement, Props>(function DpArea(
   { className, dps },
-  ref
+  ref,
 ) {
   const { width, height } = useWindowSize();
   const dpLocators = dps.flatMap((dp) => dp.item.filter(isDpLocator));
   const { elements } = useElements(
-    dpLocators.map((dpLocator) => dpLocator.location)
+    dpLocators.map((dpLocator) => dpLocator.location),
   );
   const { rects } = useRects(elements);
   const id = useId();

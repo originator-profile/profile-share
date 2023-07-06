@@ -6,7 +6,7 @@ import { createThumbprint } from "@webdino/profile-sign";
 test("プラグインをアクチベーション後プライベート鍵が存在する", async () => {
   const keyFilePath = path.join(
     __dirname,
-    "../tmp/profile-test-snapshots/profile.key.pem"
+    "../tmp/profile-test-snapshots/profile.key.pem",
   );
   const stats = await fs.stat(keyFilePath);
   expect(stats.isFile()).toBe(true);

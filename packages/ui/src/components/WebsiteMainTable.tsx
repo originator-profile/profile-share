@@ -14,7 +14,7 @@ function WebsiteMainTable({ className, website }: Props) {
         <TableRow
           header="初回公開日"
           data={new Date(
-            website["https://schema.org/datePublished"]
+            website["https://schema.org/datePublished"],
           ).toLocaleString()}
         />
       )}
@@ -22,7 +22,7 @@ function WebsiteMainTable({ className, website }: Props) {
         <TableRow
           header="最終更新日"
           data={new Date(
-            website["https://schema.org/dateModified"]
+            website["https://schema.org/dateModified"],
           ).toLocaleString()}
         />
       )}

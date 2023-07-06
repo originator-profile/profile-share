@@ -9,7 +9,7 @@ import { calculateJwkThumbprint, exportJWK, importPKCS8, JWK } from "jose";
  */
 export async function createThumbprint(
   jwkOrPkcs8: string | JWK,
-  alg = "ES256"
+  alg = "ES256",
 ): Promise<string> {
   const jwk: JWK =
     typeof jwkOrPkcs8 === "string"

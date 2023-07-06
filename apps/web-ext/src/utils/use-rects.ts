@@ -10,8 +10,8 @@ function useRects(elements: NodeListOf<HTMLElement>) {
     startTransition(() => {
       setRects(
         intersectingElements.map((intersectingElement) =>
-          intersectingElement.getBoundingClientRect()
-        )
+          intersectingElement.getBoundingClientRect(),
+        ),
       );
     });
   }, [setRects, intersectingElements]);

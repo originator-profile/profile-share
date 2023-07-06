@@ -24,7 +24,7 @@ function Image({
       className={clsx(
         "flex justify-center items-center",
         { "bg-white": !rounded },
-        className
+        className,
       )}
       style={{ height, minWidth: width }}
     >

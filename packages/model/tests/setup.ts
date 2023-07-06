@@ -9,7 +9,7 @@ import { setupServer } from "msw/node";
 globalThis.location = { origin: "https://originator-profile.org" } as Location;
 
 const contextJson = await fs.readFile(
-  path.resolve(__dirname, "../context.json")
+  path.resolve(__dirname, "../context.json"),
 );
 const context = JSON.parse(contextJson.toString());
 const endpoints = [

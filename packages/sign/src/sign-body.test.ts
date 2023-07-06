@@ -19,7 +19,7 @@ test("signBody() returns an object containing verifiable compact JWS", async () 
       payload,
       signature,
     },
-    publicKey
+    publicKey,
   );
   expect(verification.payload).toEqual(payload);
 });
