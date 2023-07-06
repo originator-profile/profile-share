@@ -6,8 +6,10 @@ import { CategoryService } from "./category";
 import { CertificateService } from "./certificate";
 import { ValidatorService } from "./validator";
 import { PublisherService } from "./publisher";
-import { WebsiteService, type Website as WebsiteWebsite } from "./website";
+import { WebsiteService } from "./website";
 import { CredentialService } from "./credential";
+
+export type { Website } from "./website";
 
 type Options = {
   config: Config;
@@ -38,5 +40,4 @@ export const Services = (options: Options) => {
   };
 };
 
-export type Website = WebsiteWebsite;
 export type Services = ReturnType<typeof Services>;

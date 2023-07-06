@@ -59,8 +59,13 @@ export const WebsiteService = ({ prisma }: Options) => ({
         create: categoriesConnect,
       },
       ...createInput,
-    } as Prisma.websitesCreateInput;
-    return this.createForOldAPI(input);
+    } as const satisfies Prisma.websitesCreateInput;
+    return await prisma.websites
+      .create({
+        data: input,
+        include: { categories: true },
+      })
+      .catch((e: Error) => e);
   },
 
   /**
@@ -107,11 +112,10 @@ export const WebsiteService = ({ prisma }: Options) => ({
     });
 
     // 該当する website がないか、紐づいている account が違う場合はエラーを返す。
-    const recordToUpdate = await prisma.websites.findUnique({
-      where: { id: id },
-      include: { account: true },
+    const recordToUpdate = await prisma.websites.findFirst({
+      where: { id, accountId },
     });
-    if (!recordToUpdate || recordToUpdate.account.id !== accountId) {
+    if (!recordToUpdate) {
       return new NotFoundError("Not Found");
     }
 

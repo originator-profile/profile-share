@@ -9,7 +9,7 @@ import fs from "node:fs/promises";
 import { globby } from "globby";
 import { accountId, operation } from "../../flags";
 
-type Website = Omit<Omit<WebsiteType, "accountId">, "proofJws">;
+type Website = Omit<WebsiteType, "accountId" | "proofJws">;
 
 export class PublisherWebsite extends Command {
   static description = "ウェブページの作成・表示・更新・削除";
