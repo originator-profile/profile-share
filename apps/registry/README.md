@@ -507,7 +507,7 @@ FLAG DESCRIPTIONS
     "editor": "山田花子",
     "datePublished": "2023-07-04T19:14:00Z",
     "dateModified": "2023-07-04T19:14:00Z",
-    "categories": [{"cat": "IAB1", "cattax": 1}, {"cat": "IAB1-1", "cattax": 1}]
+    "categories": [{"cat": "IAB1"}, {"cat": "IAB1-1"}]
     }
 ```
 
