@@ -4,7 +4,9 @@ import {
   DpText,
   DpHtml,
   OgWebsite,
+  JwtDpPayload,
 } from "@webdino/profile-model";
+import { dpNamespace } from "./jwt-payload";
 
 /**
  * DpText 型であるか否か
@@ -37,3 +39,22 @@ export const isDpHtml = (dpItem: DpItem): dpItem is DpHtml =>
  */
 export const isOgWebsite = (dpItem: DpItem): dpItem is OgWebsite =>
   dpItem.type === OgWebsite.properties.type.const;
+
+/**
+ * DpPayload から DpVisibleText, DpHtml, DpText 型の最初の Item を返す
+ * @param dpPayload
+ * @return 見つかれば DpItem を返す。なければ undefined
+ */
+export const findFirstItemWithProof = (
+  dpPayload: JwtDpPayload
+): DpVisibleText | DpText | DpHtml | undefined => {
+  const types = [
+    DpVisibleText.properties.type.const,
+    DpText.properties.type.const,
+    DpHtml.properties.type.const,
+  ] as const;
+
+  return dpPayload[dpNamespace]?.item.find(({ type }: { type: string }) =>
+    types.includes(type as (typeof types)[number])
+  ) as DpVisibleText | DpText | DpHtml | undefined;
+};

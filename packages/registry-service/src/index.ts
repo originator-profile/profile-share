@@ -9,6 +9,8 @@ import { PublisherService } from "./publisher";
 import { WebsiteService } from "./website";
 import { CredentialService } from "./credential";
 
+export type { Website } from "./website";
+
 type Options = {
   config: Config;
   prisma: PrismaClient;

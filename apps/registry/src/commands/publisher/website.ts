@@ -1,10 +1,15 @@
 import { Command, Flags, ux } from "@oclif/core";
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { addYears } from "date-fns";
-import { Services } from "@webdino/profile-registry-service";
+import {
+  Services,
+  type Website as WebsiteType,
+} from "@webdino/profile-registry-service";
 import fs from "node:fs/promises";
 import { globby } from "globby";
 import { accountId, operation } from "../../flags";
+
+type Website = Omit<WebsiteType, "accountId" | "proofJws">;
 
 export class PublisherWebsite extends Command {
   static description = "ウェブページの作成・表示・更新・削除";
@@ -21,9 +26,25 @@ export class PublisherWebsite extends Command {
     input: Flags.string({
       summary: "JSON file",
       description: `\
-Prisma.websitesCreateInput または Prisma.websitesUpdateInput
-詳細はTSDocを参照してください。
-https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma`,
+ファイル名。ファイルには次のようなフォーマットの JSON を入れてください。空白行より上が必須プロパティです。
+
+{
+  "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc7",
+  "url": "http://localhost:8080",
+  "location": "h1",
+  "bodyFormat": "visibleText",
+  "body": "OP 確認くん",
+
+  "title": "OP 確認くん",
+  "image": "https://example.com/image.png",
+  "description": "このウェブページの説明です。",
+  "author": "山田太郎",
+  "editor": "山田花子",
+  "datePublished": "2023-07-04T19:14:00Z",
+  "dateModified": "2023-07-04T19:14:00Z",
+  "categories": [{"cat": "IAB1"}, {"cat": "IAB1-1"}]
+}
+`,
     }),
     "glob-input": Flags.string({
       summary: "JSON files match with glob pattern",
@@ -49,26 +70,29 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
       prisma,
     });
     const inputBuffer = await fs.readFile(flags.input);
-    const { body, ...input } = JSON.parse(
-      inputBuffer.toString()
-    ) as (Prisma.websitesCreateInput & Prisma.websitesUpdateInput) & {
-      id: string;
+    const { body, ...input } = JSON.parse(inputBuffer.toString()) as Website & {
       body: string;
     };
+
+    // body に署名して proofJws パラメータを生成
     const pkcs8File = await fs.readFile(flags.identity);
     const pkcs8 = pkcs8File.toString();
     const proofJws = await services.website.signBody(pkcs8, body);
     if (proofJws instanceof Error) throw proofJws;
+
+    // website サービスを呼び出す
     const operation = flags.operation as
       | "create"
       | "read"
       | "update"
       | "delete";
+
     const data = await services.website[operation]({
       ...input,
-      account: { connect: { id: flags.id } },
+      accountId: flags.id,
       proofJws,
     });
+
     if (data instanceof Error) this.error(data);
     this.log(JSON.stringify(data, null, 2));
     if (!["create", "update"].includes(operation)) return;
@@ -79,12 +103,15 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     const expiredAt = flags["expired-at"]
       ? new Date(flags["expired-at"])
       : addYears(new Date(), 1);
+
+    // 受け取った情報から SDP を生成
     const jwt = await services.publisher.signDp(flags.id, input.id, pkcs8, {
       issuedAt,
       expiredAt,
     });
     if (jwt instanceof Error) this.error(jwt);
 
+    // SDP をレジストリに登録
     const dpId = await services.publisher.registerDp(flags.id, jwt);
     if (dpId instanceof Error) this.error(dpId);
   }

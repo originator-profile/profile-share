@@ -8,13 +8,104 @@ type Options = {
   prisma: PrismaClient;
 };
 
+export interface Website {
+  id: string;
+  url: string;
+  title?: string | null;
+  image?: string | null;
+  description?: string | null;
+  author?: string | null;
+  editor?: string | null;
+  datePublished?: string | null;
+  dateModified?: string | null;
+  location?: string | null;
+  proofJws: string;
+  accountId: string;
+  categories?: [{ cat: string; cattax?: number }];
+  bodyFormat: string;
+}
+
+/**
+ * category の配列を受け取って、 prisma の update() や create() に渡せる形式にします。
+ * @param categories category の配列
+ * @param websiteId ウェブページの ID
+ * @return connectOrCreate プロパティに渡せる値
+ */
+const convertCategoriesToPrismaConnectOrCreate = (
+  categories:
+    | {
+        cat: string;
+        cattax?: number | undefined;
+      }[]
+    | undefined,
+  websiteId: string
+): Prisma.websiteCategoriesCreateNestedManyWithoutWebsiteInput | undefined => {
+  if (typeof categories === "undefined") {
+    return undefined;
+  }
+
+  const categoriesConnect = categories?.map((c) => {
+    return {
+      where: {
+        websiteId_categoryCat_categoryCattax: {
+          websiteId: websiteId,
+          categoryCat: c.cat,
+          categoryCattax: c.cattax || 1,
+        },
+      },
+      create: { categoryCat: c.cat, categoryCattax: c.cattax || 1 },
+    };
+  });
+  return { connectOrCreate: categoriesConnect };
+};
+
 export const WebsiteService = ({ prisma }: Options) => ({
   /**
+   * ウェブページの作成
+   * @param website ウェブページ
+   * @return 作成したウェブページ
+   */
+  async create(website: Website): Promise<websites | Error> {
+    const { categories, bodyFormat, accountId, ...createInput } = website;
+
+    if (
+      bodyFormat !== "text" &&
+      bodyFormat !== "visibleText" &&
+      bodyFormat !== "html"
+    ) {
+      throw new Error("invalid bodyFormat");
+    }
+
+    const input = {
+      account: {
+        connect: { id: accountId },
+      },
+      bodyFormat: {
+        connect: { value: bodyFormat },
+      },
+      categories: convertCategoriesToPrismaConnectOrCreate(
+        categories,
+        website.id
+      ),
+      ...createInput,
+    } as const satisfies Prisma.websitesCreateInput;
+    return await prisma.websites
+      .create({
+        data: input,
+        include: { categories: true },
+      })
+      .catch((e: Error) => e);
+  },
+
+  /**
+   * @deprecated
    * ウェブページの作成
    * @param input ウェブページ
    * @return ウェブページ
    */
-  async create(input: Prisma.websitesCreateInput): Promise<websites | Error> {
+  async createForOldAPI(
+    input: Prisma.websitesCreateInput
+  ): Promise<websites | Error> {
     return await prisma.websites
       .create({
         data: input,
@@ -38,10 +129,49 @@ export const WebsiteService = ({ prisma }: Options) => ({
   },
   /**
    * ウェブページの更新
+   * @param website ウェブページ
+   * @return ウェブページ
+   */
+  async update(website: Website): Promise<websites | Error> {
+    const { categories, bodyFormat, accountId, id, ...rest } = website;
+
+    // 該当する website がないか、紐づいている account が違う場合はエラーを返す。
+    const recordToUpdate = await prisma.websites.findFirst({
+      where: { id, accountId },
+    });
+    if (!recordToUpdate) {
+      return new NotFoundError("Not Found");
+    }
+
+    const connectBodyFormat =
+      typeof bodyFormat === "undefined"
+        ? undefined
+        : {
+            connect: { value: bodyFormat },
+          };
+
+    const input = {
+      bodyFormat: connectBodyFormat,
+      categories: convertCategoriesToPrismaConnectOrCreate(categories, id),
+      ...rest,
+    } satisfies Prisma.websitesUpdateInput;
+
+    return await prisma.websites
+      .update({
+        where: { id: id },
+        data: input,
+        include: { categories: true },
+      })
+      .catch((e: Error) => e);
+  },
+
+  /**
+   * @deprecated
+   * ウェブページの更新
    * @param input ウェブページ
    * @return ウェブページ
    */
-  async update(
+  async updateForOldAPI(
     input: Prisma.websitesUpdateInput & { id: string }
   ): Promise<websites | Error> {
     return await prisma.websites.update({

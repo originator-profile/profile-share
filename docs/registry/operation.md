@@ -227,7 +227,7 @@ Signed Originator Profile の登録が完了しました。
 {
   "url": "https://yomiuri.demosites.pages.dev/1",
   "location": "[itemprop=articleBody]",
-  "bodyFormat": { "connect": { "value": "text" } },
+  "bodyFormat": "text",
   "body": "大谷翔平、通算１０１号は１３０ｍの今季最長弾…エンゼルスファンが好捕",
   "title": "大谷翔平、通算１０１号は１３０ｍの今季最長弾…エンゼルスファンが好捕",
   "description": "https://yomiuri.demosites.pages.dev/1 の備考",
