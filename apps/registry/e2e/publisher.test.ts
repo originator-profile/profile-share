@@ -26,7 +26,7 @@ describe("Publisher workflows", async () => {
             location: "h1",
             output: websiteJsonPath,
           },
-        ])
+        ]),
       );
     });
 
@@ -68,7 +68,7 @@ describe("Publisher workflows", async () => {
           `--id=${accountId}`,
           "--operation=update",
           `--glob-input=${tmpdir}/**/website.json`,
-        ])
+        ]),
       ).rejects.toBeInstanceOf(Error);
     });
   });

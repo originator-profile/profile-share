@@ -14,7 +14,7 @@ async function getFrontendProfileSet(req: FastifyRequest, res: FastifyReply) {
         url: req.server.config.APP_URL ?? "http://localhost:8080",
       },
     }),
-    res
+    res,
   );
   return data;
 }

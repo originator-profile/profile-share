@@ -25,7 +25,7 @@ describe("CertificateService", () => {
   test("isCertifier() return true if account is certifier", async () => {
     prisma.accounts.findUnique.mockResolvedValue(
       // @ts-expect-error assert
-      { id: certifierId, roleValue: "certifier" }
+      { id: certifierId, roleValue: "certifier" },
     );
     const data = await certificate.isCertifier(certifierId);
     expect(data).toBe(true);

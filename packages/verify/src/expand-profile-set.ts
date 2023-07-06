@@ -7,7 +7,7 @@ const deprecatedContext = "https://github.com/webdino/profile#";
 
 function Values(node: NodeObject) {
   function values<Key extends "advertiser" | "publisher" | "main" | "profile">(
-    key: Key
+    key: Key,
   ): string[] {
     return (
       (node[`${context}${key}`] ?? node[`${deprecatedContext}${key}`] ?? [])

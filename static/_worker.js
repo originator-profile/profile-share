@@ -93,7 +93,7 @@ function basicAuthentication(request) {
   // @see https://datatracker.ietf.org/doc/html/rfc7613#section-3.3.2 (and #section-4.2.2)
   // @see https://dev.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/normalize
   const buffer = Uint8Array.from(atob(encoded), (character) =>
-    character.charCodeAt(0)
+    character.charCodeAt(0),
   );
   const decoded = new TextDecoder().decode(buffer).normalize();
 

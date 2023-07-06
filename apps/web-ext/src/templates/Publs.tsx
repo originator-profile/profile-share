@@ -38,13 +38,13 @@ function Publs({ profiles, main }: Props) {
         return (
           <li
             key={`${encodeURIComponent(dp.issuer)}/${encodeURIComponent(
-              dp.subject
+              dp.subject,
             )}`}
           >
             <Link
               className={clsx(
                 "flex justify-center items-center h-20 hover:bg-blue-50 relative",
-                { ["bg-blue-50"]: active }
+                { ["bg-blue-50"]: active },
               )}
               to={[
                 routes.base.build({ tabId: String(tabId) }),

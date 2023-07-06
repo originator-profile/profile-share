@@ -12,7 +12,7 @@ module.exports = {
         .process(css, { ...options, from: path })
         .then(
           (result) => ({ loader: "css", contents: result.css }),
-          (error) => ({ errors: [{ detail: error }] })
+          (error) => ({ errors: [{ detail: error }] }),
         );
     });
   },

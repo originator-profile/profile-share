@@ -12,7 +12,7 @@ export const CategoryService = ({ prisma }: Options) => ({
    * @return カテゴリー
    */
   async create(
-    input: Prisma.categoriesCreateInput
+    input: Prisma.categoriesCreateInput,
   ): Promise<categories | Error> {
     return await prisma.categories
       .create({ data: input })
@@ -24,7 +24,7 @@ export const CategoryService = ({ prisma }: Options) => ({
    * @return 作成数
    */
   async createMany(
-    input: Prisma.Enumerable<Prisma.categoriesCreateManyInput>
+    input: Prisma.Enumerable<Prisma.categoriesCreateManyInput>,
   ): Promise<Prisma.BatchPayload | Error> {
     return await prisma.categories
       .createMany({
@@ -57,7 +57,7 @@ export const CategoryService = ({ prisma }: Options) => ({
    * @return カテゴリー
    */
   async update(
-    input: Prisma.categoriesUpdateInput & { cat: string; cattax: number }
+    input: Prisma.categoriesUpdateInput & { cat: string; cattax: number },
   ): Promise<categories | Error> {
     return await prisma.categories.update({
       where: { cat_cattax: { cat: input.cat, cattax: input.cattax } },

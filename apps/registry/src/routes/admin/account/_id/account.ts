@@ -61,7 +61,7 @@ async function account({
   }
   const input = Object.assign(
     body?.input ?? {},
-    operation === "create" ? {} : { id: params.id }
+    operation === "create" ? {} : { id: params.id },
   ) as (Prisma.accountsCreateInput & Prisma.accountsUpdateInput) & {
     id: string;
   };

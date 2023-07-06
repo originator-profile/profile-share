@@ -28,14 +28,14 @@ async function getDocumentProfileSet(
   }: FastifyRequest<{
     Params: Params;
   }>,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) {
   const contextDefinition: ContextDefinition | undefined =
     server.config.NODE_ENV === "development" ? context["@context"] : undefined;
   const data: JsonLdDocument | Error =
     await server.services.website.getDocumentProfileSet(
       params.id,
-      contextDefinition
+      contextDefinition,
     );
   if (data instanceof HttpError) return data;
   if (data instanceof Error) {

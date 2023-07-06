@@ -46,7 +46,7 @@ describe("fetch-profiles", async () => {
   type="application/ld+json"
 />`;
     const result = await fetchProfileSet(
-      window.document as unknown as Document
+      window.document as unknown as Document,
     );
     expect(result).toEqual([profiles]);
   });
@@ -60,12 +60,12 @@ describe("fetch-profiles", async () => {
   type="application/ld+json"
 />`;
     const result = await fetchProfileSet(
-      window.document as unknown as Document
+      window.document as unknown as Document,
     );
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
     // @ts-expect-error result is ProfilesFetchFailed
     expect(result.message).toBe(
-      `プロファイルを取得できませんでした:\nInvalid URL`
+      `プロファイルを取得できませんでした:\nInvalid URL`,
     );
   });
 
@@ -79,12 +79,12 @@ describe("fetch-profiles", async () => {
   type="application/ld+json"
 />`;
     const result = await fetchProfileSet(
-      window.document as unknown as Document
+      window.document as unknown as Document,
     );
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
     // @ts-expect-error result is ProfilesFetchFailed
     expect(result.message).toBe(
-      `プロファイルを取得できませんでした:\nHTTP ステータスコード 404`
+      `プロファイルを取得できませんでした:\nHTTP ステータスコード 404`,
     );
   });
 
@@ -115,11 +115,11 @@ describe("fetch-profiles", async () => {
   rel="alternate"
   type="application/ld+json"
 />
-  `
+  `,
         )
         .join("");
       const result = await fetchProfileSet(
-        window.document as unknown as Document
+        window.document as unknown as Document,
       );
       expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
       expect(result).toMatchSnapshot();
@@ -129,7 +129,7 @@ describe("fetch-profiles", async () => {
   test("エンドポイントを指定しない時 Profile Set の取得に失敗", async () => {
     const window = new Window();
     const result = await fetchProfileSet(
-      window.document as unknown as Document
+      window.document as unknown as Document,
     );
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
   });

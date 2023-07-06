@@ -4,7 +4,7 @@ import { ProfilesFetchFailed } from "./errors";
 function getEndpoints(doc: Document): string[] {
   const endpoints = [
     ...doc.querySelectorAll(
-      `link[rel="alternate"][type="application/ld+json"]`
+      `link[rel="alternate"][type="application/ld+json"]`,
     ),
   ].map((e) => new URL(e.getAttribute("href") ?? "", doc.location.href).href);
 
@@ -20,7 +20,7 @@ function getEndpoints(doc: Document): string[] {
  * @param doc Document オブジェクト
  */
 export async function fetchProfileSet(
-  doc: Document
+  doc: Document,
 ): Promise<JsonLdDocument | ProfilesFetchFailed> {
   let profiles;
   try {
@@ -34,7 +34,7 @@ export async function fetchProfileSet(
         }
 
         return await res.json();
-      })
+      }),
     );
   } catch (e) {
     if (e instanceof Error) {
@@ -42,7 +42,7 @@ export async function fetchProfileSet(
         `プロファイルを取得できませんでした:\n${e.message}`,
         {
           cause: e,
-        }
+        },
       );
     } else {
       throw new Error("Unknown error", { cause: e });

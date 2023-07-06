@@ -6,7 +6,7 @@ async function index(fastify: FastifyInstance): Promise<void> {
   fastify.get<FromHandler<typeof getProfiles>>(
     "/profiles",
     { ...getProfiles },
-    getProfiles
+    getProfiles,
   );
 }
 

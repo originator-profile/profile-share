@@ -38,7 +38,7 @@ function Org(props: Props) {
     .filter(isOp)
     .find(
       (profile) =>
-        profile.issuer === orgIssuer && profile.subject === orgSubject
+        profile.issuer === orgIssuer && profile.subject === orgSubject,
     );
   if (!op) {
     return <NotFound variant="op" />;

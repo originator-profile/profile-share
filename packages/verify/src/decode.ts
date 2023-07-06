@@ -54,7 +54,7 @@ export function TokenDecoder(validator: SignedProfileValidator | null) {
             errors: errors ?? [],
             payload,
             jwt,
-          }
+          },
         );
       }
     }

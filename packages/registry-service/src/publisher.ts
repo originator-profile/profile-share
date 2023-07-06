@@ -31,7 +31,7 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
     options = {
       issuedAt: new Date(),
       expiredAt: addYears(new Date(), 10),
-    }
+    },
   ): Promise<string | Error> {
     const websitesInclude = {
       categories: {
@@ -119,7 +119,7 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
     }
     if (decoded.payload.iss !== account.domainName) {
       return new BadRequestError(
-        "It is not Signed Document Profile for the account."
+        "It is not Signed Document Profile for the account.",
       );
     }
     const issuedAt: Date = fromUnixTime(decoded.payload.iat);

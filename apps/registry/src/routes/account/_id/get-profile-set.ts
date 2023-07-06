@@ -27,7 +27,7 @@ async function getProfileSet(
   }: FastifyRequest<{
     Params: Params;
   }>,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) {
   const contextDefinition: ContextDefinition | undefined =
     server.config.NODE_ENV === "development" ? context["@context"] : undefined;

@@ -6,7 +6,7 @@ import { SignedProfileValidator } from "@webdino/profile-verify";
 test("妥当なDocument Profile Itemであることを検証", async () => {
   const snapshotFilePath = path.join(
     __dirname,
-    "../tests/snapshots/dp-item.json"
+    "../tests/snapshots/dp-item.json",
   );
   const snapshotFile = await fs.readFile(snapshotFilePath);
   const dpClaims = {

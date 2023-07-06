@@ -12,7 +12,7 @@ function FormRow({ as: As = "label", className, label, children }: Props) {
     <As
       className={clsx(
         "flex flex-col md:flex-row gap-2 md:gap-4 md:items-center",
-        className
+        className,
       )}
     >
       <span className="text-sm font-bold text-gray-500 flex-shrink-0 w-32">

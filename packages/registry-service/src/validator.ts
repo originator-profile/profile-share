@@ -17,7 +17,7 @@ export function ValidatorService() {
    * @return バリデーター
    */
   function createValidator<Value>(
-    schema: Schema
+    schema: Schema,
   ): (input: unknown) => Value | Error {
     const validate = ajv.compile(schema);
 
@@ -33,7 +33,7 @@ export function ValidatorService() {
       } else {
         return Object.assign(
           new BadRequestError(ajv.errorsText(validate.errors)),
-          { errors: validate.errors }
+          { errors: validate.errors },
         );
       }
     }

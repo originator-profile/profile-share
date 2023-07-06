@@ -7,7 +7,7 @@ import { ProfileGenericError } from "@webdino/profile-verify";
  * @returns result ProfileGenericError
  */
 export default function findProfileGenericError(
-  profiles: Profile[]
+  profiles: Profile[],
 ): ProfileGenericError | undefined {
   const profile = profiles.find((profile) => "error" in profile);
   return profile?.error;

@@ -11,7 +11,7 @@ function ProjectSummary({ as: As = "section", className }: Props) {
     <As
       className={clsx(
         "flex flex-col items-center gap-6 bg-gray-100 rounded-md p-8",
-        className
+        className,
       )}
     >
       <a

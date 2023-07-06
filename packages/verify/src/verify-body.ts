@@ -19,7 +19,7 @@ export async function verifyBody(body: string, jws: string, keys: Keys) {
   };
   const key = await keys(decodeProtectedHeader(jws), flattenedJws);
   const result = await flattenedVerify(flattenedJws, key).catch(
-    (e: JOSEError) => e
+    (e: JOSEError) => e,
   );
   return result;
 }

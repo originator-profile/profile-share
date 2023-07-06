@@ -50,7 +50,7 @@ export const CertificateService = ({
     options = {
       issuedAt: new Date(),
       expiredAt: addYears(new Date(), 10),
-    }
+    },
   ): Promise<string | Error> {
     const credentials = await prisma.credentials
       .findMany({
@@ -98,11 +98,11 @@ export const CertificateService = ({
     const toAccountModel = (
       accounts: Prisma.accountsGetPayload<{
         include: typeof accountsInclude;
-      }>
+      }>,
     ): Partial<OpHolder | OpVerifier | OpCertifier> => ({
       ...flush(accounts),
       businessCategory: accounts.businessCategories?.map(
-        ({ businessCategoryValue }) => businessCategoryValue
+        ({ businessCategoryValue }) => businessCategoryValue,
       ),
     });
     const input: Op = {

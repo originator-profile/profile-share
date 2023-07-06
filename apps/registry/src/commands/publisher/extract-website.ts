@@ -77,12 +77,12 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
   async #extractWebsite(
     { url, bodyFormat, location, output, ...override }: Website,
     metadataRequired: boolean,
-    cliContext: CliContext
+    cliContext: CliContext,
   ): Promise<void> {
     const browser = await chromium.launch();
     const [, browserContextOptions] =
       Object.entries(cliContext).find(([urlHead]) =>
-        new URL(url).href.startsWith(new URL(urlHead).href)
+        new URL(url).href.startsWith(new URL(urlHead).href),
       ) ?? [];
     const context = await browser.newContext(browserContextOptions);
     const page = await context.newPage();
@@ -93,7 +93,7 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
         await metascraper([author(), date(), description(), image(), title()])({
           url,
           html: await page.content(),
-        })
+        }),
       );
     }
     const body = await extractBody(
@@ -103,7 +103,7 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
         url,
         location,
         type: bodyFormat,
-      }
+      },
     );
     const website = {
       id: crypto.randomUUID(),
@@ -133,9 +133,9 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
     await Promise.all(
       websites.map((website) =>
         this.#extractWebsite(website, flags.metadata, context).then(() =>
-          bar.increment()
-        )
-      )
+          bar.increment(),
+        ),
+      ),
     );
     bar.stop();
   }

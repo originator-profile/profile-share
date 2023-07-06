@@ -52,7 +52,7 @@ export class CertIssue extends Command {
       flags.certifier,
       flags.holder,
       pkcs8,
-      { issuedAt, expiredAt }
+      { issuedAt, expiredAt },
     );
     if (jwt instanceof Error) this.error(jwt);
 

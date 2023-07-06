@@ -8,22 +8,22 @@ async function index(fastify: FastifyInstance): Promise<void> {
   fastify.post<FromHandler<typeof website, Params>>(
     "/",
     { ...website },
-    website
+    website,
   );
   fastify.get<FromHandler<typeof website, Params>>(
     "/",
     { schema: omit(website.schema, "body") },
-    website
+    website,
   );
   fastify.put<FromHandler<typeof website, Params>>(
     "/",
     { ...website },
-    website
+    website,
   );
   fastify.delete<FromHandler<typeof website, Params>>(
     "/",
     { schema: omit(website.schema, "body") },
-    website
+    website,
   );
 }
 
