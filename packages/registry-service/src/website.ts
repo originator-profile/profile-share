@@ -33,12 +33,10 @@ export interface Website {
  */
 const convertCategoriesToPrismaConnectOrCreate = (
   categories:
-    | [
-        {
-          cat: string;
-          cattax?: number | undefined;
-        }
-      ]
+    | {
+        cat: string;
+        cattax?: number | undefined;
+      }[]
     | undefined,
   websiteId: string
 ): Prisma.websiteCategoriesCreateNestedManyWithoutWebsiteInput | undefined => {
@@ -46,7 +44,7 @@ const convertCategoriesToPrismaConnectOrCreate = (
     return undefined;
   }
 
-  const categoriesConnect = categories?.map((c: any) => {
+  const categoriesConnect = categories?.map((c) => {
     return {
       where: {
         websiteId_categoryCat_categoryCattax: {
