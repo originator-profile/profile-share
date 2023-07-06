@@ -56,5 +56,5 @@ export const findFirstItemWithProof = (
 
   return dpPayload[dpNamespace]?.item.find(({ type }: { type: string }) =>
     types.includes(type as (typeof types)[number])
-  ) as DpVisibleText | DpText | DpHtml;
+  ) as DpVisibleText | DpText | DpHtml | undefined;
 };
