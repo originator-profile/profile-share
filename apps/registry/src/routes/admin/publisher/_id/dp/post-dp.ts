@@ -5,7 +5,6 @@ import { ErrorResponse } from "../../../../../error";
 import Params from "./params";
 import { DecodeResult } from "@webdino/profile-verify";
 import { findFirstItemWithProof } from "@webdino/profile-core";
-import { DpHtml, DpText, DpVisibleText } from "@webdino/profile-model";
 
 const Body = {
   type: "object",
