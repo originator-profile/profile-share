@@ -25,6 +25,12 @@ export interface Website {
   bodyFormat: string;
 }
 
+/**
+ * category の配列を受け取って、 prisma の update() や create() に渡せる形式にします。
+ * @param categories category の配列
+ * @param websiteId ウェブページの ID
+ * @return connectOrCreate プロパティに渡せる値
+ */
 const convertCategoriesToPrismaConnectOrCreate = (
   categories:
     | [
@@ -35,7 +41,7 @@ const convertCategoriesToPrismaConnectOrCreate = (
       ]
     | undefined,
   websiteId: string
-) => {
+): Prisma.websiteCategoriesCreateNestedManyWithoutWebsiteInput | undefined => {
   if (typeof categories === "undefined") {
     return undefined;
   }
