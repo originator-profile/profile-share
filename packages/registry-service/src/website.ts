@@ -25,6 +25,36 @@ export interface Website {
   bodyFormat: string;
 }
 
+const convertCategoriesToPrismaConnectOrCreate = (
+  categories:
+    | [
+        {
+          cat: string;
+          cattax?: number | undefined;
+        }
+      ]
+    | undefined,
+  websiteId: string
+) => {
+  if (typeof categories === "undefined") {
+    return undefined;
+  }
+
+  const categoriesConnect = categories?.map((c: any) => {
+    return {
+      where: {
+        websiteId_categoryCat_categoryCattax: {
+          websiteId: websiteId,
+          categoryCat: c.cat,
+          categoryCattax: c.cattax || 1,
+        },
+      },
+      create: { categoryCat: c.cat, categoryCattax: c.cattax || 1 },
+    };
+  });
+  return { connectOrCreate: categoriesConnect };
+};
+
 export const WebsiteService = ({ prisma }: Options) => ({
   /**
    * ウェブページの作成
@@ -42,19 +72,6 @@ export const WebsiteService = ({ prisma }: Options) => ({
       throw new Error("invalid bodyFormat");
     }
 
-    const categoriesConnect = categories?.map((c) => {
-      return {
-        where: {
-          websiteId_categoryCat_categoryCattax: {
-            websiteId: website.id,
-            categoryCat: c.cat,
-            categoryCattax: c.cattax || 1,
-          },
-        },
-        create: { categoryCat: c.cat, categoryCattax: c.cattax || 1 },
-      };
-    });
-
     const input = {
       account: {
         connect: { id: accountId },
@@ -62,9 +79,10 @@ export const WebsiteService = ({ prisma }: Options) => ({
       bodyFormat: {
         connect: { value: bodyFormat },
       },
-      categories: categoriesConnect && {
-        connectOrCreate: categoriesConnect,
-      },
+      categories: convertCategoriesToPrismaConnectOrCreate(
+        categories,
+        website.id
+      ),
       ...createInput,
     } as const satisfies Prisma.websitesCreateInput;
     return await prisma.websites
@@ -112,20 +130,6 @@ export const WebsiteService = ({ prisma }: Options) => ({
    */
   async update(website: Website): Promise<websites | Error> {
     const { categories, bodyFormat, accountId, id, ...rest } = website;
-    const categoriesConnect = categories?.map(
-      (c): Prisma.websiteCategoriesCreateOrConnectWithoutWebsiteInput => {
-        return {
-          where: {
-            websiteId_categoryCat_categoryCattax: {
-              websiteId: id,
-              categoryCat: c.cat,
-              categoryCattax: c.cattax || 1,
-            },
-          },
-          create: { categoryCat: c.cat, categoryCattax: c.cattax || 1 },
-        };
-      }
-    );
 
     // 該当する website がないか、紐づいている account が違う場合はエラーを返す。
     const recordToUpdate = await prisma.websites.findFirst({
@@ -135,19 +139,16 @@ export const WebsiteService = ({ prisma }: Options) => ({
       return new NotFoundError("Not Found");
     }
 
+    const connectBodyFormat =
+      typeof bodyFormat === "undefined"
+        ? undefined
+        : {
+            connect: { value: bodyFormat },
+          };
+
     const input = {
-      bodyFormat:
-        typeof bodyFormat === "undefined"
-          ? undefined
-          : {
-              connect: { value: bodyFormat },
-            },
-      categories:
-        typeof categories === "undefined"
-          ? undefined
-          : {
-              connectOrCreate: categoriesConnect,
-            },
+      bodyFormat: connectBodyFormat,
+      categories: convertCategoriesToPrismaConnectOrCreate(categories, id),
       ...rest,
     } satisfies Prisma.websitesUpdateInput;
 
