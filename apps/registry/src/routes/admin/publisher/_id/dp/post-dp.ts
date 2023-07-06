@@ -4,6 +4,7 @@ import { BadRequestError } from "http-errors-enhanced";
 import { ErrorResponse } from "../../../../../error";
 import Params from "./params";
 import { DecodeResult } from "@webdino/profile-verify";
+import { findFirstItemWithProof } from "@webdino/profile-core";
 import { DpHtml, DpText, DpVisibleText } from "@webdino/profile-model";
 
 const Body = {
@@ -56,17 +57,11 @@ export async function postDp({
     throw new BadRequestError("invalid jwt");
   }
 
-  const types = [
-    DpVisibleText.properties.type.const,
-    DpText.properties.type.const,
-    DpHtml.properties.type.const,
-  ] as const;
+  const locator = findFirstItemWithProof(decoded.payload);
 
-  const locator = decoded.payload[
-    "https://originator-profile.org/dp"
-  ]?.item.find(({ type }: { type: string }) =>
-    types.includes(type as (typeof types)[number])
-  ) as DpVisibleText | DpText | DpHtml;
+  if (typeof locator === "undefined") {
+    throw new BadRequestError("dp doesn't contain item with proof");
+  }
 
   // website テーブルに保存
   const res = await server.services.website.create({
