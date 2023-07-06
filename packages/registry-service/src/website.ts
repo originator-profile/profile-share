@@ -21,7 +21,7 @@ export interface Website {
   location?: string | null;
   proofJws: string;
   accountId: string;
-  categories?: [{ cat: string; cattax: number }];
+  categories?: [{ cat: string; cattax?: number }];
   bodyFormat: string;
 }
 
@@ -44,7 +44,14 @@ export const WebsiteService = ({ prisma }: Options) => ({
 
     const categoriesConnect = categories?.map((c) => {
       return {
-        category: { connect: { cat_cattax: { cat: c.cat, cattax: c.cattax } } },
+        where: {
+          websiteId_categoryCat_categoryCattax: {
+            websiteId: website.id,
+            categoryCat: c.cat,
+            categoryCattax: c.cattax || 1,
+          },
+        },
+        create: { categoryCat: c.cat, categoryCattax: c.cattax || 1 },
       };
     });
 
@@ -56,7 +63,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
         connect: { value: bodyFormat },
       },
       categories: categoriesConnect && {
-        create: categoriesConnect,
+        connectOrCreate: categoriesConnect,
       },
       ...createInput,
     } as const satisfies Prisma.websitesCreateInput;
@@ -105,11 +112,20 @@ export const WebsiteService = ({ prisma }: Options) => ({
    */
   async update(website: Website): Promise<websites | Error> {
     const { categories, bodyFormat, accountId, id, ...rest } = website;
-    const categoriesConnect = categories?.map((c) => {
-      return {
-        category: { connect: { cat_cattax: { cat: c.cat, cattax: c.cattax } } },
-      };
-    });
+    const categoriesConnect = categories?.map(
+      (c): Prisma.websiteCategoriesCreateOrConnectWithoutWebsiteInput => {
+        return {
+          where: {
+            websiteId_categoryCat_categoryCattax: {
+              websiteId: id,
+              categoryCat: c.cat,
+              categoryCattax: c.cattax || 1,
+            },
+          },
+          create: { categoryCat: c.cat, categoryCattax: c.cattax || 1 },
+        };
+      }
+    );
 
     // 該当する website がないか、紐づいている account が違う場合はエラーを返す。
     const recordToUpdate = await prisma.websites.findFirst({
@@ -120,14 +136,20 @@ export const WebsiteService = ({ prisma }: Options) => ({
     }
 
     const input = {
-      bodyFormat: bodyFormat && {
-        connect: { value: bodyFormat },
-      },
-      categories: categoriesConnect && {
-        create: categoriesConnect,
-      },
+      bodyFormat:
+        typeof bodyFormat === "undefined"
+          ? undefined
+          : {
+              connect: { value: bodyFormat },
+            },
+      categories:
+        typeof categories === "undefined"
+          ? undefined
+          : {
+              connectOrCreate: categoriesConnect,
+            },
       ...rest,
-    } as Prisma.websitesCreateInput;
+    } satisfies Prisma.websitesUpdateInput;
 
     return await prisma.websites
       .update({
