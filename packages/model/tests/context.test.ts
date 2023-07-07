@@ -5,7 +5,7 @@ import jsonld, { JsonLdDocument } from "jsonld";
 
 test("context.json is valid", async () => {
   const contextJson: Buffer = await fs.readFile(
-    path.resolve(__dirname, "../context.json")
+    path.resolve(__dirname, "../context.json"),
   );
   const context: JsonLdDocument = JSON.parse(contextJson.toString());
   await jsonld.expand(context);

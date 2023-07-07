@@ -8,7 +8,7 @@ import { createThumbprint } from "./thumbprint";
  * @param alg Algorithm identifier
  */
 export async function generateKey(
-  alg = "ES256"
+  alg = "ES256",
 ): Promise<{ jwk: Jwk; pkcs8: string }> {
   const { publicKey, privateKey } = await generateKeyPair(alg);
   const [jwk, pkcs8] = await Promise.all([

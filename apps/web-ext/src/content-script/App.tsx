@@ -37,7 +37,7 @@ function App() {
   function handleLeave() {
     window.parent.postMessage(
       { type: "leave-overlay" },
-      window.parent.location.origin
+      window.parent.location.origin,
     );
   }
 

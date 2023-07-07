@@ -21,7 +21,7 @@ import { VerifyTokenResult } from "./types";
 export function TokenVerifier(
   keys: Keys,
   issuer: string,
-  decoder: TokenDecoder
+  decoder: TokenDecoder,
 ): (jwt: string) => Promise<VerifyTokenResult> {
   /**
    * Profile の Token の検証
@@ -33,7 +33,7 @@ export function TokenVerifier(
     if (decoded instanceof Error) return decoded;
     const verifyOptions = isJwtOpPayload(decoded) ? { issuer } : {};
     const verified = await jwtVerify(jwt, keys, verifyOptions).catch(
-      (e: JOSEError) => e
+      (e: JOSEError) => e,
     );
     if (verified instanceof Error) {
       return new ProfileTokenVerifyFailed(verified.message, {
@@ -49,7 +49,7 @@ export function TokenVerifier(
     }
     return new ProfileTokenVerifyFailed(
       "Profile Token Verification Failed",
-      decoded
+      decoded,
     );
   }
 

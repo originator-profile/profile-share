@@ -51,10 +51,10 @@ test("投稿の検証", async () => {
   await page.getByRole("link", { name: "(no title)", exact: true }).click();
 
   const elements = await page.$$(
-    ".wp-block-post-content>*:not(.post-nav-links)"
+    ".wp-block-post-content>*:not(.post-nav-links)",
   );
   const text = (await Promise.all(elements.map((e) => e.textContent()))).join(
-    ""
+    "",
   );
   expect(text).toMatchSnapshot("post.txt");
 
@@ -64,14 +64,14 @@ test("投稿の検証", async () => {
       path.join(
         __dirname,
         "../tmp/profile-test-snapshots",
-        `${postId}.1.snapshot.txt`
-      )
+        `${postId}.1.snapshot.txt`,
+      ),
     )
   ).toString();
   expect(text, "transition_post_statusフックで得られる内容と一致").toBe(post);
 
   const link = await page.$$(
-    `link[rel="alternate"][type="application/ld+json"][href^="http"]`
+    `link[rel="alternate"][type="application/ld+json"][href^="http"]`,
   );
   expect(link, "link要素を含む").toHaveLength(1);
 });

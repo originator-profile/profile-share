@@ -6,18 +6,18 @@ program
   .addOption(
     new Option("-t, --target <target>", "The extensions runners to enable")
       .choices(["chromium", "firefox-desktop", "firefox-android"])
-      .default("chromium")
+      .default("chromium"),
   )
   .addOption(
     new Option("-u, --url <url>", "Launch runner at specified page").default(
       "http://localhost:8080",
-      "local profile registry"
-    )
+      "local profile registry",
+    ),
   )
   .addOption(
     new Option("-i, --issuer <issuer>", "Issuer trusted to sign")
       .env("PROFILE_ISSUER")
-      .default("localhost")
+      .default("localhost"),
   );
 
 program.parse(process.argv);

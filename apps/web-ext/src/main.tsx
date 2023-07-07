@@ -12,7 +12,7 @@ const init = () => {
       <HashRouter>
         <App />
       </HashRouter>
-    </React.StrictMode>
+    </React.StrictMode>,
   );
 };
 

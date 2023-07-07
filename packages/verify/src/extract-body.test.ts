@@ -20,7 +20,7 @@ const html =
 const pageUrl = "https://example.com/";
 
 const extractVisibleText = async function (
-  locator: (location: string) => Promise<Locale[]>
+  locator: (location: string) => Promise<Locale[]>,
 ) {
   const item: DpVisibleText = {
     ...base,
@@ -32,7 +32,7 @@ const extractVisibleText = async function (
 };
 
 const extractText = async function (
-  locator: (location: string) => Promise<Locale[]>
+  locator: (location: string) => Promise<Locale[]>,
 ) {
   const item: DpText = {
     ...base,
@@ -44,7 +44,7 @@ const extractText = async function (
 };
 
 const extractHtml = async function (
-  locator: (location: string) => Promise<Locale[]>
+  locator: (location: string) => Promise<Locale[]>,
 ) {
   const item: DpHtml = {
     ...base,
@@ -53,12 +53,12 @@ const extractHtml = async function (
   const result = await extractBody(pageUrl, locator, item);
   expect(result).not.instanceOf(Error);
   expect(result).toBe(
-    '<body><p>Hello, World!</p><p style="display:none">None</p><p>Goodbye, World!</p></body>'
+    '<body><p>Hello, World!</p><p style="display:none">None</p><p>Goodbye, World!</p></body>',
   );
 };
 
 const extractEvil = async function (
-  locator: (location: string) => Promise<Locale[]>
+  locator: (location: string) => Promise<Locale[]>,
 ) {
   const item: DpText = {
     ...base,

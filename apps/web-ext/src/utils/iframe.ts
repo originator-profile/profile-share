@@ -33,7 +33,7 @@ export function activate(iframe: HTMLIFrameElement) {
   }
   if (
     !iframe.contentDocument.querySelector(
-      "script[src$='content-script/iframe.js']"
+      "script[src$='content-script/iframe.js']",
     )
   ) {
     const script = iframe.contentDocument.createElement("script");

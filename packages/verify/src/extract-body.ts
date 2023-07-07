@@ -10,7 +10,7 @@ type Locale = HTMLElement | Locator;
  */
 function extractor(
   locale: Locale,
-  attribute: "innerText" | "textContent" | "outerHTML"
+  attribute: "innerText" | "textContent" | "outerHTML",
 ): Promise<string> {
   if ("evaluate" in locale)
     return locale.evaluate((el, attribute) => {
@@ -31,7 +31,7 @@ function extractor(
 export async function extractBody<T extends Locale>(
   pageUrl: string,
   locator: (location: Extract<DpItem["location"], string>) => Promise<T[]>,
-  item: Omit<DpItem, "proof">
+  item: Omit<DpItem, "proof">,
 ) {
   if (new URL(pageUrl).href !== new URL(item.url).href)
     return new ProfileBodyExtractFailed("URL mismatch");
@@ -42,7 +42,7 @@ export async function extractBody<T extends Locale>(
     html: "outerHTML",
   } as const;
   const result = await Promise.all(
-    locales.map((locale) => extractor(locale, attribute[item.type]))
+    locales.map((locale) => extractor(locale, attribute[item.type])),
   );
   return result.join("");
 }

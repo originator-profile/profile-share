@@ -12,7 +12,7 @@ let activeDp: Dp | null = null;
 const iframe = initialize();
 
 async function handleMessageResponse(
-  message: ContentScriptMessageRequest
+  message: ContentScriptMessageRequest,
 ): Promise<ContentScriptMessageResponse> {
   switch (message.type) {
     case "fetch-profiles": {
@@ -50,7 +50,7 @@ async function handleMessageResponse(
 chrome.runtime.onMessage.addListener(function (
   message: ContentScriptMessageRequest,
   _,
-  sendResponse: (response: ContentScriptMessageResponse) => void
+  sendResponse: (response: ContentScriptMessageResponse) => void,
 ): true /* NOTE: Chrome の場合、Promise には非対応 */ {
   handleMessageResponse(message).then(sendResponse);
   return true;
