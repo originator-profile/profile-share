@@ -2,7 +2,7 @@ import { PrismaClient, Prisma, websites } from "@prisma/client";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { NotFoundError } from "http-errors-enhanced";
 import { signBody } from "@webdino/profile-sign";
-import { validate } from "uuid";
+import { v4 as uuid4, validate } from "uuid";
 
 type Options = {
   prisma: PrismaClient;
@@ -21,7 +21,7 @@ export interface Website {
   location?: string | null;
   proofJws: string;
   accountId: string;
-  categories?: [{ cat: string; cattax?: number }];
+  categories?: Array<{ cat: string; cattax?: number }>;
   bodyFormat: string;
 }
 
@@ -32,13 +32,8 @@ export interface Website {
  * @return connectOrCreate プロパティに渡せる値
  */
 const convertCategoriesToPrismaConnectOrCreate = (
-  categories:
-    | {
-        cat: string;
-        cattax?: number | undefined;
-      }[]
-    | undefined,
-  websiteId: string,
+  categories: Website["categories"],
+  websiteId: Website["id"],
 ): Prisma.websiteCategoriesCreateNestedManyWithoutWebsiteInput | undefined => {
   if (typeof categories === "undefined") {
     return undefined;
@@ -62,11 +57,19 @@ const convertCategoriesToPrismaConnectOrCreate = (
 export const WebsiteService = ({ prisma }: Options) => ({
   /**
    * ウェブページの作成
-   * @param website ウェブページ
+   * @param website ウェブページ (webpage.id を省略した場合: UUID v4 生成)
    * @return 作成したウェブページ
    */
-  async create(website: Website): Promise<websites | Error> {
-    const { categories, bodyFormat, accountId, ...createInput } = website;
+  async create(
+    website: Omit<Website, "id"> & { id?: Website["id"] },
+  ): Promise<websites | Error> {
+    const {
+      categories,
+      bodyFormat,
+      accountId,
+      id = uuid4(),
+      ...createInput
+    } = website;
 
     if (
       bodyFormat !== "text" &&
@@ -83,10 +86,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
       bodyFormat: {
         connect: { value: bodyFormat },
       },
-      categories: convertCategoriesToPrismaConnectOrCreate(
-        categories,
-        website.id,
-      ),
+      categories: convertCategoriesToPrismaConnectOrCreate(categories, id),
       ...createInput,
     } as const satisfies Prisma.websitesCreateInput;
     return await prisma.websites
@@ -129,11 +129,15 @@ export const WebsiteService = ({ prisma }: Options) => ({
   },
   /**
    * ウェブページの更新
-   * @param website ウェブページ
+   * @param website ウェブページ (webpage.id 必須)
    * @return ウェブページ
    */
   async update(website: Website): Promise<websites | Error> {
     const { categories, bodyFormat, accountId, id, ...rest } = website;
+
+    if (!id) {
+      return new Error("website.id is required.");
+    }
 
     // 該当する website がないか、紐づいている account が違う場合はエラーを返す。
     const recordToUpdate = await prisma.websites.findFirst({
