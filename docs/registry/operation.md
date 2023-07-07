@@ -232,7 +232,6 @@ Signed Originator Profile の登録が完了しました。
   "title": "大谷翔平、通算１０１号は１３０ｍの今季最長弾…エンゼルスファンが好捕",
   "description": "https://yomiuri.demosites.pages.dev/1 の備考",
   "author": "前木 理一郎",
-  "category": "スポーツ > 野球",
   "editor": "デジタル編集部"
 }
 ```
