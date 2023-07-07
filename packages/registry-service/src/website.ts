@@ -57,7 +57,7 @@ const convertCategoriesToPrismaConnectOrCreate = (
 export const WebsiteService = ({ prisma }: Options) => ({
   /**
    * ウェブページの作成
-   * @param website ウェブページ (webpage.id を省略した場合: UUID v4 生成)
+   * @param website ウェブページ (website.id を省略した場合: UUID v4 生成)
    * @return 作成したウェブページ
    */
   async create(
@@ -129,7 +129,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
   },
   /**
    * ウェブページの更新
-   * @param website ウェブページ (webpage.id 必須)
+   * @param website ウェブページ (website.id 必須)
    * @return ウェブページ
    */
   async update(website: Website): Promise<websites | Error> {
