@@ -38,7 +38,7 @@ const convertCategoriesToPrismaConnectOrCreate = (
         cattax?: number | undefined;
       }[]
     | undefined,
-  websiteId: string
+  websiteId: string,
 ): Prisma.websiteCategoriesCreateNestedManyWithoutWebsiteInput | undefined => {
   if (typeof categories === "undefined") {
     return undefined;
@@ -85,7 +85,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
       },
       categories: convertCategoriesToPrismaConnectOrCreate(
         categories,
-        website.id
+        website.id,
       ),
       ...createInput,
     } as const satisfies Prisma.websitesCreateInput;
@@ -104,7 +104,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
    * @return ウェブページ
    */
   async createForOldAPI(
-    input: Prisma.websitesCreateInput
+    input: Prisma.websitesCreateInput,
   ): Promise<websites | Error> {
     return await prisma.websites
       .create({
@@ -172,7 +172,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
    * @return ウェブページ
    */
   async updateForOldAPI(
-    input: Prisma.websitesUpdateInput & { id: string }
+    input: Prisma.websitesUpdateInput & { id: string },
   ): Promise<websites | Error> {
     return await prisma.websites.update({
       where: { id: input.id },
@@ -205,7 +205,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
     url: string,
     contextDefinition:
       | ContextDefinition
-      | string = "https://originator-profile.org/context.jsonld"
+      | string = "https://originator-profile.org/context.jsonld",
   ): Promise<JsonLdDocument | Error> {
     const data = await prisma.websites
       .findMany({
@@ -239,8 +239,8 @@ export const WebsiteService = ({ prisma }: Options) => ({
     const sops = [
       ...new Set(
         data.flatMap(({ account }) =>
-          account.publications.map((publication) => publication.op.jwt)
-        )
+          account.publications.map((publication) => publication.op.jwt),
+        ),
       ),
     ];
     const sdps = data.flatMap(({ dps }) => dps.map((dp) => dp.jwt));
@@ -259,7 +259,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
     id: string,
     contextDefinition:
       | ContextDefinition
-      | string = "https://originator-profile.org/context.jsonld"
+      | string = "https://originator-profile.org/context.jsonld",
   ): Promise<JsonLdDocument | Error> {
     const data = await prisma.websites
       .findFirstOrThrow({

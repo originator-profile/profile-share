@@ -20,7 +20,7 @@ function urlParamsRoute<Path extends string>(path: Path) {
         Object.entries(params).map(([key, value]) => [
           key,
           encodeURIComponent(String(value)),
-        ])
+        ]),
       ) as ParseUrlParams<Path>;
       return baseRoute.build(encodedParams);
     },

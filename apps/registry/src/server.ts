@@ -65,7 +65,7 @@ export function create(options: Options): Server {
   app.after(() => {
     app.decorate(
       "services",
-      Services({ config: app.config, prisma: options.prisma })
+      Services({ config: app.config, prisma: options.prisma }),
     );
   });
 

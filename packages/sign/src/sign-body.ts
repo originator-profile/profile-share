@@ -11,7 +11,7 @@ import { createThumbprint } from "./thumbprint";
 export async function signBody(
   body: string,
   pkcs8: string,
-  alg = "ES256"
+  alg = "ES256",
 ): Promise<string> {
   const header = {
     alg,

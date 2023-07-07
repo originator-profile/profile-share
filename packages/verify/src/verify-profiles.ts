@@ -35,7 +35,7 @@ export function ProfilesVerifier(
   profiles: Profiles,
   registryKeys: Keys,
   registry: string,
-  validator: SignedProfileValidator | null
+  validator: SignedProfileValidator | null,
 ) {
   const results = new Map<Token | symbol, VerifyResult>();
   const decoder = TokenDecoder(validator);
@@ -98,7 +98,7 @@ export function ProfilesVerifier(
         if (dp instanceof ProfileGenericError) {
           const error = new ProfilesVerifyFailed(
             "Document Profile is invalid",
-            res
+            res,
           );
           results.set(token, error);
         }

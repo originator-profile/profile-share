@@ -14,7 +14,7 @@ async function getIssuerProfileSet(req: FastifyRequest, res: FastifyReply) {
         id: req.server.config.ISSUER_UUID,
       },
     }),
-    res
+    res,
   );
   return data;
 }

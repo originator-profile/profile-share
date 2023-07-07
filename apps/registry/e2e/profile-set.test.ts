@@ -21,7 +21,7 @@ describe("複数のSigned Document Profilesが存在する場合", async () => {
       method: "POST",
       headers: {
         authorization: `Basic ${Buffer.from(
-          `${accountId}:${dummyPassword}`
+          `${accountId}:${dummyPassword}`,
         ).toString("base64")}`,
         "content-type": "application/json",
       },
@@ -41,7 +41,7 @@ describe("複数のSigned Document Profilesが存在する場合", async () => {
     const { profile } = await expandProfileSet(profiles);
     const registry = "localhost";
     const keys = RemoteKeys(
-      new URL("http://localhost:8080/.well-known/jwks.json")
+      new URL("http://localhost:8080/.well-known/jwks.json"),
     );
     const verify = ProfilesVerifier({ profile }, keys, registry, null);
     const verifyResults = await verify();

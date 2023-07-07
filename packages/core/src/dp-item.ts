@@ -46,7 +46,7 @@ export const isOgWebsite = (dpItem: DpItem): dpItem is OgWebsite =>
  * @return 見つかれば DpItem を返す。なければ undefined
  */
 export const findFirstItemWithProof = (
-  dpPayload: JwtDpPayload
+  dpPayload: JwtDpPayload,
 ): DpVisibleText | DpText | DpHtml | undefined => {
   const types = [
     DpVisibleText.properties.type.const,
@@ -55,6 +55,6 @@ export const findFirstItemWithProof = (
   ] as const;
 
   return dpPayload[dpNamespace]?.item.find(({ type }: { type: string }) =>
-    types.includes(type as (typeof types)[number])
+    types.includes(type as (typeof types)[number]),
   ) as DpVisibleText | DpText | DpHtml | undefined;
 };

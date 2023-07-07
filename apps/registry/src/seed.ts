@@ -27,7 +27,7 @@ async function issueOp(
   services: Services,
   issuerUuid: string,
   jwk: Jwk,
-  pkcs8: string
+  pkcs8: string,
 ) {
   const data = await services.account.registerKey(issuerUuid, jwk);
   if (data instanceof Error) throw data;
@@ -94,7 +94,7 @@ export async function seed(): Promise<void> {
       new Date(),
       addYears(new Date(), 1),
       new URL("/credential-brand-safety-certified.png", process.env.APP_URL)
-        .href
+        .href,
     );
   }
   console.log(`UUID: ${issuerUuid}`);

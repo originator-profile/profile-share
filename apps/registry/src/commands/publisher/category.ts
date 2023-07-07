@@ -29,7 +29,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
   };
 
   async #category(
-    flags: Awaited<ReturnType<typeof this.parse>>["flags"]
+    flags: Awaited<ReturnType<typeof this.parse>>["flags"],
   ): Promise<void> {
     const prisma = new PrismaClient();
     const services = Services({
@@ -38,7 +38,7 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     });
     const inputBuffer = await fs.readFile(flags.input);
     const input = JSON.parse(
-      inputBuffer.toString()
+      inputBuffer.toString(),
     ) as Prisma.Enumerable<Prisma.categoriesCreateManyInput>;
     const operation = flags.operation as "createMany";
     const data = await services.category[operation](input);
@@ -58,8 +58,8 @@ https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.P
     bar.start(paths.length, 0);
     await Promise.all(
       paths.map((path) =>
-        this.#category({ ...flags, input: path }).then(() => bar.increment())
-      )
+        this.#category({ ...flags, input: path }).then(() => bar.increment()),
+      ),
     );
     bar.stop();
   }

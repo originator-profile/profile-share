@@ -30,12 +30,12 @@ export class PublisherProfileSet extends Command {
     const prisma = new PrismaClient();
     const services = Services({ config, prisma });
     const data: JsonLdDocument | Error = await services.website.getProfileSet(
-      flags.url
+      flags.url,
     );
     if (data instanceof Error) this.error(data);
     const json = JSON.stringify(data, null, "  ");
     await stream.promises.finished(
-      stream.Readable.from([json, `\n`]).pipe(output)
+      stream.Readable.from([json, `\n`]).pipe(output),
     );
   }
 }

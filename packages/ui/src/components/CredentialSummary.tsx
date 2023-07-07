@@ -16,7 +16,7 @@ function CredentialSummary({ className, credential, holder, onClick }: Props) {
     <button
       className={clsx(
         "flex items-center gap-4 hover:bg-primary-50 p-2 rounded-sm",
-        className
+        className,
       )}
       onClick={onClick}
     >

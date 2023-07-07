@@ -26,7 +26,7 @@ export class ProfileClaimsValidationFailed extends ProfileGenericError {
 
   constructor(
     message: string,
-    result: ProfileClaimsValidationFailed["result"]
+    result: ProfileClaimsValidationFailed["result"],
   ) {
     super(message);
     this.result = result;

@@ -931,7 +931,7 @@ $ curl -X PUT https://dprexpt.originator-profile.org/admin/publisher/8fe1b860-55
 HTML の例
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <title>メディア (試験用)</title>
 <link
   rel="alternate"

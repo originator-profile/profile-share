@@ -6,11 +6,12 @@
 node_modules
 dist
 tmp
-composer.lock
 vendor
 /apps/registry/oclif.manifest.json
 /apps/web-ext/web-ext-artifacts
 /apps/web-ext/screenshots
-/docs/**/assets
+/docs/model/assets
+/docs/registry/assets/*
+!/docs/registry/assets/.keep
 /pages
 /static/ts

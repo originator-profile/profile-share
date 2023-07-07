@@ -7,7 +7,7 @@ const exec = util.promisify(child_process.exec);
 
 async function globalSetup() {
   process.env.WORDPRESS_ADMIN_USER = `profile-tester-${crypto.randomInt(
-    65535
+    65535,
   )}`;
   process.env.WORDPRESS_ADMIN_PASSWORD = crypto
     .randomBytes(32)

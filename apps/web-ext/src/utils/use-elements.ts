@@ -8,9 +8,9 @@ function useElements(location?: string | (string | undefined)[]) {
         [location]
           .flat()
           .map((l) => l ?? ":root")
-          .join(", ") || ":not(*)"
+          .join(", ") || ":not(*)",
       ),
-    [location]
+    [location],
   );
   return { elements };
 }

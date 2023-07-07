@@ -13,7 +13,7 @@ import { createThumbprint } from "./thumbprint";
 export async function signDp(
   dp: Dp,
   pkcs8: string,
-  alg = "ES256"
+  alg = "ES256",
 ): Promise<string> {
   const header = {
     alg,

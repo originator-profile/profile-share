@@ -8,6 +8,6 @@ if (root) {
   createRoot(root).render(
     <StrictMode>
       <Pages />
-    </StrictMode>
+    </StrictMode>,
   );
 }

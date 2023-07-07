@@ -28,7 +28,7 @@ describe("Request with administrative privileges", async () => {
     const res = await fetch(endpoint, {
       headers: {
         Authorization: `Basic ${Buffer.from(
-          `${accountId}:${dummyPassword}`
+          `${accountId}:${dummyPassword}`,
         ).toString("base64")}`,
       },
     });

@@ -34,7 +34,7 @@ const initialValues = loadInitialValues();
 export default function Pages() {
   const [values, setValues] = useState<Record<string, unknown>>({});
   const [presentation, setPresentation] = useState(
-    "profileSet" in initialValues ? "direct" : "url"
+    "profileSet" in initialValues ? "direct" : "url",
   );
   const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
     setPresentation(event.target.value);
@@ -66,7 +66,9 @@ export default function Pages() {
 
           const response = await fetch(endpoint)
             .then((res) =>
-              res.ok ? res.json() : new Error(`${res.status} ${res.statusText}`)
+              res.ok
+                ? res.json()
+                : new Error(`${res.status} ${res.statusText}`),
             )
             .catch((e: Error) => e);
           setValues((values) => ({ ...values, response }));
@@ -84,13 +86,13 @@ export default function Pages() {
     const jwksEndpoint = new URL(
       import.meta.env.DEV && registry === "localhost"
         ? `http://localhost:8080/.well-known/jwks.json`
-        : `https://${registry}/.well-known/jwks.json`
+        : `https://${registry}/.well-known/jwks.json`,
     );
     const results = await ProfilesVerifier(
       expanded,
       RemoteKeys(jwksEndpoint),
       registry,
-      null
+      null,
     )();
     setValues((values) => ({ ...values, results }));
   }

@@ -62,7 +62,7 @@ export class PublisherWebsite extends Command {
   };
 
   async #website(
-    flags: Awaited<ReturnType<typeof this.parse>>["flags"]
+    flags: Awaited<ReturnType<typeof this.parse>>["flags"],
   ): Promise<void> {
     const prisma = new PrismaClient();
     const services = Services({
@@ -128,8 +128,8 @@ export class PublisherWebsite extends Command {
     bar.start(paths.length, 0);
     await Promise.all(
       paths.map((path) =>
-        this.#website({ ...flags, input: path }).then(() => bar.increment())
-      )
+        this.#website({ ...flags, input: path }).then(() => bar.increment()),
+      ),
     );
     bar.stop();
   }

@@ -16,12 +16,12 @@ async function index(fastify: FastifyInstance): Promise<void> {
         public: path.resolve(__dirname, "../../dist/public"),
         directoryListing: false,
       });
-    }
+    },
   );
   fastify.get<FromHandler<typeof getFrontendProfileSet>>(
     "/ps.json",
     { ...getFrontendProfileSet },
-    getFrontendProfileSet
+    getFrontendProfileSet,
   );
   fastify.get(
     "/context",
@@ -42,17 +42,17 @@ async function index(fastify: FastifyInstance): Promise<void> {
     async (_, reply) => {
       reply.type("application/ld+json");
       return context;
-    }
+    },
   );
   fastify.get<FromHandler<typeof getIssuerKeys>>(
     "/.well-known/jwks.json",
     { ...getIssuerKeys },
-    getIssuerKeys
+    getIssuerKeys,
   );
   fastify.get<FromHandler<typeof getIssuerProfileSet>>(
     "/.well-known/ps.json",
     { ...getIssuerProfileSet },
-    getIssuerProfileSet
+    getIssuerProfileSet,
   );
 }
 

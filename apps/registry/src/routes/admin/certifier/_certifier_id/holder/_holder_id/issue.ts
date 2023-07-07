@@ -38,14 +38,14 @@ async function issue({
 }>) {
   const opId = await server.services.certificate.issue(
     params.certifier_id,
-    body.jwt
+    body.jwt,
   );
   if (opId instanceof Error) {
     throw new BadRequestError("Invalid issue request");
   }
   const data = await server.services.account.publishProfile(
     params.holder_id,
-    opId
+    opId,
   );
   if (data instanceof Error) {
     throw new BadRequestError("Invalid publish request");

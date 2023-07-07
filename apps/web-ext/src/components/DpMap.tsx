@@ -16,7 +16,9 @@ function DpMapFragment({
   const op = ops.find((op) => op.subject === dp.issuer);
   if (!op) return null;
   const active = Boolean(
-    activeDp && activeDp.issuer === dp.issuer && activeDp.subject === dp.subject
+    activeDp &&
+      activeDp.issuer === dp.issuer &&
+      activeDp.subject === dp.subject,
   );
   return <DpMarker dp={dp} op={op} active={active} onClickDp={onClickDp} />;
 }
@@ -35,7 +37,7 @@ function DpMap({ profiles, activeDp, onClickDp }: Props) {
       {dps.map((dp) => (
         <DpMapFragment
           key={`${encodeURIComponent(dp.issuer)}/${encodeURIComponent(
-            dp.subject
+            dp.subject,
           )}`}
           dp={dp}
           activeDp={activeDp}

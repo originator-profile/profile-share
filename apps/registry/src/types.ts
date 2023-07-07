@@ -11,7 +11,7 @@ declare module "fastify" {
 /** RouteHandlerMethod から RouteGeneric への型の変換 */
 export type FromHandler<
   Handler,
-  Params = unknown
+  Params = unknown,
 > = Handler extends RouteHandlerMethod<never, never, never, infer RouteGeneric>
   ? Omit<RouteGeneric, "Params"> & { Params: Params }
   : never;

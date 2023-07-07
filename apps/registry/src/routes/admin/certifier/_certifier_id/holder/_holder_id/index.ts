@@ -7,7 +7,7 @@ async function index(fastify: FastifyInstance): Promise<void> {
   fastify.post<FromHandler<typeof issue, Params>>(
     "/issue",
     { ...issue },
-    issue
+    issue,
   );
 }
 

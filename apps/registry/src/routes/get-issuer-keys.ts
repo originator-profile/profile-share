@@ -8,7 +8,7 @@ const schema: FastifySchema = {
 
 async function getIssuerKeys(req: FastifyRequest) {
   const data = await getKeys(
-    Object.assign(req, { params: { id: req.server.config.ISSUER_UUID } })
+    Object.assign(req, { params: { id: req.server.config.ISSUER_UUID } }),
   );
   return data;
 }

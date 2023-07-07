@@ -111,7 +111,7 @@ export const AccountService = ({ prisma, validator }: Options) => ({
     }
     if (decoded.payload.sub !== account.domainName) {
       return new BadRequestError(
-        "It is not Signed Originator Profile for the account."
+        "It is not Signed Originator Profile for the account.",
       );
     }
     const issuedAt: Date = fromUnixTime(decoded.payload.iat);
@@ -158,7 +158,7 @@ export const AccountService = ({ prisma, validator }: Options) => ({
     id: string,
     contextDefinition:
       | ContextDefinition
-      | string = "https://originator-profile.org/context.jsonld"
+      | string = "https://originator-profile.org/context.jsonld",
   ): Promise<JsonLdDocument | Error> {
     const data = await prisma.accounts
       .findUnique({

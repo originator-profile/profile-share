@@ -19,7 +19,7 @@ function Roles({ className, roles }: Props) {
           key={index}
           className={clsx(
             "jumpu-tag hover:border-transparent cursor-auto text-xs bg-gray-100",
-            { ["mb-1"]: index < roles.length - 1 }
+            { ["mb-1"]: index < roles.length - 1 },
           )}
         >
           {roleName[role]}
