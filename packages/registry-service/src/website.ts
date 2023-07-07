@@ -80,6 +80,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
     }
 
     const input = {
+      id,
       account: {
         connect: { id: accountId },
       },
