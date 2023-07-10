@@ -232,7 +232,8 @@ Signed Originator Profile の登録が完了しました。
   "title": "大谷翔平、通算１０１号は１３０ｍの今季最長弾…エンゼルスファンが好捕",
   "description": "https://yomiuri.demosites.pages.dev/1 の備考",
   "author": "前木 理一郎",
-  "editor": "デジタル編集部"
+  "editor": "デジタル編集部",
+  "categories": [{ "cat": "IAB17-2" }]
 }
 ```
 
@@ -255,6 +256,16 @@ profile-registry publisher:website \
 組織の行を横スクロールすると `issuedDps` が見えてきますが、そこに `1 dps`を表示されたら成功です。
 
 オプションについては、[apps/registry/README.md](https://github.com/webdino/profile/tree/main/apps/registry) を参照してください。
+
+##### 情報カテゴリーについて
+
+`website.json`の項目`categories`に[IAB Tech Lab Content Category Taxonomy 1.0](https://iabtechlab.com/wp-content/uploads/2023/03/Content-Taxonomy-1.0-1.xlsx)にもとづく文字列を記載することで、対象となる Web ページの情報カテゴリーを表すことが可能です。
+
+前節`website.json`における`[{ "cat": "IAB17-2" }]`は`Baseball`を意味し、Web ページが野球に関するものであることを示しています。Web ページが複数カテゴリーの情報を扱っている場合は`[{ "cat": "IAB17-2" }, { "cat": "IAB17-3" }]`のようにカテゴリーを列挙できます。
+
+:::note
+カテゴリー名として使用する文字列については上記[IAB Tech Lab Content Category Taxonomy 1.0](https://iabtechlab.com/wp-content/uploads/2023/03/Content-Taxonomy-1.0-1.xlsx)または[category.example.json](https://github.com/webdino/profile/blob/main/apps/registry/category.example.json)を参照してください。Web ページの情報カテゴリーは`profile-registry`コマンドでは削除できないので注意してください。
+:::
 
 ### 公開する Web サイトに Profile Set を紐付ける
 
