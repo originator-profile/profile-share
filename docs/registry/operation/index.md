@@ -27,14 +27,7 @@ Originator Profile レジストリの会員となり、Originator Profile によ
 
 ## 記事出版・引用の担当者
 
-[Signed Document Profile（SDP）](/spec.md#signed-document-profile)を発行して自身の組織の出版物を表明します。自身の組織の SOP と SDP を利用して [Profile Set](/spec.md#profile-set) を作成します。次の作業を実施します。
-
-- [Document Profile レジストリ構築](../document-profile-registry-creation.md)
-- [レジストリ DB 参照](./registry-db-access.md)
-- [WordPress 連携](../wordpress-integration.md)
-- [Web サイト連携](../website-integration.md)
-- [Signed Document Profile 発行](./signed-document-profile-issuance.md)
-- [Profile Set 作成](./profile-set-creation.md)
+[Signed Document Profile（SDP）](/spec.md#signed-document-profile)を発行して自身の組織の出版物を表明します。また、自身の組織の SOP と SDP を利用して [Profile Set](/spec.md#profile-set) を作成します。これらは間接的に Document Profile レジストリ管理者が用意したレジストリ API 等によって行われます。
 
 ## 広告主
 
@@ -49,3 +42,14 @@ Originator Profile の発行者です。次の作業を実施します。
 - [鍵ペアの生成](./key-pair-generation.md)
 - [公開鍵の登録](./public-key-registration.md)
 - [Signed Originator Profile 発行](./signed-originator-profile-issuance.md)
+
+## Document Profile レジストリ管理者
+
+Document Profile の発行者です。次の作業を実施します。
+
+- [Document Profile レジストリ構築](../document-profile-registry-creation.md)
+- [レジストリ DB 参照](./registry-db-access.md)
+- [Signed Document Profile 発行](./signed-document-profile-issuance.md)
+- [Profile Set 作成](./profile-set-creation.md)
+- [WordPress 連携](../wordpress-integration.md)
+- [Web サイト連携](../website-integration.md)
