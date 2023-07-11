@@ -22,7 +22,7 @@ sidebar_position: 11
 - [サマリ](/registry/)
 - [仕様](/registry/spec.md)
   - Profile Registry に関する仕様
-- [操作説明書](/registry/operation.md)
+- [レジストリ運用](/registry/operation/)
   - Originator Profile、Document Profile の発行手順と Web サイトへの紐づけ方法
 - [Document Profile レジストリ構築](/registry/document-profile-registry-creation.md)
   - Document Profile 　レジストリの構築手順
