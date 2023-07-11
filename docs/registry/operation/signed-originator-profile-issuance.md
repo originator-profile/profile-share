@@ -4,7 +4,7 @@ sidebar_position: 7
 
 # Signed Originator Profile 発行
 
-ここで必要な情報は以下の 2 点です。
+ここで必要な情報は以下の 3 点です。
 
 - `--holder` に指定する Signed Originator Profile の所有者となる組織の id
 - `--certifier` に指定する Signed Originator Profile の発行者となる組織の id
