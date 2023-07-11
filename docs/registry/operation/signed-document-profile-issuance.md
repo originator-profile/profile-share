@@ -37,6 +37,16 @@ sidebar_position: 8
 }
 ```
 
+### 情報カテゴリーについて
+
+`website.json` の項目 `categories` に [IAB Tech Lab Content Category Taxonomy 1.0](https://iabtechlab.com/wp-content/uploads/2023/03/Content-Taxonomy-1.0-1.xlsx) にもとづく文字列を記載することで、対象となる Web ページの情報カテゴリーを表すことが可能です。
+
+前節 `website.json` における `[{ "cat": "IAB17-2" }]` は `Baseball` を意味し、Web ページが野球に関するものであることを示しています。Web ページが複数カテゴリーの情報を扱っている場合は `[{ "cat": "IAB17-2" }, { "cat": "IAB17-3" }]` のようにカテゴリーを列挙できます。
+
+:::note
+カテゴリー名として使用する文字列については上記 [IAB Tech Lab Content Category Taxonomy 1.0](https://iabtechlab.com/wp-content/uploads/2023/03/Content-Taxonomy-1.0-1.xlsx) または [category.example.json](https://github.com/webdino/profile/blob/main/apps/registry/category.example.json) を参照してください。Web ページの情報カテゴリーは `profile-registry` コマンドでは削除できないので注意してください。
+:::
+
 「読売新聞社」は、株式会社読売新聞東京本社の登録商標です。
 
 ## 発行
@@ -56,13 +66,3 @@ profile-registry publisher:website \
 発行された Signed Document Profile は、Prisma Studio で確認できます。Prisma Studio を起動し、accounts テーブルの自身の組織のレコード行を横スクロールすると issuedDps カラムがあり、dps レコードが 1 件増えていることが確認できます。
 
 <img alt="Signed Document Profile が作成された" width="1082" alt="image" src="https://user-images.githubusercontent.com/281424/193495340-acc186d4-139b-407c-bc0a-be7e6b5496cd.png" />
-
-### 情報カテゴリーについて
-
-`website.json` の項目 `categories` に [IAB Tech Lab Content Category Taxonomy 1.0](https://iabtechlab.com/wp-content/uploads/2023/03/Content-Taxonomy-1.0-1.xlsx) にもとづく文字列を記載することで、対象となる Web ページの情報カテゴリーを表すことが可能です。
-
-前節 `website.json` における `[{ "cat": "IAB17-2" }]` は `Baseball` を意味し、Web ページが野球に関するものであることを示しています。Web ページが複数カテゴリーの情報を扱っている場合は `[{ "cat": "IAB17-2" }, { "cat": "IAB17-3" }]` のようにカテゴリーを列挙できます。
-
-:::note
-カテゴリー名として使用する文字列については上記 [IAB Tech Lab Content Category Taxonomy 1.0](https://iabtechlab.com/wp-content/uploads/2023/03/Content-Taxonomy-1.0-1.xlsx) または [category.example.json](https://github.com/webdino/profile/blob/main/apps/registry/category.example.json) を参照してください。Web ページの情報カテゴリーは `profile-registry` コマンドでは削除できないので注意してください。
-:::
