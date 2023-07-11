@@ -13,7 +13,7 @@ sidebar_position: 8
 - Originator Profile レジストリ管理者による[レジストリへの公開鍵の登録](./public-key-registration.md)
 - Originator Profile レジストリ管理者による [Signed Originator Profile 発行](./signed-originator-profile-issuance.md)
 
-表明可能な出版物は、現状単一の Web ページのみ対応しています。単一の Web ページの Web ページの情報は JSON ファイルに記載します。
+表明可能な出版物は、現状単一の Web ページのみ対応しています。単一の Web ページの情報は JSON ファイルに記載します。
 
 ## website.json の例
 
