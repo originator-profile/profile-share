@@ -4,7 +4,7 @@ sidebar_position: 8
 
 # Signed Document Profile 発行
 
-本ページでは [Signed Document Profile（SDP）](/spec/#signed-document-profile)を発行して自身の組織の出版物を表明する方法を説明します。
+本ページでは Document Profile レジストリ管理者が [Signed Document Profile（SDP）](/spec/#signed-document-profile)を発行して、自身の組織の出版物を表明し検証可能にする方法について説明します。
 
 あらかじめ次の作業を完了している必要があります。
 

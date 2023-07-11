@@ -4,7 +4,7 @@ sidebar_position: 9
 
 # Profile Set 作成
 
-本ページでは、自身の組織の Signed Originator Profile（SOP）と Signed Document Profile（SDP）を利用して [Profile Set](/spec.md#profile-set) を作成する方法を説明します。
+本ページでは Document Profile 管理者が自身の組織の Signed Originator Profile（SOP）と Signed Document Profile（SDP）を利用して、[Profile Set](/spec.md#profile-set) を作成する方法を説明します。
 
 :::note
 

@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # 鍵ペアの生成
 
-Signed Originator Profile あるいは Signed Document Profile 発行時にデジタル署名を行います。デジタル署名に使用する鍵ペアの生成には、以下のコマンドを実行してください。
+Signed Originator Profile あるいは Signed Document Profile 発行時にデジタル署名を行うための鍵ペアの生成には、以下のコマンドを実行してください。
 
 CLI のインストールを含む開発環境の構築方法については、[開発ガイド](/development/)を参照してください。
 

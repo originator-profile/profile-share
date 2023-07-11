@@ -4,6 +4,8 @@ sidebar_position: 7
 
 # Signed Originator Profile 発行
 
+本ページでは Originator Profile レジストリ管理者が [Signed Originator Profile（SOP）](/spec/#signed-originator-profile)を発行して、自身あるいは他組織の身元を表明し検証可能にする方法について説明します。
+
 ここで必要な情報は以下の 3 点です。
 
 - `--holder` に指定する Signed Originator Profile の所有者となる組織の id
