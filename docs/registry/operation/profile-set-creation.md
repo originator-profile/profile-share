@@ -6,7 +6,7 @@ sidebar_position: 9
 
 本ページでは Document Profile 管理者が自身の組織の Signed Originator Profile（SOP）と Signed Document Profile（SDP）を利用して、[Profile Set](/spec.md#profile-set) を作成する方法を説明します。
 
-:::note
+:::caution
 
 本ページの方法は都度検証をパスする SOP と SDP への更新が必要であり、推奨できません。あくまでレジストリ API を使用しない方法として仕様への理解を深める目的で参考にしてください。
 
