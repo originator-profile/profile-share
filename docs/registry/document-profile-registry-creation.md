@@ -87,7 +87,7 @@ JWK の例:
 
 ### profile-registry CLI を使用する方法
 
-profile-registry CLI を使用して、鍵ペアを生成することが可能です。[操作説明書](./operation.md#鍵ペアの生成)を参照してください。
+profile-registry CLI を使用して、[鍵ペアを生成](./operation/key-pair-generation.md)することが可能です。
 
 例:
 
@@ -104,8 +104,8 @@ $ cat key.pem.pub.json | jq
 ```
 
 <!-- NOTE:
-Originator Profile レジストリ運用者によって公開鍵を登録します。
-詳細は[操作説明書](./operation.md)と[Profile Registry ソースコード](https://github.com/webdino/profile/blob/main/apps/registry#readme)を参照してください。
+Originator Profile レジストリ運用者によって[公開鍵を登録](./operation/public-key-registration.md)します。
+詳細は[Profile Registry ソースコード](https://github.com/webdino/profile/blob/main/apps/registry#readme)を参照してください。
 -->
 
 ## Document Profile レジストリへの Signed Originator Profile の登録
