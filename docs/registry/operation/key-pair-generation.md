@@ -23,4 +23,4 @@ profile-registry key-gen -o <keyのファイル名>
 プライベート鍵は適切に管理してください。プライベート鍵が漏洩するとあなたの組織を詐称してコンテンツに署名をされる恐れがあります。
 :::
 
-鍵ペアの生成が完了したら、[公開鍵の登録](./public-key-registration.md)を Originator Profile レジストリ管理者に依頼します。
+鍵ペアの生成が完了したら、公開鍵を Originator Profile レジストリ管理者に渡してください。Originator Profile レジストリ管理者が公開鍵の登録を行います。
