@@ -40,7 +40,7 @@ Originator Profile の発行者です。次の作業を実施します。
 - [レジストリ DB 参照](./registry-db-access.md)
 - [会員の作成](./account-creation.md)
 - [鍵ペアの生成](./key-pair-generation.md)
-- [公開鍵の登録](./public-key-registration.md)
+- [レジストリへの公開鍵の登録](./public-key-registration.md)
 - [Signed Originator Profile 発行](./signed-originator-profile-issuance.md)
 
 ## Document Profile レジストリ管理者
