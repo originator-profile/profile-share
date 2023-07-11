@@ -316,7 +316,7 @@ API の詳細については、 [CIP 提供 DP レジストリについて](#cip
 
 コンテンツに対する署名付き DP (SDP) を DP レジストリに登録するためのエンドポイントです。必要なパラメータをリクエストのボディー部に付与して POST メソッドを送ることで、登録ができます。
 
-:::warning
+:::caution
 
 このエンドポイントは非推奨になっています。代わりに [`/admin/publisher/アカウントID/dp/` エンドポイント](http://localhost:3000/media-study-202307/howto/#adminpublisher%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88iddp-%E3%82%A8%E3%83%B3%E3%83%89%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88)を使用してください。
 
@@ -746,7 +746,7 @@ DP の登録に成功した場合、次のようなレスポンスが返って�
 
 DP の登録に失敗した場合、以下のようなレスポンスが返ってきます。
 
-失敗レスポンス（リクエストのパラメータが間違っていた場合）:
+失敗レスポンス（一般的なエラー）:
 
 ```json
 {
@@ -756,17 +756,25 @@ DP の登録に失敗した場合、以下のようなレスポンスが返っ�
 }
 ```
 
-失敗レスポンス（`jwt` パラメータに渡した DP が間違っていた場合）:
+失敗レスポンス（`jwt` パラメータの [item クレーム](/spec/#dp-クレームの-item-プロパティ) の中にコンテンツへの署名を含む要素がなかった場合）:
 
 ```json
 {
   "statusCode": 400,
   "error": "Bad Request",
-  "message": "Invalid issue request: It is not Document Profile."
+  "message": "dp doesn't contain item with proof"
 }
 ```
 
-上のエラーメッセージの場合、具体的には `jwt` の中に [dp クレーム](/spec#dp-document-profile-クレーム) が含まれていないためエラーになっています。
+失敗レスポンス（`jwt` パラメータが [dp クレーム](/spec#dp-document-profile-クレーム) を含んでいなかった場合）:
+
+```json
+{
+  "statusCode": 400,
+  "error": "Bad Request",
+  "message": "invalid jwt"
+}
+```
 
 失敗レスポンス（認証情報が間違っていた場合）:
 
@@ -781,10 +789,52 @@ DP の登録に失敗した場合、以下のようなレスポンスが返っ�
 
 失敗レスポンスが返ってきた場合、 DP の登録ができていません。成功レスポンスが返ってくるように、リクエストを修正してください。
 
+### `/website/profiles` エンドポイント詳細
+
+#### パラメータ（`/website/profiles` エンドポイント）
+
+パラメータの一覧は以下になります。これらを GET リクエストのクエリパラメータに与えてください。全て必須パラメータとなります。
+
+| パラメータ名 | 型     | 説明                                                                                                     |
+| ------------ | ------ | -------------------------------------------------------------------------------------------------------- |
+| url          | 文字列 | 記事の URL を与えてください。記事登録時に指定した URL を RFC 3986 の形式でエンコーディングしてください。 |
+
+#### リクエストの例（`/website/profiles` エンドポイント）
+
+```
+$ curl https://dprexpt.originator-profile.org/website/profiles?url=https%3A%2F%2Fmedia.example.com%2F2023%2F06%2Fhello%2F
+```
+
+#### レスポンスの例（`/website/profiles` エンドポイント）
+
+成功レスポンスの例（見やすく整形しています）:
+
+```json
+{
+  "@context": "https://originator-profile.org/context.jsonld",
+  "profile": [
+    "eyJhbGciOiJFUzI1NiIsImtpZCI6IjIwX1hDazM2dFFrUlpsQnhEckhzMVhldHBUZUZYdDRfVlRSbHlEa0YyQWsiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvb3AiOnsiaXRlbSI6W3sidHlwZSI6ImNlcnRpZmllciIsImRvbWFpbk5hbWUiOiJvcHJleHB0Lm9yaWdpbmF0b3ItcHJvZmlsZS5vcmciLCJ1cmwiOiJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvIiwibmFtZSI6Ik9yaWdpbmF0b3IgUHJvZmlsZSDmioDooZPnoJTnqbbntYTlkIgiLCJwb3N0YWxDb2RlIjoiMTA4LTAwNzMiLCJhZGRyZXNzQ291bnRyeSI6IkpQIiwiYWRkcmVzc1JlZ2lvbiI6IuadseS6rOmDvSIsImFkZHJlc3NMb2NhbGl0eSI6Iua4r-WMuiIsInN0cmVldEFkZHJlc3MiOiLkuInnlLAiLCJjb250YWN0VGl0bGUiOiLjgYrllY_jgYTlkIjjgo_jgZsiLCJjb250YWN0VXJsIjoiaHR0cHM6Ly9vcmlnaW5hdG9yLXByb2ZpbGUub3JnL2phLUpQL2lucXVpcnkvIiwicHJpdmFjeVBvbGljeVRpdGxlIjoi44OX44Op44Kk44OQ44K344O844Od44Oq44K344O8IiwicHJpdmFjeVBvbGljeVVybCI6Imh0dHBzOi8vb3JpZ2luYXRvci1wcm9maWxlLm9yZy9qYS1KUC9wcml2YWN5LyIsImxvZ29zIjpbXSwiYnVzaW5lc3NDYXRlZ29yeSI6W119LHsidHlwZSI6ImhvbGRlciIsImRvbWFpbk5hbWUiOiJtZWRpYS5leGFtcGxlLmNvbSIsInVybCI6Imh0dHBzOi8vbWVkaWEuZXhhbXBsZS5jb20vIiwibmFtZSI6IuS8muWToSAo6Kmm6aiT55SoKSIsInBvc3RhbENvZGUiOiIxMDAtMDAwMCIsImFkZHJlc3NDb3VudHJ5IjoiSlAiLCJhZGRyZXNzUmVnaW9uIjoi5p2x5Lqs6YO9IiwiYWRkcmVzc0xvY2FsaXR5Ijoi5Y2D5Luj55Sw5Yy6Iiwic3RyZWV0QWRkcmVzcyI6IiIsImxvZ29zIjpbXSwiYnVzaW5lc3NDYXRlZ29yeSI6W119XSwiandrcyI6eyJrZXlzIjpbeyJ4IjoiMk9LbXF1VVBpbWtzaGtKUVdXaWgtLXp1LVUxTmtEc0tJbVdfbzNrYmVPZyIsInkiOiJmOWJnZU1IX3FMUzVMdk95YzNkSG9LWUptVmZ1dEVNOVZyYjJXZUVlbXRNIiwiY3J2IjoiUC0yNTYiLCJraWQiOiJENUQ1UDNVclYxVl82VV9xOXlLdl9qWl9xOFNoSXZyeHk3RTJReU9mV1lFIiwia3R5IjoiRUMifV19fSwiaXNzIjoib3ByZXhwdC5vcmlnaW5hdG9yLXByb2ZpbGUub3JnIiwic3ViIjoibWVkaWEuZXhhbXBsZS5jb20iLCJpYXQiOjE2ODg1MzczMTcsImV4cCI6MTcyMDE1OTcxN30.HmflTdUnbgLKpXbbCtO6eV4nR6Ncttlv_4sCJUsHujeLO2QHS2_Ot6VddzECiOcLX_UotBRVqhvJ_J1OQJNVpw",
+    "eyJhbGciOiJFUzI1NiIsImtpZCI6IkQ1RDVQM1VyVjFWXzZVX3E5eUt2X2paX3E4U2hJdnJ4eTdFMlF5T2ZXWUUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJtZWRpYS5leGFtcGxlLmNvbSIsInN1YiI6IjQxNjMyNzA1LTk2MDAtNDlkZi1iODBkLWEzNTdkNDc0ZjM3ZSIsImlhdCI6MTY4NzgyNzQ1OCwiZXhwIjoxNzE5NDQ5ODU4LCJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwczovL21lZGlhLmV4YW1wbGUuY29tLzIwMjMvMDYvaGVsbG8vIiwidGl0bGUiOiLjg6Hjg4fjgqPjgqIgKOippumok-eUqCkifV19fQ.fHwD1V6tGG2VpRx_i93Wq14yH7JRzhIRijt1DXYBRQaHEoPstQfEQLA92cR5wq1n58tuH3bHv3D9nwoEaghUVQ"
+  ]
+}
+```
+
+失敗レスポンスの例（ url に対応する Profile Set がなかった場合）:
+
+```json
+{
+  "statusCode": 404,
+  "error": "Not Found",
+  "message": ""
+}
+```
+
+失敗レスポンスが返ってきた場合、求める Profile Set が返ってくるようにリクエストを修正してください。
+
 ### `/admin/publisher/{アカウントID}/` エンドポイント詳細
 
 <details>
-<summary>非推奨</summary>
+<summary>このエンドポイントは非推奨になっています。代わりに /admin/publisher/アカウントID/dp/ エンドポイントを利用してください。</summary>
 
 #### パラメータ　（`/admin/publisher/{アカウントID}/` エンドポイント）
 
@@ -887,48 +937,6 @@ DP の登録に失敗した場合、以下のようなレスポンスが返っ�
 失敗レスポンスが返ってきた場合、 DP の登録ができていません。成功レスポンスが返ってくるように、リクエストを修正してください。
 
 </details>
-
-### `/website/profiles` エンドポイント詳細
-
-#### パラメータ（`/website/profiles` エンドポイント）
-
-パラメータの一覧は以下になります。これらを GET リクエストのクエリパラメータに与えてください。全て必須パラメータとなります。
-
-| パラメータ名 | 型     | 説明                                                                                                     |
-| ------------ | ------ | -------------------------------------------------------------------------------------------------------- |
-| url          | 文字列 | 記事の URL を与えてください。記事登録時に指定した URL を RFC 3986 の形式でエンコーディングしてください。 |
-
-#### リクエストの例（`/website/profiles` エンドポイント）
-
-```
-$ curl https://dprexpt.originator-profile.org/website/profiles?url=https%3A%2F%2Fmedia.example.com%2F2023%2F06%2Fhello%2F
-```
-
-#### レスポンスの例（`/website/profiles` エンドポイント）
-
-成功レスポンスの例（見やすく整形しています）:
-
-```json
-{
-  "@context": "https://originator-profile.org/context.jsonld",
-  "profile": [
-    "eyJhbGciOiJFUzI1NiIsImtpZCI6IjIwX1hDazM2dFFrUlpsQnhEckhzMVhldHBUZUZYdDRfVlRSbHlEa0YyQWsiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvb3AiOnsiaXRlbSI6W3sidHlwZSI6ImNlcnRpZmllciIsImRvbWFpbk5hbWUiOiJvcHJleHB0Lm9yaWdpbmF0b3ItcHJvZmlsZS5vcmciLCJ1cmwiOiJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvIiwibmFtZSI6Ik9yaWdpbmF0b3IgUHJvZmlsZSDmioDooZPnoJTnqbbntYTlkIgiLCJwb3N0YWxDb2RlIjoiMTA4LTAwNzMiLCJhZGRyZXNzQ291bnRyeSI6IkpQIiwiYWRkcmVzc1JlZ2lvbiI6IuadseS6rOmDvSIsImFkZHJlc3NMb2NhbGl0eSI6Iua4r-WMuiIsInN0cmVldEFkZHJlc3MiOiLkuInnlLAiLCJjb250YWN0VGl0bGUiOiLjgYrllY_jgYTlkIjjgo_jgZsiLCJjb250YWN0VXJsIjoiaHR0cHM6Ly9vcmlnaW5hdG9yLXByb2ZpbGUub3JnL2phLUpQL2lucXVpcnkvIiwicHJpdmFjeVBvbGljeVRpdGxlIjoi44OX44Op44Kk44OQ44K344O844Od44Oq44K344O8IiwicHJpdmFjeVBvbGljeVVybCI6Imh0dHBzOi8vb3JpZ2luYXRvci1wcm9maWxlLm9yZy9qYS1KUC9wcml2YWN5LyIsImxvZ29zIjpbXSwiYnVzaW5lc3NDYXRlZ29yeSI6W119LHsidHlwZSI6ImhvbGRlciIsImRvbWFpbk5hbWUiOiJtZWRpYS5leGFtcGxlLmNvbSIsInVybCI6Imh0dHBzOi8vbWVkaWEuZXhhbXBsZS5jb20vIiwibmFtZSI6IuS8muWToSAo6Kmm6aiT55SoKSIsInBvc3RhbENvZGUiOiIxMDAtMDAwMCIsImFkZHJlc3NDb3VudHJ5IjoiSlAiLCJhZGRyZXNzUmVnaW9uIjoi5p2x5Lqs6YO9IiwiYWRkcmVzc0xvY2FsaXR5Ijoi5Y2D5Luj55Sw5Yy6Iiwic3RyZWV0QWRkcmVzcyI6IiIsImxvZ29zIjpbXSwiYnVzaW5lc3NDYXRlZ29yeSI6W119XSwiandrcyI6eyJrZXlzIjpbeyJ4IjoiMk9LbXF1VVBpbWtzaGtKUVdXaWgtLXp1LVUxTmtEc0tJbVdfbzNrYmVPZyIsInkiOiJmOWJnZU1IX3FMUzVMdk95YzNkSG9LWUptVmZ1dEVNOVZyYjJXZUVlbXRNIiwiY3J2IjoiUC0yNTYiLCJraWQiOiJENUQ1UDNVclYxVl82VV9xOXlLdl9qWl9xOFNoSXZyeHk3RTJReU9mV1lFIiwia3R5IjoiRUMifV19fSwiaXNzIjoib3ByZXhwdC5vcmlnaW5hdG9yLXByb2ZpbGUub3JnIiwic3ViIjoibWVkaWEuZXhhbXBsZS5jb20iLCJpYXQiOjE2ODg1MzczMTcsImV4cCI6MTcyMDE1OTcxN30.HmflTdUnbgLKpXbbCtO6eV4nR6Ncttlv_4sCJUsHujeLO2QHS2_Ot6VddzECiOcLX_UotBRVqhvJ_J1OQJNVpw",
-    "eyJhbGciOiJFUzI1NiIsImtpZCI6IkQ1RDVQM1VyVjFWXzZVX3E5eUt2X2paX3E4U2hJdnJ4eTdFMlF5T2ZXWUUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJtZWRpYS5leGFtcGxlLmNvbSIsInN1YiI6IjQxNjMyNzA1LTk2MDAtNDlkZi1iODBkLWEzNTdkNDc0ZjM3ZSIsImlhdCI6MTY4NzgyNzQ1OCwiZXhwIjoxNzE5NDQ5ODU4LCJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwczovL21lZGlhLmV4YW1wbGUuY29tLzIwMjMvMDYvaGVsbG8vIiwidGl0bGUiOiLjg6Hjg4fjgqPjgqIgKOippumok-eUqCkifV19fQ.fHwD1V6tGG2VpRx_i93Wq14yH7JRzhIRijt1DXYBRQaHEoPstQfEQLA92cR5wq1n58tuH3bHv3D9nwoEaghUVQ"
-  ]
-}
-```
-
-失敗レスポンスの例（ url に対応する Profile Set がなかった場合）:
-
-```json
-{
-  "statusCode": 404,
-  "error": "Not Found",
-  "message": ""
-}
-```
-
-失敗レスポンスが返ってきた場合、求める Profile Set が返ってくるようにリクエストを修正してください。
 
 ### 試験用アカウント情報
 
