@@ -16,6 +16,6 @@ sidebar_position: 4
 profile-registry account -i account.json -o create
 ```
 
-Prisma Studio から作成した会員のレコードを閲覧することができます。
+Prisma Studio から作成した会員（accounts テーブル）のレコードを閲覧することができます。
 
 <img width="1552" alt="Prisma Studioで組織登録が完了した" src="https://user-images.githubusercontent.com/281424/193491831-9ee55ec6-965d-465b-a2c6-44d6f150f9ea.png" />

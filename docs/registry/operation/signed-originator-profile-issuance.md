@@ -31,7 +31,7 @@ profile-registry cert:issue \
   --holder example.com
 ```
 
-Prisma Studio で発行者の組織のレコード行を横スクロールすると、issuedOps カラムがあり、ops レコードが 1 件増えていることが確認できます。
+Prisma Studio で accounts テーブルの発行者の組織のレコード行を横スクロールすると、issuedOps カラムがあり、ops レコードが 1 件増えていることが確認できます。
 
 ops レコードをクリックして ops レコードの詳細を閲覧することもできます。
 

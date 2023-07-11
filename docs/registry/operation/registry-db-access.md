@@ -21,12 +21,12 @@ Heroku Postgres を使用している場合は、PostgreSQL 接続 URL を [Hero
 
 ### DB の内容の参照
 
-Prisma Studio を使用して DB の内容を参照することができます。
+以下のコマンドを実行すると、Prisma Studio を使用して DB の内容を参照することができます。
 
 ```sh
 profile-registry db:prisma studio --schema=../../packages/registry-db/prisma/schema.prisma
 ```
 
-Prisma Studio が起動します。現在レジストリ側に登録されている OP / DP 情報が閲覧できます。
+レジストリに登録されている ops テーブルのレコードや、 dps テーブルのレコードなどが閲覧できます。
 
 <img width="1552" alt="Prisma Studioの画面が起動した" src="https://user-images.githubusercontent.com/281424/193489958-76ffdb86-3e58-4442-a230-740402c5fcad.png" />

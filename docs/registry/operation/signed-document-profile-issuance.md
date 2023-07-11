@@ -39,9 +39,9 @@ sidebar_position: 8
 
 「読売新聞社」は、株式会社読売新聞東京本社の登録商標です。
 
-組織 id が仮に `example.com` であることを前提に、実際の Web ページに対して Signed Document Profile を発行する例を見てみましょう。
+## 発行
 
---input は先程作成した`website.json`ファイル名です。
+組織 id が `example.com` 、JSON ファイル名が `website.json` である場合、以下のコマンドにより Signed Document Profile を発行することができます。
 
 CLI のオプションについては、[apps/registry/README.md](https://github.com/webdino/profile/tree/main/apps/registry) を参照してください。
 
@@ -53,7 +53,7 @@ profile-registry publisher:website \
   -o create
 ```
 
-発行された Signed Document Profile は、Prisma Studio で確認できます。Prisma Studio を起動し、組織のレコードを横スクロールすると `issuedDps` が見えてきますが、そこに `1 dps`を表示されることが確認できます。
+発行された Signed Document Profile は、Prisma Studio で確認できます。Prisma Studio を起動し、accounts テーブルの自身の組織のレコード行を横スクロールすると issuedDps カラムがあり、dps レコードが 1 件増えていることが確認できます。
 
 <img alt="Signed Document Profile が作成された" width="1082" alt="image" src="https://user-images.githubusercontent.com/281424/193495340-acc186d4-139b-407c-bc0a-be7e6b5496cd.png" />
 
