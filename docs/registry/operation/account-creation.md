@@ -6,13 +6,13 @@ sidebar_position: 4
 
 本ページでは Originator Profile レジストリ管理者が組織より提出を受けた組織情報をもとに、会員を作成する方法について説明します。
 
-組織情報が `account.json` というファイルである場合、以下のコマンドで会員の作成を行います。
-
 :::note
 
 事前に[レジストリ DB 参照](./registry-db-access.md)ができることを確認してください。
 
 :::
+
+組織情報が `account.json` というファイルである場合、以下のコマンドで会員の作成を行います。
 
 ```console
 profile-registry account -i account.json -o create

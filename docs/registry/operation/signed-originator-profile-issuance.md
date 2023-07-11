@@ -6,6 +6,12 @@ sidebar_position: 7
 
 本ページでは Originator Profile レジストリ管理者が [Signed Originator Profile（SOP）](/spec/#signed-originator-profile)を発行して、自身あるいは他組織の身元を表明し検証可能にする方法について説明します。
 
+:::note
+
+事前に[レジストリ DB 参照](./registry-db-access.md)ができることを確認してください。
+
+:::
+
 ここで必要な情報は以下の 3 点です。
 
 - `--holder` に指定する Signed Originator Profile の所有者となる組織の id
@@ -17,12 +23,6 @@ sidebar_position: 7
 例えば、所有者となる組織のドメイン名が `example.com`、発行者となる組織のドメイン名が `oprexpt.originator-profile.org` である場合、`--holder example.com --certifier oprexpt.originator-profile.org` となります。
 
 さらに先程取得した発行者のプライベート鍵のファイルパスも必要となります。例えばプライベート鍵のファイル名が `certifier-key.pem` である場合、`--identity certifier-key.pem` となります。
-
-:::note
-
-事前に[レジストリ DB 参照](./registry-db-access.md)ができることを確認してください。
-
-:::
 
 この情報をもとに、以下のコマンドを実行します。
 
