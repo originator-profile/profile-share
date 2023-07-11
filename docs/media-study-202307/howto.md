@@ -212,7 +212,7 @@ $ cat key.pem.pub.json | jq
 curl -X POST https://dprexpt.originator-profile.org/admin/publisher/8fe1b860-558c-5107-a9af-21c376a6a27c/dp/ \
     -u 8fe1b860-558c-5107-a9af-21c376a6a27c:eqjyPR--HaS0mMj0wiDP1HA7yT1WGgYpHcUjDia3py8 \
     -H 'Content-Type: application/json' \
-    -d '{"jwt":"eyJhbGciOiJFUzI1NiIsImtpZCI6IkQ1RDVQM1VyVjFWXzZVX3E5eUt2X2paX3E4U2hJdnJ4eTdFMlF5T2ZXWUUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJtZWRpYS5leGFtcGxlLmNvbSIsInN1YiI6IjAwZjQ3MGViLWVhZmQtNGEzOC04NTRjLWZiYjY5NjhhMTU5ZSIsImlhdCI6MTY4NzgyNzQ1OCwiZXhwIjoxNzE5NDQ5ODU4LCJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwOi8vbWVkaWEuZXhhbXBsZS5jb20vMjAyMy8wNi9oZWxsby8ifV19fQ.BIYtuie4ZQKANLXlpWmhu_UzxLX9bKkDAGcTULWP6vjPDFNunAjD6PANVso7US54opAa7NbrSR-y_8TSOzLsbw"}'
+    -d '{"jwt":"eyJhbGciOiJFUzI1NiIsImtpZCI6IkQ1RDVQM1VyVjFWXzZVX3E5eUt2X2paX3E4U2hJdnJ4eTdFMlF5T2ZXWUUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJtZWRpYS5leGFtcGxlLmNvbSIsInN1YiI6IjAwZjQ3MGViLWVhZmQtNGEzOC04NTRjLWZiYjY5NjhhMTU5ZSIsImlhdCI6MTY4NzgyNzQ1OCwiZXhwIjoxNzE5NDQ5ODU4LCJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwczovL21lZGlhLmV4YW1wbGUuY29tL2FydGljbGVzL2hlbGxvLXdvcmxkLyIsInRpdGxlIjoi44Oh44OH44Kj44KiICjoqabpqJPnlKgpIn0seyJ0eXBlIjoidGV4dCIsInVybCI6Imh0dHBzOi8vbWVkaWEuZXhhbXBsZS5jb20vYXJ0aWNsZXMvaGVsbG8td29ybGQvIiwibG9jYXRpb24iOiIud3AtYmxvY2stcG9zdC1jb250ZW50IiwicHJvb2YiOnsiandzIjoiZXlKaGJHY2lPaUpGVXpJMU5pSXNJbXRwWkNJNklrUTFSRFZRTTFWeVZqRldYelpWWDNFNWVVdDJYMnBhWDNFNFUyaEpkbko0ZVRkRk1sRjVUMlpYV1VVaUxDSmlOalFpT21aaGJITmxMQ0pqY21sMElqcGJJbUkyTkNKZGZRLi5vc1d3SkVPLVRZNDhZQldRMEhRYVE0cGZOWm9UZEtWZ3U1YlBfbVVFbW1GNHowMGxhelZkcjFlTF93dUxBTXo3ZjItd084UVp2OGtXUElUcTVDLW80ZyJ9fV19fQ.ZXRG71IWfgt7MNoqt_sXSLOl7wkqqHsDXJL85UlUd-w0GxXOrFHziv11KXwBp5Wd8zoCZ5euGpn0t4zPxyPKSQ"}'
 ```
 
 上記の例は、 curl コマンドで DP レジストリ (`dprexpt.originator-profile.org`) の DP 登録エンドポイントへ POST リクエストを送っています。
@@ -225,7 +225,7 @@ CIP から受け取った認証情報が `8fe1b860-558c-5107-a9af-21c376a6a27c:e
 
 ```jsonc
 {
-  "jwt": "eyJhbGciOiJFUzI1NiIsImtpZCI6IkQ1RDVQM1VyVjFWXzZVX3E5eUt2X2paX3E4U2hJdnJ4eTdFMlF5T2ZXWUUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJtZWRpYS5leGFtcGxlLmNvbSIsInN1YiI6IjAwZjQ3MGViLWVhZmQtNGEzOC04NTRjLWZiYjY5NjhhMTU5ZSIsImlhdCI6MTY4NzgyNzQ1OCwiZXhwIjoxNzE5NDQ5ODU4LCJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwOi8vbWVkaWEuZXhhbXBsZS5jb20vMjAyMy8wNi9oZWxsby8ifV19fQ.BIYtuie4ZQKANLXlpWmhu_UzxLX9bKkDAGcTULWP6vjPDFNunAjD6PANVso7US54opAa7NbrSR-y_8TSOzLsbw"
+  "jwt": "eyJhbGciOiJFUzI1NiIsImtpZCI6IkQ1RDVQM1VyVjFWXzZVX3E5eUt2X2paX3E4U2hJdnJ4eTdFMlF5T2ZXWUUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJtZWRpYS5leGFtcGxlLmNvbSIsInN1YiI6IjAwZjQ3MGViLWVhZmQtNGEzOC04NTRjLWZiYjY5NjhhMTU5ZSIsImlhdCI6MTY4NzgyNzQ1OCwiZXhwIjoxNzE5NDQ5ODU4LCJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwczovL21lZGlhLmV4YW1wbGUuY29tL2FydGljbGVzL2hlbGxvLXdvcmxkLyIsInRpdGxlIjoi44Oh44OH44Kj44KiICjoqabpqJPnlKgpIn0seyJ0eXBlIjoidGV4dCIsInVybCI6Imh0dHBzOi8vbWVkaWEuZXhhbXBsZS5jb20vYXJ0aWNsZXMvaGVsbG8td29ybGQvIiwibG9jYXRpb24iOiIud3AtYmxvY2stcG9zdC1jb250ZW50IiwicHJvb2YiOnsiandzIjoiZXlKaGJHY2lPaUpGVXpJMU5pSXNJbXRwWkNJNklrUTFSRFZRTTFWeVZqRldYelpWWDNFNWVVdDJYMnBhWDNFNFUyaEpkbko0ZVRkRk1sRjVUMlpYV1VVaUxDSmlOalFpT21aaGJITmxMQ0pqY21sMElqcGJJbUkyTkNKZGZRLi5vc1d3SkVPLVRZNDhZQldRMEhRYVE0cGZOWm9UZEtWZ3U1YlBfbVVFbW1GNHowMGxhelZkcjFlTF93dUxBTXo3ZjItd084UVp2OGtXUElUcTVDLW80ZyJ9fV19fQ.ZXRG71IWfgt7MNoqt_sXSLOl7wkqqHsDXJL85UlUd-w0GxXOrFHziv11KXwBp5Wd8zoCZ5euGpn0t4zPxyPKSQ"
 }
 ```
 
@@ -235,8 +235,8 @@ CIP から受け取った認証情報が `8fe1b860-558c-5107-a9af-21c376a6a27c:e
 
 ```json
 {
-  "id": "403cc6d4-53d6-4286-9f42-930e0bf7bd3f",
-  "url": "https://media.example.com/2023/06/hello/",
+  "id": "00f470eb-eafd-4a38-854c-fbb6968a159e",
+  "url": "https://media.example.com/articles/hello-world",
   "accountId": "8fe1b860-558c-5107-a9af-21c376a6a27c",
   "title": null,
   "image": null,
@@ -245,19 +245,19 @@ CIP から受け取った認証情報が `8fe1b860-558c-5107-a9af-21c376a6a27c:e
   "editor": null,
   "datePublished": null,
   "dateModified": null,
-  "location": null,
+  "location": ".wp-block-post-content",
   "bodyFormatValue": "text",
-  "proofJws": "",
+  "proofJws": "eyJhbGciOiJFUzI1NiIsImtpZCI6IkQ1RDVQM1VyVjFWXzZVX3E5eUt2X2paX3E4U2hJdnJ4eTdFMlF5T2ZXWUUiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..osWwJEO-TY48YBWQ0HQaQ4pfNZoTdKVgu5bP_mUEmmF4z00lazVdr1eL_wuLAMz7f2-wO8QZv8kWPITq5C-o4g",
   "categories": []
 }
 ```
 
 レスポンスの中の一部の値は、 `jwt` パラメータの中のクレームになっています。
-`id` パラメータは `jwt` のペイロードの `sub` クレームの値に、 `url` パラメータは `item` クレームの中の値から取られています。この `url` の値は Profile Set を取得するもう一方のエンドポイントで使用します。
+`id` は `jwt` のペイロードの `sub` クレームの値に、 `url`, `location`, `proofJws` は `item` クレームの中の値から取られています。この `url` の値は Profile Set を取得するもう一方のエンドポイントで使用します。
 
-`accountId` はエンドポイントの URL に入れたアカウントIDの値です。
+`accountId` はエンドポイントの URL 内のアカウントIDの値です。
 
-`id`, `url`, `accountId` 以外のフィールドは無視して構いません。今回の実験では使用しない部分です。
+これ以外のフィールドは無視して構いません。今回の実験では使用しない部分です。
 
 SDP の登録が出来たら、ページからその SDP を参照させましょう。これは、次に説明するエンドポイントの URL を、記事ページの HTML 内に <link\> 要素で指定することで実現します。
 
@@ -309,11 +309,18 @@ API の詳細については、 [CIP 提供 DP レジストリについて](#cip
 
 このファイルには指定された記事の URL に対して登録した SDP およびその SDP の発行元組織の SOP (後述の操作で登録) が含まれます。ブラウザではそれらの署名を検証し、閲覧中の URL と一致することを確認の上で画面に表示します。
 
+<details>
+<summary> /admin/publisher/アカウントID/ エンドポイント（非推奨）について</summary>
+
 #### `/admin/publisher/{アカウントID}/` エンドポイント
 
-<details>
-<summary>このエンドポイントは非推奨になっています。代わりに `/admin/publisher/アカウントID/dp/` エンドポイントを使用してください。</summary>
 コンテンツに対する署名付き DP (SDP) を DP レジストリに登録するためのエンドポイントです。必要なパラメータをリクエストのボディー部に付与して POST メソッドを送ることで、登録ができます。
+
+:::warning
+
+このエンドポイントは非推奨になっています。代わりに [`/admin/publisher/アカウントID/dp/` エンドポイント](http://localhost:3000/media-study-202307/howto/#adminpublisher%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88iddp-%E3%82%A8%E3%83%B3%E3%83%89%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88)を使用してください。
+
+:::
 
 このエンドポイントは、呼び出しに Basic 認証による認証が必要です。必要な認証情報は CIP から受け取ってください。受け取った認証情報は、Basic 認証及び、このエンドポイントの URL の中の `{アカウントID}` で使用します。
 
@@ -709,16 +716,7 @@ DP レジストリが提供する API のうち、次の 2 つのエンドポイ
 $ curl -X POST https://dprexpt.originator-profile.org/admin/publisher/8fe1b860-558c-5107-a9af-21c376a6a27c/ \
     -u 8fe1b860-558c-5107-a9af-21c376a6a27c:eqjyPR--HaS0mMj0wiDP1HA7yT1WGgYpHcUjDia3py8 \
     -H 'Content-Type: application/json' \
-    -d '{"input":{"id":"41632705-9600-49df-b80d-a357d474f37e","url":"https://media.example.com/2023/06/hello/","bodyFormat":{"connect":{"value":"text"}},"proofJws":""},"jwt":"eyJhbGciOiJFUzI1NiIsImtpZCI6IkQ1RDVQM1VyVjFWXzZVX3E5eUt2X2paX3E4U2hJdnJ4eTdFMlF5T2ZXWUUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJtZWRpYS5leGFtcGxlLmNvbSIsInN1YiI6IjQxNjMyNzA1LTk2MDAtNDlkZi1iODBkLWEzNTdkNDc0ZjM3ZSIsImlhdCI6MTY4NzgyNzQ1OCwiZXhwIjoxNzE5NDQ5ODU4LCJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwczovL21lZGlhLmV4YW1wbGUuY29tLzIwMjMvMDYvaGVsbG8vIiwidGl0bGUiOiLjg6Hjg4fjgqPjgqIgKOippumok-eUqCkifV19fQ.fHwD1V6tGG2VpRx_i93Wq14yH7JRzhIRijt1DXYBRQaHEoPstQfEQLA92cR5wq1n58tuH3bHv3D9nwoEaghUVQ"}'
-```
-
-更新 (curl)
-
-```
-$ curl -X PUT https://dprexpt.originator-profile.org/admin/publisher/8fe1b860-558c-5107-a9af-21c376a6a27c/ \
-    -u 8fe1b860-558c-5107-a9af-21c376a6a27c:eqjyPR--HaS0mMj0wiDP1HA7yT1WGgYpHcUjDia3py8  \
-    -H 'Content-Type: application/json' \
-    -d '{"input":{"id":"41632705-9600-49df-b80d-a357d474f37e","url":"https://media.example.com/2023/06/hello/","bodyFormat":{"connect":{"value":"text"}},"proofJws":""},"jwt":"eyJhbGciOiJFUzI1NiIsImtpZCI6IkQ1RDVQM1VyVjFWXzZVX3E5eUt2X2paX3E4U2hJdnJ4eTdFMlF5T2ZXWUUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJtZWRpYS5leGFtcGxlLmNvbSIsInN1YiI6IjQxNjMyNzA1LTk2MDAtNDlkZi1iODBkLWEzNTdkNDc0ZjM3ZSIsImlhdCI6MTY4NzgyNzQ1OCwiZXhwIjoxNzE5NDQ5ODU4LCJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwczovL21lZGlhLmV4YW1wbGUuY29tLzIwMjMvMDYvaGVsbG8vIiwidGl0bGUiOiLjg6Hjg4fjgqPjgqIgKOippumok-eUqCkifV19fQ.fHwD1V6tGG2VpRx_i93Wq14yH7JRzhIRijt1DXYBRQaHEoPstQfEQLA92cR5wq1n58tuH3bHv3D9nwoEaghUVQ"}'
+    -d '{"jwt":"eyJhbGciOiJFUzI1NiIsImtpZCI6IkQ1RDVQM1VyVjFWXzZVX3E5eUt2X2paX3E4U2hJdnJ4eTdFMlF5T2ZXWUUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJtZWRpYS5leGFtcGxlLmNvbSIsInN1YiI6IjAwZjQ3MGViLWVhZmQtNGEzOC04NTRjLWZiYjY5NjhhMTU5ZSIsImlhdCI6MTY4NzgyNzQ1OCwiZXhwIjoxNzE5NDQ5ODU4LCJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwczovL21lZGlhLmV4YW1wbGUuY29tL2FydGljbGVzL2hlbGxvLXdvcmxkLyIsInRpdGxlIjoi44Oh44OH44Kj44KiICjoqabpqJPnlKgpIn0seyJ0eXBlIjoidGV4dCIsInVybCI6Imh0dHBzOi8vbWVkaWEuZXhhbXBsZS5jb20vYXJ0aWNsZXMvaGVsbG8td29ybGQvIiwibG9jYXRpb24iOiIud3AtYmxvY2stcG9zdC1jb250ZW50IiwicHJvb2YiOnsiandzIjoiZXlKaGJHY2lPaUpGVXpJMU5pSXNJbXRwWkNJNklrUTFSRFZRTTFWeVZqRldYelpWWDNFNWVVdDJYMnBhWDNFNFUyaEpkbko0ZVRkRk1sRjVUMlpYV1VVaUxDSmlOalFpT21aaGJITmxMQ0pqY21sMElqcGJJbUkyTkNKZGZRLi5vc1d3SkVPLVRZNDhZQldRMEhRYVE0cGZOWm9UZEtWZ3U1YlBfbVVFbW1GNHowMGxhelZkcjFlTF93dUxBTXo3ZjItd084UVp2OGtXUElUcTVDLW80ZyJ9fV19fQ.ZXRG71IWfgt7MNoqt_sXSLOl7wkqqHsDXJL85UlUd-w0GxXOrFHziv11KXwBp5Wd8zoCZ5euGpn0t4zPxyPKSQ"}'
 ```
 
 #### レスポンスの例（`/admin/publisher/{アカウントID}/dp/` エンドポイント）
@@ -739,9 +737,9 @@ DP の登録に成功した場合、次のようなレスポンスが返って�
   "editor": null,
   "datePublished": null,
   "dateModified": null,
-  "location": null,
+  "location": ".wp-block-post-content",
   "bodyFormatValue": "text",
-  "proofJws": "",
+  "proofJws": "eyJhbGciOiJFUzI1NiIsImtpZCI6IkQ1RDVQM1VyVjFWXzZVX3E5eUt2X2paX3E4U2hJdnJ4eTdFMlF5T2ZXWUUiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..osWwJEO-TY48YBWQ0HQaQ4pfNZoTdKVgu5bP_mUEmmF4z00lazVdr1eL_wuLAMz7f2-wO8QZv8kWPITq5C-o4g",
   "categories": []
 }
 ```
