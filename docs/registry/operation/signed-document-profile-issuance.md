@@ -4,18 +4,24 @@ sidebar_position: 8
 
 # Signed Document Profile 発行
 
-あらかじめ会員登録、公開鍵の登録、Signed Originator Profile 発行を行っておく必要があります。
-ここで用意するものは Web ページの情報です。
+本ページでは[Signed Document Profile（SDP）](/spec/#signed-document-profile)を発行して自身の組織の出版物を表明する方法を説明します。
+
+あらかじめ次の作業を完了している必要があります。
+
+- [組織情報の提出](./org-info-submission.md)
+- OP レジストリ管理者による[会員の作成](./account-creation.md)
+- [公開鍵の登録](./public-key-registration.md)
+- OP レジストリ管理者による[Signed Originator Profile 発行](./signed-originator-profile-issuance.md)
+
+表明可能な出版物は、現状単一の Web ページのみ対応しています。単一の Web ページの Web ページの情報は JSON ファイルに記載します。
 
 ## website.json の例
 
-先ほど `account.json` ファイルを作成した手順と似ています。以下のサンプル用の JSON ファイルを複製して `website.json` というファイル名を作成しましょう。
-
-[website.example.json](https://github.com/webdino/profile/blob/main/apps/registry/website.example.json)
+[website.example.json](https://github.com/webdino/profile/blob/main/apps/registry/website.example.json) を参考に作成してください。
 
 ### 読売新聞社の記事登録の例
 
-`website.json` に記述する内容ですが、例えば以下のようになります。 Web ページの内容に沿って書き換えてください。
+読売新聞社の記事である場合、以下のようになるでしょう。
 
 ```json
 {
@@ -33,23 +39,23 @@ sidebar_position: 8
 
 「読売新聞社」は、株式会社読売新聞東京本社の登録商標です。
 
-組織 id が仮に `daab5a08-d513-400d-aaaa-e1c1493e0421` であることを前提に、実際の Web ページに対して Signed Document Profile を発行する例を見てみましょう。
+組織 id が仮に `example.com` であることを前提に、実際の Web ページに対して Signed Document Profile を発行する例を見てみましょう。
 
 --input は先程作成した`website.json`ファイル名です。
+
+CLI のオプションについては、[apps/registry/README.md](https://github.com/webdino/profile/tree/main/apps/registry) を参照してください。
 
 ```console
 profile-registry publisher:website \
   -i holder-key.pem \
-  --id daab5a08-d513-400d-aaaa-e1c1493e0421 \
+  --id example.com \
   --input website.json \
   -o create
 ```
 
+発行された Signed Document Profile は、Prisma Studio で確認できます。Prisma Studio を起動し、組織のレコードを横スクロールすると `issuedDps` が見えてきますが、そこに `1 dps`を表示されることが確認できます。
+
 <img alt="Signed Document Profile が作成された" width="1082" alt="image" src="https://user-images.githubusercontent.com/281424/193495340-acc186d4-139b-407c-bc0a-be7e6b5496cd.png" />
-
-組織の行を横スクロールすると `issuedDps` が見えてきますが、そこに `1 dps`を表示されたら成功です。
-
-オプションについては、[apps/registry/README.md](https://github.com/webdino/profile/tree/main/apps/registry) を参照してください。
 
 ### 情報カテゴリーについて
 
@@ -93,4 +99,4 @@ profile には `ops` と `dps` が混在しているように見えますが、 
 }
 ```
 
-[<link\>](/spec.md#link) 要素の追加方法についてはリンク先を参照してください。
+詳細は [<link\> 要素を使用する外部的な表現の仕様](/spec.md#link)を参照してください。

@@ -4,7 +4,9 @@ sidebar_position: 5
 
 # 鍵ペアの生成
 
-Signed Originator Profile あるいは Signed Document Profile 発行の作業を行うために、鍵ペアを取得する作業が必要になります。 以下のコマンドを実行してください。
+Signed Originator Profile あるいは Signed Document Profile 発行時にデジタル署名を行います。デジタル署名に使用する鍵ペアの生成には、以下のコマンドを実行してください。
+
+CLI のインストールを含む開発環境の構築方法については、[開発ガイド](/development/)を参照してください。
 
 ```console
 profile-registry key-gen -o <keyのファイル名>
@@ -15,4 +17,10 @@ profile-registry key-gen -o <keyのファイル名>
 - `key.pem` （プライベート鍵）
 - `key.pem.pub.json` （公開鍵）
 
-の鍵ペアが取得できます。
+の鍵ペアが生成されます。
+
+:::warning
+プライベート鍵は適切に管理してください。プライベート鍵が漏洩するとあなたの組織を詐称してコンテンツに署名をされる恐れがあります。
+:::
+
+鍵ペアの生成が完了したら、[公開鍵の登録](./public-key-registration.md)を OP レジストリ管理者に依頼します。

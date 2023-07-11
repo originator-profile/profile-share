@@ -4,10 +4,9 @@ sidebar_position: 3
 
 # 組織情報の提出
 
-組織情報は JSON ファイルに記載します。 以下の JSON ファイルを確認した上で `account.json` というファイル名に複製し、内容を組織情報に入れ直してください。
-保存する場所は`account.example.json`と同階層の位置でよいでしょう。必要に応じて `.gitignore` ファイルに指定してください。
+組織情報は JSON ファイルに記載します。[account.example.json](https://github.com/webdino/profile/blob/main/apps/registry/account.example.json) を参考に組織情報を入力してください。
 
-[account.example.json](https://github.com/webdino/profile/blob/main/apps/registry/account.example.json)
+入力した組織情報を OP レジストリ管理者に提出し、[会員の作成](./account-creation.md)を依頼します。
 
 ## トヨタ登録時の例
 
@@ -50,7 +49,7 @@ sidebar_position: 3
 
 ## JICDAQ 登録時の例
 
-トヨタ自動車株式会社の組織情報を記載する場合、以下のようになるでしょう。
+一般社団法人デジタル広告品質認証機構の組織情報を記載する場合、以下のようになるでしょう。
 
 ```jsonc
 {
