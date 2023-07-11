@@ -9,9 +9,9 @@ sidebar_position: 8
 あらかじめ次の作業を完了している必要があります。
 
 - [組織情報の提出](./org-info-submission.md)
-- OP レジストリ管理者による[会員の作成](./account-creation.md)
+- Originator Profile レジストリ管理者による[会員の作成](./account-creation.md)
 - [公開鍵の登録](./public-key-registration.md)
-- OP レジストリ管理者による [Signed Originator Profile 発行](./signed-originator-profile-issuance.md)
+- Originator Profile レジストリ管理者による [Signed Originator Profile 発行](./signed-originator-profile-issuance.md)
 
 表明可能な出版物は、現状単一の Web ページのみ対応しています。単一の Web ページの Web ページの情報は JSON ファイルに記載します。
 

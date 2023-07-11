@@ -6,7 +6,7 @@ sidebar_position: 3
 
 組織情報は JSON ファイルに記載します。[account.example.json](https://github.com/webdino/profile/blob/main/apps/registry/account.example.json) を参考に組織情報を入力してください。
 
-入力した組織情報を OP レジストリ管理者に提出し、[会員の作成](./account-creation.md)を依頼します。
+入力した組織情報を Originator Profile レジストリ管理者に提出し、[会員の作成](./account-creation.md)を依頼します。
 
 ## トヨタ登録時の例
 

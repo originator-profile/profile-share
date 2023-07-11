@@ -6,13 +6,13 @@ sidebar_position: 1
 
 レジストリの運用にあたり、各関係者が実施する作業について説明します。
 
-以下の図は Originator Profile（OP）レジストリの関係者が作業する対象と依存関係を示しています。
+以下の図は Originator Profile レジストリの関係者が作業する対象と依存関係を示しています。
 
 ![image](https://user-images.githubusercontent.com/281424/198944140-26516b92-3f3b-4b89-92be-e5f56c9bd3f8.png)
 
 ## 企業・組織の担当者
 
-OP レジストリの会員となり、発行される [Signed Originator Profile（SOP）](/spec.md#signed-originator-profile)により自身の組織の身元を表明します。次の作業を実施します。
+Originator Profile レジストリの会員となり、発行される [Signed Originator Profile（SOP）](/spec.md#signed-originator-profile)により自身の組織の身元を表明します。次の作業を実施します。
 
 - [組織情報の提出](./org-info-submission.md)
 - 資格情報の提出
@@ -20,7 +20,7 @@ OP レジストリの会員となり、発行される [Signed Originator Profil
 
 ## 第三者認証機関の担当者
 
-OP レジストリの会員となり、OP により自身あるいは他組織の身元を表明します。次の作業を実施します。
+Originator Profile レジストリの会員となり、Originator Profile により自身あるいは他組織の身元を表明します。次の作業を実施します。
 
 - [組織情報の提出](./org-info-submission.md)
 - [鍵ペアの生成](./key-pair-generation.md)
@@ -40,9 +40,9 @@ OP レジストリの会員となり、OP により自身あるいは他組織�
 
 TBD
 
-## OP レジストリ管理者
+## Originator Profile レジストリ管理者
 
-OP の発行者です。次の作業を実施します。
+Originator Profile の発行者です。次の作業を実施します。
 
 - [レジストリ DB 参照](./registry-db-access.md)
 - [会員の作成](./account-creation.md)
