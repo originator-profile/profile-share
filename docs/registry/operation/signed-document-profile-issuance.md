@@ -66,37 +66,3 @@ profile-registry publisher:website \
 :::note
 カテゴリー名として使用する文字列については上記[IAB Tech Lab Content Category Taxonomy 1.0](https://iabtechlab.com/wp-content/uploads/2023/03/Content-Taxonomy-1.0-1.xlsx)または[category.example.json](https://github.com/webdino/profile/blob/main/apps/registry/category.example.json)を参照してください。Web ページの情報カテゴリーは`profile-registry`コマンドでは削除できないので注意してください。
 :::
-
-## 公開する Web サイトに Profile Set を紐付ける
-
-最後にデプロイ用 Profile Set の作成を行います。
-公開するサイトに配置する際には、トップディレクトリの .well-known に以下のファイルを配置します。
-
-- ps.json
-
-または、HTML 中に Profile Set への <link\> 要素を追加しても構いません。
-
-### ps.json
-
-Prisma Studio の画面上部のタブで、`ops`と`dps`それぞれ画面の中に、`jwt`列があります、その値をコピーして以下に貼り付けてください。
-
-![jwtの値をコピーする](https://user-images.githubusercontent.com/281424/193496060-657ecdc7-23d0-47d8-b8c7-8d7b85136774.jpg)
-
-画面は`ops`を見ていますが `dps` でも同様の作業を行います。
-
-profile には `ops` と `dps` が混在しているように見えますが、 特に`dps`は、一つの組織に対し、複数の Web ページを持つことが考えられるので、配列といていくつも dps の jwt 値を登録していくことになります。
-
-```jsonc
-{
-  "@context": "https://originator-profile.org/context.jsonld",
-  "main": ["https://examples.demosites.pages.dev"],
-  "profile": [
-    // <- 発行した Signed Originator Profile の値 ops - jwt の値
-    "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9...",
-    // <- 発行した Signed Document Profile の値 dps - jwt の値
-    "eaXQbGciOiJFUzI1NiaXQiOlsiY6IkpXVCaX..."
-  ]
-}
-```
-
-詳細は [<link\> 要素を使用する外部的な表現の仕様](/spec.md#link)を参照してください。

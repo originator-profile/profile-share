@@ -12,7 +12,7 @@ sidebar_position: 1
 
 ## 企業・組織の担当者
 
-OP レジストリの会員となり、発行される [Signed Originator Profile（SOP）](/spec/#signed-originator-profile)により自身の組織の身元を表明します。次の作業を実施します。
+OP レジストリの会員となり、発行される [Signed Originator Profile（SOP）](/spec.md#signed-originator-profile)により自身の組織の身元を表明します。次の作業を実施します。
 
 - [組織情報の提出](./org-info-submission.md)
 - 資格情報の提出
@@ -27,13 +27,14 @@ OP レジストリの会員となり、OP により自身あるいは他組織�
 
 ## 記事出版・引用の担当者
 
-[Signed Document Profile（SDP）](/spec/#signed-document-profile)を発行して自身の組織の出版物を表明します。自身の組織の SOP と SDP を利用して [Profile Set](/spec/#profile-set) を配信します。次の作業を実施します。
+[Signed Document Profile（SDP）](/spec.md#signed-document-profile)を発行して自身の組織の出版物を表明します。自身の組織の SOP と SDP を利用して [Profile Set](/spec.md#profile-set) を作成します。次の作業を実施します。
 
 - [Document Profile レジストリ構築](../document-profile-registry-creation.md)
 - [レジストリ DB 参照](./registry-db-access.md)
 - [WordPress 連携](../wordpress-integration.md)
 - [Web サイト連携](../website-integration.md)
 - [Signed Document Profile 発行](./signed-document-profile-issuance.md)
+- [Profile Set 作成](./profile-set-creation.md)
 
 ## 広告主
 
