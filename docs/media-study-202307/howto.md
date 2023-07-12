@@ -557,6 +557,179 @@ Wordpress 連携プラグインは、 *hook* によって、 Wordpress 本体か
 
 <!-- docs/registry/wordpress-integration.md より -->
 
+#### Wordpress 以外のCMS連携を実装する場合
+
+本章では、 CMS 連携のために、署名付き Document Profile (SDP) を生成する手順を説明します。この手順では profile-registry CLI などのツールに頼らずに一から SDP を生成するため、 CMS 連携プラグインなどの実装の際に読まれることを想定しています。
+
+手順の解説の際に、CPI が実装した Wordpress 連携のソースコードの抜粋を適宜引用します。 Wordpress 連携のソースコードは[こちら](https://github.com/webdino/profile/tree/main/packages/wordpress) にあり、本実験参加者の方は[事務局にご連絡いただいた GitHub アカウント](howto.md#github-アカウント) を利用して自由に見ることができます。
+
+SDP 生成の手順は次のようになっています。
+
+1. 記事の情報を収集する
+2. 記事コンテンツに署名をする
+3. それらの情報をまとめて DP を作る
+4. DP に署名をして SDP を作る
+
+DP は URL ごとに必要なため、公開する記事が複数ページに分かれている場合はページ数分作ってください。
+
+生成した SDP は、SDP 登録エンドポイントを使って、 DP レジストリに登録してください。
+
+##### 記事の情報を収集する
+
+記事に関する情報を収集します。記事を閲覧するユーザーは、 Originator Profile 拡張機能を使ってこれらの情報を確認することができます。
+
+次の2つの JSON はそれぞれ SDP のヘッダー部とペイロード部です。
+
+SDP ヘッダー部:
+
+```json
+{
+  "alg": "ES256",
+  "kid": "jJYs5_ILgUc8180L-pBPxBpgA3QC7eZu9wKOkh9mYPU",
+  "typ": "JWT"
+}
+```
+
+SDP ペイロード部:
+
+```json
+{
+  "https://originator-profile.org/dp": {
+    "item": [
+      {
+        "type": "website",
+        "url": "http://localhost:8080",
+        "title": "OP 確認くん",
+        "image": "https://example.com/image.png",
+        "description": "このウェブページの説明です。",
+        "https://schema.org/author": "山田太郎",
+        "category": [],
+        "https://schema.org/editor": "山田花子",
+        "https://schema.org/datePublished": "2023-07-04T19:14:00Z",
+        "https://schema.org/dateModified": "2023-07-04T19:14:00Z"
+      },
+      {
+        "type": "visibleText",
+        "url": "http://localhost:8080",
+        "location": "h1",
+        "proof": {
+          "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImpKWXM1X0lMZ1VjODE4MEwtcEJQeEJwZ0EzUUM3ZVp1OXdLT2toOW1ZUFUiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..iW5cLsuUaABodKMynyCBH95j7WWemNlJ5CCi4iVwH_SlkN6KVV9jB4GJxN2pwG7N8IKsXrZ42TBSiP4LLn-83g"
+        }
+      }
+    ]
+  },
+  "iss": "localhost",
+  "sub": "ff9d78e0-d81a-4e39-b7a0-27e15405edc7",
+  "iat": 1688623395,
+  "exp": 1720245795
+}
+```
+
+各クレームの詳細については仕様をご確認ください。
+
+
+##### 記事コンテンツに署名をする
+
+- [ ] TODO: sign_body にコメントを付与する
+
+上記の例の中の item プロパティの2番目の要素には、 `jws` が含まれていました。
+
+```json
+      {
+        "type": "visibleText",
+        "url": "http://localhost:8080",
+        "location": "h1",
+        "proof": {
+          "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImpKWXM1X0lMZ1VjODE4MEwtcEJQeEJwZ0EzUUM3ZVp1OXdLT2toOW1ZUFUiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..iW5cLsuUaABodKMynyCBH95j7WWemNlJ5CCi4iVwH_SlkN6KVV9jB4GJxN2pwG7N8IKsXrZ42TBSiP4LLn-83g"
+        }
+      }
+```
+
+この `jws` は記事コンテンツに対する署名であり、記事担当者が保持する秘密鍵を使って生成する必要があります。
+
+この署名は [RFC 7797](https://www.rfc-editor.org/rfc/rfc7797) の Unencoded Payload Option を付与した JWS になっており、 JWS ヘッダー部の中の `b64` がそのオプションです。`crit` パラメータも必要となります。
+署名したいデータを base64 エンコードせずにそのまま使えるという特徴があります。
+
+JWS ヘッダー部:
+
+```json
+{
+  "alg": "ES256",
+  "kid": "jJYs5_ILgUc8180L-pBPxBpgA3QC7eZu9wKOkh9mYPU",
+  "b64": false,
+  "crit": [
+    "b64"
+  ]
+}
+```
+CIP 実装の Wordpress プラグインでは、このように実装されています。
+
+```php
+/**
+ * 対象のテキストへの署名 (RFC 7797)
+ *
+ * @param string $body 対象のテキスト
+ * @param string $pkcs8 PEM base64 でエンコードされた PKCS #8 プライベート鍵またはそのファイルパス
+ * @return string|false 成功した場合はDetached Compact JWS、失敗した場合はfalse
+ */
+function sign_body( string $body, string $pkcs8 ): string|false {
+	$pkey = \openssl_pkey_get_private( $pkcs8 );
+	$jwk  = get_jwk( $pkey );
+
+	if ( ! $jwk ) {
+		return false;
+	}
+
+	$header = array(
+		'alg'  => $jwk['alg'],
+		'kid'  => $jwk['kid'],
+		'b64'  => false,
+		'crit' => array( 'b64' ),
+	);
+
+	$protected = base64_urlsafe_encode( \json_encode( $header ) );
+	$data      = "{$protected}.{$body}";
+	$signature = ( new Sha256() )->sign( $data, InMemory::plainText( $pkcs8 ) );
+	$jws       = $protected . '..' . base64_urlsafe_encode( $signature );
+
+	return $jws;
+}
+```
+
+##### それらの情報をまとめて DP を作る
+
+ここまでの手順で、 DP に必要な情報は全て用意できました。これを DP の仕様に従って適切なクレーム・プロパティの中に入れてください。この手順の最初に載せた DP の例に従ってください。より詳しい情報については仕様を参考にしてください。
+
+仕様に準拠していない場合には、情報を入れたにも関わらず、検証に失敗したり、ユーザーに提示されなくなる可能性があります。
+
+##### DP に署名をして SDP を作る
+
+ここまでの手順で DP ができました。最後は DP に署名をして SDP を作ってください。[RFC 7519](https://www.rfc-editor.org/rfc/rfc7519) に従ってください。署名に使うシークレット鍵としてはレジストリに登録した公開鍵に対応するものを使ってください。
+
+```php
+		$builder = (
+				new Builder( new JoseEncoder(), ChainedFormatter::withUnixTimestampDates() )
+			)
+				->withHeader( 'alg', $jwk['alg'] )
+				->withHeader( 'kid', $jwk['kid'] )
+				->issuedBy( $dp['issuer'] )
+				->relatedTo( $dp['subject'] )
+				->issuedAt(
+					( new \DateTimeImmutable() )
+					->setTimestamp( \strtotime( $dp['issuedAt'] ) )
+				)
+				->expiresAt(
+					( new \DateTimeImmutable() )
+					->setTimestamp( \strtotime( $dp['expiredAt'] ) )
+				)
+				->withClaim( 'https://originator-profile.org/dp', array( 'item' => $dp['item'] ) );
+
+		$jwt = $builder->getToken( new Sha256(), InMemory::plainText( $pkcs8 ) );
+
+		return $jwt->toString();
+```
+
+
 #### 他の Web サイト
 
 ```mermaid
