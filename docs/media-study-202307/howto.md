@@ -631,8 +631,6 @@ SDP ペイロード部:
 
 ##### 記事コンテンツに署名をする
 
-- [ ] TODO: sign_body にコメントを付与する
-
 上記の例の中の item プロパティの2番目の要素には、 `jws` が含まれていました。
 
 ```json
@@ -673,6 +671,7 @@ CIP 実装の Wordpress プラグインでは、このように実装されて�
  * @return string|false 成功した場合はDetached Compact JWS、失敗した場合はfalse
  */
 function sign_body( string $body, string $pkcs8 ): string|false {
+	// $pkey はレジストリに登録した公開鍵に対応するシークレット鍵です
 	$pkey = \openssl_pkey_get_private( $pkcs8 );
 	$jwk  = get_jwk( $pkey );
 
@@ -680,6 +679,7 @@ function sign_body( string $body, string $pkcs8 ): string|false {
 		return false;
 	}
 
+  // JWS のヘッダーを生成しています。
 	$header = array(
 		'alg'  => $jwk['alg'],
 		'kid'  => $jwk['kid'],
@@ -688,8 +688,16 @@ function sign_body( string $body, string $pkcs8 ): string|false {
 	);
 
 	$protected = base64_urlsafe_encode( \json_encode( $header ) );
+	/* b64 を false に設定したため、 $body は base64 エンコードをする必要がありません。
+	   つまり、 $body = "あいうえお", $protected = "eyJ...fQ" の場合、 $data は次のようになります。
+
+		 eyJ...fQ.あいうえお
+
+	　　この文字列に対する署名が $signature です。
+	*/
 	$data      = "{$protected}.{$body}";
 	$signature = ( new Sha256() )->sign( $data, InMemory::plainText( $pkcs8 ) );
+	// $body は、jws には含めません。これは、記事ページ上で jws を検証するときに、拡張機能が記事から取得します。
 	$jws       = $protected . '..' . base64_urlsafe_encode( $signature );
 
 	return $jws;
