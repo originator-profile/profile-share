@@ -463,7 +463,7 @@ DP の作成が可能になったら、DP 発行処理を CMS 側に組み込み
 
 このガイドでは、まずCMS連携プラグインの一例として、 CIP が開発した Wordpress 連携プラグインの使い方を紹介します。その後、 Wordpress 以外の CMS に連携プラグインを実装する際の参考として、より一般的な SDP 発行の手順を説明します。
 
-### 全体の流れ (HTML の一部を CSS Selector で選択、署名、SDP 生成、DP レジストリ登録、Link 付与)
+### 例：Wordpress 連携の使い方
 
 CMS 連携の一例として、 CIP が開発した Wordpress 連携プラグインの使い方を紹介します。
 
@@ -505,7 +505,7 @@ cfbff0d1-9375-5685-968c-48ce8b15ae17:GVWoXikZIqzdxzB3CieDHL-FefBT31IfpjdbtAJtBcU
 
 <!-- docs/registry/wordpress-integration.md より -->
 
-### 署名付与の WordPress,それ以外の Web サイトのプロトタイプに関する説明
+### Wordpress以外のCMS連携実装ガイド
 
 ここまでは Wordpress 連携プラグインの使い方の説明をしてきました。この章では、まず Wordpress 連携プラグインの内部的な仕組みを概観し、その後、それを踏まえて Wordpress 以外の CMS連携をどう実装するかの説明をします。
 
@@ -545,7 +545,7 @@ Document Profile レジストリ-->>利用者: Profile Set
 利用者->>利用者: コンテンツ情報の閲覧と検証
 ```
 
-Wordpress 連携プラグインは、 _hook_ によって、 Wordpress 本体からトリガーされ、そのフックに対応した処理を実行します。
+Wordpress 連携プラグインは、 [hook](https://developer.wordpress.org/plugins/hooks/) によって、 Wordpress 本体からトリガーされ、そのフックに対応した処理を実行します。
 
 1. `activate_plugin` hook が、プラグインを最初に有効化した際に呼ばれ、公開鍵ペアを生成して、シークレット鍵を Wordpress のサーバー内に保存します。
 2. 次に、`transition_post_status` hook が記事の状態遷移に応じてトリガーされるため、記事が公開（どのタイミングか要調査）されたタイミングで、 SDP を発行します
