@@ -754,8 +754,22 @@ function sign_body( string $body, string $pkcs8 ): string|false {
 
 ##### SDP の登録
 
+生成した SDP を DP レジストリに登録します。これには　DP レジストリ (`dprexpt.originator-profile.org`) の [SDP登録用のエンドポイント](howto.md#adminpublisherアカウントiddp-エンドポイント) を利用します。
+
 ##### Profile Set の配信
 
+SDP をレジストリに登録したら、最後に、記事から SDP を含む Profile Set を取得できるようにします。
+これには[Profile Set 取得エンドポイント](/howto.md#websiteprofiles-エンドポイント) を利用してください。
+
+結果的に次のような <link\> 要素が記事の HTML の <head\> 要素内に追記されれば、完了となります。
+
+```html
+<link
+  href="https://dprexpt.originator-profile.org/website/profiles?url=<記事のURL (RFC 3986 でエンコード) >"
+  rel="alternate"
+  type="application/ld+json"
+/>
+```
 
 #### 他の Web サイト
 
