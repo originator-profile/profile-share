@@ -10,3 +10,4 @@ sidebar_position: 0
 - [プロトタイプ実装の確認と CMS の対応方法](howto.md)
 - [リンクと用語集](appendix.md)
 - [よくある質問](faq.md)
+- [資格情報の取り扱い](credential.md)

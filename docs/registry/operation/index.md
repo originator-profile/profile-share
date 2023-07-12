@@ -15,7 +15,7 @@ sidebar_position: 1
 Originator Profile レジストリの会員となり、発行される [Signed Originator Profile（SOP）](/spec.md#signed-originator-profile)により自身の組織の身元を表明します。次の作業を実施します。
 
 - [組織情報の提出](./org-info-submission.md)
-- 資格情報の提出
+- [資格情報の提出](./credential-submission.md)
 - [鍵ペアの生成](./key-pair-generation.md)
 
 ## 第三者認証機関の担当者
@@ -39,6 +39,7 @@ Originator Profile の発行者です。次の作業を実施します。
 
 - [レジストリ DB 参照](./registry-db-access.md)
 - [会員の作成](./account-creation.md)
+- [資格情報の登録](./credential-registration.md)
 - [鍵ペアの生成](./key-pair-generation.md)
 - [レジストリへの公開鍵の登録](./public-key-registration.md)
 - [Signed Originator Profile 発行](./signed-originator-profile-issuance.md)
