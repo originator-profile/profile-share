@@ -547,19 +547,22 @@ Document Profile レジストリ-->>利用者: Profile Set
 
 Wordpress 連携プラグインは、 *hook* によって、 Wordpress 本体からトリガーされ、そのフックに対応した処理を実行します。
 
-この場合 `activate_plugin` hook が、プラグインを最初に有効化した際に呼ばれ、公開鍵ペアを生成して、シークレット鍵を Wordpress のサーバー内に保存します。
 
-次に、`transition_post_status` hook が記事の状態遷移に応じてトリガーされるため、記事が公開（どのタイミングか要調査）されたタイミングで、 SDP を発行し、 DP レジストリに登録します。
+1. `activate_plugin` hook が、プラグインを最初に有効化した際に呼ばれ、公開鍵ペアを生成して、シークレット鍵を Wordpress のサーバー内に保存します。
+2. 次に、`transition_post_status` hook が記事の状態遷移に応じてトリガーされるため、記事が公開（どのタイミングか要調査）されたタイミングで、 SDP を発行します
+3. (2) で生成した SDP を DP レジストリに登録します。これは (2) の直後におこなれます。
+4. 最後に `wp_head` hook が、ユーザーが記事に訪れて記事を閲覧した際にトリガーされ、これにより、記事の HTML に Profile Set へのリンクが <link\> 要素として追加されます。
+5. ユーザーが、OP拡張機能をクリックすると、拡張機能はこの <link\> 要素から、記事に対応する Profile Set を取得・検証し、記事の信頼性や情報を表示します。
 
-最後に `wp_head` hook が、ユーザーが記事に訪れて記事を閲覧した際にトリガーされ、これにより、記事の HTML に Profile Set へのリンクが <link\> 要素として追加されます。
-
-ユーザーが、OP拡張機能をクリックすると、拡張機能はこの <link\> 要素から、記事に対応する Profile Set を取得・検証し、記事の信頼性や情報を表示します。
+以降の説明では、 (2), (3), (4) を実装する際のガイドを提供します。それぞれ、 SDP の発行、 SDP の登録、 Profile Set の配信に対応します。
 
 <!-- docs/registry/wordpress-integration.md より -->
 
 #### Wordpress 以外のCMS連携を実装する場合
 
-本章では、 CMS 連携のために、署名付き Document Profile (SDP) を生成する手順を説明します。この手順では profile-registry CLI などのツールに頼らずに一から SDP を生成するため、 CMS 連携プラグインなどの実装の際に読まれることを想定しています。
+##### SDP の発行
+
+この節では、署名付き Document Profile (SDP) を生成する手順を説明します。この手順では profile-registry CLI などのツールに頼らずに一から SDP を生成します。
 
 手順の解説の際に、CPI が実装した Wordpress 連携のソースコードの抜粋を適宜引用します。 Wordpress 連携のソースコードは[こちら](https://github.com/webdino/profile/tree/main/packages/wordpress) にあり、本実験参加者の方は[事務局にご連絡いただいた GitHub アカウント](howto.md#github-アカウント) を利用して自由に見ることができます。
 
