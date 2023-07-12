@@ -547,7 +547,7 @@ Document Profile レジストリ-->>利用者: Profile Set
 
 Wordpress 連携プラグインは、 [hook](https://developer.wordpress.org/plugins/hooks/) によって、 Wordpress 本体からトリガーされ、そのフックに対応した処理を実行します。
 
-1. `activate_plugin` hook が、プラグインを最初に有効化した際にトリガーされ、公開鍵ペアを生成して、シークレット鍵を Wordpress のサーバー内に保存します。
+1. `activate_plugin` hook が、プラグインを最初に有効化した際にトリガーされ、公開鍵ペアを生成して、プライベート鍵を Wordpress のサーバー内に保存します。
 2. 次に、`transition_post_status` hook が記事の公開や更新のタイミングでトリガーされ、このときに SDP を発行します。
 3. (2) で生成した SDP を DP レジストリに登録します。これは (2) の直後におこなれます。
 4. 最後に `wp_head` hook が、ユーザーが記事に訪れて記事を閲覧した際にトリガーされ、これにより、記事の HTML に Profile Set へのリンクが <link\> 要素として追加されます。
@@ -656,7 +656,7 @@ SDP ペイロード部:
 
 ##### 記事コンテンツに署名をする
 
-次に選んだコンテンツに署名をします。署名に使うシークレット鍵としてはレジストリに登録した公開鍵に対応するものを使ってください。
+次に選んだコンテンツに署名をします。署名に使うプライベート鍵としてはレジストリに登録した公開鍵に対応するものを使ってください。
 
 この署名は [RFC 7797](https://www.rfc-editor.org/rfc/rfc7797) の Unencoded Payload Option を付与した JWS になっており、 JWS ヘッダー部の中の `b64` がそのオプションです。`crit` パラメータも必要となります。
 署名したいデータを base64 エンコードせずにそのまま使えるという特徴があります。
@@ -683,7 +683,7 @@ CIP 実装の Wordpress プラグインでは、このように実装されて�
  * @return string|false 成功した場合はDetached Compact JWS、失敗した場合はfalse
  */
 function sign_body( string $body, string $pkcs8 ): string|false {
-	// $pkey はレジストリに登録した公開鍵に対応するシークレット鍵です
+	// $pkey はレジストリに登録した公開鍵に対応するプライベート鍵です
 	$pkey = \openssl_pkey_get_private( $pkcs8 );
 	$jwk  = get_jwk( $pkey );
 
@@ -724,7 +724,7 @@ function sign_body( string $body, string $pkcs8 ): string|false {
 
 ##### DP に署名をして SDP を作る
 
-最後に DP に署名をして SDP を作ってください。一般的な JWT の仕様である [RFC 7519](https://www.rfc-editor.org/rfc/rfc7519) の Compact Serialization に従ってください。署名に使うシークレット鍵としてはレジストリに登録した公開鍵に対応するものを使ってください。
+最後に DP に署名をして SDP を作ってください。一般的な JWT の仕様である [RFC 7519](https://www.rfc-editor.org/rfc/rfc7519) の Compact Serialization に従ってください。署名に使うプライベート鍵としてはレジストリに登録した公開鍵に対応するものを使ってください。
 
 CIP の Wordpress 連携では次のように実装されています。
 
