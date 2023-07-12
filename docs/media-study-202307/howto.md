@@ -553,11 +553,11 @@ Wordpress 連携プラグインは、 [hook](https://developer.wordpress.org/plu
 4. 最後に `wp_head` hook が、ユーザーが記事に訪れて記事を閲覧した際にトリガーされ、これにより、記事の HTML に Profile Set へのリンクが <link\> 要素として追加されます。
 5. ユーザーが、OP拡張機能をクリックすると、拡張機能はこの <link\> 要素から、記事に対応する Profile Set を取得・検証し、記事の信頼性や情報を表示します。
 
-以降の説明では、 (2), (3), (4) を実装する際のガイドを提供します。それぞれ、 SDP の発行、 SDP の登録、 Profile Set の配信に対応します。
+以降の説明では、 (2), (3), (4) を実装する際のガイドを提供します。それぞれ、 SDP の生成、 SDP の登録、 Profile Set の配信に対応します。
 
 <!-- docs/registry/wordpress-integration.md より -->
 
-#### SDP の発行
+#### SDP の生成
 
 この節では、署名付き Document Profile (SDP) を生成する手順を説明します。この手順では profile-registry CLI などのツールに頼らずに一から SDP を生成します。
 
@@ -566,13 +566,12 @@ Wordpress 連携プラグインは、 [hook](https://developer.wordpress.org/plu
 SDP 生成の手順は次のようになっています。
 
 1. 記事の情報を収集する
-2. 記事コンテンツに署名をする
-3. それらの情報をまとめて DP を作る
-4. DP に署名をして SDP を作る
+2. 署名する記事コンテンツを選択する
+3. 記事コンテンツに署名をする
+4. それらの情報をまとめて DP を作る
+5. DP に署名をして SDP を作る
 
 DP は URL ごとに必要なため、公開する記事が複数ページに分かれている場合はページ数分作ってください。
-
-生成した SDP は、SDP 登録エンドポイントを使って、 DP レジストリに登録してください。
 
 ##### 記事の情報を収集する
 
@@ -644,12 +643,12 @@ SDP ペイロード部:
 }
 ```
 
-この `jws` は記事コンテンツに対する署名であり、記事担当者が保持する秘密鍵を使って生成する必要があります。記事コンテンツ中の、どの部分に署名するかは、署名をする際に選ぶことができます。これは CSS セレクターで指定する必要があります。 `location` プロパティがその値です。
+この `jws` は記事コンテンツに対する署名であり、記事担当者が保持する秘密鍵を使って生成する必要があります。記事コンテンツ中のどの部分に署名するかは、署名をする際に選ぶことができます。これは CSS セレクターで指定する必要があります。 `location` プロパティがその値です。
 選択したコンテンツは、記事ページ上で拡張機能を起動した際に、SDP の検証が通ればハイライトされます。
 
 TODO: 画像が欲しい
 
-署名対象の記事コンテンツによって3種類のデータ構造が定義されています。これは上記の JSON の中の `type` プロパティで指定します。自身にニーズに合わせて選んでください。
+署名対象の記事コンテンツによって3種類のデータ構造が定義されています。これは上記の JSON の中の `type` プロパティで指定します。自身のニーズに合わせて選んでください。
 
 - [visibleText 型](/spec.md#visibletext-型)
 - [text 型](/spec.md#text-型)
@@ -657,7 +656,7 @@ TODO: 画像が欲しい
 
 ##### 記事コンテンツに署名をする
 
-次に選んだコンテンツに署名をします。
+次に選んだコンテンツに署名をします。署名に使うシークレット鍵としてはレジストリに登録した公開鍵に対応するものを使ってください。
 
 この署名は [RFC 7797](https://www.rfc-editor.org/rfc/rfc7797) の Unencoded Payload Option を付与した JWS になっており、 JWS ヘッダー部の中の `b64` がそのオプションです。`crit` パラメータも必要となります。
 署名したいデータを base64 エンコードせずにそのまま使えるという特徴があります。
@@ -719,13 +718,13 @@ function sign_body( string $body, string $pkcs8 ): string|false {
 
 ##### それらの情報をまとめて DP を作る
 
-ここまでの手順で、 DP に必要な情報は全て用意できました。これを DP の仕様に従って適切なクレーム・プロパティの中に入れてください。この手順の最初に載せた DP の例に従ってください。より詳しい情報については仕様を参考にしてください。
+ここまでの手順で、 DP に必要な情報は全て用意できました。これを DP の仕様に従って適切なクレーム・プロパティの中に入れてください。この手順の最初に載せた DP の例に従ってください。より詳しい情報については[仕様](/spec/)を参考にしてください。
 
 仕様に準拠していない場合には、情報を入れたにも関わらず、検証に失敗したり、ユーザーに提示されなくなる可能性があります。
 
 ##### DP に署名をして SDP を作る
 
-最後に DP に署名をして SDP を作ってください。[RFC 7519](https://www.rfc-editor.org/rfc/rfc7519) に従ってください。署名に使うシークレット鍵としてはレジストリに登録した公開鍵に対応するものを使ってください。
+最後に DP に署名をして SDP を作ってください。一般的な JWT の仕様である [RFC 7519](https://www.rfc-editor.org/rfc/rfc7519) の Compact Serialization に従ってください。署名に使うシークレット鍵としてはレジストリに登録した公開鍵に対応するものを使ってください。
 
 ```php
 		$builder = (
@@ -748,6 +747,12 @@ function sign_body( string $body, string $pkcs8 ): string|false {
 		$jwt = $builder->getToken( new Sha256(), InMemory::plainText( $pkcs8 ) );
 
 		return $jwt->toString();
+```
+
+これにより、次のような JWT が生成されます。
+
+```
+eyJhbGciOiJFUzI1NiIsImtpZCI6ImpKWXM1X0lMZ1VjODE4MEwtcEJQeEJwZ0EzUUM3ZVp1OXdLT2toOW1ZUFUiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJ0aXRsZSI6Ik9QIOeiuuiqjeOBj-OCkyIsImltYWdlIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9pbWFnZS5wbmciLCJkZXNjcmlwdGlvbiI6IuOBk-OBruOCpuOCp-ODluODmuODvOOCuOOBruiqrOaYjuOBp-OBmeOAgiIsImh0dHBzOi8vc2NoZW1hLm9yZy9hdXRob3IiOiLlsbHnlLDlpKrpg44iLCJjYXRlZ29yeSI6W10sImh0dHBzOi8vc2NoZW1hLm9yZy9lZGl0b3IiOiLlsbHnlLDoirHlrZAiLCJodHRwczovL3NjaGVtYS5vcmcvZGF0ZVB1Ymxpc2hlZCI6IjIwMjMtMDctMDRUMTk6MTQ6MDBaIiwiaHR0cHM6Ly9zY2hlbWEub3JnL2RhdGVNb2RpZmllZCI6IjIwMjMtMDctMDRUMTk6MTQ6MDBaIn0seyJ0eXBlIjoidmlzaWJsZVRleHQiLCJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJsb2NhdGlvbiI6ImgxIiwicHJvb2YiOnsiandzIjoiZXlKaGJHY2lPaUpGVXpJMU5pSXNJbXRwWkNJNkltcEtXWE0xWDBsTVoxVmpPREU0TUV3dGNFSlFlRUp3WjBFelVVTTNaVnAxT1hkTFQydG9PVzFaVUZVaUxDSmlOalFpT21aaGJITmxMQ0pqY21sMElqcGJJbUkyTkNKZGZRLi5pVzVjTHN1VWFBQm9kS015bnlDQkg5NWo3V1dlbU5sSjVDQ2k0aVZ3SF9TbGtONktWVjlqQjRHSnhOMnB3RzdOOElLc1hyWjQyVEJTaVA0TExuLTgzZyJ9fV19LCJpc3MiOiJsb2NhbGhvc3QiLCJzdWIiOiJmZjlkNzhlMC1kODFhLTRlMzktYjdhMC0yN2UxNTQwNWVkYzciLCJpYXQiOjE2ODg2MjMzOTUsImV4cCI6MTcyMDI0NTc5NX0.31h0GW7DJK-UOzAVFoG_ukgGjAkg0da62ujeyj4bdr2cFgeQqt-yreS9MLKfw-Kcyfn5Lryqd7uvFP6xAZSGmA
 ```
 
 #### SDP の登録
