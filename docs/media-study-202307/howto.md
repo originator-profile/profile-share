@@ -509,7 +509,7 @@ cfbff0d1-9375-5685-968c-48ce8b15ae17:GVWoXikZIqzdxzB3CieDHL-FefBT31IfpjdbtAJtBcU
 
 ここまでは Wordpress 連携プラグインの使い方の説明をしてきました。この章では、まず Wordpress 連携プラグインの内部的な仕組みを概観し、その後、それを踏まえて Wordpress 以外の CMS連携をどう実装するかの説明をします。
 
-#### WordPress　連携プラグイン
+#### 例: WordPress 連携プラグイン
 
 Wordpress 連携プラグインによる SDP 発行、登録のフローはこのようになっています。
 
@@ -557,9 +557,7 @@ Wordpress 連携プラグインは、 _hook_ によって、 Wordpress 本体か
 
 <!-- docs/registry/wordpress-integration.md より -->
 
-#### Wordpress 以外のCMS連携を実装する場合
-
-##### SDP の発行
+#### SDP の発行
 
 この節では、署名付き Document Profile (SDP) を生成する手順を説明します。この手順では profile-registry CLI などのツールに頼らずに一から SDP を生成します。
 
@@ -627,9 +625,9 @@ SDP ペイロード部:
 }
 ```
 
-各クレームの詳細については仕様をご確認ください。
+各クレームの詳細については[仕様](/spec/)をご確認ください。
 
-#### 署名をする記事コンテンツを選択する
+##### 署名をする記事コンテンツを選択する
 
 次に、署名をする記事コンテンツを選択してください。
 
@@ -752,11 +750,11 @@ function sign_body( string $body, string $pkcs8 ): string|false {
 		return $jwt->toString();
 ```
 
-##### SDP の登録
+#### SDP の登録
 
 生成した SDP を DP レジストリに登録します。これには　DP レジストリ (`dprexpt.originator-profile.org`) の [SDP登録用のエンドポイント](howto.md#adminpublisherアカウントiddp-エンドポイント) を利用します。
 
-##### Profile Set の配信
+#### Profile Set の配信
 
 SDP をレジストリに登録したら、最後に、記事から SDP を含む Profile Set を取得できるようにします。
 これには[Profile Set 取得エンドポイント](/howto.md#websiteprofiles-エンドポイント) を利用してください。
