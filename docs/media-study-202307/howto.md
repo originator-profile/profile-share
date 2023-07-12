@@ -547,8 +547,8 @@ Document Profile レジストリ-->>利用者: Profile Set
 
 Wordpress 連携プラグインは、 [hook](https://developer.wordpress.org/plugins/hooks/) によって、 Wordpress 本体からトリガーされ、そのフックに対応した処理を実行します。
 
-1. `activate_plugin` hook が、プラグインを最初に有効化した際に呼ばれ、公開鍵ペアを生成して、シークレット鍵を Wordpress のサーバー内に保存します。
-2. 次に、`transition_post_status` hook が記事の状態遷移に応じてトリガーされるため、記事が公開（どのタイミングか要調査）されたタイミングで、 SDP を発行します
+1. `activate_plugin` hook が、プラグインを最初に有効化した際にトリガーされ、公開鍵ペアを生成して、シークレット鍵を Wordpress のサーバー内に保存します。
+2. 次に、`transition_post_status` hook が記事の公開や更新のタイミングでトリガーされ、このときに SDP を発行します
 3. (2) で生成した SDP を DP レジストリに登録します。これは (2) の直後におこなれます。
 4. 最後に `wp_head` hook が、ユーザーが記事に訪れて記事を閲覧した際にトリガーされ、これにより、記事の HTML に Profile Set へのリンクが <link\> 要素として追加されます。
 5. ユーザーが、OP拡張機能をクリックすると、拡張機能はこの <link\> 要素から、記事に対応する Profile Set を取得・検証し、記事の信頼性や情報を表示します。
