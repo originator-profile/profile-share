@@ -726,6 +726,8 @@ function sign_body( string $body, string $pkcs8 ): string|false {
 
 最後に DP に署名をして SDP を作ってください。一般的な JWT の仕様である [RFC 7519](https://www.rfc-editor.org/rfc/rfc7519) の Compact Serialization に従ってください。署名に使うシークレット鍵としてはレジストリに登録した公開鍵に対応するものを使ってください。
 
+CIP の Wordpress 連携では次のように実装されています。
+
 ```php
 		$builder = (
 				new Builder( new JoseEncoder(), ChainedFormatter::withUnixTimestampDates() )
