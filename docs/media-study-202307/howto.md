@@ -750,16 +750,6 @@ DP の登録に失敗した場合、以下のようなレスポンスが返っ�
 }
 ```
 
-失敗レスポンス（`jwt` パラメータの [item クレーム](/spec/#dp-クレームの-item-プロパティ) の中にコンテンツへの署名を含む要素がなかった場合）:
-
-```json
-{
-  "statusCode": 400,
-  "error": "Bad Request",
-  "message": "dp doesn't contain item with proof"
-}
-```
-
 失敗レスポンス（`jwt` パラメータが [dp クレーム](/spec#dp-document-profile-クレーム) を含んでいなかった場合）:
 
 ```json
@@ -767,6 +757,16 @@ DP の登録に失敗した場合、以下のようなレスポンスが返っ�
   "statusCode": 400,
   "error": "Bad Request",
   "message": "invalid jwt"
+}
+```
+
+失敗レスポンス（`dp` クレームの [item プロパティ](/spec/#dp-クレームの-item-プロパティ) の中にコンテンツへの署名を含む要素がなかった場合）:
+
+```json
+{
+  "statusCode": 400,
+  "error": "Bad Request",
+  "message": "dp doesn't contain item with proof"
 }
 ```
 
