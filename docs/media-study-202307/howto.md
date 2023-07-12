@@ -507,7 +507,11 @@ cfbff0d1-9375-5685-968c-48ce8b15ae17:GVWoXikZIqzdxzB3CieDHL-FefBT31IfpjdbtAJtBcU
 
 ### 署名付与の WordPress,それ以外の Web サイトのプロトタイプに関する説明
 
-#### WordPress
+ここまでは Wordpress 連携プラグインの使い方の説明をしてきました。この章では、まず Wordpress 連携プラグインの内部的な仕組みを概観し、その後、それを踏まえて Wordpress 以外の CMS連携をどう実装するかの説明をします。
+
+#### WordPress　連携プラグイン
+
+Wordpress 連携プラグインによる SDP 発行、登録のフローはこのようになっています。
 
 ```mermaid
 sequenceDiagram
@@ -540,6 +544,16 @@ Document Profile レジストリ-->>利用者: Profile Set
 
 利用者->>利用者: コンテンツ情報の閲覧と検証
 ```
+
+Wordpress 連携プラグインは、 *hook* によって、 Wordpress 本体からトリガーされ、そのフックに対応した処理を実行します。
+
+この場合 `activate_plugin` hook が、プラグインを最初に有効化した際に呼ばれ、公開鍵ペアを生成して、シークレット鍵を Wordpress のサーバー内に保存します。
+
+次に、`transition_post_status` hook が記事の状態遷移に応じてトリガーされるため、記事が公開（どのタイミングか要調査）されたタイミングで、 SDP を発行し、 DP レジストリに登録します。
+
+最後に `wp_head` hook が、ユーザーが記事に訪れて記事を閲覧した際にトリガーされ、これにより、記事の HTML に Profile Set へのリンクが <link\> 要素として追加されます。
+
+ユーザーが、OP拡張機能をクリックすると、拡張機能はこの <link\> 要素から、記事に対応する Profile Set を取得・検証し、記事の信頼性や情報を表示します。
 
 <!-- docs/registry/wordpress-integration.md より -->
 
