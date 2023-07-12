@@ -457,9 +457,15 @@ DP の作成が可能になったら、DP 発行処理を CMS 側に組み込み
 
 ## CMS の実装ガイド
 
+今まで説明した手順では、記事に対する署名付き DP (SDP) の生成は、 profile-registry コマンドなどを利用して、担当者が都度行っていました。
+実際の運用では、記事の執筆や公開と同時に SDP が自動で生成され DP レジストリに登録されるほうが、運用上好ましいでしょう。
+このような自動化を実装する方法として、メディア各社が、自社で利用している CMS 向けに、 SDP の発行、登録を行うプラグインを開発することが考えられます。
+
+このガイドでは、まずCMS連携プラグインの一例として、 CIP が開発した Wordpress 連携プラグインの使い方を紹介します。その後、 Wordpress 以外の CMS に連携プラグインを実装する際の参考として、より一般的な SDP 発行の手順を説明します。
+
 ### 全体の流れ (HTML の一部を CSS Selector で選択、署名、SDP 生成、DP レジストリ登録、Link 付与)
 
-CMS への実装として WordPress での手順を例に説明します。
+CMS 連携の一例として、 CIP が開発した Wordpress 連携プラグインの使い方を紹介します。
 
 #### 事前準備
 
@@ -475,8 +481,8 @@ DP レジストリは各社共同使用となっています。
 
 ##### プラグインのインストール
 
-WordPress サイトに WordPress Profile Plugin をインストールします。
-詳細は [WordPress 参照実装のソースコード](https://github.com/webdino/profile/tree/main/packages/wordpress#readme)をご確認ください。
+WordPress サイトに Profile Plugin をインストールします。
+詳細は [プラグインのソースコード](https://github.com/webdino/profile/tree/main/packages/wordpress#readme)をご確認ください。
 
 Document Profile レジストリのドメイン名を、WordPress 管理者画面 > Settings > Profile > [レジストリドメイン名] に入力します。
 
@@ -486,7 +492,7 @@ Document Profile レジストリのドメイン名を、WordPress 管理者画�
 dprexpt.originator-profile.org
 ```
 
-[レジストリの管理者を作成](/registry/document-profile-registry-creation.md#レジストリの管理者の作成)した際の認証情報、WordPress 管理者画面 > Settings > Profile > [認証情報] に入力します。
+[レジストリの管理者を作成](/registry/document-profile-registry-creation.md#レジストリの管理者の作成)した際の認証情報を、WordPress 管理者画面 > Settings > Profile > [認証情報] に入力します。
 
 例:
 
@@ -495,7 +501,7 @@ cfbff0d1-9375-5685-968c-48ce8b15ae17:GVWoXikZIqzdxzB3CieDHL-FefBT31IfpjdbtAJtBcU
 ```
 
 それぞれ適切な値を入力したら、保存を選択し、設定を反映します。
-設定が反映されれば、それ以降公開される投稿で Profile Set が配信されるようになります。
+設定が反映されれば、それ以降、公開される投稿に対して SDP が自動で発行・登録され、記事から Profile Set へリンクされるようになります。
 
 <!-- docs/registry/wordpress-integration.md より -->
 
