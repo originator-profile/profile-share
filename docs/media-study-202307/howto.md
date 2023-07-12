@@ -545,8 +545,7 @@ Document Profile レジストリ-->>利用者: Profile Set
 利用者->>利用者: コンテンツ情報の閲覧と検証
 ```
 
-Wordpress 連携プラグインは、 *hook* によって、 Wordpress 本体からトリガーされ、そのフックに対応した処理を実行します。
-
+Wordpress 連携プラグインは、 _hook_ によって、 Wordpress 本体からトリガーされ、そのフックに対応した処理を実行します。
 
 1. `activate_plugin` hook が、プラグインを最初に有効化した際に呼ばれ、公開鍵ペアを生成して、シークレット鍵を Wordpress のサーバー内に保存します。
 2. 次に、`transition_post_status` hook が記事の状態遷移に応じてトリガーされるため、記事が公開（どのタイミングか要調査）されたタイミングで、 SDP を発行します
@@ -630,7 +629,6 @@ SDP ペイロード部:
 
 各クレームの詳細については仕様をご確認ください。
 
-
 ##### 記事コンテンツに署名をする
 
 - [ ] TODO: sign_body にコメントを付与する
@@ -638,14 +636,14 @@ SDP ペイロード部:
 上記の例の中の item プロパティの2番目の要素には、 `jws` が含まれていました。
 
 ```json
-      {
-        "type": "visibleText",
-        "url": "http://localhost:8080",
-        "location": "h1",
-        "proof": {
-          "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImpKWXM1X0lMZ1VjODE4MEwtcEJQeEJwZ0EzUUM3ZVp1OXdLT2toOW1ZUFUiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..iW5cLsuUaABodKMynyCBH95j7WWemNlJ5CCi4iVwH_SlkN6KVV9jB4GJxN2pwG7N8IKsXrZ42TBSiP4LLn-83g"
-        }
-      }
+{
+  "type": "visibleText",
+  "url": "http://localhost:8080",
+  "location": "h1",
+  "proof": {
+    "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImpKWXM1X0lMZ1VjODE4MEwtcEJQeEJwZ0EzUUM3ZVp1OXdLT2toOW1ZUFUiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..iW5cLsuUaABodKMynyCBH95j7WWemNlJ5CCi4iVwH_SlkN6KVV9jB4GJxN2pwG7N8IKsXrZ42TBSiP4LLn-83g"
+  }
+}
 ```
 
 この `jws` は記事コンテンツに対する署名であり、記事担当者が保持する秘密鍵を使って生成する必要があります。
@@ -660,11 +658,10 @@ JWS ヘッダー部:
   "alg": "ES256",
   "kid": "jJYs5_ILgUc8180L-pBPxBpgA3QC7eZu9wKOkh9mYPU",
   "b64": false,
-  "crit": [
-    "b64"
-  ]
+  "crit": ["b64"]
 }
 ```
+
 CIP 実装の Wordpress プラグインでは、このように実装されています。
 
 ```php
@@ -731,7 +728,6 @@ function sign_body( string $body, string $pkcs8 ): string|false {
 
 		return $jwt->toString();
 ```
-
 
 #### 他の Web サイト
 
