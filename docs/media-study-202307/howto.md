@@ -561,7 +561,7 @@ Wordpress 連携プラグインは、 [hook](https://developer.wordpress.org/plu
 
 この節では、署名付き Document Profile (SDP) を生成する手順を説明します。この手順では profile-registry CLI などのツールに頼らずに一から SDP を生成します。
 
-手順の解説の際に、CPI が実装した Wordpress 連携のソースコードの抜粋を適宜引用します。 Wordpress 連携のソースコードは[こちら](https://github.com/webdino/profile/tree/main/packages/wordpress) にあり、本実験参加者の方は[事務局にご連絡いただいた GitHub アカウント](howto.md#github-アカウント) を利用して自由に見ることができます。
+手順の解説の際に、CPI が実装した Wordpress 連携のソースコードの抜粋を適宜引用します。 Wordpress 連携のソースコードは[こちら](https://github.com/webdino/profile/tree/main/packages/wordpress) にあり、本実験参加者の方は[事務局にご連絡いただいた GitHub アカウント](#github-アカウント) を利用して自由に見ることができます。
 
 SDP 生成の手順は次のようになっています。
 
@@ -763,12 +763,12 @@ SDP を生成したら、次は SDP を DP レジストリに登録してくだ�
 
 #### SDP の登録
 
-生成した SDP を DP レジストリに登録します。これには　DP レジストリ (`dprexpt.originator-profile.org`) の [SDP登録用のエンドポイント](howto.md#adminpublisherアカウントiddp-エンドポイント) を利用します。
+生成した SDP を DP レジストリに登録します。これには　DP レジストリ (`dprexpt.originator-profile.org`) の [SDP登録用のエンドポイント](#adminpublisherアカウントiddp-エンドポイント) を利用します。
 
 #### Profile Set の配信
 
 SDP をレジストリに登録したら、最後に、記事から SDP を含む Profile Set を取得できるようにします。
-これには[Profile Set 取得エンドポイント](/howto.md#websiteprofiles-エンドポイント) を利用してください。
+これには[Profile Set 取得エンドポイント](#websiteprofiles-エンドポイント) を利用してください。
 
 結果的に次のような <link\> 要素が記事の HTML の <head\> 要素内に追記されれば、完了となります。
 
