@@ -1,6 +1,6 @@
 services:
   api:
-    image: originator-profile/registry
+    image: ghcr.io/originator-profile/registry
     build:
       context: "."
       args:
