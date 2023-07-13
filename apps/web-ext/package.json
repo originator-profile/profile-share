@@ -48,7 +48,7 @@
     "vitest": "^0.32.4",
     "web-ext": "^7.6.2"
   },
-  "homepage": "https://github.com/originator-profile/profile#readme",
+  "homepage": "https://profile-docs.pages.dev/",
   "keywords": [
     "webextension"
   ],
