@@ -4,7 +4,7 @@ import {
   OpCertifier,
   OpCredential,
   OpVerifier,
-} from "@webdino/profile-model";
+} from "@originator-profile/model";
 
 /**
  * OpItem が OpHolder 型であるか否か

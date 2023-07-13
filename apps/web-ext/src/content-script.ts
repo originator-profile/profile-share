@@ -1,5 +1,5 @@
-import { fetchProfileSet } from "@webdino/profile-verify";
-import { Profile, Dp } from "@webdino/profile-ui/src/types";
+import { fetchProfileSet } from "@originator-profile/verify";
+import { Profile, Dp } from "@originator-profile/ui/src/types";
 import {
   ContentScriptMessageRequest,
   ContentScriptMessageResponse,

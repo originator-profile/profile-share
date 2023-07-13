@@ -1,4 +1,4 @@
-import { JwtOpPayload, JwtDpPayload } from "@webdino/profile-model";
+import { JwtOpPayload, JwtDpPayload } from "@originator-profile/model";
 import { SignedProfileValidator, TokenDecoder } from "./decode";
 import {
   ProfileGenericError,
@@ -24,7 +24,7 @@ type Token = ReturnType<typeof getToken>;
 
 /**
  * Profile Set の検証者の生成
- * @todo Originator Profile のみでの検証を対応したい https://github.com/webdino/profile/issues/615
+ * @todo Originator Profile のみでの検証を対応したい https://github.com/originator-profile/profile/issues/615
  * @param profiles Profile Set
  * @param registryKeys OPレジストリの公開鍵
  * @param registry OPレジストリ

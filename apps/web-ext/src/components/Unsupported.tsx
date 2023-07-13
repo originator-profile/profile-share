@@ -1,5 +1,5 @@
 import { Dialog } from "@headlessui/react";
-import { ProjectTitle, ProjectSummary } from "@webdino/profile-ui";
+import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
 import figUser1Url from "../assets/fig-user-1.svg";
 import figUser2Url from "../assets/fig-user-2.svg";
 import figUser3Url from "../assets/fig-user-3.svg";
@@ -9,7 +9,7 @@ import figTraceabilityUrl from "../assets/fig-traceability.png";
 import {
   ProfileGenericError,
   ProfilesVerifyFailed,
-} from "@webdino/profile-verify";
+} from "@originator-profile/verify";
 
 function Messages({ className, error }: { className?: string; error: Error }) {
   if (error instanceof ProfilesVerifyFailed) {

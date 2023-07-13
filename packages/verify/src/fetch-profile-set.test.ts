@@ -4,8 +4,8 @@ import { describe, beforeEach, afterEach, test, expect } from "vitest";
 import { Window } from "happy-dom";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { JsonLdDocument } from "jsonld";
-import { generateKey, signOp } from "@webdino/profile-sign";
-import { Op } from "@webdino/profile-model";
+import { generateKey, signOp } from "@originator-profile/sign";
+import { Op } from "@originator-profile/model";
 import { fetchProfileSet } from "./fetch-profile-set";
 import { ProfilesFetchFailed } from "./errors";
 

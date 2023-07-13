@@ -54,7 +54,7 @@ const JwtOpPayload = {
   required: ["iss", "sub", "exp", "iat"],
   oneOf: [
     { required: ["https://originator-profile.org/op"] },
-    { required: ["https://opr.webdino.org/jwt/claims/op"] },
+    { required: ["https://opr.webdino.org/jwt/claims/dp"] },
   ],
   additionalProperties: false,
 } as const;

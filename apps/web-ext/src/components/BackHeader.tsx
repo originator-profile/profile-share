@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
-import { Header } from "@webdino/profile-ui";
+import { Header } from "@originator-profile/ui";
 
 type Props = Parameters<typeof Link>[0];
 

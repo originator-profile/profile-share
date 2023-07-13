@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { JwtOpPayload, JwtDpPayload } from "@webdino/profile-model";
+import { JwtOpPayload, JwtDpPayload } from "@originator-profile/model";
 import { isJwtOpPayload, isJwtDpPayload } from "./jwt-payload";
 
 test("isJwtOpPayload() returns true if of type JwtOpPayload", () => {

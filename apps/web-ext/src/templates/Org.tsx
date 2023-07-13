@@ -1,11 +1,11 @@
 import { useId } from "react";
 import { Icon } from "@iconify/react";
-import { OpHolder, OpCertifier, OpVerifier } from "@webdino/profile-model";
+import { OpHolder, OpCertifier, OpVerifier } from "@originator-profile/model";
 import {
   isOpCredential,
   isOpCertifier,
   isOpVerifier,
-} from "@webdino/profile-core";
+} from "@originator-profile/core";
 import {
   Image,
   Roles,
@@ -16,10 +16,10 @@ import {
   TableRow,
   CredentialSummary,
   CredentialDetail,
-} from "@webdino/profile-ui";
-import { Op, Role } from "@webdino/profile-ui/src/types";
-import placeholderLogoMainUrl from "@webdino/profile-ui/src/assets/placeholder-logo-main.png";
-import logomarkUrl from "@webdino/profile-ui/src/assets/logomark.svg";
+} from "@originator-profile/ui";
+import { Op, Role } from "@originator-profile/ui/src/types";
+import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
+import logomarkUrl from "@originator-profile/ui/src/assets/logomark.svg";
 import BackHeader from "../components/BackHeader";
 
 type Props = {

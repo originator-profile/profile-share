@@ -1,5 +1,5 @@
 import { Profile } from "../types/profile";
-import { ProfileGenericError } from "@webdino/profile-verify";
+import { ProfileGenericError } from "@originator-profile/verify";
 
 /**
  * ProfileGenericError を検出する関数

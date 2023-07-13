@@ -1,4 +1,4 @@
-import { OpCredential, OpHolder } from "@webdino/profile-model";
+import { OpCredential, OpHolder } from "@originator-profile/model";
 
 /** 検証種別の取得 */
 export const getVerificationType = (
