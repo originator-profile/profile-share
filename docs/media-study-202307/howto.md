@@ -659,7 +659,7 @@ SDP ペイロード部:
 次に選んだコンテンツに署名をします。署名に使うプライベート鍵としてはレジストリに登録した公開鍵に対応するものを使ってください。
 
 この署名は [RFC 7797](https://www.rfc-editor.org/rfc/rfc7797) の Unencoded Payload Option を付与した JWS になっており、 JWS ヘッダー部の中の `b64` がそのオプションです。`crit` パラメータも必要となります。
-署名したいデータを base64 エンコードせずにそのまま使えるという特徴があります。
+署名したいデータを base64 エンコードせずにそのまま使えるという特徴があります。また、上記 RFC の [Section 5.1](https://www.rfc-editor.org/rfc/rfc7797#section-5.1) にのっとり、ペイロード部は JWS から省略してください (Detached Payload) 。
 
 JWS ヘッダー部:
 
@@ -709,7 +709,10 @@ function sign_body( string $body, string $pkcs8 ): string|false {
 	*/
 	$data      = "{$protected}.{$body}";
 	$signature = ( new Sha256() )->sign( $data, InMemory::plainText( $pkcs8 ) );
-	// $body は、jws には含めません。これは、記事ページ上で jws を検証するときに、拡張機能が記事から取得します。
+	/* $body は、jws には含めません。これは、記事ページ上で jws を検証するときに、拡張機能が記事から取得します。
+		 参考: RFC 7797 Section 5.1 Unencoded Detached Payload https://www.rfc-editor.org/rfc/rfc7797#section-5.1
+		      RFC 7515 Appendix F. Detached Content https://www.rfc-editor.org/rfc/rfc7515.html#appendix-F
+	*/
 	$jws       = $protected . '..' . base64_urlsafe_encode( $signature );
 
 	return $jws;
