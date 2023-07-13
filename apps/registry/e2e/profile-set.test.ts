@@ -17,21 +17,26 @@ const dummyJwt =
 describe("複数のSigned Document Profilesが存在する場合", async () => {
   beforeAll(async () => {
     await AdminCreate.run([`--id=${accountId}`, `--password=${dummyPassword}`]);
-    const response = await fetch(`http://localhost:8080/admin/publisher/${accountId}/dp/`, {
-      method: "POST",
-      headers: {
-        authorization: `Basic ${Buffer.from(
-          `${accountId}:${dummyPassword}`,
-        ).toString("base64")}`,
-        "content-type": "application/json",
+    const response = await fetch(
+      `http://localhost:8080/admin/publisher/${accountId}/dp/`,
+      {
+        method: "POST",
+        headers: {
+          authorization: `Basic ${Buffer.from(
+            `${accountId}:${dummyPassword}`,
+          ).toString("base64")}`,
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          jwt: dummyJwt,
+        }),
       },
-      body: JSON.stringify({
-        jwt: dummyJwt,
-      }),
-    });
+    );
     if (!response.ok) {
-      const message = await response.text();  
-      throw new Error(`API does not exist or server error occurred. Status: ${response.status}, Message: ${message}`);
+      const message = await response.text();
+      throw new Error(
+        `API does not exist or server error occurred. Status: ${response.status}, Message: ${message}`,
+      );
     }
   });
 
