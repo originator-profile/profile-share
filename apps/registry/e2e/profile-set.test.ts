@@ -12,12 +12,12 @@ import { AdminDelete } from "../src/commands/admin/delete";
 const accountId = "cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc";
 const dummyPassword = crypto.randomBytes(16).toString("hex");
 const dummyJwt =
-  "eyJhbGciOiJFUzI1NiIsImtpZCI6IktzLUpscm1nMUhIVE82NHdUSlB0bEUxQ1RqTFEtR1k3dGkzMVFWWG9HQ2siLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL29wci53ZWJkaW5vLm9yZy9qd3QvY2xhaW1zL2RwIjp7Iml0ZW0iOlt7InR5cGUiOiJ3ZWJzaXRlIiwidXJsIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwidGl0bGUiOiJPUCDnorroqo3jgY_jgpMifSx7InR5cGUiOiJodG1sIiwidXJsIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwibG9jYXRpb24iOiJoMSIsInByb29mIjp7Imp3cyI6ImV5SmhiR2NpT2lKRlV6STFOaUlzSW10cFpDSTZJa3R6TFVwc2NtMW5NVWhJVkU4Mk5IZFVTbEIwYkVVeFExUnFURkV0UjFrM2RHa3pNVkZXV0c5SFEyc2lMQ0ppTmpRaU9tWmhiSE5sTENKamNtbDBJanBiSW1JMk5DSmRmUS4ueXNnYW1xWnRaN0dkN1VxVTRENjFqTWg1TGFVS0s5aXc4UTllSk0zN3pJM3BoY3F4Q0lHSklZeHhLa0hMaEs2UkY5Z2FEdVo1eEU5Ykt4QnRNSDA4YlEifX1dfSwiaXNzIjoibG9jYWxob3N0Iiwic3ViIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwIiwiaWF0IjoxNjc1MDU3NDYxLCJleHAiOjE5OTA2NzY2NjF9.zoBT2cXr86U9PSj_LxUHEGrOZHYdEn2XtHBeLqC60ToUOutW8YiIsJCjITAceajGyXIpTa51ktQlLxvD1mnCAg";
+  "eyJhbGciOiJFUzI1NiIsImtpZCI6ImpKWXM1X0lMZ1VjODE4MEwtcEJQeEJwZ0EzUUM3ZVp1OXdLT2toOW1ZUFUiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJ0aXRsZSI6Ik9QIOeiuuiqjeOBj-OCkyIsImltYWdlIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2Fzc2V0cy9sb2dvLTJiMDRlNjM1LnN2ZyIsImNhdGVnb3J5IjpbXX0seyJ0eXBlIjoidmlzaWJsZVRleHQiLCJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJsb2NhdGlvbiI6ImgxIiwicHJvb2YiOnsiandzIjoiZXlKaGJHY2lPaUpGVXpJMU5pSXNJbXRwWkNJNkltcEtXWE0xWDBsTVoxVmpPREU0TUV3dGNFSlFlRUp3WjBFelVVTTNaVnAxT1hkTFQydG9PVzFaVUZVaUxDSmlOalFpT21aaGJITmxMQ0pqY21sMElqcGJJbUkyTkNKZGZRLi4wR1RTSlNBSHVZU2FEV0RTcmczRDBXUDF5Y0xHdUp3WW9WNUpyR0NULV9QUXZtdzJlcGNtc0h0ZWpDelkzUk95LTJYY0JQNFZ5MW55ZGhqVXctMXpTdyJ9fV19LCJpc3MiOiJsb2NhbGhvc3QiLCJzdWIiOiJENEYyQzVCNi0xMjlELTQ0RkUtQTQ0MS04MzdCODA4RUY2NDMiLCJpYXQiOjE2ODkwNTkzODcsImV4cCI6MTcyMDY4MTc4N30.0O21U9LaLrGoiDlXCXCVRGUEtDhKQkp1_ieYQOpEeFELKVBQkZY7J9gitNc81_wJ3K_yDdLKhLbsE5lfcww01A";
 
 describe("複数のSigned Document Profilesが存在する場合", async () => {
   beforeAll(async () => {
     await AdminCreate.run([`--id=${accountId}`, `--password=${dummyPassword}`]);
-    await fetch(`http://localhost:8080/admin/publisher/${accountId}/issue`, {
+    const response = await fetch(`http://localhost:8080/admin/publisher/${accountId}/dp/`, {
       method: "POST",
       headers: {
         authorization: `Basic ${Buffer.from(
@@ -29,6 +29,10 @@ describe("複数のSigned Document Profilesが存在する場合", async () => {
         jwt: dummyJwt,
       }),
     });
+    if (!response.ok) {
+      const message = await response.text();  
+      throw new Error(`API does not exist or server error occurred. Status: ${response.status}, Message: ${message}`);
+    }
   });
 
   afterAll(async () => {
