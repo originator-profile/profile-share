@@ -326,7 +326,7 @@ Signed Document Profile のためのプロパティです。
 - `type` プロパティは、必ず文字列 `visibleText` でなければなりません。
 - `url` プロパティは、対象の要素が存在するページの URL です。
 - `location` プロパティは、対象の要素の場所を特定する CSS セレクターです。対象の要素は、そのページの `document` のルート要素 (例えば、 HTML 文書の場合は `<html>` 要素) から、`querySelectorAll()` メソッドを使用して検索します。値が未定義の場合は、そのページの `document` のルート要素 (例えば、HTML 文書の場合は `<html>` 要素) を対象の要素とみなします。
-- `proof` プロパティは、対象のテキストへの署名を表すオブジェクトです。そのオブジェクトには必ず `jws` プロパティを持たなければなりません。その `jws` プロパティは必ず Detached JSON Web Signature として表現したシリアライズされたテキストの署名でなければなりません。
+- `proof` プロパティは、対象のテキストへの署名を表すオブジェクトです。そのオブジェクトには必ず `jws` プロパティを持たなければなりません。その `jws` プロパティには [Compact Serialization](https://www.rfc-editor.org/rfc/rfc7515#section-7.1) でシリアライズした JWS を入れなければなりません。JWS には必ず [RFC 7797](https://www.rfc-editor.org/rfc/rfc7797) の Unencoded Payload Option を付与し、同 RFC の[Section 5.1](https://www.rfc-editor.org/rfc/rfc7797#section-5.1) に則りペイロード部は JWS から省略しなければなりません。
 
 ### `visibleText` 型における署名
 
@@ -335,6 +335,12 @@ Signed Document Profile のためのプロパティです。
 3. すべての対象を UTF-8 に符号化します。もし仮に対象が複数存在する場合は、それらの内容を結合します。
 4. その結果への署名を行います。
 
+:::caution
+
+`visibleText` 型を利用する場合、署名対象のコンテンツが**ブラウザーによって変わらない**ように注意してください。署名検証時に、`innerText` 属性を利用して[レンダリングされた](https://html.spec.whatwg.org/multipage/rendering.html#being-rendered)テキストを取得するため、ブラウザ間のレンダリングの違いによって取得するコンテンツに違いが発生する場合があります。
+
+:::
+
 ## `text` 型
 
 対象の要素の子孫のテキストへの署名を表すオブジェクトです。
@@ -342,7 +348,7 @@ Signed Document Profile のためのプロパティです。
 - `type` プロパティは、必ず文字列 `text` でなければなりません。
 - `url` プロパティは、対象の要素が存在するページの URL です。
 - `location` プロパティは、対象の要素の場所を特定する CSS セレクターです。対象の要素は、そのページの `document` のルート要素 (例えば、 HTML 文書の場合は `<html>` 要素) から、`querySelectorAll()` メソッドを使用して検索します。値が未定義の場合は、そのページの `document` のルート要素 (例えば、HTML 文書の場合は `<html>` 要素) を対象の要素とみなします。
-- `proof` プロパティは、対象のテキストへの署名を表すオブジェクトです。そのオブジェクトには必ず `jws` プロパティを持たなければなりません。その `jws` プロパティは必ず Detached JSON Web Signature として表現したシリアライズされたテキストの署名でなければなりません。
+- `proof` プロパティは、対象のテキストへの署名を表すオブジェクトです。そのオブジェクトには必ず `jws` プロパティを持たなければなりません。その `jws` プロパティには [Compact Serialization](https://www.rfc-editor.org/rfc/rfc7515#section-7.1) でシリアライズした JWS を入れなければなりません。JWS には必ず [RFC 7797](https://www.rfc-editor.org/rfc/rfc7797) の Unencoded Payload Option を付与し、同 RFC の[Section 5.1](https://www.rfc-editor.org/rfc/rfc7797#section-5.1) に則りペイロード部は JWS から省略しなければなりません。
 
 ### `text` 型における署名
 
@@ -358,7 +364,7 @@ Signed Document Profile のためのプロパティです。
 - `type` プロパティは、必ず文字列 `html` でなければなりません。
 - `url` プロパティは、対象の要素が存在するページの URL です。
 - `location` プロパティは、対象の要素の場所を特定する CSS セレクターです。対象の要素は、そのページの `document` のルート要素 (例えば、 HTML 文書の場合は `<html>` 要素) から、`querySelectorAll()` メソッドを使用して検索します。値が未定義の場合は、そのページの `document` のルート要素 (例えば、HTML 文書の場合は `<html>` 要素) を対象の要素とみなします。
-- `proof` プロパティは、対象のテキストへの署名を表すオブジェクトです。そのオブジェクトには必ず `jws` プロパティを持たなければなりません。その `jws` プロパティは必ず Detached JSON Web Signature として表現したシリアライズされたテキストの署名でなければなりません。
+- `proof` プロパティは、対象のテキストへの署名を表すオブジェクトです。そのオブジェクトには必ず `jws` プロパティを持たなければなりません。その `jws` プロパティには [Compact Serialization](https://www.rfc-editor.org/rfc/rfc7515#section-7.1) でシリアライズした JWS を入れなければなりません。JWS には必ず [RFC 7797](https://www.rfc-editor.org/rfc/rfc7797) の Unencoded Payload Option を付与し、同 RFC の[Section 5.1](https://www.rfc-editor.org/rfc/rfc7797#section-5.1) に則りペイロード部は JWS から省略しなければなりません。
 
 ### `html` 型における署名
 

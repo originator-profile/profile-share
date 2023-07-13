@@ -457,9 +457,15 @@ DP の作成が可能になったら、DP 発行処理を CMS 側に組み込み
 
 ## CMS の実装ガイド
 
-### 全体の流れ (HTML の一部を CSS Selector で選択、署名、SDP 生成、DP レジストリ登録、Link 付与)
+今まで説明した手順では、記事に対する署名付き DP (SDP) の生成は、 profile-registry コマンドなどを利用して、担当者が都度行っていました。
+実際の運用では、記事の執筆や公開と同時に SDP が自動で生成され DP レジストリに登録されるほうが、運用上好ましいでしょう。
+このような自動化を実装する方法として、メディア各社が、自社で利用している CMS 向けに、 SDP の発行、登録を行うプラグインを開発することが考えられます。
 
-CMS への実装として WordPress での手順を例に説明します。
+このガイドでは、まずCMS連携プラグインの一例として、 CIP が開発した Wordpress 連携プラグインの使い方を紹介します。その後、 Wordpress 以外の CMS に連携プラグインを実装する際の参考として、より一般的な SDP 発行の手順を説明します。
+
+### 例：Wordpress 連携の使い方
+
+CMS 連携の一例として、 CIP が開発した Wordpress 連携プラグインの使い方を紹介します。
 
 #### 事前準備
 
@@ -475,8 +481,8 @@ DP レジストリは各社共同使用となっています。
 
 ##### プラグインのインストール
 
-WordPress サイトに WordPress Profile Plugin をインストールします。
-詳細は [WordPress 参照実装のソースコード](https://github.com/webdino/profile/tree/main/packages/wordpress#readme)をご確認ください。
+WordPress サイトに Profile Plugin をインストールします。
+詳細は [プラグインのソースコード](https://github.com/webdino/profile/tree/main/packages/wordpress#readme)をご確認ください。
 
 Document Profile レジストリのドメイン名を、WordPress 管理者画面 > Settings > Profile > [レジストリドメイン名] に入力します。
 
@@ -486,7 +492,7 @@ Document Profile レジストリのドメイン名を、WordPress 管理者画�
 dprexpt.originator-profile.org
 ```
 
-[レジストリの管理者を作成](/registry/document-profile-registry-creation.md#レジストリの管理者の作成)した際の認証情報、WordPress 管理者画面 > Settings > Profile > [認証情報] に入力します。
+[レジストリの管理者を作成](/registry/document-profile-registry-creation.md#レジストリの管理者の作成)した際の認証情報を、WordPress 管理者画面 > Settings > Profile > [認証情報] に入力します。
 
 例:
 
@@ -495,13 +501,17 @@ cfbff0d1-9375-5685-968c-48ce8b15ae17:GVWoXikZIqzdxzB3CieDHL-FefBT31IfpjdbtAJtBcU
 ```
 
 それぞれ適切な値を入力したら、保存を選択し、設定を反映します。
-設定が反映されれば、それ以降公開される投稿で Profile Set が配信されるようになります。
+設定が反映されれば、それ以降、公開される投稿に対して SDP が自動で発行・登録され、記事から Profile Set へリンクされるようになります。
 
 <!-- docs/registry/wordpress-integration.md より -->
 
-### 署名付与の WordPress,それ以外の Web サイトのプロトタイプに関する説明
+### Wordpress以外のCMS連携実装ガイド
 
-#### WordPress
+ここまでは Wordpress 連携プラグインの使い方の説明をしてきました。この章では、まず Wordpress 連携プラグインの内部的な仕組みを概観し、その後、それを踏まえて Wordpress 以外の CMS連携をどう実装するかの説明をします。
+
+#### 例: WordPress 連携プラグイン
+
+Wordpress 連携プラグインによる SDP 発行、登録のフローはこのようになっています。
 
 ```mermaid
 sequenceDiagram
@@ -535,150 +545,259 @@ Document Profile レジストリ-->>利用者: Profile Set
 利用者->>利用者: コンテンツ情報の閲覧と検証
 ```
 
+Wordpress 連携プラグインは、 [hook](https://developer.wordpress.org/plugins/hooks/) によって、 Wordpress 本体からトリガーされ、そのフックに対応した処理を実行します。
+
+1. `activate_plugin` hook が、プラグインを最初に有効化した際にトリガーされ、公開鍵ペアを生成して、プライベート鍵を Wordpress のサーバー内に保存します。
+2. 次に、`transition_post_status` hook が記事の公開や更新のタイミングでトリガーされ、このときに SDP を発行します。
+3. (2) で生成した SDP を DP レジストリに登録します。これは (2) の直後におこなれます。
+4. 最後に `wp_head` hook が、ユーザーが記事に訪れて記事を閲覧した際にトリガーされ、これにより、記事の HTML に Profile Set へのリンクが <link\> 要素として追加されます。
+5. ユーザーが、OP拡張機能をクリックすると、拡張機能はこの <link\> 要素から、記事に対応する Profile Set を取得・検証し、記事の信頼性や情報を表示します。
+
+以降の説明では、 (2), (3), (4) を実装する際のガイドを提供します。それぞれ、 SDP の生成、 SDP の登録、 Profile Set の配信に対応します。
+
 <!-- docs/registry/wordpress-integration.md より -->
 
-#### 他の Web サイト
+#### SDP の生成
 
-```mermaid
-sequenceDiagram
-actor 利用者
-actor Web サイト管理者
-participant Web サイト
-participant Document Profile レジストリ
+この節では、署名付き Document Profile (SDP) を生成する手順を説明します。この手順では profile-registry CLI などのツールに頼らずに一から SDP を生成します。
 
-Web サイト管理者->>Web サイト管理者: 鍵ペアの生成
+手順の解説の際に、CIP が実装した Wordpress 連携のソースコードの抜粋を適宜引用します。 Wordpress 連携のソースコードは[こちら](https://github.com/webdino/profile/tree/main/packages/wordpress) にあり、本実験参加者の方は[事務局にご連絡いただいた GitHub アカウント](#github-アカウント) を利用して自由に見ることができます。
 
-Web サイト管理者->>Originator Profile レジストリ: Originator Profile の発行依頼
-Originator Profile レジストリ-->>Web サイト管理者: Signed Originator Profile
-Web サイト管理者->>Document Profile レジストリ: Signed Originator Profile の登録
+SDP 生成の手順は次のようになっています。
 
-Web サイト管理者->>Web サイト: HTML <link> 要素の設置
-Web サイト管理者->>Web サイト: 記事本文の抽出
-Web サイト-->>Web サイト管理者: 記事本文
-Web サイト管理者->>Document Profile レジストリ: Signed Document Profile の発行
+1. 記事の情報を収集する
+2. 署名する記事コンテンツを選択する
+3. 記事コンテンツに署名をする
+4. それらの情報をまとめて DP を作る
+5. DP に署名をして SDP を作る
 
-利用者->>Web サイト: 記事の閲覧
-Web サイト-->>利用者: HTML <link> 要素
+DP は URL ごとに必要なため、公開する記事が複数ページに分かれている場合はページ数分作ってください。
 
-利用者->>Document Profile レジストリ: 拡張機能をクリック
-Document Profile レジストリ-->>利用者: Profile Set
+##### 記事の情報を収集する
 
-利用者->>利用者: コンテンツ情報の閲覧と検証
+記事に関する情報を収集します。記事を閲覧するユーザーは、 Originator Profile 拡張機能を使ってこれらの情報を確認することができます。
+
+次の2つの JSON はそれぞれ SDP のヘッダー部とペイロード部です。
+
+SDP ヘッダー部:
+
+```json
+{
+  "alg": "ES256",
+  "kid": "jJYs5_ILgUc8180L-pBPxBpgA3QC7eZu9wKOkh9mYPU",
+  "typ": "JWT"
+}
 ```
 
-<!-- docs/registry/website-integration.md より -->
+SDP ペイロード部:
 
-WordPress 以外の Web サイトで実装する場合、手順が異なり下記のような内容の実施が必要となります。
+```json
+{
+  "https://originator-profile.org/dp": {
+    "item": [
+      {
+        "type": "website",
+        "url": "http://localhost:8080",
+        "title": "OP 確認くん",
+        "image": "https://example.com/image.png",
+        "description": "このウェブページの説明です。",
+        "https://schema.org/author": "山田太郎",
+        "category": [],
+        "https://schema.org/editor": "山田花子",
+        "https://schema.org/datePublished": "2023-07-04T19:14:00Z",
+        "https://schema.org/dateModified": "2023-07-04T19:14:00Z"
+      },
+      {
+        "type": "visibleText",
+        "url": "http://localhost:8080",
+        "location": "h1",
+        "proof": {
+          "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImpKWXM1X0lMZ1VjODE4MEwtcEJQeEJwZ0EzUUM3ZVp1OXdLT2toOW1ZUFUiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..iW5cLsuUaABodKMynyCBH95j7WWemNlJ5CCi4iVwH_SlkN6KVV9jB4GJxN2pwG7N8IKsXrZ42TBSiP4LLn-83g"
+        }
+      }
+    ]
+  },
+  "iss": "localhost",
+  "sub": "ff9d78e0-d81a-4e39-b7a0-27e15405edc7",
+  "iat": 1688623395,
+  "exp": 1720245795
+}
+```
 
-1. HTML <link\> 要素の設置
-2. 記事本文の抽出
-3. Signed Document Profile の発行
+各クレームの詳細については[仕様](/spec/)をご確認ください。
 
-以降では、Document Profile レジストリとウェブサイトそれぞれ下記の場合を例として説明します。
+##### 署名をする記事コンテンツを選択する
 
-- Document Profile レジストリのドメイン名: dprexpt.originator-profile.org
-- 対象のウェブサイト: https://originator-profile.org/
+次に、署名をする記事コンテンツを選択してください。
 
-#### HTML <link\> 要素の設置
+上記の例の中の item プロパティの2番目の要素には、 `jws` が含まれていました。
 
-設置する <link\> 要素は下記のように書き表します。
+```json
+{
+  "type": "visibleText",
+  "url": "http://localhost:8080",
+  "location": "h1",
+  "proof": {
+    "jws": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImpKWXM1X0lMZ1VjODE4MEwtcEJQeEJwZ0EzUUM3ZVp1OXdLT2toOW1ZUFUiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..iW5cLsuUaABodKMynyCBH95j7WWemNlJ5CCi4iVwH_SlkN6KVV9jB4GJxN2pwG7N8IKsXrZ42TBSiP4LLn-83g"
+  }
+}
+```
+
+この `jws` は記事コンテンツに対する署名であり、記事担当者が保持するプライベート鍵を使って生成する必要があります。記事コンテンツ中のどの部分に署名するかは、署名をする際に選ぶことができます。これは CSS セレクターで指定する必要があります。 `location` プロパティがその値です。
+選択したコンテンツは、記事ページ上で拡張機能を起動した際に、SDP の検証が通ればハイライトされます。
+
+![拡張機能による検証コンテンツのハイライト](assets/web-ext-text-highlighting.png)
+
+署名対象の記事コンテンツによって3種類のデータ構造が定義されています。これは上記の JSON の中の `type` プロパティで指定します。自身のニーズに合わせて選んでください。
+
+- [visibleText 型](/spec.md#visibletext-型)
+- [text 型](/spec.md#text-型)
+- [html 型](/spec.md#html-型)
+
+##### 記事コンテンツに署名をする
+
+次に選んだコンテンツに署名をします。署名に使うプライベート鍵としてはレジストリに登録した公開鍵に対応するものを使ってください。
+
+この署名は [RFC 7797](https://www.rfc-editor.org/rfc/rfc7797) の Unencoded Payload Option を付与した JWS になっており、 JWS ヘッダー部の中の `b64` がそのオプションです。`crit` パラメータも必要となります。
+署名したいデータを base64 エンコードせずにそのまま使えるという特徴があります。また、上記 RFC の [Section 5.1](https://www.rfc-editor.org/rfc/rfc7797#section-5.1) にのっとり、ペイロード部は JWS から省略してください (Detached Payload) 。
+
+JWS ヘッダー部:
+
+```json
+{
+  "alg": "ES256",
+  "kid": "jJYs5_ILgUc8180L-pBPxBpgA3QC7eZu9wKOkh9mYPU",
+  "b64": false,
+  "crit": ["b64"]
+}
+```
+
+CIP 実装の Wordpress プラグインでは、このように実装されています。
+
+```php
+/**
+ * 対象のテキストへの署名 (RFC 7797)
+ *
+ * @param string $body 対象のテキスト
+ * @param string $pkcs8 PEM base64 でエンコードされた PKCS #8 プライベート鍵またはそのファイルパス
+ * @return string|false 成功した場合はDetached Compact JWS、失敗した場合はfalse
+ */
+function sign_body( string $body, string $pkcs8 ): string|false {
+	// $pkey はレジストリに登録した公開鍵に対応するプライベート鍵です
+	$pkey = \openssl_pkey_get_private( $pkcs8 );
+	$jwk  = get_jwk( $pkey );
+
+	if ( ! $jwk ) {
+		return false;
+	}
+
+  // JWS のヘッダーを生成しています。
+	$header = array(
+		'alg'  => $jwk['alg'],
+		'kid'  => $jwk['kid'],
+		'b64'  => false,
+		'crit' => array( 'b64' ),
+	);
+
+	$protected = base64_urlsafe_encode( \json_encode( $header ) );
+	/* b64 を false に設定したため、 $body は base64 エンコードをする必要がありません。
+	   つまり、 $body = "あいうえお", $protected = "eyJ...fQ" の場合、 $data は次のようになります。
+
+		 eyJ...fQ.あいうえお
+
+	　　この文字列に対する署名が $signature です。
+	*/
+	$data      = "{$protected}.{$body}";
+	$signature = ( new Sha256() )->sign( $data, InMemory::plainText( $pkcs8 ) );
+	/* $body は、jws には含めません。これは、記事ページ上で jws を検証するときに、拡張機能が記事から取得します。
+		 参考: RFC 7797 Section 5.1 Unencoded Detached Payload https://www.rfc-editor.org/rfc/rfc7797#section-5.1
+		      RFC 7515 Appendix F. Detached Content https://www.rfc-editor.org/rfc/rfc7515.html#appendix-F
+	*/
+	$jws       = $protected . '..' . base64_urlsafe_encode( $signature );
+
+	return $jws;
+}
+```
+
+##### それらの情報をまとめて DP を作る
+
+ここまでの手順で、 DP に必要な情報は全て用意できました。これを DP の仕様に従って適切なクレーム・プロパティの中に入れてください。この手順の最初に載せた DP の例に従ってください。より詳しい情報については[仕様](/spec/)を参考にしてください。
+
+仕様に準拠していない場合には、情報を入れたにも関わらず、検証に失敗したり、ユーザーに提示されなくなる可能性があります。
+
+##### DP に署名をして SDP を作る
+
+最後に DP に署名をして SDP を作ってください。一般的な JWT の仕様である [RFC 7519](https://www.rfc-editor.org/rfc/rfc7519) に従ってください。署名に使うプライベート鍵としてはレジストリに登録した公開鍵に対応するものを使ってください。
+
+CIP の Wordpress 連携では次のように実装されています。
+
+```php
+		$builder = (
+				new Builder( new JoseEncoder(), ChainedFormatter::withUnixTimestampDates() )
+			)
+				->withHeader( 'alg', $jwk['alg'] )
+				->withHeader( 'kid', $jwk['kid'] )
+				->issuedBy( $dp['issuer'] )
+				->relatedTo( $dp['subject'] )
+				->issuedAt(
+					( new \DateTimeImmutable() )
+					->setTimestamp( \strtotime( $dp['issuedAt'] ) )
+				)
+				->expiresAt(
+					( new \DateTimeImmutable() )
+					->setTimestamp( \strtotime( $dp['expiredAt'] ) )
+				)
+				->withClaim( 'https://originator-profile.org/dp', array( 'item' => $dp['item'] ) );
+
+		$jwt = $builder->getToken( new Sha256(), InMemory::plainText( $pkcs8 ) );
+
+		return $jwt->toString();
+```
+
+これにより、次のような JWT が生成されます。
+
+```
+eyJhbGciOiJFUzI1NiIsImtpZCI6ImpKWXM1X0lMZ1VjODE4MEwtcEJQeEJwZ0EzUUM3ZVp1OXdLT2toOW1ZUFUiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJ0aXRsZSI6Ik9QIOeiuuiqjeOBj-OCkyIsImltYWdlIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9pbWFnZS5wbmciLCJkZXNjcmlwdGlvbiI6IuOBk-OBruOCpuOCp-ODluODmuODvOOCuOOBruiqrOaYjuOBp-OBmeOAgiIsImh0dHBzOi8vc2NoZW1hLm9yZy9hdXRob3IiOiLlsbHnlLDlpKrpg44iLCJjYXRlZ29yeSI6W10sImh0dHBzOi8vc2NoZW1hLm9yZy9lZGl0b3IiOiLlsbHnlLDoirHlrZAiLCJodHRwczovL3NjaGVtYS5vcmcvZGF0ZVB1Ymxpc2hlZCI6IjIwMjMtMDctMDRUMTk6MTQ6MDBaIiwiaHR0cHM6Ly9zY2hlbWEub3JnL2RhdGVNb2RpZmllZCI6IjIwMjMtMDctMDRUMTk6MTQ6MDBaIn0seyJ0eXBlIjoidmlzaWJsZVRleHQiLCJ1cmwiOiJodHRwOi8vbG9jYWxob3N0OjgwODAiLCJsb2NhdGlvbiI6ImgxIiwicHJvb2YiOnsiandzIjoiZXlKaGJHY2lPaUpGVXpJMU5pSXNJbXRwWkNJNkltcEtXWE0xWDBsTVoxVmpPREU0TUV3dGNFSlFlRUp3WjBFelVVTTNaVnAxT1hkTFQydG9PVzFaVUZVaUxDSmlOalFpT21aaGJITmxMQ0pqY21sMElqcGJJbUkyTkNKZGZRLi5pVzVjTHN1VWFBQm9kS015bnlDQkg5NWo3V1dlbU5sSjVDQ2k0aVZ3SF9TbGtONktWVjlqQjRHSnhOMnB3RzdOOElLc1hyWjQyVEJTaVA0TExuLTgzZyJ9fV19LCJpc3MiOiJsb2NhbGhvc3QiLCJzdWIiOiJmZjlkNzhlMC1kODFhLTRlMzktYjdhMC0yN2UxNTQwNWVkYzciLCJpYXQiOjE2ODg2MjMzOTUsImV4cCI6MTcyMDI0NTc5NX0.31h0GW7DJK-UOzAVFoG_ukgGjAkg0da62ujeyj4bdr2cFgeQqt-yreS9MLKfw-Kcyfn5Lryqd7uvFP6xAZSGmA
+```
+
+以上で SDP の生成が終了しました。この処理は、記事を新規作成したり、更新したりするタイミングで、行われるのが望ましいです。CMS連携を実装する際にはそのように実装してください。
+
+SDP を生成したら、次は SDP を DP レジストリに登録してください。
+
+#### SDP の登録
+
+生成した SDP を DP レジストリに登録します。これには　DP レジストリ (`dprexpt.originator-profile.org`) の [SDP登録用のエンドポイント](#adminpublisherアカウントiddp-エンドポイント) を利用します。
+
+#### Profile Set の配信
+
+SDP をレジストリに登録したら、最後に、記事から SDP を含む Profile Set を取得できるようにします。
+これには[Profile Set 取得エンドポイント](#websiteprofiles-エンドポイント) を利用してください。
+
+結果的に次のような <link\> 要素が記事の HTML の <head\> 要素内に追記されれば、完了となります。
 
 ```html
 <link
-  href="https://dprexpt.originator-profile.org/website/profiles?url=https%3A%2F%2Foriginator-profile.org%2F"
+  href="https://dprexpt.originator-profile.org/website/profiles?url=<記事のURL (RFC 3986 でエンコード) >"
   rel="alternate"
   type="application/ld+json"
 />
 ```
 
-#### 記事本文の抽出
-
-:::note
-profile-registry CLI によって署名対象の記事の本文を抽出します。
-あらかじめ profile-registry CLI をインストールする必要があります。
-
-開発ガイド: https://profile-docs.pages.dev/development
-:::
-
-記事の URL、検証対象となるテキストの範囲、抽出結果の保存先を表明する .extract.json を作成します。
-
-```
-[
-  {
-    "url": "https://originator-profile.org/ja-JP/",
-    "bodyFormat": "visibleText",
-    "location": "[itemprop=articleBody]",
-    "output": "src/ja-JP/.website.json"
-  },
-  {
-    "url": "https://originator-profile.org/ja-JP/about/",
-    "bodyFormat": "visibleText",
-    "location": "[itemprop=articleBody]",
-    "output": "src/ja-JP/about/.website.json"
-  },
-  {
-    "url": "https://originator-profile.org/ja-JP/for-viewer/",
-    "bodyFormat": "visibleText",
-    "location": "[itemprop=articleBody]",
-    "output": "src/ja-JP/for-viewer/.website.json"
-  },
-  {
-    "url": "https://originator-profile.org/ja-JP/future/",
-    "bodyFormat": "visibleText",
-    "location": "[itemprop=articleBody]",
-    "output": "src/ja-JP/future/.website.json"
-  },
-  {
-    "url": "https://originator-profile.org/ja-JP/structure/",
-    "bodyFormat": "visibleText",
-    "location": "[itemprop=articleBody]",
-    "output": "src/ja-JP/structure/.website.json"
-  }
-]
-```
-
-作成した.extract.json から OGP 等メタデータ、検証対象となるテキストの抽出するため、
-下記コマンドを実行します。
-
-```
-$ profile-registry publisher:extract-website --input .extract.json
-```
-
-出力結果が下記です
-
-```
-{
-  "url": "https://originator-profile.org/ja-JP/",
-  "location": "[itemprop=articleBody]",
-  "bodyFormat": "visibleText",
-  "body": "一般的なネットユーザーの課題\nちゃんと事実を伝えているウェブ上の記事とか広告とかって、信頼できる情報だけ見る方法はないのかしら...？\nフェイクニュースや有害サイトってどうやってもなくならないの...？\n\nアテンションエコノミー（関心を引くことの価値化）を背景に、事実を伝える記事より例えフェイクニュースであっても目立つ記事の方が利益が上がる構造ができています。これはコンテンツ発信者とその信頼性を確認する一般的な手段が無いことが大きな原因の一つです。閲覧者や広告配信システムが良質な記事やメディアを識別可能にすれば、インターネットの情報流通はより健全化できます。\n\nウェブコンテンツを閲覧される方へ\n\n広告・メディア関係者の課題\nえええー！？ こんな危険なサイトにウチの広告が！！\nあれ、この記事の内容にウチの広告は合わないのでは！？\n\n不適切なサイト (メディア) に広告が掲載されたり、逆に、表示して欲しくない広告が掲載されることがあります。検索結果に偽サイトなどが表示されたり、SNS でもフェイクニュースが目立った形で拡散されたりしています。適切なサイトや広告主を識別し、適切なサイトと広告のマッチングをしたり、その配信記録を残すことでブランド毀損を防げます。\n\n一方で...\nでも、情報の規制は良くないよね、言論の自由も認められなければいけない。\n\nそのとおりです。ただし、Originator Profile技術はメディアや広告主の峻別しゅんべつをおこなうものではありません。現存する認証機関などに活用してもらうことを考えています。\n\n課題を解決するために\nコンテンツの発信元や流通経路を透明化する手段を提供します\n\nウェブ上の記事や広告といったコンテンツの発信者や掲載サイトの運営者の情報を付与し、公正な基準で第三者認証された発信者や運営者を確認出来るようにします。現在、これを実現するための技術と仕組みの開発と運用試験を、広告やメディアの関係企業や大学の研究機関と共に行っています。\n\n「Originator Profile 技術とは」についてもご覧ください。\n\nウェブ標準化に向けて\n\n情報の発信者や流通経路、広告主を透明化することで、様々な問題を解決できます。\n\nコンテンツ発信元や第三者認証情報をウェブブラウザで簡単に確認できます\nなりすましや改変を防ぎ安心してコンテンツを閲覧できます\n不適切な広告の掲載や、不適切なサイトへの広告掲載を防げます\n目をひくだけでなく、適切な記事の配信者の収益性を高めることができます\n\n次代のウェブをより健全で公益性の高いものとするべく、これらの問題を解決するため Originator Profile 技術を標準規格として Web 技術の標準化団体（W3C）に提案し、世界標準化と普及を目指した取り組みを行っています。",
-  "datePublished": null,
-  "author": null,
-  "description": "Originator Profileの紹介ページ",
-  "image": "https://originator-profile.org/image/ogp.png",
-  "title": "Originator Profile"
-}
-```
-
-#### Signed Document Profile の発行
-
-.website.json から Signed Document Profile を発行し Document Profile レジストリに登録します。
-あらかじめ Document Profile レジストリのデータベースの接続情報が必要です。
-この際、--identity で指定するプライベート鍵は Originator Profile レジストリに登録した公開鍵とペアでなければなりません。
-
-```
-$ profile-registry publisher:website --identity <プライベート鍵> --id <管理者の UUID> --operation create
-```
+以上の機能を CMS 連携に実装すれば、実装は完了となります。
 
 #### ブラウザでの表示結果確認
 
-CMS (WordPress または他の CMS) 側の実装が終わったら出力 HTML に SDP への <link\> 要素が含まれていることを確認します。
+正しく実装されていることを確認しましょう。 SDP を発行した記事のページに、ブラウザでアクセスしてください。出力 HTML に Profile Set への <link\> 要素が含まれていることを確認します。
 
 ![ブラウザでの確認1](assets/check_browser01.png)
 
-拡張機能を起動して読み込まれることを確認します。
+拡張機能を起動してみましょう。 Profile Set が取得、検証され、情報が表示されることを確認してください。署名したコンテンツがハイライトされていることも確認できます。
 
 ![ブラウザでの確認2](assets/check_browser02.png)
+
+拡張機能中の「この記事についてさらに詳しく」をクリックすると、 SDP に入れた情報が表示されることも確認ください。
+
+![ブラウザでの確認3](assets/check_browser03.png)
 
 ## CIP 提供 DP レジストリについて
 
