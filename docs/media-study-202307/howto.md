@@ -561,7 +561,7 @@ Wordpress 連携プラグインは、 [hook](https://developer.wordpress.org/plu
 
 この節では、署名付き Document Profile (SDP) を生成する手順を説明します。この手順では profile-registry CLI などのツールに頼らずに一から SDP を生成します。
 
-手順の解説の際に、CPI が実装した Wordpress 連携のソースコードの抜粋を適宜引用します。 Wordpress 連携のソースコードは[こちら](https://github.com/webdino/profile/tree/main/packages/wordpress) にあり、本実験参加者の方は[事務局にご連絡いただいた GitHub アカウント](#github-アカウント) を利用して自由に見ることができます。
+手順の解説の際に、CIP が実装した Wordpress 連携のソースコードの抜粋を適宜引用します。 Wordpress 連携のソースコードは[こちら](https://github.com/webdino/profile/tree/main/packages/wordpress) にあり、本実験参加者の方は[事務局にご連絡いただいた GitHub アカウント](#github-アカウント) を利用して自由に見ることができます。
 
 SDP 生成の手順は次のようになっています。
 
