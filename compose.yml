@@ -1,6 +1,6 @@
 services:
   api:
-    image: webdino/profile
+    image: originator-profile/registry
     build:
       context: "."
       args:

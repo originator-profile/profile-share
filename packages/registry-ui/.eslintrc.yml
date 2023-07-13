@@ -1,4 +1,4 @@
-extends: webdino-profile
+extends: originator-profile
 overrides:
   - files: components/*.tsx
     rules:

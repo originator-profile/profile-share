@@ -7,7 +7,7 @@ import helmet from "@fastify/helmet";
 import swagger, { FastifyDynamicSwaggerOptions } from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import httpErrorsEnhanced from "fastify-http-errors-enhanced";
-import { Config, Services } from "@webdino/profile-registry-service";
+import { Config, Services } from "@originator-profile/registry-service";
 import pkg from "./package.json";
 
 type Options = {

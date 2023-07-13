@@ -1,8 +1,8 @@
 {
-  "name": "@webdino/profile",
+  "name": "@originator-profile/profile",
   "description": "Originator Profile",
   "homepage": "https://profile-docs.pages.dev",
-  "repository": "https://github.com/webdino/profile",
+  "repository": "https://github.com/originator-profile/profile",
   "version": "0.0.1",
   "private": true,
   "workspaces": [

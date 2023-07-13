@@ -3,8 +3,8 @@ import { FromSchema } from "json-schema-to-ts";
 import { BadRequestError } from "http-errors-enhanced";
 import { ErrorResponse } from "../../../../../error";
 import Params from "./params";
-import { DecodeResult } from "@webdino/profile-verify";
-import { findFirstItemWithProof } from "@webdino/profile-core";
+import { DecodeResult } from "@originator-profile/verify";
+import { findFirstItemWithProof } from "@originator-profile/core";
 
 const Body = {
   type: "object",

@@ -1,5 +1,5 @@
 import { RouteHandlerMethod } from "fastify";
-import { Config, Services } from "@webdino/profile-registry-service";
+import { Config, Services } from "@originator-profile/registry-service";
 
 declare module "fastify" {
   interface FastifyInstance {

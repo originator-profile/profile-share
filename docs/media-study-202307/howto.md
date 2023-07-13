@@ -21,7 +21,7 @@ sidebar_position: 2
 Step 1
 : ダウンロード
 
-[GitHub Releases](https://github.com/webdino/profile/releases/latest) から OP 拡張機能の最新版をダウンロードします。
+[GitHub Releases](https://github.com/originator-profile/profile/releases/latest) から OP 拡張機能の最新版をダウンロードします。
 
 Step 2
 : インストール
@@ -96,7 +96,7 @@ Step 4
 
 ### GitHub アカウント
 
-本実験で利用頂く参照実装コードやレジストリ・拡張機能などのコードを収めた [オリジネータープロファイル リポジトリ](https://github.com/webdino/profile/tree/main) は private リポジトリであり、Read 権限を付与する CIP 加盟企業の github アカウントが必要です。
+本実験で利用頂く参照実装コードやレジストリ・拡張機能などのコードを収めた [オリジネータープロファイル リポジトリ](https://github.com/originator-profile/profile/tree/main) は private リポジトリであり、Read 権限を付与する CIP 加盟企業の github アカウントが必要です。
 
 **github アカウント作成後、担当者名とアカウント名を事務局までメールでご連絡ください。**ご連絡いただいた github アカウントに関連リポジトリのアクセス権を付与する invite をお送りさせて頂きます。
 
@@ -400,7 +400,7 @@ DP レジストリに登録するにはまず、Signed Document Profile (SDP) �
 
 SDP の生成は Web ページの HTML からテキストを抜き出し連結し署名する実装が必要ですが、これについては処理対象を定義したファイル `website.json` を用意し、コマンドラインで読み込むだけで SDP を生成する CLI を用意しています。
 
-SDP 生成対象を定義する `website.json` ファイルは[website.example.json](https://github.com/webdino/profile/blob/main/apps/registry/website.example.json) などをひな形として作成してください。例えば下記のような内容を使用します。
+SDP 生成対象を定義する `website.json` ファイルは[website.example.json](https://github.com/originator-profile/profile/blob/main/apps/registry/website.example.json) などをひな形として作成してください。例えば下記のような内容を使用します。
 
 ```json
 {
@@ -482,7 +482,7 @@ DP レジストリは各社共同使用となっています。
 ##### プラグインのインストール
 
 WordPress サイトに Profile Plugin をインストールします。
-詳細は [プラグインのソースコード](https://github.com/webdino/profile/tree/main/packages/wordpress#readme)をご確認ください。
+詳細は [プラグインのソースコード](https://github.com/originator-profile/profile/tree/main/packages/wordpress#readme)をご確認ください。
 
 Document Profile レジストリのドメイン名を、WordPress 管理者画面 > Settings > Profile > [レジストリドメイン名] に入力します。
 
@@ -561,7 +561,7 @@ Wordpress 連携プラグインは、 [hook](https://developer.wordpress.org/plu
 
 この節では、署名付き Document Profile (SDP) を生成する手順を説明します。この手順では profile-registry CLI などのツールに頼らずに一から SDP を生成します。
 
-手順の解説の際に、CIP が実装した Wordpress 連携のソースコードの抜粋を適宜引用します。 Wordpress 連携のソースコードは[こちら](https://github.com/webdino/profile/tree/main/packages/wordpress) にあり、本実験参加者の方は[事務局にご連絡いただいた GitHub アカウント](#github-アカウント) を利用して自由に見ることができます。
+手順の解説の際に、CIP が実装した Wordpress 連携のソースコードの抜粋を適宜引用します。 Wordpress 連携のソースコードは[こちら](https://github.com/originator-profile/profile/tree/main/packages/wordpress) にあり、本実験参加者の方は[事務局にご連絡いただいた GitHub アカウント](#github-アカウント) を利用して自由に見ることができます。
 
 SDP 生成の手順は次のようになっています。
 

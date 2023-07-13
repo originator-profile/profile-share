@@ -1,5 +1,5 @@
 {
-  "name": "@webdino/profile-registry-db",
+  "name": "@originator-profile/registry-db",
   "version": "0.0.1",
   "private": true,
   "main": "src/index.ts",
@@ -10,7 +10,7 @@
   "devDependencies": {
     "@prisma/client": "^4.16.2",
     "@prisma/generator-helper": "^4.16.2",
-    "@webdino/profile-tsconfig": "*",
+    "@originator-profile/tsconfig": "*",
     "prisma": "^4.16.2",
     "prisma-erd-generator": "^1.6.2"
   }

@@ -18,7 +18,7 @@ sidebar_position: 2
 5. 下記のコマンドをターミナルで実行
 
 ```sh
-git clone https://github.com/webdino/profile
+git clone https://github.com/originator-profile/profile
 cd profile
 corepack enable yarn
 yarn install

@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { OpCredential, OpHolder } from "@webdino/profile-model";
+import { OpCredential, OpHolder } from "@originator-profile/model";
 import Image from "../components/Image";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
 import { getVerificationType } from "../utils/credential";

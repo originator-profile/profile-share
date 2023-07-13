@@ -1,6 +1,6 @@
 import { Command, Flags } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
-import { Services } from "@webdino/profile-registry-service";
+import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { accountId } from "../../flags";
 

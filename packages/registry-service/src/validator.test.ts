@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
 import { addYears } from "date-fns";
-import { Op } from "@webdino/profile-model";
+import { Op } from "@originator-profile/model";
 import { ValidatorService } from "./validator";
 
 test("opValidate() return OP", () => {

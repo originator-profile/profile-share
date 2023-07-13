@@ -4,7 +4,7 @@ import { addYears } from "date-fns";
 import {
   Services,
   type Website as WebsiteType,
-} from "@webdino/profile-registry-service";
+} from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { globby } from "globby";
 import { accountId, operation } from "../../flags";

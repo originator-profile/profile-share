@@ -1,5 +1,5 @@
 import { JWTPayload } from "jose";
-import { JwtOpPayload, JwtDpPayload } from "@webdino/profile-model";
+import { JwtOpPayload, JwtDpPayload } from "@originator-profile/model";
 
 export const opNamespace = "https://originator-profile.org/op";
 export const dpNamespace = "https://originator-profile.org/dp";

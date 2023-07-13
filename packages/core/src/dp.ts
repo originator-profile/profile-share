@@ -1,4 +1,4 @@
-import { Dp, JwtDpPayload } from "@webdino/profile-model";
+import { Dp, JwtDpPayload } from "@originator-profile/model";
 import { deprecatedDpNamespace, dpNamespace } from "./jwt-payload";
 
 /**

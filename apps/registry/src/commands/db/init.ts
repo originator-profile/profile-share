@@ -10,7 +10,7 @@ export class DbInit extends Command {
     schema: Flags.string({
       description: "Prisma schema file",
       default:
-        "node_modules/@webdino/profile-registry/dist/prisma/schema.prisma",
+        "node_modules/@originator-profile/registry/dist/prisma/schema.prisma",
     }),
     seed: Flags.boolean({
       description: "Seed database",

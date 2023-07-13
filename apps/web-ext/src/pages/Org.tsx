@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
-import { isOp, isOpHolder } from "@webdino/profile-core";
+import { isOp, isOpHolder } from "@originator-profile/core";
 import {
   toRoles,
   findProfileGenericError,
-} from "@webdino/profile-ui/src/utils";
+} from "@originator-profile/ui/src/utils";
 import useProfileSet from "../utils/use-profile-set";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";

@@ -1,7 +1,7 @@
 import { FastifySchema, FastifyRequest, FastifyReply } from "fastify";
 import { HttpError, BadRequestError } from "http-errors-enhanced";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
-import context from "@webdino/profile-model/context.json" assert { type: "json" };
+import context from "@originator-profile/model/context.json" assert { type: "json" };
 import { ErrorResponse } from "../../../error";
 import Params from "./params";
 

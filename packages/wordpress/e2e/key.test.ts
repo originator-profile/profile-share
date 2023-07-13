@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import path from "node:path";
 import fs from "node:fs/promises";
-import { createThumbprint } from "@webdino/profile-sign";
+import { createThumbprint } from "@originator-profile/sign";
 
 test("プラグインをアクチベーション後プライベート鍵が存在する", async () => {
   const keyFilePath = path.join(

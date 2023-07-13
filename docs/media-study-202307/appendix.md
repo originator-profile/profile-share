@@ -11,7 +11,7 @@ sidebar_position: 11
 ## 全般
 
 - [全体サマリ](/)
-- [オリジネータープロファイル リポジトリ](https://github.com/webdino/profile)
+- [オリジネータープロファイル リポジトリ](https://github.com/originator-profile/profile)
 - [仕様](/spec.md)
   - リポジトリ全体での仕様
 - [環境構築手順書](/development.md)
