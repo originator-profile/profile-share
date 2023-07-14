@@ -25,6 +25,8 @@ export interface Website {
   bodyFormat: string;
 }
 
+type WebsiteUpdate = Partial<Website> & Pick<Website, "id">;
+
 /**
  * category の配列を受け取って、 prisma の update() や create() に渡せる形式にします。
  * @param categories category の配列
@@ -35,7 +37,7 @@ const convertCategoriesToPrismaConnectOrCreate = (
   categories: Website["categories"],
   websiteId: Website["id"],
 ): Prisma.websiteCategoriesCreateNestedManyWithoutWebsiteInput | undefined => {
-  if (typeof categories === "undefined") {
+  if (!categories) {
     return undefined;
   }
 
@@ -133,7 +135,7 @@ export const WebsiteService = ({ prisma }: Options) => ({
    * @param website ウェブページ (website.id 必須)
    * @return ウェブページ
    */
-  async update(website: Website): Promise<websites | Error> {
+  async update(website: WebsiteUpdate): Promise<websites | Error> {
     const { categories, bodyFormat, accountId, id, ...rest } = website;
 
     if (!id) {
@@ -148,12 +150,11 @@ export const WebsiteService = ({ prisma }: Options) => ({
       return new NotFoundError("Not Found");
     }
 
-    const connectBodyFormat =
-      typeof bodyFormat === "undefined"
-        ? undefined
-        : {
-            connect: { value: bodyFormat },
-          };
+    const connectBodyFormat = !bodyFormat
+      ? undefined
+      : {
+          connect: { value: bodyFormat },
+        };
 
     const input = {
       bodyFormat: connectBodyFormat,

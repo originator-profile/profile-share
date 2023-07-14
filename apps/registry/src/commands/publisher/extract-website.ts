@@ -1,5 +1,4 @@
 import { Command, Flags, ux } from "@oclif/core";
-import { Prisma } from "@prisma/client";
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import { chromium, BrowserContextOptions } from "playwright";
@@ -11,16 +10,17 @@ import image from "metascraper-image";
 import title from "metascraper-title";
 import { extractBody } from "@webdino/profile-verify";
 
-type Website = Prisma.websitesUpdateInput & {
+type Input = Array<{
+  id?: string;
   url: string;
   bodyFormat: "visibleText" | "text" | "html";
   location?: string;
   output: string;
-};
-type Websites = Array<Website>;
+  [k: string]: unknown;
+}>;
 type CliContext = { [key: string]: BrowserContextOptions };
 
-const toWebsite = (metadata: Metadata): Partial<Website> => {
+const toWebsite = (metadata: Metadata) => {
   const { url: _url, date: datePublished, ...other } = metadata;
   return { datePublished, ...other };
 };
@@ -42,13 +42,11 @@ export class PublisherExtractWebsite extends Command {
     "location": "h1",
     // ウェブサイトの保存先
     "output": "./path/to/.website.json"
-    // その他 Prisma.websitesUpdateInput を受け付けます
+    // その他のプロパティは出力の JSON ファイルにそのまま渡されます。
   },
   ...
 ]
-Prisma.websitesUpdateInput については
-詳細はTSDocを参照してください。
-https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma`,
+`,
       required: true,
     }),
     context: Flags.string({
@@ -75,7 +73,7 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
   };
 
   async #extractWebsite(
-    { url, bodyFormat, location, output, ...override }: Website,
+    { url, bodyFormat, location, output, id, ...override }: Input[number],
     metadataRequired: boolean,
     cliContext: CliContext,
   ): Promise<void> {
@@ -87,7 +85,7 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
     const context = await browser.newContext(browserContextOptions);
     const page = await context.newPage();
     await page.goto(url);
-    let metadata = {};
+    let metadata: ReturnType<typeof toWebsite> | undefined = undefined;
     if (metadataRequired) {
       metadata = toWebsite(
         await metascraper([author(), date(), description(), image(), title()])({
@@ -105,8 +103,13 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
         type: bodyFormat,
       },
     );
-    const website = {
-      id: crypto.randomUUID(),
+
+    if (body instanceof Error) {
+      this.error(body.message);
+    }
+
+    const extractionResult = {
+      id: id || crypto.randomUUID(),
       url,
       location,
       bodyFormat,
@@ -114,7 +117,10 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
       ...metadata,
       ...override,
     };
-    await fs.writeFile(output, JSON.stringify(website, null, 2) + "\n");
+    await fs.writeFile(
+      output,
+      JSON.stringify(extractionResult, null, 2) + "\n",
+    );
     await context.close();
     await browser.close();
   }
@@ -122,17 +128,17 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
   async run(): Promise<void> {
     const { flags } = await this.parse(PublisherExtractWebsite);
     const inputBuffer = await fs.readFile(flags.input);
-    const websites = JSON.parse(inputBuffer.toString()) as Websites;
+    const input = JSON.parse(inputBuffer.toString()) as Input;
     let context: CliContext = {};
     if (flags.context) {
       const contextBuffer = await fs.readFile(flags.context);
       context = JSON.parse(contextBuffer.toString());
     }
     const bar = ux.progress();
-    bar.start(websites.length, 0);
+    bar.start(input.length, 0);
     await Promise.all(
-      websites.map((website) =>
-        this.#extractWebsite(website, flags.metadata, context).then(() =>
+      input.map((i) =>
+        this.#extractWebsite(i, flags.metadata, context).then(() =>
           bar.increment(),
         ),
       ),
