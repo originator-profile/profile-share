@@ -1,5 +1,4 @@
 import { Command, Flags, ux } from "@oclif/core";
-import { Prisma } from "@prisma/client";
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import { chromium, BrowserContextOptions } from "playwright";
@@ -11,7 +10,9 @@ import image from "metascraper-image";
 import title from "metascraper-title";
 import { extractBody } from "@webdino/profile-verify";
 
-type Website = Prisma.websitesUpdateInput & {
+import { type Website as WebsiteType } from "@webdino/profile-registry-service";
+
+type Website = Partial<WebsiteType> & {
   url: string;
   bodyFormat: "visibleText" | "text" | "html";
   location?: string;
@@ -42,13 +43,11 @@ export class PublisherExtractWebsite extends Command {
     "location": "h1",
     // ウェブサイトの保存先
     "output": "./path/to/.website.json"
-    // その他 Prisma.websitesUpdateInput を受け付けます
+    // その他のプロパティは出力の JSON ファイルにそのまま渡されます。
   },
   ...
 ]
-Prisma.websitesUpdateInput については
-詳細はTSDocを参照してください。
-https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma`,
+`,
       required: true,
     }),
     context: Flags.string({
@@ -106,7 +105,7 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
       },
     );
     const website = {
-      id: crypto.randomUUID(),
+      id: override.id || crypto.randomUUID(),
       url,
       location,
       bodyFormat,

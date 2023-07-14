@@ -437,13 +437,10 @@ FLAG DESCRIPTIONS
     "location": "h1",
     // ウェブサイトの保存先
     "output": "./path/to/.website.json"
-    // その他 Prisma.websitesUpdateInput を受け付けます
+    // その他のプロパティは出力の JSON ファイルにそのまま渡されます。
     },
     ...
     ]
-    Prisma.websitesUpdateInput については
-    詳細はTSDocを参照してください。
-    https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
 ```
 
 ## `profile-registry publisher:profile-set`
