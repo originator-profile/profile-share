@@ -5,6 +5,7 @@ import { PublisherExtractWebsite } from "../src/commands/publisher/extract-websi
 import { PublisherWebsite } from "../src/commands/publisher/website";
 
 const accountId = "cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc";
+const websiteId = "efd400c1-4f6d-44bd-8fa0-8ecc85c6b1b4";
 const keyPath = path.join(__dirname, "..", "account-key.example.pem");
 
 describe("Publisher workflows", async () => {
@@ -21,6 +22,7 @@ describe("Publisher workflows", async () => {
         extractJsonPath,
         JSON.stringify([
           {
+            id: websiteId,
             url: "http://localhost:8080",
             bodyFormat: "visibleText",
             location: "h1",
@@ -31,6 +33,12 @@ describe("Publisher workflows", async () => {
     });
 
     afterAll(async () => {
+    await PublisherWebsite.run([
+        `--identity=${keyPath}`,
+        `--id=${accountId}`,
+        "--operation=delete",
+        `--input=${websiteJsonPath}`,
+      ]);
       await fs.rm(tmpdir, { recursive: true });
     });
 
