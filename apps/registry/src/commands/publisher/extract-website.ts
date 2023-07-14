@@ -16,6 +16,7 @@ type Input = Array<{
   bodyFormat: "visibleText" | "text" | "html";
   location?: string;
   output: string;
+  [k: string]: unknown;
 }>;
 type CliContext = { [key: string]: BrowserContextOptions };
 
@@ -107,7 +108,7 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
       this.error(body.message);
     }
 
-    const website = {
+    const extractionResult = {
       id: id || crypto.randomUUID(),
       url,
       location,
@@ -116,7 +117,10 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
       ...metadata,
       ...override,
     };
-    await fs.writeFile(output, JSON.stringify(website, null, 2) + "\n");
+    await fs.writeFile(
+      output,
+      JSON.stringify(extractionResult, null, 2) + "\n",
+    );
     await context.close();
     await browser.close();
   }
