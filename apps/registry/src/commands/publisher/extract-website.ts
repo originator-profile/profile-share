@@ -127,17 +127,17 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
   async run(): Promise<void> {
     const { flags } = await this.parse(PublisherExtractWebsite);
     const inputBuffer = await fs.readFile(flags.input);
-    const websites = JSON.parse(inputBuffer.toString()) as InputArray;
+    const inputArray = JSON.parse(inputBuffer.toString()) as InputArray;
     let context: CliContext = {};
     if (flags.context) {
       const contextBuffer = await fs.readFile(flags.context);
       context = JSON.parse(contextBuffer.toString());
     }
     const bar = ux.progress();
-    bar.start(websites.length, 0);
+    bar.start(inputArray.length, 0);
     await Promise.all(
-      websites.map((website) =>
-        this.#extractWebsite(website, flags.metadata, context).then(() =>
+      inputArray.map((input) =>
+        this.#extractWebsite(input, flags.metadata, context).then(() =>
           bar.increment(),
         ),
       ),
