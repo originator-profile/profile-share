@@ -10,16 +10,13 @@ import image from "metascraper-image";
 import title from "metascraper-title";
 import { extractBody } from "@webdino/profile-verify";
 
-interface Input {
+type Input = Array<{
   id?: string;
   url: string;
   bodyFormat: "visibleText" | "text" | "html";
   location?: string;
   output: string;
-  [k: string]: any;
-}
-
-type InputArray = Array<Input>;
+}>;
 type CliContext = { [key: string]: BrowserContextOptions };
 
 const toWebsite = (metadata: Metadata) => {
@@ -75,7 +72,7 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
   };
 
   async #extractWebsite(
-    { url, bodyFormat, location, output, id, ...override }: Input,
+    { url, bodyFormat, location, output, id, ...override }: Input[number],
     metadataRequired: boolean,
     cliContext: CliContext,
   ): Promise<void> {
@@ -87,7 +84,7 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
     const context = await browser.newContext(browserContextOptions);
     const page = await context.newPage();
     await page.goto(url);
-    let metadata: ReturnType<typeof toWebsite> | {} = {};
+    let metadata: ReturnType<typeof toWebsite> | undefined = undefined;
     if (metadataRequired) {
       metadata = toWebsite(
         await metascraper([author(), date(), description(), image(), title()])({
@@ -127,17 +124,17 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
   async run(): Promise<void> {
     const { flags } = await this.parse(PublisherExtractWebsite);
     const inputBuffer = await fs.readFile(flags.input);
-    const inputArray = JSON.parse(inputBuffer.toString()) as InputArray;
+    const input = JSON.parse(inputBuffer.toString()) as Input;
     let context: CliContext = {};
     if (flags.context) {
       const contextBuffer = await fs.readFile(flags.context);
       context = JSON.parse(contextBuffer.toString());
     }
     const bar = ux.progress();
-    bar.start(inputArray.length, 0);
+    bar.start(input.length, 0);
     await Promise.all(
-      inputArray.map((input) =>
-        this.#extractWebsite(input, flags.metadata, context).then(() =>
+      input.map((i) =>
+        this.#extractWebsite(i, flags.metadata, context).then(() =>
           bar.increment(),
         ),
       ),
