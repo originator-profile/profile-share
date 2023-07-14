@@ -10,18 +10,19 @@ import image from "metascraper-image";
 import title from "metascraper-title";
 import { extractBody } from "@webdino/profile-verify";
 
-import { type Website as WebsiteType } from "@webdino/profile-registry-service";
-
-type Website = Partial<WebsiteType> & {
+interface Input {
+  id?: string;
   url: string;
   bodyFormat: "visibleText" | "text" | "html";
   location?: string;
   output: string;
-};
-type Websites = Array<Website>;
+  [k: string]: any;
+}
+
+type InputArray = Array<Input>;
 type CliContext = { [key: string]: BrowserContextOptions };
 
-const toWebsite = (metadata: Metadata): Partial<Website> => {
+const toWebsite = (metadata: Metadata) => {
   const { url: _url, date: datePublished, ...other } = metadata;
   return { datePublished, ...other };
 };
@@ -74,7 +75,7 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
   };
 
   async #extractWebsite(
-    { url, bodyFormat, location, output, ...override }: Website,
+    { url, bodyFormat, location, output, id, ...override }: Input,
     metadataRequired: boolean,
     cliContext: CliContext,
   ): Promise<void> {
@@ -86,7 +87,7 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
     const context = await browser.newContext(browserContextOptions);
     const page = await context.newPage();
     await page.goto(url);
-    let metadata = {};
+    let metadata: ReturnType<typeof toWebsite> | {} = {};
     if (metadataRequired) {
       metadata = toWebsite(
         await metascraper([author(), date(), description(), image(), title()])({
@@ -104,8 +105,13 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
         type: bodyFormat,
       },
     );
+
+    if (body instanceof Error) {
+      this.error(body.message);
+    }
+
     const website = {
-      id: override.id || crypto.randomUUID(),
+      id: id || crypto.randomUUID(),
       url,
       location,
       bodyFormat,
@@ -121,7 +127,7 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
   async run(): Promise<void> {
     const { flags } = await this.parse(PublisherExtractWebsite);
     const inputBuffer = await fs.readFile(flags.input);
-    const websites = JSON.parse(inputBuffer.toString()) as Websites;
+    const websites = JSON.parse(inputBuffer.toString()) as InputArray;
     let context: CliContext = {};
     if (flags.context) {
       const contextBuffer = await fs.readFile(flags.context);
