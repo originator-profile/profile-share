@@ -33,7 +33,7 @@ describe("Publisher workflows", async () => {
     });
 
     afterAll(async () => {
-    await PublisherWebsite.run([
+      await PublisherWebsite.run([
         `--identity=${keyPath}`,
         `--id=${accountId}`,
         "--operation=delete",
