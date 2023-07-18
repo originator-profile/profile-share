@@ -93,7 +93,7 @@ profile-registry CLI を使用して、[鍵ペアを生成](./operation/key-pair
 
 ```
 $ profile-registry key-gen -o key
-$ cat key.pub.json | jq
+$ cat key.pub.json
 {
   "kty": "EC",
   "kid": "x6pZlFXlKvbV69GZf8xW-lqb6tg0_ERuNHHgTTvmQ70",
