@@ -4,7 +4,7 @@ import { describe, beforeEach, afterEach, test, expect } from "vitest";
 import { Window } from "happy-dom";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { JsonLdDocument } from "jsonld";
-import { generateKey, signOp } from "@originator-profile/sign";
+import { generateKey, generateJwk, signOp } from "@originator-profile/sign";
 import { Op } from "@originator-profile/model";
 import { fetchProfileSet } from "./fetch-profile-set";
 import { ProfilesFetchFailed } from "./errors";
@@ -20,8 +20,8 @@ describe("fetch-profiles", async () => {
     subject: "example.com",
     item: [],
   };
-  const { pkcs8 } = await generateKey();
-  const jwt = await signOp(op, pkcs8);
+  const { privateKey } = await generateJwk();
+  const jwt = await signOp(op, privateKey);
   const profiles: JsonLdDocument = {
     "@context": "https://originator-profile.org/context.jsonld",
     main: ["example.com"],

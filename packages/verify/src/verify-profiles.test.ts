@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { Op, Dp } from "@originator-profile/model";
-import { generateKey, signOp, signDp } from "@originator-profile/sign";
+import { generateKey, signOp, signDp, generateJwk } from "@originator-profile/sign";
 import {
   ProfileClaimsValidationFailed,
   ProfilesVerifyFailed,
@@ -12,7 +12,7 @@ import { SignedProfileValidator } from "./decode";
 import { ProfilesVerifier } from "./verify-profiles";
 
 describe("verify-profiles", async () => {
-  const certKeys = await generateKey();
+  const certKeys = await generateJwk();
   const subKeys = await generateKey();
   const iat = getUnixTime(new Date());
   const exp = getUnixTime(addYears(new Date(), 10));
@@ -33,9 +33,9 @@ describe("verify-profiles", async () => {
     subject: "https://example.com/article/42",
     item: [],
   };
-  const opToken = await signOp(op, certKeys.pkcs8);
+  const opToken = await signOp(op, certKeys.privateKey);
   const dpToken = await signDp(dp, subKeys.pkcs8);
-  const registryKeys = LocalKeys({ keys: [certKeys.jwk] });
+  const registryKeys = LocalKeys({ keys: [certKeys.publicKey] });
 
   test("Verify Profiles", async () => {
     const verifier = ProfilesVerifier(
@@ -50,8 +50,8 @@ describe("verify-profiles", async () => {
   });
 
   test("OPの検証に失敗すると子も検証に失敗", async () => {
-    const evilKeys = await generateKey();
-    const evilOpToken = await signOp(op, evilKeys.pkcs8);
+    const evilKeys = await generateJwk();
+    const evilOpToken = await signOp(op, evilKeys.privateKey);
     const verifier = ProfilesVerifier(
       { profile: [evilOpToken, dpToken] },
       registryKeys,
@@ -76,7 +76,7 @@ describe("verify-profiles", async () => {
       jwks: { keys: [subKeys.jwk] },
     };
     // @ts-expect-error invalid Op
-    const invalidOpToken = await signOp(invalidOp, certKeys.pkcs8);
+    const invalidOpToken = await signOp(invalidOp, certKeys.privateKey);
     const verifier = ProfilesVerifier(
       { profile: [invalidOpToken] },
       registryKeys,
@@ -98,7 +98,7 @@ describe("verify-profiles", async () => {
       item: [],
       jwks: { keys: [evilKeys.jwk] },
     };
-    const evilOpToken = await signOp(evilOp, certKeys.pkcs8);
+    const evilOpToken = await signOp(evilOp, certKeys.privateKey);
     const verifier = ProfilesVerifier(
       { profile: [evilOpToken, dpToken] },
       registryKeys,
