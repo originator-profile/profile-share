@@ -17,7 +17,7 @@ export async function signOp(
 ): Promise<string> {
   const header = {
     alg,
-    kid: privateKeyJwk.kid ?? await createThumbprint(privateKeyJwk, alg),
+    kid: privateKeyJwk.kid ?? (await createThumbprint(privateKeyJwk, alg)),
     typ: "JWT",
   };
   const payload: Pick<JwtOpPayload, "https://originator-profile.org/op"> = {

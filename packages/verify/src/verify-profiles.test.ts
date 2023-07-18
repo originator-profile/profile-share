@@ -1,7 +1,12 @@
 import { describe, test, expect } from "vitest";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { Op, Dp } from "@originator-profile/model";
-import { generateKey, signOp, signDp, generateJwk } from "@originator-profile/sign";
+import {
+  generateKey,
+  signOp,
+  signDp,
+  generateJwk,
+} from "@originator-profile/sign";
 import {
   ProfileClaimsValidationFailed,
   ProfilesVerifyFailed,
