@@ -7,6 +7,7 @@ import {
   OpHolder,
   OpVerifier,
   OpCertifier,
+  Jwk,
 } from "@originator-profile/model";
 import { signOp } from "@originator-profile/sign";
 import { AccountService } from "./account";
@@ -51,7 +52,7 @@ export const CertificateService = ({
   async signOp(
     id: CertifierId,
     accountId: AccountId,
-    pkcs8: string,
+    jwk: Jwk,
     options = {
       issuedAt: new Date(),
       expiredAt: addYears(new Date(), 10),
@@ -149,7 +150,7 @@ export const CertificateService = ({
     if (holderKeys.keys.length > 0) Object.assign(input, { jwks: holderKeys });
     const valid = validator.opValidate(input);
     if (valid instanceof Error) return valid;
-    const jwt: string = await signOp(valid, pkcs8);
+    const jwt: string = await signOp(valid, jwk);
     return jwt;
   },
   /**

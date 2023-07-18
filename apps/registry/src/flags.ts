@@ -1,5 +1,7 @@
 import { Flags } from "@oclif/core";
 import { parseAccountId } from "@originator-profile/core";
+import { Jwk } from "@originator-profile/model";
+import fs from "node:fs/promises";
 
 export const accountId = Flags.custom<string>({
   summary: "会員 ID またはドメイン名",
@@ -16,3 +18,17 @@ export const operation = Flags.custom<"create" | "read" | "update" | "delete">({
   options: ["create", "read", "update", "delete"],
   required: true,
 });
+
+export const privateKey = Flags.custom({
+    char: "i",
+    summary: "プライベート鍵のファイルパス",
+    description:
+      "プライベート鍵のファイルパスを渡してください。プライベート鍵は JWK 形式か、PEM base64 でエンコードされた PKCS #8 形式にしてください。",
+  async parse(filepath: string): Promise<Jwk> {
+    const pkcs8File = await fs.readFile(filepath);
+    const pkcs8 = pkcs8File.toString();
+    const jwk = JSON.parse(pkcs8);
+    // TODO: 正しい JWK か検証
+    return jwk;
+  }
+})
