@@ -4,7 +4,7 @@ import { describe, beforeEach, afterEach, test, expect } from "vitest";
 import { Window } from "happy-dom";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { JsonLdDocument } from "jsonld";
-import { generateKey, generateJwk, signOp } from "@originator-profile/sign";
+import { generateJwk, signOp } from "@originator-profile/sign";
 import { Op } from "@originator-profile/model";
 import { fetchProfileSet } from "./fetch-profile-set";
 import { ProfilesFetchFailed } from "./errors";
