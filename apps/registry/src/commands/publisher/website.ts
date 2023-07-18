@@ -15,7 +15,7 @@ type Website = Omit<WebsiteType, "accountId" | "proofJws">;
 export class PublisherWebsite extends Command {
   static description = "ウェブページの作成・表示・更新・削除";
   static flags = {
-    identity: privateKey({required: true}),
+    identity: privateKey({ required: true }),
     id: accountId({
       required: true,
     }),
@@ -101,10 +101,15 @@ export class PublisherWebsite extends Command {
       : addYears(new Date(), 1);
 
     // 受け取った情報から SDP を生成
-    const jwt = await services.publisher.signDp(flags.id, input.id, privateKeyJwk, {
-      issuedAt,
-      expiredAt,
-    });
+    const jwt = await services.publisher.signDp(
+      flags.id,
+      input.id,
+      privateKeyJwk,
+      {
+        issuedAt,
+        expiredAt,
+      },
+    );
     if (jwt instanceof Error) this.error(jwt);
 
     // SDP をレジストリに登録

@@ -31,7 +31,11 @@ async function issueOp(
 ) {
   const data = await services.account.registerKey(issuerUuid, publicKey);
   if (data instanceof Error) throw data;
-  const jwt = await services.certificate.signOp(issuerUuid, issuerUuid, privateKey);
+  const jwt = await services.certificate.signOp(
+    issuerUuid,
+    issuerUuid,
+    privateKey,
+  );
   if (jwt instanceof Error) throw jwt;
   const opId = await services.certificate.issue(issuerUuid, jwt);
   if (opId instanceof Error) throw opId;
@@ -42,7 +46,11 @@ Public Key: ${JSON.stringify(publicKey)}
 ${privateKey}`);
 }
 
-async function issueDp(services: Services, issuerUuid: string, privateKey: Jwk) {
+async function issueDp(
+  services: Services,
+  issuerUuid: string,
+  privateKey: Jwk,
+) {
   const count = await services.category.createMany(exampleCategories);
   if (count instanceof Error) throw count;
   const exampleCategory = Array.isArray(exampleCategories)
@@ -64,7 +72,11 @@ async function issueDp(services: Services, issuerUuid: string, privateKey: Jwk) 
     proofJws,
   });
   if (website instanceof Error) throw website;
-  const dpJwt = await services.publisher.signDp(issuerUuid, input.id, privateKey);
+  const dpJwt = await services.publisher.signDp(
+    issuerUuid,
+    input.id,
+    privateKey,
+  );
   if (dpJwt instanceof Error) throw dpJwt;
   await services.publisher.registerDp(issuerUuid, dpJwt);
   console.log(`Document Profile: ${dpJwt}`);

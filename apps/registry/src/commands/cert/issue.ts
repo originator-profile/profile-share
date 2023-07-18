@@ -10,7 +10,7 @@ const config = { ISSUER_UUID: process.env.ISSUER_UUID ?? "" };
 export class CertIssue extends Command {
   static description = "OP の発行";
   static flags = {
-    identity: privateKey({required: true}),
+    identity: privateKey({ required: true }),
     certifier: accountId({
       summary: "認証機関 ID またはドメイン名",
       required: true,

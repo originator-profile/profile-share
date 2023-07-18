@@ -20,15 +20,15 @@ export const operation = Flags.custom<"create" | "read" | "update" | "delete">({
 });
 
 export const privateKey = Flags.custom({
-    char: "i",
-    summary: "プライベート鍵のファイルパス",
-    description:
-      "プライベート鍵のファイルパスを渡してください。プライベート鍵は JWK 形式か、PEM base64 でエンコードされた PKCS #8 形式にしてください。",
+  char: "i",
+  summary: "プライベート鍵のファイルパス",
+  description:
+    "プライベート鍵のファイルパスを渡してください。プライベート鍵は JWK 形式か、PEM base64 でエンコードされた PKCS #8 形式にしてください。",
   async parse(filepath: string): Promise<Jwk> {
     const buffer = await fs.readFile(filepath);
     const fileContent = buffer.toString();
     const jwk = JSON.parse(fileContent);
     // TODO: 正しい JWK か検証
     return jwk;
-  }
-})
+  },
+});
