@@ -1,6 +1,5 @@
 import { Command, Flags } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
-import fs from "node:fs/promises";
 import { addYears } from "date-fns";
 import { Services } from "@originator-profile/registry-service";
 import { accountId, privateKey } from "../../flags";

@@ -1,7 +1,7 @@
 import { test, expect, describe, afterEach } from "vitest";
 import { mockDeep, mockClear } from "vitest-mock-extended";
 import { PrismaClient } from "@prisma/client";
-import { generateJwk, generateKey } from "@originator-profile/sign";
+import { generateJwk } from "@originator-profile/sign";
 import { WebsiteService } from "./website";
 
 describe("WebsiteService", () => {

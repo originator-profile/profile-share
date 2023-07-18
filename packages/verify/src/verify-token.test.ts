@@ -1,12 +1,7 @@
 import { test, expect } from "vitest";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { Op, Dp } from "@originator-profile/model";
-import {
-  generateKey,
-  signOp,
-  signDp,
-  generateJwk,
-} from "@originator-profile/sign";
+import { signOp, signDp, generateJwk } from "@originator-profile/sign";
 import { TokenDecoder } from "./decode";
 import { LocalKeys } from "./keys";
 import { TokenVerifier } from "./verify-token";

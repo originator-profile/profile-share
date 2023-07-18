@@ -2,7 +2,7 @@ import { test, expect } from "vitest";
 import { addYears } from "date-fns";
 import { decodeJwt, decodeProtectedHeader } from "jose";
 import { Dp } from "@originator-profile/model";
-import { generateJwk, generateKey } from "./generate-key";
+import { generateJwk } from "./generate-key";
 import { signDp } from "./sign-dp";
 
 test("signDp() return a valid JWT", async () => {

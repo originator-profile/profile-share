@@ -4,7 +4,7 @@ import { PrismaClient, websites } from "@prisma/client";
 import crypto from "node:crypto";
 import { decodeJwt } from "jose";
 import { JwtDpPayload } from "@originator-profile/model";
-import { generateJwk, generateKey } from "@originator-profile/sign";
+import { generateJwk } from "@originator-profile/sign";
 import { ValidatorService } from "./validator";
 import { PublisherService } from "./publisher";
 
