@@ -25,3 +25,35 @@ export async function generateKey(
     pkcs8,
   };
 }
+
+/**
+ * 鍵の生成（JWK形式）
+ * 公開鍵とプライベート鍵を JWK 形式で生成する。
+ * @param alg Algorithm identifier
+ */
+export async function generateJwk(
+  alg = "ES256",
+): Promise<{ publicKey: Jwk; privateKey: Jwk }> {
+  const { publicKey, privateKey } = await generateKeyPair(alg);
+  const [publicKeyJwk, privateKeyJwk] = await Promise.all([
+    exportJWK(publicKey),
+    exportJWK(privateKey),
+  ]);
+  if (!publicKeyJwk.kty || !privateKeyJwk.kty)
+    throw new Error("kty is not defined");
+
+  const kid = await createThumbprint(publicKeyJwk);
+
+  return {
+    publicKey: {
+      kty: publicKeyJwk.kty,
+      kid,
+      ...publicKeyJwk,
+    },
+    privateKey: {
+      kty: privateKeyJwk.kty,
+      kid,
+      ...privateKeyJwk,
+    },
+  };
+}
