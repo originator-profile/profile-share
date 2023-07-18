@@ -1,6 +1,6 @@
 import { describe, beforeAll, test, expect } from "vitest";
 import { Window } from "happy-dom";
-import { DpVisibleText, DpText, DpHtml } from "@webdino/profile-model";
+import { DpVisibleText, DpText, DpHtml } from "@originator-profile/model";
 import { extractBody } from "./extract-body";
 import { chromium, firefox, webkit, Locator } from "playwright";
 

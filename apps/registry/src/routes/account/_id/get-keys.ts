@@ -1,6 +1,6 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 import { HttpError, BadRequestError } from "http-errors-enhanced";
-import { Jwks } from "@webdino/profile-model";
+import { Jwks } from "@originator-profile/model";
 import { ErrorResponse } from "../../../error";
 import Params from "./params";
 

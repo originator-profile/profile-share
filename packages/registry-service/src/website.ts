@@ -1,7 +1,7 @@
 import { PrismaClient, Prisma, websites } from "@prisma/client";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { NotFoundError } from "http-errors-enhanced";
-import { signBody } from "@webdino/profile-sign";
+import { signBody } from "@originator-profile/sign";
 import { v4 as uuid4, validate } from "uuid";
 
 type Options = {

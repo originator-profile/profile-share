@@ -2,9 +2,9 @@ import { PrismaClient } from "@prisma/client";
 import flush from "just-flush";
 import { addYears, fromUnixTime } from "date-fns";
 import { NotFoundError, BadRequestError } from "http-errors-enhanced";
-import { Dp } from "@webdino/profile-model";
-import { isJwtDpPayload } from "@webdino/profile-core";
-import { signDp } from "@webdino/profile-sign";
+import { Dp } from "@originator-profile/model";
+import { isJwtDpPayload } from "@originator-profile/core";
+import { signDp } from "@originator-profile/sign";
 import { ValidatorService } from "./validator";
 
 type Options = {

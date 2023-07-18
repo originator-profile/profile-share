@@ -1,4 +1,4 @@
-import { Jwk } from "@webdino/profile-model";
+import { Jwk } from "@originator-profile/model";
 import { generateKeyPair, exportJWK, exportPKCS8 } from "jose";
 import { createThumbprint } from "./thumbprint";
 

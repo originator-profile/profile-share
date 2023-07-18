@@ -4,7 +4,7 @@ import {
   OpHolder,
   OpCertifier,
   OpVerifier,
-} from "@webdino/profile-model";
+} from "@originator-profile/model";
 import { getVerificationType } from "../utils/credential";
 import Image from "../components/Image";
 import Table from "./Table";

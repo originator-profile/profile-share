@@ -4,8 +4,8 @@ WORKDIR /app
 COPY . .
 RUN yarn install --frozen-lockfile \
   && yarn build \
-  && yarn workspace @webdino/profile-registry pack \
-  && mv apps/registry/webdino-profile-registry-v*.tgz profile-registry.tgz
+  && yarn workspace @originator-profile/registry pack \
+  && mv apps/registry/originator-profile-registry-v*.tgz profile-registry.tgz
 
 FROM node:${NODE_VERSION}
 WORKDIR /app

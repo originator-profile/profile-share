@@ -3,9 +3,9 @@ import { mockDeep, mockClear } from "vitest-mock-extended";
 import { Prisma, PrismaClient } from "@prisma/client";
 import crypto from "node:crypto";
 import { decodeJwt } from "jose";
-import { JwtOpPayload } from "@webdino/profile-model";
-import { generateKey } from "@webdino/profile-sign";
-import { isOpHolder, isOpCredential } from "@webdino/profile-core";
+import { JwtOpPayload } from "@originator-profile/model";
+import { generateKey } from "@originator-profile/sign";
+import { isOpHolder, isOpCredential } from "@originator-profile/core";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
 import { CertificateService } from "./certificate";
@@ -36,22 +36,24 @@ describe("CertificateService", () => {
     const accountId = crypto.randomUUID();
     const { jwk, pkcs8 } = await generateKey();
     const dummyAccount = {
+      url: "https://originator-profile.org/",
       roleValue: "certifier",
-      name: "WebDINO Japan OPR",
-      description: "Profile Registry (Demo)",
-      email: "example@webdino.org",
+      name: "Originator Profile 技術研究組合",
+      description: "Originator Profile Registry (Demo)",
+      email: "example@originator-profile.org",
       phoneNumber: null,
-      postalCode: "123-4567",
+      postalCode: "108-0073",
       addressCountry: "JP",
       addressRegion: "東京都",
-      addressLocality: "中央区",
-      streetAddress: "日本橋富沢町 10-13 WORK EDITION NIHONBASHI 3F",
+      addressLocality: "港区",
+      streetAddress: "三田",
       contactTitle: "お問い合わせ",
-      contactUrl: "https://www.webdino.org/contact/",
-      privacyPolicyTitle: "個人情報保護方針",
-      privacyPolicyUrl: "https://www.webdino.org/privacy/",
+      contactUrl: "https://originator-profile.org/ja-JP/inquiry/",
+      privacyPolicyTitle: "プライバシーポリシー",
+      privacyPolicyUrl: "https://originator-profile.org/ja-JP/privacy/",
       publishingPrincipleTitle: "編集ガイドライン",
-      publishingPrincipleUrl: "https://www.webdino.org/publishing-principle/",
+      publishingPrincipleUrl:
+        "https://originator-profile.org/ja-JP/publishing-principle/",
     };
     prisma.credentials.findMany.mockResolvedValue([
       {

@@ -1,5 +1,5 @@
 {
-  "extends": "@webdino/profile-tsconfig/tsconfig.json",
+  "extends": "@originator-profile/tsconfig/tsconfig.json",
   "compilerOptions": {
     "types": ["vi-fetch/matchers"],
     "resolveJsonModule": true

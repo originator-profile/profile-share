@@ -72,7 +72,7 @@ commands:
           name: Configure Git
           command: |
             git config user.name bot
-            git config user.email bot@webdino.org
+            git config user.email bot@originator-profile.org
   yarn_install_with_cache:
     steps:
       - restore_cache:

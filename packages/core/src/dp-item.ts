@@ -5,7 +5,7 @@ import {
   DpHtml,
   OgWebsite,
   JwtDpPayload,
-} from "@webdino/profile-model";
+} from "@originator-profile/model";
 import { dpNamespace } from "./jwt-payload";
 
 /**

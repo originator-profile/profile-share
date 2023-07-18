@@ -1,16 +1,16 @@
 import { Icon } from "@iconify/react";
 import { Disclosure, Transition } from "@headlessui/react";
-import { OgWebsite, OpHolder } from "@webdino/profile-model";
-import { isOpCredential } from "@webdino/profile-core";
+import { OgWebsite, OpHolder } from "@originator-profile/model";
+import { isOpCredential } from "@originator-profile/core";
 import {
   Image,
   WebsiteMainTable,
   WebsiteSubTable,
   TechTable,
   Description,
-} from "@webdino/profile-ui";
-import { Op, Dp } from "@webdino/profile-ui/src/types";
-import placeholderLogoMainUrl from "@webdino/profile-ui/src/assets/placeholder-logo-main.png";
+} from "@originator-profile/ui";
+import { Op, Dp } from "@originator-profile/ui/src/types";
+import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
 import HolderSummary from "../components/HolderSummary";
 
 type Props = {

@@ -1,4 +1,4 @@
-import { isOp } from "@webdino/profile-core";
+import { isOp } from "@originator-profile/core";
 import { Profile } from "../types/profile";
 import Table from "./Table";
 import TableRow from "./TableRow";

@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import clsx from "clsx";
-import { OgWebsite, OpHolder } from "@webdino/profile-model";
-import { isOgWebsite, isOpHolder } from "@webdino/profile-core";
-import { Image } from "@webdino/profile-ui";
-import { Op, Dp } from "@webdino/profile-ui/src/types";
-import placeholderLogoMainUrl from "@webdino/profile-ui/src/assets/placeholder-logo-main.png";
+import { OgWebsite, OpHolder } from "@originator-profile/model";
+import { isOgWebsite, isOpHolder } from "@originator-profile/core";
+import { Image } from "@originator-profile/ui";
+import { Op, Dp } from "@originator-profile/ui/src/types";
+import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
 import { DpLocator } from "../types/dp-locator";
 import { isDpLocator } from "../utils/dp-locator";
 import useElements from "../utils/use-elements";

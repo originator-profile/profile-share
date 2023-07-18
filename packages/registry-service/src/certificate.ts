@@ -2,8 +2,13 @@ import { PrismaClient, Prisma } from "@prisma/client";
 import flush from "just-flush";
 import { addYears, fromUnixTime } from "date-fns";
 import { NotFoundError, BadRequestError } from "http-errors-enhanced";
-import { Op, OpHolder, OpVerifier, OpCertifier } from "@webdino/profile-model";
-import { signOp } from "@webdino/profile-sign";
+import {
+  Op,
+  OpHolder,
+  OpVerifier,
+  OpCertifier,
+} from "@originator-profile/model";
+import { signOp } from "@originator-profile/sign";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
 

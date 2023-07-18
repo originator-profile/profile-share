@@ -1,4 +1,4 @@
-import { DpVisibleText, DpText, DpHtml } from "@webdino/profile-model";
+import { DpVisibleText, DpText, DpHtml } from "@originator-profile/model";
 import { ProfileBodyExtractFailed } from "./errors";
 import { Locator } from "playwright";
 

@@ -4,8 +4,8 @@ import {
   RemoteKeys,
   ProfilesVerifier,
   expandProfileSet,
-} from "@webdino/profile-verify";
-import { ProjectSummary } from "@webdino/profile-ui";
+} from "@originator-profile/verify";
+import { ProjectSummary } from "@originator-profile/ui";
 import FormRow from "../components/FormRow";
 
 type InitialValues = {

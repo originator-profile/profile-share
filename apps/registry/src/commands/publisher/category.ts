@@ -1,6 +1,6 @@
 import { Command, Flags, ux } from "@oclif/core";
 import { PrismaClient, Prisma } from "@prisma/client";
-import { Services } from "@webdino/profile-registry-service";
+import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { globby } from "globby";
 
@@ -12,7 +12,7 @@ export class PublisherCategory extends Command {
       description: `\
 Prisma.Enumerable<Prisma.categoriesCreateManyInput>
 詳細はTSDocを参照してください。
-https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma`,
+https://profile-docs.pages.dev/ts/modules/_originator-profile_profile_registry_db.default.Prisma`,
     }),
     "glob-input": Flags.string({
       summary: "JSON files match with glob pattern",

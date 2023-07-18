@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { rimraf } from "rimraf";
 import kebabCase from "just-kebab-case";
-import { Profile } from "@webdino/profile-model";
+import { Profile } from "@originator-profile/model";
 
 const out = "dist";
 const schemas = { Profile };

@@ -1,5 +1,5 @@
 {
-  "name": "@webdino/profile-verify",
+  "name": "@originator-profile/verify",
   "version": "0.0.1",
   "private": true,
   "main": "src/index.ts",
@@ -8,15 +8,15 @@
     "lint": "eslint --fix ."
   },
   "devDependencies": {
-    "@webdino/profile-core": "*",
-    "@webdino/profile-model": "*",
-    "@webdino/profile-sign": "*",
-    "@webdino/profile-tsconfig": "*",
+    "@originator-profile/core": "*",
+    "@originator-profile/model": "*",
+    "@originator-profile/sign": "*",
+    "@originator-profile/tsconfig": "*",
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
     "date-fns": "^2.30.0",
     "eslint": "^8.44.0",
-    "eslint-config-webdino-profile": "*",
+    "eslint-config-originator-profile": "*",
     "happy-dom": "^9.20.3",
     "jose": "^4.14.4",
     "jsonld": "^8.2.0",

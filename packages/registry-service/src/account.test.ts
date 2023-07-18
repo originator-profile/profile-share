@@ -3,7 +3,7 @@ import { mockDeep, mockClear } from "vitest-mock-extended";
 import { PrismaClient } from "@prisma/client";
 import crypto from "node:crypto";
 import Ajv from "ajv";
-import { Jwks } from "@webdino/profile-model";
+import { Jwks } from "@originator-profile/model";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
 

@@ -1,6 +1,6 @@
 services:
   api:
-    image: webdino/profile
+    image: ghcr.io/originator-profile/registry
     build:
       context: "."
       args:

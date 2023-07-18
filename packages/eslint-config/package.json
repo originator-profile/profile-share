@@ -1,5 +1,5 @@
 {
-  "name": "eslint-config-webdino-profile",
+  "name": "eslint-config-originator-profile",
   "version": "0.0.1",
   "private": true,
   "exports": "./eslint-config.cjs",

@@ -8,7 +8,7 @@ import date from "metascraper-date";
 import description from "metascraper-description";
 import image from "metascraper-image";
 import title from "metascraper-title";
-import { extractBody } from "@webdino/profile-verify";
+import { extractBody } from "@originator-profile/verify";
 
 type Input = Array<{
   id?: string;

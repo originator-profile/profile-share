@@ -1,6 +1,6 @@
 import { afterAll, afterEach, beforeAll } from "vitest";
 import { rest } from "msw";
-import context from "@webdino/profile-model/context.json";
+import context from "@originator-profile/model/context.json";
 import { setupServer } from "msw/node";
 
 // TODO: `ReferenceError: location is not defined` になるので宣言しているが
