@@ -45,7 +45,7 @@ export const CertificateService = ({
    * OP への署名
    * @param id 認証機関 ID
    * @param accountId 会員 ID
-   * @param pkcs8 PEM base64 でエンコードされた PKCS #8 プライベート鍵
+   * @param jwk JWK 形式のプライベート鍵
    * @param options 署名オプション
    * @return JWT でエンコードされた OP
    */

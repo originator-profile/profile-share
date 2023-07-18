@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import flush from "just-flush";
 import { addYears, fromUnixTime } from "date-fns";
 import { NotFoundError, BadRequestError } from "http-errors-enhanced";
-import { Dp } from "@originator-profile/model";
+import { Dp, Jwk } from "@originator-profile/model";
 import { isJwtDpPayload } from "@originator-profile/core";
 import { signDp } from "@originator-profile/sign";
 import { ValidatorService } from "./validator";
@@ -20,14 +20,14 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
    * DP への署名
    * @param accountId 会員 ID
    * @param id ウェブページ ID
-   * @param pkcs8 PEM base64 でエンコードされた PKCS #8 プライベート鍵
+   * @param privateKeyJwk PEM base64 でエンコードされた PKCS #8 プライベート鍵
    * @param options 署名オプション
    * @return JWT でエンコードされた DP
    */
   async signDp(
     accountId: AccountId,
     id: string,
-    pkcs8: string,
+    privateKeyJwk: Jwk,
     options = {
       issuedAt: new Date(),
       expiredAt: addYears(new Date(), 10),
@@ -97,7 +97,7 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
 
     const valid = validator.dpValidate(input);
     if (valid instanceof Error) return valid;
-    const jwt: string = await signDp(valid, pkcs8);
+    const jwt: string = await signDp(valid, privateKeyJwk);
     return jwt;
   },
   /**

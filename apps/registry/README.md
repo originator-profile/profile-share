@@ -475,7 +475,7 @@ USAGE
     create|read|update|delete [--issued-at <value>] [--expired-at <value>]
 
 FLAGS
-  -i, --identity=<value>    (required) PEM base64 でエンコードされた PKCS #8 プライベート鍵ファイル
+  -i, --identity=<value>    (required) プライベート鍵のファイルパス
   -o, --operation=<option>  (required) 操作
                             <options: create|read|update|delete>
   --expired-at=<value>      有効期限 (ISO 8601)
@@ -488,6 +488,11 @@ DESCRIPTION
   ウェブページの作成・表示・更新・削除
 
 FLAG DESCRIPTIONS
+  -i, --identity=<value>  プライベート鍵のファイルパス
+
+    プライベート鍵のファイルパスを渡してください。プライベート鍵は JWK 形式か、PEM base64 でエンコードされた PKCS #8
+    形式にしてください。
+
   --id=<value>  会員 ID またはドメイン名
 
     UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。

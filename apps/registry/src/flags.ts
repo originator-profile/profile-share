@@ -25,9 +25,9 @@ export const privateKey = Flags.custom({
     description:
       "プライベート鍵のファイルパスを渡してください。プライベート鍵は JWK 形式か、PEM base64 でエンコードされた PKCS #8 形式にしてください。",
   async parse(filepath: string): Promise<Jwk> {
-    const pkcs8File = await fs.readFile(filepath);
-    const pkcs8 = pkcs8File.toString();
-    const jwk = JSON.parse(pkcs8);
+    const buffer = await fs.readFile(filepath);
+    const fileContent = buffer.toString();
+    const jwk = JSON.parse(fileContent);
     // TODO: 正しい JWK か検証
     return jwk;
   }

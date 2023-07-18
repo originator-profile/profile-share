@@ -13,7 +13,7 @@ import { ProfilesVerifier } from "./verify-profiles";
 
 describe("verify-profiles", async () => {
   const certKeys = await generateJwk();
-  const subKeys = await generateKey();
+  const subKeys = await generateJwk();
   const iat = getUnixTime(new Date());
   const exp = getUnixTime(addYears(new Date(), 10));
   const op: Op = {
@@ -23,7 +23,7 @@ describe("verify-profiles", async () => {
     issuer: "example.org",
     subject: "example.com",
     item: [],
-    jwks: { keys: [subKeys.jwk] },
+    jwks: { keys: [subKeys.publicKey] },
   };
   const dp: Dp = {
     type: "dp",
@@ -34,7 +34,7 @@ describe("verify-profiles", async () => {
     item: [],
   };
   const opToken = await signOp(op, certKeys.privateKey);
-  const dpToken = await signDp(dp, subKeys.pkcs8);
+  const dpToken = await signDp(dp, subKeys.privateKey);
   const registryKeys = LocalKeys({ keys: [certKeys.publicKey] });
 
   test("Verify Profiles", async () => {
@@ -73,7 +73,7 @@ describe("verify-profiles", async () => {
       issuer: "example.org",
       subject: "example.com",
       item: ["invalid"],
-      jwks: { keys: [subKeys.jwk] },
+      jwks: { keys: [subKeys.publicKey] },
     };
     // @ts-expect-error invalid Op
     const invalidOpToken = await signOp(invalidOp, certKeys.privateKey);
@@ -134,8 +134,8 @@ describe("verify-profiles", async () => {
   });
 
   test("DPの検証に失敗するとその親のOPも検証に失敗", async () => {
-    const evilKeys = await generateKey();
-    const evilDpToken = await signDp(dp, evilKeys.pkcs8);
+    const evilKeys = await generateJwk();
+    const evilDpToken = await signDp(dp, evilKeys.privateKey);
     const verifier = ProfilesVerifier(
       { profile: [opToken, evilDpToken] },
       registryKeys,

@@ -1,25 +1,25 @@
 import { test, expect } from "vitest";
 import { importJWK, flattenedVerify, decodeProtectedHeader } from "jose";
-import { generateKey } from "./generate-key";
+import { generateJwk, generateKey } from "./generate-key";
 import { signBody } from "./sign-body";
 
 test("signBody() returns an object containing verifiable compact JWS", async () => {
   const body = "Hello, world!";
   const alg = "ES256";
-  const { jwk, pkcs8 } = await generateKey(alg);
-  const jws = await signBody(body, pkcs8);
-  expect(decodeProtectedHeader(jws).kid).toBe(jwk.kid);
+  const { publicKey, privateKey } = await generateJwk(alg);
+  const jws = await signBody(body, privateKey);
+  expect(decodeProtectedHeader(jws).kid).toBe(publicKey.kid);
   const [protectedHeader, emptyPayload, signature] = jws.split(".");
   expect(emptyPayload).toBe("");
   const payload = new TextEncoder().encode(body);
-  const publicKey = await importJWK(jwk, alg);
+  const publicKeyImported = await importJWK(publicKey, alg);
   const verification = await flattenedVerify(
     {
       protected: protectedHeader,
       payload,
       signature,
     },
-    publicKey,
+    publicKeyImported,
   );
   expect(verification.payload).toEqual(payload);
 });
