@@ -7,7 +7,8 @@ export class KeyGen extends Command {
   static flags = {
     output: Flags.string({
       char: "o",
-      description: "鍵を保存するファイル名（拡張子除く）。<output>.priv.json と <output>.pub.json を出力します。",
+      description:
+        "鍵を保存するファイル名（拡張子除く）。<output>.priv.json と <output>.pub.json を出力します。",
       required: true,
     }),
   };
