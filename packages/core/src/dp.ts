@@ -1,5 +1,5 @@
 import { Dp, JwtDpPayload } from "@originator-profile/model";
-import { deprecatedDpNamespace, dpNamespace } from "./jwt-payload";
+import { dpNamespace } from "./jwt-payload";
 
 /**
  * JwtDpPayload を与えると有効な Dp を返す関数
@@ -7,7 +7,7 @@ import { deprecatedDpNamespace, dpNamespace } from "./jwt-payload";
  * @return Dp
  */
 export function fromJwtDpPayload(payload: JwtDpPayload): Dp {
-  const claims = payload[dpNamespace] ?? payload[deprecatedDpNamespace];
+  const claims = payload[dpNamespace];
 
   return {
     type: "dp",
