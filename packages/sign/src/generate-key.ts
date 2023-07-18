@@ -31,7 +31,7 @@ export async function generateKey(
  * 公開鍵とプライベート鍵を JWK 形式で生成する。
  * @param alg Algorithm identifier
  */
-export async function generateKeyJwk(
+export async function generateJwk(
   alg = "ES256",
 ): Promise<{ publicKey: Jwk; privateKey: Jwk }> {
   const { publicKey, privateKey } = await generateKeyPair(alg);
