@@ -3,7 +3,9 @@
   "description": "Profile Registry API",
   "version": "0.0.1",
   "private": true,
-  "bin": "bin/run",
+  "bin": {
+    "profile-registry": "bin/run"
+  },
   "files": [
     "bin",
     "dist",
