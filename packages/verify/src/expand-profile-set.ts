@@ -2,15 +2,12 @@ import jsonld, { JsonLdDocument, NodeObject } from "jsonld";
 
 const context = "https://originator-profile.org/context#";
 
-/** @deprecated use context */
-const deprecatedContext = "https://github.com/webdino/profile#";
-
 function Values(node: NodeObject) {
   function values<Key extends "advertiser" | "publisher" | "main" | "profile">(
     key: Key,
   ): string[] {
     return (
-      (node[`${context}${key}`] ?? node[`${deprecatedContext}${key}`] ?? [])
+      (node[`${context}${key}`] ?? [])
         // @ts-expect-error assert
         .map((value: { "@value": string }) => value["@value"])
     );

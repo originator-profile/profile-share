@@ -105,7 +105,7 @@ Document Profile レジストリ-->>利用者: Profile Set
 ]
 ```
 
-詳細は [Profile Registry ソースコード](https://github.com/webdino/profile/blob/main/apps/registry#readme)を参照してください。
+詳細は [Profile Registry ソースコード](https://github.com/originator-profile/profile/blob/main/apps/registry#readme)を参照してください。
 
 ### .website.json の用意
 
@@ -131,7 +131,7 @@ $ profile-registry publisher:extract-website --input .extract.json
 }
 ```
 
-詳細は [Profile Registry ソースコード](https://github.com/webdino/profile/blob/main/apps/registry#readme)を参照してください。
+詳細は [Profile Registry ソースコード](https://github.com/originator-profile/profile/blob/main/apps/registry#readme)を参照してください。
 
 ## Signed Document Profile の発行
 
@@ -143,4 +143,4 @@ $ profile-registry publisher:extract-website --input .extract.json
 $ profile-registry publisher:website --identity <プライベート鍵> --id <管理者の UUID> --operation create
 ```
 
-詳細は [Profile Registry ソースコード](https://github.com/webdino/profile/blob/main/apps/registry#readme)を参照してください。
+詳細は [Profile Registry ソースコード](https://github.com/originator-profile/profile/blob/main/apps/registry#readme)を参照してください。

@@ -2,4 +2,4 @@
 
 スキーマのドキュメントを生成するためのパッケージです。
 
-- `@webdino/profile-model-docs/dist/*.schema.json` … JSON Schema
+- `@originator-profile/model-docs/dist/*.schema.json` … JSON Schema

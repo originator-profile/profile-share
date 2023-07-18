@@ -1,13 +1,13 @@
 import util from "node:util";
 import { PrismaClient } from "@prisma/client";
 import fs from "node:fs/promises";
-import { Services } from "@webdino/profile-registry-service";
+import { Services } from "@originator-profile/registry-service";
 import exampleAccount from "./account.example.json";
 import exampleWebsite from "./website.example.json";
 import exampleCategories from "./category.example.json";
-import { Jwk } from "@webdino/profile-model";
+import { Jwk } from "@originator-profile/model";
 import addYears from "date-fns/addYears";
-import { parseAccountId } from "@webdino/profile-core";
+import { parseAccountId } from "@originator-profile/core";
 
 export async function waitForDb(prisma: PrismaClient): Promise<void> {
   const sleep = util.promisify(setTimeout);

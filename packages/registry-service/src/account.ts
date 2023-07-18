@@ -2,8 +2,8 @@ import { PrismaClient, Prisma, accounts } from "@prisma/client";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { fromUnixTime } from "date-fns";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
-import { Jwk, Jwks } from "@webdino/profile-model";
-import { isJwtOpPayload } from "@webdino/profile-core";
+import { Jwk, Jwks } from "@originator-profile/model";
+import { isJwtOpPayload } from "@originator-profile/core";
 import { ValidatorService } from "./validator";
 
 type Options = {

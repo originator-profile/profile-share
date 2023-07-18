@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import path from "node:path";
 import serveHandler from "serve-handler";
-import context from "@webdino/profile-model/context.json";
+import context from "@originator-profile/model/context.json";
 import { FromHandler } from "../types";
 import getFrontendProfileSet from "./get-frontend-profile-set";
 import getIssuerKeys from "./get-issuer-keys";

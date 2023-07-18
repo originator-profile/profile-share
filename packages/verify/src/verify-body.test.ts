@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { generateKey, signBody } from "@webdino/profile-sign";
+import { generateKey, signBody } from "@originator-profile/sign";
 import { verifyBody } from "./verify-body";
 import { LocalKeys } from "./keys";
 

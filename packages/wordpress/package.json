@@ -1,5 +1,5 @@
 {
-  "name": "@webdino/profile-wordpress",
+  "name": "@originator-profile/wordpress",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -9,8 +9,8 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.35.1",
-    "@webdino/profile-sign": "*",
-    "@webdino/profile-verify": "*",
+    "@originator-profile/sign": "*",
+    "@originator-profile/verify": "*",
     "start-server-and-test": "^2.0.0"
   }
 }

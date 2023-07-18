@@ -9,7 +9,7 @@ Originator Profile と Document Profile の管理を行うシステムです。
 
 ## Deployment
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/webdino/profile)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/originator-profile/profile)
 
 ### 公式デプロイ
 
@@ -17,7 +17,7 @@ Originator Profile と Document Profile の管理を行うシステムです。
 - DP レジストリサーバー: [dprexpt.originator-profile.org](https://dprexpt.originator-profile.org/)
 - 試験運用版: [oprdev.originator-profile.org](https://oprdev.originator-profile.org/) (本リポジトリの `main` ブランチへのコミットごとにデプロイされています)
 
-不具合の報告・脆弱性の報告は [GitHub Issues](https://github.com/webdino/profile/issues) にてお寄せください。
+不具合の報告・脆弱性の報告は [GitHub Issues](https://github.com/originator-profile/profile/issues) にてお寄せください。
 
 ## Dependencies
 
@@ -90,7 +90,7 @@ FLAG DESCRIPTIONS
 
     Prisma.accountsCreateInput または Prisma.accountsUpdateInput
     詳細はTSDocを参照してください。
-    https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
+    https://profile-docs.pages.dev/ts/modules/_originator-profile_profile_registry_db.default.Prisma
     "id" フィールドの値には会員 ID またはドメイン名を指定可能です。
 ```
 
@@ -256,7 +256,7 @@ USAGE
   $ profile-registry db:init [--schema <value>] [--seed]
 
 FLAGS
-  --schema=<value>  [default: node_modules/@webdino/profile-registry/dist/prisma/schema.prisma] Prisma schema file
+  --schema=<value>  [default: node_modules/@originator-profile/registry/dist/prisma/schema.prisma] Prisma schema file
   --[no-]seed       Seed database
 
 DESCRIPTION
@@ -317,7 +317,8 @@ USAGE
   $ profile-registry key-gen -o <value>
 
 FLAGS
-  -o, --output=<value>  (required) プライベート鍵の保存先
+  -o, --output=<value>  (required) 鍵を保存するファイル名（拡張子除く）。<output>.priv.json と <output>.pub.json
+                        を出力します。
 
 DESCRIPTION
   鍵ペアの生成
@@ -360,7 +361,7 @@ FLAG DESCRIPTIONS
 
     Prisma.Enumerable<Prisma.categoriesCreateManyInput>
     詳細はTSDocを参照してください。
-    https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
+    https://profile-docs.pages.dev/ts/modules/_originator-profile_profile_registry_db.default.Prisma
 ```
 
 ## `profile-registry publisher:extract-category [OUTPUT]`
@@ -518,7 +519,7 @@ USAGE
 
 FLAGS
   -p, --port=<value>  [default: 8080] Listen port
-  --schema=<value>    [default: node_modules/@webdino/profile-registry/dist/prisma/schema.prisma] Prisma schema file
+  --schema=<value>    [default: node_modules/@originator-profile/registry/dist/prisma/schema.prisma] Prisma schema file
   --[no-]seed         Seed database
 
 DESCRIPTION

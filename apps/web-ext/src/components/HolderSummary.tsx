@@ -2,11 +2,11 @@ import clsx from "clsx";
 import isAfter from "date-fns/isAfter";
 import { Link, LinkProps } from "react-router-dom";
 import { Icon } from "@iconify/react";
-import { OpHolder, OpCredential } from "@webdino/profile-model";
-import { Image } from "@webdino/profile-ui";
-import { getVerificationType } from "@webdino/profile-ui/src/utils";
-import placeholderLogoMainUrl from "@webdino/profile-ui/src/assets/placeholder-logo-main.png";
-import logomarkUrl from "@webdino/profile-ui/src/assets/logomark.svg";
+import { OpHolder, OpCredential } from "@originator-profile/model";
+import { Image } from "@originator-profile/ui";
+import { getVerificationType } from "@originator-profile/ui/src/utils";
+import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
+import logomarkUrl from "@originator-profile/ui/src/assets/logomark.svg";
 
 function Credential({
   className,

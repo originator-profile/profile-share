@@ -5,7 +5,7 @@ import {
   fromJwtDpPayload,
   isJwtOpPayload,
   isJwtDpPayload,
-} from "@webdino/profile-core";
+} from "@originator-profile/core";
 import { TokenDecoder } from "./decode";
 import { ProfileTokenVerifyFailed } from "./errors";
 import { Keys } from "./keys";

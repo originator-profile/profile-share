@@ -1,9 +1,9 @@
 import { Command, Flags } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
-import { Services } from "@webdino/profile-registry-service";
+import { Services } from "@originator-profile/registry-service";
 import crypto from "node:crypto";
 import { NotFoundError } from "http-errors-enhanced";
-import { parseAccountId } from "@webdino/profile-core";
+import { parseAccountId } from "@originator-profile/core";
 
 export class AdminCreate extends Command {
   static description = "管理者の作成";

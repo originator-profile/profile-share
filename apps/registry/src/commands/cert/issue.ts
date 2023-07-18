@@ -2,7 +2,7 @@ import { Command, Flags } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
 import fs from "node:fs/promises";
 import { addYears } from "date-fns";
-import { Services } from "@webdino/profile-registry-service";
+import { Services } from "@originator-profile/registry-service";
 import { accountId } from "../../flags";
 
 const config = { ISSUER_UUID: process.env.ISSUER_UUID ?? "" };

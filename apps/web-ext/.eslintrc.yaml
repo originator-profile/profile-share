@@ -1,4 +1,4 @@
-extends: webdino-profile
+extends: originator-profile
 overrides:
   - files: [postcss.config.js, tailwind.config.js, esbuild.*.js]
     env:

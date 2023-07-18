@@ -1,10 +1,10 @@
 import clsx from "clsx";
 import { useParams, Link } from "react-router-dom";
-import { isOp, isDp, isOpHolder } from "@webdino/profile-core";
-import { Image } from "@webdino/profile-ui";
-import { Profile, Dp } from "@webdino/profile-ui/src/types";
-import { sortDps } from "@webdino/profile-ui/src/utils";
-import placeholderLogoMainUrl from "@webdino/profile-ui/src/assets/placeholder-logo-main.png";
+import { isOp, isDp, isOpHolder } from "@originator-profile/core";
+import { Image } from "@originator-profile/ui";
+import { Profile, Dp } from "@originator-profile/ui/src/types";
+import { sortDps } from "@originator-profile/ui/src/utils";
+import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
 import { routes } from "../utils/routes";
 
 type Props = {

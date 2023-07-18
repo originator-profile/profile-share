@@ -1,9 +1,9 @@
 {
-  "name": "profile-web-ext",
+  "name": "@originator-profile/web-ext",
   "description": "Profile Web Extension",
   "version": "0.0.1",
   "bugs": {
-    "url": "https://github.com/webdino/profile/issues"
+    "url": "https://github.com/originator-profile/profile/issues"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -17,11 +17,11 @@
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@types/rimraf": "^3.0.2",
-    "@webdino/profile-core": "*",
-    "@webdino/profile-model": "*",
-    "@webdino/profile-tsconfig": "*",
-    "@webdino/profile-ui": "*",
-    "@webdino/profile-verify": "*",
+    "@originator-profile/core": "*",
+    "@originator-profile/model": "*",
+    "@originator-profile/tsconfig": "*",
+    "@originator-profile/ui": "*",
+    "@originator-profile/verify": "*",
     "autoprefixer": "^10.4.14",
     "clsx": "^1.2.1",
     "commander": "^11.0.0",
@@ -30,7 +30,7 @@
     "esbuild": "^0.18.11",
     "esbuild-copy-static-files": "^0.1.0",
     "eslint": "^8.44.0",
-    "eslint-config-webdino-profile": "*",
+    "eslint-config-originator-profile": "*",
     "jsonld": "^8.2.0",
     "just-extend": "^6.2.0",
     "npm-run-all": "4.1.5",
@@ -41,20 +41,20 @@
     "react-use": "^17.4.0",
     "rimraf": "^5.0.1",
     "swr": "^2.2.0",
-    "tailwind-config-webdino-profile": "*",
+    "tailwind-config-originator-profile": "*",
     "tailwindcss": "^3.3.2",
     "typed-url-params": "^1.0.1",
     "typescript": "^5.1.6",
     "vitest": "^0.32.4",
     "web-ext": "^7.6.2"
   },
-  "homepage": "https://github.com/webdino/profile#readme",
+  "homepage": "https://profile-docs.pages.dev/",
   "keywords": [
     "webextension"
   ],
   "license": "MIT",
   "main": "src/main.ts",
-  "repository": "git@github.com:webdino/profile.git",
+  "repository": "git@github.com:originator-profile/profile.git",
   "scripts": {
     "build": "run-s clean build:{esbuild,web-ext}",
     "build:esbuild": "node esbuild.build.cjs",

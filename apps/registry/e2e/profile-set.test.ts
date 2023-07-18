@@ -5,7 +5,7 @@ import {
   expandProfileSet,
   ProfilesVerifier,
   RemoteKeys,
-} from "@webdino/profile-verify";
+} from "@originator-profile/verify";
 import { AdminCreate } from "../src/commands/admin/create";
 import { AdminDelete } from "../src/commands/admin/delete";
 

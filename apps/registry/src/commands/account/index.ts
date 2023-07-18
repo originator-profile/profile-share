@@ -1,9 +1,9 @@
 import { Command, Flags } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
-import { Services } from "@webdino/profile-registry-service";
+import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { operation } from "../../flags";
-import { parseAccountId } from "@webdino/profile-core";
+import { parseAccountId } from "@originator-profile/core";
 
 export class Account extends Command {
   static description = "会員の作成・表示・更新・削除";
@@ -14,7 +14,7 @@ export class Account extends Command {
       description: `\
 Prisma.accountsCreateInput または Prisma.accountsUpdateInput
 詳細はTSDocを参照してください。
-https://profile-docs.pages.dev/ts/modules/_webdino_profile_registry_db.default.Prisma
+https://profile-docs.pages.dev/ts/modules/_originator-profile_profile_registry_db.default.Prisma
 "id" フィールドの値には会員 ID またはドメイン名を指定可能です。`,
       default: "account.example.json",
       required: true,

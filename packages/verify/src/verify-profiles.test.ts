@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
-import { Op, Dp } from "@webdino/profile-model";
-import { generateKey, signOp, signDp } from "@webdino/profile-sign";
+import { Op, Dp } from "@originator-profile/model";
+import { generateKey, signOp, signDp } from "@originator-profile/sign";
 import {
   ProfileClaimsValidationFailed,
   ProfilesVerifyFailed,

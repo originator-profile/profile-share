@@ -1,5 +1,5 @@
-import { Op, JwtOpPayload } from "@webdino/profile-model";
-import { deprecatedOpNamespace, opNamespace } from "./jwt-payload";
+import { Op, JwtOpPayload } from "@originator-profile/model";
+import { opNamespace } from "./jwt-payload";
 
 /**
  * JwtOpPayload を与えると有効な Op を返す関数
@@ -7,7 +7,7 @@ import { deprecatedOpNamespace, opNamespace } from "./jwt-payload";
  * @return Op
  */
 export function fromJwtOpPayload(payload: JwtOpPayload): Op {
-  const claims = payload[opNamespace] ?? payload[deprecatedOpNamespace];
+  const claims = payload[opNamespace];
 
   return {
     type: "op",

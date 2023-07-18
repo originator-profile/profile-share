@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ProjectTitle, ProjectSummary } from "@webdino/profile-ui";
+import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
 import useProfileSet from "../utils/use-profile-set";
 import { routes } from "../utils/routes";
 

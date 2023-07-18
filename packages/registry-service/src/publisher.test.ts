@@ -3,8 +3,8 @@ import { mockDeep, mockClear } from "vitest-mock-extended";
 import { PrismaClient, websites } from "@prisma/client";
 import crypto from "node:crypto";
 import { decodeJwt } from "jose";
-import { JwtDpPayload } from "@webdino/profile-model";
-import { generateKey } from "@webdino/profile-sign";
+import { JwtDpPayload } from "@originator-profile/model";
+import { generateKey } from "@originator-profile/sign";
 import { ValidatorService } from "./validator";
 import { PublisherService } from "./publisher";
 

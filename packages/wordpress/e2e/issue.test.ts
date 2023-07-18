@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import path from "node:path";
 import fs from "node:fs/promises";
-import { SignedProfileValidator } from "@webdino/profile-verify";
+import { SignedProfileValidator } from "@originator-profile/verify";
 
 test("妥当なDocument Profile Itemであることを検証", async () => {
   const snapshotFilePath = path.join(

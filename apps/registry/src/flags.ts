@@ -1,5 +1,5 @@
 import { Flags } from "@oclif/core";
-import { parseAccountId } from "@webdino/profile-core";
+import { parseAccountId } from "@originator-profile/core";
 
 export const accountId = Flags.custom<string>({
   summary: "会員 ID またはドメイン名",

@@ -1,6 +1,6 @@
 import { Command } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
-import { Services } from "@webdino/profile-registry-service";
+import { Services } from "@originator-profile/registry-service";
 import { accountId } from "../../flags";
 
 export class AdminDelete extends Command {
