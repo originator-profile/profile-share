@@ -37,22 +37,8 @@ const JwtDpPayload = {
       required: ["item"],
       additionalProperties: false,
     },
-    /** @deprecated Use "https://originator-profile.org/op" */
-    "https://opr.webdino.org/jwt/claims/dp": {
-      deprecated: true,
-      type: "object",
-      properties: {
-        item: { type: "array", items: DpItem },
-      },
-      required: ["item"],
-      additionalProperties: false,
-    },
   },
-  required: ["iss", "sub", "exp", "iat"],
-  oneOf: [
-    { required: ["https://originator-profile.org/dp"] },
-    { required: ["https://opr.webdino.org/jwt/claims/dp"] },
-  ],
+  required: ["iss", "sub", "exp", "iat", "https://originator-profile.org/dp"],
   additionalProperties: false,
 } as const;
 
