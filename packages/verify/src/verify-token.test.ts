@@ -38,11 +38,11 @@ test("verify DP Token", async () => {
     subject: "https://example.com/article/42",
     item: [],
   };
-  const { jwk, pkcs8 } = await generateKey();
+  const { publicKey, privateKey } = await generateJwk();
   const decoder = TokenDecoder(null);
-  const keys = LocalKeys({ keys: [jwk] });
+  const keys = LocalKeys({ keys: [publicKey] });
   const verifier = TokenVerifier(keys, "http://localhost:8080", decoder);
-  const jwt = await signDp(dp, pkcs8);
+  const jwt = await signDp(dp, privateKey);
   const result = await verifier(jwt);
   // @ts-expect-error assert
   expect(result.dp).toEqual(dp);
