@@ -1,4 +1,4 @@
-import { OgWebsite } from "@webdino/profile-model";
+import { OgWebsite } from "@originator-profile/model";
 import Table from "./Table";
 import TableRow from "./TableRow";
 

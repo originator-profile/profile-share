@@ -1,5 +1,5 @@
-import { Dp as DpModel, Op as OpModel } from "@webdino/profile-model";
-import { ProfileGenericError } from "@webdino/profile-verify";
+import { Dp as DpModel, Op as OpModel } from "@originator-profile/model";
+import { ProfileGenericError } from "@originator-profile/verify";
 
 export type Op = OpModel & { error?: ProfileGenericError };
 export type Dp = DpModel & { error?: ProfileGenericError };

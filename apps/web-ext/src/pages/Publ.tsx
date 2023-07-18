@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import { isOp, isOpHolder, isDp, isOgWebsite } from "@webdino/profile-core";
-import { findProfileGenericError } from "@webdino/profile-ui/src/utils";
+import { isOp, isOpHolder, isDp, isOgWebsite } from "@originator-profile/core";
+import { findProfileGenericError } from "@originator-profile/ui/src/utils";
 import useProfileSet from "../utils/use-profile-set";
 import { routes } from "../utils/routes";
 import Loading from "../components/Loading";

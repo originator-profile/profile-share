@@ -2,7 +2,7 @@ import "vi-fetch/setup";
 import { mockFetch, mockGet } from "vi-fetch";
 import { describe, beforeEach, afterEach, test, expect } from "vitest";
 import { JsonLdDocument } from "jsonld";
-import context from "@webdino/profile-model/context.json";
+import context from "@originator-profile/model/context.json";
 import { expandProfileSet } from "./expand-profile-set";
 
 describe("expand-profiles", async () => {

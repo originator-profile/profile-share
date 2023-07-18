@@ -1,7 +1,7 @@
 import { test, expect } from "vitest";
 import { addYears } from "date-fns";
 import { decodeJwt, decodeProtectedHeader } from "jose";
-import { Op } from "@webdino/profile-model";
+import { Op } from "@originator-profile/model";
 import { generateKey } from "./generate-key";
 import { signOp } from "./sign-op";
 

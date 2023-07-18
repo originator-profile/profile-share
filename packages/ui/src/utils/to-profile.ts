@@ -1,11 +1,11 @@
 import { Profile } from "../types/profile";
-import { VerifyResult, ProfileGenericError } from "@webdino/profile-verify";
-import { JwtDpPayload } from "@webdino/profile-model";
+import { VerifyResult, ProfileGenericError } from "@originator-profile/verify";
+import { JwtDpPayload } from "@originator-profile/model";
 import {
   fromJwtDpPayload,
   fromJwtOpPayload,
   isJwtOpPayload,
-} from "@webdino/profile-core";
+} from "@originator-profile/core";
 
 /**
  * 検証結果から Profile 型へ変換する関数

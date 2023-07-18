@@ -1,6 +1,6 @@
 import { importPKCS8, SignJWT } from "jose";
 import { getUnixTime } from "date-fns";
-import { Op, JwtOpPayload } from "@webdino/profile-model";
+import { Op, JwtOpPayload } from "@originator-profile/model";
 import { createThumbprint } from "./thumbprint";
 
 /**

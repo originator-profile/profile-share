@@ -1,8 +1,8 @@
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import { decodeJwt, JWTPayload } from "jose";
-import { JwtOpPayload, JwtDpPayload } from "@webdino/profile-model";
-import { isJwtOpPayload, isJwtDpPayload } from "@webdino/profile-core";
+import { JwtOpPayload, JwtDpPayload } from "@originator-profile/model";
+import { isJwtOpPayload, isJwtDpPayload } from "@originator-profile/core";
 import { JOSEError } from "jose/dist/types/util/errors";
 import { ProfileClaimsValidationFailed } from "./errors";
 import { DecodeResult } from "./types";

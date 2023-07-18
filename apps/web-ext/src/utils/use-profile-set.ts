@@ -6,9 +6,9 @@ import {
   RemoteKeys,
   ProfilesVerifier,
   expandProfileSet,
-} from "@webdino/profile-verify";
-import { Profile } from "@webdino/profile-ui/src/types";
-import { toProfile } from "@webdino/profile-ui/src/utils";
+} from "@originator-profile/verify";
+import { Profile } from "@originator-profile/ui/src/types";
+import { toProfile } from "@originator-profile/ui/src/utils";
 import {
   fetchProfileSetMessageResponse,
   PopupMessageRequest,
