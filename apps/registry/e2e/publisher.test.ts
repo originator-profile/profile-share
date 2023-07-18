@@ -6,7 +6,7 @@ import { PublisherWebsite } from "../src/commands/publisher/website";
 
 const accountId = "cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc";
 const websiteId = "efd400c1-4f6d-44bd-8fa0-8ecc85c6b1b4";
-const keyPath = path.join(__dirname, "..", "account-key.example.pem");
+const keyPath = path.join(__dirname, "..", "account-key.example.priv.json");
 
 describe("Publisher workflows", async () => {
   let tmpdir: string;
