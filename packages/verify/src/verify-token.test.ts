@@ -1,7 +1,7 @@
 import { test, expect } from "vitest";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { Op, Dp } from "@originator-profile/model";
-import { generateKey, signOp, signDp } from "@originator-profile/sign";
+import { signOp, signDp, generateKey } from "@originator-profile/sign";
 import { TokenDecoder } from "./decode";
 import { LocalKeys } from "./keys";
 import { TokenVerifier } from "./verify-token";
@@ -17,11 +17,11 @@ test("verify OP Token", async () => {
     subject: "example.com",
     item: [],
   };
-  const { jwk, pkcs8 } = await generateKey();
+  const { publicKey, privateKey } = await generateKey();
   const decoder = TokenDecoder(null);
-  const keys = LocalKeys({ keys: [jwk] });
+  const keys = LocalKeys({ keys: [publicKey] });
   const verifier = TokenVerifier(keys, "http://localhost:8080", decoder);
-  const jwt = await signOp(op, pkcs8);
+  const jwt = await signOp(op, privateKey);
   const result = await verifier(jwt);
   // @ts-expect-error assert
   expect(result.op).toEqual(op);
@@ -38,11 +38,11 @@ test("verify DP Token", async () => {
     subject: "https://example.com/article/42",
     item: [],
   };
-  const { jwk, pkcs8 } = await generateKey();
+  const { publicKey, privateKey } = await generateKey();
   const decoder = TokenDecoder(null);
-  const keys = LocalKeys({ keys: [jwk] });
+  const keys = LocalKeys({ keys: [publicKey] });
   const verifier = TokenVerifier(keys, "http://localhost:8080", decoder);
-  const jwt = await signDp(dp, pkcs8);
+  const jwt = await signDp(dp, privateKey);
   const result = await verifier(jwt);
   // @ts-expect-error assert
   expect(result.dp).toEqual(dp);
