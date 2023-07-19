@@ -1,7 +1,7 @@
 import { test, expect } from "vitest";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { Op, Dp } from "@originator-profile/model";
-import { signOp, signDp, generateJwk } from "@originator-profile/sign";
+import { signOp, signDp, generateKey } from "@originator-profile/sign";
 import { TokenDecoder } from "./decode";
 import { LocalKeys } from "./keys";
 import { TokenVerifier } from "./verify-token";
@@ -17,7 +17,7 @@ test("verify OP Token", async () => {
     subject: "example.com",
     item: [],
   };
-  const { publicKey, privateKey } = await generateJwk();
+  const { publicKey, privateKey } = await generateKey();
   const decoder = TokenDecoder(null);
   const keys = LocalKeys({ keys: [publicKey] });
   const verifier = TokenVerifier(keys, "http://localhost:8080", decoder);
@@ -38,7 +38,7 @@ test("verify DP Token", async () => {
     subject: "https://example.com/article/42",
     item: [],
   };
-  const { publicKey, privateKey } = await generateJwk();
+  const { publicKey, privateKey } = await generateKey();
   const decoder = TokenDecoder(null);
   const keys = LocalKeys({ keys: [publicKey] });
   const verifier = TokenVerifier(keys, "http://localhost:8080", decoder);

@@ -2,7 +2,7 @@ import { test, expect } from "vitest";
 import { addYears } from "date-fns";
 import { decodeJwt, decodeProtectedHeader } from "jose";
 import { Op } from "@originator-profile/model";
-import { generateJwk } from "./generate-key";
+import { generateKey } from "./generate-key";
 import { signOp } from "./sign-op";
 
 test("signOp() return a valid JWT", async () => {
@@ -16,7 +16,7 @@ test("signOp() return a valid JWT", async () => {
     subject: "example.com",
     item: [],
   };
-  const { publicKey, privateKey } = await generateJwk();
+  const { publicKey, privateKey } = await generateKey();
   const jwt = await signOp(op, privateKey);
   expect(decodeProtectedHeader(jwt).kid).toBe(publicKey.kid);
   const valid = decodeJwt(jwt);
