@@ -119,12 +119,12 @@ export async function seed(): Promise<void> {
     const privateKeyText = await fs
       .readFile("./account-key.example.priv.json")
       .then((buffer) => buffer.toString());
-    const privateKeyJwk: Jwk = JSON.parse(privateKeyText);
-    await issueOp(services, issuerUuid, jwk, privateKeyJwk);
+    const privateKey: Jwk = JSON.parse(privateKeyText);
+    await issueOp(services, issuerUuid, jwk, privateKey);
 
     const websiteExists = await services.website.read(exampleWebsite);
     if (websiteExists instanceof Error) {
-      await issueDp(services, issuerUuid, privateKeyJwk);
+      await issueDp(services, issuerUuid, privateKey);
     }
   }
 }

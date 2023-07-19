@@ -70,10 +70,10 @@ export class PublisherWebsite extends Command {
       body: string;
     };
 
-    const privateKeyJwk = flags.identity as Jwk;
+    const privateKey = flags.identity as Jwk;
 
     // body に署名して proofJws パラメータを生成
-    const proofJws = await services.website.signBody(privateKeyJwk, body);
+    const proofJws = await services.website.signBody(privateKey, body);
     if (proofJws instanceof Error) throw proofJws;
 
     // website サービスを呼び出す
@@ -104,7 +104,7 @@ export class PublisherWebsite extends Command {
     const jwt = await services.publisher.signDp(
       flags.id,
       input.id,
-      privateKeyJwk,
+      privateKey,
       {
         issuedAt,
         expiredAt,

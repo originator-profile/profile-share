@@ -11,25 +11,25 @@ export async function generateKey(
   alg = "ES256",
 ): Promise<{ publicKey: Jwk; privateKey: Jwk }> {
   const { publicKey, privateKey } = await generateKeyPair(alg);
-  const [publicKeyJwk, privateKeyJwk] = await Promise.all([
+  const [publicJwk, privateJwk] = await Promise.all([
     exportJWK(publicKey),
     exportJWK(privateKey),
   ]);
-  if (!publicKeyJwk.kty || !privateKeyJwk.kty)
+  if (!publicJwk.kty || !privateJwk.kty)
     throw new Error("kty is not defined");
 
-  const kid = await createThumbprint(publicKeyJwk);
+  const kid = await createThumbprint(publicJwk);
 
   return {
     publicKey: {
-      kty: publicKeyJwk.kty,
+      kty: publicJwk.kty,
       kid,
-      ...publicKeyJwk,
+      ...publicJwk,
     },
     privateKey: {
-      kty: privateKeyJwk.kty,
+      kty: privateJwk.kty,
       kid,
-      ...privateKeyJwk,
+      ...privateJwk,
     },
   };
 }
