@@ -149,7 +149,7 @@ describe("fetch-profiles", async () => {
         "@context": "https://originator-profile.org/context.jsonld",
         main: ["https://example.org"],
         profile: ["{Signed Document Profile または Signed Originator Profile}"],
-      }
+      };
       window.document.body.innerHTML = `
 <script type="application/ld+json">${JSON.stringify(profileSet)}</script>
 `;
@@ -167,7 +167,7 @@ describe("fetch-profiles", async () => {
         "@context": "https://originator-profile.org/context.jsonld",
         main: ["https://example.org"],
         profile: ["{Signed Document Profile または Signed Originator Profile}"],
-      }
+      };
       const profileEndpoint = "https://example.com/1/ps.json";
       window.document.body.innerHTML = `
 <script type="application/ld+json">${JSON.stringify(profileSet)}</script>
