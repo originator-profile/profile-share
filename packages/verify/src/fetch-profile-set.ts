@@ -51,7 +51,7 @@ export async function fetchProfileSet(
   let profiles = getEmbeddedProfileSets(doc);
   try {
     const profileEndpoints = getEndpoints(doc);
-    const profileSetFromEndPoints = await Promise.all(
+    const profileSetFromEndpoints = await Promise.all(
       profileEndpoints.map(async (endpoint) => {
         const res = await fetch(endpoint);
 
@@ -62,7 +62,7 @@ export async function fetchProfileSet(
         return await res.json();
       }),
     );
-    profiles = profiles.concat(profileSetFromEndPoints);
+    profiles = profiles.concat(profileSetFromEndpoints);
   } catch (e) {
     if (profiles.length > 0) {
       return profiles;
