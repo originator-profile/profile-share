@@ -23,7 +23,7 @@ function getEmbeddedProfileSets(doc: Document): NodeObject[] {
     .map((elem) => {
       const text = elem.textContent;
       if (typeof text !== "string") {
-        return;
+        return undefined;
       }
       let jsonld;
       try {
@@ -34,7 +34,7 @@ function getEmbeddedProfileSets(doc: Document): NodeObject[] {
       if (jsonld["@context"] && jsonld.main && jsonld.profile) {
         return jsonld as NodeObject;
       }
-      return;
+      return undefined;
     })
     .filter((e) => typeof e !== "undefined") as NodeObject[];
 
