@@ -114,7 +114,7 @@ export async function seed(): Promise<void> {
   const accountKeys = await services.account.getKeys(issuerUuid);
   if ("keys" in accountKeys && accountKeys.keys.length === 0) {
     const jwk = await fs
-      .readFile("./account-key.example.pem.pub.json")
+      .readFile("./account-key.example.pub.json")
       .then((buffer) => JSON.parse(buffer.toString()));
     const privateKeyText = await fs
       .readFile("./account-key.example.priv.json")
