@@ -15,8 +15,7 @@ export async function generateKey(
     exportJWK(publicKey),
     exportJWK(privateKey),
   ]);
-  if (!publicJwk.kty || !privateJwk.kty)
-    throw new Error("kty is not defined");
+  if (!publicJwk.kty || !privateJwk.kty) throw new Error("kty is not defined");
 
   const kid = await createThumbprint(publicJwk);
 
