@@ -70,7 +70,7 @@ export class PublisherWebsite extends Command {
       body: string;
     };
 
-    const privateKeyJwk: Jwk = flags.identity satisfies Jwk;
+    const privateKeyJwk = flags.identity as Jwk;
 
     // body に署名して proofJws パラメータを生成
     const proofJws = await services.website.signBody(privateKeyJwk, body);
