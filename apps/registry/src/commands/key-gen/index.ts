@@ -1,24 +1,21 @@
 import { Command, Flags } from "@oclif/core";
 import fs from "node:fs/promises";
-import { generateJwk } from "@originator-profile/sign";
+import { generateKey } from "@originator-profile/sign";
 
 export class KeyGen extends Command {
   static description = "鍵ペアの生成";
   static flags = {
     output: Flags.string({
       char: "o",
-      description:
-        "鍵を保存するファイル名（拡張子除く）。<output>.priv.json と <output>.pub.json を出力します。",
+      description: "プライベート鍵の保存先",
       required: true,
     }),
   };
 
   async run(): Promise<void> {
     const { flags } = await this.parse(KeyGen);
-    const { publicKey, privateKey } = await generateJwk();
-    const privateKeyFilename = `${flags.output}.priv.json`;
-    const publicKeyFilename = `${flags.output}.pub.json`;
-    fs.writeFile(publicKeyFilename, JSON.stringify(publicKey, null, 2));
-    fs.writeFile(privateKeyFilename, JSON.stringify(privateKey, null, 2));
+    const { jwk, pkcs8 } = await generateKey();
+    fs.writeFile(`${flags.output}.pub.json`, JSON.stringify(jwk));
+    fs.writeFile(flags.output, pkcs8);
   }
 }
