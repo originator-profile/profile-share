@@ -1,21 +1,15 @@
 import { Command, Flags } from "@oclif/core";
 import { PrismaClient } from "@prisma/client";
-import fs from "node:fs/promises";
 import { addYears } from "date-fns";
 import { Services } from "@originator-profile/registry-service";
-import { accountId } from "../../flags";
+import { accountId, privateKey } from "../../flags";
 
 const config = { ISSUER_UUID: process.env.ISSUER_UUID ?? "" };
 
 export class CertIssue extends Command {
   static description = "OP の発行";
   static flags = {
-    identity: Flags.string({
-      char: "i",
-      description:
-        "PEM base64 でエンコードされた PKCS #8 プライベート鍵ファイル",
-      required: true,
-    }),
+    identity: privateKey({ required: true }),
     certifier: accountId({
       summary: "認証機関 ID またはドメイン名",
       required: true,
@@ -40,8 +34,7 @@ export class CertIssue extends Command {
     if (isCertifier instanceof Error) this.error(isCertifier);
     if (!isCertifier) this.error("Invalid certifier.");
 
-    const pkcs8File = await fs.readFile(flags.identity);
-    const pkcs8 = pkcs8File.toString();
+    const jwk = flags.identity;
     const issuedAt = flags["issued-at"]
       ? new Date(flags["issued-at"])
       : new Date();
@@ -51,7 +44,7 @@ export class CertIssue extends Command {
     const jwt = await services.certificate.signOp(
       flags.certifier,
       flags.holder,
-      pkcs8,
+      jwk,
       { issuedAt, expiredAt },
     );
     if (jwt instanceof Error) this.error(jwt);

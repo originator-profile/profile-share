@@ -20,8 +20,8 @@ describe("fetch-profiles", async () => {
     subject: "example.com",
     item: [],
   };
-  const { pkcs8 } = await generateKey();
-  const jwt = await signOp(op, pkcs8);
+  const { privateKey } = await generateKey();
+  const jwt = await signOp(op, privateKey);
   const profiles: JsonLdDocument = {
     "@context": "https://originator-profile.org/context.jsonld",
     main: ["example.com"],

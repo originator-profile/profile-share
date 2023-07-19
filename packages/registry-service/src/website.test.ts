@@ -13,9 +13,9 @@ describe("WebsiteService", () => {
 
   test("signBody() return compact JWS", async () => {
     const website: WebsiteService = WebsiteService({ prisma });
-    const { pkcs8 } = await generateKey();
+    const { privateKey } = await generateKey();
     const body = "<h1>OP 確認くん</h1>";
-    const jws = await website.signBody(pkcs8, body);
+    const jws = await website.signBody(privateKey, body);
     expect(jws).toBeTypeOf("string");
     expect((jws as string).split(".").length).toBe(3);
   });

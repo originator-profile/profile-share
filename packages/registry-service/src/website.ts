@@ -3,6 +3,7 @@ import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { NotFoundError } from "http-errors-enhanced";
 import { signBody } from "@originator-profile/sign";
 import { v4 as uuid4, validate } from "uuid";
+import { Jwk } from "@originator-profile/model";
 
 type Options = {
   prisma: PrismaClient;
@@ -196,11 +197,11 @@ export const WebsiteService = ({ prisma }: Options) => ({
   },
   /**
    * 対象のテキストへの署名
-   * @param pkcs8 PEM base64 でエンコードされた PKCS #8 プライベート鍵
+   * @param privateKey プライベート鍵
    * @param body 対象のテキスト
    * @return Detached Compact JWS
-   */ async signBody(pkcs8: string, body: string): Promise<string | Error> {
-    return await signBody(body, pkcs8).catch((e: Error) => e);
+   */ async signBody(privateKey: Jwk, body: string): Promise<string | Error> {
+    return await signBody(body, privateKey).catch((e: Error) => e);
   },
   /**
    * Profile Set の取得
