@@ -317,8 +317,7 @@ USAGE
   $ profile-registry key-gen -o <value>
 
 FLAGS
-  -o, --output=<value>  (required) 鍵を保存するファイル名（拡張子除く）。<output>.priv.json と <output>.pub.json
-                        を出力します。
+  -o, --output=<value>  (required) プライベート鍵の保存先
 
 DESCRIPTION
   鍵ペアの生成
