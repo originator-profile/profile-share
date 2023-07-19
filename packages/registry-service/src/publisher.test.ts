@@ -4,7 +4,7 @@ import { PrismaClient, websites } from "@prisma/client";
 import crypto from "node:crypto";
 import { decodeJwt } from "jose";
 import { JwtDpPayload } from "@originator-profile/model";
-import { generateJwk } from "@originator-profile/sign";
+import { generateKey } from "@originator-profile/sign";
 import { ValidatorService } from "./validator";
 import { PublisherService } from "./publisher";
 
@@ -38,7 +38,7 @@ describe("PublisherService", () => {
       // @ts-expect-error include websites
       websites: [dummyWebsite],
     });
-    const { privateKey } = await generateJwk();
+    const { privateKey } = await generateKey();
     const jwt = await publisher.signDp(accountId, webpageId, privateKey);
     // @ts-expect-error assert
     const valid: JwtDpPayload = decodeJwt(jwt);

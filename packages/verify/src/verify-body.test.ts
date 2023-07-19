@@ -1,12 +1,12 @@
 import { test, expect } from "vitest";
-import { generateJwk, signBody } from "@originator-profile/sign";
+import { generateKey, signBody } from "@originator-profile/sign";
 import { verifyBody } from "./verify-body";
 import { LocalKeys } from "./keys";
 
 test("verify body", async () => {
   const body = "Hello, world!";
   const alg = "ES256";
-  const { publicKey, privateKey } = await generateJwk(alg);
+  const { publicKey, privateKey } = await generateKey(alg);
   const jws = await signBody(body, privateKey);
   const keys = LocalKeys({ keys: [publicKey] });
   const result = await verifyBody(body, jws, keys);
@@ -19,7 +19,7 @@ test("invalid body", async () => {
   const body = "Hello, world!";
   const invalidBody = "invalid";
   const alg = "ES256";
-  const { publicKey, privateKey } = await generateJwk(alg);
+  const { publicKey, privateKey } = await generateKey(alg);
   const jws = await signBody(body, privateKey);
   const keys = LocalKeys({ keys: [publicKey] });
   const result = await verifyBody(invalidBody, jws, keys);

@@ -1,7 +1,7 @@
 import { test, expect, describe, afterEach } from "vitest";
 import { mockDeep, mockClear } from "vitest-mock-extended";
 import { PrismaClient } from "@prisma/client";
-import { generateJwk } from "@originator-profile/sign";
+import { generateKey } from "@originator-profile/sign";
 import { WebsiteService } from "./website";
 
 describe("WebsiteService", () => {
@@ -13,7 +13,7 @@ describe("WebsiteService", () => {
 
   test("signBody() return compact JWS", async () => {
     const website: WebsiteService = WebsiteService({ prisma });
-    const { privateKey } = await generateJwk();
+    const { privateKey } = await generateKey();
     const body = "<h1>OP 確認くん</h1>";
     const jws = await website.signBody(privateKey, body);
     expect(jws).toBeTypeOf("string");

@@ -4,7 +4,7 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import crypto from "node:crypto";
 import { decodeJwt } from "jose";
 import { JwtOpPayload } from "@originator-profile/model";
-import { generateJwk } from "@originator-profile/sign";
+import { generateKey } from "@originator-profile/sign";
 import { isOpHolder, isOpCredential } from "@originator-profile/core";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
@@ -34,7 +34,7 @@ describe("CertificateService", () => {
   test("signOp() return a valid JWT", async () => {
     const id = crypto.randomUUID();
     const accountId = crypto.randomUUID();
-    const { publicKey, privateKey } = await generateJwk();
+    const { publicKey, privateKey } = await generateKey();
     const dummyAccount = {
       url: "https://originator-profile.org/",
       roleValue: "certifier",

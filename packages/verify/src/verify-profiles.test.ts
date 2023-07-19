@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { Op, Dp } from "@originator-profile/model";
-import { signOp, signDp, generateJwk } from "@originator-profile/sign";
+import { signOp, signDp, generateKey } from "@originator-profile/sign";
 import {
   ProfileClaimsValidationFailed,
   ProfilesVerifyFailed,
@@ -12,8 +12,8 @@ import { SignedProfileValidator } from "./decode";
 import { ProfilesVerifier } from "./verify-profiles";
 
 describe("verify-profiles", async () => {
-  const certKeys = await generateJwk();
-  const subKeys = await generateJwk();
+  const certKeys = await generateKey();
+  const subKeys = await generateKey();
   const iat = getUnixTime(new Date());
   const exp = getUnixTime(addYears(new Date(), 10));
   const op: Op = {
@@ -50,7 +50,7 @@ describe("verify-profiles", async () => {
   });
 
   test("OPの検証に失敗すると子も検証に失敗", async () => {
-    const evilKeys = await generateJwk();
+    const evilKeys = await generateKey();
     const evilOpToken = await signOp(op, evilKeys.privateKey);
     const verifier = ProfilesVerifier(
       { profile: [evilOpToken, dpToken] },
@@ -88,7 +88,7 @@ describe("verify-profiles", async () => {
   });
 
   test("不正な公開鍵のときJWTの検証に失敗", async () => {
-    const evilKeys = await generateJwk();
+    const evilKeys = await generateKey();
     const evilOp: Op = {
       type: "op",
       issuedAt: fromUnixTime(iat).toISOString(),
@@ -134,7 +134,7 @@ describe("verify-profiles", async () => {
   });
 
   test("DPの検証に失敗するとその親のOPも検証に失敗", async () => {
-    const evilKeys = await generateJwk();
+    const evilKeys = await generateKey();
     const evilDpToken = await signDp(dp, evilKeys.privateKey);
     const verifier = ProfilesVerifier(
       { profile: [opToken, evilDpToken] },

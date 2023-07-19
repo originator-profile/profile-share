@@ -1,6 +1,6 @@
 import { Command, Flags } from "@oclif/core";
 import fs from "node:fs/promises";
-import { generateJwk } from "@originator-profile/sign";
+import { generateKey } from "@originator-profile/sign";
 
 export class KeyGen extends Command {
   static description = "鍵ペアの生成";
@@ -15,7 +15,7 @@ export class KeyGen extends Command {
 
   async run(): Promise<void> {
     const { flags } = await this.parse(KeyGen);
-    const { publicKey, privateKey } = await generateJwk();
+    const { publicKey, privateKey } = await generateKey();
     const privateKeyFilename = `${flags.output}.priv.json`;
     const publicKeyFilename = `${flags.output}.pub.json`;
     fs.writeFile(publicKeyFilename, JSON.stringify(publicKey, null, 2));

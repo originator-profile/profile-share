@@ -4,7 +4,7 @@ import { describe, beforeEach, afterEach, test, expect } from "vitest";
 import { Window } from "happy-dom";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { JsonLdDocument } from "jsonld";
-import { generateJwk, signOp } from "@originator-profile/sign";
+import { generateKey, signOp } from "@originator-profile/sign";
 import { Op } from "@originator-profile/model";
 import { fetchProfileSet } from "./fetch-profile-set";
 import { ProfilesFetchFailed } from "./errors";
@@ -20,7 +20,7 @@ describe("fetch-profiles", async () => {
     subject: "example.com",
     item: [],
   };
-  const { privateKey } = await generateJwk();
+  const { privateKey } = await generateKey();
   const jwt = await signOp(op, privateKey);
   const profiles: JsonLdDocument = {
     "@context": "https://originator-profile.org/context.jsonld",
