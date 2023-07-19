@@ -22,13 +22,13 @@ sidebar_position: 7
 
 例えば、所有者となる組織のドメイン名が `example.com`、発行者となる組織のドメイン名が `oprexpt.originator-profile.org` である場合、`--holder example.com --certifier oprexpt.originator-profile.org` となります。
 
-さらに先程取得した発行者のプライベート鍵のファイルパスも必要となります。例えばプライベート鍵のファイル名が `certifier-key.pem` である場合、`--identity certifier-key.pem` となります。
+さらに先程取得した発行者のプライベート鍵のファイルパスも必要となります。例えばプライベート鍵のファイル名が `certifier-key.priv.json` である場合、`--identity certifier-key.priv.json` となります。
 
 この情報をもとに、以下のコマンドを実行します。
 
 ```console
 profile-registry cert:issue \
-  --identity certifier-key.pem \
+  --identity certifier-key.priv.json \
   --certifier oprexpt.originator-profile.org \
   --holder example.com
 ```

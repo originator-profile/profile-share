@@ -57,7 +57,7 @@ CLI のオプションについては、[apps/registry/README.md](https://github
 
 ```console
 profile-registry publisher:website \
-  -i holder-key.pem \
+  -i holder-key.priv.json \
   --id example.com \
   --input website.json \
   -o create
