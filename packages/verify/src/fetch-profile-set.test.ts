@@ -133,4 +133,52 @@ describe("fetch-profiles", async () => {
     );
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
   });
+
+  describe("<script>要素から Profile Set を取得する", async () => {
+    beforeEach(() => {
+      mockGet("https://example.com/1/ps.json").willResolve({
+        "@context": "https://originator-profile.org/context.jsonld",
+        main: ["https://example.com"],
+        profile: ["1/ps.json"],
+      });
+    });
+
+    test("<script> から profile set を取得できる", async () => {
+      const window = new Window();
+      const profileSet = {
+        "@context": "https://originator-profile.org/context.jsonld",
+        main: ["https://example.org"],
+        profile: ["{Signed Document Profile または Signed Originator Profile}"],
+      }
+      window.document.body.innerHTML = `
+<script type="application/ld+json">${JSON.stringify(profileSet)}</script>
+`;
+
+      const result = await fetchProfileSet(
+        window.document as unknown as Document,
+      );
+      expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
+      expect(result).toMatchSnapshot();
+    });
+
+    test("<script> と <link> から profile set を取得できる", async () => {
+      const window = new Window();
+      const profileSet = {
+        "@context": "https://originator-profile.org/context.jsonld",
+        main: ["https://example.org"],
+        profile: ["{Signed Document Profile または Signed Originator Profile}"],
+      }
+      const profileEndpoint = "https://example.com/1/ps.json";
+      window.document.body.innerHTML = `
+<script type="application/ld+json">${JSON.stringify(profileSet)}</script>
+<link href="${profileEndpoint}" rel="alternate" type="application/ld+json" />
+`;
+
+      const result = await fetchProfileSet(
+        window.document as unknown as Document,
+      );
+      expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
+      expect(result).toMatchSnapshot();
+    });
+  });
 });
