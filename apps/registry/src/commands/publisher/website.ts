@@ -7,19 +7,15 @@ import {
 } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { globby } from "globby";
-import { accountId, operation } from "../../flags";
+import { accountId, operation, privateKey } from "../../flags";
+import { Jwk } from "@originator-profile/model";
 
 type Website = Omit<WebsiteType, "accountId" | "proofJws">;
 
 export class PublisherWebsite extends Command {
   static description = "ウェブページの作成・表示・更新・削除";
   static flags = {
-    identity: Flags.string({
-      char: "i",
-      description:
-        "PEM base64 でエンコードされた PKCS #8 プライベート鍵ファイル",
-      required: true,
-    }),
+    identity: privateKey({ required: true }),
     id: accountId({
       required: true,
     }),
@@ -74,10 +70,10 @@ export class PublisherWebsite extends Command {
       body: string;
     };
 
+    const privateKey = flags.identity as Jwk;
+
     // body に署名して proofJws パラメータを生成
-    const pkcs8File = await fs.readFile(flags.identity);
-    const pkcs8 = pkcs8File.toString();
-    const proofJws = await services.website.signBody(pkcs8, body);
+    const proofJws = await services.website.signBody(privateKey, body);
     if (proofJws instanceof Error) throw proofJws;
 
     // website サービスを呼び出す
@@ -105,10 +101,15 @@ export class PublisherWebsite extends Command {
       : addYears(new Date(), 1);
 
     // 受け取った情報から SDP を生成
-    const jwt = await services.publisher.signDp(flags.id, input.id, pkcs8, {
-      issuedAt,
-      expiredAt,
-    });
+    const jwt = await services.publisher.signDp(
+      flags.id,
+      input.id,
+      privateKey,
+      {
+        issuedAt,
+        expiredAt,
+      },
+    );
     if (jwt instanceof Error) this.error(jwt);
 
     // SDP をレジストリに登録

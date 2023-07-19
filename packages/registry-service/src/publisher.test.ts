@@ -38,8 +38,8 @@ describe("PublisherService", () => {
       // @ts-expect-error include websites
       websites: [dummyWebsite],
     });
-    const { pkcs8 } = await generateKey();
-    const jwt = await publisher.signDp(accountId, webpageId, pkcs8);
+    const { privateKey } = await generateKey();
+    const jwt = await publisher.signDp(accountId, webpageId, privateKey);
     // @ts-expect-error assert
     const valid: JwtDpPayload = decodeJwt(jwt);
     expect(valid).toMatchObject({

@@ -7,15 +7,18 @@ export class KeyGen extends Command {
   static flags = {
     output: Flags.string({
       char: "o",
-      description: "プライベート鍵の保存先",
+      description:
+        "鍵を保存するファイル名（拡張子除く）。<output>.priv.json と <output>.pub.json を出力します。",
       required: true,
     }),
   };
 
   async run(): Promise<void> {
     const { flags } = await this.parse(KeyGen);
-    const { jwk, pkcs8 } = await generateKey();
-    fs.writeFile(`${flags.output}.pub.json`, JSON.stringify(jwk));
-    fs.writeFile(flags.output, pkcs8);
+    const { publicKey, privateKey } = await generateKey();
+    const privateKeyFilename = `${flags.output}.priv.json`;
+    const publicKeyFilename = `${flags.output}.pub.json`;
+    fs.writeFile(publicKeyFilename, JSON.stringify(publicKey, null, 2));
+    fs.writeFile(privateKeyFilename, JSON.stringify(privateKey, null, 2));
   }
 }

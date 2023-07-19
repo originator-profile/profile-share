@@ -166,8 +166,8 @@ profile-registry CLI のインストール方法は[開発ガイド](../developm
 例:
 
 ```
-$ profile-registry key-gen -o key.pem
-$ cat key.pem.pub.json | jq
+$ profile-registry key-gen -o key
+$ cat key.pub.json
 {
   "kty": "EC",
   "kid": "x6pZlFXlKvbV69GZf8xW-lqb6tg0_ERuNHHgTTvmQ70",
@@ -179,8 +179,8 @@ $ cat key.pem.pub.json | jq
 
 実行結果として得られる、鍵ファイルは下記となります。
 
-- key.pem (プライベート鍵)
-- key.pem.pub.json (公開鍵)
+- key.priv.json (プライベート鍵)
+- key.pub.json (公開鍵)
 
 公開鍵は事務局 OP レジストリに登録する必要があります。
 事務局に公開鍵の登録を依頼してください。
@@ -395,7 +395,7 @@ DP レジストリに登録するにはまず、Signed Document Profile (SDP) �
 前提条件として組織情報の登録、公開鍵の登録、Signed Originator Profile 発行を行う必要があります。
 今回は下記を使用して実行します。
 
-- プライベート鍵のパス: key.pem
+- プライベート鍵のパス: key.priv.json
 - 登録する組織: media.example.com
 
 SDP の生成は Web ページの HTML からテキストを抜き出し連結し署名する実装が必要ですが、これについては処理対象を定義したファイル `website.json` を用意し、コマンドラインで読み込むだけで SDP を生成する CLI を用意しています。
@@ -417,7 +417,7 @@ SDP 生成対象を定義する `website.json` ファイルは[website.example.j
 
 ```
 $ profile-registry publisher:website \
-  -i key.pem \
+  -i key.priv.json \
   --id media.example.com \
   --input website.json \
   -o create
@@ -1076,7 +1076,20 @@ media.example.com
 
 試験用鍵ペア (**本実験以外では決して使用しないでください**)
 
-プライベート鍵
+プライベート鍵（ JWK 形式）
+
+```json
+{
+  "kty": "EC",
+  "kid": "D5D5P3UrV1V_6U_q9yKv_jZ_q8ShIvrxy7E2QyOfWYE",
+  "x": "2OKmquUPimkshkJQWWih--zu-U1NkDsKImW_o3kbeOg",
+  "y": "f9bgeMH_qLS5LvOyc3dHoKYJmVfutEM9Vrb2WeEemtM",
+  "crv": "P-256",
+  "d": "ahNz8S20FnuMaFezOGlfQwBN5-rem8AnKvtHGDqOpHk"
+}
+```
+
+プライベート鍵（PKCS#8 形式）
 
 ```pem
 -----BEGIN PRIVATE KEY-----

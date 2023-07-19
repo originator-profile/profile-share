@@ -7,6 +7,7 @@ import {
   OpHolder,
   OpVerifier,
   OpCertifier,
+  Jwk,
 } from "@originator-profile/model";
 import { signOp } from "@originator-profile/sign";
 import { AccountService } from "./account";
@@ -44,14 +45,14 @@ export const CertificateService = ({
    * OP への署名
    * @param id 認証機関 ID
    * @param accountId 会員 ID
-   * @param pkcs8 PEM base64 でエンコードされた PKCS #8 プライベート鍵
+   * @param privateKey JWK 形式のプライベート鍵
    * @param options 署名オプション
    * @return JWT でエンコードされた OP
    */
   async signOp(
     id: CertifierId,
     accountId: AccountId,
-    pkcs8: string,
+    privateKey: Jwk,
     options = {
       issuedAt: new Date(),
       expiredAt: addYears(new Date(), 10),
@@ -149,7 +150,7 @@ export const CertificateService = ({
     if (holderKeys.keys.length > 0) Object.assign(input, { jwks: holderKeys });
     const valid = validator.opValidate(input);
     if (valid instanceof Error) return valid;
-    const jwt: string = await signOp(valid, pkcs8);
+    const jwt: string = await signOp(valid, privateKey);
     return jwt;
   },
   /**
