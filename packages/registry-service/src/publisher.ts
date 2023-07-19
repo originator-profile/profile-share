@@ -20,14 +20,14 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
    * DP への署名
    * @param accountId 会員 ID
    * @param id ウェブページ ID
-   * @param privateKeyJwk PEM base64 でエンコードされた PKCS #8 プライベート鍵
+   * @param privateKey プライベート鍵
    * @param options 署名オプション
    * @return JWT でエンコードされた DP
    */
   async signDp(
     accountId: AccountId,
     id: string,
-    privateKeyJwk: Jwk,
+    privateKey: Jwk,
     options = {
       issuedAt: new Date(),
       expiredAt: addYears(new Date(), 10),
@@ -97,7 +97,7 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
 
     const valid = validator.dpValidate(input);
     if (valid instanceof Error) return valid;
-    const jwt: string = await signDp(valid, privateKeyJwk);
+    const jwt: string = await signDp(valid, privateKey);
     return jwt;
   },
   /**

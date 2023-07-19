@@ -197,14 +197,11 @@ export const WebsiteService = ({ prisma }: Options) => ({
   },
   /**
    * 対象のテキストへの署名
-   * @param privateKeyJwk PEM base64 でエンコードされた PKCS #8 プライベート鍵
+   * @param privateKey プライベート鍵
    * @param body 対象のテキスト
    * @return Detached Compact JWS
-   */ async signBody(
-    privateKeyJwk: Jwk,
-    body: string,
-  ): Promise<string | Error> {
-    return await signBody(body, privateKeyJwk).catch((e: Error) => e);
+   */ async signBody(privateKey: Jwk, body: string): Promise<string | Error> {
+    return await signBody(body, privateKey).catch((e: Error) => e);
   },
   /**
    * Profile Set の取得
