@@ -6,18 +6,18 @@ import { createThumbprint } from "./thumbprint";
 /**
  * OP への署名
  * @param op OP オブジェクト
- * @param privateKeyJwk PEM base64 でエンコードされた PKCS #8 プライベート鍵
+ * @param privateKey プライベート鍵
  * @param alg Algorithm identifier
  * @return JWT でエンコードされた OP
  */
 export async function signOp(
   op: Op,
-  privateKeyJwk: Jwk,
+  privateKey: Jwk,
   alg = "ES256",
 ): Promise<string> {
   const header = {
     alg,
-    kid: privateKeyJwk.kid ?? (await createThumbprint(privateKeyJwk, alg)),
+    kid: privateKey.kid ?? (await createThumbprint(privateKey, alg)),
     typ: "JWT",
   };
   const payload: Pick<JwtOpPayload, "https://originator-profile.org/op"> = {
@@ -26,13 +26,13 @@ export async function signOp(
       jwks: op.jwks,
     },
   };
-  const privateKey = await importJWK(privateKeyJwk, alg);
+  const privateKeyImported = await importJWK(privateKey, alg);
   const jwt = await new SignJWT(payload)
     .setProtectedHeader(header)
     .setIssuer(op.issuer)
     .setSubject(op.subject)
     .setIssuedAt(getUnixTime(new Date(op.issuedAt)))
     .setExpirationTime(getUnixTime(new Date(op.expiredAt)))
-    .sign(privateKey);
+    .sign(privateKeyImported);
   return jwt;
 }
