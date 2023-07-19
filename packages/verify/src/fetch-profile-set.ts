@@ -63,6 +63,9 @@ export async function fetchProfileSet(
     );
     profiles = profiles.concat(profileSetFromEndPoints)
   } catch (e) {
+    if (profiles.length > 0) {
+      return profiles;
+    }
     if (e instanceof Error) {
       return new ProfilesFetchFailed(
         `プロファイルを取得できませんでした:\n${e.message}`,
