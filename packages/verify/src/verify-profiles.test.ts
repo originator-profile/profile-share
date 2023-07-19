@@ -1,12 +1,7 @@
 import { describe, test, expect } from "vitest";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { Op, Dp } from "@originator-profile/model";
-import {
-  generateKey,
-  signOp,
-  signDp,
-  generateJwk,
-} from "@originator-profile/sign";
+import { signOp, signDp, generateJwk } from "@originator-profile/sign";
 import {
   ProfileClaimsValidationFailed,
   ProfilesVerifyFailed,
@@ -93,7 +88,7 @@ describe("verify-profiles", async () => {
   });
 
   test("不正な公開鍵のときJWTの検証に失敗", async () => {
-    const evilKeys = await generateKey();
+    const evilKeys = await generateJwk();
     const evilOp: Op = {
       type: "op",
       issuedAt: fromUnixTime(iat).toISOString(),
@@ -101,7 +96,7 @@ describe("verify-profiles", async () => {
       issuer: "example.org",
       subject: "example.com",
       item: [],
-      jwks: { keys: [evilKeys.jwk] },
+      jwks: { keys: [evilKeys.publicKey] },
     };
     const evilOpToken = await signOp(evilOp, certKeys.privateKey);
     const verifier = ProfilesVerifier(
