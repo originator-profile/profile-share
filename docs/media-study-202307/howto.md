@@ -1076,7 +1076,20 @@ media.example.com
 
 試験用鍵ペア (**本実験以外では決して使用しないでください**)
 
-プライベート鍵
+プライベート鍵（ JWK 形式）
+
+```json
+{
+  "kty": "EC",
+  "kid": "D5D5P3UrV1V_6U_q9yKv_jZ_q8ShIvrxy7E2QyOfWYE",
+  "x": "2OKmquUPimkshkJQWWih--zu-U1NkDsKImW_o3kbeOg",
+  "y": "f9bgeMH_qLS5LvOyc3dHoKYJmVfutEM9Vrb2WeEemtM",
+  "crv": "P-256",
+  "d": "ahNz8S20FnuMaFezOGlfQwBN5-rem8AnKvtHGDqOpHk"
+}
+```
+
+プライベート鍵（PKCS#8 形式）
 
 ```pem
 -----BEGIN PRIVATE KEY-----
