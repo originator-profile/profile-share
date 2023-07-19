@@ -17,27 +17,28 @@ function getEndpoints(doc: Document): string[] {
 
 function getEmbeddedProfileSets(doc: Document): NodeObject[] {
   const elements = [
-    ...doc.querySelectorAll(`script[type="application/ld+json"]`)
-  ]
-  const profileSetArray = elements.map((elem) => {
-    const text = elem.textContent;
-    if (typeof text !== 'string') {
+    ...doc.querySelectorAll(`script[type="application/ld+json"]`),
+  ];
+  const profileSetArray = elements
+    .map((elem) => {
+      const text = elem.textContent;
+      if (typeof text !== "string") {
+        return;
+      }
+      let jsonld;
+      try {
+        jsonld = JSON.parse(text);
+      } catch (e: unknown) {
+        return undefined;
+      }
+      if (jsonld["@context"] && jsonld.main && jsonld.profile) {
+        return jsonld as NodeObject;
+      }
       return;
-    }
-    let jsonld;
-    try {
-      jsonld = JSON.parse(text);
-    } catch (e: unknown) {
-      return undefined;
-    }
-    if (jsonld["@context"] && jsonld.main && jsonld.profile) {
-      return jsonld as NodeObject;
-    }
-    return;
-  }).filter((e) => typeof e !== 'undefined') as NodeObject[];
+    })
+    .filter((e) => typeof e !== "undefined") as NodeObject[];
 
   return profileSetArray;
-
 }
 
 /**
@@ -61,7 +62,7 @@ export async function fetchProfileSet(
         return await res.json();
       }),
     );
-    profiles = profiles.concat(profileSetFromEndPoints)
+    profiles = profiles.concat(profileSetFromEndPoints);
   } catch (e) {
     if (profiles.length > 0) {
       return profiles;
