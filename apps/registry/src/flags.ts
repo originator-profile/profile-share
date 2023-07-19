@@ -1,6 +1,7 @@
 import { Flags } from "@oclif/core";
 import { parseAccountId } from "@originator-profile/core";
 import { Jwk } from "@originator-profile/model";
+import { importPKCS8, exportJWK } from "jose";
 import fs from "node:fs/promises";
 
 export const accountId = Flags.custom<string>({
@@ -27,8 +28,12 @@ export const privateKey = Flags.custom({
   async parse(filepath: string): Promise<Jwk> {
     const buffer = await fs.readFile(filepath);
     const fileContent = buffer.toString();
-    const jwk = JSON.parse(fileContent);
-    // TODO: 正しい JWK か検証
-    return jwk;
+    try {
+      const key = await importPKCS8(fileContent, "ES256");
+      const jwk = await exportJWK(key);
+      return jwk as Jwk;
+    } catch (e: unknown) {
+      return JSON.parse(fileContent);
+    }
   },
 });
