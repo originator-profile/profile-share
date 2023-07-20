@@ -160,8 +160,8 @@ Originator Profile レジストリサーバー-->>検証者: Originator Profile 
 
 HTML 文書全体や Web サイト全体への付帯情報を表現する仕様は未定義です。
 
-- [ページ全体の付帯情報を表現する仕様の検討](https://github.com/originator-profile/profile-share/issues/353)
-- [サイトの付帯情報を表現する仕様の検討](https://github.com/originator-profile/profile-share/issues/613)
+- [ページ全体の付帯情報を表現する仕様の検討](https://github.com/originator-profile/profile/issues/353)
+- [サイトの付帯情報を表現する仕様の検討](https://github.com/originator-profile/profile/issues/613)
 
 :::
 
