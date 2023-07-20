@@ -32,12 +32,16 @@ export function parseExpirationDate(input: string): Date {
 /**
  * ロケールの表記規則に従って有効期限日付時刻文字列表現に変換
  * @param expiredAt 期限切れ日時
+ * @param locale ロケール (デフォルト: 実行環境のロケールに従います)
  * @example Dateオブジェクトの場合、1秒減らした時間を表示します (実行環境のロケールに従います)
  * expirationDateTimeLocaleFrom(new Date("2023-07-31T24:00:00.000+09:00")) // "2023/7/31 23:59:59"
  * @example 文字列の場合、`expirationDateTimeLocaleFrom(new Date(expiredAtString))` を実行するのと同じです
  * expirationDateTimeLocaleFrom("2023-07-31T24:00:00.000+09:00") // "2023/7/31 23:59:59"
  * @return 有効期限の文字列表現
  */
-export function expirationDateTimeLocaleFrom(expiredAt: Date | string): string {
-  return new Date(new Date(expiredAt).getTime() - 1).toLocaleString();
+export function expirationDateTimeLocaleFrom(
+  expiredAt: Date | string,
+  locale?: Intl.LocalesArgument,
+): string {
+  return new Date(new Date(expiredAt).getTime() - 1).toLocaleString(locale);
 }
