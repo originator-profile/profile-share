@@ -8,9 +8,10 @@
     "lint": "eslint --fix ."
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.2",
+    "@js-temporal/polyfill": "^0.4.4",
     "@originator-profile/model": "*",
     "@originator-profile/tsconfig": "*",
+    "@types/uuid": "^9.0.2",
     "eslint": "^8.44.0",
     "eslint-config-originator-profile": "*",
     "uuid": "^9.0.0",

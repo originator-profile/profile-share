@@ -35,7 +35,9 @@ function TechTable({ className, profile }: Props) {
       />
       <TableRow
         header="有効期限"
-        data={new Date(profile.expiredAt).toLocaleString()}
+        data={new Date(
+          new Date(profile.expiredAt).getTime() - 1,
+        ).toLocaleString()}
       />
     </Table>
   );
