@@ -24,7 +24,7 @@ describe("ProfileSet不在/不正時の確認", () => {
     ];
 
     const counts = await Promise.all(
-      messages.map((message) => ext?.locator(`:text("${message}")`).count())
+      messages.map((message) => ext?.locator(`:text("${message}")`).count()),
     );
 
     counts.forEach((count) => {
