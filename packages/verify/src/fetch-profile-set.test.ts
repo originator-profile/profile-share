@@ -135,7 +135,6 @@ describe("fetch-profiles", async () => {
   });
 
   describe("<script>要素から Profile Set を取得する", async () => {
-
     const profileSet = {
       "@context": "https://originator-profile.org/context.jsonld",
       main: ["https://example.org"],
