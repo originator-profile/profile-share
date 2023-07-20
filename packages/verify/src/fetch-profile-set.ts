@@ -25,16 +25,12 @@ function getEmbeddedProfileSets(doc: Document): NodeObject[] {
       if (typeof text !== "string") {
         return undefined;
       }
-      let jsonld;
       try {
-        jsonld = JSON.parse(text);
+        const jsonld = JSON.parse(text);
+        return jsonld as NodeObject;
       } catch (e: unknown) {
         return undefined;
       }
-      if (jsonld["@context"] && jsonld.main && jsonld.profile) {
-        return jsonld as NodeObject;
-      }
-      return undefined;
     })
     .filter((e) => typeof e !== "undefined") as NodeObject[];
 
