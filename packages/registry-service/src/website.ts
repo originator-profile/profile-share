@@ -102,10 +102,11 @@ export const WebsiteService = ({ prisma }: Options) => ({
   },
 
   /**
-   * @deprecated
    * ウェブページの作成
    * @param input ウェブページ
    * @return ウェブページ
+   *
+   * @deprecated 代わりに {@link create} を利用してください。
    */
   async createForOldAPI(
     input: Prisma.websitesCreateInput,
@@ -173,10 +174,11 @@ export const WebsiteService = ({ prisma }: Options) => ({
   },
 
   /**
-   * @deprecated
    * ウェブページの更新
    * @param input ウェブページ
    * @return ウェブページ
+   *
+   * @deprecated 代わりに {@link update} を利用してください。
    */
   async updateForOldAPI(
     input: Prisma.websitesUpdateInput & { id: string },
