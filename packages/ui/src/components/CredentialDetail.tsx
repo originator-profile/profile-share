@@ -5,6 +5,7 @@ import {
   OpCertifier,
   OpVerifier,
 } from "@originator-profile/model";
+import { expirationDateTimeLocaleFrom } from "@originator-profile/core";
 import { getVerificationType } from "../utils/credential";
 import Image from "../components/Image";
 import Table from "./Table";
@@ -62,9 +63,7 @@ function CredentialDetail({
         />
         <TableRow
           header="有効期限"
-          data={new Date(
-            new Date(credential.expiredAt).getTime() - 1,
-          ).toLocaleString()}
+          data={expirationDateTimeLocaleFrom(credential.expiredAt)}
         />
       </Table>
     </div>
