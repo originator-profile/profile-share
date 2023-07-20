@@ -8,10 +8,6 @@ function getEndpoints(doc: Document): string[] {
     ),
   ].map((e) => new URL(e.getAttribute("href") ?? "", doc.location.href).href);
 
-  if (endpoints.length === 0) {
-    throw new ProfilesFetchFailed("Invalid endpoints");
-  }
-
   return endpoints;
 }
 
@@ -60,9 +56,6 @@ export async function fetchProfileSet(
     );
     profiles = profiles.concat(profileSetFromEndpoints);
   } catch (e) {
-    if (profiles.length > 0) {
-      return profiles;
-    }
     if (e instanceof Error) {
       return new ProfilesFetchFailed(
         `プロファイルを取得できませんでした:\n${e.message}`,
@@ -74,5 +67,10 @@ export async function fetchProfileSet(
       throw new Error("Unknown error", { cause: e });
     }
   }
+
+  if (profiles.length === 0) {
+    return new ProfilesFetchFailed("No profile sets found")
+  }
+
   return profiles;
 }
