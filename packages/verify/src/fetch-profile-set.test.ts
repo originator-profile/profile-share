@@ -135,6 +135,13 @@ describe("fetch-profiles", async () => {
   });
 
   describe("<script>要素から Profile Set を取得する", async () => {
+
+    const profileSet = {
+      "@context": "https://originator-profile.org/context.jsonld",
+      main: ["https://example.org"],
+      profile: ["{Signed Document Profile または Signed Originator Profile}"],
+    };
+
     beforeEach(() => {
       mockGet("https://example.com/1/ps.json").willResolve({
         "@context": "https://originator-profile.org/context.jsonld",
@@ -145,11 +152,6 @@ describe("fetch-profiles", async () => {
 
     test("<script> から profile set を取得できる", async () => {
       const window = new Window();
-      const profileSet = {
-        "@context": "https://originator-profile.org/context.jsonld",
-        main: ["https://example.org"],
-        profile: ["{Signed Document Profile または Signed Originator Profile}"],
-      };
       window.document.body.innerHTML = `
 <script type="application/ld+json">${JSON.stringify(profileSet)}</script>
 `;
@@ -163,11 +165,6 @@ describe("fetch-profiles", async () => {
 
     test("<script> が2つ以上存在する", async () => {
       const window = new Window();
-      const profileSet = {
-        "@context": "https://originator-profile.org/context.jsonld",
-        main: ["https://example.org"],
-        profile: ["{Signed Document Profile または Signed Originator Profile}"],
-      };
       window.document.body.innerHTML = `
 <script type="application/ld+json">${JSON.stringify(profileSet)}</script>
 <script type="application/ld+json">${JSON.stringify(profileSet)}</script>
@@ -182,12 +179,12 @@ describe("fetch-profiles", async () => {
 
     test("<script> 内の Profile Set が不正", async () => {
       const window = new Window();
-      const profileSet = {
+      const invalidProfileSet = {
         main: ["https://example.org"],
         profile: ["{Signed Document Profile または Signed Originator Profile}"],
       };
       window.document.body.innerHTML = `
-<script type="application/ld+json">${JSON.stringify(profileSet)}</script>
+<script type="application/ld+json">${JSON.stringify(invalidProfileSet)}</script>
 `;
 
       const result = await fetchProfileSet(
@@ -198,11 +195,6 @@ describe("fetch-profiles", async () => {
 
     test("<script> と <link> から profile set を取得できる", async () => {
       const window = new Window();
-      const profileSet = {
-        "@context": "https://originator-profile.org/context.jsonld",
-        main: ["https://example.org"],
-        profile: ["{Signed Document Profile または Signed Originator Profile}"],
-      };
       const profileEndpoint = "https://example.com/1/ps.json";
       window.document.body.innerHTML = `
 <script type="application/ld+json">${JSON.stringify(profileSet)}</script>
