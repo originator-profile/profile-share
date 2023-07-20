@@ -69,7 +69,7 @@ export async function fetchProfileSet(
   }
 
   if (profiles.length === 0) {
-    return new ProfilesFetchFailed("No profile sets found")
+    return new ProfilesFetchFailed("No profile sets found");
   }
 
   return profiles;
