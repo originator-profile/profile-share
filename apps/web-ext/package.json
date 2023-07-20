@@ -48,7 +48,7 @@
     "vitest": "^0.32.4",
     "web-ext": "^7.6.2"
   },
-  "homepage": "https://profile-docs.pages.dev/",
+  "homepage": "https://docs.originator-profile.org/",
   "keywords": [
     "webextension"
   ],
