@@ -20,7 +20,7 @@ model ops {
   certifierId String        @db.Uuid
   /// 発行日
   issuedAt    DateTime
-  /// 有効期限
+  /// 期限切れ日時
   expiredAt   DateTime
   /// JWT
   jwt         String
@@ -36,7 +36,7 @@ model dps {
   issuerId  String    @db.Uuid
   /// 発行日
   issuedAt  DateTime
-  /// 有効期限
+  /// 期限切れ日時
   expiredAt DateTime
   /// JWT
   jwt       String
@@ -175,12 +175,12 @@ model keys {
 
 /// ウェブページ
 model websites {
-  id              String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id              String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   /// ウェブページ URL
   url             String
   /// 会員
-  account         accounts    @relation(fields: [accountId], references: [id], onDelete: Cascade)
-  accountId       String      @db.Uuid
+  account         accounts            @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId       String              @db.Uuid
   /// タイトル
   title           String?
   /// 画像URL
@@ -200,7 +200,7 @@ model websites {
   /// 対象の要素の場所 (CSS セレクター)
   location        String?
   /// 対象のテキストの形式
-  bodyFormat      bodyFormats @relation(fields: [bodyFormatValue], references: [value])
+  bodyFormat      bodyFormats         @relation(fields: [bodyFormatValue], references: [value])
   bodyFormatValue String
   /// 対象のテキストへの署名 (Detached JSON Web Signature)
   proofJws        String
@@ -211,11 +211,11 @@ model websites {
 /// 情報カテゴリー
 model categories {
   /// 情報カテゴリー (使用タクソノミーにおけるCodeまたはUnique ID)
-  cat       String
+  cat      String
   /// 情報カテゴリー名(使用タクソノミーにおけるCategoryまたはName)
-  name      String
+  name     String
   /// 使用タクソノミー (https://github.com/InteractiveAdvertisingBureau/AdCOM/blob/master/AdCOM%20v1.0%20FINAL.md#list_categorytaxonomies)
-  cattax    Int     @default(1)
+  cattax   Int                 @default(1)
   /// ウェブページ
   websites websiteCategories[]
 
@@ -225,12 +225,12 @@ model categories {
 /// ウェブページ・情報カテゴリーリレーション
 model websiteCategories {
   /// ウェブページ
-  website               websites           @relation(fields: [websiteId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  websiteId             String             @db.Uuid
+  website        websites   @relation(fields: [websiteId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  websiteId      String     @db.Uuid
   /// 情報カテゴリー
-  category              categories         @relation(fields: [categoryCat, categoryCattax], references: [cat, cattax])
-  categoryCat           String
-  categoryCattax        Int
+  category       categories @relation(fields: [categoryCat, categoryCattax], references: [cat, cattax])
+  categoryCat    String
+  categoryCattax Int
 
   @@id([websiteId, categoryCat, categoryCattax])
 }
@@ -270,6 +270,6 @@ model credentials {
   image       String?
   /// 発行日
   issuedAt    DateTime
-  /// 有効期限
+  /// 期限切れ日時
   expiredAt   DateTime
 }

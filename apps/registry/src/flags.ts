@@ -1,5 +1,5 @@
 import { Flags } from "@oclif/core";
-import { parseAccountId } from "@originator-profile/core";
+import { parseAccountId, parseExpirationDate } from "@originator-profile/core";
 import { Jwk } from "@originator-profile/model";
 import { importPKCS8, exportJWK } from "jose";
 import fs from "node:fs/promises";
@@ -35,5 +35,14 @@ export const privateKey = Flags.custom({
     } catch (e: unknown) {
       return JSON.parse(fileContent);
     }
+  },
+});
+
+export const expirationDate = Flags.custom<Date>({
+  summary: "有効期限 (ISO 8601)",
+  description:
+    "日付のみの場合、その日の 24:00:00.000 より前まで有効、それ以外の場合、期限切れとなる日付・時刻・秒を指定します。",
+  async parse(input: string): Promise<Date> {
+    return parseExpirationDate(input);
   },
 });

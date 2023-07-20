@@ -62,7 +62,9 @@ function CredentialDetail({
         />
         <TableRow
           header="有効期限"
-          data={new Date(credential.expiredAt).toLocaleString()}
+          data={new Date(
+            new Date(credential.expiredAt).getTime() - 1,
+          ).toLocaleString()}
         />
       </Table>
     </div>
