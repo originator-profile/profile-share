@@ -12,6 +12,6 @@ sidebar_position: 13
 
 ### JICDAQ による認証を登録する場合
 
-ご提出いただいた認証マークは拡張機能での閲覧等を想定した形式に加工し、[サンプルサイトリポジトリのロゴ用ブランチ](https://github.com/originator-profile/profile-share-samples/tree/op-logos)にアップロードします。
+ご提出いただいた認証マークは拡張機能での閲覧等を想定した形式に加工し、[サンプルサイトリポジトリのロゴ用ブランチ](https://github.com/originator-profile/profile-samples-share/tree/op-logos)にアップロードします。
 
-その際、[配置の際の命名規則](https://github.com/originator-profile/profile-share-samples/tree/op-logos#readme)にしたがい、ご提出いただいた本実験参加企業ごとに認証マークのデータを管理します。
+その際、[配置の際の命名規則](https://github.com/originator-profile/profile-samples-share/tree/op-logos#readme)にしたがい、ご提出いただいた本実験参加企業ごとに認証マークのデータを管理します。
