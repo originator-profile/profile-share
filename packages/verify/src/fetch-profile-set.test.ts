@@ -145,7 +145,10 @@ describe("fetch-profiles", async () => {
       mockGet("https://example.com/1/ps.json").willResolve({
         "@context": "https://originator-profile.org/context.jsonld",
         main: ["https://example.com"],
-        profile: ["1/ps.json"],
+        profile: [
+          "{Signed Document Profile または Signed Originator Profile}",
+          "{Signed Document Profile または Signed Originator Profile}",
+        ],
       });
     });
 

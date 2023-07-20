@@ -67,7 +67,8 @@ exports[`fetch-profiles > <script>要素から Profile Set を取得する > <sc
       "https://example.com",
     ],
     "profile": [
-      "1/ps.json",
+      "{Signed Document Profile または Signed Originator Profile}",
+      "{Signed Document Profile または Signed Originator Profile}",
     ],
   },
 ]
