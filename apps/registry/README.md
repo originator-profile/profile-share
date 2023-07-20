@@ -21,7 +21,7 @@ Originator Profile と Document Profile の管理を行うシステムです。
 
 ## Dependencies
 
-[開発ガイド](https://profile-docs.pages.dev/development/)を参照してください。
+[開発ガイド](https://docs.originator-profile.org/development/)を参照してください。
 
 ## Usage
 
@@ -90,7 +90,7 @@ FLAG DESCRIPTIONS
 
     Prisma.accountsCreateInput または Prisma.accountsUpdateInput
     詳細はTSDocを参照してください。
-    https://profile-docs.pages.dev/ts/modules/_originator-profile_profile_registry_db.default.Prisma
+    https://docs.originator-profile.org/ts/modules/_originator_profile_registry_db.default.Prisma
     "id" フィールドの値には会員 ID またはドメイン名を指定可能です。
 ```
 
@@ -366,7 +366,7 @@ FLAG DESCRIPTIONS
 
     Prisma.Enumerable<Prisma.categoriesCreateManyInput>
     詳細はTSDocを参照してください。
-    https://profile-docs.pages.dev/ts/modules/_originator-profile_profile_registry_db.default.Prisma
+    https://docs.originator-profile.org/ts/modules/_originator_profile_registry_db.default.Prisma
 ```
 
 ## `profile-registry publisher:extract-category [OUTPUT]`

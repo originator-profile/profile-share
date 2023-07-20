@@ -12,7 +12,7 @@ export class PublisherCategory extends Command {
       description: `\
 Prisma.Enumerable<Prisma.categoriesCreateManyInput>
 詳細はTSDocを参照してください。
-https://profile-docs.pages.dev/ts/modules/_originator-profile_profile_registry_db.default.Prisma`,
+https://docs.originator-profile.org/ts/modules/_originator_profile_registry_db.default.Prisma`,
     }),
     "glob-input": Flags.string({
       summary: "JSON files match with glob pattern",

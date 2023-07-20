@@ -12,9 +12,9 @@ const Body = {
       type: "object",
       title: "JSON",
       description: `\
-[Prisma.accountsCreateInput](https://profile-docs.pages.dev/ts/types/_originator-profile_profile_registry_db.default.Prisma.accountsCreateInput.html)\
+[Prisma.accountsCreateInput](https://docs.originator-profile.org/ts/types/_originator_profile_registry_db.default.Prisma.accountsCreateInput.html)\
  または \
-[Prisma.accountsUpdateInput](https://profile-docs.pages.dev/ts/types/_originator-profile_profile_registry_db.default.Prisma.accountsUpdateInput.html)\
+[Prisma.accountsUpdateInput](https://docs.originator-profile.org/ts/types/_originator_profile_registry_db.default.Prisma.accountsUpdateInput.html)\
  を与えます。`,
       additionalProperties: true,
     },
