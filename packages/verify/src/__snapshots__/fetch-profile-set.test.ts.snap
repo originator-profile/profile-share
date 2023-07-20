@@ -27,6 +27,29 @@ exports[`fetch-profiles > <script>要素から Profile Set を取得する > <sc
 ]
 `;
 
+exports[`fetch-profiles > <script>要素から Profile Set を取得する > <script> が2つ以上存在する 1`] = `
+[
+  {
+    "@context": "https://originator-profile.org/context.jsonld",
+    "main": [
+      "https://example.org",
+    ],
+    "profile": [
+      "{Signed Document Profile または Signed Originator Profile}",
+    ],
+  },
+  {
+    "@context": "https://originator-profile.org/context.jsonld",
+    "main": [
+      "https://example.org",
+    ],
+    "profile": [
+      "{Signed Document Profile または Signed Originator Profile}",
+    ],
+  },
+]
+`;
+
 exports[`fetch-profiles > <script>要素から Profile Set を取得する > <script> と <link> から profile set を取得できる 1`] = `
 [
   {
