@@ -23,8 +23,12 @@ describe("ProfileSet不在/不正時の確認", () => {
       "組織の信頼性情報と出版物の流通経路の取得に失敗しました",
     ];
 
-    for (const message of messages) {
-      expect(await ext?.locator(`:text("${message}")`).count()).toEqual(1);
-    }
+    const counts = await Promise.all(
+      messages.map((message) => ext?.locator(`:text("${message}")`).count())
+    );
+
+    counts.forEach((count) => {
+      expect(count).toEqual(1);
+    });
   });
 });
