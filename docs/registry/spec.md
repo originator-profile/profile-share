@@ -16,4 +16,4 @@ Originator Profile は、認証機関の報告書をもとに CLI アプリケ�
 
 ## データベーススキーマ
 
-上記以外のデータベーススキーマに関する詳細は、データベーススキーマ [schema.prisma](https://github.com/originator-profile/profile/blob/main/packages/registry-db/prisma/schema.prisma) とそれをもとに自動生成された[データベーススキーマの ER 図](assets/erd.md)を参照してください。
+上記以外のデータベーススキーマに関する詳細は、データベーススキーマ [schema.prisma](https://github.com/originator-profile/profile-share/blob/main/packages/registry-db/prisma/schema.prisma) とそれをもとに自動生成された[データベーススキーマの ER 図](assets/erd.md)を参照してください。

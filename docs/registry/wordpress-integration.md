@@ -54,7 +54,7 @@ Document Profile レジストリ-->>利用者: Profile Set
 ## プラグインのインストール
 
 WordPress サイトに WordPress Profile Plugin をインストールします。
-[WordPress Profile Plugin ソースコード](https://github.com/originator-profile/profile/tree/main/packages/wordpress#readme)を参照してください。
+[WordPress Profile Plugin ソースコード](https://github.com/originator-profile/profile-share/tree/main/packages/wordpress#readme)を参照してください。
 
 Document Profile レジストリのドメイン名を、WordPress 管理者画面 > Settings > Profile > [レジストリドメイン名] に入力します。
 

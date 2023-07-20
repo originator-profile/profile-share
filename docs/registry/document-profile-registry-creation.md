@@ -35,7 +35,7 @@ Heroku などを利用して Profile Registry のデプロイを行います。
 ### レジストリの管理者の作成
 
 PostgreSQL 接続 URL など `profile-registry` コマンドの実行に必要な情報を .env ファイルに指定します。
-[Profile Registry ソースコード](https://github.com/originator-profile/profile/blob/main/apps/registry#環境変数)を参照してください。
+[Profile Registry ソースコード](https://github.com/originator-profile/profile-share/blob/main/apps/registry#環境変数)を参照してください。
 
 ```
 $ cd apps/registry
@@ -105,7 +105,7 @@ $ cat key.pub.json
 
 <!-- NOTE:
 Originator Profile レジストリ運用者によって[公開鍵を登録](./operation/public-key-registration.md)します。
-詳細は[Profile Registry ソースコード](https://github.com/originator-profile/profile/blob/main/apps/registry#readme)を参照してください。
+詳細は[Profile Registry ソースコード](https://github.com/originator-profile/profile-share/blob/main/apps/registry#readme)を参照してください。
 -->
 
 ## Document Profile レジストリへの Signed Originator Profile の登録
@@ -122,7 +122,7 @@ $ profile-registry account:register-op --id <ドメイン名> --op <Signed Origi
 $ profile-registry account:register-op --id example.com --op sop.jwt
 ```
 
-詳細は [Profile Registry ソースコード](https://github.com/originator-profile/profile/blob/main/apps/registry#readme)を参照してください。
+詳細は [Profile Registry ソースコード](https://github.com/originator-profile/profile-share/blob/main/apps/registry#readme)を参照してください。
 
 <!-- NOTE: ローカル環境の開発用サーバーの Signed Originator Profile の例
 

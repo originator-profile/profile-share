@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # 組織情報の提出
 
-組織情報は JSON ファイルに記載します。[account.example.json](https://github.com/originator-profile/profile/blob/main/apps/registry/account.example.json) を参考に組織情報を入力してください。
+組織情報は JSON ファイルに記載します。[account.example.json](https://github.com/originator-profile/profile-share/blob/main/apps/registry/account.example.json) を参考に組織情報を入力してください。
 
 組織情報を入力した JSON ファイルが用意できたら、Originator Profile レジストリ管理者に渡してください。Originator Profile レジストリ管理者が Originator Profile レジストリにアカウントを作成します。
 

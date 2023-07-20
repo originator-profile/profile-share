@@ -17,7 +17,7 @@ sidebar_position: 8
 
 ## website.json の例
 
-[website.example.json](https://github.com/originator-profile/profile/blob/main/apps/registry/website.example.json) を参考に作成してください。
+[website.example.json](https://github.com/originator-profile/profile-share/blob/main/apps/registry/website.example.json) を参考に作成してください。
 
 ### 読売新聞社の記事登録の例
 
@@ -44,7 +44,7 @@ sidebar_position: 8
 前節 `website.json` における `[{ "cat": "IAB17-2" }]` は `Baseball` を意味し、Web ページが野球に関するものであることを示しています。Web ページが複数カテゴリーの情報を扱っている場合は `[{ "cat": "IAB17-2" }, { "cat": "IAB17-3" }]` のようにカテゴリーを列挙できます。
 
 :::note
-カテゴリー名として使用する文字列については上記 [IAB Tech Lab Content Category Taxonomy 1.0](https://iabtechlab.com/wp-content/uploads/2023/03/Content-Taxonomy-1.0-1.xlsx) または [category.example.json](https://github.com/originator-profile/profile/blob/main/apps/registry/category.example.json) を参照してください。Web ページの情報カテゴリーは `profile-registry` コマンドでは削除できないので注意してください。
+カテゴリー名として使用する文字列については上記 [IAB Tech Lab Content Category Taxonomy 1.0](https://iabtechlab.com/wp-content/uploads/2023/03/Content-Taxonomy-1.0-1.xlsx) または [category.example.json](https://github.com/originator-profile/profile-share/blob/main/apps/registry/category.example.json) を参照してください。Web ページの情報カテゴリーは `profile-registry` コマンドでは削除できないので注意してください。
 :::
 
 「読売新聞社」は、株式会社読売新聞東京本社の登録商標です。
@@ -53,7 +53,7 @@ sidebar_position: 8
 
 組織 id が `example.com` 、JSON ファイル名が `website.json` である場合、以下のコマンドにより Signed Document Profile を発行することができます。
 
-CLI のオプションについては、[apps/registry/README.md](https://github.com/originator-profile/profile/tree/main/apps/registry) を参照してください。
+CLI のオプションについては、[apps/registry/README.md](https://github.com/originator-profile/profile-share/tree/main/apps/registry) を参照してください。
 
 ```console
 profile-registry publisher:website \

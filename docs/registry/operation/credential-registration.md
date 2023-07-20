@@ -26,7 +26,7 @@ sidebar_position: 11
 
 以下のコマンドにより資格情報を登録することができます。
 
-CLI のオプションについては、[apps/registry/README.md](https://github.com/originator-profile/profile/tree/main/apps/registry) を参照してください。
+CLI のオプションについては、[apps/registry/README.md](https://github.com/originator-profile/profile-share/tree/main/apps/registry) を参照してください。
 
 ```console
 profile-registry account:register-credential \
