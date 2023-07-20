@@ -14,7 +14,7 @@ export class Account extends Command {
       description: `\
 Prisma.accountsCreateInput または Prisma.accountsUpdateInput
 詳細はTSDocを参照してください。
-https://profile-docs.pages.dev/ts/modules/_originator-profile_profile_registry_db.default.Prisma
+https://docs.originator-profile.org/ts/modules/_originator_profile_registry_db.default.Prisma
 "id" フィールドの値には会員 ID またはドメイン名を指定可能です。`,
       default: "account.example.json",
       required: true,
