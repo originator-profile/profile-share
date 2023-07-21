@@ -124,8 +124,8 @@ export const CertificateService = ({
           ...flush(credential),
           certifier: credential.certifier.domainName,
           verifier: credential.verifier.domainName,
-          issuedAt: options.issuedAt.toISOString(),
-          expiredAt: options.expiredAt.toISOString(),
+          issuedAt: credential.issuedAt.toISOString(),
+          expiredAt: credential.expiredAt.toISOString(),
         })),
         // @ts-expect-error any properties
         ...certifiers.map((certifier) => ({
