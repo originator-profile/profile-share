@@ -8,14 +8,16 @@ describe("ProfileSet不在/不正時の確認", () => {
 
   beforeEach(async () => {
     page = await ctx.newPage();
-    await page.route('https://www.example.com/', route => route.fulfill({
+    await page.route("https://www.example.com/", (route) =>
+      route.fulfill({
         status: 200,
-        contentType: 'text/html',
-        body: '<html><body><h1>Test page</h1></body></html>'
-    }));
-    await page.goto('https://www.example.com/');
+        contentType: "text/html",
+        body: "<html><body><h1>Test page</h1></body></html>",
+      }),
+    );
+    await page.goto("https://www.example.com/");
     ext = await popup(ctx);
-});
+  });
 
   afterEach(async () => {
     await page?.screenshot({ path: `screenshots/webpage.png` });
