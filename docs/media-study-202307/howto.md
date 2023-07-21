@@ -185,6 +185,20 @@ $ cat key.pub.json
 公開鍵は事務局 OP レジストリに登録する必要があります。
 事務局に公開鍵の登録を依頼してください。
 
+#### JSON Web Key Generator を使用する方法
+
+https://jwk.pages.dev/ を使用して、鍵ペアを生成することが可能です。
+
+以下を指定して Generate ボタンをクリックしてください。
+
+- Algorithm: ECDSA (ES256)
+- Key ID: JWK Thumbprint (SHA-256)
+
+ページ上に生成された鍵を、以下のようなファイル名で保存してください。
+
+- Private Key: key.priv.json
+- Public Key: key.pub.json
+
 ### CMS の OP 対応と SDP の発行・登録
 
 これについては後述します。この後の手順を進めるには実際にコンテンツに対して SDP を生成する必要がありますが、CMS の対応を行う前に、まずは後述の CLI を用いて SDP を生成し、それを使って DP レジストリへの登録処理などを試しておくと理解が深まるかも知れません。
