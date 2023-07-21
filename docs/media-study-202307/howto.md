@@ -129,7 +129,7 @@ https://forms.gle/udirHux1TFs5ctyu6
 
 <!-- 下記は docs/registry/document-profile-registry-creation.md を改変して利用 -->
 
-### WordPress プラグインを使用する方法
+#### WordPress プラグインを使用する方法
 
 WordPress の参照実装のプラグインをインストールし、有効化したあと、WordPress 管理者画面 > Settings > Profile 設定画面にアクセスすると公開鍵を確認できます。
 
@@ -150,7 +150,7 @@ JWK の例:
 公開鍵は、事務局 OP レジストリに登録する必要があります。
 事務局に公開鍵の登録を依頼してください。
 
-### profile-registry CLI を使用する方法
+#### profile-registry CLI を使用する方法
 
 profile-registry CLI を使用して、鍵ペアを生成することが可能です。
 
