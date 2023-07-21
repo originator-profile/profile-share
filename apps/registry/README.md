@@ -21,7 +21,8 @@ Originator Profile と Document Profile の管理を行うシステムです。
 
 ## Dependencies
 
-[開発ガイド](https://docs.originator-profile.org/development/)を参照してください。
+- サーバー: [開発ガイド](https://docs.originator-profile.org/development/)を参照してください。
+- CLI: [Node.js](https://nodejs.org/) をインストールしてください。
 
 ## Usage
 

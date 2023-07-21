@@ -156,7 +156,7 @@ profile-registry CLI を使用して、鍵ペアを生成することが可能�
 
 :::note
 あらかじめ profile-registry CLI をインストールする必要があります。
-profile-registry CLI のインストール方法は[開発ガイド](../development.md)を参照してください。
+profile-registry CLI のインストール方法は [CLI のソースコード](https://github.com/originator-profile/profile-share/tree/main/apps/registry#readme)を参照してください。
 :::
 
 :::warning
