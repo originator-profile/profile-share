@@ -13,9 +13,9 @@ describe("certify", () => {
     ext = await popup(ctx);
   });
 
-  afterEach(async ({ meta }) => {
-    await page?.screenshot({ path: `screenshots/${meta.name}-本体.png` });
-    await ext?.screenshot({ path: `screenshots/${meta.name}-拡張機能.png` });
+  afterEach(async ({ task }) => {
+    await page?.screenshot({ path: `screenshots/${task.name}-本体.png` });
+    await ext?.screenshot({ path: `screenshots/${task.name}-拡張機能.png` });
     await Promise.all(ctx.pages().map((page) => page.close()));
   });
 
