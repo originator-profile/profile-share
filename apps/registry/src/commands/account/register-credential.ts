@@ -2,7 +2,7 @@ import { Command, Flags } from "@oclif/core";
 import { addYears } from "date-fns";
 import { Services } from "@originator-profile/registry-service";
 import { accountId } from "../../flags";
-import { prisma } from "../../prisma-client"
+import { prisma } from "../../prisma-client";
 
 const config = { ISSUER_UUID: process.env.ISSUER_UUID ?? "" };
 
