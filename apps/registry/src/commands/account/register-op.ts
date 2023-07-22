@@ -1,8 +1,8 @@
 import { Command, Flags } from "@oclif/core";
-import { PrismaClient } from "@prisma/client";
 import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { accountId } from "../../flags";
+import { prisma } from "../../prisma-client";
 
 export class AccountRegisterOp extends Command {
   static description =
@@ -22,7 +22,6 @@ JWT の含まれないファイルは無効です。また JWT の Subject ク�
 
   async run(): Promise<void> {
     const { flags } = await this.parse(AccountRegisterOp);
-    const prisma = new PrismaClient();
     const services = Services({ config: { ISSUER_UUID: "" }, prisma });
     const opFile = await fs.readFile(flags.op);
     const jwt = opFile.toString().trim();

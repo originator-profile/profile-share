@@ -1,8 +1,8 @@
 import { Command, Flags } from "@oclif/core";
-import { PrismaClient } from "@prisma/client";
 import { waitForDb } from "../../seed";
 import { DbPrisma } from "./prisma";
 import { DbSeed } from "./seed";
+import { prisma } from "../../prisma-client";
 
 export class DbInit extends Command {
   static description = "データベースの初期化";
@@ -21,7 +21,6 @@ export class DbInit extends Command {
 
   async run(): Promise<void> {
     const { flags } = await this.parse(DbInit);
-    const prisma = new PrismaClient();
     await waitForDb(prisma);
     await prisma.$disconnect();
     await DbPrisma.run(["migrate", "deploy", `--schema=${flags.schema}`]);

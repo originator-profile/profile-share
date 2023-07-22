@@ -1,9 +1,9 @@
 import { Command, Flags } from "@oclif/core";
-import { PrismaClient } from "@prisma/client";
 import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs";
 import stream from "node:stream";
 import { JsonLdDocument } from "jsonld";
+import { prisma } from "../../prisma-client";
 
 const config = { ISSUER_UUID: process.env.ISSUER_UUID ?? "" };
 
@@ -27,7 +27,6 @@ export class PublisherProfileSet extends Command {
       flags.output === "-"
         ? process.stdout
         : fs.createWriteStream(flags.output);
-    const prisma = new PrismaClient();
     const services = Services({ config, prisma });
     const data: JsonLdDocument | Error = await services.website.getProfileSet(
       flags.url,

@@ -1,8 +1,8 @@
 import { Command, Flags } from "@oclif/core";
-import { PrismaClient } from "@prisma/client";
 import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { accountId } from "../../flags";
+import { prisma } from "../../prisma-client";
 
 export class AccountRegisterKey extends Command {
   static description = "公開鍵の登録";
@@ -19,7 +19,6 @@ export class AccountRegisterKey extends Command {
 
   async run(): Promise<void> {
     const { flags } = await this.parse(AccountRegisterKey);
-    const prisma = new PrismaClient();
     const services = Services({
       config: { ISSUER_UUID: process.env.ISSUER_UUID ?? "" },
       prisma,

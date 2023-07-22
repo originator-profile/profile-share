@@ -1,8 +1,9 @@
 import { Command, Flags, ux } from "@oclif/core";
-import { PrismaClient, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { globby } from "globby";
+import { prisma } from "../../prisma-client";
 
 export class PublisherCategory extends Command {
   static description = "カテゴリーの作成・表示・削除";
@@ -31,7 +32,6 @@ https://docs.originator-profile.org/ts/modules/_originator_profile_registry_db.d
   async #category(
     flags: Awaited<ReturnType<typeof this.parse>>["flags"],
   ): Promise<void> {
-    const prisma = new PrismaClient();
     const services = Services({
       config: { ISSUER_UUID: process.env.ISSUER_UUID ?? "" },
       prisma,

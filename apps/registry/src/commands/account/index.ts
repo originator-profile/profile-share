@@ -1,9 +1,9 @@
 import { Command, Flags } from "@oclif/core";
-import { PrismaClient } from "@prisma/client";
 import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { operation } from "../../flags";
 import { parseAccountId } from "@originator-profile/core";
+import { prisma } from "../../prisma-client";
 
 export class Account extends Command {
   static description = "会員の作成・表示・更新・削除";
@@ -24,7 +24,6 @@ https://docs.originator-profile.org/ts/modules/_originator_profile_registry_db.d
 
   async run(): Promise<void> {
     const { flags } = await this.parse(Account);
-    const prisma = new PrismaClient();
     const services = Services({
       config: { ISSUER_UUID: process.env.ISSUER_UUID ?? "" },
       prisma,

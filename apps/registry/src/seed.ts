@@ -8,6 +8,7 @@ import exampleCategories from "./category.example.json";
 import { Jwk } from "@originator-profile/model";
 import addYears from "date-fns/addYears";
 import { parseAccountId } from "@originator-profile/core";
+import { prisma } from "./prisma-client";
 
 export async function waitForDb(prisma: PrismaClient): Promise<void> {
   const sleep = util.promisify(setTimeout);
@@ -86,7 +87,6 @@ export async function seed(): Promise<void> {
   const issuerUuid: string =
     process.env.ISSUER_UUID ?? "cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc";
   const appUrl: string = process.env.APP_URL ?? "http://localhost:8080";
-  const prisma: PrismaClient = new PrismaClient();
   const services = Services({
     config: { ISSUER_UUID: issuerUuid, APP_URL: appUrl },
     prisma,
