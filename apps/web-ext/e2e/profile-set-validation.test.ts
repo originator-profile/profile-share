@@ -6,16 +6,34 @@ describe("ProfileSet不在/不正時の確認", () => {
   let page: Page | undefined;
   let ext: Page | undefined;
 
+  type Response = {
+    status: number,
+    contentType: string,
+    body: string
+  };
+  
+  const responseMap: Record<string, Response> = {
+    "/": {
+      status: 200,
+      contentType: "text/html",
+      body: "<!doctype html><html lang=\"ja\"><head><title>Test page</title></head><body><h1>Test page</h1></body></html>",
+    }
+  };
+
   beforeEach(async () => {
     page = await ctx.newPage();
-    await page.route("https://www.example.com/", (route) =>
-      route.fulfill({
-        status: 200,
-        contentType: "text/html",
-        body: "<!doctype html><html lang=\"ja\"><head><title>Test page</title></head><body><h1>Test page</h1></body></html>",
-      }),
-    );
-    await page.goto("https://www.example.com/");
+    await page.route("**", (route) => {
+      const url = new URL(route.request().url());
+      const response = responseMap[url.pathname];
+
+      if (response) {
+        return route.fulfill(response);
+      } else {
+        return route.continue();
+      }
+    });
+
+    await page.goto("http://localhost:8080/");
     ext = await popup(ctx);
   });
 
