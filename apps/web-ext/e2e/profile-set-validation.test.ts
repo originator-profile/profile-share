@@ -19,9 +19,9 @@ describe("ProfileSet不在/不正時の確認", () => {
     ext = await popup(ctx);
   });
 
-  afterEach(async () => {
-    await page?.screenshot({ path: `screenshots/webpage.png` });
-    await ext?.screenshot({ path: `screenshots/web-ext.png` });
+  afterEach(async ({ task }) => {
+    await page?.screenshot({ path: `screenshots/${task.name}-webpage.png` });
+    await ext?.screenshot({ path: `screenshots/${task.name}-web-ext.png` });
     await Promise.all(ctx.pages().map((page) => page.close()));
   });
 
