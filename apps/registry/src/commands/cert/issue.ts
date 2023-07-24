@@ -1,8 +1,8 @@
 import { Command, Flags } from "@oclif/core";
-import { PrismaClient } from "@prisma/client";
 import { addYears } from "date-fns";
 import { Services } from "@originator-profile/registry-service";
 import { accountId, privateKey } from "../../flags";
+import { prisma } from "../../prisma-client";
 
 const config = { ISSUER_UUID: process.env.ISSUER_UUID ?? "" };
 
@@ -28,7 +28,6 @@ export class CertIssue extends Command {
 
   async run(): Promise<void> {
     const { flags } = await this.parse(CertIssue);
-    const prisma = new PrismaClient();
     const services = Services({ config, prisma });
     const isCertifier = await services.certificate.isCertifier(flags.certifier);
     if (isCertifier instanceof Error) this.error(isCertifier);

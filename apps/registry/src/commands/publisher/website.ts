@@ -1,5 +1,4 @@
 import { Command, Flags, ux } from "@oclif/core";
-import { PrismaClient } from "@prisma/client";
 import { addYears } from "date-fns";
 import {
   Services,
@@ -9,6 +8,7 @@ import fs from "node:fs/promises";
 import { globby } from "globby";
 import { accountId, operation, privateKey } from "../../flags";
 import { Jwk } from "@originator-profile/model";
+import { prisma } from "../../prisma-client";
 
 type Website = Omit<WebsiteType, "accountId" | "proofJws">;
 
@@ -60,7 +60,6 @@ export class PublisherWebsite extends Command {
   async #website(
     flags: Awaited<ReturnType<typeof this.parse>>["flags"],
   ): Promise<void> {
-    const prisma = new PrismaClient();
     const services = Services({
       config: { ISSUER_UUID: process.env.ISSUER_UUID ?? "" },
       prisma,
