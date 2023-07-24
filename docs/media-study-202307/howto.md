@@ -154,10 +154,29 @@ JWK の例:
 
 profile-registry CLI を使用して、鍵ペアを生成することが可能です。
 
-:::note
 あらかじめ profile-registry CLI をインストールする必要があります。
-profile-registry CLI のインストール方法は[開発ガイド](../development.md)を参照してください。
-:::
+
+##### profile-registry CLI のインストール方法
+
+Step 1
+: Git と [Node.js](https://nodejs.org/) のインストール
+
+Step 2
+: 下記のコマンドをターミナルで実行
+
+```console
+git clone https://github.com/originator-profile/profile-share
+cd profile-share
+corepack enable yarn
+yarn install
+yarn build
+# profile-registry CLIのインストール
+npm i -g ./apps/registry
+```
+
+##### 鍵生成コマンドの実行
+
+profile-registry CLI を使用して公開鍵、プライベート鍵を生成します。
 
 :::warning
 プライベート鍵は適切に管理してください。プライベート鍵が漏洩するとあなたの組織を詐称してコンテンツに署名をされる恐れがあります。
