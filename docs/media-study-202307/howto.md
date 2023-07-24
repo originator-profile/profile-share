@@ -129,7 +129,7 @@ https://forms.gle/udirHux1TFs5ctyu6
 
 <!-- 下記は docs/registry/document-profile-registry-creation.md を改変して利用 -->
 
-### WordPress プラグインを使用する方法
+#### WordPress プラグインを使用する方法
 
 WordPress の参照実装のプラグインをインストールし、有効化したあと、WordPress 管理者画面 > Settings > Profile 設定画面にアクセスすると公開鍵を確認できます。
 
@@ -150,14 +150,33 @@ JWK の例:
 公開鍵は、事務局 OP レジストリに登録する必要があります。
 事務局に公開鍵の登録を依頼してください。
 
-### profile-registry CLI を使用する方法
+#### profile-registry CLI を使用する方法
 
 profile-registry CLI を使用して、鍵ペアを生成することが可能です。
 
-:::note
 あらかじめ profile-registry CLI をインストールする必要があります。
-profile-registry CLI のインストール方法は[開発ガイド](../development.md)を参照してください。
-:::
+
+##### profile-registry CLI のインストール方法
+
+Step 1
+: Git と [Node.js](https://nodejs.org/) のインストール
+
+Step 2
+: 下記のコマンドをターミナルで実行
+
+```console
+git clone https://github.com/originator-profile/profile-share
+cd profile-share
+corepack enable yarn
+yarn install
+yarn build
+# profile-registry CLIのインストール
+npm i -g ./apps/registry
+```
+
+##### 鍵生成コマンドの実行
+
+profile-registry CLI を使用して公開鍵、プライベート鍵を生成します。
 
 :::warning
 プライベート鍵は適切に管理してください。プライベート鍵が漏洩するとあなたの組織を詐称してコンテンツに署名をされる恐れがあります。
@@ -184,6 +203,20 @@ $ cat key.pub.json
 
 公開鍵は事務局 OP レジストリに登録する必要があります。
 事務局に公開鍵の登録を依頼してください。
+
+#### JSON Web Key Generator を使用する方法
+
+https://jwk.pages.dev/ を使用して、鍵ペアを生成することが可能です。
+
+以下を指定して Generate ボタンをクリックしてください。
+
+- Algorithm: ECDSA (ES256)
+- Key ID: JWK Thumbprint (SHA-256)
+
+ページ上に生成された鍵を、以下のようなファイル名で保存してください。
+
+- Private Key: key.priv.json
+- Public Key: key.pub.json
 
 ### CMS の OP 対応と SDP の発行・登録
 
