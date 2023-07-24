@@ -12,7 +12,7 @@ describe("ProfileSet不在/不正時の確認", () => {
       route.fulfill({
         status: 200,
         contentType: "text/html",
-        body: "<html><body><h1>Test page</h1></body></html>",
+        body: "<!doctype html><html lang=\"ja\"><head><title>Test page</title></head><body><h1>Test page</h1></body></html>",
       }),
     );
     await page.goto("https://www.example.com/");
