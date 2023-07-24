@@ -7,17 +7,17 @@ describe("ProfileSet不在/不正時の確認", () => {
   let ext: Page | undefined;
 
   type Response = {
-    status: number,
-    contentType: string,
-    body: string
+    status: number;
+    contentType: string;
+    body: string;
   };
-  
+
   const responseMap: Record<string, Response> = {
     "/": {
       status: 200,
       contentType: "text/html",
-      body: "<!doctype html><html lang=\"ja\"><head><title>Test page</title></head><body><h1>Test page</h1></body></html>",
-    }
+      body: '<!doctype html><html lang="ja"><head><title>Test page</title></head><body><h1>Test page</h1></body></html>',
+    },
   };
 
   beforeEach(async () => {
