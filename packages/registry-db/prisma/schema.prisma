@@ -43,8 +43,6 @@ model dps {
   /// ウェブページ
   website   websites? @relation(fields: [websiteId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   websiteId String?   @db.Uuid
-  /// ウェブページのURL
-  url       String?
 }
 
 /// 会員
