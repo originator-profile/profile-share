@@ -6,7 +6,7 @@ import {
 } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { globby } from "globby";
-import { accountId, operation, privateKey } from "../../flags";
+import { accountId, expirationDate, operation, privateKey } from "../../flags";
 import { Jwk } from "@originator-profile/model";
 import { prisma } from "../../prisma-client";
 
@@ -52,9 +52,7 @@ export class PublisherWebsite extends Command {
     "issued-at": Flags.string({
       description: "発行日時 (ISO 8601)",
     }),
-    "expired-at": Flags.string({
-      description: "有効期限 (ISO 8601)",
-    }),
+    "expired-at": expirationDate(),
   };
 
   async #website(
@@ -95,9 +93,7 @@ export class PublisherWebsite extends Command {
     const issuedAt = flags["issued-at"]
       ? new Date(flags["issued-at"])
       : new Date();
-    const expiredAt = flags["expired-at"]
-      ? new Date(flags["expired-at"])
-      : addYears(new Date(), 1);
+    const expiredAt = flags["expired-at"] ?? addYears(new Date(), 1);
 
     // 受け取った情報から SDP を生成
     const jwt = await services.publisher.signDp(

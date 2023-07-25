@@ -1,4 +1,4 @@
-import { isOp } from "@originator-profile/core";
+import { expirationDateTimeLocaleFrom, isOp } from "@originator-profile/core";
 import { Profile } from "../types/profile";
 import Table from "./Table";
 import TableRow from "./TableRow";
@@ -35,7 +35,7 @@ function TechTable({ className, profile }: Props) {
       />
       <TableRow
         header="有効期限"
-        data={new Date(profile.expiredAt).toLocaleString()}
+        data={expirationDateTimeLocaleFrom(profile.expiredAt)}
       />
     </Table>
   );

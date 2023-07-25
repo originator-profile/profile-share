@@ -1,7 +1,7 @@
 import { Command, Flags } from "@oclif/core";
 import { addYears } from "date-fns";
 import { Services } from "@originator-profile/registry-service";
-import { accountId } from "../../flags";
+import { accountId, expirationDate } from "../../flags";
 import { prisma } from "../../prisma-client";
 
 const config = { ISSUER_UUID: process.env.ISSUER_UUID ?? "" };
@@ -31,9 +31,7 @@ export class RegisterCredential extends Command {
     "issued-at": Flags.string({
       description: "発行日時 (ISO 8601)",
     }),
-    "expired-at": Flags.string({
-      description: "有効期限 (ISO 8601)",
-    }),
+    "expired-at": expirationDate(),
   };
 
   async run(): Promise<void> {
@@ -46,9 +44,7 @@ export class RegisterCredential extends Command {
     const issuedAt = flags["issued-at"]
       ? new Date(flags["issued-at"])
       : new Date();
-    const expiredAt = flags["expired-at"]
-      ? new Date(flags["expired-at"])
-      : addYears(new Date(), 1);
+    const expiredAt = flags["expired-at"] ?? addYears(new Date().getTime(), 1);
 
     const result = await services.credential.create(
       flags.id,
