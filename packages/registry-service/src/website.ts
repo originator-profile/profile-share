@@ -36,9 +36,13 @@ export const WebsiteService = ({ prisma, websiteRepository }: Options) => ({
   async createForOldAPI(
     input: Prisma.websitesCreateInput,
   ): Promise<websites | Error> {
+    const { url, ...rest } = input;
     return await prisma.websites
       .create({
-        data: input,
+        data: {
+          url: websiteRepository.serializeUrl(url),
+          ...rest,
+        },
         include: { categories: true },
       })
       .catch((e: Error) => e);
@@ -72,9 +76,20 @@ export const WebsiteService = ({ prisma, websiteRepository }: Options) => ({
   async updateForOldAPI(
     input: Prisma.websitesUpdateInput & { id: string },
   ): Promise<websites | Error> {
+    const { id, url, ...rest } = input;
+    let serialized;
+    if (typeof url === "undefined") {
+      serialized = undefined;
+    } else if (typeof url === "string") {
+      serialized = websiteRepository.serializeUrl(url);
+    } else if (!url?.set) {
+      serialized = {
+        set: url.set && websiteRepository.serializeUrl(url.set),
+      };
+    }
     return await prisma.websites.update({
-      where: { id: input.id },
-      data: input,
+      where: { id },
+      data: { url: serialized, ...rest },
       include: { categories: true },
     });
   },
