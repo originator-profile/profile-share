@@ -59,6 +59,7 @@ running command...
 * [`profile-registry db:init`](#profile-registry-dbinit)
 * [`profile-registry db:prisma`](#profile-registry-dbprisma)
 * [`profile-registry db:seed`](#profile-registry-dbseed)
+* [`profile-registry db:serialize-website-url`](#profile-registry-dbserialize-website-url)
 * [`profile-registry help [COMMANDS]`](#profile-registry-help-commands)
 * [`profile-registry key-gen`](#profile-registry-key-gen)
 * [`profile-registry openapi-gen [OUTPUT]`](#profile-registry-openapi-gen-output)
@@ -299,6 +300,18 @@ USAGE
 
 DESCRIPTION
   Seed database
+```
+
+## `profile-registry db:serialize-website-url`
+
+websites テーブルの url カラムの値を serialize した url に更新します。
+
+```
+USAGE
+  $ profile-registry db:serialize-website-url
+
+DESCRIPTION
+  websites テーブルの url カラムの値を serialize した url に更新します。
 ```
 
 ## `profile-registry help [COMMANDS]`
