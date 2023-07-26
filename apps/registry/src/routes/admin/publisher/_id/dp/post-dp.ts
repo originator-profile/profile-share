@@ -75,9 +75,9 @@ export async function postDp({
     throw new BadRequestError("invalid request");
   }
   // SDP を登録
-  const dpId = await server.services.publisher.registerDp(accountId, jwt);
-  if (dpId instanceof Error) {
-    const details = dpId.message;
+  const sdp = await server.services.publisher.registerDp(accountId, jwt);
+  if (sdp instanceof Error) {
+    const details = sdp.message;
     throw new BadRequestError(`Invalid issue request: ${details}`);
   }
 

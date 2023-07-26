@@ -8,7 +8,10 @@ import { ValidatorService } from "./validator";
 import { PublisherService } from "./publisher";
 import { WebsiteService } from "./website";
 import { CredentialService } from "./credential";
-import { WebsiteRepository } from "@originator-profile/registry-db";
+import {
+  DpRepository,
+  WebsiteRepository,
+} from "@originator-profile/registry-db";
 
 export type { Website } from "./website";
 
@@ -25,7 +28,8 @@ export const Services = (options: Options) => {
   const admin = AdminService(options);
   const category = CategoryService(options);
   const certificate = CertificateService({ ...options, account, validator });
-  const publisher = PublisherService({ ...options, validator });
+  const dpRepository = DpRepository(options);
+  const publisher = PublisherService({ ...options, validator, dpRepository });
   const websiteRepository = WebsiteRepository(options);
   const website = WebsiteService({ ...options, websiteRepository });
   const credential = CredentialService(options);

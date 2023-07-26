@@ -108,8 +108,8 @@ export class PublisherWebsite extends Command {
     if (jwt instanceof Error) this.error(jwt);
 
     // SDP をレジストリに登録
-    const dpId = await services.publisher.registerDp(flags.id, jwt);
-    if (dpId instanceof Error) this.error(dpId);
+    const sdp = await services.publisher.registerDp(flags.id, jwt);
+    if (sdp instanceof Error) this.error(sdp);
   }
 
   async run(): Promise<void> {

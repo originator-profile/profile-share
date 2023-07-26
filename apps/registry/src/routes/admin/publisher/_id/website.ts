@@ -76,9 +76,9 @@ async function website({
   if (!body?.jwt) return res;
   if (!["create", "update"].includes(operation)) return res;
 
-  const dpId = await server.services.publisher.registerDp(params.id, body.jwt);
-  if (dpId instanceof Error) {
-    const details = dpId.message;
+  const sdp = await server.services.publisher.registerDp(params.id, body.jwt);
+  if (sdp instanceof Error) {
+    const details = sdp.message;
     throw new BadRequestError(`Invalid issue request: ${details}`);
   }
 
