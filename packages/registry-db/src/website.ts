@@ -20,7 +20,7 @@ export interface Website {
   location?: string | null;
   proofJws: string;
   accountId: string;
-  categories?: Array<{ cat: string; cattax?: number }>;
+  categories?: Array<{ cat: string; cattax?: number; name?: string }>;
   bodyFormat: string;
 }
 

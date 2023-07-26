@@ -420,69 +420,50 @@ API の詳細については、[CIP 提供 DP レジストリについて](#cip-
 
 </details>
 
-### SDP の作成と DP レジストリへの登録
+### SDP の生成と DP レジストリへの登録
 
-#### SDP の作成
+#### SDP の生成
 
-DP レジストリに登録するにはまず、Signed Document Profile (SDP) を作成する必要があります。
+DP レジストリに登録するにはまず、Signed Document Profile (SDP) を発行する必要があります。
 前提条件として組織情報の登録、公開鍵の登録、Signed Originator Profile 発行を行う必要があります。
 今回は下記を使用して実行します。
 
 - プライベート鍵のパス: key.priv.json
 - 登録する組織: media.example.com
 
-SDP の生成は Web ページの HTML からテキストを抜き出し連結し署名する実装が必要ですが、これについては処理対象を定義したファイル `website.json` を用意し、コマンドラインで読み込むだけで SDP を生成する CLI を用意しています。
+SDP の生成は Web ページの HTML からテキストを抜き出し連結し署名する実装が必要ですが、これについては処理対象を定義したファイル `website.json` を用意し、コマンドラインで読み込むことで SDP を発行する CLI を用意しています。
 
-SDP 生成対象を定義する `website.json` ファイルは[website.example.json](https://github.com/originator-profile/profile-share/blob/main/apps/registry/website.example.json) などをひな形として作成してください。例えば下記のような内容を使用します。
+DP を定義する `website.json` ファイルは[website.example.json](https://github.com/originator-profile/profile-share/blob/main/apps/registry/website.example.json) などをひな形として作成してください。例えば下記のような内容を使用します。
 
 ```json
 {
   "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc8",
-  "url": "http://localhost:8080",
-  "location": "h1",
+  "url": "https://media.example.com/2023/06/hello/",
+  "location": "body",
   "bodyFormat": "visibleText",
-  "body": "OP 確認くん",
-  "title": "OP 確認くん"
+  "body": "本文の例",
+  "title": "メディア (試験用)"
 }
 ```
 
 公開鍵のパス、登録する組織、Web ページの情報を引数として使用して下記のように実行します。
 
 ```
-$ profile-registry publisher:website \
+$ profile-registry publisher:sign \
   -i key.priv.json \
   --id media.example.com \
-  --input website.json \
-  -o create
+  --input website.json
 ```
 
-実行結果として下記のようにコンソールに表示されます。
+実行結果として下記のようにコンソールに SDP が表示されます。
 
 ```
-{
-  "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc8",
-  "url": "http://localhost:8080",
-  "accountId": "e1c6e970-0739-5227-a429-ae0dfa897398",
-  "title": "OP 確認くん",
-  "image": null,
-  "description": null,
-  "author": null,
-  "editor": null,
-  "datePublished": null,
-  "dateModified": null,
-  "location": "h1",
-  "bodyFormatValue": "visibleText",
-  "proofJws": "eyJhbGciOiJFUzI1NiIsImtpZCI6Im5Senc0VzdFVXJSMmlZdGlMbkFick5QOVVEdFFneE96OGZnX3poRjBmTkEiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..Y_IlLjScpDwO3cfBPLSgh0mPVAw8xgU00DcPmL-e2ZD8Mpf6QkzH6raX_Anh0YWJRLWaS3US80MRHZmxfcmPpw"
-}
+eyJhbGciOiJFUzI1NiIsImtpZCI6Ijd5ZWp2UmRDejV2MWpkYVh1emEydXQ3c1Q4dmtyZmJsRGZOZVRWd3NJanMiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwczovL21lZGlhLmV4YW1wbGUuY29tLzIwMjMvMDYvaGVsbG8vIiwidGl0bGUiOiLjg6Hjg4fjgqPjgqIgKOippumok-eUqCkifSx7InR5cGUiOiJ2aXNpYmxlVGV4dCIsInVybCI6Imh0dHBzOi8vbWVkaWEuZXhhbXBsZS5jb20vMjAyMy8wNi9oZWxsby8iLCJsb2NhdGlvbiI6ImJvZHkiLCJwcm9vZiI6eyJqd3MiOiJleUpoYkdjaU9pSkZVekkxTmlJc0ltdHBaQ0k2SWpkNVpXcDJVbVJEZWpWMk1XcGtZVmgxZW1FeWRYUTNjMVE0ZG10eVptSnNSR1pPWlZSV2QzTkphbk1pTENKaU5qUWlPbVpoYkhObExDSmpjbWwwSWpwYkltSTJOQ0pkZlEuLjg4VVJFZ0VnTHV3SkhqekpmSzB3UWxaM3hpOFdqUVJTd2RqZXNUM1ViN1hLTm9RNWxpNDh3dU03dE1CS09Wc3dNY3B5cjA2aTUxZmowU1pNcC1LWEV3In19XX0sImlzcyI6Im1lZGlhLmV4YW1wbGUuY29tIiwic3ViIjoiZWY5ZDc4ZTAtZDgxYS00ZTM5LWI3YTAtMjdlMTU0MDVlZGM4IiwiaWF0IjoxNjkwMzYzNjY0LCJleHAiOjE3MjE5ODYwNjR9.RRQE3Id7fqIzsHL_u3HNEOZitEMoaXkAeTntDU4hG0ayIGHULvTnnOefCsRCvUF96KA__2cipcXhwS09S0caZw
 ```
 
-#### SOP を DP レジストリに登録
+#### SDP の登録
 
-Originator Profile レジストリ運用者から受け取った Signed Originator Profile (SOP) を Document Profile レジストリに登録します。
-
-```
-$ profile-registry account:register-op --id <ドメイン名> --op <Signed Originator Profileファイル>
-```
+生成した SDP を DP レジストリに登録します。これには　DP レジストリ (`dprexpt.originator-profile.org`) の [SDP登録用のエンドポイント](#adminpublisherアカウントiddp-エンドポイント) を利用します。
 
 これにより DP レジストリは `/website/profiles` エンドポイントで SOP と SDP をまとめて返せるようになります。
 
