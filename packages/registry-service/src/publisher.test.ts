@@ -5,7 +5,10 @@ import crypto from "node:crypto";
 import { decodeJwt } from "jose";
 import { JwtDpPayload } from "@originator-profile/model";
 import { generateKey } from "@originator-profile/sign";
-import { DpRepository } from "@originator-profile/registry-db";
+import {
+  DpRepository,
+  WebsiteRepository,
+} from "@originator-profile/registry-db";
 import { ValidatorService } from "./validator";
 import { PublisherService } from "./publisher";
 
@@ -13,7 +16,13 @@ describe("PublisherService", () => {
   const prisma = mockDeep<PrismaClient>();
   const validator = ValidatorService();
   const dpRepository = DpRepository({ prisma });
-  const publisher = PublisherService({ prisma, validator, dpRepository });
+  const websiteRepository = WebsiteRepository({ prisma });
+  const publisher = PublisherService({
+    prisma,
+    validator,
+    dpRepository,
+    websiteRepository,
+  });
 
   afterEach(() => {
     mockClear(prisma);

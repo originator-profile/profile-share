@@ -3,8 +3,14 @@ import flush from "just-flush";
 import { addYears } from "date-fns";
 import { NotFoundError, BadRequestError } from "http-errors-enhanced";
 import { Dp, Jwk } from "@originator-profile/model";
-import { isJwtDpPayload } from "@originator-profile/core";
-import { DpRepository } from "@originator-profile/registry-db";
+import {
+  findFirstItemWithProof,
+  isJwtDpPayload,
+} from "@originator-profile/core";
+import {
+  DpRepository,
+  WebsiteRepository,
+} from "@originator-profile/registry-db";
 import { signDp } from "@originator-profile/sign";
 import { ValidatorService } from "./validator";
 
@@ -12,6 +18,7 @@ type Options = {
   prisma: PrismaClient;
   validator: ValidatorService;
   dpRepository: DpRepository;
+  websiteRepository: WebsiteRepository;
 };
 
 type AccountId = string;
@@ -20,6 +27,7 @@ export const PublisherService = ({
   prisma,
   validator,
   dpRepository,
+  websiteRepository,
 }: Options) => ({
   /**
    * DP への署名
@@ -106,7 +114,7 @@ export const PublisherService = ({
     return jwt;
   },
   /**
-   * Signed Document Profile の登録
+   * Signed Document Profile の更新・登録
    * @param accountId 会員 ID
    * @param jwt Signed Document Profile
    * @return Signed Document Profile
@@ -128,6 +136,23 @@ export const PublisherService = ({
         "It is not Signed Document Profile for the account.",
       );
     }
+    const locator = findFirstItemWithProof(payload);
+    if (!locator) {
+      return new BadRequestError(
+        "Document Profile doesn't contain item with proof",
+      );
+    }
+    const websiteId = payload.sub;
+    const websiteInput = {
+      id: websiteId,
+      location: locator.location,
+      bodyFormat: locator.type,
+      url: locator.url,
+      proofJws: locator.proof.jws,
+      accountId,
+    };
+    const website = await websiteRepository.upsert(websiteInput);
+    if (website instanceof Error) return website;
     return await dpRepository.create({ jwt, payload });
   },
 });

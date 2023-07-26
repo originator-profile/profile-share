@@ -231,7 +231,7 @@ function issue_dp( Dp $dp, string $admin_secret, string $pkcs8 ): string|false {
 	}
 
 	list( $uuid, ) = \explode( ':', $admin_secret );
-	$endpoint      = "https://{$dp->issuer}/admin/publisher/{$uuid}";
+	$endpoint      = "https://{$dp->issuer}/admin/publisher/{$uuid}/dp/";
 	$args          = array(
 		'method'  => 'POST',
 		'headers' => array(
@@ -240,22 +240,7 @@ function issue_dp( Dp $dp, string $admin_secret, string $pkcs8 ): string|false {
 		),
 		'body'    => \wp_json_encode(
 			array(
-				'input' => array(
-					'id'            => $dp->subject,
-					'url'           => $dp->url,
-					'title'         => $dp->title,
-					'image'         => $dp->image,
-					'description'   => $dp->description,
-					'author'        => $dp->author,
-					'categories'    => connect_or_create_categories( $dp->subject, $dp->category ),
-					'editor'        => $dp->editor,
-					'datePublished' => $dp->date_published,
-					'dateModified'  => $dp->date_modified,
-					'bodyFormat'    => array( 'connect' => array( 'value' => PROFILE_VERIFICATION_TYPE ) ),
-					'location'      => PROFILE_VERIFICATION_LOCATION,
-					'proofJws'      => $dp->jws,
-				),
-				'jwt'   => $jwt,
+				'jwt' => $jwt,
 			)
 		),
 	);
@@ -263,9 +248,9 @@ function issue_dp( Dp $dp, string $admin_secret, string $pkcs8 ): string|false {
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $dp->issuer ) {
 		$in_docker = \file_exists( '/.dockerenv' );
 		if ( $in_docker ) {
-			$endpoint = "http://host.docker.internal:8080/admin/publisher/{$uuid}";
+			$endpoint = "http://host.docker.internal:8080/admin/publisher/{$uuid}/dp/";
 		} else {
-			$endpoint = "http://localhost:8080/admin/publisher/{$uuid}";
+			$endpoint = "http://localhost:8080/admin/publisher/{$uuid}/dp/";
 		}
 	}
 
@@ -274,55 +259,9 @@ function issue_dp( Dp $dp, string $admin_secret, string $pkcs8 ): string|false {
 		return false;
 	}
 
-	if ( 200 !== $res['response']['code'] ) {
-		$args['method'] = 'PUT';
-		$res            = \wp_remote_request( $endpoint, $args );
-	}
-
 	if ( \is_wp_error( $res ) || 200 !== $res['response']['code'] ) {
 		return false;
 	}
 
 	return $jwt;
-}
-
-/**
- * カテゴリーの接続あるいは作成
- *
- * @param string $website_id ウェブサイトの識別子
- * @param ?array $category カテゴリー
- * @remarks
- * 不要な websiteCategories レコードの削除はおこなわれません
- * 必要に応じて別途 Prisma Studio あるいは profile-registry publisher:website CLI を使用して削除してください
- */
-function connect_or_create_categories( string $website_id, ?array $category ): \stdClass|array {
-	if ( ! $category ) {
-		return new \stdClass();
-	}
-
-	$callback = function ( $value ) use ( $website_id ) {
-		return array(
-			'where'  => array(
-				'websiteCategoriesWhereUniqueInput' => array(
-					'categoryCat'    => $value->cat,
-					'categoryCattax' => $value->cattax ?? 1,
-					'websiteId'      => $website_id,
-				),
-			),
-			'create' => array(
-				'category' => array(
-					'connect' => array(
-						'cat_cattax' => array(
-							'cat'    => $value->cat,
-							'cattax' => $value->cattax ?? 1,
-						),
-					),
-				),
-			),
-		);
-	};
-
-	return array(
-		'connectOrCreate' => array_map( $callback, $category ),
-	);
 }

@@ -29,8 +29,13 @@ export const Services = (options: Options) => {
   const category = CategoryService(options);
   const certificate = CertificateService({ ...options, account, validator });
   const dpRepository = DpRepository(options);
-  const publisher = PublisherService({ ...options, validator, dpRepository });
   const websiteRepository = WebsiteRepository(options);
+  const publisher = PublisherService({
+    ...options,
+    validator,
+    dpRepository,
+    websiteRepository,
+  });
   const website = WebsiteService({ ...options, websiteRepository });
   const credential = CredentialService(options);
   return {

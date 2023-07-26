@@ -155,6 +155,19 @@ export const WebsiteRepository = ({ prisma }: Options) => ({
   },
 
   /**
+   * ウェブページの更新・作成
+   * @param website ウェブページ (website.id 必須)
+   * @returns ウェブページ
+   */
+  async upsert(
+    website: WebsiteUpdate & WebsiteCreate,
+  ): Promise<websites | Error> {
+    const data = await this.create(website);
+    if (data instanceof Error) return await this.update(website);
+    return data;
+  },
+
+  /**
    * ウェブページの削除
    * @param input.id ウェブページ ID
    * @return ウェブページ
