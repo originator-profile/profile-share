@@ -1,21 +1,34 @@
 import { PrismaClient } from "@prisma/client";
 import flush from "just-flush";
-import { addYears, fromUnixTime } from "date-fns";
+import { addYears } from "date-fns";
 import { NotFoundError, BadRequestError } from "http-errors-enhanced";
 import { Dp, Jwk } from "@originator-profile/model";
-import { isJwtDpPayload } from "@originator-profile/core";
+import {
+  findFirstItemWithProof,
+  isJwtDpPayload,
+} from "@originator-profile/core";
+import {
+  DpRepository,
+  WebsiteRepository,
+} from "@originator-profile/registry-db";
 import { signDp } from "@originator-profile/sign";
 import { ValidatorService } from "./validator";
 
 type Options = {
   prisma: PrismaClient;
   validator: ValidatorService;
+  dpRepository: DpRepository;
+  websiteRepository: WebsiteRepository;
 };
 
 type AccountId = string;
-type DpId = string;
 
-export const PublisherService = ({ prisma, validator }: Options) => ({
+export const PublisherService = ({
+  prisma,
+  validator,
+  dpRepository,
+  websiteRepository,
+}: Options) => ({
   /**
    * DP への署名
    * @param accountId 会員 ID
@@ -101,12 +114,12 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
     return jwt;
   },
   /**
-   * Signed Document Profile の登録
+   * Signed Document Profile の更新・登録
    * @param accountId 会員 ID
    * @param jwt Signed Document Profile
-   * @return dps.id
+   * @return Signed Document Profile
    */
-  async registerDp(accountId: AccountId, jwt: string): Promise<DpId | Error> {
+  async registerDp(accountId: AccountId, jwt: string): Promise<string | Error> {
     const account = await prisma.accounts.findUnique({
       where: { id: accountId },
     });
@@ -114,31 +127,33 @@ export const PublisherService = ({ prisma, validator }: Options) => ({
     if (account instanceof Error) return account;
     const decoded = validator.decodeToken(jwt);
     if (decoded instanceof Error) return decoded;
-    if (!isJwtDpPayload(decoded.payload)) {
+    const payload = decoded.payload;
+    if (!isJwtDpPayload(payload)) {
       return new BadRequestError("It is not Document Profile.");
     }
-    if (decoded.payload.iss !== account.domainName) {
+    if (payload.iss !== account.domainName) {
       return new BadRequestError(
         "It is not Signed Document Profile for the account.",
       );
     }
-    const issuedAt: Date = fromUnixTime(decoded.payload.iat);
-    const expiredAt: Date = fromUnixTime(decoded.payload.exp);
-    const websiteId = decoded.payload.sub;
-    const data = await prisma.dps
-      .create({
-        data: {
-          issuerId: accountId,
-          jwt,
-          issuedAt,
-          expiredAt,
-          websiteId,
-        },
-      })
-      .catch((e: Error) => e);
-    if (!data) return new BadRequestError();
-    if (data instanceof Error) return data;
-    return data.id;
+    const locator = findFirstItemWithProof(payload);
+    if (!locator) {
+      return new BadRequestError(
+        "Document Profile doesn't contain item with proof",
+      );
+    }
+    const websiteId = payload.sub;
+    const websiteInput = {
+      id: websiteId,
+      location: locator.location,
+      bodyFormat: locator.type,
+      url: locator.url,
+      proofJws: locator.proof.jws,
+      accountId,
+    };
+    const website = await websiteRepository.upsert(websiteInput);
+    if (website instanceof Error) return website;
+    return await dpRepository.create({ jwt, payload });
   },
 });
 
