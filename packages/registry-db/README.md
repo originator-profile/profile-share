@@ -1,3 +1,3 @@
 # Profile Registry DB
 
-Profile Registry のデータベーススキーマとマイグレーションのためのパッケージです。
+Profile Registry のデータベースとドメインモデルのマッピングのためのパッケージです。

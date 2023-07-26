@@ -7,10 +7,14 @@
     "build": "prisma generate"
   },
   "devDependencies": {
+    "@originator-profile/tsconfig": "*",
     "@prisma/client": "^4.16.2",
     "@prisma/generator-helper": "^4.16.2",
-    "@originator-profile/tsconfig": "*",
+    "@types/jsonld": "^1.5.9",
+    "http-errors-enhanced": "^1.0.13",
+    "jsonld": "^8.2.0",
     "prisma": "^4.16.2",
-    "prisma-erd-generator": "^1.6.2"
+    "prisma-erd-generator": "^1.6.2",
+    "uuid": "^9.0.0"
   }
 }
