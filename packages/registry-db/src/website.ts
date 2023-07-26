@@ -56,7 +56,6 @@ const convertCategoriesToPrismaConnectOrCreate = (
   return { connectOrCreate: categoriesConnect };
 };
 
-
 export const WebsiteRepository = ({ prisma }: Options) => ({
   /**
    * url を serialize します
@@ -148,8 +147,8 @@ export const WebsiteRepository = ({ prisma }: Options) => ({
     const connectBodyFormat = !bodyFormat
       ? undefined
       : {
-        connect: { value: bodyFormat },
-      };
+          connect: { value: bodyFormat },
+        };
 
     const input = {
       bodyFormat: connectBodyFormat,
