@@ -2,6 +2,5 @@
   "url": "https://media.example.com/2023/06/hello/",
   "location": "body",
   "bodyFormat": "visibleText",
-  "body": "本文の例",
-  "title": "メディア (試験用)"
+  "body": "本文の例"
 }
