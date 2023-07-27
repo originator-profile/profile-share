@@ -431,7 +431,7 @@ DP レジストリに登録するにはまず、Signed Document Profile (SDP) �
 - プライベート鍵のパス: key.priv.json
 - 登録する組織: media.example.com
 
-SDP の生成は Web ページの HTML からテキストを抜き出し連結し署名する実装が必要ですが、これについては処理対象を定義したファイル `website.json` を用意し、コマンドラインで読み込むことで SDP を発行する CLI を用意しています。
+SDP の生成は Web ページの HTML からテキストを抜き出し連結し署名することでおこないます。これについては処理対象を定義したファイル `website.json` を読み込むことで SDP を発行する CLI を用意しています。
 
 DP を定義する `website.json` ファイルは[website.example.json](https://github.com/originator-profile/profile-share/blob/main/apps/registry/website.example.json) などをひな形として作成してください。例えば下記のような内容を使用します。
 
