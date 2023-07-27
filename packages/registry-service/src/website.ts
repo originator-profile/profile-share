@@ -84,7 +84,7 @@ export const WebsiteService = ({ prisma, websiteRepository }: Options) => ({
       serialized = websiteRepository.serializeUrl(url);
     } else if (url?.set) {
       serialized = {
-        set: url.set && websiteRepository.serializeUrl(url.set),
+        set: websiteRepository.serializeUrl(url.set),
       };
     }
     return await prisma.websites.update({
