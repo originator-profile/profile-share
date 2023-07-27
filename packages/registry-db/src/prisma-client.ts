@@ -10,15 +10,27 @@ const transactionContext =
 
 export const prisma = new PrismaClient();
 
+/**
+ * prisma client を返す（トランザクション対応）。
+ * @return prisma client
+ */
 export const getClient = () => {
   const tx = transactionContext.get(PRISMA_CLIENT_KEY);
   return tx ? tx : prisma;
 };
 
+/**
+ * DBのトランザクションとして {fn} を実行する
+ *
+ * @param fn トランザクションとして実行したい処理
+ * @return prisma client
+ */
 export const beginTransaction = async <T>(fn: () => T) => {
   const savedTx = transactionContext.get(PRISMA_CLIENT_KEY);
 
   if (savedTx) {
+    // この場合、既に $transaction() の中なので、再度 $transaction() を呼ぶことはせず、
+    // fn() をそのまま実行する。
     return await fn();
   }
 
