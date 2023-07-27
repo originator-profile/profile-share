@@ -7,11 +7,11 @@ describe("ProfileSet不在/不正時の確認", () => {
   let page: Page | undefined;
 
   type Response = {
-    status: number,
-    contentType: string,
-    body: string
+    status: number;
+    contentType: string;
+    body: string;
   };
-  
+
   const responseMap: Record<string, Response> = {
     "/test": {
       status: 200,
