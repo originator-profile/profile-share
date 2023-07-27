@@ -10,7 +10,7 @@ import {
   DpRepository,
   WebsiteRepository,
   beginTransaction,
-  getClient
+  getClient,
 } from "@originator-profile/registry-db";
 import { signDp } from "@originator-profile/sign";
 import { ValidatorService } from "./validator";
@@ -120,7 +120,7 @@ export const PublisherService = ({
    * @return Signed Document Profile
    */
   async registerDp(accountId: AccountId, jwt: string): Promise<string | Error> {
-    const prisma = getClient()
+    const prisma = getClient();
     const account = await prisma.accounts.findUnique({
       where: { id: accountId },
     });
@@ -153,12 +153,13 @@ export const PublisherService = ({
       accountId,
     };
 
-    return await beginTransaction<ReturnType<typeof dpRepository.create>>(async () => {
-      const website = await websiteRepository.upsert(websiteInput);
-      if (website instanceof Error) return website;
-      return await dpRepository.create({ jwt, payload });
-    })
-
+    return await beginTransaction<ReturnType<typeof dpRepository.create>>(
+      async () => {
+        const website = await websiteRepository.upsert(websiteInput);
+        if (website instanceof Error) return website;
+        return await dpRepository.create({ jwt, payload });
+      },
+    );
   },
 });
 

@@ -13,7 +13,7 @@ import { prisma } from "@originator-profile/registry-db";
 export async function waitForDb(prisma: PrismaClient): Promise<void> {
   const sleep = util.promisify(setTimeout);
 
-  for (; ;) {
+  for (;;) {
     try {
       await prisma.$connect();
       break;

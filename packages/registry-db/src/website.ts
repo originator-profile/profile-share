@@ -136,8 +136,8 @@ export const WebsiteRepository = () => ({
     const connectBodyFormat = !bodyFormat
       ? undefined
       : {
-        connect: { value: bodyFormat },
-      };
+          connect: { value: bodyFormat },
+        };
 
     const input = {
       bodyFormat: connectBodyFormat,
