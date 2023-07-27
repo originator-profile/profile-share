@@ -21,7 +21,7 @@ describe("publisher:sign", () => {
     await PublisherSign.run([
       `-i=${path.join(basePath, "key.priv.json")}`,
       `--id=${domainName}`,
-      `--input=${path.join(basePath, "website-min.json")}`,
+      `--input=${path.join(basePath, "website-minimal.json")}`,
     ]);
     expect(decodeJwt(stdout.output)).toHaveProperty("iss", domainName);
   });
