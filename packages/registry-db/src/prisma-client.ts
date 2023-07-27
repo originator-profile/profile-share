@@ -25,19 +25,23 @@ export const getClient = () => {
  * @param fn トランザクションとして実行したい処理
  * @return prisma client
  */
-export const beginTransaction = async <T>(fn: () => T) => {
+export const beginTransaction = async <T>(fn: () => T): Promise<T | Error> => {
   const savedTx = transactionContext.get(PRISMA_CLIENT_KEY);
 
-  if (savedTx) {
-    // この場合、既に $transaction() の中なので、再度 $transaction() を呼ぶことはせず、
-    // fn() をそのまま実行する。
-    return await fn();
-  }
-
-  return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-    return transactionContext.runPromise(async () => {
-      transactionContext.set(PRISMA_CLIENT_KEY, tx);
+  try {
+    if (savedTx) {
+      // この場合、既に $transaction() の中なので、再度 $transaction() を呼ぶことはせず、
+      // fn() をそのまま実行する。
       return await fn();
+    }
+
+    return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+      return transactionContext.runPromise(async () => {
+        transactionContext.set(PRISMA_CLIENT_KEY, tx);
+        return await fn();
+      });
     });
-  });
+  } catch (e) {
+    return e as Error;
+  }
 };
