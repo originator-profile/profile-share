@@ -2,7 +2,7 @@ import { Command, Flags } from "@oclif/core";
 import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { accountId } from "../../flags";
-import { prisma } from "../../prisma-client";
+import { prisma } from "@originator-profile/registry-db";
 
 export class AccountRegisterOp extends Command {
   static description =

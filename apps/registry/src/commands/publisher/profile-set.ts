@@ -3,7 +3,7 @@ import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs";
 import stream from "node:stream";
 import { JsonLdDocument } from "jsonld";
-import { prisma } from "../../prisma-client";
+import { prisma } from "@originator-profile/registry-db";
 
 const config = { ISSUER_UUID: process.env.ISSUER_UUID ?? "" };
 

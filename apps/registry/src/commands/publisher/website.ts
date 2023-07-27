@@ -8,7 +8,7 @@ import fs from "node:fs/promises";
 import { globby } from "globby";
 import { accountId, expirationDate, operation, privateKey } from "../../flags";
 import { Jwk } from "@originator-profile/model";
-import { prisma } from "../../prisma-client";
+import { prisma } from "@originator-profile/registry-db";
 
 type Website = Omit<WebsiteType, "accountId" | "proofJws">;
 

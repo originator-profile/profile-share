@@ -3,7 +3,7 @@ import { Services } from "@originator-profile/registry-service";
 import crypto from "node:crypto";
 import { NotFoundError } from "http-errors-enhanced";
 import { parseAccountId } from "@originator-profile/core";
-import { prisma } from "../../prisma-client";
+import { prisma } from "@originator-profile/registry-db";
 
 export class AdminCreate extends Command {
   static description = "管理者の作成";

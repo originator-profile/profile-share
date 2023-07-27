@@ -2,7 +2,7 @@ import { Command, Flags } from "@oclif/core";
 import { waitForDb } from "../../seed";
 import { DbPrisma } from "./prisma";
 import { DbSeed } from "./seed";
-import { prisma } from "../../prisma-client";
+import { prisma } from "@originator-profile/registry-db";
 
 export class DbInit extends Command {
   static description = "データベースの初期化";

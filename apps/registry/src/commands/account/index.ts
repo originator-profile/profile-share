@@ -3,7 +3,7 @@ import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { operation } from "../../flags";
 import { parseAccountId } from "@originator-profile/core";
-import { prisma } from "../../prisma-client";
+import { prisma } from "@originator-profile/registry-db";
 
 export class Account extends Command {
   static description = "会員の作成・表示・更新・削除";

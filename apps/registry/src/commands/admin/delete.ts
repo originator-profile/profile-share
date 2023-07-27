@@ -1,7 +1,7 @@
 import { Command } from "@oclif/core";
 import { Services } from "@originator-profile/registry-service";
 import { accountId } from "../../flags";
-import { prisma } from "../../prisma-client";
+import { prisma } from "@originator-profile/registry-db";
 
 export class AdminDelete extends Command {
   static description = "管理者権限の削除";

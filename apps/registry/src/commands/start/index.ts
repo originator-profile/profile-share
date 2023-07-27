@@ -2,7 +2,7 @@ import { Command, Flags, ux } from "@oclif/core";
 import path from "node:path";
 import { create, start } from "../../server";
 import { DbInit } from "../db/init";
-import { prisma } from "../../prisma-client";
+import { prisma } from "@originator-profile/registry-db";
 
 export default class Start extends Command {
   static description = "API サーバーの起動";

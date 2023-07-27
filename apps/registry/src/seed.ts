@@ -8,12 +8,12 @@ import exampleCategories from "./category.example.json";
 import { Jwk } from "@originator-profile/model";
 import addYears from "date-fns/addYears";
 import { parseAccountId } from "@originator-profile/core";
-import { prisma } from "./prisma-client";
+import { prisma } from "@originator-profile/registry-db";
 
 export async function waitForDb(prisma: PrismaClient): Promise<void> {
   const sleep = util.promisify(setTimeout);
 
-  for (;;) {
+  for (; ;) {
     try {
       await prisma.$connect();
       break;
