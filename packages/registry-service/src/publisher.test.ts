@@ -15,10 +15,9 @@ import { PublisherService } from "./publisher";
 describe("PublisherService", () => {
   const prisma = mockDeep<PrismaClient>();
   const validator = ValidatorService();
-  const dpRepository = DpRepository({ prisma });
-  const websiteRepository = WebsiteRepository({ prisma });
+  const dpRepository = DpRepository();
+  const websiteRepository = WebsiteRepository();
   const publisher = PublisherService({
-    prisma,
     validator,
     dpRepository,
     websiteRepository,

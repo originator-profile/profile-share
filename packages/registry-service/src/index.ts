@@ -28,8 +28,8 @@ export const Services = (options: Options) => {
   const admin = AdminService(options);
   const category = CategoryService(options);
   const certificate = CertificateService({ ...options, account, validator });
-  const dpRepository = DpRepository(options);
-  const websiteRepository = WebsiteRepository(options);
+  const dpRepository = DpRepository();
+  const websiteRepository = WebsiteRepository();
   const publisher = PublisherService({
     ...options,
     validator,

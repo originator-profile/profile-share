@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import flush from "just-flush";
 import { addYears } from "date-fns";
 import { NotFoundError, BadRequestError } from "http-errors-enhanced";
@@ -10,12 +9,13 @@ import {
 import {
   DpRepository,
   WebsiteRepository,
+  beginTransaction,
+  getClient
 } from "@originator-profile/registry-db";
 import { signDp } from "@originator-profile/sign";
 import { ValidatorService } from "./validator";
 
 type Options = {
-  prisma: PrismaClient;
   validator: ValidatorService;
   dpRepository: DpRepository;
   websiteRepository: WebsiteRepository;
@@ -24,7 +24,6 @@ type Options = {
 type AccountId = string;
 
 export const PublisherService = ({
-  prisma,
   validator,
   dpRepository,
   websiteRepository,
@@ -46,6 +45,7 @@ export const PublisherService = ({
       expiredAt: addYears(new Date(), 10),
     },
   ): Promise<string | Error> {
+    const prisma = getClient();
     const websitesInclude = {
       categories: {
         select: {
@@ -120,6 +120,7 @@ export const PublisherService = ({
    * @return Signed Document Profile
    */
   async registerDp(accountId: AccountId, jwt: string): Promise<string | Error> {
+    const prisma = getClient()
     const account = await prisma.accounts.findUnique({
       where: { id: accountId },
     });
@@ -151,9 +152,13 @@ export const PublisherService = ({
       proofJws: locator.proof.jws,
       accountId,
     };
-    const website = await websiteRepository.upsert(websiteInput);
-    if (website instanceof Error) return website;
-    return await dpRepository.create({ jwt, payload });
+
+    return await beginTransaction<ReturnType<typeof dpRepository.create>>(async () => {
+      const website = await websiteRepository.upsert(websiteInput);
+      if (website instanceof Error) return website;
+      return await dpRepository.create({ jwt, payload });
+    })
+
   },
 });
 
