@@ -476,7 +476,7 @@ DESCRIPTION
 
 ## `profile-registry publisher:sign`
 
-Signed Document Profile の生成
+Signed Document Profile (SDP) の生成
 
 ```
 USAGE
@@ -491,9 +491,10 @@ FLAGS
   --issued-at=<value>     発行日時 (ISO 8601)
 
 DESCRIPTION
-  Signed Document Profile の生成
+  Signed Document Profile (SDP) の生成
 
-  Web ページの情報に署名し、標準出力に生成した Signed Document Profile を出力します。
+  Web ページの情報 (DP) に対して署名を行います。
+  署名済み DP (SDP) を生成し、それを標準出力に出力します。
 
 FLAG DESCRIPTIONS
   -i, --identity=<value>  プライベート鍵のファイルパス

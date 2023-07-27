@@ -11,9 +11,10 @@ import { signBody, signDp } from "@originator-profile/sign";
 type Website = Omit<WebsiteType, "accountId" | "proofJws">;
 
 export class PublisherSign extends Command {
-  static summary = "Signed Document Profile の生成";
+  static summary = "Signed Document Profile (SDP) の生成";
   static description = `\
-Web ページの情報に署名し、標準出力に生成した Signed Document Profile を出力します。`;
+Web ページの情報 (DP) に対して署名を行います。
+署名済み DP (SDP) を生成し、それを標準出力に出力します。`;
   static flags = {
     identity: privateKey({ required: true }),
     id: Flags.string({
