@@ -13,7 +13,7 @@ describe("WebsiteService", () => {
   });
 
   test("signBody() return compact JWS", async () => {
-    const websiteRepository = WebsiteRepository({ prisma });
+    const websiteRepository = WebsiteRepository();
     const website: WebsiteService = WebsiteService({
       prisma,
       websiteRepository,
