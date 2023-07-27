@@ -58,6 +58,15 @@ const convertCategoriesToPrismaConnectOrCreate = (
 
 export const WebsiteRepository = ({ prisma }: Options) => ({
   /**
+   * url を serialize します
+   * @param url
+   * @returns serialize された URL
+   */
+  serializeUrl(url: string) {
+    return new URL(url).href;
+  },
+
+  /**
    * ウェブページの作成
    * @param website ウェブページ (website.id を省略した場合: UUID v4 生成)
    * @return 作成したウェブページ
@@ -68,6 +77,7 @@ export const WebsiteRepository = ({ prisma }: Options) => ({
       bodyFormat,
       accountId,
       id = uuid4(),
+      url,
       ...createInput
     } = website;
 
@@ -81,6 +91,7 @@ export const WebsiteRepository = ({ prisma }: Options) => ({
 
     const input = {
       id,
+      url: this.serializeUrl(url),
       account: {
         connect: { id: accountId },
       },
@@ -119,7 +130,7 @@ export const WebsiteRepository = ({ prisma }: Options) => ({
    * @return ウェブページ
    */
   async update(website: WebsiteUpdate): Promise<websites | Error> {
-    const { categories, bodyFormat, accountId, id, ...rest } = website;
+    const { categories, bodyFormat, accountId, id, url, ...rest } = website;
 
     if (!id) {
       return new Error("website.id is required.");
@@ -142,6 +153,7 @@ export const WebsiteRepository = ({ prisma }: Options) => ({
     const input = {
       bodyFormat: connectBodyFormat,
       categories: convertCategoriesToPrismaConnectOrCreate(categories, id),
+      url: url && this.serializeUrl(url),
       ...rest,
     } satisfies Prisma.websitesUpdateInput;
 
@@ -189,7 +201,7 @@ export const WebsiteRepository = ({ prisma }: Options) => ({
   ): Promise<JsonLdDocument | Error> {
     const data = await prisma.websites
       .findMany({
-        where: { url },
+        where: { url: this.serializeUrl(url) },
         include: {
           account: {
             include: {
@@ -244,7 +256,7 @@ export const WebsiteRepository = ({ prisma }: Options) => ({
   ): Promise<JsonLdDocument | Error> {
     const data = await prisma.websites
       .findFirstOrThrow({
-        where: validate(id) ? { id } : { url: id },
+        where: validate(id) ? { id } : { url: this.serializeUrl(id) },
         include: {
           account: {
             include: {
