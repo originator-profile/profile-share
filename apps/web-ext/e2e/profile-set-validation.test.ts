@@ -69,9 +69,9 @@ describe("ProfileSet不在/不正時の確認", () => {
       }
     });
 
-    try{
+    try {
       await page.goto(url);
-    }catch(err){
+    } catch (err) {
       console.error(`Error navigating to ${url}`);
     }
     ext = await popup(ctx);
@@ -97,7 +97,7 @@ describe("ProfileSet不在/不正時の確認", () => {
     await page?.screenshot({ path: `screenshots/${task.name}-webpage.png` });
     await ext?.screenshot({ path: `screenshots/${task.name}-web-ext.png` });
   });
-  
+
   afterAll(async () => {
     await Promise.all(ctx.pages().map((page) => page.close()));
   });
