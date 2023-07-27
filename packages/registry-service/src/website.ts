@@ -82,7 +82,7 @@ export const WebsiteService = ({ prisma, websiteRepository }: Options) => ({
       serialized = undefined;
     } else if (typeof url === "string") {
       serialized = websiteRepository.serializeUrl(url);
-    } else if (!url?.set) {
+    } else if (url?.set) {
       serialized = {
         set: url.set && websiteRepository.serializeUrl(url.set),
       };
