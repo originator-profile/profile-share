@@ -52,44 +52,44 @@ describe("ProfileSet不在/不正時の確認", () => {
 
   async function runTest(url: string): Promise<Page> {
     page = await ctx.newPage();
-
+  
     await page.route("**", (route) => {
       const url = new URL(route.request().url());
-
-      if (url.origin === "http://localhost:8080" && url.pathname === "/test") {
+  
+      if(url.pathname === "/ps.json") {
         return route.abort();
       }
-
+  
       const response = responseMap[url.pathname];
-
+  
       if (response) {
         return route.fulfill(response);
       } else {
         return route.continue();
       }
     });
-
-    try {
+  
+    try{
       await page.goto(url);
     } catch (err) {
       console.error(`Error navigating to ${url}`);
     }
     ext = await popup(ctx);
-
+  
     const messages = [
       "組織の信頼性情報と出版物の流通経路が正しく読み取れませんでした",
       "組織の信頼性情報と出版物の流通経路がまだありません",
       "組織の信頼性情報と出版物の流通経路の取得に失敗しました",
     ];
-
+  
     const counts = await Promise.all(
       messages.map((message) => ext?.locator(`:text("${message}")`).count()),
     );
-
+  
     counts.forEach((count) => {
       expect(count).toEqual(1);
     });
-
+  
     return page;
   }
 
@@ -103,10 +103,13 @@ describe("ProfileSet不在/不正時の確認", () => {
   });
 
   test("ProfileSet不在時(エンドポイントなし)の確認", async () => {
-    page = await runTest("http://localhost:8080/");
+    await runTest("http://localhost:8080/");
+    await expect(ext?.locator("details dd").textContent()).resolves.toBe("No profile sets found");
   });
 
   test("ProfileSet不在時(エンドポイントあり、取得できない)の確認", async () => {
-    page = await runTest("http://localhost:8080/test");
+    await runTest("http://localhost:8080/test");
+    await expect(ext?.locator("details dd").textContent()).resolves.toBe("プロファイルを取得できませんでした:\nFailed to fetch");
   });
+
 });
