@@ -34,7 +34,7 @@ describe("CertificateService", () => {
   test("signOp() return a valid JWT", async () => {
     const id = crypto.randomUUID();
     const accountId = crypto.randomUUID();
-    const { jwk, pkcs8 } = await generateKey();
+    const { publicKey, privateKey } = await generateKey();
     const dummyAccount = {
       url: "https://originator-profile.org/",
       roleValue: "certifier",
@@ -95,15 +95,15 @@ describe("CertificateService", () => {
       url: "https://example.com/",
     });
     prisma.keys.findMany.mockResolvedValue([
-      { id: 1, accountId, jwk: jwk as Prisma.JsonValue },
+      { id: 1, accountId, jwk: publicKey as Prisma.JsonValue },
     ]);
-    const jwt = await certificate.signOp(id, accountId, pkcs8);
+    const jwt = await certificate.signOp(id, accountId, privateKey);
     // @ts-expect-error assert
     const valid: JwtOpPayload = decodeJwt(jwt);
     expect(valid).toMatchObject({
       iss: "example.org",
       sub: "example.com",
-      "https://originator-profile.org/op": { jwks: { keys: [jwk] } },
+      "https://originator-profile.org/op": { jwks: { keys: [publicKey] } },
     });
     const holder =
       valid["https://originator-profile.org/op"]?.item.find(isOpHolder);

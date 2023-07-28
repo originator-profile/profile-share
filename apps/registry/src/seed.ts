@@ -8,6 +8,7 @@ import exampleCategories from "./category.example.json";
 import { Jwk } from "@originator-profile/model";
 import addYears from "date-fns/addYears";
 import { parseAccountId } from "@originator-profile/core";
+import { prisma } from "./prisma-client";
 
 export async function waitForDb(prisma: PrismaClient): Promise<void> {
   const sleep = util.promisify(setTimeout);
@@ -26,23 +27,31 @@ export async function waitForDb(prisma: PrismaClient): Promise<void> {
 async function issueOp(
   services: Services,
   issuerUuid: string,
-  jwk: Jwk,
-  pkcs8: string,
+  publicKey: Jwk,
+  privateKey: Jwk,
 ) {
-  const data = await services.account.registerKey(issuerUuid, jwk);
+  const data = await services.account.registerKey(issuerUuid, publicKey);
   if (data instanceof Error) throw data;
-  const jwt = await services.certificate.signOp(issuerUuid, issuerUuid, pkcs8);
+  const jwt = await services.certificate.signOp(
+    issuerUuid,
+    issuerUuid,
+    privateKey,
+  );
   if (jwt instanceof Error) throw jwt;
   const opId = await services.certificate.issue(issuerUuid, jwt);
   if (opId instanceof Error) throw opId;
   await services.account.publishProfile(issuerUuid, opId);
   console.log(`Profile: ${jwt}
-Public Key: ${JSON.stringify(jwk)}
+Public Key: ${JSON.stringify(publicKey)}
 
-${pkcs8}`);
+${privateKey}`);
 }
 
-async function issueDp(services: Services, issuerUuid: string, pkcs8: string) {
+async function issueDp(
+  services: Services,
+  issuerUuid: string,
+  privateKey: Jwk,
+) {
   const count = await services.category.createMany(exampleCategories);
   if (count instanceof Error) throw count;
   const exampleCategory = Array.isArray(exampleCategories)
@@ -50,7 +59,7 @@ async function issueDp(services: Services, issuerUuid: string, pkcs8: string) {
     : exampleCategories;
 
   const { body, ...input } = exampleWebsite;
-  const proofJws = await services.website.signBody(pkcs8, body);
+  const proofJws = await services.website.signBody(privateKey, body);
   if (proofJws instanceof Error) throw proofJws;
   const website = await services.website.create({
     ...input,
@@ -64,7 +73,11 @@ async function issueDp(services: Services, issuerUuid: string, pkcs8: string) {
     proofJws,
   });
   if (website instanceof Error) throw website;
-  const dpJwt = await services.publisher.signDp(issuerUuid, input.id, pkcs8);
+  const dpJwt = await services.publisher.signDp(
+    issuerUuid,
+    input.id,
+    privateKey,
+  );
   if (dpJwt instanceof Error) throw dpJwt;
   await services.publisher.registerDp(issuerUuid, dpJwt);
   console.log(`Document Profile: ${dpJwt}`);
@@ -74,7 +87,6 @@ export async function seed(): Promise<void> {
   const issuerUuid: string =
     process.env.ISSUER_UUID ?? "cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc";
   const appUrl: string = process.env.APP_URL ?? "http://localhost:8080";
-  const prisma: PrismaClient = new PrismaClient();
   const services = Services({
     config: { ISSUER_UUID: issuerUuid, APP_URL: appUrl },
     prisma,
@@ -102,16 +114,17 @@ export async function seed(): Promise<void> {
   const accountKeys = await services.account.getKeys(issuerUuid);
   if ("keys" in accountKeys && accountKeys.keys.length === 0) {
     const jwk = await fs
-      .readFile("./account-key.example.pem.pub.json")
+      .readFile("./account-key.example.pub.json")
       .then((buffer) => JSON.parse(buffer.toString()));
-    const pkcs8 = await fs
-      .readFile("./account-key.example.pem")
+    const privateKeyText = await fs
+      .readFile("./account-key.example.priv.json")
       .then((buffer) => buffer.toString());
-    await issueOp(services, issuerUuid, jwk, pkcs8);
+    const privateKey: Jwk = JSON.parse(privateKeyText);
+    await issueOp(services, issuerUuid, jwk, privateKey);
 
     const websiteExists = await services.website.read(exampleWebsite);
     if (websiteExists instanceof Error) {
-      await issueDp(services, issuerUuid, pkcs8);
+      await issueDp(services, issuerUuid, privateKey);
     }
   }
 }

@@ -21,7 +21,7 @@ Originator Profile と Document Profile の管理を行うシステムです。
 
 ## Dependencies
 
-[開発ガイド](https://profile-docs.pages.dev/development/)を参照してください。
+[開発ガイド](https://docs.originator-profile.org/development/)を参照してください。
 
 ## Usage
 
@@ -66,6 +66,7 @@ running command...
 * [`profile-registry publisher:extract-category [OUTPUT]`](#profile-registry-publisherextract-category-output)
 * [`profile-registry publisher:extract-website`](#profile-registry-publisherextract-website)
 * [`profile-registry publisher:profile-set`](#profile-registry-publisherprofile-set)
+* [`profile-registry publisher:sign`](#profile-registry-publishersign)
 * [`profile-registry publisher:website`](#profile-registry-publisherwebsite)
 * [`profile-registry start`](#profile-registry-start)
 
@@ -90,7 +91,7 @@ FLAG DESCRIPTIONS
 
     Prisma.accountsCreateInput または Prisma.accountsUpdateInput
     詳細はTSDocを参照してください。
-    https://profile-docs.pages.dev/ts/modules/_originator-profile_profile_registry_db.default.Prisma
+    https://docs.originator-profile.org/ts/modules/_originator_profile_registry_db.default.Prisma
     "id" フィールドの値には会員 ID またはドメイン名を指定可能です。
 ```
 
@@ -119,6 +120,10 @@ FLAG DESCRIPTIONS
   --certifier=<value>  認証機関の ID またはドメイン名
 
     UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+
+  --expired-at=<value>  有効期限 (ISO 8601)
+
+    日付のみの場合、その日の 24:00:00.000 より前まで有効、それ以外の場合、期限切れとなる日付・時刻・秒を指定します。
 
   --id=<value>  アカウントの ID またはドメイン名
 
@@ -228,7 +233,7 @@ USAGE
     [--expired-at <value>]
 
 FLAGS
-  -i, --identity=<value>  (required) PEM base64 でエンコードされた PKCS #8 プライベート鍵ファイル
+  -i, --identity=<value>  (required) プライベート鍵のファイルパス
   --certifier=<value>     (required) 認証機関 ID またはドメイン名
   --expired-at=<value>    有効期限 (ISO 8601)
   --holder=<value>        (required) 所有者となる会員 ID またはドメイン名
@@ -238,9 +243,18 @@ DESCRIPTION
   OP の発行
 
 FLAG DESCRIPTIONS
+  -i, --identity=<value>  プライベート鍵のファイルパス
+
+    プライベート鍵のファイルパスを渡してください。プライベート鍵は JWK 形式か、PEM base64 でエンコードされた PKCS #8
+    形式にしてください。
+
   --certifier=<value>  認証機関 ID またはドメイン名
 
     UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+
+  --expired-at=<value>  有効期限 (ISO 8601)
+
+    日付のみの場合、その日の 24:00:00.000 より前まで有効、それ以外の場合、期限切れとなる日付・時刻・秒を指定します。
 
   --holder=<value>  所有者となる会員 ID またはドメイン名
 
@@ -317,7 +331,8 @@ USAGE
   $ profile-registry key-gen -o <value>
 
 FLAGS
-  -o, --output=<value>  (required) プライベート鍵の保存先
+  -o, --output=<value>  (required) 鍵を保存するファイル名（拡張子除く）。<output>.priv.json と <output>.pub.json
+                        を出力します。
 
 DESCRIPTION
   鍵ペアの生成
@@ -360,7 +375,7 @@ FLAG DESCRIPTIONS
 
     Prisma.Enumerable<Prisma.categoriesCreateManyInput>
     詳細はTSDocを参照してください。
-    https://profile-docs.pages.dev/ts/modules/_originator-profile_profile_registry_db.default.Prisma
+    https://docs.originator-profile.org/ts/modules/_originator_profile_registry_db.default.Prisma
 ```
 
 ## `profile-registry publisher:extract-category [OUTPUT]`
@@ -459,6 +474,68 @@ DESCRIPTION
   Profile Set の生成
 ```
 
+## `profile-registry publisher:sign`
+
+Signed Document Profile (SDP) の生成
+
+```
+USAGE
+  $ profile-registry publisher:sign -i <value> --id <value> --input <value> [--issued-at <value>] [--expired-at
+    <value>]
+
+FLAGS
+  -i, --identity=<value>  (required) プライベート鍵のファイルパス
+  --expired-at=<value>    有効期限 (ISO 8601)
+  --id=<value>            (required) OP ID (ドメイン名)
+  --input=<value>         (required) JSON file
+  --issued-at=<value>     発行日時 (ISO 8601)
+
+DESCRIPTION
+  Signed Document Profile (SDP) の生成
+
+  Web ページの情報 (DP) に対して署名を行います。
+  署名済み DP (SDP) を生成し、それを標準出力に出力します。
+
+FLAG DESCRIPTIONS
+  -i, --identity=<value>  プライベート鍵のファイルパス
+
+    プライベート鍵のファイルパスを渡してください。プライベート鍵は JWK 形式か、PEM base64 でエンコードされた PKCS #8
+    形式にしてください。
+
+  --expired-at=<value>  有効期限 (ISO 8601)
+
+    日付のみの場合、その日の 24:00:00.000 より前まで有効、それ以外の場合、期限切れとなる日付・時刻・秒を指定します。
+
+  --id=<value>  OP ID (ドメイン名)
+
+    ドメイン名 (RFC 4501) を指定します。
+
+  --input=<value>  JSON file
+
+    ファイル名。ファイルには次のようなフォーマットの JSON を入れてください。空白行より上が必須プロパティです。
+
+    {
+    "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc7",
+    "url": "https://example.com/",
+    "location": "h1",
+    "bodyFormat": "visibleText",
+    "body": "OP 確認くん",
+
+    "title": "OP 確認くん",
+    "image": "https://example.com/image.png",
+    "description": "このウェブページの説明です。",
+    "author": "山田太郎",
+    "editor": "山田花子",
+    "datePublished": "2023-07-04T19:14:00Z",
+    "dateModified": "2023-07-04T19:14:00Z",
+    "categories": [{
+    "cat": "IAB1-1",
+    "name": "Books & Literature",
+    "cattax": 1
+    }]
+    }
+```
+
 ## `profile-registry publisher:website`
 
 ウェブページの作成・表示・更新・削除
@@ -469,7 +546,7 @@ USAGE
     create|read|update|delete [--issued-at <value>] [--expired-at <value>]
 
 FLAGS
-  -i, --identity=<value>    (required) PEM base64 でエンコードされた PKCS #8 プライベート鍵ファイル
+  -i, --identity=<value>    (required) プライベート鍵のファイルパス
   -o, --operation=<option>  (required) 操作
                             <options: create|read|update|delete>
   --expired-at=<value>      有効期限 (ISO 8601)
@@ -482,6 +559,15 @@ DESCRIPTION
   ウェブページの作成・表示・更新・削除
 
 FLAG DESCRIPTIONS
+  -i, --identity=<value>  プライベート鍵のファイルパス
+
+    プライベート鍵のファイルパスを渡してください。プライベート鍵は JWK 形式か、PEM base64 でエンコードされた PKCS #8
+    形式にしてください。
+
+  --expired-at=<value>  有効期限 (ISO 8601)
+
+    日付のみの場合、その日の 24:00:00.000 より前まで有効、それ以外の場合、期限切れとなる日付・時刻・秒を指定します。
+
   --id=<value>  会員 ID またはドメイン名
 
     UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。

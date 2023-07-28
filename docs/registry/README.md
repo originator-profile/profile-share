@@ -7,4 +7,4 @@ Originator Profile と Document Profile の管理を行うシステムです。
 - [Document Profile レジストリ構築](./document-profile-registry-creation.md)
 - [WordPress 連携](./wordpress-integration.md)
 - [ウェブサイト連携](./website-integration.md)
-- [ソースコード](https://github.com/originator-profile/profile/blob/main/apps/registry)
+- [ソースコード](https://github.com/originator-profile/profile-share/blob/main/apps/registry)

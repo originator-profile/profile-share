@@ -16,9 +16,9 @@ test("signOp() return a valid JWT", async () => {
     subject: "example.com",
     item: [],
   };
-  const { jwk, pkcs8 } = await generateKey();
-  const jwt = await signOp(op, pkcs8);
-  expect(decodeProtectedHeader(jwt).kid).toBe(jwk.kid);
+  const { publicKey, privateKey } = await generateKey();
+  const jwt = await signOp(op, privateKey);
+  expect(decodeProtectedHeader(jwt).kid).toBe(publicKey.kid);
   const valid = decodeJwt(jwt);
   expect(valid).toMatchObject({
     iss: op.issuer,

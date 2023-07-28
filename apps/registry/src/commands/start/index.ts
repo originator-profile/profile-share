@@ -1,8 +1,8 @@
 import { Command, Flags, ux } from "@oclif/core";
-import { PrismaClient } from "@prisma/client";
 import path from "node:path";
 import { create, start } from "../../server";
 import { DbInit } from "../db/init";
+import { prisma } from "../../prisma-client";
 
 export default class Start extends Command {
   static description = "API サーバーの起動";
@@ -23,7 +23,6 @@ export default class Start extends Command {
       `--${flags.seed ? "" : "no-"}seed`,
     ]);
     const isDev = process.env.NODE_ENV === "development";
-    const prisma = new PrismaClient();
     const server = create({
       isDev,
       prisma,

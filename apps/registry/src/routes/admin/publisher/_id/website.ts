@@ -12,9 +12,9 @@ const Body = {
       type: "object",
       title: "JSON",
       description: `\
-[Prisma.websitesCreateInput](https://profile-docs.pages.dev/ts/types/_originator-profile_profile_registry_db.default.Prisma.websitesCreateInput.html)\
+[Prisma.websitesCreateInput](https://docs.originator-profile.org/ts/types/_originator_profile_registry_db.default.Prisma.websitesCreateInput.html)\
  または \
-[Prisma.websitesUpdateInput](https://profile-docs.pages.dev/ts/types/_originator-profile_profile_registry_db.default.Prisma.websitesUpdateInput.html)\
+[Prisma.websitesUpdateInput](https://docs.originator-profile.org/ts/types/_originator_profile_registry_db.default.Prisma.websitesUpdateInput.html)\
  を与えます。`,
       additionalProperties: true,
     },
@@ -76,9 +76,9 @@ async function website({
   if (!body?.jwt) return res;
   if (!["create", "update"].includes(operation)) return res;
 
-  const dpId = await server.services.publisher.registerDp(params.id, body.jwt);
-  if (dpId instanceof Error) {
-    const details = dpId.message;
+  const sdp = await server.services.publisher.registerDp(params.id, body.jwt);
+  if (sdp instanceof Error) {
+    const details = sdp.message;
     throw new BadRequestError(`Invalid issue request: ${details}`);
   }
 

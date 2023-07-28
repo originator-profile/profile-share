@@ -1,4 +1,4 @@
-<!-- https://profile-docs.pages.dev/ts/ -->
+<!-- https://docs.originator-profile.org/ts/ -->
 
 [ドキュメント](/)
 

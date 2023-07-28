@@ -1,9 +1,9 @@
 import { Command, Flags } from "@oclif/core";
-import { PrismaClient } from "@prisma/client";
 import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { operation } from "../../flags";
 import { parseAccountId } from "@originator-profile/core";
+import { prisma } from "../../prisma-client";
 
 export class Account extends Command {
   static description = "会員の作成・表示・更新・削除";
@@ -14,7 +14,7 @@ export class Account extends Command {
       description: `\
 Prisma.accountsCreateInput または Prisma.accountsUpdateInput
 詳細はTSDocを参照してください。
-https://profile-docs.pages.dev/ts/modules/_originator-profile_profile_registry_db.default.Prisma
+https://docs.originator-profile.org/ts/modules/_originator_profile_registry_db.default.Prisma
 "id" フィールドの値には会員 ID またはドメイン名を指定可能です。`,
       default: "account.example.json",
       required: true,
@@ -24,7 +24,6 @@ https://profile-docs.pages.dev/ts/modules/_originator-profile_profile_registry_d
 
   async run(): Promise<void> {
     const { flags } = await this.parse(Account);
-    const prisma = new PrismaClient();
     const services = Services({
       config: { ISSUER_UUID: process.env.ISSUER_UUID ?? "" },
       prisma,

@@ -1,9 +1,9 @@
 import { Command, Flags } from "@oclif/core";
-import { PrismaClient } from "@prisma/client";
 import { Services } from "@originator-profile/registry-service";
 import crypto from "node:crypto";
 import { NotFoundError } from "http-errors-enhanced";
 import { parseAccountId } from "@originator-profile/core";
+import { prisma } from "../../prisma-client";
 
 export class AdminCreate extends Command {
   static description = "管理者の作成";
@@ -22,7 +22,6 @@ UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定し
 
   async run(): Promise<void> {
     const { flags } = await this.parse(AdminCreate);
-    const prisma = new PrismaClient();
     const services = Services({ config: { ISSUER_UUID: "" }, prisma });
     const account = await services.account.read({
       id: parseAccountId(flags.id),

@@ -18,7 +18,7 @@ sidebar_position: 2
 5. 下記のコマンドをターミナルで実行
 
 ```sh
-git clone https://github.com/originator-profile/profile
+git clone https://github.com/originator-profile/profile-share
 cd profile
 corepack enable yarn
 yarn install

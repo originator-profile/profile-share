@@ -1,27 +1,34 @@
 import { Jwk } from "@originator-profile/model";
-import { generateKeyPair, exportJWK, exportPKCS8 } from "jose";
+import { generateKeyPair, exportJWK } from "jose";
 import { createThumbprint } from "./thumbprint";
 
 /**
- * 鍵の生成
- * JWK 形式の公開鍵と PEM base64 でエンコードされた PKCS #8 プライベート鍵を生成する
+ * 鍵の生成（JWK形式）
+ * 公開鍵とプライベート鍵を JWK 形式で生成する。
  * @param alg Algorithm identifier
  */
 export async function generateKey(
   alg = "ES256",
-): Promise<{ jwk: Jwk; pkcs8: string }> {
+): Promise<{ publicKey: Jwk; privateKey: Jwk }> {
   const { publicKey, privateKey } = await generateKeyPair(alg);
-  const [jwk, pkcs8] = await Promise.all([
+  const [publicJwk, privateJwk] = await Promise.all([
     exportJWK(publicKey),
-    exportPKCS8(privateKey),
+    exportJWK(privateKey),
   ]);
-  if (typeof jwk.kty !== "string") throw new Error("kty is not defined");
+  if (!publicJwk.kty || !privateJwk.kty) throw new Error("kty is not defined");
+
+  const kid = await createThumbprint(publicJwk);
+
   return {
-    jwk: {
-      kty: jwk.kty,
-      kid: await createThumbprint(jwk),
-      ...jwk,
+    publicKey: {
+      kty: publicJwk.kty,
+      kid,
+      ...publicJwk,
     },
-    pkcs8,
+    privateKey: {
+      kty: privateJwk.kty,
+      kid,
+      ...privateJwk,
+    },
   };
 }

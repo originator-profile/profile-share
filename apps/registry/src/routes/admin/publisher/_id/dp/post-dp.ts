@@ -4,13 +4,12 @@ import { BadRequestError } from "http-errors-enhanced";
 import { ErrorResponse } from "../../../../../error";
 import Params from "./params";
 import { DecodeResult } from "@originator-profile/verify";
-import { findFirstItemWithProof } from "@originator-profile/core";
 
 const Body = {
   type: "object",
   properties: {
     jwt: {
-      description: "登録する Signed Document Profile",
+      description: "Signed Document Profile",
       type: "string",
     },
   },
@@ -23,7 +22,7 @@ export const schema: FastifySchema = {
   operationId: "registerSignedDocumentProfile",
   params: Params,
   body: Body,
-  description: "Signed Document Profile (SDP) をレジストリに登録します",
+  description: "Signed Document Profile (SDP) を更新・登録します",
   security: [{ basicAuth: [] }],
   response: {
     200: {
@@ -46,41 +45,22 @@ export async function postDp({
   const { id: accountId } = params;
   const { jwt } = body;
 
-  // sdp をデコード
+  // SDP を更新・登録
+  const sdp = await server.services.publisher.registerDp(accountId, jwt);
+  if (sdp instanceof Error) {
+    const details = sdp.message;
+    throw new BadRequestError(`Invalid issue request: ${details}`);
+  }
   const decoded: DecodeResult = server.services.validator.decodeToken(jwt);
   if (decoded instanceof Error) {
     return decoded;
   }
-
-  if (!("dp" in decoded)) {
-    throw new BadRequestError("invalid jwt");
-  }
-
-  const locator = findFirstItemWithProof(decoded.payload);
-
-  if (typeof locator === "undefined") {
-    throw new BadRequestError("dp doesn't contain item with proof");
-  }
-
-  // website テーブルに保存
-  const res = await server.services.website.create({
+  const res = await server.services.website.read({
     id: decoded.payload.sub,
-    location: locator.location,
-    bodyFormat: locator.type,
-    url: locator.url,
-    proofJws: locator.proof.jws,
-    accountId,
   });
   if (res instanceof Error) {
     throw new BadRequestError("invalid request");
   }
-  // SDP を登録
-  const dpId = await server.services.publisher.registerDp(accountId, jwt);
-  if (dpId instanceof Error) {
-    const details = dpId.message;
-    throw new BadRequestError(`Invalid issue request: ${details}`);
-  }
-
   return res;
 }
 

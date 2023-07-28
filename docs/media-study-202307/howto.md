@@ -21,7 +21,7 @@ sidebar_position: 2
 Step 1
 : ダウンロード
 
-[GitHub Releases](https://github.com/originator-profile/profile/releases/latest) から OP 拡張機能の最新版をダウンロードします。
+[GitHub Releases](https://github.com/originator-profile/profile-share/releases/latest) から OP 拡張機能の最新版をダウンロードします。
 
 Step 2
 : インストール
@@ -96,7 +96,7 @@ Step 4
 
 ### GitHub アカウント
 
-本実験で利用頂く参照実装コードやレジストリ・拡張機能などのコードを収めた [オリジネータープロファイル リポジトリ](https://github.com/originator-profile/profile/tree/main) は private リポジトリであり、Read 権限を付与する CIP 加盟企業の github アカウントが必要です。
+本実験で利用頂く参照実装コードやレジストリ・拡張機能などのコードを収めた [オリジネータープロファイル リポジトリ](https://github.com/originator-profile/profile-share/tree/main) は private リポジトリであり、Read 権限を付与する CIP 加盟企業の github アカウントが必要です。
 
 **github アカウント作成後、担当者名とアカウント名を事務局までメールでご連絡ください。**ご連絡いただいた github アカウントに関連リポジトリのアクセス権を付与する invite をお送りさせて頂きます。
 
@@ -129,7 +129,7 @@ https://forms.gle/udirHux1TFs5ctyu6
 
 <!-- 下記は docs/registry/document-profile-registry-creation.md を改変して利用 -->
 
-### WordPress プラグインを使用する方法
+#### WordPress プラグインを使用する方法
 
 WordPress の参照実装のプラグインをインストールし、有効化したあと、WordPress 管理者画面 > Settings > Profile 設定画面にアクセスすると公開鍵を確認できます。
 
@@ -150,14 +150,33 @@ JWK の例:
 公開鍵は、事務局 OP レジストリに登録する必要があります。
 事務局に公開鍵の登録を依頼してください。
 
-### profile-registry CLI を使用する方法
+#### profile-registry CLI を使用する方法
 
 profile-registry CLI を使用して、鍵ペアを生成することが可能です。
 
-:::note
 あらかじめ profile-registry CLI をインストールする必要があります。
-profile-registry CLI のインストール方法は[開発ガイド](../development.md)を参照してください。
-:::
+
+##### profile-registry CLI のインストール方法
+
+Step 1
+: Git と [Node.js](https://nodejs.org/) のインストール
+
+Step 2
+: 下記のコマンドをターミナルで実行
+
+```console
+git clone https://github.com/originator-profile/profile-share
+cd profile-share
+corepack enable yarn
+yarn install
+yarn build
+# profile-registry CLIのインストール
+npm i -g ./apps/registry
+```
+
+##### 鍵生成コマンドの実行
+
+profile-registry CLI を使用して公開鍵、プライベート鍵を生成します。
 
 :::warning
 プライベート鍵は適切に管理してください。プライベート鍵が漏洩するとあなたの組織を詐称してコンテンツに署名をされる恐れがあります。
@@ -166,8 +185,8 @@ profile-registry CLI のインストール方法は[開発ガイド](../developm
 例:
 
 ```
-$ profile-registry key-gen -o key.pem
-$ cat key.pem.pub.json | jq
+$ profile-registry key-gen -o key
+$ cat key.pub.json
 {
   "kty": "EC",
   "kid": "x6pZlFXlKvbV69GZf8xW-lqb6tg0_ERuNHHgTTvmQ70",
@@ -179,11 +198,25 @@ $ cat key.pem.pub.json | jq
 
 実行結果として得られる、鍵ファイルは下記となります。
 
-- key.pem (プライベート鍵)
-- key.pem.pub.json (公開鍵)
+- key.priv.json (プライベート鍵)
+- key.pub.json (公開鍵)
 
 公開鍵は事務局 OP レジストリに登録する必要があります。
 事務局に公開鍵の登録を依頼してください。
+
+#### JSON Web Key Generator を使用する方法
+
+https://jwk.pages.dev/ を使用して、鍵ペアを生成することが可能です。
+
+以下を指定して Generate ボタンをクリックしてください。
+
+- Algorithm: ECDSA (ES256)
+- Key ID: JWK Thumbprint (SHA-256)
+
+ページ上に生成された鍵を、以下のようなファイル名で保存してください。
+
+- Private Key: key.priv.json
+- Public Key: key.pub.json
 
 ### CMS の OP 対応と SDP の発行・登録
 
@@ -387,69 +420,50 @@ API の詳細については、[CIP 提供 DP レジストリについて](#cip-
 
 </details>
 
-### SDP の作成と DP レジストリへの登録
+### SDP の生成と DP レジストリへの登録
 
-#### SDP の作成
+#### SDP の生成
 
-DP レジストリに登録するにはまず、Signed Document Profile (SDP) を作成する必要があります。
+DP レジストリに登録するにはまず、Signed Document Profile (SDP) を発行する必要があります。
 前提条件として組織情報の登録、公開鍵の登録、Signed Originator Profile 発行を行う必要があります。
 今回は下記を使用して実行します。
 
-- プライベート鍵のパス: key.pem
+- プライベート鍵のパス: key.priv.json
 - 登録する組織: media.example.com
 
-SDP の生成は Web ページの HTML からテキストを抜き出し連結し署名する実装が必要ですが、これについては処理対象を定義したファイル `website.json` を用意し、コマンドラインで読み込むだけで SDP を生成する CLI を用意しています。
+SDP の生成は Web ページの HTML からテキストを抜き出し連結し署名することでおこないます。これについては処理対象を定義したファイル `website.json` を読み込むことで SDP を発行する CLI を用意しています。
 
-SDP 生成対象を定義する `website.json` ファイルは[website.example.json](https://github.com/originator-profile/profile/blob/main/apps/registry/website.example.json) などをひな形として作成してください。例えば下記のような内容を使用します。
+DP を定義する `website.json` ファイルは[website.example.json](https://github.com/originator-profile/profile-share/blob/main/apps/registry/website.example.json) などをひな形として作成してください。例えば下記のような内容を使用します。
 
 ```json
 {
   "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc8",
-  "url": "http://localhost:8080",
-  "location": "h1",
+  "url": "https://media.example.com/2023/06/hello/",
+  "location": "body",
   "bodyFormat": "visibleText",
-  "body": "OP 確認くん",
-  "title": "OP 確認くん"
+  "body": "本文の例",
+  "title": "メディア (試験用)"
 }
 ```
 
 公開鍵のパス、登録する組織、Web ページの情報を引数として使用して下記のように実行します。
 
 ```
-$ profile-registry publisher:website \
-  -i key.pem \
+$ profile-registry publisher:sign \
+  -i key.priv.json \
   --id media.example.com \
-  --input website.json \
-  -o create
+  --input website.json
 ```
 
-実行結果として下記のようにコンソールに表示されます。
+実行結果として下記のようにコンソールに SDP が表示されます。
 
 ```
-{
-  "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc8",
-  "url": "http://localhost:8080",
-  "accountId": "e1c6e970-0739-5227-a429-ae0dfa897398",
-  "title": "OP 確認くん",
-  "image": null,
-  "description": null,
-  "author": null,
-  "editor": null,
-  "datePublished": null,
-  "dateModified": null,
-  "location": "h1",
-  "bodyFormatValue": "visibleText",
-  "proofJws": "eyJhbGciOiJFUzI1NiIsImtpZCI6Im5Senc0VzdFVXJSMmlZdGlMbkFick5QOVVEdFFneE96OGZnX3poRjBmTkEiLCJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdfQ..Y_IlLjScpDwO3cfBPLSgh0mPVAw8xgU00DcPmL-e2ZD8Mpf6QkzH6raX_Anh0YWJRLWaS3US80MRHZmxfcmPpw"
-}
+eyJhbGciOiJFUzI1NiIsImtpZCI6Ijd5ZWp2UmRDejV2MWpkYVh1emEydXQ3c1Q4dmtyZmJsRGZOZVRWd3NJanMiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwczovL21lZGlhLmV4YW1wbGUuY29tLzIwMjMvMDYvaGVsbG8vIiwidGl0bGUiOiLjg6Hjg4fjgqPjgqIgKOippumok-eUqCkifSx7InR5cGUiOiJ2aXNpYmxlVGV4dCIsInVybCI6Imh0dHBzOi8vbWVkaWEuZXhhbXBsZS5jb20vMjAyMy8wNi9oZWxsby8iLCJsb2NhdGlvbiI6ImJvZHkiLCJwcm9vZiI6eyJqd3MiOiJleUpoYkdjaU9pSkZVekkxTmlJc0ltdHBaQ0k2SWpkNVpXcDJVbVJEZWpWMk1XcGtZVmgxZW1FeWRYUTNjMVE0ZG10eVptSnNSR1pPWlZSV2QzTkphbk1pTENKaU5qUWlPbVpoYkhObExDSmpjbWwwSWpwYkltSTJOQ0pkZlEuLjg4VVJFZ0VnTHV3SkhqekpmSzB3UWxaM3hpOFdqUVJTd2RqZXNUM1ViN1hLTm9RNWxpNDh3dU03dE1CS09Wc3dNY3B5cjA2aTUxZmowU1pNcC1LWEV3In19XX0sImlzcyI6Im1lZGlhLmV4YW1wbGUuY29tIiwic3ViIjoiZWY5ZDc4ZTAtZDgxYS00ZTM5LWI3YTAtMjdlMTU0MDVlZGM4IiwiaWF0IjoxNjkwMzYzNjY0LCJleHAiOjE3MjE5ODYwNjR9.RRQE3Id7fqIzsHL_u3HNEOZitEMoaXkAeTntDU4hG0ayIGHULvTnnOefCsRCvUF96KA__2cipcXhwS09S0caZw
 ```
 
-#### SOP を DP レジストリに登録
+#### SDP の登録
 
-Originator Profile レジストリ運用者から受け取った Signed Originator Profile (SOP) を Document Profile レジストリに登録します。
-
-```
-$ profile-registry account:register-op --id <ドメイン名> --op <Signed Originator Profileファイル>
-```
+生成した SDP を DP レジストリに登録します。これには　DP レジストリ (`dprexpt.originator-profile.org`) の [SDP登録用のエンドポイント](#adminpublisherアカウントiddp-エンドポイント) を利用します。
 
 これにより DP レジストリは `/website/profiles` エンドポイントで SOP と SDP をまとめて返せるようになります。
 
@@ -482,7 +496,7 @@ DP レジストリは各社共同使用となっています。
 ##### プラグインのインストール
 
 WordPress サイトに Profile Plugin をインストールします。
-詳細は [プラグインのソースコード](https://github.com/originator-profile/profile/tree/main/packages/wordpress#readme)をご確認ください。
+詳細は [プラグインのソースコード](https://github.com/originator-profile/profile-share/tree/main/packages/wordpress#readme)をご確認ください。
 
 Document Profile レジストリのドメイン名を、WordPress 管理者画面 > Settings > Profile > [レジストリドメイン名] に入力します。
 
@@ -561,7 +575,7 @@ Wordpress 連携プラグインは、 [hook](https://developer.wordpress.org/plu
 
 この節では、署名付き Document Profile (SDP) を生成する手順を説明します。この手順では profile-registry CLI などのツールに頼らずに一から SDP を生成します。
 
-手順の解説の際に、CIP が実装した Wordpress 連携のソースコードの抜粋を適宜引用します。 Wordpress 連携のソースコードは[こちら](https://github.com/originator-profile/profile/tree/main/packages/wordpress) にあり、本実験参加者の方は[事務局にご連絡いただいた GitHub アカウント](#github-アカウント) を利用して自由に見ることができます。
+手順の解説の際に、CIP が実装した Wordpress 連携のソースコードの抜粋を適宜引用します。 Wordpress 連携のソースコードは[こちら](https://github.com/originator-profile/profile-share/tree/main/packages/wordpress) にあり、本実験参加者の方は[事務局にご連絡いただいた GitHub アカウント](#github-アカウント) を利用して自由に見ることができます。
 
 SDP 生成の手順は次のようになっています。
 
@@ -1076,7 +1090,20 @@ media.example.com
 
 試験用鍵ペア (**本実験以外では決して使用しないでください**)
 
-プライベート鍵
+プライベート鍵（ JWK 形式）
+
+```json
+{
+  "kty": "EC",
+  "kid": "D5D5P3UrV1V_6U_q9yKv_jZ_q8ShIvrxy7E2QyOfWYE",
+  "x": "2OKmquUPimkshkJQWWih--zu-U1NkDsKImW_o3kbeOg",
+  "y": "f9bgeMH_qLS5LvOyc3dHoKYJmVfutEM9Vrb2WeEemtM",
+  "crv": "P-256",
+  "d": "ahNz8S20FnuMaFezOGlfQwBN5-rem8AnKvtHGDqOpHk"
+}
+```
+
+プライベート鍵（PKCS#8 形式）
 
 ```pem
 -----BEGIN PRIVATE KEY-----

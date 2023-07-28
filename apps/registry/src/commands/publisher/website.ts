@@ -1,5 +1,4 @@
 import { Command, Flags, ux } from "@oclif/core";
-import { PrismaClient } from "@prisma/client";
 import { addYears } from "date-fns";
 import {
   Services,
@@ -7,19 +6,16 @@ import {
 } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { globby } from "globby";
-import { accountId, operation } from "../../flags";
+import { accountId, expirationDate, operation, privateKey } from "../../flags";
+import { Jwk } from "@originator-profile/model";
+import { prisma } from "../../prisma-client";
 
 type Website = Omit<WebsiteType, "accountId" | "proofJws">;
 
 export class PublisherWebsite extends Command {
   static description = "ウェブページの作成・表示・更新・削除";
   static flags = {
-    identity: Flags.string({
-      char: "i",
-      description:
-        "PEM base64 でエンコードされた PKCS #8 プライベート鍵ファイル",
-      required: true,
-    }),
+    identity: privateKey({ required: true }),
     id: accountId({
       required: true,
     }),
@@ -56,15 +52,12 @@ export class PublisherWebsite extends Command {
     "issued-at": Flags.string({
       description: "発行日時 (ISO 8601)",
     }),
-    "expired-at": Flags.string({
-      description: "有効期限 (ISO 8601)",
-    }),
+    "expired-at": expirationDate(),
   };
 
   async #website(
     flags: Awaited<ReturnType<typeof this.parse>>["flags"],
   ): Promise<void> {
-    const prisma = new PrismaClient();
     const services = Services({
       config: { ISSUER_UUID: process.env.ISSUER_UUID ?? "" },
       prisma,
@@ -74,10 +67,10 @@ export class PublisherWebsite extends Command {
       body: string;
     };
 
+    const privateKey = flags.identity as Jwk;
+
     // body に署名して proofJws パラメータを生成
-    const pkcs8File = await fs.readFile(flags.identity);
-    const pkcs8 = pkcs8File.toString();
-    const proofJws = await services.website.signBody(pkcs8, body);
+    const proofJws = await services.website.signBody(privateKey, body);
     if (proofJws instanceof Error) throw proofJws;
 
     // website サービスを呼び出す
@@ -100,20 +93,23 @@ export class PublisherWebsite extends Command {
     const issuedAt = flags["issued-at"]
       ? new Date(flags["issued-at"])
       : new Date();
-    const expiredAt = flags["expired-at"]
-      ? new Date(flags["expired-at"])
-      : addYears(new Date(), 1);
+    const expiredAt = flags["expired-at"] ?? addYears(new Date(), 1);
 
     // 受け取った情報から SDP を生成
-    const jwt = await services.publisher.signDp(flags.id, input.id, pkcs8, {
-      issuedAt,
-      expiredAt,
-    });
+    const jwt = await services.publisher.signDp(
+      flags.id,
+      input.id,
+      privateKey,
+      {
+        issuedAt,
+        expiredAt,
+      },
+    );
     if (jwt instanceof Error) this.error(jwt);
 
     // SDP をレジストリに登録
-    const dpId = await services.publisher.registerDp(flags.id, jwt);
-    if (dpId instanceof Error) this.error(dpId);
+    const sdp = await services.publisher.registerDp(flags.id, jwt);
+    if (sdp instanceof Error) this.error(sdp);
   }
 
   async run(): Promise<void> {

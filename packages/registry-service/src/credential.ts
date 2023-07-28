@@ -12,7 +12,7 @@ export const CredentialService = ({ prisma }: Options) => ({
    * @param verifierId 検証機関 ID
    * @param name 資格名
    * @param issuedAt 資格発行日
-   * @param expiredAt 資格失効日
+   * @param expiredAt 期限切れ日時
    * @param imageUrl 資格画像の URL
    * @return
    */

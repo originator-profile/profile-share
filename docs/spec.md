@@ -418,7 +418,7 @@ HTML では、`<script>` 要素を使用する内部的な表現と `<link>` 要
 </script>
 ```
 
-Signed Document Profile の場合、署名の際に `location` として含まれる要素にを対象にこの `<script>` 要素を含めてはいけません。その場合、必ず `<link>` 要素または Well-Known URL の使用によって代替してください。
+Signed Document Profile の場合、署名の際に `location` として含まれる要素にこの `<script>` 要素を含めてはいけません。その場合、必ず `<link>` 要素または Well-Known URL の使用によって代替してください。
 
 ### &lt;link&gt;
 
