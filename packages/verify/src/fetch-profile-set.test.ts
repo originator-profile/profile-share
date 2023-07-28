@@ -20,8 +20,8 @@ describe("fetch-profiles", async () => {
     subject: "example.com",
     item: [],
   };
-  const { pkcs8 } = await generateKey();
-  const jwt = await signOp(op, pkcs8);
+  const { privateKey } = await generateKey();
+  const jwt = await signOp(op, privateKey);
   const profiles: JsonLdDocument = {
     "@context": "https://originator-profile.org/context.jsonld",
     main: ["example.com"],
@@ -132,5 +132,66 @@ describe("fetch-profiles", async () => {
       window.document as unknown as Document,
     );
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
+  });
+
+  describe("<script>要素から Profile Set を取得する", async () => {
+    const profileSet = {
+      "@context": "https://originator-profile.org/context.jsonld",
+      main: ["https://example.org"],
+      profile: ["{Signed Document Profile または Signed Originator Profile}"],
+    };
+
+    beforeEach(() => {
+      mockGet("https://example.com/1/ps.json").willResolve({
+        "@context": "https://originator-profile.org/context.jsonld",
+        main: ["https://example.com"],
+        profile: [
+          "{Signed Document Profile または Signed Originator Profile}",
+          "{Signed Document Profile または Signed Originator Profile}",
+        ],
+      });
+    });
+
+    test("<script> から profile set を取得できる", async () => {
+      const window = new Window();
+      window.document.body.innerHTML = `
+<script type="application/ld+json">${JSON.stringify(profileSet)}</script>
+`;
+
+      const result = await fetchProfileSet(
+        window.document as unknown as Document,
+      );
+      expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
+      expect(result).toMatchSnapshot();
+    });
+
+    test("<script> が2つ以上存在する", async () => {
+      const window = new Window();
+      window.document.body.innerHTML = `
+<script type="application/ld+json">${JSON.stringify(profileSet)}</script>
+<script type="application/ld+json">${JSON.stringify(profileSet)}</script>
+`;
+
+      const result = await fetchProfileSet(
+        window.document as unknown as Document,
+      );
+      expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
+      expect(result).toMatchSnapshot();
+    });
+
+    test("<script> と <link> から profile set を取得できる", async () => {
+      const window = new Window();
+      const profileEndpoint = "https://example.com/1/ps.json";
+      window.document.body.innerHTML = `
+<script type="application/ld+json">${JSON.stringify(profileSet)}</script>
+<link href="${profileEndpoint}" rel="alternate" type="application/ld+json" />
+`;
+
+      const result = await fetchProfileSet(
+        window.document as unknown as Document,
+      );
+      expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
+      expect(result).toMatchSnapshot();
+    });
   });
 });

@@ -1,28 +1,29 @@
-import { importPKCS8, CompactSign } from "jose";
+import { CompactSign, importJWK } from "jose";
 import { createThumbprint } from "./thumbprint";
+import { Jwk } from "@originator-profile/model";
 
 /**
  * 対象のテキストへの署名
  * @param body 対象のテキスト
- * @param pkcs8 PEM base64 でエンコードされた PKCS #8 プライベート鍵
+ * @param privateKey プライベート鍵
  * @param alg Algorithm identifier
  * @return Detached Compact JWS
  */
 export async function signBody(
   body: string,
-  pkcs8: string,
+  privateKey: Jwk,
   alg = "ES256",
 ): Promise<string> {
   const header = {
     alg,
-    kid: await createThumbprint(pkcs8, alg),
+    kid: await createThumbprint(privateKey, alg),
     b64: false,
     crit: ["b64"],
   };
   const payload = new TextEncoder().encode(body);
-  const privateKey = await importPKCS8(pkcs8, alg);
+  const privateKeyImported = await importJWK(privateKey, alg);
   const jws = await new CompactSign(payload)
     .setProtectedHeader(header)
-    .sign(privateKey);
+    .sign(privateKeyImported);
   return jws;
 }

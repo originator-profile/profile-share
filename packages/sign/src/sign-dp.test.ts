@@ -16,9 +16,9 @@ test("signDp() return a valid JWT", async () => {
     subject: "https://example.com/article/42",
     item: [],
   };
-  const { jwk, pkcs8 } = await generateKey();
-  const jwt = await signDp(dp, pkcs8);
-  expect(decodeProtectedHeader(jwt).kid).toBe(jwk.kid);
+  const { publicKey, privateKey } = await generateKey();
+  const jwt = await signDp(dp, privateKey);
+  expect(decodeProtectedHeader(jwt).kid).toBe(publicKey.kid);
   const valid = decodeJwt(jwt);
   expect(valid).toMatchObject({
     "https://originator-profile.org/dp": {

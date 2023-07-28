@@ -28,7 +28,7 @@ const OpCredential = {
       format: "date-time",
     },
     expiredAt: {
-      title: "有効期限",
+      title: "期限切れ日時",
       type: "string",
       format: "date-time",
     },
