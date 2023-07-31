@@ -40,9 +40,12 @@ async function dev() {
       }),
     },
     plugins: [
-      require("esbuild-copy-static-files")({ src: "public", dest: `dist-${options.target}` }),
+      require("esbuild-copy-static-files")({
+        src: "public",
+        dest: `dist-${options.target}`,
+      }),
       require("./esbuild.postcss.cjs"),
-      plugin({target: options.target, dist: `dist-${options.target}`}),
+      plugin({ target: options.target, dist: `dist-${options.target}` }),
     ],
   });
   await context.watch();

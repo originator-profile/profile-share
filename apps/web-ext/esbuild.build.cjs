@@ -19,22 +19,26 @@ program.parse(process.argv);
 const options = program.opts();
 
 async function build() {
-  await esbuild.build({
-    ...config,
-    outdir: `dist-${options.target}`,
-    define: {
-      ...config.define,
-      "import.meta.env": JSON.stringify({
-        ...JSON.parse(config.define["import.meta.env"]),
-        PROFILE_ISSUER: options.issuer,
-      }),
-    },
-    plugins: [
-      require("esbuild-copy-static-files")({ src: "public", dest: `dist-${options.target}` }),
-      require("./esbuild.postcss.cjs"),
-      plugin({target: options.target, dist: `dist-${options.target}`}),
-    ],
-  })
-  .catch(() => process.exit(1));
+  await esbuild
+    .build({
+      ...config,
+      outdir: `dist-${options.target}`,
+      define: {
+        ...config.define,
+        "import.meta.env": JSON.stringify({
+          ...JSON.parse(config.define["import.meta.env"]),
+          PROFILE_ISSUER: options.issuer,
+        }),
+      },
+      plugins: [
+        require("esbuild-copy-static-files")({
+          src: "public",
+          dest: `dist-${options.target}`,
+        }),
+        require("./esbuild.postcss.cjs"),
+        plugin({ target: options.target, dist: `dist-${options.target}` }),
+      ],
+    })
+    .catch(() => process.exit(1));
 }
-build()
+build();
