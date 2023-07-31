@@ -21,8 +21,8 @@ test.beforeAll(async ({ browser }) => {
 
   await page.getByRole("button", { name: "Log In" }).click();
 
-  // ログインが成功したことの確認
-  expect(page.url()).not.toContain("wp-login.php");
+  // ログイン完了まで待機
+  await page.waitForURL("http://localhost:9000/wp-admin/");
 });
 
 test("投稿の検証", async () => {
