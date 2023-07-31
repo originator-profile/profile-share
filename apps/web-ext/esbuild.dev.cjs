@@ -1,6 +1,7 @@
 const config = require("./esbuild.config.cjs");
 const { program, Option } = require("commander");
 const esbuild = require("esbuild");
+const path = require("node:path");
 
 program
   .addOption(
@@ -42,7 +43,7 @@ async function dev() {
   const webExt = await import("web-ext");
   webExt.cmd.run({
     target: options.target,
-    sourceDir: "dist",
+    sourceDir: path.join(__dirname, "dist"),
     noReload: true,
     startUrl: options.url,
   });
