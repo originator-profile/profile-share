@@ -2,7 +2,7 @@ name: wordpress_format
 runs:
   using: composite
   steps:
-  - name: composer run format
-    run: docker compose exec -w /var/www/html/wp-content/plugins/profile wordpress composer run format
-    working-directory: packages/wordpress
-    shell: bash
+    - name: composer run format
+      run: docker compose exec -w /var/www/html/wp-content/plugins/profile wordpress composer run format
+      working-directory: packages/wordpress
+      shell: bash
