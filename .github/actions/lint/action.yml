@@ -1,0 +1,7 @@
+name: lint
+runs:
+  using: composite
+  steps:
+  - run: yarn lint
+    shell: bash
+  - uses: "./.github/actions/wordpress_lint"
