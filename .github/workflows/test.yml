@@ -2,17 +2,17 @@ name: originator-profile/profile/test
 on:
   push:
     branches:
-    - main
+      - main
 jobs:
   main:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3.5.0
-#     # This item has no matching transformer
-#     - setup:
-    - uses: "./.github/actions/format"
-    - uses: "./.github/actions/lint"
-    - uses: "./.github/actions/build"
-#     # This item has no matching transformer
-#     - test:
-    - uses: "./.github/actions/e2e"
+      - uses: actions/checkout@v3.5.0
+      #     # This item has no matching transformer
+      #     - setup:
+      - uses: "./.github/actions/format"
+      - uses: "./.github/actions/lint"
+      - uses: "./.github/actions/build"
+      #     # This item has no matching transformer
+      #     - test:
+      - uses: "./.github/actions/e2e"
