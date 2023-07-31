@@ -1,8 +1,5 @@
 name: originator-profile/profile/test
-on:
-  push:
-    branches:
-      - main
+on: push
 jobs:
   main:
     runs-on: ubuntu-latest
