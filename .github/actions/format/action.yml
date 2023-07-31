@@ -1,0 +1,13 @@
+name: format
+runs:
+  using: composite
+  steps:
+  - run: yarn format
+    shell: bash
+  - uses: "./.github/actions/wordpress_format"
+  - name: Commit
+    run: |-
+      if git commit -am 'bot: format [skip ci]'; then
+        git push origin HEAD:"${{ github.ref }}"
+      fi
+    shell: bash
