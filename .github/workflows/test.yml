@@ -5,8 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.5.0
-      #     # This item has no matching transformer
-      #     - setup:
+      - uses: "./.github/actions/setup"
       - uses: "./.github/actions/format"
       - uses: "./.github/actions/lint"
       - uses: "./.github/actions/build"

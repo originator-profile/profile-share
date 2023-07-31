@@ -1,0 +1,19 @@
+name: wordpress_setup
+runs:
+  using: composite
+  steps:
+    - name: Restore Composer cache
+      uses: actions/cache@v3
+      with:
+        path: packages/wordpress/vendor
+        key: composer-v2-main-{{ hashFiles('packages/wordpress/composer.lock') }}
+    - name: Create and start containers
+      run: |
+        cp .env.development .env
+        docker compose up -d
+      shell: bash
+      working-directory: packages/wordpress
+    - name: Install WordPress dependencies
+      run: docker compose exec -w /var/www/html/wp-content/plugins/profile wordpress composer install
+      shell: bash
+      working-directory: packages/wordpress
