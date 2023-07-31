@@ -9,6 +9,5 @@ jobs:
       - uses: "./.github/actions/format"
       - uses: "./.github/actions/lint"
       - uses: "./.github/actions/build"
-      #     # This item has no matching transformer
-      #     - test:
+      - uses: "./.github/actions/test"
       - uses: "./.github/actions/e2e"

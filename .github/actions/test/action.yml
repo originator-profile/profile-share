@@ -1,0 +1,7 @@
+name: test
+runs:
+  using: composite
+  steps:
+    - run: yarn test
+      shell: bash
+    - uses: "./.github/actions/wordpress_test"

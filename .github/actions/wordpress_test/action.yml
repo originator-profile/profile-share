@@ -1,0 +1,8 @@
+name: wordpress_test
+runs:
+  using: composite
+  steps:
+    - name: composer run test
+      run: docker compose exec -w /var/www/html/wp-content/plugins/profile wordpress composer run test
+      working-directory: packages/wordpress
+      shell: bash
