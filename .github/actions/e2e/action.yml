@@ -1,4 +1,5 @@
 name: e2e
+description: End-to-End Test
 runs:
   using: composite
   steps:

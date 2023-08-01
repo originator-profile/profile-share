@@ -1,10 +1,12 @@
 name: format
+description: Format
 runs:
   using: composite
   steps:
     - run: yarn format
       shell: bash
-    - uses: "./.github/actions/wordpress_format"
+    - name: Format for WordPress plugin
+      uses: "./.github/actions/wordpress_format"
     - name: Commit
       run: |-
         if git commit -am 'bot: format [skip ci]'; then

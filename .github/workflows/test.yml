@@ -5,9 +5,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.5.0
-      - uses: "./.github/actions/setup"
-      - uses: "./.github/actions/format"
-      - uses: "./.github/actions/lint"
-      - uses: "./.github/actions/build"
-      - uses: "./.github/actions/test"
-      - uses: "./.github/actions/e2e"
+      - name: Setup
+        uses: "./.github/actions/setup"
+      - name: Format
+        uses: "./.github/actions/format"
+      - name: Lint
+        uses: "./.github/actions/lint"
+      - name: Build
+        uses: "./.github/actions/build"
+      - name: Test
+        uses: "./.github/actions/test"
+      - name: End-to-End Test
+        uses: "./.github/actions/e2e"
