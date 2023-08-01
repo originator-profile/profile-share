@@ -1,4 +1,5 @@
 name: wordpress_format
+description: Format for WordPress plugin
 runs:
   using: composite
   steps:
