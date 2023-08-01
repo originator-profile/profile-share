@@ -18,7 +18,7 @@ describe("AdminService", () => {
       adminId: accountId,
       password: hashedPassword,
     });
-    const admin: AdminService = AdminService({ prisma });
+    const admin: AdminService = AdminService();
     const valid = await admin.auth(accountId, dummyPassword);
     expect(valid).toBe(true);
   });

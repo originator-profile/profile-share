@@ -3,7 +3,6 @@ import { Services } from "@originator-profile/registry-service";
 import crypto from "node:crypto";
 import { NotFoundError } from "http-errors-enhanced";
 import { parseAccountId } from "@originator-profile/core";
-import { prisma } from "@originator-profile/registry-db";
 
 export class AdminCreate extends Command {
   static description = "管理者の作成";
@@ -22,7 +21,7 @@ UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定し
 
   async run(): Promise<void> {
     const { flags } = await this.parse(AdminCreate);
-    const services = Services({ config: { ISSUER_UUID: "" }, prisma });
+    const services = Services({ config: { ISSUER_UUID: "" } });
     const account = await services.account.read({
       id: parseAccountId(flags.id),
     });

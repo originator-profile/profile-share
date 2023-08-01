@@ -2,7 +2,6 @@ import { Command, Flags } from "@oclif/core";
 import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { accountId } from "../../flags";
-import { prisma } from "@originator-profile/registry-db";
 
 export class AccountRegisterKey extends Command {
   static description = "公開鍵の登録";
@@ -21,7 +20,6 @@ export class AccountRegisterKey extends Command {
     const { flags } = await this.parse(AccountRegisterKey);
     const services = Services({
       config: { ISSUER_UUID: process.env.ISSUER_UUID ?? "" },
-      prisma,
     });
     const keyFile = await fs.readFile(flags.key);
     const jwk = JSON.parse(keyFile.toString());

@@ -3,7 +3,6 @@ import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { operation } from "../../flags";
 import { parseAccountId } from "@originator-profile/core";
-import { prisma } from "@originator-profile/registry-db";
 
 export class Account extends Command {
   static description = "会員の作成・表示・更新・削除";
@@ -26,7 +25,6 @@ https://docs.originator-profile.org/ts/modules/_originator_profile_registry_db.d
     const { flags } = await this.parse(Account);
     const services = Services({
       config: { ISSUER_UUID: process.env.ISSUER_UUID ?? "" },
-      prisma,
     });
     const inputBuffer = await fs.readFile(flags.input);
     const input = JSON.parse(inputBuffer.toString());

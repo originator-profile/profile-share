@@ -1,22 +1,22 @@
-import { PrismaClient, Prisma, websites } from "@prisma/client";
+import { Prisma, websites } from "@prisma/client";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { signBody } from "@originator-profile/sign";
 import { Jwk } from "@originator-profile/model";
-import type {
+import {
   Website,
   WebsiteCreate,
   WebsiteUpdate,
   WebsiteRepository,
+  getClient,
 } from "@originator-profile/registry-db";
 
 type Options = {
-  prisma: PrismaClient;
   websiteRepository: WebsiteRepository;
 };
 
 export type { Website };
 
-export const WebsiteService = ({ prisma, websiteRepository }: Options) => ({
+export const WebsiteService = ({ websiteRepository }: Options) => ({
   /**
    * ウェブページの作成
    * @param website ウェブページ (website.id を省略した場合: UUID v4 生成)
@@ -36,6 +36,7 @@ export const WebsiteService = ({ prisma, websiteRepository }: Options) => ({
   async createForOldAPI(
     input: Prisma.websitesCreateInput,
   ): Promise<websites | Error> {
+    const prisma = getClient();
     return await prisma.websites
       .create({
         data: input,
@@ -72,6 +73,7 @@ export const WebsiteService = ({ prisma, websiteRepository }: Options) => ({
   async updateForOldAPI(
     input: Prisma.websitesUpdateInput & { id: string },
   ): Promise<websites | Error> {
+    const prisma = getClient();
     return await prisma.websites.update({
       where: { id: input.id },
       data: input,

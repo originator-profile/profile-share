@@ -2,7 +2,6 @@ import { Command, Flags } from "@oclif/core";
 import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { accountId } from "../../flags";
-import { prisma } from "@originator-profile/registry-db";
 
 export class AccountRegisterOp extends Command {
   static description =
@@ -22,7 +21,7 @@ JWT の含まれないファイルは無効です。また JWT の Subject ク�
 
   async run(): Promise<void> {
     const { flags } = await this.parse(AccountRegisterOp);
-    const services = Services({ config: { ISSUER_UUID: "" }, prisma });
+    const services = Services({ config: { ISSUER_UUID: "" }});
     const opFile = await fs.readFile(flags.op);
     const jwt = opFile.toString().trim();
     const op = await services.account.registerOp(flags.id, jwt);

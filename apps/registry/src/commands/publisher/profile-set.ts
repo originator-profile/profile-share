@@ -3,7 +3,6 @@ import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs";
 import stream from "node:stream";
 import { JsonLdDocument } from "jsonld";
-import { prisma } from "@originator-profile/registry-db";
 
 const config = { ISSUER_UUID: process.env.ISSUER_UUID ?? "" };
 
@@ -27,7 +26,7 @@ export class PublisherProfileSet extends Command {
       flags.output === "-"
         ? process.stdout
         : fs.createWriteStream(flags.output);
-    const services = Services({ config, prisma });
+    const services = Services({ config });
     const data: JsonLdDocument | Error = await services.website.getProfileSet(
       flags.url,
     );

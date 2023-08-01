@@ -89,7 +89,6 @@ export async function seed(): Promise<void> {
   const appUrl: string = process.env.APP_URL ?? "http://localhost:8080";
   const services = Services({
     config: { ISSUER_UUID: issuerUuid, APP_URL: appUrl },
-    prisma,
   });
 
   await waitForDb(prisma);

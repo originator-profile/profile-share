@@ -3,7 +3,6 @@ import { Prisma } from "@prisma/client";
 import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { globby } from "globby";
-import { prisma } from "@originator-profile/registry-db";
 
 export class PublisherCategory extends Command {
   static description = "カテゴリーの作成・表示・削除";
@@ -34,7 +33,6 @@ https://docs.originator-profile.org/ts/modules/_originator_profile_registry_db.d
   ): Promise<void> {
     const services = Services({
       config: { ISSUER_UUID: process.env.ISSUER_UUID ?? "" },
-      prisma,
     });
     const inputBuffer = await fs.readFile(flags.input);
     const input = JSON.parse(

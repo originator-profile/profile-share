@@ -1,19 +1,18 @@
-import { PrismaClient, admins } from "@prisma/client";
+import { admins } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { getClient } from "@originator-profile/registry-db";
 
-type Options = {
-  prisma: PrismaClient;
-};
 
 type AccountId = string;
 
-export const AdminService = ({ prisma }: Options) => ({
+export const AdminService = () => ({
   /**
    * 管理者の認証
    * @param id 管理者 ID
    * @param password パスフレーズ
    */
   async auth(id: AccountId, password: string): Promise<boolean> {
+    const prisma = getClient();
     const data = await prisma.admins
       .findUniqueOrThrow({ where: { adminId: id } })
       .catch((e: Error) => e);
@@ -25,6 +24,7 @@ export const AdminService = ({ prisma }: Options) => ({
    * @param id 会員 ID
    * @param password パスフレーズ
    */ async create(id: AccountId, password: string): Promise<admins | Error> {
+    const prisma = getClient();
     const hashedPassword = await bcrypt.hash(password, 12);
     return await prisma.admins
       .create({
@@ -40,6 +40,7 @@ export const AdminService = ({ prisma }: Options) => ({
    * @param id 管理者 ID
    */
   async delete(id: AccountId): Promise<admins | Error> {
+    const prisma = getClient();
     return await prisma.admins
       .delete({ where: { adminId: id } })
       .catch((e: Error) => e);

@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import Config from "./config";
 import { AccountService } from "./account";
 import { AdminService } from "./admin";
@@ -17,7 +16,6 @@ export type { Website } from "./website";
 
 type Options = {
   config: Config;
-  prisma: PrismaClient;
 };
 
 export { Config };
@@ -25,8 +23,8 @@ export { Config };
 export const Services = (options: Options) => {
   const validator = ValidatorService();
   const account = AccountService({ ...options, validator });
-  const admin = AdminService(options);
-  const category = CategoryService(options);
+  const admin = AdminService();
+  const category = CategoryService();
   const certificate = CertificateService({ ...options, account, validator });
   const dpRepository = DpRepository();
   const websiteRepository = WebsiteRepository();
@@ -37,9 +35,8 @@ export const Services = (options: Options) => {
     websiteRepository,
   });
   const website = WebsiteService({ ...options, websiteRepository });
-  const credential = CredentialService(options);
+  const credential = CredentialService();
   return {
-    prisma: options.prisma,
     validator,
     account,
     admin,

@@ -21,7 +21,6 @@ describe("AccountService", () => {
 
     const ajv = new Ajv();
     const account: AccountService = AccountService({
-      prisma,
       validator,
     });
     // @ts-expect-error assert

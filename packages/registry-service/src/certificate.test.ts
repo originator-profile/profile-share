@@ -16,8 +16,8 @@ const certifierId: string = crypto.randomUUID();
 
 describe("CertificateService", () => {
   const validator = ValidatorService();
-  const account = AccountService({ prisma, validator });
-  const certificate = CertificateService({ prisma, account, validator });
+  const account = AccountService({ validator });
+  const certificate = CertificateService({ account, validator });
 
   test("isCertifier() return true if account is certifier", async () => {
     prisma.accounts.findUnique.mockResolvedValue(

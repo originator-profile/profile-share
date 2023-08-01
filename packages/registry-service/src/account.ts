@@ -1,20 +1,20 @@
-import { PrismaClient, Prisma, accounts } from "@prisma/client";
+import { Prisma, accounts } from "@prisma/client";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { fromUnixTime } from "date-fns";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
 import { Jwk, Jwks } from "@originator-profile/model";
 import { isJwtOpPayload } from "@originator-profile/core";
 import { ValidatorService } from "./validator";
+import { getClient } from "@originator-profile/registry-db";
 
 type Options = {
-  prisma: PrismaClient;
   validator: ValidatorService;
 };
 
 type AccountId = string;
 type OpId = string;
 
-export const AccountService = ({ prisma, validator }: Options) => ({
+export const AccountService = ({ validator }: Options) => ({
   /**
    * 会員の作成
    * @param input 会員
@@ -24,6 +24,7 @@ export const AccountService = ({ prisma, validator }: Options) => ({
     id: _,
     ...input
   }: Prisma.accountsCreateInput): Promise<accounts | Error> {
+    const prisma = getClient();
     return await prisma.accounts.create({ data: input }).catch((e: Error) => e);
   },
   /**
@@ -32,6 +33,7 @@ export const AccountService = ({ prisma, validator }: Options) => ({
    * @return 会員
    */
   async read({ id }: { id: AccountId }): Promise<accounts | Error> {
+    const prisma = getClient();
     const data = await prisma.accounts
       .findUnique({ where: { id } })
       .catch((e: Error) => e);
@@ -48,6 +50,7 @@ export const AccountService = ({ prisma, validator }: Options) => ({
   }: Prisma.accountsUpdateInput & { id: AccountId }): Promise<
     accounts | Error
   > {
+    const prisma = getClient();
     return await prisma.accounts.update({
       where: { id },
       data: input,
@@ -59,6 +62,7 @@ export const AccountService = ({ prisma, validator }: Options) => ({
    * @return 会員
    */
   async delete({ id }: { id: AccountId }): Promise<accounts | Error> {
+    const prisma = getClient();
     return await prisma.accounts.delete({
       where: { id },
     });
@@ -68,6 +72,7 @@ export const AccountService = ({ prisma, validator }: Options) => ({
    * @param id 会員 ID
    */
   async getKeys(id: AccountId): Promise<Jwks | Error> {
+    const prisma = getClient();
     const data = await prisma.keys
       .findMany({ where: { accountId: id } })
       .catch((e: Error) => e);
@@ -83,6 +88,7 @@ export const AccountService = ({ prisma, validator }: Options) => ({
    * @param input 公開鍵 (JWK)
    */
   async registerKey(id: AccountId, input: Jwk): Promise<Jwks | Error> {
+    const prisma = getClient();
     const jwk = validator.jwkValidate(input);
     if (jwk instanceof Error) return jwk;
     const data = await prisma.keys
@@ -101,6 +107,7 @@ export const AccountService = ({ prisma, validator }: Options) => ({
    * @return 成功した場合はSigned Originator Profile、失敗した場合はError
    */
   async registerOp(id: AccountId, jwt: string): Promise<string | Error> {
+    const prisma = getClient();
     const account = await this.read({ id });
     if (account instanceof Error) return account;
     const uuid = account.id;
@@ -140,6 +147,7 @@ export const AccountService = ({ prisma, validator }: Options) => ({
    * @return 公開した OP (JWT)
    */
   async publishProfile(id: AccountId, opId: OpId): Promise<string | Error> {
+    const prisma = getClient();
     const data = await prisma.publications
       .create({ data: { accountId: id, opId }, include: { op: true } })
       .catch((e: Error) => e);
@@ -160,6 +168,7 @@ export const AccountService = ({ prisma, validator }: Options) => ({
       | ContextDefinition
       | string = "https://originator-profile.org/context.jsonld",
   ): Promise<JsonLdDocument | Error> {
+    const prisma = getClient();
     const data = await prisma.accounts
       .findUnique({
         where: { id },

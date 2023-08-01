@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import flush from "just-flush";
 import { addYears, fromUnixTime } from "date-fns";
 import { NotFoundError, BadRequestError } from "http-errors-enhanced";
@@ -12,9 +12,9 @@ import {
 import { signOp } from "@originator-profile/sign";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
+import { getClient } from "@originator-profile/registry-db";
 
 type Options = {
-  prisma: PrismaClient;
   validator: ValidatorService;
   account: AccountService;
 };
@@ -24,7 +24,6 @@ type AccountId = string;
 type OpId = string;
 
 export const CertificateService = ({
-  prisma,
   account,
   validator,
 }: Options) => ({
@@ -34,6 +33,7 @@ export const CertificateService = ({
    * @return 認証機関であれば true, そうでなければ false
    */
   async isCertifier(id: CertifierId): Promise<boolean | Error> {
+    const prisma = getClient();
     const data = await prisma.accounts
       .findUnique({ where: { id }, select: { roleValue: true } })
       .catch((e: Error) => e);
@@ -58,6 +58,7 @@ export const CertificateService = ({
       expiredAt: addYears(new Date(), 10),
     },
   ): Promise<string | Error> {
+    const prisma = getClient();
     const credentials = await prisma.credentials
       .findMany({
         where: { accountId },
@@ -160,6 +161,7 @@ export const CertificateService = ({
    * @return ops.id
    */
   async issue(id: CertifierId, jwt: string): Promise<OpId | Error> {
+    const prisma = getClient();
     const decoded = validator.decodeToken(jwt);
     if (decoded instanceof Error) return decoded;
     const issuedAt: Date = fromUnixTime(decoded.payload.iat);
