@@ -1,5 +1,5 @@
 import { test, expect, describe, vi } from "vitest";
-import { Prisma  } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import crypto from "node:crypto";
 import { decodeJwt } from "jose";
 import { JwtOpPayload } from "@originator-profile/model";
@@ -8,9 +8,9 @@ import { isOpHolder, isOpCredential } from "@originator-profile/core";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
 import { CertificateService } from "./certificate";
-import { prisma } from "@originator-profile/registry-db/src/__mocks__/prisma-client";
+import { prisma } from "@originator-profile/registry-db/src/lib/__mocks__/prisma-client";
 
-vi.mock("@originator-profile/registry-db/src/prisma-client.ts");
+vi.mock("@originator-profile/registry-db/src/lib/prisma-client.ts");
 
 const certifierId: string = crypto.randomUUID();
 

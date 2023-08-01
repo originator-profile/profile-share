@@ -2,9 +2,9 @@ import { test, expect, describe, vi } from "vitest";
 import { WebsiteRepository } from "@originator-profile/registry-db";
 import { generateKey } from "@originator-profile/sign";
 import { WebsiteService } from "./website";
-import { prisma } from "@originator-profile/registry-db/src/__mocks__/prisma-client";
+import { prisma } from "@originator-profile/registry-db/src/lib/__mocks__/prisma-client";
 
-vi.mock("@originator-profile/registry-db/src/prisma-client.ts");
+vi.mock("@originator-profile/registry-db/src/lib/prisma-client.ts");
 
 describe("WebsiteService", () => {
   test("signBody() return compact JWS", async () => {

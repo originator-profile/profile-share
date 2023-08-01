@@ -1,8 +1,8 @@
-import { PrismaClient, Prisma, websites } from "@prisma/client";
+import { Prisma, websites } from "@prisma/client";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { NotFoundError } from "http-errors-enhanced";
 import { v4 as uuid4, validate } from "uuid";
-import { getClient } from "./prisma-client";
+import { getClient } from "./lib/prisma-client";
 
 export interface Website {
   id: string;

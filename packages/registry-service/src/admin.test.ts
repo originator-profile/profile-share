@@ -4,10 +4,9 @@ import bcrypt from "bcryptjs";
 
 import { AdminService } from "./admin";
 
-import { prisma } from "@originator-profile/registry-db/src/__mocks__/prisma-client";
+import { prisma } from "@originator-profile/registry-db/src/lib/__mocks__/prisma-client";
 
-vi.mock("@originator-profile/registry-db/src/prisma-client.ts");
-
+vi.mock("@originator-profile/registry-db/src/lib/prisma-client.ts");
 
 const accountId: string = crypto.randomUUID();
 

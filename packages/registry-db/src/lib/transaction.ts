@@ -1,23 +1,6 @@
-import { PrismaClient, Prisma } from "@prisma/client";
-import * as cls from "cls-hooked";
-
-const PRISMA_CLIENT_KEY = "tx";
-
-const transactionContext =
-  cls.createNamespace<Record<"tx", Prisma.TransactionClient | undefined>>(
-    "prisma transaction",
-  );
-
-export const prisma = new PrismaClient();
-
-/**
- * prisma client を返す（トランザクション対応）。
- * @return prisma client
- */
-export const getClient = () => {
-  const tx = transactionContext.get(PRISMA_CLIENT_KEY);
-  return tx ? tx : prisma;
-};
+import { Prisma } from "@prisma/client";
+import { prisma } from "./prisma-client";
+import transactionContext, { PRISMA_CLIENT_KEY } from "./transaction-context";
 
 /**
  * DBのトランザクションとして {fn} を実行する

@@ -10,9 +10,9 @@ import {
 } from "@originator-profile/registry-db";
 import { ValidatorService } from "./validator";
 import { PublisherService } from "./publisher";
-import { prisma } from "@originator-profile/registry-db/src/__mocks__/prisma-client";
+import { prisma } from "@originator-profile/registry-db/src/lib/__mocks__/prisma-client";
 
-vi.mock("@originator-profile/registry-db/src/prisma-client.ts");
+vi.mock("@originator-profile/registry-db/src/lib/prisma-client.ts");
 
 describe("PublisherService", () => {
   const validator = ValidatorService();

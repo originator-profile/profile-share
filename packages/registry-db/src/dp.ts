@@ -1,9 +1,8 @@
-import { PrismaClient } from "@prisma/client";
 import { fromUnixTime } from "date-fns";
 import { BadRequestError } from "http-errors-enhanced";
 import { JwtDpPayload } from "@originator-profile/model";
 import { parseAccountId } from "@originator-profile/core";
-import { getClient } from "./prisma-client";
+import { getClient } from "./lib/prisma-client";
 
 export const DpRepository = () => ({
   /**
