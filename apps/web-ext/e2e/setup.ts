@@ -14,7 +14,7 @@ let userDataDir: string;
 
 beforeAll(async () => {
   userDataDir = await fs.mkdtemp(path.join(os.tmpdir(), "profile-web-ext-"));
-  const extensionPath = path.resolve(__dirname, `../dist-${browserType}`);
+  const extensionPath = path.resolve(__dirname, `../dist-${browserType.name()}`);
   ctx = await browserType.launchPersistentContext(userDataDir, {
     // NOTE: see also https://playwright.dev/docs/chrome-extensions#headless-mode
     args: [
