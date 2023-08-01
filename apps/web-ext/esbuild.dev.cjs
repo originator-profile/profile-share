@@ -1,5 +1,4 @@
 const config = require("./esbuild.config.cjs");
-const plugin = require("./esbuild.plugin.cjs");
 const { program, Option } = require("commander");
 const esbuild = require("esbuild");
 const path = require("node:path");
@@ -45,7 +44,7 @@ async function dev() {
         dest: `dist-${options.target}`,
       }),
       require("./esbuild.postcss.cjs"),
-      plugin({ target: options.target, dist: `dist-${options.target}` }),
+      require("./esbuild.manifest-rename.cjs")({ target: options.target, dist: `dist-${options.target}` }),
     ],
   });
   await context.watch();
