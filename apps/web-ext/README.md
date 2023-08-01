@@ -61,7 +61,7 @@ $ yarn dev --issuer=oprexpt.originator-profile.org --url=https://oprexpt.origina
   - `-i, --issuer`: 環境変数 `PROFILE_ISSUER` と同じです。
 - `yarn lint`: コードリントと fixable なリントエラーを修正します。
 - `yarn test`: ユニットテストを実行します。
-- `yarn e2e`: e2eテストを実行します。`yarn dev`で拡張機能をビルドした状態もしくは環境変数`MODE=development``PROFILE_ISSUER=localhost`で実行してください。
+- `yarn e2e`: Chrome用拡張機能のe2eテストを実行します。`yarn dev`で拡張機能をビルドした状態で実行してください。
 - `yarn build:esbuild-firefox`: `yarn build:esbuild -t firefox-desktop`のエイリアスです。
 - `yarn dev:firefox`: `yarn dev -t firefox-desktop`のエイリアスです。
 - `yarn build:web-ext-firefox`: `dist-firefox-desktop` をソースとして、拡張機能を[パッケージング](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/#packaging-your-extension)します。
