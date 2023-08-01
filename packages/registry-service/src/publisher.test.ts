@@ -1,5 +1,4 @@
-import { test, expect, describe, afterEach, vi } from "vitest";
-import { mockClear } from "vitest-mock-extended";
+import { test, expect, describe, vi } from "vitest";
 import { websites } from "@prisma/client";
 import crypto from "node:crypto";
 import { decodeJwt } from "jose";
@@ -23,10 +22,6 @@ describe("PublisherService", () => {
     validator,
     dpRepository,
     websiteRepository,
-  });
-
-  afterEach(() => {
-    mockClear(prisma);
   });
 
   test("signDp() return a valid JWT", async () => {

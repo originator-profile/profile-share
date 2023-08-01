@@ -1,17 +1,12 @@
-import { test, expect, describe, afterEach } from "vitest";
-import { mockDeep, mockClear } from "vitest-mock-extended";
-import { PrismaClient } from "@prisma/client";
+import { test, expect, describe, vi } from "vitest";
 import { WebsiteRepository } from "@originator-profile/registry-db";
 import { generateKey } from "@originator-profile/sign";
 import { WebsiteService } from "./website";
+import { prisma } from "@originator-profile/registry-db/src/__mocks__/prisma-client";
+
+vi.mock("@originator-profile/registry-db/src/prisma-client.ts");
 
 describe("WebsiteService", () => {
-  const prisma = mockDeep<PrismaClient>();
-
-  afterEach(() => {
-    mockClear(prisma);
-  });
-
   test("signBody() return compact JWS", async () => {
     const websiteRepository = WebsiteRepository();
     const website: WebsiteService = WebsiteService({

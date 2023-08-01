@@ -1,21 +1,18 @@
-import { test, expect, describe, afterEach } from "vitest";
-import { mockDeep, mockClear } from "vitest-mock-extended";
-import { PrismaClient } from "@prisma/client";
+import { test, expect, describe,  vi } from "vitest";
 import crypto from "node:crypto";
 import Ajv from "ajv";
 import { Jwks } from "@originator-profile/model";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
 
+import { prisma } from "@originator-profile/registry-db/src/__mocks__/prisma-client";
+
+vi.mock("@originator-profile/registry-db/src/prisma-client.ts");
+
 const accountId: string = crypto.randomUUID();
 
 describe("AccountService", () => {
-  const prisma = mockDeep<PrismaClient>();
   const validator = ValidatorService();
-
-  afterEach(() => {
-    mockClear(prisma);
-  });
 
   test("getKeys() returns valid JWKS", async () => {
     prisma.keys.findMany.mockResolvedValue([

@@ -1,6 +1,5 @@
-import { test, expect, describe, afterEach } from "vitest";
-import { mockDeep, mockClear } from "vitest-mock-extended";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { test, expect, describe, vi } from "vitest";
+import { Prisma  } from "@prisma/client";
 import crypto from "node:crypto";
 import { decodeJwt } from "jose";
 import { JwtOpPayload } from "@originator-profile/model";
@@ -9,18 +8,16 @@ import { isOpHolder, isOpCredential } from "@originator-profile/core";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
 import { CertificateService } from "./certificate";
+import { prisma } from "@originator-profile/registry-db/src/__mocks__/prisma-client";
+
+vi.mock("@originator-profile/registry-db/src/prisma-client.ts");
 
 const certifierId: string = crypto.randomUUID();
 
 describe("CertificateService", () => {
-  const prisma = mockDeep<PrismaClient>();
   const validator = ValidatorService();
   const account = AccountService({ prisma, validator });
   const certificate = CertificateService({ prisma, account, validator });
-
-  afterEach(() => {
-    mockClear(prisma);
-  });
 
   test("isCertifier() return true if account is certifier", async () => {
     prisma.accounts.findUnique.mockResolvedValue(
