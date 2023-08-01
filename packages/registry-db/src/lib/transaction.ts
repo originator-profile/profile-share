@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "./prisma-client";
 import transactionContext, { PRISMA_CLIENT_KEY } from "./transaction-context";
+import { BadRequestError } from "http-errors-enhanced";
 
 /**
  * DBのトランザクションとして {fn} を実行する
@@ -18,13 +19,17 @@ export const beginTransaction = async <T>(fn: () => T): Promise<T | Error> => {
       return await fn();
     }
 
-    return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+    return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       return transactionContext.runPromise(async () => {
         transactionContext.set(PRISMA_CLIENT_KEY, tx);
         return await fn();
       });
     });
   } catch (e) {
+    if (e instanceof Prisma.PrismaClientUnknownRequestError) {
+      // このエラーの場合、 e.message にスタックトレースが含まれるため、ユーザーにそのまま見せないほうがよい。
+      return new BadRequestError("transaction failed")
+    }
     return e as Error;
   }
 };
