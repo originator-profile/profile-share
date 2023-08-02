@@ -28,7 +28,7 @@ export const beginTransaction = async <T>(fn: () => T): Promise<T | Error> => {
   } catch (e) {
     if (e instanceof Prisma.PrismaClientUnknownRequestError) {
       // このエラーの場合、 e.message にスタックトレースが含まれるため、ユーザーにそのまま見せないほうがよい。
-      return new BadRequestError("transaction failed")
+      return new BadRequestError("transaction failed");
     }
     return e as Error;
   }

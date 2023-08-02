@@ -163,7 +163,7 @@ export const WebsiteRepository = () => ({
     website: WebsiteUpdate & WebsiteCreate,
   ): Promise<websites | Error> {
     const found = await this.read(website);
-    if (found instanceof Error) {
+    if (found instanceof NotFoundError) {
       return await this.create(website);
     } else {
       return await this.update(website);
