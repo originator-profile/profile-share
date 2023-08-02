@@ -9,7 +9,7 @@ use Ramsey\Uuid\Uuid;
 
 require_once __DIR__ . '/config.php';
 use const Profile\Config\PROFILE_PRIVATE_KEY_FILENAME;
-use const Profile\Config\PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME;
+use const Profile\Config\PROFILE_DEFAULT_PROFILE_REGISTRY_SERVER_HOSTNAME;
 use const Profile\Config\PROFILE_VERIFICATION_TYPE;
 use const Profile\Config\PROFILE_VERIFICATION_LOCATION;
 
@@ -40,7 +40,8 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 		return;
 	}
 
-	$domain_name = \get_option( 'profile_registry_domain_name', PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME );
+	$hostname    = \get_option( 'profile_registry_server_hostname', PROFILE_DEFAULT_PROFILE_REGISTRY_SERVER_HOSTNAME );
+	$domain_name = \get_option( 'profile_registry_domain_name', $hostname );
 
 	if ( empty( $domain_name ) ) {
 		return;
@@ -50,12 +51,24 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 		return;
 	}
 
-	$privatekey = 'file://' . PROFILE_PRIVATE_KEY_FILENAME;
-	$dp_list    = create_dp_list( $post, $domain_name, $privatekey );
+	$privatekey    = 'file://' . PROFILE_PRIVATE_KEY_FILENAME;
+	$dp_list       = create_dp_list( $post, $domain_name, $privatekey );
+	$admin_secret  = \get_option( 'profile_registry_admin_secret' );
+	list( $uuid, ) = \explode( ':', $admin_secret );
+	$endpoint      = "https://{$hostname}/admin/publisher/{$uuid}/dp/";
+
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $hostname ) {
+		$in_docker = \file_exists( '/.dockerenv' );
+		if ( $in_docker ) {
+			$endpoint = "http://host.docker.internal:8080/admin/publisher/{$uuid}/dp/";
+		} else {
+			$endpoint = "http://localhost:8080/admin/publisher/{$uuid}/dp/";
+		}
+	}
 
 	foreach ( $dp_list as $page => $dp ) {
 		$page++;
-		$jwt = issue_dp( $dp, \get_option( 'profile_registry_admin_secret' ), $privatekey );
+		$jwt = issue_dp( $dp, $endpoint, $admin_secret, $privatekey );
 
 		if ( ! $jwt ) {
 			return;
@@ -219,20 +232,19 @@ function sign_body( string $body, string $pkcs8 ): string|false {
  * Signed Document Profileの発行
  *
  * @param Dp     $dp Dp
- * @param string $admin_secret レジストリ認証情報
+ * @param string $endpoint レジストリサーバー DP 更新・登録エンドポイント
+ * @param string $admin_secret レジストリサーバー認証情報
  * @param string $pkcs8 PEM base64 でエンコードされた PKCS #8 プライベート鍵またはそのファイルパス
  * @return string|false 成功した場合はSigned Document Profile、失敗した場合はfalse
  */
-function issue_dp( Dp $dp, string $admin_secret, string $pkcs8 ): string|false {
+function issue_dp( Dp $dp, string $endpoint, string $admin_secret, string $pkcs8 ): string|false {
 	$jwt = $dp->sign( pkcs8: $pkcs8 );
 
 	if ( ! $jwt ) {
 		return false;
 	}
 
-	list( $uuid, ) = \explode( ':', $admin_secret );
-	$endpoint      = "https://{$dp->issuer}/admin/publisher/{$uuid}/dp/";
-	$args          = array(
+	$args = array(
 		'method'  => 'POST',
 		'headers' => array(
 			'authorization' => 'Basic ' . \sodium_bin2base64( $admin_secret, SODIUM_BASE64_VARIANT_ORIGINAL ),
@@ -244,15 +256,6 @@ function issue_dp( Dp $dp, string $admin_secret, string $pkcs8 ): string|false {
 			)
 		),
 	);
-
-	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $dp->issuer ) {
-		$in_docker = \file_exists( '/.dockerenv' );
-		if ( $in_docker ) {
-			$endpoint = "http://host.docker.internal:8080/admin/publisher/{$uuid}/dp/";
-		} else {
-			$endpoint = "http://localhost:8080/admin/publisher/{$uuid}/dp/";
-		}
-	}
 
 	$res = \wp_remote_request( $endpoint, $args );
 	if ( \is_wp_error( $res ) ) {

@@ -6,8 +6,8 @@ namespace Profile\Config;
 /** プライベート鍵ファイル */
 const PROFILE_PRIVATE_KEY_FILENAME = WP_CONTENT_DIR . '/credentials/profile.key.pem';
 
-/** デフォルトのレジストリドメイン名 */
-const PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME = 'dprexpt.originator-profile.org';
+/** DP レジストリサーバーのホスト名のデフォルト値 */
+const PROFILE_DEFAULT_PROFILE_REGISTRY_SERVER_HOSTNAME = 'dprexpt.originator-profile.org';
 
 /** 検証する対象の型 */
 const PROFILE_VERIFICATION_TYPE = 'text';
