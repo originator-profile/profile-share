@@ -18,7 +18,9 @@ beforeAll(async () => {
       `--id=${ADMIN_ACCOUNT}`,
       `--password=${ADMIN_PASSWORD}`,
     ]);
-  } catch (e) {}
+  } catch (e) {
+    return;
+  }
 });
 
 afterAll(async () => {

@@ -162,9 +162,12 @@ export const WebsiteRepository = () => ({
   async upsert(
     website: WebsiteUpdate & WebsiteCreate,
   ): Promise<websites | Error> {
-    const data = await this.create(website);
-    if (data instanceof Error) return await this.update(website);
-    return data;
+    const found = await this.read(website);
+    if (found instanceof Error) {
+      return await this.create(website);
+    } else {
+      return await this.update(website);
+    }
   },
 
   /**
