@@ -1,0 +1,22 @@
+name: setup
+description: Setup
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: "18"
+        cache: yarn
+    - name: Restore Playwright cache
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-v1-main
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+      shell: bash
+    - name: Install browsers and system dependencies
+      run: npx playwright install --with-deps
+      shell: bash
+    - name: Setup for WordPress plugin
+      uses: "./.github/actions/wordpress_setup"
