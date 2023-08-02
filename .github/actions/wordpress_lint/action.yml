@@ -1,0 +1,9 @@
+name: wordpress_lint
+description: Lint for WordPress plugin
+runs:
+  using: composite
+  steps:
+    - name: composer run lint
+      run: docker compose exec -w /var/www/html/wp-content/plugins/profile wordpress composer run lint
+      working-directory: packages/wordpress
+      shell: bash
