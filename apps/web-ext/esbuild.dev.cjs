@@ -49,13 +49,15 @@ async function dev() {
   });
   await context.watch();
   console.log("watching...");
-  const webExt = await import("web-ext");
-  webExt.cmd.run({
-    target: options.target,
-    sourceDir: path.join(__dirname, `dist-${options.target}`),
-    noReload: true,
-    startUrl: options.url,
-  });
+  if (process.env.CI !== "true") {
+    const webExt = await import("web-ext");
+    await webExt.cmd.run({
+      target: options.target,
+      sourceDir: path.join(__dirname, `dist-${options.target}`),
+      noReload: true,
+      startUrl: options.url,
+    });
+  }
 }
 
 dev();
