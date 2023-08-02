@@ -43,7 +43,7 @@ CHROME_PATH=/usr/bin/google-chrome yarn dev
   - model … システムのコアとなる静的構造のためのパッケージ
   - core … システムのコアとなる関数のためのパッケージ
 - package.json … プロジェクトの付帯情報 ([package.json](https://docs.npmjs.com/files/package.json/))
-- .circleci/config.yml … CI 環境の設定ファイル ([CircleCI の設定](https://circleci.com/docs/ja/configuration-reference))
+- .github/workflows/ … GitHub Actions のワークフローの定義
 
 ## 便利なコマンド
 
@@ -76,14 +76,10 @@ docker compose run --rm -w /var/www/html/wp-content/plugins/profile wordpress co
 
 コードの整形を行います。
 
-## 便利な CI ワークフロー
+## GitHub Actions
 
-[GitHub Checks が有効化されており](https://circleci.com/docs/ja/enable-checks)、GitHub リポジトリ上で各コミットに対する CI の結果を確認することができます。 CI で実行している便利な CI ワークフローを紹介します。
+GitHub リポジトリ上での変更は自動的にチェックされます。
 
-### test
+### originator-profile/profile/test
 
-`yarn lint` `yarn test` `yarn build` `yarn e2e` を行います。
-
-### format
-
-`yarn format` を行います。
+パッケージの生成、コードの整形、静的コード解析、E2E テストを含むすべてのテストを実施します。

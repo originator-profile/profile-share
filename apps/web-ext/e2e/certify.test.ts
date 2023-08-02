@@ -39,6 +39,9 @@ describe("certify", () => {
         .textContent(),
     ).toMatch("有効期限内");
 
+    // 対象のWebページにオーバーレイ表示が読み込まれるまで待機
+    await page?.waitForSelector("iframe");
+
     // 対象Webページにマークは表示されているか
     expect(await page?.title()).toMatch(/OP 確認くん/);
     expect(
