@@ -8,7 +8,8 @@ dist
 tmp
 vendor
 /apps/registry/oclif.manifest.json
-/apps/web-ext/web-ext-artifacts
+/apps/web-ext/web-ext-artifacts*
+/apps/web-ext/dist*
 /apps/web-ext/screenshots
 /docs/model/assets
 /docs/registry/assets/*
