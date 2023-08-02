@@ -13,14 +13,16 @@ beforeAll(async () => {
   await waitForDb(prisma);
 
   try {
-    // テスト用の管理者アカウントを作成
-    await AdminCreate.run([
-      `--id=${ADMIN_ACCOUNT}`,
-      `--password=${ADMIN_PASSWORD}`,
-    ]);
+    await AdminDelete.run([`--id=${ADMIN_ACCOUNT}`]);
   } catch (e) {
-    return;
+    // テスト用の管理者アカウントが存在しないケースだと考えて無視する
   }
+
+  // テスト用の管理者アカウントを作成
+  await AdminCreate.run([
+    `--id=${ADMIN_ACCOUNT}`,
+    `--password=${ADMIN_PASSWORD}`,
+  ]);
 });
 
 afterAll(async () => {
