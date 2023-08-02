@@ -15,8 +15,12 @@
  * A user-id containing a colon (":") character is invalid, as the
  * first colon in a user-pass string separates user and password.
  */
-const BASIC_USER = "op";
-const BASIC_PASS = "l17Fx7U7feOp";
+const users = new Map(
+  Object.entries({
+    op: "l17Fx7U7feOp",
+    tw: "KCkYg12B^Ofs",
+  }),
+);
 
 /**
  * Receives a HTTP request and replies with a response.
@@ -64,11 +68,18 @@ async function handleRequest(request, env) {
  * @throws {UnauthorizedException}
  */
 function verifyCredentials(user, pass) {
-  if (BASIC_USER !== user) {
+  if (!users.has(user)) {
     throw new UnauthorizedException("Invalid username.");
   }
 
-  if (BASIC_PASS !== pass) {
+  if (
+    users.get(user)?.length !== pass.length ||
+    // @ts-expect-error "This is a non-standard extension to the Web Crypto API." https://developers.cloudflare.com/workers/runtime-apis/web-crypto/#timingsafeequal
+    !crypto.subtle.timingSafeEqual(
+      new TextEncoder().encode(users.get(user)),
+      new TextEncoder().encode(pass),
+    )
+  ) {
     throw new UnauthorizedException("Invalid password.");
   }
 }
