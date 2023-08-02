@@ -416,9 +416,9 @@ API の詳細については、[CIP 提供 DP レジストリについて](#cip-
 
 </details>
 
-### SDP の生成と DP レジストリへの登録
+## CLI による OP 対応ガイド
 
-#### SDP の生成
+### SDP の生成
 
 DP レジストリに登録するにはまず、Signed Document Profile (SDP) を発行する必要があります。
 前提条件として組織情報の登録、公開鍵の登録、Signed Originator Profile 発行を行う必要があります。
@@ -457,13 +457,26 @@ $ profile-registry publisher:sign \
 eyJhbGciOiJFUzI1NiIsImtpZCI6Ijd5ZWp2UmRDejV2MWpkYVh1emEydXQ3c1Q4dmtyZmJsRGZOZVRWd3NJanMiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwczovL21lZGlhLmV4YW1wbGUuY29tLzIwMjMvMDYvaGVsbG8vIiwidGl0bGUiOiLjg6Hjg4fjgqPjgqIgKOippumok-eUqCkifSx7InR5cGUiOiJ2aXNpYmxlVGV4dCIsInVybCI6Imh0dHBzOi8vbWVkaWEuZXhhbXBsZS5jb20vMjAyMy8wNi9oZWxsby8iLCJsb2NhdGlvbiI6ImJvZHkiLCJwcm9vZiI6eyJqd3MiOiJleUpoYkdjaU9pSkZVekkxTmlJc0ltdHBaQ0k2SWpkNVpXcDJVbVJEZWpWMk1XcGtZVmgxZW1FeWRYUTNjMVE0ZG10eVptSnNSR1pPWlZSV2QzTkphbk1pTENKaU5qUWlPbVpoYkhObExDSmpjbWwwSWpwYkltSTJOQ0pkZlEuLjg4VVJFZ0VnTHV3SkhqekpmSzB3UWxaM3hpOFdqUVJTd2RqZXNUM1ViN1hLTm9RNWxpNDh3dU03dE1CS09Wc3dNY3B5cjA2aTUxZmowU1pNcC1LWEV3In19XX0sImlzcyI6Im1lZGlhLmV4YW1wbGUuY29tIiwic3ViIjoiZWY5ZDc4ZTAtZDgxYS00ZTM5LWI3YTAtMjdlMTU0MDVlZGM4IiwiaWF0IjoxNjkwMzYzNjY0LCJleHAiOjE3MjE5ODYwNjR9.RRQE3Id7fqIzsHL_u3HNEOZitEMoaXkAeTntDU4hG0ayIGHULvTnnOefCsRCvUF96KA__2cipcXhwS09S0caZw
 ```
 
-#### SDP の登録
+### SDP の登録
 
-生成した SDP を DP レジストリに登録します。これには　DP レジストリ (`dprexpt.originator-profile.org`) の [SDP登録用のエンドポイント](#adminpublisherアカウントiddp-エンドポイント) を利用します。
+生成した SDP を DP レジストリに登録します。これには　DP レジストリ (`dprexpt.originator-profile.org`) の [SDP 登録用のエンドポイント](#adminpublisherアカウントiddp-エンドポイント) を利用します。
 
-これにより DP レジストリは `/website/profiles` エンドポイントで SOP と SDP をまとめて返せるようになります。
+SDP 登録後、DP レジストリの [Profile Set 取得エンドポイント](#websiteprofiles-エンドポイント)を使用して OP 拡張機能での閲覧に必要な SOP と SDP を配信することが可能になります。
 
-DP の作成が可能になったら、DP 発行処理を CMS 側に組み込み、記事の編集後に自動で DP の発行と <link\> 要素の埋め込みがされるようにします。
+### Profile Set の配信
+
+SDP をレジストリに登録したら、最後に、記事から SDP を含む Profile Set を取得できるようにします。
+これには[Profile Set 取得エンドポイント](#websiteprofiles-エンドポイント) を利用してください。
+
+結果的に次のような <link\> 要素が記事の HTML の <head\> 要素内に追記されれば、完了となります。
+
+```html
+<link
+  href="https://dprexpt.originator-profile.org/website/profiles?url=<website.jsonに指定したURL (RFC 3986 でエンコード) >"
+  rel="alternate"
+  type="application/ld+json"
+/>
+```
 
 ## CMS の実装ガイド
 
@@ -778,7 +791,7 @@ SDP を生成したら、次は SDP を DP レジストリに登録してくだ�
 
 生成した SDP を DP レジストリに登録します。これには　DP レジストリ (`dprexpt.originator-profile.org`) の [SDP登録用のエンドポイント](#adminpublisherアカウントiddp-エンドポイント) を利用します。
 
-#### Profile Set の配信
+#### 記事に対応する Profile Set の配信
 
 SDP をレジストリに登録したら、最後に、記事から SDP を含む Profile Set を取得できるようにします。
 これには[Profile Set 取得エンドポイント](#websiteprofiles-エンドポイント) を利用してください。
@@ -795,9 +808,9 @@ SDP をレジストリに登録したら、最後に、記事から SDP を含�
 
 以上の機能を CMS 連携に実装すれば、実装は完了となります。
 
-#### ブラウザでの表示結果確認
+## ブラウザでの表示結果確認
 
-正しく実装されていることを確認しましょう。 SDP を発行した記事のページに、ブラウザでアクセスしてください。出力 HTML に Profile Set への <link\> 要素が含まれていることを確認します。
+正しく OP 対応できていることを確認しましょう。 SDP を発行した記事のページに、ブラウザでアクセスしてください。出力 HTML に Profile Set への <link\> 要素が含まれていることを確認します。
 
 ![ブラウザでの確認1](assets/check_browser01.png)
 
