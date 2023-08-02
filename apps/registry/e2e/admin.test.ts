@@ -35,12 +35,7 @@ describe("Request with unpriviledged accounts", async () => {
         }),
       },
     );
-    if (!response.ok) {
-      const message = await response.text();
-      throw new Error(
-        `Failed to create account ${nonAdminAccountId}. Status: ${response.status}, Message: ${message}`,
-      );
-    }
+    expect(response.status).toBe(200);
   });
 
   afterAll(async () => {
@@ -59,12 +54,7 @@ describe("Request with unpriviledged accounts", async () => {
         }),
       },
     );
-    if (!response.ok) {
-      const message = await response.text();
-      throw new Error(
-        `Failed to delete account ${nonAdminAccountId}. Status: ${response.status}, Message: ${message}`,
-      );
-    }
+    expect(response.status).toBe(200);
   });
 
   test("/admin/account/{id} response is an unauthorized error", async () => {
