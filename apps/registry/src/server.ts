@@ -63,10 +63,7 @@ export function create(options: Options): Server {
   });
   app.register(httpErrorsEnhanced);
   app.after(() => {
-    app.decorate(
-      "services",
-      Services({ config: app.config, prisma: options.prisma }),
-    );
+    app.decorate("services", Services({ config: app.config }));
   });
 
   return app;
