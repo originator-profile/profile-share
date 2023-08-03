@@ -17,7 +17,7 @@ export interface Website {
   location?: string | null;
   proofJws: string;
   accountId: string;
-  categories?: Array<{ cat: string; cattax?: number }>;
+  categories?: Array<{ cat: string; cattax?: number; name?: string }>;
   bodyFormat: string;
 }
 
@@ -55,6 +55,15 @@ const convertCategoriesToPrismaConnectOrCreate = (
 
 export const WebsiteRepository = () => ({
   /**
+   * url を serialize します
+   * @param url
+   * @returns serialize された URL
+   */
+  serializeUrl(url: string) {
+    return new URL(url).href;
+  },
+
+  /**
    * ウェブページの作成
    * @param website ウェブページ (website.id を省略した場合: UUID v4 生成)
    * @return 作成したウェブページ
@@ -66,6 +75,7 @@ export const WebsiteRepository = () => ({
       bodyFormat,
       accountId,
       id = uuid4(),
+      url,
       ...createInput
     } = website;
 
@@ -79,6 +89,7 @@ export const WebsiteRepository = () => ({
 
     const input = {
       id,
+      url: this.serializeUrl(url),
       account: {
         connect: { id: accountId },
       },
@@ -119,7 +130,7 @@ export const WebsiteRepository = () => ({
    */
   async update(website: WebsiteUpdate): Promise<websites | Error> {
     const prisma = getClient();
-    const { categories, bodyFormat, accountId, id, ...rest } = website;
+    const { categories, bodyFormat, accountId, id, url, ...rest } = website;
 
     if (!id) {
       return new Error("website.id is required.");
@@ -142,6 +153,7 @@ export const WebsiteRepository = () => ({
     const input = {
       bodyFormat: connectBodyFormat,
       categories: convertCategoriesToPrismaConnectOrCreate(categories, id),
+      url: url && this.serializeUrl(url),
       ...rest,
     } satisfies Prisma.websitesUpdateInput;
 
@@ -194,7 +206,7 @@ export const WebsiteRepository = () => ({
     const prisma = getClient();
     const data = await prisma.websites
       .findMany({
-        where: { url },
+        where: { url: this.serializeUrl(url) },
         include: {
           account: {
             include: {
@@ -250,7 +262,7 @@ export const WebsiteRepository = () => ({
     const prisma = getClient();
     const data = await prisma.websites
       .findFirstOrThrow({
-        where: validate(id) ? { id } : { url: id },
+        where: validate(id) ? { id } : { url: this.serializeUrl(id) },
         include: {
           account: {
             include: {

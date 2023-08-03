@@ -1,6 +1,7 @@
 const config = require("./esbuild.config.cjs");
 const { program, Option } = require("commander");
 const esbuild = require("esbuild");
+const path = require("node:path");
 
 program
   .addOption(
@@ -28,6 +29,7 @@ async function dev() {
     ...config,
     minify: false,
     sourcemap: true,
+    outdir: `dist-${options.target}`,
     define: {
       ...config.define,
       "import.meta.env": JSON.stringify({
@@ -36,16 +38,26 @@ async function dev() {
         PROFILE_ISSUER: options.issuer,
       }),
     },
+    plugins: [
+      require("esbuild-copy-static-files")({
+        src: "public",
+        dest: `dist-${options.target}`,
+      }),
+      require("./esbuild.postcss.cjs"),
+      require("./esbuild.manifest-rename.cjs")({ target: options.target, dist: `dist-${options.target}` }),
+    ],
   });
   await context.watch();
   console.log("watching...");
-  const webExt = await import("web-ext");
-  webExt.cmd.run({
-    target: options.target,
-    sourceDir: "dist",
-    noReload: true,
-    startUrl: options.url,
-  });
+  if (process.env.CI !== "true") {
+    const webExt = await import("web-ext");
+    await webExt.cmd.run({
+      target: options.target,
+      sourceDir: path.join(__dirname, `dist-${options.target}`),
+      noReload: true,
+      startUrl: options.url,
+    });
+  }
 }
 
 dev();

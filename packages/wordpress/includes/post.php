@@ -6,7 +6,7 @@ namespace Profile\Post;
 use Ramsey\Uuid\Uuid;
 
 require_once __DIR__ . '/config.php';
-use const Profile\Config\PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME;
+use const Profile\Config\PROFILE_DEFAULT_PROFILE_REGISTRY_SERVER_HOSTNAME;
 
 require_once __DIR__ . '/url.php';
 use function Profile\Url\add_page_query;
@@ -22,13 +22,13 @@ function profile_link() {
 		return;
 	}
 
-	$registry = \get_option( 'profile_registry_domain_name', PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME );
+	$hostname = \get_option( 'profile_registry_server_hostname', PROFILE_DEFAULT_PROFILE_REGISTRY_SERVER_HOSTNAME );
 
-	if ( empty( $registry ) ) {
+	if ( empty( $hostname ) ) {
 		return;
 	}
 
-	if ( ! is_string( $registry ) ) {
+	if ( ! is_string( $hostname ) ) {
 		return;
 	}
 
@@ -40,9 +40,9 @@ function profile_link() {
 	}
 
 	$uuid     = Uuid::uuid5( Uuid::NAMESPACE_URL, $uri );
-	$endpoint = "https://{$registry}/website/{$uuid}/profiles";
+	$endpoint = "https://{$hostname}/website/{$uuid}/profiles";
 
-	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $registry ) {
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $hostname ) {
 		$endpoint = "http://localhost:8080/website/{$uuid}/profiles";
 	}
 

@@ -1,0 +1,15 @@
+name: format
+description: Format
+runs:
+  using: composite
+  steps:
+    - run: yarn format
+      shell: bash
+    - name: Format for WordPress plugin
+      uses: "./.github/actions/wordpress_format"
+    - name: Commit
+      run: |-
+        if git commit -am 'bot: format [skip ci]'; then
+          git push origin HEAD:"${{ github.ref }}"
+        fi
+      shell: bash

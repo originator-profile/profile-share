@@ -5,7 +5,7 @@ namespace Profile\Admin;
 
 require_once __DIR__ . '/config.php';
 use const Profile\Config\PROFILE_PRIVATE_KEY_FILENAME;
-use const Profile\Config\PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME;
+use const Profile\Config\PROFILE_DEFAULT_PROFILE_REGISTRY_SERVER_HOSTNAME;
 
 require_once __DIR__ . '/key.php';
 use function Profile\Key\get_jwk_from_file;
@@ -31,9 +31,16 @@ function add_options_page() {
 function register_settings() {
 	\register_setting(
 		'profile',
+		'profile_registry_server_hostname',
+		array(
+			'default' => PROFILE_DEFAULT_PROFILE_REGISTRY_SERVER_HOSTNAME,
+		)
+	);
+	\register_setting(
+		'profile',
 		'profile_registry_domain_name',
 		array(
-			'default' => PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME,
+			'default' => \get_option( 'profile_registry_server_hostname' ),
 		)
 	);
 	\register_setting( 'profile', 'profile_registry_admin_secret' );
@@ -47,8 +54,13 @@ function settings_page() {
 		<form method="post" action="options.php">
 			<?php \settings_fields( 'profile' ); ?>
 			<fieldset>
-				<label><?php \esc_html_e( 'レジストリドメイン名', 'registry-domain-name' ); ?>
+				<label><?php \esc_html_e( 'Originator Profile ID', 'registry-domain-name' ); ?>
 					<input name="profile_registry_domain_name" required value="<?php echo \esc_html( \get_option( 'profile_registry_domain_name' ) ); ?>">
+				</label>
+			</fieldset>
+			<fieldset>
+				<label><?php \esc_html_e( 'レジストリサーバーホスト名', 'registry-server-hostname' ); ?>
+					<input name="profile_registry_server_hostname" required value="<?php echo \esc_html( \get_option( 'profile_registry_server_hostname' ) ); ?>">
 				</label>
 			</fieldset>
 			<fieldset>

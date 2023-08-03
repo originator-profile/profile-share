@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "Profile Web Extension",
+  "description": "Profile Web Extension",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "bot@originator-profile.org",
+      "strict_min_version": "78.0"
+    }
+  },
+  "version": "0.0.1",
+  "homepage_url": "https://originator-profile.org/",
+  "icons": {
+    "48": "icons/48x48.png",
+    "128": "icons/128x128.png"
+  },
+  "action": {},
+  "background": {
+    "page": "background.html"
+  },
+  "content_scripts": [
+    {
+      "match_about_blank": true,
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "matches": ["<all_urls>"],
+      "resources": ["content-script/iframe.js", "main.css", "*.map"]
+    }
+  ],
+  "permissions": ["activeTab"]
+}
