@@ -1,4 +1,4 @@
-import { test, expect, describe, vi } from "vitest";
+import { test, expect, describe } from "vitest";
 import { WebsiteRepository } from "@originator-profile/registry-db";
 import { generateKey } from "@originator-profile/sign";
 import { WebsiteService } from "./website";
