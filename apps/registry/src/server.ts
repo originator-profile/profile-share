@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import fastify, { FastifyInstance } from "fastify";
 import autoload from "@fastify/autoload";
 import cors from "@fastify/cors";
@@ -12,7 +11,6 @@ import pkg from "./package.json";
 
 type Options = {
   isDev: boolean;
-  prisma: PrismaClient;
   routes: string;
   quiet?: boolean;
 };

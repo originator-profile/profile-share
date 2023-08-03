@@ -25,7 +25,6 @@ export default class Start extends Command {
     const isDev = process.env.NODE_ENV === "development";
     const server = create({
       isDev,
-      prisma,
       routes: path.resolve(__dirname, "../../routes"),
     });
     await start(server, flags.port);
