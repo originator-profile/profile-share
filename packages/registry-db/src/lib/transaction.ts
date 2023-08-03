@@ -12,13 +12,13 @@ import { BadRequestError } from "http-errors-enhanced";
 export const beginTransaction = async <T>(fn: () => T): Promise<T | Error> => {
   const savedTx = transactionLocalStorage.getStore();
 
-  try {
-    if (savedTx) {
-      // この場合、既に $transaction() の中なので、再度 $transaction() を呼ぶことはせず、
-      // fn() をそのまま実行する。
-      return await fn();
-    }
+  if (savedTx) {
+    // この場合、既に $transaction() の中なので、再度 $transaction() を呼ぶことはせず、
+    // fn() をそのまま実行する。
+    return await fn();
+  }
 
+  try {
     return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       return await transactionLocalStorage.run(tx, () => {
         return fn();
