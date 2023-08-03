@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "./prisma-client";
-import transactionContext, { PRISMA_CLIENT_KEY } from "./transaction-context";
+import transactionLocalStorage from "./transaction-local-storage";
 import { BadRequestError } from "http-errors-enhanced";
 
 /**
@@ -10,7 +10,7 @@ import { BadRequestError } from "http-errors-enhanced";
  * @return prisma client
  */
 export const beginTransaction = async <T>(fn: () => T): Promise<T | Error> => {
-  const savedTx = transactionContext.get(PRISMA_CLIENT_KEY);
+  const savedTx = transactionLocalStorage.getStore();
 
   try {
     if (savedTx) {
@@ -20,9 +20,8 @@ export const beginTransaction = async <T>(fn: () => T): Promise<T | Error> => {
     }
 
     return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-      return transactionContext.runPromise(async () => {
-        transactionContext.set(PRISMA_CLIENT_KEY, tx);
-        return await fn();
+      return await transactionLocalStorage.run(tx, () => {
+        return fn();
       });
     });
   } catch (e) {

@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import transactionContext, { PRISMA_CLIENT_KEY } from "./transaction-context";
+import transactionLocalStorage from "./transaction-local-storage";
 
 /**
  * prisma client のシングルトン
@@ -11,6 +11,6 @@ export const prisma = new PrismaClient();
  * @return prisma client
  */
 export const getClient = () => {
-  const tx = transactionContext.get(PRISMA_CLIENT_KEY);
+  const tx = transactionLocalStorage.getStore();
   return tx ? tx : prisma;
 };

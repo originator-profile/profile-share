@@ -42,7 +42,6 @@
     "@oclif/core": "^2.8.11",
     "@oclif/plugin-help": "^5.2.11",
     "@prisma/client": "^4.16.2",
-    "cls-hooked": "^4.2.2",
     "dotenv": "^16.3.1",
     "dotenv-expand": "^10.0.0",
     "jsonld": "^8.2.0",
