@@ -3,8 +3,6 @@ import { WebsiteRepository } from "@originator-profile/registry-db";
 import { generateKey } from "@originator-profile/sign";
 import { WebsiteService } from "./website";
 
-vi.mock("@originator-profile/registry-db/src/lib/prisma-client.ts");
-
 describe("WebsiteService", () => {
   test("signBody() return compact JWS", async () => {
     const websiteRepository = WebsiteRepository();
