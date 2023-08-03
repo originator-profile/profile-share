@@ -71,7 +71,6 @@
     "@originator-profile/sign": "*",
     "@originator-profile/tsconfig": "*",
     "@originator-profile/verify": "*",
-    "@types/cls-hooked": "^4.3.4",
     "@types/jsonld": "^1.5.9",
     "@types/serve-handler": "^6.1.1",
     "@types/uuid": "^9.0.2",
