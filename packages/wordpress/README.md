@@ -21,11 +21,11 @@ WordPress での記事の公開時の Signed Document Profile の発行に役立
 署名に使うプライベート鍵ファイルのパスです。
 もし仮にプライベート鍵が存在しない場合、プラグインを有効化した際に自動的に生成されます。
 
-#### PROFILE_DEFAULT_PROFILE_REGISTRY_DOMAIN_NAME
+#### PROFILE_DEFAULT_PROFILE_REGISTRY_SERVER_HOSTNAME
 
-DP レジストリのドメイン名の設定の初期値です。
-このドメイン名のエンドポイントを介して Signed Document Profile の登録と取得を行います。
-もし設定画面から DP レジストリのドメイン名の設定を変更した場合、この値は参照されません。
+DP レジストリサーバーのホスト名の設定の初期値です。
+このホスト名のエンドポイントを介して Signed Document Profile の登録と取得を行います。
+もし設定画面から DP レジストリサーバーのホスト名の設定を変更した場合、この値は参照されません。
 
 #### PROFILE_VERIFICATION_TYPE
 

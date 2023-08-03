@@ -56,7 +56,15 @@ Document Profile レジストリ-->>利用者: Profile Set
 WordPress サイトに WordPress Profile Plugin をインストールします。
 [WordPress Profile Plugin ソースコード](https://github.com/originator-profile/profile-share/tree/main/packages/wordpress#readme)を参照してください。
 
-Document Profile レジストリのドメイン名を、WordPress 管理者画面 > Settings > Profile > [レジストリドメイン名] に入力します。
+Originator Profile ID を、WordPress 管理者画面 > Settings > Profile > [Originator Profile ID] に入力します。
+
+例:
+
+```
+media.example.com
+```
+
+Document Profile レジストリサーバーのホスト名を、WordPress 管理者画面 > Settings > Profile > [レジストリサーバーホスト名] に入力します。
 
 例:
 
