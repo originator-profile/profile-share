@@ -1,6 +1,5 @@
-import { test, expect, describe, afterEach } from "vitest";
-import { mockDeep, mockClear } from "vitest-mock-extended";
-import { PrismaClient, websites } from "@prisma/client";
+import { test, expect, describe, vi } from "vitest";
+import { websites } from "@prisma/client";
 import crypto from "node:crypto";
 import { decodeJwt } from "jose";
 import { JwtDpPayload } from "@originator-profile/model";
@@ -11,21 +10,18 @@ import {
 } from "@originator-profile/registry-db";
 import { ValidatorService } from "./validator";
 import { PublisherService } from "./publisher";
+import { prisma } from "@originator-profile/registry-db/src/lib/__mocks__/prisma-client";
+
+vi.mock("@originator-profile/registry-db/src/lib/prisma-client.ts");
 
 describe("PublisherService", () => {
-  const prisma = mockDeep<PrismaClient>();
   const validator = ValidatorService();
-  const dpRepository = DpRepository({ prisma });
-  const websiteRepository = WebsiteRepository({ prisma });
+  const dpRepository = DpRepository();
+  const websiteRepository = WebsiteRepository();
   const publisher = PublisherService({
-    prisma,
     validator,
     dpRepository,
     websiteRepository,
-  });
-
-  afterEach(() => {
-    mockClear(prisma);
   });
 
   test("signDp() return a valid JWT", async () => {

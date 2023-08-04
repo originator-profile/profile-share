@@ -1,10 +1,7 @@
-import { PrismaClient, Prisma, credentials } from "@prisma/client";
+import { Prisma, credentials } from "@prisma/client";
+import { getClient } from "@originator-profile/registry-db";
 
-type Options = {
-  prisma: PrismaClient;
-};
-
-export const CredentialService = ({ prisma }: Options) => ({
+export const CredentialService = () => ({
   /**
    * 資格情報の作成
    * @param accountId 会員 ID
@@ -41,6 +38,7 @@ export const CredentialService = ({ prisma }: Options) => ({
       expiredAt,
     };
 
+    const prisma = getClient();
     return prisma.credentials.create({ data: input }).catch((e: Error) => e);
   },
 });

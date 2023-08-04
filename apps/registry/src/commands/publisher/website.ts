@@ -8,7 +8,6 @@ import fs from "node:fs/promises";
 import { globby } from "globby";
 import { accountId, expirationDate, operation, privateKey } from "../../flags";
 import { Jwk } from "@originator-profile/model";
-import { prisma } from "../../prisma-client";
 
 type Website = Omit<WebsiteType, "accountId" | "proofJws">;
 
@@ -60,7 +59,6 @@ export class PublisherWebsite extends Command {
   ): Promise<void> {
     const services = Services({
       config: { ISSUER_UUID: process.env.ISSUER_UUID ?? "" },
-      prisma,
     });
     const inputBuffer = await fs.readFile(flags.input);
     const { body, ...input } = JSON.parse(inputBuffer.toString()) as Website & {

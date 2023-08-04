@@ -2,7 +2,6 @@ import { Command, Flags } from "@oclif/core";
 import { addYears } from "date-fns";
 import { Services } from "@originator-profile/registry-service";
 import { accountId, expirationDate } from "../../flags";
-import { prisma } from "../../prisma-client";
 
 const config = { ISSUER_UUID: process.env.ISSUER_UUID ?? "" };
 
@@ -36,7 +35,7 @@ export class RegisterCredential extends Command {
 
   async run(): Promise<void> {
     const { flags } = await this.parse(RegisterCredential);
-    const services = Services({ config, prisma });
+    const services = Services({ config });
     const isCertifier = await services.certificate.isCertifier(flags.certifier);
     if (isCertifier instanceof Error) this.error(isCertifier);
     if (!isCertifier) this.error("Invalid certifier.");

@@ -1,11 +1,8 @@
-import { PrismaClient, Prisma, websites } from "@prisma/client";
+import { Prisma, websites } from "@prisma/client";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { NotFoundError } from "http-errors-enhanced";
 import { v4 as uuid4, validate } from "uuid";
-
-type Options = {
-  prisma: PrismaClient;
-};
+import { getClient } from "./lib/prisma-client";
 
 export interface Website {
   id: string;
@@ -56,7 +53,7 @@ const convertCategoriesToPrismaConnectOrCreate = (
   return { connectOrCreate: categoriesConnect };
 };
 
-export const WebsiteRepository = ({ prisma }: Options) => ({
+export const WebsiteRepository = () => ({
   /**
    * url を serialize します
    * @param url
@@ -72,6 +69,7 @@ export const WebsiteRepository = ({ prisma }: Options) => ({
    * @return 作成したウェブページ
    */
   async create(website: WebsiteCreate): Promise<websites | Error> {
+    const prisma = getClient();
     const {
       categories,
       bodyFormat,
@@ -115,6 +113,7 @@ export const WebsiteRepository = ({ prisma }: Options) => ({
    * @return ウェブページ
    */
   async read({ id }: { id: string }): Promise<websites | Error> {
+    const prisma = getClient();
     const data = await prisma.websites
       .findUnique({
         where: { id },
@@ -130,6 +129,7 @@ export const WebsiteRepository = ({ prisma }: Options) => ({
    * @return ウェブページ
    */
   async update(website: WebsiteUpdate): Promise<websites | Error> {
+    const prisma = getClient();
     const { categories, bodyFormat, accountId, id, url, ...rest } = website;
 
     if (!id) {
@@ -174,9 +174,12 @@ export const WebsiteRepository = ({ prisma }: Options) => ({
   async upsert(
     website: WebsiteUpdate & WebsiteCreate,
   ): Promise<websites | Error> {
-    const data = await this.create(website);
-    if (data instanceof Error) return await this.update(website);
-    return data;
+    const found = await this.read(website);
+    if (found instanceof NotFoundError) {
+      return await this.create(website);
+    } else {
+      return await this.update(website);
+    }
   },
 
   /**
@@ -185,6 +188,7 @@ export const WebsiteRepository = ({ prisma }: Options) => ({
    * @return ウェブページ
    */
   async delete({ id }: { id: string }): Promise<websites | Error> {
+    const prisma = getClient();
     return await prisma.websites.delete({ where: { id } });
   },
 
@@ -199,6 +203,7 @@ export const WebsiteRepository = ({ prisma }: Options) => ({
       | ContextDefinition
       | string = "https://originator-profile.org/context.jsonld",
   ): Promise<JsonLdDocument | Error> {
+    const prisma = getClient();
     const data = await prisma.websites
       .findMany({
         where: { url: this.serializeUrl(url) },
@@ -254,6 +259,7 @@ export const WebsiteRepository = ({ prisma }: Options) => ({
       | ContextDefinition
       | string = "https://originator-profile.org/context.jsonld",
   ): Promise<JsonLdDocument | Error> {
+    const prisma = getClient();
     const data = await prisma.websites
       .findFirstOrThrow({
         where: validate(id) ? { id } : { url: this.serializeUrl(id) },

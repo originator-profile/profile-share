@@ -1,11 +1,9 @@
-import { PrismaClient, Prisma, categories } from "@prisma/client";
+import { Prisma, categories } from "@prisma/client";
 import { NotFoundError } from "http-errors-enhanced";
+import { getClient } from "@originator-profile/registry-db";
 
-type Options = {
-  prisma: PrismaClient;
-};
 
-export const CategoryService = ({ prisma }: Options) => ({
+export const CategoryService = () => ({
   /**
    * カテゴリーの作成
    * @param input カテゴリー
@@ -14,6 +12,7 @@ export const CategoryService = ({ prisma }: Options) => ({
   async create(
     input: Prisma.categoriesCreateInput,
   ): Promise<categories | Error> {
+    const prisma = getClient();
     return await prisma.categories
       .create({ data: input })
       .catch((e: Error) => e);
@@ -26,6 +25,7 @@ export const CategoryService = ({ prisma }: Options) => ({
   async createMany(
     input: Prisma.Enumerable<Prisma.categoriesCreateManyInput>,
   ): Promise<Prisma.BatchPayload | Error> {
+    const prisma = getClient();
     return await prisma.categories
       .createMany({
         data: input,
@@ -46,6 +46,7 @@ export const CategoryService = ({ prisma }: Options) => ({
     cat: string;
     cattax: number;
   }): Promise<categories | Error> {
+    const prisma = getClient();
     const data = await prisma.categories
       .findUnique({ where: { cat_cattax: { cat, cattax } } })
       .catch((e: Error) => e);
@@ -59,6 +60,7 @@ export const CategoryService = ({ prisma }: Options) => ({
   async update(
     input: Prisma.categoriesUpdateInput & { cat: string; cattax: number },
   ): Promise<categories | Error> {
+    const prisma = getClient();
     return await prisma.categories.update({
       where: { cat_cattax: { cat: input.cat, cattax: input.cattax } },
       data: input,
@@ -77,6 +79,7 @@ export const CategoryService = ({ prisma }: Options) => ({
     cat: string;
     cattax: number;
   }): Promise<categories | Error> {
+    const prisma = getClient();
     return await prisma.categories.delete({
       where: { cat_cattax: { cat, cattax } },
     });

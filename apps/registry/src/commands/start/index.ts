@@ -2,7 +2,6 @@ import { Command, Flags, ux } from "@oclif/core";
 import path from "node:path";
 import { create, start } from "../../server";
 import { DbInit } from "../db/init";
-import { prisma } from "../../prisma-client";
 
 export default class Start extends Command {
   static description = "API サーバーの起動";
@@ -25,7 +24,6 @@ export default class Start extends Command {
     const isDev = process.env.NODE_ENV === "development";
     const server = create({
       isDev,
-      prisma,
       routes: path.resolve(__dirname, "../../routes"),
     });
     await start(server, flags.port);
