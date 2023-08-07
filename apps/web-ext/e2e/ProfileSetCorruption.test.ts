@@ -22,14 +22,14 @@ describe("ProfileSet不正時の確認", () => {
         <html lang="ja">
         <head>
           <meta charset="utf-8">
-          <title>Title</title>
+          <title>ProfileSet不正時の確認</title>
           <link
             href="/ps.json"
             rel="alternate"
             type="application/ld+json"
           />
         </head>
-        <body><h1>test</h1></body>
+        <body><h1>ProfileSet不正時の確認</h1></body>
         </html>
       `,
     },    
