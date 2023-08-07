@@ -2,7 +2,7 @@ import { describe, afterEach, expect, test, afterAll } from "vitest";
 import { Page } from "playwright";
 import { ctx, popup } from "./setup";
 
-describe("ProfileSet不在/不正時の確認", () => {
+describe("ProfileSet不在時の確認", () => {
   let ext: Page | undefined;
   let page: Page | undefined;
 
@@ -12,7 +12,7 @@ describe("ProfileSet不在/不正時の確認", () => {
     body: string;
   };
 
-  const responseMap: Record<string, Response> = {
+  const responseMap: Record<string, Response> = { 
     "/test": {
       status: 200,
       contentType: "text/html",
@@ -114,5 +114,5 @@ describe("ProfileSet不在/不正時の確認", () => {
     await expect(ext?.locator("details dd").textContent()).resolves.toBe(
       "プロファイルを取得できませんでした:\nFailed to fetch",
     );
-  });
+  });  
 });
