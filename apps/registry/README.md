@@ -129,6 +129,10 @@ FLAG DESCRIPTIONS
 
     UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
 
+  --image=<value>  画像URL
+
+    拡張機能Webページへの埋め込みが可能な(CORSが許可されている)画像URL
+
   --verifier=<value>  検証機関の ID またはドメイン名
 
     UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
@@ -513,6 +517,7 @@ FLAG DESCRIPTIONS
   --input=<value>  JSON file
 
     ファイル名。ファイルには次のようなフォーマットの JSON を入れてください。空白行より上が必須プロパティです。
+    imageプロパティの画像リソースは拡張機能Webページから参照されます。埋め込み可能なようCORS許可しておいてください。
 
     {
     "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc7",
@@ -575,6 +580,7 @@ FLAG DESCRIPTIONS
   --input=<value>  JSON file
 
     ファイル名。ファイルには次のようなフォーマットの JSON を入れてください。空白行より上が必須プロパティです。
+    imageプロパティの画像リソースは拡張機能Webページから参照されます。埋め込み可能なようCORS許可しておいてください。
 
     {
     "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc7",

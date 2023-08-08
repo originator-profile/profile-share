@@ -15,6 +15,13 @@ async function index(fastify: FastifyInstance): Promise<void> {
       await serveHandler(req.raw, res.raw, {
         public: path.resolve(__dirname, "../../dist/public"),
         directoryListing: false,
+        headers: [{
+          source : "**/*.@(svg|png)",
+          headers : [{
+            key : "Access-Control-Allow-Origin",
+            value : "*"
+          }]
+        }],
       });
     },
   );
