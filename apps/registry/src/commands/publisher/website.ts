@@ -22,6 +22,7 @@ export class PublisherWebsite extends Command {
       summary: "JSON file",
       description: `\
 ファイル名。ファイルには次のようなフォーマットの JSON を入れてください。空白行より上が必須プロパティです。
+imageプロパティの画像リソースは拡張機能Webページから参照されます。埋め込み可能なようCORS許可しておいてください。
 
 {
   "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc7",
