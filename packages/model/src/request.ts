@@ -19,7 +19,7 @@ const Request = {
       format: "date-time",
     },
   },
-  required: ["status", "comments", "createdAt"],
+  required: ["status", "description", "createdAt"],
   additionalProperties: false,
 } as const;
 
