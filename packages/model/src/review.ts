@@ -10,8 +10,8 @@ const Review = {
       title: "ステータス",
       const: ["pending", "accepted", "rejected"],
     },
-    description: {
-      title: "説明",
+    summary: {
+      title: "概要",
       type: "string",
     },
     comments: {

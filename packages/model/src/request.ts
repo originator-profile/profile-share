@@ -9,8 +9,8 @@ const Request = {
       title: "ステータス",
       const: ["unreviewed", "reviewed", "cancelled"],
     },
-    description: {
-      title: "説明",
+    summary: {
+      title: "概要",
       type: "string",
     },
     createdAt: {
@@ -19,7 +19,7 @@ const Request = {
       format: "date-time",
     },
   },
-  required: ["status", "description", "createdAt"],
+  required: ["status", "summary", "createdAt"],
   additionalProperties: false,
 } as const;
 

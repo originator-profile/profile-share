@@ -297,8 +297,8 @@ model requests {
   /// ステータス
   status             requestStatus @relation(fields: [requestStatusValue], references: [value])
   requestStatusValue String        @default("unreviewed")
-  /// 説明
-  description        String?
+  /// 概要
+  summary            String?
   /// 審査
   review             reviews?
   /// 作成日
@@ -322,8 +322,8 @@ model reviews {
   /// ステータス
   status            reviewStatus     @relation(fields: [reviewStatusValue], references: [value])
   reviewStatusValue String           @default("pending")
-  /// 説明
-  description       String?
+  /// 概要
+  summary           String?
   /// コメント
   comments          reviewComments[]
   /// 申請
