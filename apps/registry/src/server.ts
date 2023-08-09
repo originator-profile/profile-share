@@ -66,7 +66,7 @@ export async function create(options: Options): Promise<Server> {
 
   await app.register(FastifyVite, {
     dev: true,
-    root: join(dirname(fileURLToPath(new URL(import.meta.url))), '../'),
+    root: join(__dirname, '../'),
     spa: true,
   })
 
