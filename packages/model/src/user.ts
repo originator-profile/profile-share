@@ -7,6 +7,7 @@ const User = {
   properties: {
     id: {
       title: "ユーザーアカウント識別子",
+      type: "string",
     },
     email: {
       title: "メールアドレス",
