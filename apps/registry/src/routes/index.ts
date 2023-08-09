@@ -9,7 +9,7 @@ import getIssuerProfileSet from "./get-issuer-profile-set";
 
 async function index(fastify: FastifyInstance): Promise<void> {
   fastify.get('/', (req, reply) => {
-    reply.html(reply.render())
+    reply.html();
   });
   fastify.get(
     "*",

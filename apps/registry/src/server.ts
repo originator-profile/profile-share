@@ -1,4 +1,5 @@
 import fastify, { FastifyInstance } from "fastify";
+// @ts-expect-error
 import FastifyVite from '@fastify/vite'
 import autoload from "@fastify/autoload";
 import cors from "@fastify/cors";
@@ -9,8 +10,8 @@ import swaggerUi from "@fastify/swagger-ui";
 import httpErrorsEnhanced from "fastify-http-errors-enhanced";
 import { Config, Services } from "@originator-profile/registry-service";
 import pkg from "./package.json";
-import { renderToString } from 'react-dom/server'
-
+import { join, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 type Options = {
   isDev: boolean;
   routes: string;
@@ -65,14 +66,8 @@ export async function create(options: Options): Promise<Server> {
 
   await app.register(FastifyVite, {
     dev: true,
-    root: import.meta.url,
-    createRenderFunction ({ createApp }) {
-      return () => {
-        return {
-          element: renderToString(createApp())
-        }
-      }
-    }
+    root: join(dirname(fileURLToPath(new URL(import.meta.url))), '../'),
+    spa: true,
   })
 
   app.after(() => {
