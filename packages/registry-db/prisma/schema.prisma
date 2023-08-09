@@ -346,7 +346,7 @@ model reviewStatus {
 /// 審査コメント
 model reviewComments {
   id       Int     @id @default(autoincrement())
-  /// 箇所
+  /// 申請項目の箇所の識別子
   location String
   /// コメント
   comment  String

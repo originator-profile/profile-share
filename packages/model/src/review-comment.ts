@@ -6,7 +6,7 @@ const ReviewComment = {
   type: "object",
   properties: {
     location: {
-      title: "箇所 (入れ子オブジェクトプロパティ名",
+      title: "申請項目の箇所の識別子",
       type: "string",
     },
     comment: {
