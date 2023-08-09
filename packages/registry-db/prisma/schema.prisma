@@ -332,7 +332,7 @@ model reviews {
   /// 作成日
   createdAt         DateTime         @default(now())
   /// 更新日
-  updatedAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
 }
 
 /// 審査ステータス
