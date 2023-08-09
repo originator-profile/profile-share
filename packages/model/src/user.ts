@@ -13,8 +13,16 @@ const User = {
       title: "メールアドレス",
       type: "string",
     },
+    name: {
+      title: "名前",
+      type: "string",
+    },
+    picture: {
+      title: "画像",
+      type: "string",
+    }
   },
-  required: ["id", "email"],
+  required: ["id", "email", "name", "picture"],
   additionalProperties: false,
 } as const;
 
