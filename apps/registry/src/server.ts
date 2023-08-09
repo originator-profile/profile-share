@@ -1,4 +1,5 @@
 import fastify, { FastifyInstance } from "fastify";
+import FastifyVite from '@fastify/vite'
 import autoload from "@fastify/autoload";
 import cors from "@fastify/cors";
 import env from "@fastify/env";
@@ -8,6 +9,7 @@ import swaggerUi from "@fastify/swagger-ui";
 import httpErrorsEnhanced from "fastify-http-errors-enhanced";
 import { Config, Services } from "@originator-profile/registry-service";
 import pkg from "./package.json";
+import { renderToString } from 'react-dom/server'
 
 type Options = {
   isDev: boolean;
@@ -33,7 +35,7 @@ const openapi: FastifyDynamicSwaggerOptions["openapi"] = {
   },
 };
 
-export function create(options: Options): Server {
+export async function create(options: Options): Promise<Server> {
   const app = fastify({
     logger: !options.quiet,
   });
@@ -60,6 +62,19 @@ export function create(options: Options): Server {
     crossOriginResourcePolicy: false,
   });
   app.register(httpErrorsEnhanced);
+
+  await app.register(FastifyVite, {
+    dev: true,
+    root: import.meta.url,
+    createRenderFunction ({ createApp }) {
+      return () => {
+        return {
+          element: renderToString(createApp())
+        }
+      }
+    }
+  })
+
   app.after(() => {
     app.decorate("services", Services({ config: app.config }));
   });
@@ -68,6 +83,7 @@ export function create(options: Options): Server {
 }
 
 export async function start(server: Server, port: number): Promise<string> {
+  await server.vite.ready()
   await server.ready();
   const address: string = await server.listen({ port, host: "::" });
   return address;

@@ -39,6 +39,7 @@
     "start": "bin/run start"
   },
   "dependencies": {
+    "@fastify/vite": "^4.0.0",
     "@oclif/core": "^2.8.11",
     "@oclif/plugin-help": "^5.2.11",
     "@prisma/client": "^4.16.2",

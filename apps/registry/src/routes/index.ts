@@ -8,6 +8,9 @@ import getIssuerKeys from "./get-issuer-keys";
 import getIssuerProfileSet from "./get-issuer-profile-set";
 
 async function index(fastify: FastifyInstance): Promise<void> {
+  fastify.get('/', (req, reply) => {
+    reply.html(reply.render())
+  });
   fastify.get(
     "*",
     { schema: { operationId: "frontend" } },

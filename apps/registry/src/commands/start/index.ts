@@ -22,7 +22,7 @@ export default class Start extends Command {
       `--${flags.seed ? "" : "no-"}seed`,
     ]);
     const isDev = process.env.NODE_ENV === "development";
-    const server = create({
+    const server = await create({
       isDev,
       routes: path.resolve(__dirname, "../../routes"),
     });
