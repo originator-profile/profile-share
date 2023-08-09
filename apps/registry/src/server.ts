@@ -1,5 +1,5 @@
 import fastify, { FastifyInstance } from "fastify";
-// @ts-expect-error
+// @ts-expect-error 型パッケージがない
 import FastifyVite from '@fastify/vite'
 import autoload from "@fastify/autoload";
 import cors from "@fastify/cors";
@@ -78,6 +78,7 @@ export async function create(options: Options): Promise<Server> {
 }
 
 export async function start(server: Server, port: number): Promise<string> {
+  // @ts-expect-error Property 'vite' does not exist on type 'Server'.
   await server.vite.ready()
   await server.ready();
   const address: string = await server.listen({ port, host: "::" });

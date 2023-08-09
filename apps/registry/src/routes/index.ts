@@ -9,6 +9,7 @@ import getIssuerProfileSet from "./get-issuer-profile-set";
 
 async function index(fastify: FastifyInstance): Promise<void> {
   fastify.get('/', (req, reply) => {
+    // @ts-expect-error @fastify/vite が html() メソッドを提供
     reply.html();
   });
   fastify.get(

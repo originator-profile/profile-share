@@ -1,5 +1,10 @@
 extends: originator-profile
 overrides:
+  - files: vite.config.js
+    env:
+      node: true
+    rules:
+      "@typescript-eslint/no-var-requires": "off"
   - files: src/seed.ts
     rules:
       no-await-in-loop: "off"
