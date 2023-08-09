@@ -8,7 +8,7 @@ const Review = {
   properties: {
     status: {
       title: "ステータス",
-      const: ["pending", "accepted", "rejected"],
+      const: ["pending", "approved", "rejected"],
     },
     summary: {
       title: "概要",
