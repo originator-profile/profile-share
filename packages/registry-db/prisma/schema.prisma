@@ -345,12 +345,12 @@ model reviewStatus {
 
 /// 審査コメント
 model reviewComments {
-  id       Int     @id @default(autoincrement())
-  /// 申請項目の箇所の識別子
-  location String
+  id               Int     @id @default(autoincrement())
+  /// 申請項目名 (HTML 要素における name 属性)
+  requestFieldName String
   /// コメント
-  comment  String
+  comment          String
   /// 審査
-  review   reviews @relation(fields: [reviewId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  reviewId Int
+  review           reviews @relation(fields: [reviewId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  reviewId         Int
 }

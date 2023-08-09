@@ -5,8 +5,8 @@ const ReviewComment = {
   description: "OP 発行申請の内容に対するコメント",
   type: "object",
   properties: {
-    location: {
-      title: "申請項目の箇所の識別子",
+    requestFieldName: {
+      title: "申請項目名 (HTML 要素の name 属性)",
       type: "string",
     },
     comment: {
@@ -14,7 +14,7 @@ const ReviewComment = {
       type: "string",
     },
   },
-  required: ["location", "comment"],
+  required: ["requestFieldName", "comment"],
   additionalProperties: false,
 } as const;
 
