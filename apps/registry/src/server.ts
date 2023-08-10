@@ -74,7 +74,7 @@ export async function create(options: Options): Promise<Server> {
   });
 
   await app.register(FastifyVite, {
-    dev: true,
+    dev: options.isDev,
     root: REGISTRY_ROOT,
     spa: true,
   })
