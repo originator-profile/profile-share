@@ -15,7 +15,7 @@
     "build": "run-s build:{ts,db,ui,cli,api} docs",
     "build:ts": "tsup src --clean",
     "build:db": "shx cp -r ../../packages/registry-db/prisma dist/",
-    "build:ui": "run-s ui:{build,clean}",
+    "build:ui": "run-s ui:{clean,build}",
     "build:cli": "oclif manifest",
     "build:api": "bin/run openapi-gen",
     "dev": "dotenv -e .env.development run-p dev:{db,build}",
