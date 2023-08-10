@@ -4,7 +4,5 @@ import { createApp } from "./base";
 
 const root = document.getElementById("root");
 if (root) {
-  createRoot(root).render(
-    createApp(),
-  );
+  createRoot(root).render(createApp());
 }

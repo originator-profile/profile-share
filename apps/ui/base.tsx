@@ -1,11 +1,10 @@
 import { StrictMode } from "react";
 import Pages from "./pages/index";
 
-
-export function createApp () {
+export function createApp() {
   return (
     <StrictMode>
       <Pages />
     </StrictMode>
-  )
+  );
 }
