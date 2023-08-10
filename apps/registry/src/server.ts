@@ -1,6 +1,7 @@
 import fastify, { FastifyInstance } from "fastify";
 // @ts-expect-error 型パッケージがない
 import FastifyVite from '@fastify/vite'
+import fastifyStatic from "@fastify/static";
 import autoload from "@fastify/autoload";
 import cors from "@fastify/cors";
 import env from "@fastify/env";
@@ -64,9 +65,17 @@ export async function create(options: Options): Promise<Server> {
   });
   app.register(httpErrorsEnhanced);
 
+  const REGISTRY_ROOT = join(__dirname, '../');
+
+  // @fastify/vite が public ディレクトリを無視するため
+  // https://github.com/fastify/fastify-vite/issues/105
+  await app.register(fastifyStatic, {
+    root: join(REGISTRY_ROOT, "../ui/public"),
+  });
+
   await app.register(FastifyVite, {
     dev: true,
-    root: join(__dirname, '../'),
+    root: REGISTRY_ROOT,
     spa: true,
   })
 
