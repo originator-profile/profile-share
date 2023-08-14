@@ -112,6 +112,10 @@ model accounts {
   verifiedCredentials      credentials[]               @relation("verifiedCredentials")
   /// ユーザーアカウント
   userAccounts             userAccounts?
+  /// 申請
+  requests                 requests[]
+  /// 審査
+  reviews                  reviews[]
 }
 
 /// 会員種別
@@ -301,6 +305,9 @@ model requests {
   /// 申請担当者
   author    userAccounts @relation(fields: [authorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   authorId  String
+  /// 組織
+  group     accounts     @relation(fields: [groupId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  groupId   String       @db.Uuid
   /// 概要
   summary   String?
   /// 審査
@@ -315,6 +322,9 @@ model reviews {
   /// 審査担当者
   reviewer    userAccounts       @relation(fields: [reviewerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   reviewerId  String
+  /// 認証機関
+  certifier   accounts           @relation(fields: [certifierId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  certifierId String             @db.Uuid
   /// ステータス
   status      approvalFlowStatus @relation(fields: [statusValue], references: [value])
   statusValue String             @default("pending")
