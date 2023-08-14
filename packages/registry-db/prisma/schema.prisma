@@ -346,7 +346,7 @@ model reviews {
 
 /// 承認フローステータス
 model approvalFlowStatus {
-  /// "pending": 審査中、"approved": 承認、"rejected": 拒否、"cancelled": キャンセル
+  /// "pending": 審査中、"approved": 承認、"rejected": 却下、"cancelled": キャンセル
   value   String    @id
   /// 審査
   reviews reviews[]
