@@ -297,41 +297,41 @@ model userAccounts {
 
 /// 申請
 model requests {
-  id             Int          @id @default(autoincrement())
-  /// ユーザーアカウント
-  userAccount    userAccounts @relation(fields: [userAccountsId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  userAccountsId String
+  id        Int          @id @default(autoincrement())
+  /// 申請担当者
+  author    userAccounts @relation(fields: [authorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  authorId  String
   /// 概要
-  summary        String?
+  summary   String?
   /// 審査
-  review         reviews?
+  review    reviews?
   /// 作成日
-  createdAt      DateTime     @default(now())
+  createdAt DateTime     @default(now())
 }
 
 /// 審査
 model reviews {
-  id             Int                @id @default(autoincrement())
-  /// ユーザーアカウント
-  userAccount    userAccounts       @relation(fields: [userAccountsId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  userAccountsId String
+  id          Int                @id @default(autoincrement())
+  /// 審査担当者
+  reviewer    userAccounts       @relation(fields: [reviewerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  reviewerId  String
   /// ステータス
-  status         approvalFlowStatus @relation(fields: [statusValue], references: [value])
-  statusValue    String             @default("pending")
+  status      approvalFlowStatus @relation(fields: [statusValue], references: [value])
+  statusValue String             @default("pending")
   /// 概要
-  summary        String?
+  summary     String?
   /// コメント
-  comments       reviewComments[]
+  comments    reviewComments[]
   /// Signed Originator Profile
-  op             ops?               @relation(fields: [opId], references: [id])
-  opId           String?            @unique @db.Uuid
+  op          ops?               @relation(fields: [opId], references: [id])
+  opId        String?            @unique @db.Uuid
   /// 申請
-  request        requests           @relation(fields: [requestId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  requestId      Int                @unique
+  request     requests           @relation(fields: [requestId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  requestId   Int                @unique
   /// 作成日
-  createdAt      DateTime           @default(now())
+  createdAt   DateTime           @default(now())
   /// 更新日
-  updatedAt      DateTime           @updatedAt
+  updatedAt   DateTime           @updatedAt
 }
 
 /// 承認フローステータス
