@@ -299,7 +299,7 @@ model userAccounts {
 model requests {
   id             Int          @id @default(autoincrement())
   /// ユーザーアカウント
-  userAccount    userAccounts @relation(fields: [userAccountsId], references: [id])
+  userAccount    userAccounts @relation(fields: [userAccountsId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   userAccountsId String
   /// 概要
   summary        String?
@@ -313,7 +313,7 @@ model requests {
 model reviews {
   id             Int                @id @default(autoincrement())
   /// ユーザーアカウント
-  userAccount    userAccounts       @relation(fields: [userAccountsId], references: [id])
+  userAccount    userAccounts       @relation(fields: [userAccountsId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   userAccountsId String
   /// ステータス
   status         approvalFlowStatus @relation(fields: [statusValue], references: [value])
@@ -323,7 +323,7 @@ model reviews {
   /// コメント
   comments       reviewComments[]
   /// Signed Originator Profile
-  op             ops?               @relation(fields: [opId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  op             ops?               @relation(fields: [opId], references: [id])
   opId           String?            @unique @db.Uuid
   /// 申請
   request        requests           @relation(fields: [requestId], references: [id], onUpdate: Cascade, onDelete: Cascade)
