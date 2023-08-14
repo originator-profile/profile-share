@@ -26,8 +26,8 @@ model ops {
   jwt         String
   /// 公開
   publication publications?
-  /// 審査
-  reviews     reviews?
+  /// 申請
+  request     requests?
 }
 
 /// Signed Document Profile
@@ -114,8 +114,8 @@ model accounts {
   userAccounts             userAccounts?
   /// 申請
   requests                 requests[]
-  /// 審査
-  reviews                  reviews[]
+  /// 申請の審査履歴
+  reviewedRequests         requests[]                  @relation("certifierReviewedRequests")
 }
 
 /// 会員種別
@@ -283,83 +283,71 @@ model credentials {
 /// ユーザーアカウント
 model userAccounts {
   /// 識別子 (OpenID Connect Standard Claims における sub)
-  id        String     @id
+  id               String     @id
   /// メールアドレス (OpenID Connect Standard Claims)
-  email     String
+  email            String
   /// 名前 (OpenID Connect Standard Claims)
-  name      String
+  name             String
   /// 画像 (OpenID Connect Standard Claims)
-  picture   String
+  picture          String
   /// 会員
-  account   accounts   @relation(fields: [accountId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  accountId String     @unique @db.Uuid
+  account          accounts   @relation(fields: [accountId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  accountId        String     @unique @db.Uuid
   /// 申請
-  requests  requests[]
-  /// 審査
-  reviews   reviews[]
+  requests         requests[]
+  /// 申請の審査履歴
+  reviewedRequests requests[] @relation("reviewedRequests")
 }
 
 /// 申請
 model requests {
-  id        Int          @id @default(autoincrement())
+  id             Int                @id @default(autoincrement())
   /// 申請担当者
-  author    userAccounts @relation(fields: [authorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  authorId  String
+  author         userAccounts       @relation(fields: [authorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  authorId       String
   /// 組織
-  group     accounts     @relation(fields: [groupId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  groupId   String       @db.Uuid
-  /// 概要
-  summary   String?
-  /// 審査
-  review    reviews?
-  /// 作成日
-  createdAt DateTime     @default(now())
-}
-
-/// 審査
-model reviews {
-  id          Int                @id @default(autoincrement())
+  group          accounts           @relation(fields: [groupId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  groupId        String             @db.Uuid
   /// 審査担当者
-  reviewer    userAccounts       @relation(fields: [reviewerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  reviewerId  String
+  reviewer       userAccounts?      @relation("reviewedRequests", fields: [reviewerId], references: [id])
+  reviewerId     String?
   /// 認証機関
-  certifier   accounts           @relation(fields: [certifierId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  certifierId String             @db.Uuid
+  certifier      accounts?          @relation("certifierReviewedRequests", fields: [certifierId], references: [id])
+  certifierId    String?            @db.Uuid
   /// ステータス
-  status      approvalFlowStatus @relation(fields: [statusValue], references: [value])
-  statusValue String             @default("pending")
-  /// 概要
-  summary     String?
-  /// コメント
-  comments    reviewComments[]
+  status         approvalFlowStatus @relation(fields: [statusValue], references: [value])
+  statusValue    String             @default("pending")
+  /// 申請概要
+  requestSummary String?
+  /// 審査概要
+  reviewSummary  String?
+  /// 審査コメント
+  reviewComments reviewComments[]
   /// Signed Originator Profile
-  op          ops?               @relation(fields: [opId], references: [id])
-  opId        String?            @unique @db.Uuid
-  /// 申請
-  request     requests           @relation(fields: [requestId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  requestId   Int                @unique
+  op             ops?               @relation(fields: [opId], references: [id])
+  opId           String?            @unique @db.Uuid
   /// 作成日
-  createdAt   DateTime           @default(now())
+  createdAt      DateTime           @default(now())
   /// 更新日
-  updatedAt   DateTime           @updatedAt
+  updatedAt      DateTime           @updatedAt
 }
 
 /// 承認フローステータス
 model approvalFlowStatus {
   /// "pending": 審査中、"approved": 承認、"rejected": 却下、"cancelled": キャンセル
-  value   String    @id
-  /// 審査
-  reviews reviews[]
+  value    String     @id
+  /// 申請
+  requests requests[]
 }
 
 /// 審査コメント
 model reviewComments {
-  id               Int     @id @default(autoincrement())
+  id               Int      @id @default(autoincrement())
   /// 申請項目名 (HTML 要素における name 属性)
   requestFieldName String
   /// コメント
   comment          String
-  /// 審査
-  review           reviews @relation(fields: [reviewId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  reviewId         Int
+  /// 申請
+  request          requests @relation(fields: [requestId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  requestId        Int
 }
