@@ -26,6 +26,8 @@ model ops {
   jwt         String
   /// 公開
   publication publications?
+  /// 審査
+  reviews     reviews?
 }
 
 /// Signed Document Profile
@@ -320,6 +322,9 @@ model reviews {
   summary        String?
   /// コメント
   comments       reviewComments[]
+  /// Signed Originator Profile
+  op             ops?               @relation(fields: [opId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  opId           String?            @unique @db.Uuid
   /// 申請
   request        requests           @relation(fields: [requestId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   requestId      Int                @unique
