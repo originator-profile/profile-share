@@ -295,54 +295,43 @@ model userAccounts {
 
 /// 申請
 model requests {
-  id                 Int           @id @default(autoincrement())
+  id             Int          @id @default(autoincrement())
   /// ユーザーアカウント
-  userAccount        userAccounts  @relation(fields: [userAccountsId], references: [id])
-  userAccountsId     String
-  /// ステータス
-  status             requestStatus @relation(fields: [requestStatusValue], references: [value])
-  requestStatusValue String        @default("unreviewed")
+  userAccount    userAccounts @relation(fields: [userAccountsId], references: [id])
+  userAccountsId String
   /// 概要
-  summary            String?
+  summary        String?
   /// 審査
-  review             reviews?
+  review         reviews?
   /// 作成日
-  createdAt          DateTime      @default(now())
-}
-
-/// 申請ステータス
-model requestStatus {
-  /// "unreviewed": 未審査、"reviewed": 審査済み、"cancelled": 申請取り下げ
-  value    String     @id
-  /// 申請
-  requests requests[]
+  createdAt      DateTime     @default(now())
 }
 
 /// 審査
 model reviews {
-  id                Int              @id @default(autoincrement())
+  id             Int                @id @default(autoincrement())
   /// ユーザーアカウント
-  userAccount       userAccounts     @relation(fields: [userAccountsId], references: [id])
-  userAccountsId    String
+  userAccount    userAccounts       @relation(fields: [userAccountsId], references: [id])
+  userAccountsId String
   /// ステータス
-  status            reviewStatus     @relation(fields: [reviewStatusValue], references: [value])
-  reviewStatusValue String           @default("pending")
+  status         approvalFlowStatus @relation(fields: [statusValue], references: [value])
+  statusValue    String             @default("pending")
   /// 概要
-  summary           String?
+  summary        String?
   /// コメント
-  comments          reviewComments[]
+  comments       reviewComments[]
   /// 申請
-  request           requests         @relation(fields: [requestId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  requestId         Int              @unique
+  request        requests           @relation(fields: [requestId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  requestId      Int                @unique
   /// 作成日
-  createdAt         DateTime         @default(now())
+  createdAt      DateTime           @default(now())
   /// 更新日
-  updatedAt         DateTime         @updatedAt
+  updatedAt      DateTime           @updatedAt
 }
 
-/// 審査ステータス
-model reviewStatus {
-  /// "pending": 保留、"approved": 承認、"rejected": 拒否
+/// 承認フローステータス
+model approvalFlowStatus {
+  /// "pending": 審査中、"approved": 承認、"rejected": 拒否、"cancelled": キャンセル
   value   String    @id
   /// 審査
   reviews reviews[]
