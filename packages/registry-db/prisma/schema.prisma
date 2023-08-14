@@ -109,7 +109,7 @@ model accounts {
   /// 資格情報の検証履歴
   verifiedCredentials      credentials[]               @relation("verifiedCredentials")
   /// ユーザーアカウント
-  userAccounts             userAccounts[]
+  userAccounts             userAccounts?
 }
 
 /// 会員種別
@@ -286,7 +286,7 @@ model userAccounts {
   picture   String
   /// 会員
   account   accounts   @relation(fields: [accountId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  accountId String     @db.Uuid
+  accountId String     @unique @db.Uuid
   /// 申請
   requests  requests[]
   /// 審査
