@@ -1,4 +1,4 @@
-import { Page, test, expect } from "@playwright/test";
+import { Page, test, expect, Locator } from "@playwright/test";
 import path from "node:path";
 import fs from "node:fs/promises";
 
@@ -50,10 +50,8 @@ test("投稿の検証", async () => {
     .click();
   await page.getByRole("link", { name: "(no title)", exact: true }).click();
 
-  const elements = await page.$$(
-    ".wp-block-post-content>*:not(.post-nav-links)",
-  );
-  const text = (await Promise.all(elements.map((e) => e.textContent()))).join(
+  const locators = await page.locator(".wp-block-post-content>*:not(.post-nav-links)").all();
+  const text = (await Promise.all(locators.map((loc) => loc.textContent()))).join(
     "",
   );
   expect(text).toMatchSnapshot("post.txt");
