@@ -1,4 +1,4 @@
-import { Page, test, expect, Locator } from "@playwright/test";
+import { Page, test, expect } from "@playwright/test";
 import path from "node:path";
 import fs from "node:fs/promises";
 
@@ -50,10 +50,12 @@ test("投稿の検証", async () => {
     .click();
   await page.getByRole("link", { name: "(no title)", exact: true }).click();
 
-  const locators = await page.locator(".wp-block-post-content>*:not(.post-nav-links)").all();
-  const text = (await Promise.all(locators.map((loc) => loc.textContent()))).join(
-    "",
-  );
+  const locators = await page
+    .locator(".wp-block-post-content>*:not(.post-nav-links)")
+    .all();
+  const text = (
+    await Promise.all(locators.map((loc) => loc.textContent()))
+  ).join("");
   expect(text).toMatchSnapshot("post.txt");
 
   const postId = Number(new URL(page.url()).searchParams.get("p"));
@@ -68,7 +70,7 @@ test("投稿の検証", async () => {
   ).toString();
   expect(text, "transition_post_statusフックで得られる内容と一致").toBe(post);
 
-  const link = await page.$$(
+  const link = page.locator(
     `link[rel="alternate"][type="application/ld+json"][href^="http"]`,
   );
   expect(link, "link要素を含む").toHaveLength(1);
