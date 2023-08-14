@@ -276,9 +276,14 @@ model credentials {
 
 /// ユーザーアカウント
 model userAccounts {
+  /// 識別子 (OpenID Connect Standard Claims における sub)
   id        String     @id
-  /// メールアドレス
+  /// メールアドレス (OpenID Connect Standard Claims)
   email     String
+  /// 名前 (OpenID Connect Standard Claims)
+  name      String
+  /// 画像 (OpenID Connect Standard Claims)
+  picture   String
   /// 会員
   account   accounts   @relation(fields: [accountId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   accountId String     @db.Uuid
