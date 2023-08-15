@@ -26,6 +26,8 @@ model ops {
   jwt         String
   /// 公開
   publication publications?
+  /// 申請
+  request     requests?
 }
 
 /// Signed Document Profile
@@ -108,6 +110,12 @@ model accounts {
   issuedCredentials        credentials[]               @relation("issuedCredentials")
   /// 資格情報の検証履歴
   verifiedCredentials      credentials[]               @relation("verifiedCredentials")
+  /// ユーザーアカウント
+  userAccounts             userAccounts?
+  /// 申請
+  requests                 requests[]
+  /// 申請の審査履歴
+  reviewedRequests         requests[]                  @relation("certifierReviewedRequests")
 }
 
 /// 会員種別
@@ -270,4 +278,76 @@ model credentials {
   issuedAt    DateTime
   /// 期限切れ日時
   expiredAt   DateTime
+}
+
+/// ユーザーアカウント
+model userAccounts {
+  /// 識別子 (OpenID Connect Standard Claims における sub)
+  id               String     @id
+  /// メールアドレス (OpenID Connect Standard Claims)
+  email            String
+  /// 名前 (OpenID Connect Standard Claims)
+  name             String
+  /// 画像 (OpenID Connect Standard Claims)
+  picture          String
+  /// 会員
+  account          accounts   @relation(fields: [accountId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  accountId        String     @unique @db.Uuid
+  /// 申請
+  requests         requests[]
+  /// 申請の審査履歴
+  reviewedRequests requests[] @relation("reviewedRequests")
+}
+
+/// 申請
+model requests {
+  id             Int                @id @default(autoincrement())
+  /// 申請担当者
+  author         userAccounts       @relation(fields: [authorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  authorId       String
+  /// 組織
+  group          accounts           @relation(fields: [groupId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  groupId        String             @db.Uuid
+  /// 審査担当者
+  reviewer       userAccounts?      @relation("reviewedRequests", fields: [reviewerId], references: [id])
+  reviewerId     String?
+  /// 認証機関
+  certifier      accounts?          @relation("certifierReviewedRequests", fields: [certifierId], references: [id])
+  certifierId    String?            @db.Uuid
+  /// ステータス
+  status         approvalFlowStatus @relation(fields: [statusValue], references: [value])
+  statusValue    String             @default("pending")
+  /// 申請概要
+  requestSummary String?
+  /// 審査概要
+  reviewSummary  String?
+  /// 審査コメント
+  reviewComments reviewComments[]
+  /// Signed Originator Profile
+  op             ops?               @relation(fields: [opId], references: [id])
+  opId           String?            @unique @db.Uuid
+  /// 作成日
+  createdAt      DateTime           @default(now())
+  /// 更新日
+  updatedAt      DateTime           @updatedAt
+}
+
+/// 承認フローステータス
+model approvalFlowStatus {
+  /// "pending": 審査中、"approved": 承認、"rejected": 却下、"cancelled": キャンセル
+  value    String     @id
+  /// 申請
+  requests requests[]
+}
+
+/// 審査コメント
+model reviewComments {
+  id               Int      @id @default(autoincrement())
+  /// 申請項目名 (HTML 要素における name 属性)
+  requestFieldName String
+  /// コメント
+  comment          String
+  /// 申請
+  request          requests @relation(fields: [requestId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  requestId        Int
 }
