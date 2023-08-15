@@ -27,7 +27,16 @@ export default class Start extends Command {
       routes: path.resolve(__dirname, "../../routes"),
     });
     await start(server, flags.port);
-    await ux.anykey();
+    while (true) {
+
+      try {
+        // 文字列 Press any key to continue or q to exit: を端末に出力する
+        // q が押された場合には例外を投げる。
+        await ux.anykey();
+      } catch (Error) {
+        break;
+      }
+    }
     this.exit();
   }
 }
