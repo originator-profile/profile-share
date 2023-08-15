@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "build:prod": "yarn workspace @originator-profile/registry ui:build",
     "clean": "rm -rf dist",
     "lint": "eslint --fix ."
   },
