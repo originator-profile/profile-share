@@ -44,7 +44,10 @@ async function dev() {
         dest: `dist-${options.target}`,
       }),
       require("./esbuild.postcss.cjs"),
-      require("./esbuild.manifest-rename.cjs")({ target: options.target, dist: `dist-${options.target}` }),
+      require("./esbuild.manifest-rename.cjs")({
+        target: options.target,
+        dist: `dist-${options.target}`,
+      }),
     ],
   });
   await context.watch();

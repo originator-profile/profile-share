@@ -2,7 +2,6 @@ import { admins } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { getClient } from "@originator-profile/registry-db";
 
-
 type AccountId = string;
 
 export const AdminService = () => ({
