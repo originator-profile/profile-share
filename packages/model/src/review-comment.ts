@@ -10,7 +10,7 @@ const ReviewComment = {
       type: "string",
     },
     comment: {
-      title: "string",
+      title: "コメント",
       type: "string",
     },
   },
