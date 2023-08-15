@@ -2,7 +2,6 @@ import { Prisma, categories } from "@prisma/client";
 import { NotFoundError } from "http-errors-enhanced";
 import { getClient } from "@originator-profile/registry-db";
 
-
 export const CategoryService = () => ({
   /**
    * カテゴリーの作成
