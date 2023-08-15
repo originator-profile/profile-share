@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build:prod": "yarn workspace @originator-profile/registry ui:build",
-    "clean": "rm -rf dist",
+    "clean": "shx rm -rf dist",
     "lint": "eslint --fix ."
   },
   "devDependencies": {
