@@ -3,6 +3,9 @@ on: push
 jobs:
   main:
     runs-on: ubuntu-latest
+    # format ステップで新しいコミットを push するために write 権限を与える
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3.5.0
       - name: Setup
