@@ -1,10 +1,10 @@
 import { StrictMode } from "react";
-import Pages from "./pages/index";
+import { Routes } from "@generouted/react-router";
 
 export function createApp() {
   return (
     <StrictMode>
-      <Pages />
+      <Routes />
     </StrictMode>
   );
 }
