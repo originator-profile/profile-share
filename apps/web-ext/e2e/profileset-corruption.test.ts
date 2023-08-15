@@ -2,7 +2,6 @@ import { describe, afterEach, expect, test, afterAll } from "vitest";
 import { Page } from "playwright";
 import { ctx, popup } from "./setup";
 
-
 describe("ProfileSet不正時の確認", () => {
   let ext: Page | undefined;
   let page: Page | undefined;
@@ -32,11 +31,11 @@ describe("ProfileSet不正時の確認", () => {
         <body><h1>ProfileSet不正時の確認</h1></body>
         </html>
       `,
-    },    
+    },
     "/ps.json": {
-        status: 200,
-        contentType: "application/json",
-        body: `{
+      status: 200,
+      contentType: "application/json",
+      body: `{
             "@context":{
                 "op":"https://originator-profile.org/context#",
                 "xsd":"http://www.w3.org/2001/XMLSchema#",
@@ -49,8 +48,8 @@ describe("ProfileSet不正時の確認", () => {
                 "a",
               "b"
             ]
-            }`
-      }, 
+            }`,
+    },
   };
 
   async function runTest(url: string): Promise<Page> {
@@ -104,5 +103,4 @@ describe("ProfileSet不正時の確認", () => {
   test("ProfileSet不正時の確認", async () => {
     await runTest("http://localhost:8080/invalid-ps");
   });
-  
 });

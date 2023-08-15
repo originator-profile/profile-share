@@ -5,6 +5,11 @@ runs:
   steps:
     - run: yarn format
       shell: bash
+    - name: setup git config
+      run: |
+        git config user.name "bot"
+        git config user.email "bot@originator-profile.org"
+      shell: bash
     - name: Format for WordPress plugin
       uses: "./.github/actions/wordpress_format"
     - name: Commit
