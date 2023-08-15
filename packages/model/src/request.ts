@@ -23,7 +23,7 @@ const Request = {
       type: "array",
       items: ReviewComment,
     },
-     createdAt: {
+    createdAt: {
       title: "作成日時",
       type: "string",
       format: "date-time",

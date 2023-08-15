@@ -20,7 +20,7 @@ const User = {
     picture: {
       title: "画像",
       type: "string",
-    }
+    },
   },
   required: ["id", "email", "name", "picture"],
   additionalProperties: false,
