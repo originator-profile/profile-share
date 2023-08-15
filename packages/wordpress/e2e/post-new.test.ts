@@ -70,8 +70,8 @@ test("投稿の検証", async () => {
   ).toString();
   expect(text, "transition_post_statusフックで得られる内容と一致").toBe(post);
 
-  const link = page.locator(
-    `link[rel="alternate"][type="application/ld+json"][href^="http"]`,
-  );
+  const link = await page
+    .locator(`link[rel="alternate"][type="application/ld+json"][href^="http"]`)
+    .all();
   expect(link, "link要素を含む").toHaveLength(1);
 });
