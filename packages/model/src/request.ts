@@ -1,4 +1,5 @@
 import { FromSchema } from "json-schema-to-ts";
+import ReviewComment from "./review-comment";
 
 const Request = {
   title: "申請",
@@ -6,20 +7,34 @@ const Request = {
   type: "object",
   properties: {
     status: {
-      title: "ステータス",
-      const: ["unreviewed", "reviewed", "cancelled"],
+      title: "承認フローステータス",
+      const: ["pending", "approved", "rejected", "cancelled"],
     },
-    summary: {
-      title: "概要",
+    requestSummary: {
+      title: "申請概要",
       type: "string",
     },
-    createdAt: {
+    reviewSummary: {
+      title: "審査概要",
+      type: "string",
+    },
+    reviewComments: {
+      title: "コメント",
+      type: "array",
+      items: ReviewComment,
+    },
+     createdAt: {
       title: "作成日時",
       type: "string",
       format: "date-time",
     },
+    updatedAt: {
+      title: "更新日時",
+      type: "string",
+      format: "date-time",
+    },
   },
-  required: ["status", "createdAt"],
+  required: ["status", "reviewComments", "createdAt", "updatedAt"],
   additionalProperties: false,
 } as const;
 
