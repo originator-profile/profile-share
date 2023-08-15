@@ -1,6 +1,4 @@
 import { FastifyInstance } from "fastify";
-import path from "node:path";
-import serveHandler from "serve-handler";
 import context from "@originator-profile/model/context.json";
 import { FromHandler } from "../types";
 import getFrontendProfileSet from "./get-frontend-profile-set";
@@ -8,27 +6,10 @@ import getIssuerKeys from "./get-issuer-keys";
 import getIssuerProfileSet from "./get-issuer-profile-set";
 
 async function index(fastify: FastifyInstance): Promise<void> {
-  fastify.get(
-    "*",
-    { schema: { operationId: "frontend" } },
-    async (req, res) => {
-      await serveHandler(req.raw, res.raw, {
-        public: path.resolve(__dirname, "../../dist/public"),
-        directoryListing: false,
-        headers: [
-          {
-            source: "**/*.@(svg|png)",
-            headers: [
-              {
-                key: "Access-Control-Allow-Origin",
-                value: "*",
-              },
-            ],
-          },
-        ],
-      });
-    },
-  );
+  fastify.get("/", (req, reply) => {
+    // @ts-expect-error @fastify/vite が html() メソッドを提供
+    reply.html();
+  });
   fastify.get<FromHandler<typeof getFrontendProfileSet>>(
     "/ps.json",
     { ...getFrontendProfileSet },

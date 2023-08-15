@@ -1,4 +1,7 @@
 import fastify, { FastifyInstance } from "fastify";
+// @ts-expect-error 型パッケージがない
+import FastifyVite from "@fastify/vite";
+import fastifyStatic from "@fastify/static";
 import autoload from "@fastify/autoload";
 import cors from "@fastify/cors";
 import env from "@fastify/env";
@@ -8,6 +11,7 @@ import swaggerUi from "@fastify/swagger-ui";
 import httpErrorsEnhanced from "fastify-http-errors-enhanced";
 import { Config, Services } from "@originator-profile/registry-service";
 import pkg from "./package.json";
+import { join } from "node:path";
 
 type Options = {
   isDev: boolean;
@@ -33,7 +37,7 @@ const openapi: FastifyDynamicSwaggerOptions["openapi"] = {
   },
 };
 
-export function create(options: Options): Server {
+export async function create(options: Options): Promise<Server> {
   const app = fastify({
     logger: !options.quiet,
   });
@@ -60,6 +64,21 @@ export function create(options: Options): Server {
     crossOriginResourcePolicy: false,
   });
   app.register(httpErrorsEnhanced);
+
+  const REGISTRY_ROOT = join(__dirname, "../");
+
+  // @fastify/vite が public ディレクトリを無視するため
+  // https://github.com/fastify/fastify-vite/issues/105
+  await app.register(fastifyStatic, {
+    root: join(REGISTRY_ROOT, "../../packages/registry-ui/public"),
+  });
+
+  await app.register(FastifyVite, {
+    dev: options.isDev,
+    root: REGISTRY_ROOT,
+    spa: true,
+  });
+
   app.after(() => {
     app.decorate("services", Services({ config: app.config }));
   });
@@ -68,6 +87,8 @@ export function create(options: Options): Server {
 }
 
 export async function start(server: Server, port: number): Promise<string> {
+  // @ts-expect-error Property 'vite' does not exist on type 'Server'.
+  await server.vite.ready();
   await server.ready();
   const address: string = await server.listen({ port, host: "::" });
   return address;

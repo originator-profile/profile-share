@@ -15,7 +15,7 @@ export default class OpenapiGen extends Command {
   async run(): Promise<void> {
     const { args } = await this.parse(OpenapiGen);
     const output: string = args.output;
-    const server = create({
+    const server = await create({
       isDev: true,
       routes: path.resolve(__dirname, "../../routes"),
       quiet: true,
