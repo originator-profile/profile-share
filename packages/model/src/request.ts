@@ -19,7 +19,7 @@ const Request = {
       type: "string",
     },
     reviewComments: {
-      title: "コメント",
+      title: "審査コメント",
       type: "array",
       items: ReviewComment,
     },
