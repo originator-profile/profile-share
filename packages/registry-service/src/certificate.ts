@@ -23,10 +23,7 @@ type CertifierId = string;
 type AccountId = string;
 type OpId = string;
 
-export const CertificateService = ({
-  account,
-  validator,
-}: Options) => ({
+export const CertificateService = ({ account, validator }: Options) => ({
   /**
    * 認証機関か否かを判定する
    * @param id 認証機関 ID

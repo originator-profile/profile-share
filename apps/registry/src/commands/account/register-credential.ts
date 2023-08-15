@@ -26,7 +26,8 @@ export class RegisterCredential extends Command {
     }),
     image: Flags.url({
       summary: "画像URL",
-      description: "拡張機能Webページへの埋め込みが可能な(CORSが許可されている)画像URL",
+      description:
+        "拡張機能Webページへの埋め込みが可能な(CORSが許可されている)画像URL",
     }),
     "issued-at": Flags.string({
       description: "発行日時 (ISO 8601)",
