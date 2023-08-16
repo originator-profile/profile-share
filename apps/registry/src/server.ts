@@ -11,7 +11,7 @@ import swaggerUi from "@fastify/swagger-ui";
 import httpErrorsEnhanced from "fastify-http-errors-enhanced";
 import { Config, Services } from "@originator-profile/registry-service";
 import pkg from "./package.json";
-import { join } from "node:path";
+import { resolve } from "node:path";
 
 type Options = {
   isDev: boolean;
@@ -65,12 +65,12 @@ export async function create(options: Options): Promise<Server> {
   });
   app.register(httpErrorsEnhanced);
 
-  const REGISTRY_ROOT = join(__dirname, "../");
+  const REGISTRY_ROOT = resolve(require.main?.path ?? "", "..");
 
   // @fastify/vite が public ディレクトリを無視するため
   // https://github.com/fastify/fastify-vite/issues/105
   await app.register(fastifyStatic, {
-    root: join(REGISTRY_ROOT, "../../packages/registry-ui/public"),
+    root: resolve(REGISTRY_ROOT, "../../packages/registry-ui/public"),
   });
 
   await app.register(FastifyVite, {
