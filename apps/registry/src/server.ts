@@ -70,7 +70,7 @@ export async function create(options: Options): Promise<Server> {
   // @fastify/vite が public ディレクトリを無視するため
   // https://github.com/fastify/fastify-vite/issues/105
   await app.register(fastifyStatic, {
-    wildcard: false,
+    wildcard: true,
     root: join(REGISTRY_ROOT, "../../packages/registry-ui/public"),
   });
 
