@@ -34,8 +34,15 @@ afterAll(async () => {
 });
 
 export async function popup(ctx: BrowserContext): Promise<Page> {
-  const [backgroundWorker] = ctx.serviceWorkers();
-  await backgroundWorker?.evaluate(async function () {
+  let [backgroundWorker] = ctx.serviceWorkers();
+  if (!backgroundWorker) {
+    // backgroundWorker がまだない場合、新しい Service Worker が作られるのを待つ。
+    backgroundWorker = await ctx.waitForEvent('serviceworker');
+    // worker が立ち上がった直後は chrome.tabs API が使えないことがあるので待つ。
+    await sleep(500);
+  }
+  await backgroundWorker.evaluate(async function () {
+    // 現在 active なタブの上で拡張機能のアイコンを押して起動する。
     const [targetTab] = await chrome.tabs.query({ active: true });
     // @ts-expect-error dispatch が未定義だが実際には存在する
     chrome.action.onClicked.dispatch(targetTab);
