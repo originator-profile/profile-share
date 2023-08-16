@@ -1,5 +1,9 @@
 extends: originator-profile
 overrides:
-  - files: components/*.tsx
+  - files: src/components/*.tsx
     rules:
       filenames/match-exported: ["error", "pascal"]
+  - files: src/pages/*.tsx
+    rules:
+      # pages/ のファイル名は generouted の規則に従うので eslint のルールは無視する
+      filenames/match-exported: "off"

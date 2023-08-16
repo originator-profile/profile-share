@@ -9,6 +9,6 @@ module.exports = extend(config, {
       require.resolve("@originator-profile/ui"),
     )}/components/*.tsx`,
     "../../packages/registry-ui/index.html",
-    "../../packages/registry-ui/{components,pages}/**/*.tsx",
+    "../../packages/registry-ui/src/{components,pages}/**/*.tsx",
   ],
 });
