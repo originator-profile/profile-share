@@ -9,4 +9,63 @@
   @apply underline;
 }
 
+ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+}
+
+.warning-text {
+  color: #B80000;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.icon {
+  font-size: 44px;
+  font-weight: 400;
+  line-height: 44px;
+  letter-spacing: 0em;
+  text-align: center;
+  width: 44px;
+  height: 44px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.warning-text01{
+  height: 28px;
+
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: 0em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.warning-text02{
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 25px;
+  letter-spacing: 0em;
+  text-align: center;
+  width: 388px;
+  height: 25px;
+}
+
+.custom-text {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 14px;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: left;
+  font-weight: 400;
+}
+
+.custom-text-strong {
+  font-weight: 700;
+}
+
 @tailwind utilities;
