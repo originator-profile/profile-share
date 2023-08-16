@@ -37,7 +37,9 @@ test("投稿の検証", async () => {
 
   // 上の try catch にも関わらずダイアログが表示されている場合、下の Add block で実行が止まるため、
   // そうなった場合にテストが早く失敗するように timeout を3秒に設定。
-  await page.getByRole("button", { name: "Add block" }).click({ timeout: 3_000 });
+  await page
+    .getByRole("button", { name: "Add block" })
+    .click({ timeout: 3_000 });
   await page.getByRole("option", { name: "Paragraph" }).click();
   await page
     .getByRole("document", {

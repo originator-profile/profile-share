@@ -37,7 +37,7 @@ export async function popup(ctx: BrowserContext): Promise<Page> {
   let [backgroundWorker] = ctx.serviceWorkers();
   if (!backgroundWorker) {
     // backgroundWorker がまだない場合、新しい Service Worker が作られるのを待つ。
-    backgroundWorker = await ctx.waitForEvent('serviceworker');
+    backgroundWorker = await ctx.waitForEvent("serviceworker");
     // worker が立ち上がった直後は chrome.tabs API が使えないことがあるので待つ。
     await sleep(500);
   }
