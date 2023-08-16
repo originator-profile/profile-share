@@ -6,7 +6,7 @@ import getIssuerKeys from "./get-issuer-keys";
 import getIssuerProfileSet from "./get-issuer-profile-set";
 
 async function index(fastify: FastifyInstance): Promise<void> {
-  fastify.get("/", (req, reply) => {
+  fastify.get("/*", (req, reply) => {
     // @ts-expect-error @fastify/vite が html() メソッドを提供
     reply.html();
   });
