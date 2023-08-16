@@ -9,11 +9,10 @@ import figTraceabilityUrl from "../assets/fig-traceability.png";
 import {
   ProfileGenericError,
   ProfilesVerifyFailed,
-  ProfileUnsupportedFailed
 } from "@originator-profile/verify";
 
 function Messages({ className, error }: { className?: string; error: Error }) {
-  if (error instanceof ProfileUnsupportedFailed) {
+  if (error instanceof ProfilesVerifyFailed) {
     return (
       <ul className={className}>
         <li>信頼性情報あるいは流通経路が仕様どおりに記述されていません</li>
