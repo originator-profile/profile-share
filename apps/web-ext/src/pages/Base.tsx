@@ -11,6 +11,7 @@ import useProfileSet from "../utils/use-profile-set";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
+import Prohibition from "../components/Prohibition";
 
 function Redirect({
   dp,
@@ -54,6 +55,7 @@ function Base() {
   // TODO: 禁止のケースの見た目を実装して
   if (result) {
     return <Unsupported error={result} />;
+    // return <Prohibition />;
   }
   const [dp] = sortDps(profiles.filter(isDp), main);
   if (!dp) {
