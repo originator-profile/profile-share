@@ -1,5 +1,5 @@
 import { StrictMode } from "react";
-import { Routes } from "./routes";
+import { Routes } from "@generouted/react-router";
 
 export function createApp() {
   return (
