@@ -31,7 +31,7 @@ function loadInitialValues() {
 
 const initialValues = loadInitialValues();
 
-export default function Pages() {
+export default function Index() {
   const [values, setValues] = useState<Record<string, unknown>>({});
   const [presentation, setPresentation] = useState(
     "profileSet" in initialValues ? "direct" : "url",
