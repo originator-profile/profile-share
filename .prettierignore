@@ -1,2 +1,2 @@
 composer.lock
-apps/registry/src/router.ts
+packages/registry-ui/src/router.ts
