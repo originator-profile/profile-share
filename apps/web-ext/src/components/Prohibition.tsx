@@ -20,17 +20,18 @@ function WarningDetails() {
       <h2>証明書は改ざん・偽装されている可能性があるのでご注意ください。</h2>
       <br />
       <h2 className="text-gray-500 ">
-        <a href="#">
           上記を理解して組織情報や出版物の内容を閲覧する
-        </a>
       </h2>
     </>
   );
 }
 
 function Prohibition() {
+  const onClose = () => {
+    // nop
+  };
   return (
-    <Dialog open onClose={() => {}}>
+    <Dialog open onClose={onClose}>
       <Dialog.Panel className="fixed top-0 left-0 z-10 bg-white w-screen h-screen overflow-y-auto">
         <main className="px-4 py-12">
           <ProjectTitle className="mb-12" as="header" />
