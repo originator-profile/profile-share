@@ -1,7 +1,11 @@
-import { Prisma, credentials } from "@prisma/client";
-import { getClient } from "@originator-profile/registry-db";
+import { credentials } from "@prisma/client";
+import { type CredentialRepository } from "@originator-profile/registry-db";
 
-export const CredentialService = () => ({
+type Options = {
+  credentialRepository: CredentialRepository;
+};
+
+export const CredentialService = ({ credentialRepository }: Options) => ({
   /**
    * 資格情報の作成
    * @param accountId 会員 ID
@@ -22,24 +26,15 @@ export const CredentialService = () => ({
     expiredAt: Date,
     imageUrl?: string,
   ): Promise<credentials | Error> {
-    const input: Prisma.credentialsCreateInput = {
-      account: {
-        connect: { id: accountId },
-      },
-      certifier: {
-        connect: { id: certifierId },
-      },
-      verifier: {
-        connect: { id: verifierId },
-      },
-      name: name,
-      image: imageUrl,
+    return credentialRepository.create(
+      accountId,
+      certifierId,
+      verifierId,
+      name,
       issuedAt,
       expiredAt,
-    };
-
-    const prisma = getClient();
-    return prisma.credentials.create({ data: input }).catch((e: Error) => e);
+      imageUrl,
+    );
   },
 });
 

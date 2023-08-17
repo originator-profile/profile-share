@@ -10,6 +10,7 @@ import { CredentialService } from "./credential";
 import {
   DpRepository,
   WebsiteRepository,
+  CredentialRepository,
 } from "@originator-profile/registry-db";
 
 export type { Website } from "./website";
@@ -35,7 +36,8 @@ export const Services = (options: Options) => {
     websiteRepository,
   });
   const website = WebsiteService({ ...options, websiteRepository });
-  const credential = CredentialService();
+  const credentialRepository = CredentialRepository();
+  const credential = CredentialService({ credentialRepository });
   return {
     validator,
     account,
