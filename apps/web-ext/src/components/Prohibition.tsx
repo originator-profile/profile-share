@@ -5,8 +5,6 @@ import { Icon } from '@iconify/react';
 function WarningDetails() {
   return (
     <>
-      <br />
-      <summary>このメッセージが表示される理由についてもっと詳しく</summary>
       <h2>Originator Profile ではこのサイトが本物であるかの確認を「認証鍵」という電子証明によって行っています。</h2>
       <br />
       <h2>このメッセージが表示されている場合、以下の2つの原因が考えられます。</h2>
