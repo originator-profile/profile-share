@@ -20,9 +20,7 @@ function WarningDetails() {
       <h2>証明書は改ざん・偽装されている可能性があるのでご注意ください。</h2>
       <br />
       <h2 className="text-gray-500 pb-3">
-        <a href="#">
-          上記を理解して組織情報や出版物の内容を閲覧する
-        </a>
+        上記を理解して組織情報や出版物の内容を閲覧する
       </h2>
     </div>
   );
@@ -52,7 +50,8 @@ function Prohibition() {
             </h2>
             <br />
             <details className="text-gray-700">
-              <WarningDetails />
+              <summary>このメッセージが表示される理由についてもっと詳しく...</summary>
+                <WarningDetails />
             </details>
             <br />
             <ProjectSummary as="footer" />
