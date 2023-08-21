@@ -4,8 +4,7 @@ import {
   ProfileGenericError,
   ProfileClaimsValidationFailed,
   ProfilesVerifyFailed,
-  ProfilesResolveFailed,
-  ProfileUnsupportedFailed
+  ProfilesResolveFailed
 } from "./errors";
 import { Keys, LocalKeys } from "./keys";
 import {
@@ -97,7 +96,7 @@ export function ProfilesVerifier(
       const verify = async (jwt: string) => {
         const dp = await dpVerifier(jwt);
         if (dp instanceof ProfileGenericError) {
-          const error = new ProfileUnsupportedFailed(
+          const error = new ProfilesVerifyFailed(
             "Document Profile is invalid",
             res,
           );

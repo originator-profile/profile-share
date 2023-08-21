@@ -4,8 +4,7 @@ import {
   ProfileClaimsValidationFailed,
   ProfileTokenVerifyFailed,
   ProfilesResolveFailed,
-  ProfilesVerifyFailed,
-  ProfileUnsupportedFailed
+  ProfilesVerifyFailed
 } from "./errors";
 
 /** Profile の Token の復号結果 */
@@ -29,8 +28,7 @@ export type Profiles = { profile: string[] };
 export type VerifyResult =
   | VerifyTokenResult
   | ProfilesResolveFailed
-  | ProfilesVerifyFailed
-  | ProfileUnsupportedFailed;
+  | ProfilesVerifyFailed;
 
 /** Profile Set の検証結果 */
 export type VerifyResults = VerifyResult[];
