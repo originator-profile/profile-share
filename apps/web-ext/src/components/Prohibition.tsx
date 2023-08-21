@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 
 function WarningDetails() {
   return (
-    <>
+    <div className="pt-3">
       <h2>Originator Profile ではこのサイトが本物であるかの確認を「認証鍵」という電子証明によって行っています。</h2>
       <br />
       <h2>このメッセージが表示されている場合、以下の2つの原因が考えられます。</h2>
@@ -19,12 +19,12 @@ function WarningDetails() {
       <h2>これらの理由によりこのサイトが偽サイトである可能性をあなたにお伝えしています。</h2>
       <h2>証明書は改ざん・偽装されている可能性があるのでご注意ください。</h2>
       <br />
-      <h2 className="text-gray-500 ">
+      <h2 className="text-gray-500 pb-3">
         <a href="#">
           上記を理解して組織情報や出版物の内容を閲覧する
         </a>
       </h2>
-    </>
+    </div>
   );
 }
 
@@ -39,7 +39,7 @@ function Prohibition() {
           <ProjectTitle className="mb-12" as="header" />
           <h1 className="flex items-center flex-col gap-4 mb-12">
             <p className="text-red-700 h-7 text-base font-normal tracking-normal text-center whitespace-nowrap inline-block align-middle">
-              <Icon icon="clarity:exclamation-triangle-line" className="text-red-700 text-5xl font-normal leading-10 tracking-normal text-center w-11 h-11 inline-block vertical-align"/> アクセスにはご注意ください
+              <Icon icon="clarity:exclamation-triangle-line" className="text-red-700 text-5xl font-normal tracking-normal leading-10 text-center w-11 h-11 inline-block vertical-align"/> アクセスにはご注意ください
             </p>
             <br />
             <p className="text-red-700 text-xl font-bold tracking-normal text-center w-96 h-6 inline-block align-middle">このサイトの発信元が確認できません</p>
@@ -51,7 +51,7 @@ function Prohibition() {
               このページではサイトの運営者情報が確認できませんでした。そのため、この<strong className="font-bold">サイトが本物かどうかは充分に注意してください。</strong>
             </h2>
             <br />
-            <details className="text-gray-700 ">
+            <details className="text-gray-700">
               <WarningDetails />
             </details>
             <br />
