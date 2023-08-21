@@ -9,10 +9,4 @@
   @apply underline;
 }
 
-.warning-text {
-  color: #B80000;
-  display: inline-block;
-  vertical-align: middle;
-}
-
 @tailwind utilities;
