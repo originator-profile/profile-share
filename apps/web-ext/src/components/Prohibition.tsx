@@ -45,10 +45,10 @@ function Prohibition() {
             <p className="warning-text text-xl font-bold tracking-normal text-center w-96 h-6">このサイトの発信元が確認できません</p>
           </h1>
           <article className="mb-12 max-w-sm mx-auto">
-            <h2 className="custom-text">
+            <h2 className="text-sm tracking-normal text-left font-normal">
               本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。
               <br />
-              このページではサイトの運営者情報が確認できませんでした。そのため、この<strong className="custom-text-strong">サイトが本物かどうかは充分に注意してください。</strong>
+              このページではサイトの運営者情報が確認できませんでした。そのため、この<strong className="font-bold">サイトが本物かどうかは充分に注意してください。</strong>
             </h2>
             <br />
             <details className="text-gray-700 ">

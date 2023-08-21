@@ -15,16 +15,4 @@
   vertical-align: middle;
 }
 
-.custom-text {
-  font-size: 14px;
-  line-height: 21px;
-  letter-spacing: 0em;
-  text-align: left;
-  font-weight: 400;
-}
-
-.custom-text-strong {
-  font-weight: 700;
-}
-
 @tailwind utilities;
