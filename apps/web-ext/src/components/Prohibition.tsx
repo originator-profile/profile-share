@@ -38,11 +38,11 @@ function Prohibition() {
         <main className="px-4 py-12">
           <ProjectTitle className="mb-12" as="header" />
           <h1 className="flex items-center flex-col gap-4 mb-12">
-            <p className="warning-text h-7 text-base font-normal tracking-normal text-center whitespace-nowrap">
-              <Icon icon="clarity:exclamation-triangle-line" className="text-5xl font-normal leading-10 tracking-normal text-center w-11 h-11 inline-block vertical-align"/> アクセスにはご注意ください
+            <p className="text-red-700 h-7 text-base font-normal tracking-normal text-center whitespace-nowrap inline-block align-middle">
+              <Icon icon="clarity:exclamation-triangle-line" className="text-red-700 text-5xl font-normal leading-10 tracking-normal text-center w-11 h-11 inline-block vertical-align"/> アクセスにはご注意ください
             </p>
             <br />
-            <p className="warning-text text-xl font-bold tracking-normal text-center w-96 h-6">このサイトの発信元が確認できません</p>
+            <p className="text-red-700 text-xl font-bold tracking-normal text-center w-96 h-6 inline-block align-middle">このサイトの発信元が確認できません</p>
           </h1>
           <article className="mb-12 max-w-sm mx-auto">
             <h2 className="text-sm tracking-normal text-left font-normal">
