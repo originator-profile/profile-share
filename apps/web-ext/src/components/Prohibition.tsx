@@ -39,7 +39,7 @@ function Prohibition() {
           <ProjectTitle className="mb-12" as="header" />
           <h1 className="flex items-center flex-col gap-4 mb-12">
             <p className="warning-text01 warning-text">
-              <Icon icon="clarity:exclamation-triangle-line" className="icon"/> アクセスにはご注意ください
+              <Icon icon="clarity:exclamation-triangle-line" className="text-5xl font-normal leading-10 tracking-normal text-center w-11 h-11 inline-block vertical-align"/> アクセスにはご注意ください
             </p>
             <br />
             <p className="warning-text02 warning-text">このサイトの発信元が確認できません</p>
