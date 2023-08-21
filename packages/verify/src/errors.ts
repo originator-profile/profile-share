@@ -87,21 +87,6 @@ export class ProfilesVerifyFailed extends ProfileGenericError {
   }
 }
 
-export class ProfileUnsupportedFailed extends ProfileGenericError {
-  static get code() {
-    return "ERR_PROFILES_UNSUPPORT_FAILED" as const;
-  }
-  readonly code = ProfileUnsupportedFailed.code;
-
-  /** 検証結果 */
-  result: Exclude<DecodeResult | VerifyTokenResult, ProfileGenericError>;
-
-  constructor(message: string, result: ProfileUnsupportedFailed["result"]) {
-    super(message);
-    this.result = result;
-  }
-}
-
 export class ProfilesFetchFailed extends ProfileGenericError {
   static get code() {
     return "ERR_PROFILES_FETCH_FAILED" as const;
