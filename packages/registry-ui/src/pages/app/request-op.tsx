@@ -1,0 +1,265 @@
+import { type ChangeEvent, type FormEvent, Fragment, useState } from "react";
+import clsx from "clsx";
+import FormRow from "../../components/FormRow";
+
+type InitialValues = {
+  registry: string;
+  endpoint: string;
+  profileSet?: unknown;
+};
+
+function saveInitialValues(val: InitialValues) {
+  window.history.replaceState(null, "", `#${window.btoa(JSON.stringify(val))}`);
+}
+
+function loadInitialValues() {
+  try {
+    return JSON.parse(window.atob(document.location.hash.slice(1)));
+  } catch {
+    return {};
+  }
+}
+
+const initialValues = loadInitialValues();
+
+export default function Index() {
+  const [values, setValues] = useState<Record<string, unknown>>({});
+  const [presentation, setPresentation] = useState(
+    "profileSet" in initialValues ? "direct" : "url",
+  );
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
+    setPresentation(event.target.value);
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const registry = String(formData.get("registry"));
+    const endpoint = String(formData.get("endpoint"));
+    const jsonld = String(formData.get("jsonld"));
+
+    setValues({ registry, endpoint, jsonld });
+  }
+
+  return (
+    <>
+      <header className="bg-black fixed top-0 left-0 w-full h-10">1</header>
+      <article className="max-w-3xl px-4 pt-12 pb-8 mx-auto">
+        <div className="flex flex-col mb-6">
+          <h1 className="text-4xl font-bold">登録</h1>
+          <div className="jumpu-boxed-tabs ml-auto">
+            <div role="tablist" aria-label="Sample BoxedTabs">
+              <button
+                role="tab"
+                aria-selected={true}
+                aria-controls="panel-1"
+                id="tab-1"
+                tabIndex={0}
+              >
+                組織情報
+              </button>
+              <button
+                role="tab"
+                aria-selected={false}
+                aria-controls="panel-2"
+                id="tab-2"
+                tabIndex={2}
+              >
+                認証鍵
+              </button>
+              <button
+                role="tab"
+                aria-selected={false}
+                aria-controls="panel-3"
+                id="tab-3"
+                tabIndex={3}
+              >
+                ロゴマーク
+              </button>
+              <button
+                role="tab"
+                aria-selected={false}
+                aria-controls="panel-4"
+                id="tab-4"
+                tabIndex={4}
+              >
+                資格情報
+              </button>
+            </div>
+          </div>
+        </div>
+        <form className="mb-8" onSubmit={onSubmit}>
+          <div className="flex flex-col mb-8 md:flex-row gap-8 md:gap-4 md:items-center">
+            <h2 className="text-4xl font-bold">組織情報</h2>
+            <input
+              className="jumpu-outlined-button ml-auto"
+              type="submit"
+              value="保存する"
+            />
+          </div>
+          <p className="text-sm mb-6">
+            Originator Profile 情報を登録頂くフォームです。
+            <br />
+            サイト運営者・コンテンツ提供者などの組織情報を法人毎に登録してください。注:
+            法人単位での登録です。
+            <br />
+            グループ会社一括やサイト・サービス単位ではありません。
+          </p>
+
+          <FormRow className="mb-4" label="組織代表ドメイン名">
+            <input
+              className="jumpu-input flex-1"
+              name="domainName"
+              required
+              defaultValue={initialValues.domainName}
+              placeholder="media.example.com"
+            />
+          </FormRow>
+          <FormRow className="mb-4" label="所有者 / 法人・組織名">
+            <input
+              className="jumpu-input flex-1"
+              name="name"
+              defaultValue={initialValues.name}
+              placeholder="⚪○△新聞社"
+            />
+          </FormRow>
+          <FormRow className="mb-4" label="郵便番号">
+            <input
+              className="jumpu-input flex-1"
+              name="postalCode"
+              defaultValue={initialValues.postalCode}
+              placeholder="100-0001"
+            />
+          </FormRow>
+          <FormRow className="mb-4" label="都道府県">
+            <input
+              className="jumpu-input flex-1"
+              name="addressRegion"
+              defaultValue={initialValues.addressRegion}
+              placeholder="東京都"
+            />
+          </FormRow>
+          <FormRow className="mb-4" label="市区町村">
+            <input
+              className="jumpu-input flex-1"
+              name="addressLocality"
+              defaultValue={initialValues.addressLocality}
+              placeholder="千代田区"
+            />
+          </FormRow>
+          <FormRow className="mb-4" label="町名・番地・ビル名・部屋番号など">
+            <input
+              className="jumpu-input flex-1"
+              name="streetAddress"
+              defaultValue={initialValues.streetAddress}
+              placeholder="大手町3丁目1-1 ○△ビル 1F"
+            />
+          </FormRow>
+          <FormRow className="mb-4" label="電話番号">
+            <input
+              className="jumpu-input flex-1"
+              name="phoneNumber"
+              type="tel"
+              defaultValue={initialValues.phoneNumber}
+              placeholder="03-1111-1111"
+            />
+          </FormRow>
+          <FormRow className="mb-4" label="メールアドレス">
+            <input
+              className="jumpu-input flex-1"
+              name="email"
+              type="email"
+              defaultValue={initialValues.email}
+              placeholder="contact@marusankaku.co.jp"
+            />
+          </FormRow>
+          <FormRow className="mb-4" label="法人番号">
+            <input
+              className="jumpu-input flex-1"
+              name="corporateNumber"
+              defaultValue={initialValues.corporateNumber}
+              placeholder="68724562888454"
+            />
+          </FormRow>
+          <FormRow className="mb-4" label="事業種目">
+            <input
+              className="jumpu-input flex-1"
+              name="businessCategory"
+              defaultValue={initialValues.businessCategory}
+              placeholder=""
+            />
+          </FormRow>
+          <FormRow className="mb-4" label="WebサイトURL">
+            <input
+              className="jumpu-input flex-1"
+              name="url"
+              type="url"
+              defaultValue={initialValues.url}
+              placeholder="https://www.marusankaku.co.jp/"
+            />
+          </FormRow>
+          <FormRow className="mb-4" label="お問い合わせ情報">
+            <input
+              className="jumpu-input flex-1"
+              name="contactTitle"
+              defaultValue={initialValues.contactTitle}
+              placeholder="○△へのお問い合わせ"
+            />
+          </FormRow>
+          <FormRow className="mb-4" label="リンク">
+            <input
+              className="jumpu-input flex-1"
+              name="contactUrl"
+              type="url"
+              defaultValue={initialValues.contactUrl}
+              placeholder="https://www.marusankaku.co.jp/contact/"
+            />
+          </FormRow>
+
+          <FormRow className="mb-4" label="編集ガイドライン">
+            <input
+              className="jumpu-input flex-1"
+              name="publishingPrincipleTitle"
+              defaultValue={initialValues.publishingPrincipleTitle}
+              placeholder="○△ガイドライン"
+            />
+          </FormRow>
+          <FormRow className="mb-4" label="編集ガイドラインURL">
+            <input
+              className="jumpu-input flex-1"
+              name="publishingPrincipleUrl"
+              type="url"
+              defaultValue={initialValues.publishingPrincipleUrl}
+              placeholder="https://www.marusankaku.co.jp/guidelines/"
+            />
+          </FormRow>
+          <FormRow className="mb-4" label="プライバシーポリシー">
+            <input
+              className="jumpu-input flex-1"
+              name="privacyPolicyTitle"
+              defaultValue={initialValues.privacyPolicyTitle}
+              placeholder="○△プライバシーセンター"
+            />
+          </FormRow>
+          <FormRow className="mb-4" label="プライバシーポリシーURL">
+            <input
+              className="jumpu-input flex-1"
+              name="privacyPolicyUrl"
+              type="url"
+              defaultValue={initialValues.privacyPolicyUrl}
+              placeholder="https://www.marusankaku.co.jp/privacy/"
+            />
+          </FormRow>
+          <FormRow className="mb-4" label="説明">
+            <textarea
+              className="jumpu-input flex-1"
+              name="description"
+              defaultValue={initialValues.description}
+              placeholder="追加の説明情報（任意）"
+            />
+          </FormRow>
+        </form>
+      </article>
+    </>
+  );
+}
