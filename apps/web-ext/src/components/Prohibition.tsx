@@ -5,23 +5,23 @@ import { Icon } from '@iconify/react';
 function WarningDetails() {
   return (
     <div className="pt-3">
-      <h2>Originator Profile ではこのサイトが本物であるかの確認を「認証鍵」という電子証明によって行っています。</h2>
+      <p>Originator Profile ではこのサイトが本物であるかの確認を「認証鍵」という電子証明によって行っています。</p>
       <br />
-      <h2>このメッセージが表示されている場合、以下の2つの原因が考えられます。</h2>
+      <p>このメッセージが表示されている場合、以下の2つの原因が考えられます。</p>
       <br />
       <ol className="px-0.5 list-decimal">
         <li>(悪意のない正当な組織担当者が)認証鍵の取り扱いについて何らかの誤りがある</li>
         <li>(悪意のある第三者が)認証鍵を改ざんし、偽サイトを本物のように見せようとしている</li>
       </ol>
       <br />
-      <h2>特に 2. の場合はあなたを欺き不利益を与える危険なサイトと考えられます。</h2>
+      <p>特に 2. の場合はあなたを欺き不利益を与える危険なサイトと考えられます。</p>
       <br />
-      <h2>これらの理由によりこのサイトが偽サイトである可能性をあなたにお伝えしています。</h2>
-      <h2>証明書は改ざん・偽装されている可能性があるのでご注意ください。</h2>
+      <p>これらの理由によりこのサイトが偽サイトである可能性をあなたにお伝えしています。</p>
+      <p>証明書は改ざん・偽装されている可能性があるのでご注意ください。</p>
       <br />
-      <h2 className="text-gray-500 pb-3">
+      <p className="text-gray-500 pb-3">
         上記を理解して組織情報や出版物の内容を閲覧する
-      </h2>
+      </p>
     </div>
   );
 }
@@ -43,11 +43,11 @@ function Prohibition() {
             <p className="text-red-700 text-xl font-bold tracking-normal text-center w-96 h-6 inline-block align-middle">このサイトの発信元が確認できません</p>
           </h1>
           <article className="mb-12 max-w-sm mx-auto">
-            <h2 className="text-sm tracking-normal text-left font-normal">
+            <p className="text-sm tracking-normal text-left font-normal">
               本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。
               <br />
               このページではサイトの運営者情報が確認できませんでした。そのため、この<strong className="font-bold">サイトが本物かどうかは充分に注意してください。</strong>
-            </h2>
+            </p>
             <br />
             <details className="text-gray-700">
               <summary>このメッセージが表示される理由についてもっと詳しく...</summary>
