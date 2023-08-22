@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => {
     e2e: {
       dir: "e2e",
       setupFiles: "e2e/setup.ts",
+      singleThread: Boolean(process.env.CI),
       testTimeout: 20_000,
     },
   };
