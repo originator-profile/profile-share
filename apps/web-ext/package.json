@@ -10,7 +10,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@headlessui/react": "^1.7.15",
+    "@headlessui/react": "^1.7.17",
     "@iconify/react": "^4.1.1",
     "@types/chrome": "^0.0.239",
     "@types/dompurify": "^3.0.2",
