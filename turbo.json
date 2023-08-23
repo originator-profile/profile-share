@@ -3,7 +3,12 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist", "/apps/web-ext/web-ext-artifacts"]
+      "outputs": [
+        "dist/**",
+        "dist-*/**",
+        "web-ext-artifacts/**",
+        "web-ext-artifacts-*/**"
+      ]
     },
     "dev": {
       "cache": false
