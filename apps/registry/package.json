@@ -15,7 +15,7 @@
     "build": "run-s build:{ts,db,ui,cli,api} docs",
     "build:ts": "tsup src --clean",
     "build:db": "shx cp -r ../../packages/registry-db/prisma dist/",
-    "build:ui": "run-s ui:{clean,build}",
+    "build:ui": "run-s ui:clean ui:build",
     "build:cli": "oclif manifest",
     "build:api": "bin/run openapi-gen",
     "dev": "dotenv -e .env.development run-p dev:{db,build}",
@@ -41,6 +41,7 @@
     "@oclif/core": "^2.8.11",
     "@oclif/plugin-help": "^5.2.11",
     "@prisma/client": "^4.16.2",
+    "@vitejs/plugin-react": "^4.0.1",
     "dotenv": "^16.3.1",
     "dotenv-expand": "^10.0.0",
     "jsonld": "^8.2.0",
@@ -52,6 +53,7 @@
     "metascraper-title": "^5.34.7",
     "playwright": "^1.35.1",
     "prisma": "^4.16.2",
+    "vite": "^4.3.9",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.0/xlsx-0.20.0.tgz"
   },
   "devDependencies": {
