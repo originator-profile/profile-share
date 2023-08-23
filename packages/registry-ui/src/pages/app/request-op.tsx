@@ -16,7 +16,26 @@ function loadInitialValues() {
   try {
     return JSON.parse(window.atob(document.location.hash.slice(1)));
   } catch {
-    return {};
+    return {
+      "domainName": "media.example.com",
+      "name": "A新聞社",
+      "postalCode": "433-8000",
+      "addressRegion": "東京都",
+      "addressLocality": "千代田区",
+      "streetAddress": "大手町３丁目1-1 Aビル 1F",
+      "phoneNumber": "090-9999-1111",
+      "email": "contact@media.example.com",
+      "corporateNumber": "68724062888454",
+      "businessCategory": "通信",
+      "url": "https://www.media.example.com/",
+      "contactTitle": "Aへのお問い合わせ",
+      "contactUrl": "https://www.media.example.com/contact/",
+      "publishingPrincipleTitle": "A新聞社ガイドライン",
+      "publishingPrincipleUrl": "https://www.media.example.com/guidelines/",
+      "privacyPolicyTitle": "Aプライバシーセンター",
+      "privacyPolicyUrl": "https://www.media.example.com/privacy/",
+      "description": "これは説明文です。"
+    };
   }
 }
 
@@ -34,11 +53,31 @@ export default function Index() {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    const registry = String(formData.get("registry"));
-    const endpoint = String(formData.get("endpoint"));
-    const jsonld = String(formData.get("jsonld"));
+    let rawFormData: Record<string, unknown> = {};
+    for (const [key, value] of formData.entries()) {
+      rawFormData[key] = value;
+    }
 
-    setValues({ registry, endpoint, jsonld });
+    console.log(JSON.stringify(rawFormData, null, 2));
+
+    rawFormData["addressCountry"] = "JP"
+    delete rawFormData["businessCategory"];
+    delete rawFormData["corporateNumber"];
+
+    const endpoint = "http://localhost:8080/admin/account//"
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Authorization": `Basic Y2Q4ZjVmOWYtZTNlOC01NjlmLTg3ZWYtZjAzYzZjZmMyOWJjOlVGVUZMcGNTcXJFcVlUT2J5X0twQ3lJQlJ4ajlLekFPSVgweHJhYUJnYVU=`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({input: rawFormData}),
+    });
+    if (!response.ok) {
+      throw new Error();
+    }
+
+    const result = await response.json();
   }
 
   return (
