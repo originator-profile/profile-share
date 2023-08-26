@@ -8,6 +8,7 @@
     "lint": "eslint --fix ."
   },
   "devDependencies": {
+    "@auth0/auth0-react": "^2.2.1",
     "@originator-profile/tsconfig": "*",
     "@originator-profile/ui": "*",
     "@originator-profile/verify": "*",
