@@ -11,6 +11,7 @@ const REGISTRY_UI_ROOT = resolve(
   ),
 );
 
+/** @type import("vite").UserConfig */
 export default defineConfig({
   root: REGISTRY_UI_ROOT,
   plugins: [
