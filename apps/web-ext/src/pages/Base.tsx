@@ -5,6 +5,7 @@ import { Dp, Profile } from "@originator-profile/ui/src/types";
 import {
   sortDps,
   findProfileGenericError,
+  findProfileTokenVerifyFailed
 } from "@originator-profile/ui/src/utils";
 import { routes } from "../utils/routes";
 import useProfileSet from "../utils/use-profile-set";
@@ -12,6 +13,9 @@ import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
 import Prohibition from "../components/Prohibition";
+import { ProfileTokenVerifyFailed } from "@originator-profile/verify";
+
+
 
 function Redirect({
   dp,
@@ -51,15 +55,25 @@ function Base() {
   if (!profiles) {
     return <Loading />;
   }
+
+  if (profiles.find((profile) => profile.error instanceof ProfileTokenVerifyFailed)) {
+    return <Prohibition />;
+  }
+
+  // if(findProfileTokenVerifyFailed(profiles)){
+  //   return <Prohibition  />;
+  // }
+
   const result = findProfileGenericError(profiles);
   
   if (result) {
-    return <Prohibition />;
+    return <Unsupported error={result} />;
   }
   const [dp] = sortDps(profiles.filter(isDp), main);
   if (!dp) {
     return <NotFound variant="dp" />;
   }
+
   return <Redirect dp={dp} tabId={tabId} profiles={profiles} />;
 }
 
