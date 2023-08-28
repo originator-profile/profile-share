@@ -5,7 +5,6 @@ import { Dp, Profile } from "@originator-profile/ui/src/types";
 import {
   sortDps,
   findProfileGenericError,
-  findProfileTokenVerifyFailed
 } from "@originator-profile/ui/src/utils";
 import { routes } from "../utils/routes";
 import useProfileSet from "../utils/use-profile-set";
