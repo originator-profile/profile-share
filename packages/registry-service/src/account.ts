@@ -25,11 +25,7 @@ export const AccountService = ({ validator }: Options) => ({
     ...input
   }: Prisma.accountsCreateInput): Promise<accounts | Error> {
     const prisma = getClient();
-    const d: Prisma.accountsCreateInput = {
-      role: {connect: {value: "group"}},
-      ...input
-    }
-    return await prisma.accounts.create({ data: d }).catch((e: Error) => e);
+    return await prisma.accounts.create({ data: input }).catch((e: Error) => e);
   },
   /**
    * 会員の表示
