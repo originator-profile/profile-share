@@ -12,7 +12,7 @@ module.exports = {
   settings: {
     react: { version: "detect" },
   },
-  ignorePatterns: ["dist", "dist-*"],
+  ignorePatterns: ["dist", "dist-*", "playwright-report"],
   rules: {
     "tsc/config": ["error", { configFile: "tsconfig.json" }],
     "filenames/match-exported": ["error", "kebab"],
