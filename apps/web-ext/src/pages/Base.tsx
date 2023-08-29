@@ -59,10 +59,6 @@ function Base() {
     return <Prohibition />;
   }
 
-  // if(findProfileTokenVerifyFailed(profiles)){
-  //   return <Prohibition  />;
-  // }
-
   const result = findProfileGenericError(profiles);
   
   if (result) {
