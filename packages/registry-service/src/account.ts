@@ -6,6 +6,7 @@ import { Jwk, Jwks } from "@originator-profile/model";
 import { isJwtOpPayload } from "@originator-profile/core";
 import { ValidatorService } from "./validator";
 import { getClient } from "@originator-profile/registry-db";
+import { type OpHolder } from "@originator-profile/model";
 
 type Options = {
   validator: ValidatorService;
@@ -38,6 +39,36 @@ export const AccountService = ({ validator }: Options) => ({
       .findUnique({ where: { id } })
       .catch((e: Error) => e);
     return data ?? new NotFoundError();
+  },
+  /**
+   * 会員の更新
+   * @param input 会員
+   * @return 会員
+   */
+  async updateAccount({
+    id,
+    businessCategory,
+    ...input
+  }: Omit<Partial<OpHolder>, "logos" | "type"> & { id: string }): Promise<
+    accounts | Error
+  > {
+    const prisma = getClient();
+    if (businessCategory) {
+      const createManyInput = businessCategory.map((cat) => {
+        return { accountId: id, businessCategoryValue: cat };
+      });
+      await prisma.accountBusinessCategories.deleteMany({
+        where: { accountId: id },
+      });
+      await prisma.accountBusinessCategories.createMany({
+        data: createManyInput,
+      });
+    }
+
+    return await prisma.accounts.update({
+      where: { id },
+      data: input,
+    });
   },
   /**
    * 会員の更新

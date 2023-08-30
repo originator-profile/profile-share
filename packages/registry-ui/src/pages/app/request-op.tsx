@@ -53,19 +53,19 @@ export default function Index() {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    let rawFormData: Record<string, unknown> = {};
+    const rawFormData: Record<string, unknown> = {};
     for (const [key, value] of formData.entries()) {
       rawFormData[key] = value;
     }
 
+    rawFormData["businessCategory"] = [rawFormData["businessCategory"]];
+
     console.log(JSON.stringify(rawFormData, null, 2));
 
-    rawFormData["addressCountry"] = "JP";
-    delete rawFormData["businessCategory"];
-
-    const endpoint = "http://localhost:8080/internal/accounts/";
+    const endpoint =
+      "http://localhost:8080/internal/accounts/8fe1b860-558c-5107-a9af-21c376a6a27c/";
     const response = await fetch(endpoint, {
-      method: "POST",
+      method: "PUT",
       headers: {
         // Authorization: `Basic Y2Q4ZjVmOWYtZTNlOC01NjlmLTg3ZWYtZjAzYzZjZmMyOWJjOjZ5R0NtR25WYkdaX0JLY2V5UERGaU1IVEo1cHdWUW1XeUJDSjlvbmhWNFk=`,
         "Content-Type": "application/json",

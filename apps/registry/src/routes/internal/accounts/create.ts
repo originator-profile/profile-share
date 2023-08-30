@@ -4,6 +4,7 @@ import { BadRequestError } from "http-errors-enhanced";
 import { ErrorResponse } from "../../../error";
 import { OpHolder } from "@originator-profile/model";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { type, logos, ...properties } = OpHolder.properties;
 
 const Body = {
@@ -28,12 +29,15 @@ const schema: FastifySchema = {
   },
 };
 
-async function create({
-  server,
-  body,
-}: FastifyRequest<{
-  Body: Body;
-}>, reply: FastifyReply) {
+async function create(
+  {
+    server,
+    body,
+  }: FastifyRequest<{
+    Body: Body;
+  }>,
+  reply: FastifyReply,
+) {
   const input = {
     role: { connect: { value: "group" } },
     // 下書き保存を可能にするため、必須のフィールドに仮の値を入れる。
