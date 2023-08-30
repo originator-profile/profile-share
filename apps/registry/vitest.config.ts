@@ -1,12 +1,14 @@
-import { UserConfig, defineConfig } from "vite";
+import { UserConfig, defineConfig } from "vitest/config";
 
 export default defineConfig(({ mode }) => {
   const tests = {
     test: {
       dir: "tests",
       setupFiles: "tests/setup.ts",
-      deps: {
-        inline: ["@fastify/autoload"],
+      server: {
+        deps: {
+          inline: ["@fastify/autoload"],
+        },
       },
     },
     e2e: {
