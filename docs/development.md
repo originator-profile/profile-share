@@ -83,3 +83,11 @@ GitHub リポジトリ上での変更は自動的にチェックされます。
 ### originator-profile/profile/test
 
 パッケージの生成、コードの整形、静的コード解析、E2E テストを含むすべてのテストを実施します。
+
+### E2E テストのレポート
+
+GitHub Actions での E2E テストに失敗すると playwright によるレポートおよびスナップショット画像が artifacts としてアップロードされます。Zip ファイルを展開することで得られるレポートディレクトリ`playwright-report`を以下のように使用することで、失敗の原因を知ることができるかもしれません。
+
+```
+npx playwright show-report path-to/playwright-report
+```
