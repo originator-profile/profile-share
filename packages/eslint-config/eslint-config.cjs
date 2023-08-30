@@ -19,12 +19,8 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
 
     // Possible Problems
-    /** https://typescript-eslint.io/rules/no-explicit-any */
-    "@typescript-eslint/no-explicit-any": "error",
     /** https://typescript-eslint.io/rules/no-non-null-assertion */
     "@typescript-eslint/no-non-null-assertion": "error",
-    /** https://typescript-eslint.io/rules/no-unused-vars */
-    "@typescript-eslint/no-unused-vars": "error",
     /** https://eslint.org/docs/rules/array-callback-return */
     "array-callback-return": "error",
     /** https://eslint.org/docs/rules/no-await-in-loop */
