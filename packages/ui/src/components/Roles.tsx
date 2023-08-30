@@ -17,10 +17,9 @@ function Roles({ className, roles }: Props) {
       {roles.map((role, index) => (
         <li
           key={index}
-          className={clsx(
-            "jumpu-tag text-xs bg-gray-100",
-            { ["mb-1"]: index < roles.length - 1 },
-          )}
+          className={clsx("jumpu-tag text-xs bg-gray-100", {
+            ["mb-1"]: index < roles.length - 1,
+          })}
         >
           {roleName[role]}
         </li>
