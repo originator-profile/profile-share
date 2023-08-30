@@ -2,11 +2,10 @@ import { Prisma, accounts } from "@prisma/client";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { fromUnixTime } from "date-fns";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
-import { Jwk, Jwks } from "@originator-profile/model";
+import { Jwk, Jwks, type OpHolder } from "@originator-profile/model";
 import { isJwtOpPayload } from "@originator-profile/core";
 import { ValidatorService } from "./validator";
 import { getClient } from "@originator-profile/registry-db";
-import { type OpHolder } from "@originator-profile/model";
 
 type Options = {
   validator: ValidatorService;

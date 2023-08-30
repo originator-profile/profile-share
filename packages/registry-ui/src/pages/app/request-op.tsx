@@ -1,16 +1,6 @@
-import { type ChangeEvent, type FormEvent, Fragment, useState } from "react";
-import clsx from "clsx";
+import { type FormEvent } from "react";
 import FormRow from "../../components/FormRow";
 
-type InitialValues = {
-  registry: string;
-  endpoint: string;
-  profileSet?: unknown;
-};
-
-function saveInitialValues(val: InitialValues) {
-  window.history.replaceState(null, "", `#${window.btoa(JSON.stringify(val))}`);
-}
 
 function loadInitialValues() {
   try {
@@ -42,13 +32,6 @@ function loadInitialValues() {
 const initialValues = loadInitialValues();
 
 export default function Index() {
-  const [values, setValues] = useState<Record<string, unknown>>({});
-  const [presentation, setPresentation] = useState(
-    "profileSet" in initialValues ? "direct" : "url",
-  );
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
-    setPresentation(event.target.value);
-
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -76,7 +59,7 @@ export default function Index() {
       throw new Error();
     }
 
-    const result = await response.json();
+    // const result = await response.json();
   }
 
   return (
@@ -101,7 +84,7 @@ export default function Index() {
                 aria-selected={false}
                 aria-controls="panel-2"
                 id="tab-2"
-                tabIndex={2}
+                tabIndex={-2}
               >
                 認証鍵
               </button>
@@ -110,7 +93,7 @@ export default function Index() {
                 aria-selected={false}
                 aria-controls="panel-3"
                 id="tab-3"
-                tabIndex={3}
+                tabIndex={-3}
               >
                 ロゴマーク
               </button>
@@ -119,7 +102,7 @@ export default function Index() {
                 aria-selected={false}
                 aria-controls="panel-4"
                 id="tab-4"
-                tabIndex={4}
+                tabIndex={-4}
               >
                 資格情報
               </button>
