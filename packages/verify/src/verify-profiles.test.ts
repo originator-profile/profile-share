@@ -6,6 +6,7 @@ import {
   ProfileClaimsValidationFailed,
   ProfilesVerifyFailed,
   ProfileTokenVerifyFailed,
+  ProfilesResolveFailed,
 } from "./errors";
 import { LocalKeys } from "./keys";
 import { SignedProfileValidator } from "./decode";
@@ -59,9 +60,9 @@ describe("verify-profiles", async () => {
       null,
     );
     const results = await verifier();
-    expect(results[0]).instanceOf(Error);
+    expect(results[0]).instanceOf(ProfileTokenVerifyFailed);
     expect(results[0]).not.haveOwnProperty("op");
-    expect(results[1]).instanceOf(Error);
+    expect(results[1]).instanceOf(ProfilesResolveFailed);
     expect(results[1]).not.haveOwnProperty("dp");
   });
 
@@ -143,7 +144,7 @@ describe("verify-profiles", async () => {
       null,
     );
     const results = await verifier();
-    expect(results[0]).instanceOf(Error);
-    expect(results[1]).instanceOf(Error);
+    expect(results[0]).instanceOf(ProfilesVerifyFailed);
+    expect(results[1]).instanceOf(ProfileTokenVerifyFailed);
   });
 });
