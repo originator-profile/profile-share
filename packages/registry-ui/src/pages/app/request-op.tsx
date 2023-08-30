@@ -1,7 +1,6 @@
 import { type FormEvent } from "react";
 import FormRow from "../../components/FormRow";
 
-
 function loadInitialValues() {
   try {
     return JSON.parse(window.atob(document.location.hash.slice(1)));
