@@ -14,8 +14,6 @@ import Unsupported from "../components/Unsupported";
 import Prohibition from "../components/Prohibition";
 import { ProfileTokenVerifyFailed } from "@originator-profile/verify";
 
-
-
 function Redirect({
   dp,
   tabId,
@@ -55,12 +53,16 @@ function Base() {
     return <Loading />;
   }
 
-  if (profiles.find((profile) => profile.error instanceof ProfileTokenVerifyFailed)) {
+  if (
+    profiles.find(
+      (profile) => profile.error instanceof ProfileTokenVerifyFailed,
+    )
+  ) {
     return <Prohibition />;
   }
 
   const result = findProfileGenericError(profiles);
-  
+
   if (result) {
     return <Unsupported error={result} />;
   }
