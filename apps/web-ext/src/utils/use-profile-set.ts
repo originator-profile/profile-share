@@ -27,9 +27,8 @@ async function fetchVerifiedProfiles([, tabId]: [
     });
   const parsed = JSON.parse(data);
   if (!ok) throw Object.assign(new Error(parsed.message), parsed);
-  const { advertisers, publishers, main, profile } = await expandProfileSet(
-    parsed,
-  );
+  const { advertisers, publishers, main, profile } =
+    await expandProfileSet(parsed);
   const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(
     import.meta.env.MODE === "development" && registry === "localhost"
