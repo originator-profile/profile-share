@@ -18,7 +18,7 @@ function Roles({ className, roles }: Props) {
         <li
           key={index}
           className={clsx(
-            "jumpu-tag hover:border-transparent cursor-auto text-xs bg-gray-100",
+            "jumpu-tag text-xs bg-gray-100",
             { ["mb-1"]: index < roles.length - 1 },
           )}
         >
