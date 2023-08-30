@@ -4,7 +4,7 @@ import {
   ProfileGenericError,
   ProfileClaimsValidationFailed,
   ProfilesVerifyFailed,
-  ProfilesResolveFailed,
+  ProfilesResolveFailed
 } from "./errors";
 import { Keys, LocalKeys } from "./keys";
 import {

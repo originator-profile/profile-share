@@ -11,6 +11,10 @@ import useProfileSet from "../utils/use-profile-set";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
+import Prohibition from "../components/Prohibition";
+import { ProfileTokenVerifyFailed } from "@originator-profile/verify";
+
+
 
 function Redirect({
   dp,
@@ -50,8 +54,13 @@ function Base() {
   if (!profiles) {
     return <Loading />;
   }
+
+  if (profiles.find((profile) => profile.error instanceof ProfileTokenVerifyFailed)) {
+    return <Prohibition />;
+  }
+
   const result = findProfileGenericError(profiles);
-  // TODO: 禁止のケースの見た目を実装して
+  
   if (result) {
     return <Unsupported error={result} />;
   }
@@ -59,6 +68,7 @@ function Base() {
   if (!dp) {
     return <NotFound variant="dp" />;
   }
+
   return <Redirect dp={dp} tabId={tabId} profiles={profiles} />;
 }
 

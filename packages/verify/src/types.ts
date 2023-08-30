@@ -4,7 +4,7 @@ import {
   ProfileClaimsValidationFailed,
   ProfileTokenVerifyFailed,
   ProfilesResolveFailed,
-  ProfilesVerifyFailed,
+  ProfilesVerifyFailed
 } from "./errors";
 
 /** Profile の Token の復号結果 */
