@@ -29,7 +29,7 @@
     "dompurify": "^3.0.4",
     "esbuild": "^0.18.11",
     "esbuild-copy-static-files": "^0.1.0",
-    "eslint": "^8.44.0",
+    "eslint": "^8.48.0",
     "eslint-config-originator-profile": "*",
     "jsonld": "^8.2.0",
     "just-extend": "^6.2.0",
