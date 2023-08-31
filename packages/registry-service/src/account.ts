@@ -2,7 +2,7 @@ import { Prisma, accounts } from "@prisma/client";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { fromUnixTime } from "date-fns";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
-import { Jwk, Jwks } from "@originator-profile/model";
+import { Jwk, Jwks, type OpHolder } from "@originator-profile/model";
 import { isJwtOpPayload } from "@originator-profile/core";
 import { ValidatorService } from "./validator";
 import { getClient } from "@originator-profile/registry-db";
@@ -44,6 +44,39 @@ export const AccountService = ({ validator }: Options) => ({
    * @param input 会員
    * @return 会員
    */
+  async updateAccount({
+    id,
+    businessCategory,
+    ...input
+  }: Omit<Partial<OpHolder>, "logos" | "type"> & { id: string }): Promise<
+    accounts | Error
+  > {
+    const prisma = getClient();
+    await this.raiseIfDomainNameCannotChange(id, input.domainName);
+    if (businessCategory) {
+      const createManyInput = businessCategory.map((cat) => {
+        return { accountId: id, businessCategoryValue: cat };
+      });
+      await prisma.accountBusinessCategories.deleteMany({
+        where: { accountId: id },
+      });
+      await prisma.accountBusinessCategories.createMany({
+        data: createManyInput,
+      });
+    }
+
+    return await prisma.accounts.update({
+      where: { id },
+      data: input,
+    });
+  },
+  /**
+   * 会員の更新
+   * @param input 会員
+   * @return 会員
+   *
+   * @deprecated 代わりに {@link updateAccount} を利用してください。
+   */
   async update({
     id,
     ...input
@@ -51,6 +84,13 @@ export const AccountService = ({ validator }: Options) => ({
     accounts | Error
   > {
     const prisma = getClient();
+    if (input.domainName) {
+      const newDomainName =
+        typeof input.domainName === "string"
+          ? input.domainName
+          : input.domainName.set;
+      this.raiseIfDomainNameCannotChange(id, newDomainName);
+    }
     return await prisma.accounts.update({
       where: { id },
       data: input,
@@ -195,6 +235,30 @@ export const AccountService = ({ validator }: Options) => ({
       profile: ops.map((p) => p.jwt),
     };
     return profiles;
+  },
+  /**
+   * ドメイン名（と会員 ID）が変更不可能なら例外を投げる。
+   * @param id 会員ID
+   * @param newDomainName 変更後のドメイン名
+   */
+  async raiseIfDomainNameCannotChange(id: string, newDomainName?: string) {
+    if (!newDomainName) {
+      return;
+    }
+    const prisma = getClient();
+    const result = await prisma.accounts.findFirst({
+      where: { id },
+      include: { issuedOps: true },
+    });
+    if (!result) {
+      throw new NotFoundError("Account not found");
+    } else {
+      const willIdChange = result.domainName !== newDomainName;
+      const opsIssued = result?.issuedOps && result?.issuedOps.length > 0;
+      if (willIdChange && opsIssued) {
+        throw new BadRequestError("Cannot change OP ID");
+      }
+    }
   },
 });
 

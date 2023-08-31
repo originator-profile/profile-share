@@ -37,6 +37,7 @@ describe("CertificateService", () => {
       roleValue: "certifier",
       name: "Originator Profile 技術研究組合",
       description: "Originator Profile Registry (Demo)",
+      corporateNumber: "68724062888454",
       email: "example@originator-profile.org",
       phoneNumber: null,
       postalCode: "108-0073",
