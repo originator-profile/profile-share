@@ -1,118 +1,114 @@
-import { describe, afterEach, expect, test, afterAll } from "vitest";
-import { Page } from "playwright";
-import { ctx, popup } from "./setup";
+import { expect, popup, test } from "./fixtures";
+import { BrowserContext, Page } from "@playwright/test";
 
-describe("ProfileSet不在時の確認", () => {
-  let ext: Page | undefined;
-  let page: Page | undefined;
+test.describe.configure({ mode: "serial" });
 
-  type Response = {
-    status: number;
-    contentType: string;
-    body: string;
-  };
+let ext: Page | undefined;
 
-  const responseMap: Record<string, Response> = {
-    "/test": {
-      status: 200,
-      contentType: "text/html",
-      body: `
-        <!doctype html>
-        <html lang="ja">
-        <head>
-          <meta charset="utf-8">
-          <title>Title</title>
-          <link
-            href="/ps.json"
-            rel="alternate"
-            type="application/ld+json"
-          />
-        </head>
-        <body><h1>ProfileSet不在時(エンドポイントあり、取得できない)の確認</h1></body>
-        </html>
-      `,
-    },
-    "/": {
-      status: 200,
-      contentType: "text/html",
-      body: `
-        <!doctype html>
-        <html lang="ja">
-        <head>
-          <meta charset="utf-8">
-          <title>Title</title>
-        </head>
-        <body>
-          <h1>ProfileSet不在時(エンドポイントなし)の確認</h1>
-        </body>
-        </html>
-      `,
-    },
-  };
+type Response = {
+  status: number;
+  contentType: string;
+  body: string;
+};
 
-  async function runTest(url: string): Promise<Page> {
-    page = await ctx.newPage();
+const responseMap: Record<string, Response> = {
+  "/test": {
+    status: 200,
+    contentType: "text/html",
+    body: `
+      <!doctype html>
+      <html lang="ja">
+      <head>
+        <meta charset="utf-8">
+        <title>Title</title>
+        <link
+          href="/ps.json"
+          rel="alternate"
+          type="application/ld+json"
+        />
+      </head>
+      <body><h1>ProfileSet不在時(エンドポイントあり、取得できない)の確認</h1></body>
+      </html>
+    `,
+  },
+  "/": {
+    status: 200,
+    contentType: "text/html",
+    body: `
+      <!doctype html>
+      <html lang="ja">
+      <head>
+        <meta charset="utf-8">
+        <title>Title</title>
+      </head>
+      <body>
+        <h1>ProfileSet不在時(エンドポイントなし)の確認</h1>
+      </body>
+      </html>
+    `,
+  },
+};
 
-    await page.route("**", (route) => {
-      const url = new URL(route.request().url());
+async function runTest(ctx: BrowserContext, page: Page, url: string) {
+  await page.route("**", (route) => {
+    const url = new URL(route.request().url());
 
-      if (url.pathname === "/ps.json") {
-        return route.abort();
-      }
-
-      const response = responseMap[url.pathname];
-
-      if (response) {
-        return route.fulfill(response);
-      } else {
-        return route.continue();
-      }
-    });
-
-    try {
-      await page.goto(url);
-    } catch (err) {
-      console.error(`Error navigating to ${url}`);
+    if (url.pathname === "/ps.json") {
+      return route.abort();
     }
-    ext = await popup(ctx);
 
-    const messages = [
-      "組織の信頼性情報と出版物の流通経路が正しく読み取れませんでした",
-      "組織の信頼性情報と出版物の流通経路がまだありません",
-      "組織の信頼性情報と出版物の流通経路の取得に失敗しました",
-    ];
+    const response = responseMap[url.pathname];
 
-    const counts = await Promise.all(
-      messages.map((message) => ext?.locator(`:text("${message}")`).count()),
-    );
+    if (response) {
+      return route.fulfill(response);
+    } else {
+      return route.continue();
+    }
+  });
 
-    counts.forEach((count) => {
-      expect(count).toEqual(1);
-    });
-
-    return page;
+  try {
+    await page.goto(url);
+  } catch (err) {
+    console.error(`Error navigating to ${url}`);
   }
+  ext = await popup(ctx);
 
-  afterEach(async ({ task }) => {
-    await page?.screenshot({ path: `screenshots/${task.name}-webpage.png` });
-    await ext?.screenshot({ path: `screenshots/${task.name}-web-ext.png` });
-  });
+  const messages = [
+    "組織の信頼性情報と出版物の流通経路が正しく読み取れませんでした",
+    "組織の信頼性情報と出版物の流通経路がまだありません",
+    "組織の信頼性情報と出版物の流通経路の取得に失敗しました",
+  ];
 
-  afterAll(async () => {
-    await Promise.all(ctx.pages().map((page) => page.close()));
-  });
+  const counts = await Promise.all(
+    messages.map((message) => ext?.locator(`:text("${message}")`).count()),
+  );
 
-  test("ProfileSet不在時(エンドポイントなし)の確認", async () => {
-    await runTest("http://localhost:8080/");
-    await expect(ext?.locator("details dd").textContent()).resolves.toBe(
-      "No profile sets found",
-    );
+  counts.forEach((count) => {
+    expect(count).toEqual(1);
   });
+}
 
-  test("ProfileSet不在時(エンドポイントあり、取得できない)の確認", async () => {
-    await runTest("http://localhost:8080/test");
-    await expect(ext?.locator("details dd").textContent()).resolves.toBe(
-      "プロファイルを取得できませんでした:\nFailed to fetch",
-    );
-  });
+test.afterEach(async ({ page }, testInfo) => {
+  await page.screenshot({ path: `screenshots/${testInfo.title}-webpage.png` });
+  await ext?.screenshot({ path: `screenshots/${testInfo.title}-web-ext.png` });
+});
+
+test("ProfileSet不在時(エンドポイントなし)の確認", async ({
+  context,
+  page,
+}) => {
+  await runTest(context, page, "http://localhost:8080/");
+  await expect(ext?.locator("details dd").textContent()).resolves.toBe(
+    "No profile sets found",
+  );
+});
+
+test("ProfileSet不在時(エンドポイントあり、取得できない)の確認", async ({
+  context,
+  page,
+}) => {
+  await runTest(context, page, "http://localhost:8080/test");
+  await expect(ext?.locator("details dd").textContent()).resolves.toBe(
+    "プロファイルを取得できませんでした:\nFailed to fetch",
+  );
 });

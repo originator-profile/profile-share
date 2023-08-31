@@ -8,14 +8,14 @@
   },
   "devDependencies": {
     "@originator-profile/tsconfig": "*",
-    "@prisma/client": "^4.16.2",
-    "@prisma/generator-helper": "^4.16.2",
+    "@prisma/client": "^5.2.0",
+    "@prisma/generator-helper": "^5.2.0",
     "@types/jsonld": "^1.5.9",
     "date-fns": "^2.30.0",
     "http-errors-enhanced": "^1.0.13",
     "jsonld": "^8.2.0",
-    "prisma": "^4.16.2",
-    "prisma-erd-generator": "^1.6.2",
+    "prisma": "^5.2.0",
+    "prisma-erd-generator": "^1.11.1",
     "uuid": "^9.0.0"
   }
 }

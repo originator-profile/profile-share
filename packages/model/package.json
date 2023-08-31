@@ -11,11 +11,11 @@
     "@types/jsonld": "^1.5.9",
     "@originator-profile/tsconfig": "*",
     "ajv": "^8.12.0",
-    "eslint": "^8.44.0",
+    "eslint": "^8.48.0",
     "eslint-config-originator-profile": "*",
-    "json-schema-to-ts": "^2.9.1",
+    "json-schema-to-ts": "^2.9.2",
     "jsonld": "^8.2.0",
-    "msw": "^1.2.2",
-    "vitest": "^0.32.4"
+    "msw": "^1.2.5",
+    "vitest": "^0.34.3"
   }
 }

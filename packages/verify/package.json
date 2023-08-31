@@ -15,13 +15,13 @@
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
     "date-fns": "^2.30.0",
-    "eslint": "^8.44.0",
+    "eslint": "^8.48.0",
     "eslint-config-originator-profile": "*",
-    "happy-dom": "^9.20.3",
+    "happy-dom": "^10.11.2",
     "jose": "^4.14.4",
     "jsonld": "^8.2.0",
-    "playwright": "^1.35.1",
+    "playwright": "^1.37.1",
     "vi-fetch": "^0.8.0",
-    "vitest": "^0.32.4"
+    "vitest": "^0.34.3"
   }
 }

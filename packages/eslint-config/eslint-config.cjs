@@ -12,19 +12,15 @@ module.exports = {
   settings: {
     react: { version: "detect" },
   },
-  ignorePatterns: ["dist", "dist-*"],
+  ignorePatterns: ["dist", "dist-*", "playwright-report"],
   rules: {
     "tsc/config": ["error", { configFile: "tsconfig.json" }],
     "filenames/match-exported": ["error", "kebab"],
     "react/react-in-jsx-scope": "off",
 
     // Possible Problems
-    /** https://typescript-eslint.io/rules/no-explicit-any */
-    "@typescript-eslint/no-explicit-any": "error",
     /** https://typescript-eslint.io/rules/no-non-null-assertion */
     "@typescript-eslint/no-non-null-assertion": "error",
-    /** https://typescript-eslint.io/rules/no-unused-vars */
-    "@typescript-eslint/no-unused-vars": "error",
     /** https://eslint.org/docs/rules/array-callback-return */
     "array-callback-return": "error",
     /** https://eslint.org/docs/rules/no-await-in-loop */

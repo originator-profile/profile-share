@@ -9,6 +9,13 @@ runs:
     - name: E2E tests
       run: yarn e2e
       shell: bash
-    - uses: actions/upload-artifact@v3.1.1
+    - name: テスト結果の保存(失敗時レポート)
+      uses: actions/upload-artifact@v3
+      if: failure()
       with:
-        path: apps/web-ext/screenshots
+        name: e2e-report
+        path: |
+          packages/wordpress/playwright-report
+          apps/web-ext/playwright-report
+          apps/web-ext/screenshots
+        retention-days: 7
