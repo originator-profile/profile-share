@@ -52,14 +52,14 @@ export default function Index() {
 
     console.log(JSON.stringify(token, null, 2));
 
-    const endpoint = "http://localhost:8080/internal/accounts/";
+    const endpoint = "http://localhost:8080/internal/accounts/cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc/";
     const response = await fetch(endpoint, {
-      method: "GET",
+      method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      // body: JSON.stringify(rawFormData),
+      body: JSON.stringify(rawFormData),
     });
     if (!response.ok) {
       throw new Error();
