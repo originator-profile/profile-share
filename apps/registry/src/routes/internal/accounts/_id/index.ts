@@ -7,12 +7,12 @@ import Params from "./params";
 async function index(fastify: FastifyInstance): Promise<void> {
   fastify.put<FromHandler<typeof update, Params>>(
     "/",
-    { schema, preHandler},
+    { schema, preHandler },
     update,
   );
   fastify.get<FromHandler<typeof get, Params>>(
     "/",
-    { schema: schemaGET, preHandler: preHandlerGET},
+    { schema: schemaGET, preHandler: preHandlerGET },
     get,
   );
 }

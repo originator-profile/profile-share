@@ -52,7 +52,8 @@ export default function Index() {
 
     console.log(JSON.stringify(token, null, 2));
 
-    const endpoint = "http://localhost:8080/internal/accounts/cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc/";
+    const endpoint =
+      "http://localhost:8080/internal/accounts/cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc/";
     const response = await fetch(endpoint, {
       method: "PUT",
       headers: {

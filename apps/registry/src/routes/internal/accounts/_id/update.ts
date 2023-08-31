@@ -1,4 +1,9 @@
-import { FastifySchema, FastifyRequest, FastifyReply, DoneFuncWithErrOrRes } from "fastify";
+import {
+  FastifySchema,
+  FastifyRequest,
+  FastifyReply,
+  DoneFuncWithErrOrRes,
+} from "fastify";
 import { FromSchema } from "json-schema-to-ts";
 import { BadRequestError } from "http-errors-enhanced";
 import { ErrorResponse } from "../../../../error";
@@ -56,10 +61,14 @@ async function update({
   return result;
 }
 
-export function preHandler(request: FastifyRequest, reply: FastifyReply, done: DoneFuncWithErrOrRes) {
+export function preHandler(
+  request: FastifyRequest,
+  reply: FastifyReply,
+  done: DoneFuncWithErrOrRes,
+) {
   const user = request.user;
   // @ts-expect-error
-  if (user.permissions.includes('write:requests')) {
+  if (user.permissions.includes("write:requests")) {
     done();
   } else {
     done(new BadRequestError("Insufficient permissions"));

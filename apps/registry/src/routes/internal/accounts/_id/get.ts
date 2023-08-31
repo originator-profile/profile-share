@@ -1,4 +1,9 @@
-import { FastifySchema, FastifyRequest, FastifyReply, DoneFuncWithErrOrRes } from "fastify";
+import {
+  FastifySchema,
+  FastifyRequest,
+  FastifyReply,
+  DoneFuncWithErrOrRes,
+} from "fastify";
 import { ErrorResponse } from "../../../../error";
 import Params from "./params";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
@@ -26,7 +31,7 @@ async function get({
 }>) {
   const { id } = params;
 
-  const data = await server.services.account.read({id});
+  const data = await server.services.account.read({ id });
 
   if (data instanceof NotFoundError) {
     throw data;
@@ -37,10 +42,14 @@ async function get({
   return data;
 }
 
-export function preHandler(request: FastifyRequest, reply: FastifyReply, done: DoneFuncWithErrOrRes) {
+export function preHandler(
+  request: FastifyRequest,
+  reply: FastifyReply,
+  done: DoneFuncWithErrOrRes,
+) {
   const user = request.user;
   // @ts-expect-error
-  if (user.permissions.includes('write:requests')) {
+  if (user.permissions.includes("write:requests")) {
     done();
   } else {
     done(new BadRequestError("Insufficient permissions"));
