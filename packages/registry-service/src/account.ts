@@ -52,7 +52,7 @@ export const AccountService = ({ validator }: Options) => ({
     accounts | Error
   > {
     const prisma = getClient();
-    this.raiseIfDomainNameCannotChange(id, input.domainName);
+    await this.raiseIfDomainNameCannotChange(id, input.domainName);
     if (businessCategory) {
       const createManyInput = businessCategory.map((cat) => {
         return { accountId: id, businessCategoryValue: cat };
