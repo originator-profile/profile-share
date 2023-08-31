@@ -1,6 +1,6 @@
 import { type FormEvent } from "react";
 import FormRow from "../../components/FormRow";
-
+import { useAuth0 } from '@auth0/auth0-react';
 function loadInitialValues() {
   // API を試すためのデータ
   return {
@@ -28,6 +28,7 @@ function loadInitialValues() {
 const initialValues = loadInitialValues();
 
 export default function Index() {
+  const { getAccessTokenSilently } = useAuth0();
   // TODO: フォームをちゃんと実装して
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -42,15 +43,24 @@ export default function Index() {
 
     console.log(JSON.stringify(rawFormData, null, 2));
 
+    const token = await getAccessTokenSilently({
+      authorizationParams: {
+        audience: "http://localhost:8080/",
+        redirect_uri: "http://localhost:8080/app/request-op/",
+      },
+    });
+
+    console.log(JSON.stringify(token, null, 2));
+
     const endpoint =
-      "http://localhost:8080/internal/accounts/8fe1b860-558c-5107-a9af-21c376a6a27c/";
+      "http://localhost:8080/internal/accounts/";
     const response = await fetch(endpoint, {
-      method: "PUT",
+      method: "GET",
       headers: {
-        // Authorization: `Basic Y2Q4ZjVmOWYtZTNlOC01NjlmLTg3ZWYtZjAzYzZjZmMyOWJjOjZ5R0NtR25WYkdaX0JLY2V5UERGaU1IVEo1cHdWUW1XeUJDSjlvbmhWNFk=`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(rawFormData),
+      // body: JSON.stringify(rawFormData),
     });
     if (!response.ok) {
       throw new Error();
