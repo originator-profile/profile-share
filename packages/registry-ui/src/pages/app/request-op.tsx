@@ -2,35 +2,33 @@ import { type FormEvent } from "react";
 import FormRow from "../../components/FormRow";
 
 function loadInitialValues() {
-  try {
-    return JSON.parse(window.atob(document.location.hash.slice(1)));
-  } catch {
-    return {
-      domainName: "media.example.com",
-      name: "A新聞社",
-      postalCode: "433-8000",
-      addressRegion: "東京都",
-      addressLocality: "千代田区",
-      streetAddress: "大手町３丁目1-1 Aビル 1F",
-      phoneNumber: "090-9999-1111",
-      email: "contact@media.example.com",
-      corporateNumber: "68724062888454",
-      businessCategory: "通信",
-      url: "https://www.media.example.com/",
-      contactTitle: "Aへのお問い合わせ",
-      contactUrl: "https://www.media.example.com/contact/",
-      publishingPrincipleTitle: "A新聞社ガイドライン",
-      publishingPrincipleUrl: "https://www.media.example.com/guidelines/",
-      privacyPolicyTitle: "Aプライバシーセンター",
-      privacyPolicyUrl: "https://www.media.example.com/privacy/",
-      description: "これは説明文です。",
-    };
-  }
+  // API を試すためのデータ
+  return {
+    domainName: "media.example.com",
+    name: "A新聞社",
+    postalCode: "433-8000",
+    addressRegion: "東京都",
+    addressLocality: "千代田区",
+    streetAddress: "大手町３丁目1-1 Aビル 1F",
+    phoneNumber: "090-9999-1111",
+    email: "contact@media.example.com",
+    corporateNumber: "68724062888454",
+    businessCategory: "通信",
+    url: "https://www.media.example.com/",
+    contactTitle: "Aへのお問い合わせ",
+    contactUrl: "https://www.media.example.com/contact/",
+    publishingPrincipleTitle: "A新聞社ガイドライン",
+    publishingPrincipleUrl: "https://www.media.example.com/guidelines/",
+    privacyPolicyTitle: "Aプライバシーセンター",
+    privacyPolicyUrl: "https://www.media.example.com/privacy/",
+    description: "これは説明文です。",
+  };
 }
 
 const initialValues = loadInitialValues();
 
 export default function Index() {
+  // TODO: フォームをちゃんと実装して
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -61,6 +59,7 @@ export default function Index() {
     // const result = await response.json();
   }
 
+  // TODO: 見た目をデザイン通りに実装して
   return (
     <>
       <header className="bg-black fixed top-0 left-0 w-full h-10">1</header>
