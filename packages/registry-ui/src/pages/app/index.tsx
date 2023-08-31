@@ -1,8 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Index() {
-  const { loginWithRedirect, isLoading, isAuthenticated, user } = useAuth0();
-  const handleClickLogin = () => loginWithRedirect();
+  const { loginWithRedirect, logout, isLoading, isAuthenticated, user } =
+    useAuth0();
 
   if (isLoading) {
     return (
@@ -14,21 +14,30 @@ export default function Index() {
     );
   }
 
-  // TODO: ログアウト機能を実装して
+  // TODO: グローバルナビゲーションにログアウトボタンを配置して
   // TODO: レジストリ DB にユーザーアカウント情報を永続化して
   if (isAuthenticated && user) {
     return (
-      <div className="jumpu-card">
-        <img src={user.picture} alt={user.name} />
-        <h2>{user.name}</h2>
-        <p>{user.email}</p>
-      </div>
+      <>
+        <button className="jumpu-button" type="button" onClick={() => logout()}>
+          ログアウト
+        </button>
+        <div className="jumpu-card">
+          <img src={user.picture} alt={user.name} />
+          <h2>{user.name}</h2>
+          <p>{user.email}</p>
+        </div>
+      </>
     );
   }
 
   // TODO: グローバルナビゲーションにログインボタンを配置して
   return (
-    <button className="jumpu-button" type="button" onClick={handleClickLogin}>
+    <button
+      className="jumpu-button"
+      type="button"
+      onClick={() => loginWithRedirect()}
+    >
       ログイン
     </button>
   );
