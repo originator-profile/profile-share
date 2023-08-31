@@ -26,6 +26,10 @@ const OpCertifier = {
         "ウェブメディアそれを運用する法人、認定機関、業界団体等であることの記述",
       type: "string",
     },
+    corporateNumber: {
+      title: "法人番号",
+      type: "string",
+    },
     businessCategory: BusinessCategory,
     email: {
       title: "メールアドレス",
