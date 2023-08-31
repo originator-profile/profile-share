@@ -1,6 +1,6 @@
 import { type FormEvent } from "react";
 import FormRow from "../../components/FormRow";
-import { useAuth0 } from '@auth0/auth0-react';
+import { useAuth0 } from "@auth0/auth0-react";
 function loadInitialValues() {
   // API を試すためのデータ
   return {
@@ -52,8 +52,7 @@ export default function Index() {
 
     console.log(JSON.stringify(token, null, 2));
 
-    const endpoint =
-      "http://localhost:8080/internal/accounts/";
+    const endpoint = "http://localhost:8080/internal/accounts/";
     const response = await fetch(endpoint, {
       method: "GET",
       headers: {

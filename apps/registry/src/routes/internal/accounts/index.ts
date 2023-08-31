@@ -4,12 +4,12 @@ import { create, schema } from "./create";
 
 async function index(fastify: FastifyInstance): Promise<void> {
   fastify.get(
-    '/',
+    "/",
     {
       // preValidation: fastify.authenticate
     },
-    r => r.user
-  )
+    (r) => r.user,
+  );
   fastify.post<FromHandler<typeof create>>("/", { schema: schema }, create);
 }
 
