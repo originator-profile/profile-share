@@ -11,7 +11,7 @@ export const UserAccountRepository = () => ({
    * @return ユーザーアカウント
    */
   async create(
-    input: Prisma.userAccountsCreateInput
+    input: Prisma.userAccountsCreateInput,
   ): Promise<userAccounts | Error> {
     const prisma = getClient();
     return await prisma.userAccounts
