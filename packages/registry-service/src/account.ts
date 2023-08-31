@@ -74,6 +74,8 @@ export const AccountService = ({ validator }: Options) => ({
    * 会員の更新
    * @param input 会員
    * @return 会員
+   *
+   * @deprecated 代わりに {@link updateAccount} を利用してください。
    */
   async update({
     id,
