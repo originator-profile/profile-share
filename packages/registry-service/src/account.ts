@@ -52,6 +52,7 @@ export const AccountService = ({ validator }: Options) => ({
     accounts | Error
   > {
     const prisma = getClient();
+    this.raiseIfDomainNameCannotChange(id, input.domainName);
     if (businessCategory) {
       const createManyInput = businessCategory.map((cat) => {
         return { accountId: id, businessCategoryValue: cat };
@@ -81,6 +82,13 @@ export const AccountService = ({ validator }: Options) => ({
     accounts | Error
   > {
     const prisma = getClient();
+    if (input.domainName) {
+      const newDomainName =
+        typeof input.domainName === "string"
+          ? input.domainName
+          : input.domainName.set;
+      this.raiseIfDomainNameCannotChange(id, newDomainName);
+    }
     return await prisma.accounts.update({
       where: { id },
       data: input,
@@ -225,6 +233,30 @@ export const AccountService = ({ validator }: Options) => ({
       profile: ops.map((p) => p.jwt),
     };
     return profiles;
+  },
+  /**
+   * ドメイン名（と会員 ID）が変更不可能なら例外を投げる。
+   * @param id 会員ID
+   * @param newDomainName 変更後のドメイン名
+   */
+  async raiseIfDomainNameCannotChange(id: string, newDomainName?: string) {
+    if (!newDomainName) {
+      return;
+    }
+    const prisma = getClient();
+    const result = await prisma.accounts.findFirst({
+      where: { id },
+      include: { issuedOps: true },
+    });
+    if (!result) {
+      throw new NotFoundError("Account not found");
+    } else {
+      const willIdChange = result.domainName !== newDomainName;
+      const opsIssued = result?.issuedOps && result?.issuedOps.length > 0;
+      if (willIdChange && opsIssued) {
+        throw new BadRequestError("Cannot change OP ID");
+      }
+    }
   },
 });
 
