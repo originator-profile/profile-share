@@ -15,8 +15,9 @@ async function globalSetup(config: FullConfig) {
     .toString("base64url");
   await exec(path.resolve(__dirname, "docker-setup.sh"));
 
-  // @wordpress/e2e-test-utils-playwright requestUtils.setupRest() が環境変数 WP_BASE_URL に依存しているため指定
-  // https://github.com/WordPress/gutenberg/blob/6d77fd28f50adb39040d27cb797b9fc3a1393ef7/packages/e2e-test-utils-playwright/src/request-utils/rest.ts#L11
+  // @wordpress/e2e-test-utils-playwright requestUtils.setupRest() で WP_BASE_URL がハードコードされており、RequestUtils.setup() で baseURL を与えても機能しないため指定
+  // https://github.com/WordPress/gutenberg/blob/6d77fd28f50adb39040d27cb797b9fc3a1393ef7/packages/e2e-test-utils-playwright/src/request-utils/rest.ts#L11-L39
+  // https://github.com/WordPress/gutenberg/issues/53277
   process.env.WP_BASE_URL = config.projects[0].use.baseURL;
 
   const { RequestUtils } = await import("@wordpress/e2e-test-utils-playwright");
