@@ -1,9 +1,4 @@
-import {
-  FastifySchema,
-  FastifyRequest,
-  FastifyReply,
-  DoneFuncWithErrOrRes,
-} from "fastify";
+import { FastifySchema, FastifyRequest } from "fastify";
 import { FromSchema } from "json-schema-to-ts";
 import { BadRequestError } from "http-errors-enhanced";
 import { ErrorResponse } from "../../../../error";
@@ -59,19 +54,6 @@ async function update({
 
   if (result instanceof Error) throw new BadRequestError("Invalid request");
   return result;
-}
-
-export function preHandler(
-  request: FastifyRequest,
-  reply: FastifyReply,
-  done: DoneFuncWithErrOrRes,
-) {
-  const user = request.user;
-  if (user.permissions.includes("write:requests")) {
-    done();
-  } else {
-    done(new BadRequestError("Insufficient permissions"));
-  }
 }
 
 export { update, schema };

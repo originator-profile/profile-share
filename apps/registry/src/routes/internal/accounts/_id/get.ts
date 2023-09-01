@@ -1,9 +1,4 @@
-import {
-  FastifySchema,
-  FastifyRequest,
-  FastifyReply,
-  DoneFuncWithErrOrRes,
-} from "fastify";
+import { FastifySchema, FastifyRequest } from "fastify";
 import { ErrorResponse } from "../../../../error";
 import Params from "./params";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
@@ -40,19 +35,6 @@ async function get({
   }
 
   return data;
-}
-
-export function preHandler(
-  request: FastifyRequest,
-  reply: FastifyReply,
-  done: DoneFuncWithErrOrRes,
-) {
-  const user = request.user;
-  if (user.permissions.includes("write:requests")) {
-    done();
-  } else {
-    done(new BadRequestError("Insufficient permissions"));
-  }
 }
 
 export { get, schema };
