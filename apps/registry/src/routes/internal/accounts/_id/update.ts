@@ -67,7 +67,6 @@ export function preHandler(
   done: DoneFuncWithErrOrRes,
 ) {
   const user = request.user;
-  // @ts-expect-error
   if (user.permissions.includes("write:requests")) {
     done();
   } else {
