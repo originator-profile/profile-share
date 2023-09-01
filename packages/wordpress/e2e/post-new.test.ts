@@ -1,59 +1,14 @@
-import { Page, test, expect } from "@playwright/test";
+import { test, expect } from "@wordpress/e2e-test-utils-playwright";
 import path from "node:path";
 import fs from "node:fs/promises";
 
-test.describe.configure({ mode: "serial" });
+test("投稿の検証", async ({ admin, editor }) => {
+  await admin.createNewPost({
+    content: "海は昼眠る、夜も眠る。ごうごう、いびきをかいて眠る。",
+  });
 
-let page: Page;
-
-test.beforeAll(async ({ browser }) => {
-  page = await browser.newPage();
-  await page.goto("http://localhost:9000/wp-login.php");
-
-  await page.waitForSelector('input[id="user_login"]:focus');
-
-  const wordpressAdminUser = process.env.WORDPRESS_ADMIN_USER!;
-  const wordpressAdminPassword = process.env.WORDPRESS_ADMIN_PASSWORD!;
-  await page.getByLabel("Username or Email Address").fill(wordpressAdminUser);
-  await page
-    .getByLabel("Password", { exact: true })
-    .fill(wordpressAdminPassword);
-
-  await page.getByRole("button", { name: "Log In" }).click();
-
-  // ログイン完了まで待機
-  await page.waitForURL("http://localhost:9000/wp-admin/");
-});
-
-test("投稿の検証", async () => {
-  await page.goto("http://localhost:9000/wp-admin/post-new.php");
-
-  try {
-    // NOTE: 初回のダイアログの表示によって以降の処理が阻まれるのでそれを防ぐために待機して閉じます
-    await page.getByRole("button", { name: /Close/ }).click({ timeout: 5_000 });
-  } catch {
-    // nop
-  }
-
-  // 上の try catch にも関わらずダイアログが表示されている場合、下の Add block で実行が止まるため、
-  // そうなった場合にテストが早く失敗するように timeout を3秒に設定。
-  await page
-    .getByRole("button", { name: "Add block" })
-    .click({ timeout: 3_000 });
-  await page.getByRole("option", { name: "Paragraph" }).click();
-  await page
-    .getByRole("document", {
-      name: "Empty block; start writing or type forward slash to choose a block",
-    })
-    .fill("海は昼眠る、夜も眠る。ごうごう、いびきをかいて眠る。");
-
-  await page.getByRole("button", { name: "Publish", exact: true }).click();
-  await page
-    .getByRole("region", { name: "Editor publish" })
-    .getByRole("button", { name: "Publish", exact: true })
-    .click();
-  await page.getByRole("link", { name: "(no title)", exact: true }).click();
-
+  const page = await editor.openPreviewPage();
+  await page.waitForSelector(".wp-block-post-content");
   const locators = await page
     .locator(".wp-block-post-content>*:not(.post-nav-links)")
     .all();
@@ -62,7 +17,7 @@ test("投稿の検証", async () => {
   ).join("");
   expect(text).toMatchSnapshot("post.txt");
 
-  const postId = Number(new URL(page.url()).searchParams.get("p"));
+  const postId = await editor.publishPost();
   const post = (
     await fs.readFile(
       path.join(
