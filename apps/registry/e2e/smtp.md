@@ -38,6 +38,7 @@ $ yarn dotenv -- -e apps/registry/.env.development -- sh -c 'printf "From: ${MAI
 or
 
 ```js
+// smtp-test.mjs
 import nodemailer from "nodemailer";
 import yn from "yn";
 
@@ -68,6 +69,10 @@ const info = await transporter.sendMail({
 });
 
 console.log(info.messageId);
+```
+
+```
+$ yarn dotenv -- -e apps/registry/.env.development -- node smtp-test.mjs
 ```
 
 Step4.
