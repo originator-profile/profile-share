@@ -630,6 +630,26 @@ APP_URL
 PORT
 : リッスンポート
 
+MAIL_FROM [^gh-770]
+: メールの送信元
+
+SMTP_HOST [^gh-770]
+: SMTPサーバーホスト名
+
+SMTP_PORT [^gh-770]
+: SMTPサーバーポート
+
+SMTP_SECURE [^gh-770]
+: SMTPS接続（SMTP over TLS）の有無 (形式: `true` or `false`)
+
+SMTP_AUTH_USER [^gh-770]
+: SMTPサーバーの認証に使用するユーザー
+
+SMTP_AUTH_PASSWORD [^gh-770]
+: SMTPサーバーの認証に使用するパスワード
+
+[^gh-770]: 未実装。[審査結果メール通知機能](https://github.com/originator-profile/profile/issues/770)にて実装予定。
+
 VITE_AUTH0_DOMAIN [^1]
 : Auth0のテナントのドメイン名 (Auth0 dashboard -> Application -> Settings -> Domain)
 
