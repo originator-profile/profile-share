@@ -629,3 +629,11 @@ APP_URL
 
 PORT
 : リッスンポート
+
+VITE_AUTH0_DOMAIN [^1]
+: Auth0のテナントのドメイン名 (Auth0 dashboard -> Application -> Settings -> Domain)
+
+VITE_AUTH0_CLIENT_ID [^1]
+: Auth0 Client ID (Auth0 dashboard -> Application -> Settings -> Client ID)
+
+[^1]: フロントエンドのビルド時に使用
