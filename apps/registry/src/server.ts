@@ -60,8 +60,17 @@ export async function create(options: Options): Promise<Server> {
   app.register(env, { schema: Config });
   app.register(helmet, {
     hsts: { preload: true },
-    contentSecurityPolicy: false,
-    crossOriginResourcePolicy: false,
+    contentSecurityPolicy: {
+      directives: {
+        "script-src": ["'self'", "'unsafe-inline'"],
+        // NOTE: Vite Dev Server 対応
+        "connect-src": ["http://localhost:24678", "ws://localhost:24678"],
+        "frame-ancestors": "'self'",
+      },
+    },
+    crossOriginResourcePolicy: {
+      policy: "same-origin",
+    },
   });
   app.register(httpErrorsEnhanced);
 
