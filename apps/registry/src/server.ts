@@ -63,6 +63,7 @@ export async function create(options: Options): Promise<Server> {
     contentSecurityPolicy: {
       directives: {
         "script-src": ["'self'", "'unsafe-inline'"],
+        "img-src": ["'self'", "http:", "https:"],
         "connect-src": [
           "'self'",
           // NOTE: Vite Dev Server 対応
