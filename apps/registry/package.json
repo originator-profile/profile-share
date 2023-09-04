@@ -21,6 +21,7 @@
     "dev": "dotenv -e .env.development run-p dev:{db,build}",
     "dev:db": "docker compose --env-file .env.development up db",
     "//TODO:gh-770:dev:docker": "docker compose --env-file .env.development up db mailpit",
+    "//TODO:gh-801:dev:docker": "docker compose --env-file .env.development up db minio",
     "dev:build": "tsup src --watch --ignore-watch src/router.ts --onSuccess 'run-p dev:{docs,server}'",
     "dev:docs": "run-s build:{cli,api} docs",
     "dev:server": "run-s dev:{prisma,start}",

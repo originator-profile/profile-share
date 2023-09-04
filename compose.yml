@@ -25,5 +25,14 @@ services:
     ports:
       - "8025:8025"
       - "${SMTP_PORT:-1025}:1025"
+  minio:
+    image: quay.io/minio/minio:RELEASE.2023-08-31T15-31-16Z
+    ports:
+      - "${MINIO_PORT:-19000}:9000"
+      - "${MINIO_CONSOLE_PORT:-19001}:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    command: server --console-address ":9001" /data
 volumes:
   postgres_data_v15:
