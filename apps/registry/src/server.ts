@@ -71,6 +71,8 @@ export async function create(options: Options): Promise<Server> {
           "ws://localhost:24678",
         ],
         "frame-ancestors": "'self'",
+        "trusted-types": "*",
+        "require-trusted-types-for": "'script'",
       },
     },
     crossOriginResourcePolicy: {
