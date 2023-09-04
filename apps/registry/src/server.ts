@@ -63,8 +63,12 @@ export async function create(options: Options): Promise<Server> {
     contentSecurityPolicy: {
       directives: {
         "script-src": ["'self'", "'unsafe-inline'"],
-        // NOTE: Vite Dev Server 対応
-        "connect-src": ["http://localhost:24678", "ws://localhost:24678"],
+        "connect-src": [
+          "'self'",
+          // NOTE: Vite Dev Server 対応
+          "http://localhost:24678",
+          "ws://localhost:24678",
+        ],
         "frame-ancestors": "'self'",
       },
     },
