@@ -69,14 +69,14 @@ export async function create(options: Options): Promise<Server> {
         directives: {
           "script-src": ["'self'", "'unsafe-inline'"],
           "img-src": ["'self'", "http:", "https:"],
-          "connect-src": ["'self'", ...viteHmr],
+          "connect-src": ["'self'", "https:", ...viteHmr],
           "frame-ancestors": "'self'",
           "trusted-types": "*",
           "require-trusted-types-for": "'script'",
         },
       },
       crossOriginResourcePolicy: {
-        policy: "same-origin",
+        policy: "cross-origin",
       },
     });
   });
