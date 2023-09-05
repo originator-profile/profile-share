@@ -42,6 +42,8 @@ export async function create(options: Options): Promise<Server> {
     logger: !options.quiet,
   });
 
+  app.register(env, { schema: Config });
+
   if (options.isDev) {
     app.register(swagger, { openapi });
     app.register(swaggerUi, {
@@ -57,7 +59,6 @@ export async function create(options: Options): Promise<Server> {
     cascadeHooks: true,
   });
   app.register(cors);
-  app.register(env, { schema: Config });
   app.register(helmet, {
     hsts: { preload: true },
     contentSecurityPolicy: false,
