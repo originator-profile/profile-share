@@ -3,14 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "e2e": "start-test e2e:up 9000 e2e:run",
-    "e2e:up": "docker compose --env-file .env.development up || :",
-    "e2e:run": "playwright test"
+    "e2e": "playwright test"
   },
   "devDependencies": {
-    "@playwright/test": "^1.37.1",
     "@originator-profile/sign": "*",
     "@originator-profile/verify": "*",
-    "start-server-and-test": "^2.0.0"
+    "@playwright/test": "^1.37.1",
+    "@wordpress/e2e-test-utils-playwright": "^0.9.0"
   }
 }
