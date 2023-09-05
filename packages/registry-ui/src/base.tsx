@@ -12,6 +12,7 @@ export function createApp() {
           redirect_uri: new URL("/app/", window.location.origin).href,
         }}
         cacheLocation="localstorage"
+        useRefreshTokens
       >
         <Routes />
       </Auth0Provider>
