@@ -11,6 +11,7 @@ export function createApp() {
         authorizationParams={{
           redirect_uri: new URL("/app/", window.location.origin).href,
         }}
+        cacheLocation="localstorage"
       >
         <Routes />
       </Auth0Provider>
