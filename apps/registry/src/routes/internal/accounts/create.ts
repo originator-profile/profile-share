@@ -37,7 +37,7 @@ async function create(
   }: FastifyRequest<{
     Body: Body;
   }>,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) {
   const input = {
     role: { connect: { value: "group" } },
