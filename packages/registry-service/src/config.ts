@@ -14,6 +14,12 @@ const Config = {
     NODE_ENV: {
       type: "string",
     },
+    AUTH0_DOMAIN: {
+      type: "string",
+    },
+    AUTH0_AUDIENCE: {
+      type: "string",
+    },
   },
   required: ["ISSUER_UUID"],
 } as const;

@@ -1,30 +1,21 @@
-import {
-  FastifyInstance,
-  FastifyRequest,
-  FastifyReply,
-  DoneFuncWithErrOrRes,
-} from "fastify";
+import { FastifyInstance, FastifyRequest } from "fastify";
 import helmet from "@fastify/helmet";
 import auth0Verify from "fastify-auth0-verify";
-import { BadRequestError } from "http-errors-enhanced";
+import { ForbiddenError } from "http-errors-enhanced";
 
-export function preHandler(
-  request: FastifyRequest,
-  reply: FastifyReply,
-  done: DoneFuncWithErrOrRes,
-) {
+export async function preHandler(request: FastifyRequest) {
   const user = request.user;
   if (user.permissions.includes("write:requests")) {
-    done();
+    return;
   } else {
-    done(new BadRequestError("Insufficient permissions"));
+    return new ForbiddenError("Insufficient permissions");
   }
 }
 
 async function autohooks(fastify: FastifyInstance): Promise<void> {
   fastify.register(auth0Verify, {
-    domain: "oprdev.jp.auth0.com",
-    audience: "http://localhost:8080/",
+    domain: process.env.AUTH0_DOMAIN ?? "oprdev.jp.auth0.com",
+    audience: process.env.AUTH0_AUDIENCE ?? "http://localhost:8080/",
   });
   fastify.after(() => {
     fastify.addHook("onRequest", fastify.authenticate);
