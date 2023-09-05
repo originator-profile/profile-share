@@ -42,7 +42,7 @@ export async function create(options: Options): Promise<Server> {
     logger: !options.quiet,
   });
 
-  app.register(env, { schema: Config });
+  await app.register(env, { schema: Config });
 
   if (options.isDev) {
     app.register(swagger, { openapi });
