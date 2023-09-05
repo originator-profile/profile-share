@@ -26,6 +26,7 @@ const schema: FastifySchema = {
       additionalProperties: true,
     },
     400: ErrorResponse,
+    403: ErrorResponse,
   },
 };
 
@@ -36,7 +37,7 @@ async function create(
   }: FastifyRequest<{
     Body: Body;
   }>,
-  reply: FastifyReply,
+  reply: FastifyReply
 ) {
   const input = {
     role: { connect: { value: "group" } },
