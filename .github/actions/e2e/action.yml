@@ -16,6 +16,7 @@ runs:
         name: e2e-report
         path: |
           packages/wordpress/playwright-report
+          packages/verify/playwright-report
           apps/web-ext/playwright-report
           apps/web-ext/screenshots
         retention-days: 7

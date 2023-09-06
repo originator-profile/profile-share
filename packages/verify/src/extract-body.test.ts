@@ -1,10 +1,7 @@
 import { describe, beforeAll, test, expect } from "vitest";
 import { Window } from "happy-dom";
-import { DpVisibleText, DpText, DpHtml } from "@originator-profile/model";
+import { DpText, DpHtml } from "@originator-profile/model";
 import { extractBody } from "./extract-body";
-import { chromium, firefox, webkit, Locator } from "playwright";
-
-type Locale = HTMLElement | Locator;
 
 const base = {
   url: "https://example.com",
@@ -19,20 +16,8 @@ const html =
   '<p>Hello, World!</p><p style="display:none">None</p><p>Goodbye, World!</p>';
 const pageUrl = "https://example.com/";
 
-const extractVisibleText = async function (
-  locator: (location: string) => Promise<Locale[]>,
-) {
-  const item: DpVisibleText = {
-    ...base,
-    type: "visibleText",
-  };
-  const result = await extractBody(pageUrl, locator, item);
-  expect(result).not.instanceOf(Error);
-  expect(result).toBe("Hello, World!\n\nGoodbye, World!");
-};
-
 const extractText = async function (
-  locator: (location: string) => Promise<Locale[]>,
+  locator: (location: string) => Promise<HTMLElement[]>,
 ) {
   const item: DpText = {
     ...base,
@@ -44,7 +29,7 @@ const extractText = async function (
 };
 
 const extractHtml = async function (
-  locator: (location: string) => Promise<Locale[]>,
+  locator: (location: string) => Promise<HTMLElement[]>,
 ) {
   const item: DpHtml = {
     ...base,
@@ -58,7 +43,7 @@ const extractHtml = async function (
 };
 
 const extractEvil = async function (
-  locator: (location: string) => Promise<Locale[]>,
+  locator: (location: string) => Promise<HTMLElement[]>,
 ) {
   const item: DpText = {
     ...base,
@@ -68,96 +53,6 @@ const extractEvil = async function (
   const result = await extractBody(pageUrl, locator, item);
   expect(result).instanceOf(Error);
 };
-
-describe("extract body on chromium", () => {
-  let locator: (location: string) => Promise<Locator[]>;
-
-  beforeAll(async () => {
-    const browser = await chromium.launch();
-    const context = await browser.newContext();
-    const page = await context.newPage();
-    await page.locator("body").evaluate((el, html) => {
-      el.innerHTML = html;
-    }, html);
-    locator = (location: string) => page.locator(location).all();
-  });
-
-  test("as visibleText type", async () => {
-    await extractVisibleText(locator);
-  });
-
-  test("as text type", async () => {
-    await extractText(locator);
-  });
-
-  test("as html type", async () => {
-    await extractHtml(locator);
-  });
-
-  test("failure when url mismatch", async () => {
-    await extractEvil(locator);
-  });
-});
-
-describe("extract body on firefox", () => {
-  let locator: (location: string) => Promise<Locator[]>;
-
-  beforeAll(async () => {
-    const browser = await firefox.launch();
-    const context = await browser.newContext();
-    const page = await context.newPage();
-    await page.locator("body").evaluate((el, html) => {
-      el.innerHTML = html;
-    }, html);
-    locator = (location: string) => page.locator(location).all();
-  });
-
-  test("as visibleText type", async () => {
-    await extractVisibleText(locator);
-  });
-
-  test("as text type", async () => {
-    await extractText(locator);
-  });
-
-  test("as html type", async () => {
-    await extractHtml(locator);
-  });
-
-  test("failure when url mismatch", async () => {
-    await extractEvil(locator);
-  });
-});
-
-describe("extract body on webkit", () => {
-  let locator: (location: string) => Promise<Locator[]>;
-
-  beforeAll(async () => {
-    const browser = await webkit.launch();
-    const context = await browser.newContext();
-    const page = await context.newPage();
-    await page.locator("body").evaluate((el, html) => {
-      el.innerHTML = html;
-    }, html);
-    locator = (location: string) => page.locator(location).all();
-  });
-
-  test("as visibleText type", async () => {
-    await extractVisibleText(locator);
-  });
-
-  test("as text type", async () => {
-    await extractText(locator);
-  });
-
-  test("as html type", async () => {
-    await extractHtml(locator);
-  });
-
-  test("failure when url mismatch", async () => {
-    await extractEvil(locator);
-  });
-});
 
 describe("extract body on happy-dom", () => {
   let locator: (location: string) => Promise<HTMLElement[]>;
