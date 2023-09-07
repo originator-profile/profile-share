@@ -15,7 +15,7 @@ export async function preHandler(request: FastifyRequest) {
 async function autohooks(fastify: FastifyInstance): Promise<void> {
   fastify.register(auth0Verify, {
     domain: fastify.config.AUTH0_DOMAIN ?? "oprdev.jp.auth0.com",
-    audience: fastify.config.AUTH0_AUDIENCE ?? "http://localhost:8080/",
+    audience: fastify.config.APP_URL ?? "http://localhost:8080/",
   });
   fastify.after(() => {
     fastify.addHook("onRequest", fastify.authenticate);

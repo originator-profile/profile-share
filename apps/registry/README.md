@@ -625,7 +625,10 @@ DATABASE_URL
 : PostgreSQL 接続 URL (形式: `postgresql://<ホスト名または IP アドレス>[:<ポート>]/<データベース>`)
 
 APP_URL
-: デプロイ先オリジン
+: デプロイ先URL (形式: `https://<ホスト名>/`)
+
+AUTH0_DOMAIN [^1]
+: Auth0のテナントのドメイン名 (Auth0 dashboard -> Application -> Settings -> Domain)
 
 PORT
 : リッスンポート
@@ -652,6 +655,9 @@ SMTP_AUTH_PASSWORD [^gh-770]
 
 VITE_AUTH0_DOMAIN [^1]
 : Auth0のテナントのドメイン名 (Auth0 dashboard -> Application -> Settings -> Domain)
+
+VITE_AUTH0_AUDIENCE [^1]
+: レジストリのURL (Auth0 dashboard -> Applications -> APIs)
 
 VITE_AUTH0_CLIENT_ID [^1]
 : Auth0 Client ID (Auth0 dashboard -> Application -> Settings -> Client ID)
