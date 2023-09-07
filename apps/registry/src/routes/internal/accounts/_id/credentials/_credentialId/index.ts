@@ -8,12 +8,12 @@ async function index(fastify: FastifyInstance): Promise<void> {
   fastify.put<FromHandler<typeof update, Params>>(
     "/",
     { schema: schema },
-    update
+    update,
   );
   fastify.delete<FromHandler<typeof deleteOne, Params>>(
     "/",
     { schema: schemaDelete },
-    deleteOne
+    deleteOne,
   );
 }
 
