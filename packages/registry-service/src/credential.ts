@@ -1,11 +1,17 @@
 import { credentials } from "@prisma/client";
 import { type CredentialRepository } from "@originator-profile/registry-db";
+import { CertificateService } from "./certificate";
+import { BadRequestError } from "http-errors-enhanced";
 
 type Options = {
   credentialRepository: CredentialRepository;
+  certificate: CertificateService;
 };
 
-export const CredentialService = ({ credentialRepository }: Options) => ({
+export const CredentialService = ({
+  credentialRepository,
+  certificate,
+}: Options) => ({
   /**
    * 資格情報の作成
    * @param accountId 会員 ID
@@ -26,6 +32,10 @@ export const CredentialService = ({ credentialRepository }: Options) => ({
     expiredAt: Date,
     imageUrl?: string,
   ): Promise<credentials | Error> {
+    const isCertifier = await certificate.isCertifier(certifierId);
+    if (isCertifier instanceof Error || !isCertifier) {
+      throw new BadRequestError("invalid certifier");
+    }
     return credentialRepository.create(
       accountId,
       certifierId,
@@ -53,6 +63,12 @@ export const CredentialService = ({ credentialRepository }: Options) => ({
       imageUrl?: string;
     },
   ): Promise<credentials | Error> {
+    if (data.certifierId) {
+      const isCertifier = await certificate.isCertifier(data.certifierId);
+      if (isCertifier instanceof Error || !isCertifier) {
+        throw new BadRequestError("invalid certifier");
+      }
+    }
     return credentialRepository.update(credentialId, data);
   },
   /**

@@ -37,7 +37,7 @@ export const Services = (options: Options) => {
   });
   const website = WebsiteService({ ...options, websiteRepository });
   const credentialRepository = CredentialRepository();
-  const credential = CredentialService({ credentialRepository });
+  const credential = CredentialService({ credentialRepository, certificate });
   return {
     validator,
     account,
