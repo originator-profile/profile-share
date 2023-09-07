@@ -42,6 +42,8 @@ export async function create(options: Options): Promise<Server> {
     logger: !options.quiet,
   });
 
+  await app.register(env, { schema: Config });
+
   if (options.isDev) {
     app.register(swagger, { openapi });
     app.register(swaggerUi, {
@@ -57,28 +59,25 @@ export async function create(options: Options): Promise<Server> {
     cascadeHooks: true,
   });
   app.register(cors);
-  app.register(env, { schema: Config }).after(() => {
-    const { NODE_ENV = "production" } = app.config;
-    const viteHmr =
-      NODE_ENV === "development"
-        ? ["http://localhost:24678", "ws://localhost:24678"]
-        : [];
-    app.register(helmet, {
-      hsts: { preload: true },
-      contentSecurityPolicy: {
-        directives: {
-          "script-src": ["'self'", "'unsafe-inline'"],
-          "img-src": ["'self'", "http:", "https:"],
-          "connect-src": ["'self'", "https:", ...viteHmr],
-          "frame-ancestors": "'self'",
-          "trusted-types": "*",
-          "require-trusted-types-for": "'script'",
-        },
+  const viteHmr =
+    app.config.NODE_ENV === "development"
+      ? ["http://localhost:24678", "ws://localhost:24678"]
+      : [];
+  app.register(helmet, {
+    hsts: { preload: true },
+    contentSecurityPolicy: {
+      directives: {
+        "script-src": ["'self'", "'unsafe-inline'"],
+        "img-src": ["'self'", "http:", "https:"],
+        "connect-src": ["'self'", "https:", ...viteHmr],
+        "frame-ancestors": "'self'",
+        "trusted-types": "*",
+        "require-trusted-types-for": "'script'",
       },
-      crossOriginResourcePolicy: {
-        policy: "cross-origin",
-      },
-    });
+    },
+    crossOriginResourcePolicy: {
+      policy: "cross-origin",
+    },
   });
   app.register(httpErrorsEnhanced);
 

@@ -8,6 +8,21 @@ declare module "fastify" {
   }
 }
 
+declare module "@fastify/jwt" {
+  interface FastifyJWT {
+    user: {
+      iss: string;
+      sub: string;
+      aud: string[];
+      iat: number;
+      exp: number;
+      azp: string;
+      scope: string;
+      permissions: string[];
+    };
+  }
+}
+
 /** RouteHandlerMethod から RouteGeneric への型の変換 */
 export type FromHandler<
   Handler,

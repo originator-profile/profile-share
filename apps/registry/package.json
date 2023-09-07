@@ -46,6 +46,7 @@
     "@vitejs/plugin-react": "^4.0.4",
     "dotenv": "^16.3.1",
     "dotenv-expand": "^10.0.0",
+    "fastify-auth0-verify": "^1.2.0",
     "jsonld": "^8.2.0",
     "metascraper": "^5.36.0",
     "metascraper-author": "^5.36.0",

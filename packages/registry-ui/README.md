@@ -14,5 +14,8 @@
 VITE_AUTH0_DOMAIN
 : Auth0のテナントのドメイン名 (Auth0 dashboard -> Application -> Settings -> Domain)
 
+VITE_AUTH0_AUDIENCE
+: レジストリのURL (Auth0 dashboard -> Applications -> APIs)
+
 VITE_AUTH0_CLIENT_ID
 : Auth0 Client ID (Auth0 dashboard -> Application -> Settings -> Client ID)

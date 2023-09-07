@@ -2,7 +2,10 @@
   "addons": [{ "plan": "heroku-postgresql" }],
   "env": {
     "APP_URL": {
-      "description": "アプリケーションのURL (形式: `https://<ホスト名>`)"
+      "description": "アプリケーションのURL (形式: `https://<ホスト名>/`)"
+    },
+    "AUTH0_DOMAIN": {
+      "description": "Auth0のテナントのドメイン名 (Auth0 dashboard -> Application -> Settings -> Domain)"
     },
     "MAIL_FROM": {
       "description": "メールの送信元"

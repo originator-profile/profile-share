@@ -9,9 +9,12 @@ const Config = {
     },
     APP_URL: {
       type: "string",
-      default: "https://oprexpt.originator-profile.org",
+      default: "https://oprexpt.originator-profile.org/",
     },
     NODE_ENV: {
+      type: "string",
+    },
+    AUTH0_DOMAIN: {
       type: "string",
     },
   },
