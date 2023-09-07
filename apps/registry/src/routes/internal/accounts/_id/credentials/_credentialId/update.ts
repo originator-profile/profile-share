@@ -47,13 +47,14 @@ async function update({
 
   const credentialIdNumber = parseInt(credentialId);
 
-  const { certifier, verifier, issuedAt, expiredAt } = body;
+  const { certifier, verifier, issuedAt, expiredAt, name } = body;
 
   const data = {
     certifierId: certifier,
     verifierId: verifier,
     issuedAt: new Date(issuedAt),
     expiredAt: new Date(expiredAt),
+    name,
   };
 
   const result = await server.services.credential.update(
