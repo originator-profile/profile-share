@@ -4,7 +4,7 @@ const Params = {
   type: "object",
   properties: {
     id: { type: "string", title: "アカウントID" },
-    credentialId: { type: "string", title: "資格情報ID" },
+    credentialId: { type: "number", title: "資格情報ID" },
   },
   additionalProperties: false,
   required: ["id", "credentialId"],

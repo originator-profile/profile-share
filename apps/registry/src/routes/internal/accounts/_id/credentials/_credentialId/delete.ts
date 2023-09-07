@@ -25,11 +25,8 @@ async function deleteOne({
   Body: Body;
   Params: Params;
 }>) {
-  const { id, credentialId } = params;
-
-  const credentialIdNumber = parseInt(credentialId);
-
-  const result = await server.services.credential.delete(credentialIdNumber);
+  const { credentialId } = params;
+  const result = await server.services.credential.delete(credentialId);
 
   if (result instanceof Error) throw new BadRequestError("Invalid request");
   return result;

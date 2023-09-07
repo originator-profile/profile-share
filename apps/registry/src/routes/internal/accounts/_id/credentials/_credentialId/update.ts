@@ -45,8 +45,6 @@ async function update({
     throw new BadRequestError("Invalid id");
   }
 
-  const credentialIdNumber = parseInt(credentialId);
-
   const { certifier, verifier, issuedAt, expiredAt, name } = body;
 
   const data = {
@@ -57,10 +55,7 @@ async function update({
     name,
   };
 
-  const result = await server.services.credential.update(
-    credentialIdNumber,
-    data
-  );
+  const result = await server.services.credential.update(credentialId, data);
 
   if (result instanceof Error) throw new BadRequestError("Invalid request");
   return result;
