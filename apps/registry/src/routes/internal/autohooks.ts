@@ -5,10 +5,8 @@ import { ForbiddenError } from "http-errors-enhanced";
 
 export async function preHandler(request: FastifyRequest) {
   const user = request.user;
-  if (user.permissions.includes("write:requests")) {
-    return;
-  } else {
-    return new ForbiddenError("Insufficient permissions");
+  if (!user.permissions.includes("write:requests")) {
+    throw new ForbiddenError("Insufficient permissions");
   }
 }
 
