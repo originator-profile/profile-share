@@ -43,12 +43,7 @@ export default function Index() {
 
     console.log(JSON.stringify(rawFormData, null, 2));
 
-    const token = await getAccessTokenSilently({
-      authorizationParams: {
-        audience: "http://localhost:8080/",
-        redirect_uri: "http://localhost:8080/app/request-op/",
-      },
-    });
+    const token = await getAccessTokenSilently();
 
     console.log(JSON.stringify(token, null, 2));
 
