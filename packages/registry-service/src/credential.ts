@@ -36,7 +36,12 @@ export const CredentialService = ({ credentialRepository }: Options) => ({
       imageUrl,
     );
   },
-
+  /**
+   * 資格情報の更新
+   * @param credentialId 資格情報 ID
+   * @param data 更新内容
+   * @return 更新後の資格情報またはエラー
+   */
   async update(
     credentialId: number,
     data: {
