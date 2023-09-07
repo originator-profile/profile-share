@@ -20,7 +20,7 @@ export const CredentialRepository = () => ({
     name: string,
     issuedAt: Date,
     expiredAt: Date,
-    imageUrl?: string,
+    imageUrl?: string
   ): Promise<credentials | Error> {
     const input: Prisma.credentialsCreateInput = {
       account: {
@@ -40,6 +40,29 @@ export const CredentialRepository = () => ({
 
     const prisma = getClient();
     return prisma.credentials.create({ data: input }).catch((e: Error) => e);
+  },
+
+  /**
+   * 資格情報の更新
+   * @param credentialId 資格情報 ID
+   * @param data 更新内容
+   * @return 更新結果またはエラー
+   */
+  async update(
+    credentialId: number,
+    data: {
+      certifierId?: string;
+      verifierId?: string;
+      name?: string;
+      issuedAt?: Date;
+      expiredAt?: Date;
+      imageUrl?: string;
+    }
+  ): Promise<credentials | Error> {
+    const prisma = getClient();
+    return prisma.credentials
+      .update({ where: { id: credentialId }, data: data })
+      .catch((e: Error) => e);
   },
 });
 

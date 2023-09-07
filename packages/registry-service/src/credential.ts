@@ -24,7 +24,7 @@ export const CredentialService = ({ credentialRepository }: Options) => ({
     name: string,
     issuedAt: Date,
     expiredAt: Date,
-    imageUrl?: string,
+    imageUrl?: string
   ): Promise<credentials | Error> {
     return credentialRepository.create(
       accountId,
@@ -33,8 +33,22 @@ export const CredentialService = ({ credentialRepository }: Options) => ({
       name,
       issuedAt,
       expiredAt,
-      imageUrl,
+      imageUrl
     );
+  },
+
+  async update(
+    credentialId: number,
+    data: {
+      certifierId?: string;
+      verifierId?: string;
+      name?: string;
+      issuedAt?: Date;
+      expiredAt?: Date;
+      imageUrl?: string;
+    }
+  ): Promise<credentials | Error> {
+    return credentialRepository.update(credentialId, data);
   },
 });
 
