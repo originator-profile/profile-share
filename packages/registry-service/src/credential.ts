@@ -50,6 +50,14 @@ export const CredentialService = ({ credentialRepository }: Options) => ({
   ): Promise<credentials | Error> {
     return credentialRepository.update(credentialId, data);
   },
+  /**
+   * 資格情報の削除
+   * @param credentialId 資格情報 ID
+   * @return 削除した資格情報またはエラー
+   */
+  async delete(credentialId: number): Promise<credentials | Error> {
+    return credentialRepository.delete(credentialId);
+  },
 });
 
 export type CredentialService = ReturnType<typeof CredentialService>;

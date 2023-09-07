@@ -64,6 +64,17 @@ export const CredentialRepository = () => ({
       .update({ where: { id: credentialId }, data: data })
       .catch((e: Error) => e);
   },
+  /**
+   * 資格情報の削除
+   * @param credentialId 資格情報 ID
+   * @return 削除した資格情報またはエラー
+   */
+  async delete(credentialId: number): Promise<credentials | Error> {
+    const prisma = getClient();
+    return prisma.credentials
+      .delete({ where: { id: credentialId } })
+      .catch((e: Error) => e);
+  },
 });
 
 export type CredentialRepository = ReturnType<typeof CredentialRepository>;
