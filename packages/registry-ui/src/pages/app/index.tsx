@@ -1,8 +1,23 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { useAsync } from "react-use";
 
 export default function Index() {
-  const { loginWithRedirect, logout, isLoading, isAuthenticated, user } =
-    useAuth0();
+  const {
+    loginWithRedirect,
+    logout,
+    isLoading,
+    isAuthenticated,
+    user,
+    getAccessTokenSilently,
+  } = useAuth0();
+
+  useAsync(async () => {
+    const token = await getAccessTokenSilently();
+    await fetch("/internal/user-accounts/", {
+      method: "PUT",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  });
 
   if (isLoading) {
     return (
