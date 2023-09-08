@@ -29,31 +29,5 @@ export default function Index() {
     );
   }
 
-  // TODO: グローバルナビゲーションにログアウトボタンを配置して
-  // TODO: レジストリ DB にユーザーアカウント情報を永続化して
-  if (isAuthenticated && user) {
-    return (
-      <>
-        <button className="jumpu-button" type="button" onClick={() => logout()}>
-          ログアウト
-        </button>
-        <div className="jumpu-card">
-          <img src={user.picture} alt={user.name} />
-          <h2>{user.name}</h2>
-          <p>{user.email}</p>
-        </div>
-      </>
-    );
-  }
-
-  // TODO: グローバルナビゲーションにログインボタンを配置して
-  return (
-    <button
-      className="jumpu-button"
-      type="button"
-      onClick={() => loginWithRedirect()}
-    >
-      ログイン
-    </button>
-  );
+  // TODO: 適切なページに画面遷移して
 }

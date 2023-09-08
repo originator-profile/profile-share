@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "@auth0/auth0-react": "^2.2.1",
+    "@headlessui/react": "^1.7.17",
     "@originator-profile/tsconfig": "*",
     "@originator-profile/ui": "*",
     "@originator-profile/verify": "*",

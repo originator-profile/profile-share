@@ -67,7 +67,6 @@ export default function Index() {
   // TODO: 見た目をデザイン通りに実装して
   return (
     <>
-      <header className="bg-black fixed top-0 left-0 w-full h-10">1</header>
       <article className="max-w-3xl px-4 pt-12 pb-8 mx-auto">
         <div className="flex flex-col mb-6">
           <h1 className="text-4xl font-bold">登録</h1>
