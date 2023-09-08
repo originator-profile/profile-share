@@ -51,7 +51,7 @@ async function create({
     verifier,
     name,
     new Date(issuedAt),
-    parseExpirationDate(expiredAt)
+    parseExpirationDate(expiredAt),
   );
 
   if (result instanceof Error) throw new BadRequestError("Invalid request");
