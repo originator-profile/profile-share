@@ -4,6 +4,7 @@ import { BadRequestError } from "http-errors-enhanced";
 import { ErrorResponse } from "../../../../../../error";
 import Params from "./params";
 import { OpCredential } from "@originator-profile/model";
+import { parseExpirationDate } from "@originator-profile/core";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { type, image, ...properties } = OpCredential.properties;
@@ -51,7 +52,7 @@ async function update({
     certifierId: certifier,
     verifierId: verifier,
     issuedAt: new Date(issuedAt),
-    expiredAt: new Date(expiredAt),
+    expiredAt: parseExpirationDate(expiredAt),
     name,
   };
 
