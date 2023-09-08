@@ -24,7 +24,7 @@ const schema: FastifySchema = {
 
 async function upsert(
   { server, headers }: FastifyRequest<{ Body: Body }>,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) {
   if (!headers.authorization) {
     reply.header("Proxy-Authenticate", 'Bearer realm="Access Token"');
@@ -34,7 +34,7 @@ async function upsert(
     | { sub: string; name: string; email: string; picture: string }
     | Error = await fetch(
     `https://${server.config.AUTH0_DOMAIN ?? "oprdev.jp.auth0.com"}/userinfo`,
-    { headers: { Authorization: headers.authorization } }
+    { headers: { Authorization: headers.authorization } },
   )
     .then((res) => res.json())
     .catch((e) => e);

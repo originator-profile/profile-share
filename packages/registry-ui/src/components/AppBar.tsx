@@ -59,7 +59,7 @@ export default function AppBar({ className }: Props) {
     <header
       className={clsx(
         "flex gap-2 justify-between items-center bg-black",
-        className
+        className,
       )}
     >
       <Image

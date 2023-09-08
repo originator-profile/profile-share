@@ -17,7 +17,7 @@ export const UserAccountService = ({ userAccountRepository }: Options) => ({
     input: Omit<
       Prisma.userAccountsUpdateInput & Prisma.userAccountsCreateInput,
       "account"
-    >
+    >,
   ): Promise<userAccounts | Error> {
     const found = await userAccountRepository.read(input);
     if (found instanceof NotFoundError) {
