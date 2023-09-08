@@ -20,7 +20,7 @@ type Body = FromSchema<typeof Body>;
 const schema: FastifySchema = {
   body: Body,
   params: Params,
-  description: "会員情報の更新",
+  description: "資格情報の更新",
   security: [],
   response: {
     200: {
@@ -56,7 +56,11 @@ async function update({
     name,
   };
 
-  const result = await server.services.credential.update(credentialId, data);
+  const result = await server.services.credential.update(
+    credentialId,
+    id,
+    data,
+  );
 
   if (result instanceof Error) throw new BadRequestError("Invalid request");
   return result;

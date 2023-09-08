@@ -54,6 +54,7 @@ export const CredentialService = ({
    */
   async update(
     credentialId: number,
+    accountId: string,
     data: {
       certifierId?: string;
       verifierId?: string;
@@ -69,15 +70,18 @@ export const CredentialService = ({
         throw new BadRequestError("invalid certifier");
       }
     }
-    return credentialRepository.update(credentialId, data);
+    return credentialRepository.update(credentialId, accountId, data);
   },
   /**
    * 資格情報の削除
    * @param credentialId 資格情報 ID
    * @return 削除した資格情報またはエラー
    */
-  async delete(credentialId: number): Promise<credentials | Error> {
-    return credentialRepository.delete(credentialId);
+  async delete(
+    credentialId: number,
+    accountId: string,
+  ): Promise<credentials | Error> {
+    return credentialRepository.delete(credentialId, accountId);
   },
 });
 

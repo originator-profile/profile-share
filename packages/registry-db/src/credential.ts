@@ -50,6 +50,7 @@ export const CredentialRepository = () => ({
    */
   async update(
     credentialId: number,
+    accountId: string,
     data: {
       certifierId?: string;
       verifierId?: string;
@@ -61,7 +62,7 @@ export const CredentialRepository = () => ({
   ): Promise<credentials | Error> {
     const prisma = getClient();
     return prisma.credentials
-      .update({ where: { id: credentialId }, data: data })
+      .update({ where: { id: credentialId, accountId }, data: data })
       .catch((e: Error) => e);
   },
   /**
@@ -69,10 +70,13 @@ export const CredentialRepository = () => ({
    * @param credentialId 資格情報 ID
    * @return 削除した資格情報またはエラー
    */
-  async delete(credentialId: number): Promise<credentials | Error> {
+  async delete(
+    credentialId: number,
+    accountId: string,
+  ): Promise<credentials | Error> {
     const prisma = getClient();
     return prisma.credentials
-      .delete({ where: { id: credentialId } })
+      .delete({ where: { id: credentialId, accountId } })
       .catch((e: Error) => e);
   },
 });

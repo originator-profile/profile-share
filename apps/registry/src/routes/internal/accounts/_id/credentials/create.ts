@@ -20,7 +20,7 @@ type Body = FromSchema<typeof Body>;
 const schema: FastifySchema = {
   body: Body,
   params: Params,
-  description: "会員情報の更新",
+  description: "資格情報の登録",
   security: [],
   response: {
     200: {
