@@ -1,5 +1,6 @@
 import { Dialog } from "@headlessui/react";
 import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
+import { MouseEvent as ReactMouseEvent, useState } from "react";
 import figUser1Url from "../assets/fig-user-1.svg";
 import figUser2Url from "../assets/fig-user-2.svg";
 import figUser3Url from "../assets/fig-user-3.svg";
@@ -34,6 +35,11 @@ type Props = {
 };
 
 function Unsupported({ error }: Props) {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleDetails = (e: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    setIsOpen((prev) => !prev);
+  };
   const onClose = () => {
     // nop
   };
@@ -55,8 +61,8 @@ function Unsupported({ error }: Props) {
               className="list-disc pl-8 text-sm mb-12 max-w-sm mx-auto"
               error={error}
             />
-            <details className="text-gray-700 pl-4 mb-12">
-              <summary>エラーの詳細</summary>
+            <details className="text-gray-700 pl-4 mb-12" open={isOpen}>
+              <summary onClick={toggleDetails}>エラーの詳細</summary>
               <dl>
                 <dt>
                   メッセージ<span aria-hidden>:</span>
