@@ -86,6 +86,23 @@ async function runTest(ctx: BrowserContext, page: Page, url: string) {
   counts.forEach((count) => {
     expect(count).toEqual(1);
   });
+
+  const details = ["メッセージ"];
+
+  await Promise.all(
+    details.map(
+      (detail) => ext && expect(ext.locator(`:text("${detail}")`)).toBeHidden(),
+    ),
+  );
+
+  await ext?.locator("details>summary").click();
+
+  await Promise.all(
+    details.map(
+      (detail) =>
+        ext && expect(ext.locator(`:text("${detail}")`)).toBeVisible(),
+    ),
+  );
 }
 
 test.afterEach(async ({ page }, testInfo) => {
