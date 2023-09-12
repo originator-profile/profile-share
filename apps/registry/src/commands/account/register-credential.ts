@@ -38,9 +38,6 @@ export class RegisterCredential extends Command {
   async run(): Promise<void> {
     const { flags } = await this.parse(RegisterCredential);
     const services = Services({ config });
-    const isCertifier = await services.certificate.isCertifier(flags.certifier);
-    if (isCertifier instanceof Error) this.error(isCertifier);
-    if (!isCertifier) this.error("Invalid certifier.");
 
     const issuedAt = flags["issued-at"]
       ? new Date(flags["issued-at"])
