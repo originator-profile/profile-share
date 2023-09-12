@@ -1,6 +1,7 @@
 import { Dialog } from "@headlessui/react";
 import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
 import { Icon } from "@iconify/react";
+import { MouseEvent as ReactMouseEvent, useState } from "react";
 
 function WarningDetails() {
   return (
@@ -35,6 +36,11 @@ function WarningDetails() {
 }
 
 function Prohibition() {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleDetails = (e: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    setIsOpen((prev) => !prev);
+  };
   const onClose = () => {
     // nop
   };
@@ -65,7 +71,10 @@ function Prohibition() {
                 サイトが本物かどうかは充分に注意してください。
               </strong>
             </p>
-            <details className="text-gray-700 pt-3">
+            <details className="text-gray-700 pt-3" open={isOpen}>
+              <summary onClick={toggleDetails}>
+                このメッセージが表示される理由についてもっと詳しく...
+              </summary>
               <WarningDetails />
             </details>
             <div className="pt-3">

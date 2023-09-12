@@ -10,6 +10,7 @@ import { CredentialService } from "./credential";
 import {
   DpRepository,
   WebsiteRepository,
+  CredentialRepository,
   UserAccountRepository,
 } from "@originator-profile/registry-db";
 import { UserAccountService } from "./user-account";
@@ -37,7 +38,8 @@ export const Services = (options: Options) => {
     websiteRepository,
   });
   const website = WebsiteService({ ...options, websiteRepository });
-  const credential = CredentialService();
+  const credentialRepository = CredentialRepository();
+  const credential = CredentialService({ credentialRepository, certificate });
   const userAccountRepository = UserAccountRepository();
   const userAccount = UserAccountService({ ...options, userAccountRepository });
   return {

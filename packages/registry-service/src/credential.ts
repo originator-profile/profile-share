@@ -1,7 +1,17 @@
-import { Prisma, credentials } from "@prisma/client";
-import { getClient } from "@originator-profile/registry-db";
+import { credentials } from "@prisma/client";
+import { type CredentialRepository } from "@originator-profile/registry-db";
+import { CertificateService } from "./certificate";
+import { BadRequestError } from "http-errors-enhanced";
 
-export const CredentialService = () => ({
+type Options = {
+  credentialRepository: CredentialRepository;
+  certificate: CertificateService;
+};
+
+export const CredentialService = ({
+  credentialRepository,
+  certificate,
+}: Options) => ({
   /**
    * 資格情報の作成
    * @param accountId 会員 ID
@@ -22,24 +32,56 @@ export const CredentialService = () => ({
     expiredAt: Date,
     imageUrl?: string,
   ): Promise<credentials | Error> {
-    const input: Prisma.credentialsCreateInput = {
-      account: {
-        connect: { id: accountId },
-      },
-      certifier: {
-        connect: { id: certifierId },
-      },
-      verifier: {
-        connect: { id: verifierId },
-      },
-      name: name,
-      image: imageUrl,
+    const isCertifier = await certificate.isCertifier(certifierId);
+    if (isCertifier instanceof Error || !isCertifier) {
+      throw new BadRequestError("invalid certifier");
+    }
+    return credentialRepository.create(
+      accountId,
+      certifierId,
+      verifierId,
+      name,
       issuedAt,
       expiredAt,
-    };
-
-    const prisma = getClient();
-    return prisma.credentials.create({ data: input }).catch((e: Error) => e);
+      imageUrl,
+    );
+  },
+  /**
+   * 資格情報の更新
+   * @param credentialId 資格情報 ID
+   * @param data 更新内容
+   * @return 更新後の資格情報またはエラー
+   */
+  async update(
+    credentialId: number,
+    accountId: string,
+    data: {
+      certifierId?: string;
+      verifierId?: string;
+      name?: string;
+      issuedAt?: Date;
+      expiredAt?: Date;
+      imageUrl?: string;
+    },
+  ): Promise<credentials | Error> {
+    if (data.certifierId) {
+      const isCertifier = await certificate.isCertifier(data.certifierId);
+      if (isCertifier instanceof Error || !isCertifier) {
+        throw new BadRequestError("invalid certifier");
+      }
+    }
+    return credentialRepository.update(credentialId, accountId, data);
+  },
+  /**
+   * 資格情報の削除
+   * @param credentialId 資格情報 ID
+   * @return 削除した資格情報またはエラー
+   */
+  async delete(
+    credentialId: number,
+    accountId: string,
+  ): Promise<credentials | Error> {
+    return credentialRepository.delete(credentialId, accountId);
   },
 });
 
