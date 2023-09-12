@@ -1,7 +1,5 @@
-import { Dialog } from "@headlessui/react";
 import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
 import { Icon } from "@iconify/react";
-import { MouseEvent as ReactMouseEvent, useState } from "react";
 
 function WarningDetails() {
   return (
@@ -36,54 +34,42 @@ function WarningDetails() {
 }
 
 function Prohibition() {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleDetails = (e: ReactMouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    setIsOpen((prev) => !prev);
-  };
-  const onClose = () => {
-    // nop
-  };
   return (
-    <Dialog open onClose={onClose}>
-      <Dialog.Panel className="fixed top-0 left-0 z-10 bg-white w-screen h-screen overflow-y-auto">
-        <main className="px-4 py-12">
-          <ProjectTitle className="mb-12" as="header" />
-          <h1 className="flex items-center flex-col gap-4 mb-12">
-            <span className="text-red-700 h-7 text-base font-normal tracking-normal text-center whitespace-nowrap inline-block align-middle">
-              <Icon
-                icon="clarity:exclamation-triangle-line"
-                className="text-red-700 text-5xl font-normal tracking-normal leading-10 text-center w-11 h-11 inline-block vertical-align"
-              />{" "}
-              アクセスにはご注意ください
-            </span>
-            <br />
-            <span className="text-red-700 text-xl font-bold tracking-normal text-center w-96 h-6 inline-block align-middle">
-              このサイトの発信元が確認できません
-            </span>
-          </h1>
-          <article className="mb-12 max-w-sm mx-auto">
-            <p className="text-sm tracking-normal text-left font-normal">
-              本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。
-              <br />
-              このページではサイトの運営者情報が確認できませんでした。そのため、この
-              <strong className="font-bold">
-                サイトが本物かどうかは充分に注意してください。
-              </strong>
-            </p>
-            <details className="text-gray-700 pt-3" open={isOpen}>
-              <summary onClick={toggleDetails}>
-                このメッセージが表示される理由についてもっと詳しく...
-              </summary>
-              <WarningDetails />
-            </details>
-            <div className="pt-3">
-              <ProjectSummary as="footer" />
-            </div>
-          </article>
-        </main>
-      </Dialog.Panel>
-    </Dialog>
+    <main className="fixed top-0 left-0 z-10 bg-white w-screen h-screen overflow-y-auto px-4 py-12">
+      <ProjectTitle className="mb-12" as="header" />
+      <h1 className="flex items-center flex-col gap-4 mb-12">
+        <span className="text-red-700 h-7 text-base font-normal tracking-normal text-center whitespace-nowrap inline-block align-middle">
+          <Icon
+            icon="clarity:exclamation-triangle-line"
+            className="text-red-700 text-5xl font-normal tracking-normal leading-10 text-center w-11 h-11 inline-block vertical-align"
+          />{" "}
+          アクセスにはご注意ください
+        </span>
+        <br />
+        <span className="text-red-700 text-xl font-bold tracking-normal text-center w-96 h-6 inline-block align-middle">
+          このサイトの発信元が確認できません
+        </span>
+      </h1>
+      <article className="mb-12 max-w-sm mx-auto">
+        <p className="text-sm tracking-normal text-left font-normal">
+          本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。
+          <br />
+          このページではサイトの運営者情報が確認できませんでした。そのため、この
+          <strong className="font-bold">
+            サイトが本物かどうかは充分に注意してください。
+          </strong>
+        </p>
+        <details className="text-gray-700 pt-3">
+          <summary>
+            このメッセージが表示される理由についてもっと詳しく...
+          </summary>
+          <WarningDetails />
+        </details>
+        <div className="pt-3">
+          <ProjectSummary as="footer" />
+        </div>
+      </article>
+    </main>
   );
 }
 
