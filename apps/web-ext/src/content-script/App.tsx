@@ -50,6 +50,7 @@ function App() {
   }
 
   return (
+    // gh-907: Dialog内では `<details><summary /></details>` がうまく動作しない可能性があるので注意
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={closeModal}>
         <Transition.Child
