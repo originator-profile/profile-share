@@ -20,7 +20,7 @@ const useUser = (token?: string) =>
       const data = await response.json();
       if (!response.ok) throw new Error(data);
       return data;
-    }
+    },
   );
 
 const useAccount = (token?: string, accountId?: string) =>
@@ -33,7 +33,7 @@ const useAccount = (token?: string, accountId?: string) =>
       const data = await response.json();
       if (!response.ok) throw new Error(data);
       return data;
-    }
+    },
   );
 
 export default function Index() {
