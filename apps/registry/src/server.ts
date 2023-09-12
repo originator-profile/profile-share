@@ -15,11 +15,11 @@ import { resolve } from "node:path";
 
 type Options = {
   isDev: boolean;
-  routes: string;
+  routes?: string;
   quiet?: boolean;
 };
 
-type Server = FastifyInstance;
+export type Server = FastifyInstance;
 
 const openapi: FastifyDynamicSwaggerOptions["openapi"] = {
   info: {
@@ -53,7 +53,7 @@ export async function create(options: Options): Promise<Server> {
     });
   }
   app.register(autoload, {
-    dir: options.routes,
+    dir: options.routes ?? resolve(__dirname, "routes"),
     routeParams: true,
     autoHooks: true,
     cascadeHooks: true,
