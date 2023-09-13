@@ -21,21 +21,29 @@ type Options = {
 
 type Server = FastifyInstance;
 
-const openapi: FastifyDynamicSwaggerOptions["openapi"] = {
-  info: {
-    title: pkg.description,
-    version: pkg.version,
-    description: "Profile Registry API Documentation.",
-  },
-  components: {
-    securitySchemes: {
-      basicAuth: {
-        type: "http",
-        scheme: "basic",
+function OpenApi(
+  config: Pick<Config, "AUTH0_DOMAIN">
+): FastifyDynamicSwaggerOptions["openapi"] {
+  return {
+    info: {
+      title: pkg.description,
+      version: pkg.version,
+      description: "Profile Registry API Documentation.",
+    },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "openIdConnect",
+          openIdConnectUrl: `https://${config.AUTH0_DOMAIN}/.well-known/openid-configuration`,
+        },
+        basicAuth: {
+          type: "http",
+          scheme: "basic",
+        },
       },
     },
-  },
-};
+  };
+}
 
 export async function create(options: Options): Promise<Server> {
   const app = fastify({
@@ -45,7 +53,7 @@ export async function create(options: Options): Promise<Server> {
   await app.register(env, { schema: Config });
 
   if (options.isDev) {
-    app.register(swagger, { openapi });
+    app.register(swagger, { openapi: OpenApi(app.config) });
     app.register(swaggerUi, {
       // NOTE: esbuild でのバンドルに失敗する問題の回避策
       //       ロゴが失われる代わりに require.resolve() を呼び出さないようにする
