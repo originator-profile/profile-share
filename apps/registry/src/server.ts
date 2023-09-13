@@ -15,11 +15,11 @@ import { resolve } from "node:path";
 
 type Options = {
   isDev: boolean;
-  routes: string;
+  routes?: string;
   quiet?: boolean;
 };
 
-type Server = FastifyInstance;
+export type Server = FastifyInstance;
 
 function OpenApi(
   config: Pick<Config, "AUTH0_DOMAIN">,
@@ -53,15 +53,32 @@ export async function create(options: Options): Promise<Server> {
   await app.register(env, { schema: Config });
 
   if (options.isDev) {
-    app.register(swagger, { openapi: OpenApi(app.config) });
-    app.register(swaggerUi, {
+    await app.register(swagger, {
+      openapi: OpenApi(app.config),
+    });
+    await app.register(swaggerUi, {
+      initOAuth: {
+        clientId: app.config.AUTH0_CLIENT_ID,
+        additionalQueryStringParams: {
+          audience: app.config.APP_URL,
+        },
+        usePkceWithAuthorizationCodeGrant: true,
+      },
+      transformStaticCSP: (header) =>
+        header
+          .split(";")
+          .filter(
+            // TrustedTypePolicyが存在せず、DOM要素が表示されないので回避
+            (dir) => !/^(?:trusted-types|require-trusted-types-for) /.test(dir),
+          )
+          .join(";"),
       // NOTE: esbuild でのバンドルに失敗する問題の回避策
       //       ロゴが失われる代わりに require.resolve() を呼び出さないようにする
       logo: { type: "text/plain", content: "" },
     });
   }
   app.register(autoload, {
-    dir: options.routes,
+    dir: options.routes ?? resolve(__dirname, "routes"),
     routeParams: true,
     autoHooks: true,
     cascadeHooks: true,
@@ -85,6 +102,12 @@ export async function create(options: Options): Promise<Server> {
     },
     crossOriginResourcePolicy: {
       policy: "cross-origin",
+    },
+    crossOriginOpenerPolicy: {
+      policy: options.isDev
+        ? // Swagger UIがwindow.openerを使用しているおり、認証出来ないので回避
+          "unsafe-none"
+        : "same-origin",
     },
   });
   app.register(httpErrorsEnhanced);

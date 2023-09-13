@@ -18,7 +18,7 @@ type Body = FromSchema<typeof Body>;
 const schema: FastifySchema = {
   body: Body,
   description: "会員の新規作成",
-  security: [],
+  security: [{ bearerAuth: ["write:requests"] }],
   response: {
     201: {
       title: "会員",

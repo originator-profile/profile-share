@@ -2,10 +2,13 @@
   "addons": [{ "plan": "heroku-postgresql" }],
   "env": {
     "APP_URL": {
-      "description": "アプリケーションのURL (形式: `https://<ホスト名>/`)"
+      "description": "アプリケーションのURL。このURLをAuth0ダッシュボードから認可されたAPI (Auth0 dashboard -> Application -> APIs -> Custom API) として登録することでAPIを利用できるようになります。(形式: `https://<ホスト名>/`)"
     },
     "AUTH0_DOMAIN": {
       "description": "Auth0のテナントのドメイン名 (Auth0 dashboard -> Application -> Settings -> Domain)"
+    },
+    "AUTH0_CLIENT_ID": {
+      "description": "Auth0 Client ID (Auth0 dashboard -> Application -> Settings -> Client ID)"
     },
     "MAIL_FROM": {
       "description": "メールの送信元"
@@ -24,12 +27,6 @@
     },
     "SMTP_AUTH_PASSWORD": {
       "description": "SMTPサーバーの認証に使用するパスワード (SendGridの場合: https://app.sendgrid.com/settings/api_keys -> Create API Key -> Mail Send -> Custom Access -> Mail Send)"
-    },
-    "VITE_AUTH0_DOMAIN": {
-      "description": "Auth0のテナントのドメイン名 (Auth0 dashboard -> Application -> Settings -> Domain)"
-    },
-    "VITE_AUTH0_CLIENT_ID": {
-      "description": "Auth0 Client ID (Auth0 dashboard -> Application -> Settings -> Client ID)"
     }
   }
 }

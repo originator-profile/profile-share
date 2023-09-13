@@ -6,7 +6,7 @@ import { BadRequestError, NotFoundError } from "http-errors-enhanced";
 const schema: FastifySchema = {
   params: Params,
   description: "会員情報の取得",
-  security: [],
+  security: [{ bearerAuth: ["write:requests"] }],
   response: {
     200: {
       title: "会員",

@@ -11,10 +11,14 @@ const Config = {
       type: "string",
       default: "https://oprexpt.originator-profile.org/",
     },
-    NODE_ENV: {
+    AUTH0_DOMAIN: {
+      type: "string",
+      default: "oprdev.jp.auth0.com",
+    },
+    AUTH0_CLIENT_ID: {
       type: "string",
     },
-    AUTH0_DOMAIN: {
+    NODE_ENV: {
       type: "string",
     },
   },
