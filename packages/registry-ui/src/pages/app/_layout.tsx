@@ -1,11 +1,12 @@
 import { Outlet } from "react-router-dom";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import AppBar from "../../components/AppBar";
 
 type Props = {
   children: React.ReactNode;
 };
 
-export default function Layout({ children }: Props) {
+function Layout({ children }: Props) {
   return (
     <>
       <AppBar />
@@ -14,3 +15,5 @@ export default function Layout({ children }: Props) {
     </>
   );
 }
+
+export default withAuthenticationRequired(Layout);

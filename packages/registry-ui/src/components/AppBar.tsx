@@ -30,7 +30,13 @@ function UserProfile() {
             <button
               className="jumpu-text-button w-full"
               type="button"
-              onClick={() => logout()}
+              onClick={() =>
+                logout({
+                  logoutParams: {
+                    returnTo: new URL(window.location.origin).href,
+                  },
+                })
+              }
             >
               ログアウト
             </button>

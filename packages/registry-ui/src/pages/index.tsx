@@ -7,6 +7,7 @@ import {
 } from "@originator-profile/verify";
 import { ProjectSummary } from "@originator-profile/ui";
 import FormRow from "../components/FormRow";
+import AppBar from "../components/AppBar";
 
 type InitialValues = {
   registry: string;
@@ -98,89 +99,94 @@ export default function Index() {
   }
 
   return (
-    <article className="max-w-3xl px-4 pt-12 pb-8 mx-auto">
-      <h1 className="text-4xl font-bold mb-8">{document.title}</h1>
-      <form className="mb-8" onSubmit={onSubmit}>
-        <FormRow className="mb-4" label="Registry">
-          <input
-            className="jumpu-input flex-1"
-            name="registry"
-            required
-            defaultValue={initialValues.registry}
-          />
-        </FormRow>
-        <FormRow as="span" className="mb-4" label="Profile Set Presentation">
-          <label className="flex gap-1 items-center py-1">
+    <>
+      <AppBar />
+      <article className="max-w-3xl px-4 pt-12 pb-8 mx-auto">
+        <h1 className="text-4xl font-bold mb-8">{document.title}</h1>
+        <form className="mb-8" onSubmit={onSubmit}>
+          <FormRow className="mb-4" label="Registry">
             <input
-              name="presentation"
-              type="radio"
-              value="url"
-              checked={presentation === "url"}
-              onChange={handleChange}
+              className="jumpu-input flex-1"
+              name="registry"
+              required
+              defaultValue={initialValues.registry}
             />
-            URL
-          </label>
-          <label className="flex gap-1 items-center py-1">
+          </FormRow>
+          <FormRow as="span" className="mb-4" label="Profile Set Presentation">
+            <label className="flex gap-1 items-center py-1">
+              <input
+                name="presentation"
+                type="radio"
+                value="url"
+                checked={presentation === "url"}
+                onChange={handleChange}
+              />
+              URL
+            </label>
+            <label className="flex gap-1 items-center py-1">
+              <input
+                name="presentation"
+                type="radio"
+                value="direct"
+                checked={presentation === "direct"}
+                onChange={handleChange}
+              />
+              Direct Input
+            </label>
+          </FormRow>
+          <FormRow
+            className={clsx("mb-4", { hidden: presentation !== "url" })}
+            label="Endpoint"
+          >
             <input
-              name="presentation"
-              type="radio"
-              value="direct"
-              checked={presentation === "direct"}
-              onChange={handleChange}
+              className="jumpu-input flex-1"
+              name="endpoint"
+              hidden={presentation !== "url"}
+              type="url"
+              defaultValue={initialValues.endpoint}
             />
-            Direct Input
-          </label>
-        </FormRow>
-        <FormRow
-          className={clsx("mb-4", { hidden: presentation !== "url" })}
-          label="Endpoint"
-        >
-          <input
-            className="jumpu-input flex-1"
-            name="endpoint"
-            hidden={presentation !== "url"}
-            type="url"
-            defaultValue={initialValues.endpoint}
-          />
-        </FormRow>
-        <FormRow
-          className={clsx("mb-4", { hidden: presentation !== "direct" })}
-          label="Profile Set"
-        >
-          <textarea
-            className="jumpu-textarea resize flex-1"
-            name="jsonld"
-            hidden={presentation !== "direct"}
-            cols={12}
-            rows={18}
-            style={{ fontFamily: "monospace" }}
-            defaultValue={
-              initialValues.profileSet
-                ? JSON.stringify(initialValues.profileSet)
-                : ""
-            }
-          />
-        </FormRow>
-        <input className="jumpu-button" type="submit" value="Verify" />
-      </form>
-      {Object.entries(values).length > 0 && (
-        <h2 className="text-2xl font-bold mb-4">Result</h2>
-      )}
-      <dl>
-        {[...Object.entries(values)].map(([key, value]: [string, unknown]) => (
-          <Fragment key={key}>
-            <dt className="text-sm font-bold mb-2">{key}</dt>
-            <dd className="ml-4 mb-6">
-              <pre className="jumpu-card block text-sm font-mono bg-gray-50 px-3 py-2 overflow-auto">
-                {typeof value === "string" || value instanceof Error
-                  ? String(value)
-                  : JSON.stringify(value, null, "  ")}
-              </pre>
-            </dd>
-          </Fragment>
-        ))}
-      </dl>
-      <ProjectSummary />
-    </article>
+          </FormRow>
+          <FormRow
+            className={clsx("mb-4", { hidden: presentation !== "direct" })}
+            label="Profile Set"
+          >
+            <textarea
+              className="jumpu-textarea resize flex-1"
+              name="jsonld"
+              hidden={presentation !== "direct"}
+              cols={12}
+              rows={18}
+              style={{ fontFamily: "monospace" }}
+              defaultValue={
+                initialValues.profileSet
+                  ? JSON.stringify(initialValues.profileSet)
+                  : ""
+              }
+            />
+          </FormRow>
+          <input className="jumpu-button" type="submit" value="Verify" />
+        </form>
+        {Object.entries(values).length > 0 && (
+          <h2 className="text-2xl font-bold mb-4">Result</h2>
+        )}
+        <dl>
+          {[...Object.entries(values)].map(
+            ([key, value]: [string, unknown]) => (
+              <Fragment key={key}>
+                <dt className="text-sm font-bold mb-2">{key}</dt>
+                <dd className="ml-4 mb-6">
+                  <pre className="jumpu-card block text-sm font-mono bg-gray-50 px-3 py-2 overflow-auto">
+                    {typeof value === "string" || value instanceof Error
+                      ? String(value)
+                      : JSON.stringify(value, null, "  ")}
+                  </pre>
+                </dd>
+              </Fragment>
+            ),
+          )}
+        </dl>
+        <ProjectSummary />
+      </article>
+    </>
   );
 }
