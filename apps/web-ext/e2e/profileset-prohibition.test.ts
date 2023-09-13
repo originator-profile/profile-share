@@ -1,6 +1,6 @@
 import { Page } from "@playwright/test";
-import {expect, popup, test } from "./fixtures";
-import { execSync } from 'child_process'; 
+import { expect, popup, test } from "./fixtures";
+import { execSync } from "child_process";
 
 function executeCommand(command: string, directory?: string): void {
   try {
@@ -17,8 +17,6 @@ function executeCommand(command: string, directory?: string): void {
 
 test.describe.configure({ mode: "serial" });
 
-
-
 let ext: Page | undefined;
 
 test.afterEach(async ({ page }, testInfo) => {
@@ -26,15 +24,21 @@ test.afterEach(async ({ page }, testInfo) => {
   if (ext && !ext.isClosed()) {
     await ext.screenshot({ path: `screenshots/${testInfo.title}-web-ext.png` });
   }
-  executeCommand('bin/dev publisher:website -i account-key.example.priv.json --id localhost --input website.example.json -o update', '../registry');
+  executeCommand(
+    "bin/dev publisher:website -i account-key.example.priv.json --id localhost --input website.example.json -o update",
+    "../registry",
+  );
 });
 
 test("ProfileSet禁止時の確認", async ({ context, page }) => {
-  executeCommand('bin/dev key-gen --output evil', '../registry');
-  executeCommand('bin/dev publisher:website -i evil.priv.json --id localhost --input website.example.json -o update', '../registry');
-  
+  executeCommand("bin/dev key-gen --output evil", "../registry");
+  executeCommand(
+    "bin/dev publisher:website -i evil.priv.json --id localhost --input website.example.json -o update",
+    "../registry",
+  );
+
   await page.goto("http://localhost:8080/");
-  
+
   ext = await popup(context);
 
   const warningTexts = [
@@ -47,4 +51,4 @@ test("ProfileSet禁止時の確認", async ({ context, page }) => {
     const foundText = await ext.textContent(`:text("${text}")`);
     expect(foundText).toBe(text);
   }
-  });
+});
