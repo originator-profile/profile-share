@@ -6,7 +6,7 @@ import fetcher from "./fetcher";
 /**
  * アカウントを取得するカスタムフック
  */
-export function useAccount(accountId: string | null = null) {
+export function useAccount(accountId: string | null) {
   const { getAccessTokenSilently } = useAuth0();
   const { value: token = null } = useAsync(async () => {
     return getAccessTokenSilently();

@@ -4,7 +4,7 @@ import { useAccount } from "../../utils/account";
 
 export default function Index() {
   const { data: user } = useUserUpsert();
-  const { data: account } = useAccount(user?.accountId);
+  const { data: account } = useAccount(user?.accountId ?? null);
 
   if (!account) {
     return (

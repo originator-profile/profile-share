@@ -64,8 +64,7 @@ type Props = {
 };
 
 export default function AppBar({ className }: Props) {
-  const { data: user } = useUserUpsert();
-  const { data: account } = useAccount(user?.accountId);
+  const { data: account } = useAccount(user?.accountId ?? null);
 
   const link: { [key: string]: string } = {
     group: "/app/request-op/",
