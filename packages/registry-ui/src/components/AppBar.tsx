@@ -5,7 +5,7 @@ import { Menu } from "@headlessui/react";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
-import { useUserUpsert } from "../utils/user";
+import { useUser } from "../utils/user";
 import { useAccount } from "../utils/account";
 
 function UserProfile() {
@@ -64,6 +64,8 @@ type Props = {
 };
 
 export default function AppBar({ className }: Props) {
+  const { user: token } = useAuth0();
+  const { data: user } = useUser(token?.sub ?? null);
   const { data: account } = useAccount(user?.accountId ?? null);
 
   const link: { [key: string]: string } = {
