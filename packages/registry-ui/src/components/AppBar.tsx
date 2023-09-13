@@ -3,7 +3,10 @@ import logoDark from "@originator-profile/ui/src/assets/logoDark.svg";
 import { Image } from "@originator-profile/ui";
 import { Menu } from "@headlessui/react";
 import { Icon } from "@iconify/react";
+import { Link } from "react-router-dom";
 import clsx from "clsx";
+import { useUserUpsert } from "../utils/user";
+import { useAccount } from "../utils/account";
 
 function UserProfile() {
   const { loginWithRedirect, logout, isLoading, isAuthenticated, user } =
@@ -61,6 +64,14 @@ type Props = {
 };
 
 export default function AppBar({ className }: Props) {
+  const { data: user } = useUserUpsert();
+  const { data: account } = useAccount(user?.accountId);
+
+  const link: { [key: string]: string } = {
+    group: "/app/request-op/",
+    certifier: "/app/review-op/",
+    none: "/",
+  };
   return (
     <header
       className={clsx(
@@ -68,13 +79,15 @@ export default function AppBar({ className }: Props) {
         className,
       )}
     >
-      <Image
-        className="px-2"
-        placeholderSrc={logoDark}
-        alt="Originator Profile"
-        width={140}
-        height={30}
-      />
+      <Link to={link[account?.roleValue ?? "none"]}>
+        <Image
+          className="px-2"
+          placeholderSrc={logoDark}
+          alt="Originator Profile"
+          width={140}
+          height={30}
+        />
+      </Link>
       <UserProfile />
     </header>
   );
