@@ -9,6 +9,14 @@ type Options = {
 
 export const UserAccountService = ({ userAccountRepository }: Options) => ({
   /**
+   * ユーザーアカウントの取得
+   * @param input.id ユーザーアカウントID
+   * @return ユーザーアカウント
+   */
+  async read(input: Pick<userAccounts, "id">): Promise<userAccounts | Error> {
+    return await userAccountRepository.read(input);
+  },
+  /**
    * ユーザーアカウントの更新・作成
    * @param input ユーザーアカウント
    * @return ユーザーアカウント
