@@ -22,7 +22,7 @@ async function upsert(req: FastifyRequest<{ Body: Body }>) {
     `https://${
       req.server.config.AUTH0_DOMAIN ?? "oprdev.jp.auth0.com"
     }/userinfo`,
-    { headers: { Authorization: `Bearer ${accessToken}` } }
+    { headers: { Authorization: `Bearer ${accessToken}` } },
   );
 
   const userinfo = (await userinfoResponse.json()) as unknown as {

@@ -13,16 +13,16 @@ const useUser = (token: string | null = null) =>
     accountId: string;
   }>(
     token && { method: "PUT", url: "/internal/user-accounts/", token },
-    fetcher
+    fetcher,
   );
 
 const useAccount = (
   token: string | null = null,
-  accountId: string | null = null
+  accountId: string | null = null,
 ) =>
   useSWR<{ roleValue: string }>(
     token && accountId && { url: `/internal/accounts/${accountId}/`, token },
-    fetcher
+    fetcher,
   );
 
 export default function Index() {

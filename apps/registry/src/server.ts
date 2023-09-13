@@ -22,7 +22,7 @@ type Options = {
 type Server = FastifyInstance;
 
 function OpenApi(
-  config: Pick<Config, "AUTH0_DOMAIN">
+  config: Pick<Config, "AUTH0_DOMAIN">,
 ): FastifyDynamicSwaggerOptions["openapi"] {
   return {
     info: {
