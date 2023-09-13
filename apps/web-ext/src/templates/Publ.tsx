@@ -27,7 +27,7 @@ function Publ({ op, dp, website, holder, paths }: Props) {
     <div className="bg-gray-50 min-h-screen p-4">
       <div className="flex gap-4">
         <Image
-          className="flex-shrink-0 mt-8"
+          className="flex-shrink-0 bg-white mt-8"
           src={website.image}
           placeholderSrc={placeholderLogoMainUrl}
           alt=""

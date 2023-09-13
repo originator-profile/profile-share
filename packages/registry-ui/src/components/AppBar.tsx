@@ -63,7 +63,7 @@ export default function AppBar({ className }: Props) {
       )}
     >
       <Image
-        className="bg-inherit px-2"
+        className="px-2"
         placeholderSrc={logoDark}
         alt="Originator Profile"
         width={140}
