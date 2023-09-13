@@ -1,9 +1,5 @@
-import { FastifySchema, FastifyRequest, FastifyReply } from "fastify";
-import {
-  ProxyAuthenticationRequiredError,
-  InternalServerError,
-  BadRequestError,
-} from "http-errors-enhanced";
+import { FastifySchema, FastifyRequest } from "fastify";
+import { BadRequestError } from "http-errors-enhanced";
 import { ErrorResponse } from "../../../error";
 import { User } from "@originator-profile/model";
 
@@ -17,28 +13,24 @@ const schema: FastifySchema = {
       additionalProperties: true,
     },
     400: ErrorResponse,
-    407: ErrorResponse,
-    500: ErrorResponse,
   },
 };
 
-async function upsert(
-  { server, headers }: FastifyRequest<{ Body: Body }>,
-  reply: FastifyReply,
-) {
-  if (!headers.authorization) {
-    reply.header("Proxy-Authenticate", 'Bearer realm="Access Token"');
-    throw new ProxyAuthenticationRequiredError();
-  }
-  const userinfo:
-    | { sub: string; name: string; email: string; picture: string }
-    | Error = await fetch(
-    `https://${server.config.AUTH0_DOMAIN ?? "oprdev.jp.auth0.com"}/userinfo`,
-    { headers: { Authorization: headers.authorization } },
-  )
-    .then((res) => res.json())
-    .catch((e) => e);
-  if (userinfo instanceof Error) throw new InternalServerError();
+async function upsert(req: FastifyRequest<{ Body: Body }>) {
+  const accessToken = req.server.jwt.lookupToken(req);
+  const userinfoResponse = await fetch(
+    `https://${
+      req.server.config.AUTH0_DOMAIN ?? "oprdev.jp.auth0.com"
+    }/userinfo`,
+    { headers: { Authorization: `Bearer ${accessToken}` } }
+  );
+
+  const userinfo = (await userinfoResponse.json()) as unknown as {
+    sub: string;
+    name: string;
+    email: string;
+    picture: string;
+  };
 
   const user: User = {
     id: userinfo.sub,
@@ -47,9 +39,9 @@ async function upsert(
     picture: userinfo.picture,
   };
 
-  const data = await server.services.userAccount.upsert(user);
+  const data = await req.server.services.userAccount.upsert(user);
   if (data instanceof Error) {
-    console.error(data.message);
+    req.server.log.error(data.message);
     throw new BadRequestError("Invalid request");
   }
   return data;
