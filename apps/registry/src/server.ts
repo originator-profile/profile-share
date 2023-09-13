@@ -21,21 +21,29 @@ type Options = {
 
 export type Server = FastifyInstance;
 
-const openapi: FastifyDynamicSwaggerOptions["openapi"] = {
-  info: {
-    title: pkg.description,
-    version: pkg.version,
-    description: "Profile Registry API Documentation.",
-  },
-  components: {
-    securitySchemes: {
-      basicAuth: {
-        type: "http",
-        scheme: "basic",
+function OpenApi(
+  config: Pick<Config, "AUTH0_DOMAIN">,
+): FastifyDynamicSwaggerOptions["openapi"] {
+  return {
+    info: {
+      title: pkg.description,
+      version: pkg.version,
+      description: "Profile Registry API Documentation.",
+    },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "openIdConnect",
+          openIdConnectUrl: `https://${config.AUTH0_DOMAIN}/.well-known/openid-configuration`,
+        },
+        basicAuth: {
+          type: "http",
+          scheme: "basic",
+        },
       },
     },
-  },
-};
+  };
+}
 
 export async function create(options: Options): Promise<Server> {
   const app = fastify({
@@ -45,8 +53,25 @@ export async function create(options: Options): Promise<Server> {
   await app.register(env, { schema: Config });
 
   if (options.isDev) {
-    app.register(swagger, { openapi });
-    app.register(swaggerUi, {
+    await app.register(swagger, {
+      openapi: OpenApi(app.config),
+    });
+    await app.register(swaggerUi, {
+      initOAuth: {
+        clientId: app.config.AUTH0_CLIENT_ID,
+        additionalQueryStringParams: {
+          audience: app.config.APP_URL,
+        },
+        usePkceWithAuthorizationCodeGrant: true,
+      },
+      transformStaticCSP: (header) =>
+        header
+          .split(";")
+          .filter(
+            // TrustedTypePolicyが存在せず、DOM要素が表示されないので回避
+            (dir) => !/^(?:trusted-types|require-trusted-types-for) /.test(dir),
+          )
+          .join(";"),
       // NOTE: esbuild でのバンドルに失敗する問題の回避策
       //       ロゴが失われる代わりに require.resolve() を呼び出さないようにする
       logo: { type: "text/plain", content: "" },
@@ -77,6 +102,12 @@ export async function create(options: Options): Promise<Server> {
     },
     crossOriginResourcePolicy: {
       policy: "cross-origin",
+    },
+    crossOriginOpenerPolicy: {
+      policy: options.isDev
+        ? // Swagger UIがwindow.openerを使用しているおり、認証出来ないので回避
+          "unsafe-none"
+        : "same-origin",
     },
   });
   app.register(httpErrorsEnhanced);

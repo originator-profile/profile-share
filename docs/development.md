@@ -45,6 +45,16 @@ CHROME_PATH=/usr/bin/google-chrome yarn dev
 - package.json … プロジェクトの付帯情報 ([package.json](https://docs.npmjs.com/files/package.json/))
 - .github/workflows/ … GitHub Actions のワークフローの定義
 
+## Swagger UI
+
+開発用サーバーの起動後、<http://localhost:8080/documentation/static/index.html> にアクセスすることでAPIの詳細の閲覧とサーバーへのリクエストの試行を行えます。
+
+### 認証
+
+Step1. Authorize -> bearerAuth (OAuth2, authorization_code with PKCE) -> [Authorize] を選択
+
+Step2. ログイン (またはサインアップ)
+
 ## 便利なコマンド
 
 テストやビルドの実行など開発に便利なコマンドを紹介します。

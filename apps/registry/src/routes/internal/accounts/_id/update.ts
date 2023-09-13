@@ -12,7 +12,6 @@ const { type, logos, ...properties } = OpHolder.properties;
 const Body = {
   type: "object",
   properties: properties,
-  required: [],
 } as const;
 
 type Body = FromSchema<typeof Body>;
@@ -21,7 +20,7 @@ const schema: FastifySchema = {
   body: Body,
   params: Params,
   description: "会員情報の更新",
-  security: [],
+  security: [{ bearerAuth: ["write:requests"] }],
   response: {
     200: {
       title: "会員",

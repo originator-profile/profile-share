@@ -11,8 +11,23 @@ const REGISTRY_UI_ROOT = resolve(
   ),
 );
 
+const {
+  APP_URL,
+  AUTH0_DOMAIN,
+  AUTH0_CLIENT_ID,
+  VITE_AUTH0_AUDIENCE,
+  VITE_AUTH0_DOMAIN,
+  VITE_AUTH0_CLIENT_ID,
+} = process.env;
+
+// See also packages/registry-ui/README.md
+process.env.VITE_AUTH0_DOMAIN = AUTH0_DOMAIN ?? VITE_AUTH0_DOMAIN;
+process.env.VITE_AUTH0_AUDIENCE = APP_URL ?? VITE_AUTH0_AUDIENCE;
+process.env.VITE_AUTH0_CLIENT_ID = AUTH0_CLIENT_ID ?? VITE_AUTH0_CLIENT_ID;
+
 /** @type import("vite").UserConfig */
 export default defineConfig({
+  base: APP_URL,
   root: REGISTRY_UI_ROOT,
   plugins: [
     react(),
