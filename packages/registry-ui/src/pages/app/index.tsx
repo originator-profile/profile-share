@@ -2,8 +2,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useAsync } from "react-use";
 import useSWR from "swr";
 import { Navigate } from "react-router-dom";
+import fetcher from "../../utils/fetcher";
 
-const useUser = (token?: string) =>
+const useUser = (token: string | null = null) =>
   useSWR<{
     id: string;
     name: string;
@@ -11,29 +12,17 @@ const useUser = (token?: string) =>
     picture: string;
     accountId: string;
   }>(
-    token ? ["/internal/user-accounts/", token] : null,
-    async ([key, token]) => {
-      const response = await fetch(key, {
-        method: "PUT",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data);
-      return data;
-    },
+    token && { method: "PUT", url: "/internal/user-accounts/", token },
+    fetcher
   );
 
-const useAccount = (token?: string, accountId?: string) =>
+const useAccount = (
+  token: string | null = null,
+  accountId: string | null = null
+) =>
   useSWR<{ roleValue: string }>(
-    token && accountId ? ["/internal/accounts/", accountId, token] : null,
-    async ([key, accountId, token]) => {
-      const response = await fetch(`${key + accountId}/`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data);
-      return data;
-    },
+    token && accountId && { url: `/internal/accounts/${accountId}/`, token },
+    fetcher
   );
 
 export default function Index() {
