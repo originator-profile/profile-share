@@ -52,7 +52,7 @@ export const LogoService = ({ config }: Options) => ({
       endpoint: config.R2_API_ENDPOINT,
       credentials: {
         accessKeyId: `${config.R2_ACCESS_KEY_ID}`,
-        secretAccessKey: `${config.R2_SECRET_KEY}`,
+        secretAccessKey: `${config.R2_SECRET_ACCESS_KEY}`,
       },
       // minio のために設定。 R2 の場合値関係なく動作している
       forcePathStyle: true,

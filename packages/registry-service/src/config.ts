@@ -30,7 +30,7 @@ const Config = {
     R2_ACCESS_KEY_ID: {
       type: "string",
     },
-    R2_SECRET_KEY: {
+    R2_SECRET_ACCESS_KEY: {
       type: "string",
     },
     R2_ACCOUNT_LOGO_PUBLIC_ENDPOINT: {

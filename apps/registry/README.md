@@ -665,7 +665,7 @@ MINIO_CONSOLE_PORT
 R2_ACCESS_KEY_ID
 : 開発用 minio サーバーの管理者ユーザー名 または、 R2 のアクセスキー
 
-R2_SECRET_KEY
+R2_SECRET_ACCESS_KEY
 : 開発用 minio サーバーの管理者パスワード または、 R2 のシークレットキー
 
 R2_ACCOUNT_LOGO_BUCKET_NAME
