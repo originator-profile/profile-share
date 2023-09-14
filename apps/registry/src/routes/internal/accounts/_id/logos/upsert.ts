@@ -25,7 +25,7 @@ const schema: FastifySchema = {
   body: Body,
   params: Params,
   description: "ロゴの登録・更新",
-  security: [],
+  security: [{ bearerAuth: ["write:requests"] }],
   response: {
     200: {
       title: "ロゴ",
