@@ -42,7 +42,7 @@ async function upsert(req: FastifyRequest<{ Body: Body }>) {
 
   const data = await req.server.services.userAccount.upsert(user);
   if (data instanceof Error) {
-    req.server.log.error(data.message);
+    req.server.log.info(data.message);
     throw new BadRequestError("Invalid request");
   }
   return data;
