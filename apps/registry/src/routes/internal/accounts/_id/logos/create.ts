@@ -1,13 +1,9 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 import { FromSchema } from "json-schema-to-ts";
-import { BadRequestError, NotFoundError } from "http-errors-enhanced";
+import { BadRequestError } from "http-errors-enhanced";
 import { ErrorResponse } from "../../../../../error";
 import Params from "./params";
-import {
-  S3Client,
-  PutObjectCommand,
-  DeleteObjectCommand,
-} from "@aws-sdk/client-s3";
+
 const Body = {
   type: "object",
   properties: {
@@ -37,7 +33,6 @@ const schema: FastifySchema = {
       additionalProperties: true,
     },
     400: ErrorResponse,
-    403: ErrorResponse,
   },
 };
 

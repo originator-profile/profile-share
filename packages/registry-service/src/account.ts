@@ -1,4 +1,4 @@
-import { Prisma, accounts, logos } from "@prisma/client";
+import { Prisma, accounts } from "@prisma/client";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { fromUnixTime } from "date-fns";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
@@ -158,7 +158,7 @@ export const AccountService = ({ validator }: Options) => ({
     }
     if (decoded.payload.sub !== account.domainName) {
       return new BadRequestError(
-        "It is not Signed Originator Profile for the account.",
+        "It is not Signed Originator Profile for the account."
       );
     }
     const issuedAt: Date = fromUnixTime(decoded.payload.iat);
@@ -206,7 +206,7 @@ export const AccountService = ({ validator }: Options) => ({
     id: string,
     contextDefinition:
       | ContextDefinition
-      | string = "https://originator-profile.org/context.jsonld",
+      | string = "https://originator-profile.org/context.jsonld"
   ): Promise<JsonLdDocument | Error> {
     const prisma = getClient();
     const data = await prisma.accounts
