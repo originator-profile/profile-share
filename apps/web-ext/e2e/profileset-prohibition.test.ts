@@ -27,6 +27,7 @@ test.afterEach(async ({ page }, testInfo) => {
   executeCommand('rm evil.priv.json', '../registry');
   executeCommand('rm evil.pub.json', '../registry');
   executeCommand('bin/dev publisher:website -i account-key.example.priv.json --id localhost --input website.example.json -o update', '../registry');
+  executeCommand('bin/dev cert:issue -i account-key.example.priv.json --certifier localhost --holder localhost', '../registry');
 });
 
 test("DPの検証失敗時は閲覧を禁止する", async ({ context, page }) => {
@@ -37,16 +38,15 @@ test("DPの検証失敗時は閲覧を禁止する", async ({ context, page }) =
   
   ext = await popup(context);
 
-  const warningTexts = [
-    " アクセスにはご注意ください",
-    "このサイトの発信元が確認できません",
-    "本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。",
-  ];
-
-  await Promise.all(warningTexts.map(async (text) => {
-    const foundText = await ext?.textContent(`:text("${text}")`);
-    expect(foundText).toBe(text);
-  }));
+  const foundText1 = await ext?.textContent(':text(" アクセスにはご注意ください")');
+  expect(foundText1).toBe(" アクセスにはご注意ください");
+  
+  const foundText2 = await ext?.textContent(':text("このサイトの発信元が確認できません")');
+  expect(foundText2).toBe("このサイトの発信元が確認できません");
+  
+  const foundText3 = await ext?.textContent(':text("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。")');
+  expect(foundText3).toBe("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。");
+  
   });
 
 test("OPの検証失敗時は閲覧を禁止する", async ({ context, page }) => {
@@ -57,14 +57,12 @@ test("OPの検証失敗時は閲覧を禁止する", async ({ context, page }) =
   
   ext = await popup(context);
 
-  const warningTexts = [
-    " アクセスにはご注意ください",
-    "このサイトの発信元が確認できません",
-    "本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。",
-  ];
-
-  await Promise.all(warningTexts.map(async (text) => {
-    const foundText = await ext?.textContent(`:text("${text}")`);
-    expect(foundText).toBe(text);
-  }));
+  const foundText1 = await ext?.textContent(':text(" アクセスにはご注意ください")');
+  expect(foundText1).toBe(" アクセスにはご注意ください");
+  
+  const foundText2 = await ext?.textContent(':text("このサイトの発信元が確認できません")');
+  expect(foundText2).toBe("このサイトの発信元が確認できません");
+  
+  const foundText3 = await ext?.textContent(':text("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。")');
+  expect(foundText3).toBe("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。");
   });
