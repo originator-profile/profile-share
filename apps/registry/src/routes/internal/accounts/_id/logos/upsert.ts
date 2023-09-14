@@ -36,7 +36,7 @@ const schema: FastifySchema = {
   },
 };
 
-async function create({
+async function upsert({
   server,
   body,
   params,
@@ -61,4 +61,4 @@ async function create({
   return newLogo;
 }
 
-export { create, schema };
+export { upsert, schema };

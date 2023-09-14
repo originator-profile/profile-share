@@ -130,7 +130,7 @@ export const LogoService = ({ config }: Options) => ({
     }
     if (width < 396 || height < 396) {
       throw new BadRequestError(
-        `too small image (width: ${width}, height: ${height})`
+        `too small image (width: ${width}, height: ${height})`,
       );
     }
   },
