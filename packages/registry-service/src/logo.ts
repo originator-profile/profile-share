@@ -5,9 +5,9 @@ import {
   S3Client,
   PutObjectCommand,
   DeleteObjectCommand,
-  type PutObjectCommandInput,
 } from "@aws-sdk/client-s3";
 import Config from "./config";
+import sizeof from "image-size";
 
 type Options = {
   config: Config;
@@ -43,8 +43,10 @@ export const LogoService = ({ config }: Options) => ({
   }: {
     id: string;
     fileName: string;
-    image: PutObjectCommandInput["Body"];
+    image: Buffer;
   }) {
+    this.raiseIfTooSmallImage(image);
+
     const s3 = new S3Client({
       region: "auto",
       endpoint: config.MINIO_ENDPOINT,
@@ -115,6 +117,21 @@ export const LogoService = ({ config }: Options) => ({
           data: { accountId: id, url: data.url, isMain: true },
         })
         .catch((e: Error) => e);
+    }
+  },
+  /**
+   * 画像のサイズを検証して、小さすぎる場合は例外を投げる
+   * @param image 画像（対応画像形式は image-size ライブラリと同じ）
+   */
+  raiseIfTooSmallImage(image: Buffer) {
+    const { width, height } = sizeof(image);
+    if (!width || !height) {
+      throw new BadRequestError("Cannot detect image size");
+    }
+    if (width < 396 || height < 396) {
+      throw new BadRequestError(
+        `too small image (width: ${width}, height: ${height})`
+      );
     }
   },
 });
