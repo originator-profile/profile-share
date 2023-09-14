@@ -53,7 +53,13 @@ async function create({
   const { image, fileName } = body;
 
   const s3 = new S3Client({
+    region: "auto",
     endpoint: server.config.MINIO_ENDPOINT,
+    credentials: {
+      accessKeyId: `${server.config.MINIO_ROOT_USER}`,
+      secretAccessKey: `${server.config.MINIO_ROOT_PASSWORD}`,
+    },
+    // TODO: R2 を使う場合に true でいいか確認して
     forcePathStyle: true,
   });
 
@@ -73,7 +79,7 @@ async function create({
     });
     await s3.send(deleteCommand);
     // TODO result の検証
-    console.log(deleteResult);
+    server.log.info(deleteResult);
   }
 
   const command = new PutObjectCommand({
@@ -83,7 +89,7 @@ async function create({
   });
   await s3.send(command);
   // TODO result の検証
-  console.log(result);
+  server.log.info(result);
 
   // TODO: public access 用の R2 の URL にして
   const url = `${server.config.MINIO_ENDPOINT}/${server.config.MINIO_ACCOUNT_LOGO_BUCKET_NAME}/${id}/${fileName}`;
