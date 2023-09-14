@@ -1,14 +1,11 @@
 import { logos } from "@prisma/client";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
 import { getClient } from "@originator-profile/registry-db";
-import {
-  S3Client,
-  PutObjectCommand,
-  DeleteObjectCommand,
-} from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import Config from "./config";
 import sizeof from "image-size";
-
+import crypto from "node:crypto";
+import path from "node:path";
 type Options = {
   config: Config;
 };
@@ -58,28 +55,19 @@ export const LogoService = ({ config }: Options) => ({
       forcePathStyle: true,
     });
 
-    const mainLogo = await this.readMainLogo({ id });
-    if (mainLogo instanceof Error) throw new BadRequestError("Invalid request");
-
-    if (!(mainLogo instanceof NotFoundError)) {
-      // 古いメインロゴが R2 にある場合は削除する
-      const oldKey = this.getObjectKeyFromUrl(mainLogo.url);
-      const deleteCommand = new DeleteObjectCommand({
-        Bucket: config.R2_ACCOUNT_LOGO_BUCKET_NAME,
-        Key: oldKey,
-      });
-      await s3.send(deleteCommand);
-    }
+    const checksum = crypto.createHash("sha256").update(image).digest("hex");
+    const extension = path.extname(fileName);
+    const newFileName = `${checksum}${extension}`;
 
     const command = new PutObjectCommand({
       Bucket: config.R2_ACCOUNT_LOGO_BUCKET_NAME,
-      Key: `${id}/${fileName}`,
+      Key: `${id}/${newFileName}`,
       Body: image,
     });
 
     await s3.send(command);
 
-    const url = this.makeUrl(id, fileName);
+    const url = this.makeUrl(id, newFileName);
 
     const newLogo = await this.upsertMainLogo(id, { url });
     if (newLogo instanceof Error) throw new BadRequestError("Invalid request");
@@ -113,17 +101,6 @@ export const LogoService = ({ config }: Options) => ({
         })
         .catch((e: Error) => e);
     }
-  },
-  /**
-   * ロゴ画像の公開 URL から、オブジェクトキーを取得する
-   * @param url URL
-   * @return オブジェクトキー
-   */
-  getObjectKeyFromUrl(url: string) {
-    const components = url.split("/");
-    return `${components[components.length - 2]}/${
-      components[components.length - 1]
-    }`;
   },
   /**
    * ロゴ画像をインターネットに公開する際の URL を生成する
