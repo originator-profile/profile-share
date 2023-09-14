@@ -42,7 +42,7 @@ test("DPの検証失敗時は閲覧を禁止する", async ({ context, page }) =
   executeCommand(`bin/dev publisher:website -i ${path.join(tempDir, 'evil.priv.json')} --id localhost --input website.example.json -o update`,'../registry');
   
   await page.goto("http://localhost:8080/");
-  
+
   ext = await popup(context);
 
   const foundText1 = await ext?.textContent(':text(" アクセスにはご注意ください")');
