@@ -52,50 +52,16 @@ async function create({
   const { id } = params;
   const { image, fileName } = body;
 
-  const s3 = new S3Client({
-    region: "auto",
-    endpoint: server.config.MINIO_ENDPOINT,
-    credentials: {
-      accessKeyId: `${server.config.MINIO_ROOT_USER}`,
-      secretAccessKey: `${server.config.MINIO_ROOT_PASSWORD}`,
-    },
-    // TODO: R2 を使う場合に true でいいか確認して
-    forcePathStyle: true,
-  });
-
-  const mainLogo = await server.services.account.readMainLogo({ id });
-  if (mainLogo instanceof Error) throw new BadRequestError("Invalid request");
-
-  if (!(mainLogo instanceof NotFoundError)) {
-    // 古いメインロゴが R2 にある場合は削除する
-    const components = mainLogo.url.split("/");
-    const oldKey = `${components[components.length - 2]}/${
-      components[components.length - 1]
-    }`;
-
-    const deleteCommand = new DeleteObjectCommand({
-      Bucket: server.config.MINIO_ACCOUNT_LOGO_BUCKET_NAME,
-      Key: oldKey,
-    });
-    await s3.send(deleteCommand);
-    // TODO result の検証
-    server.log.info(deleteResult);
+  const imageBuffer = Buffer.from(image, "base64url");
+  if (imageBuffer.toString("base64url") !== image) {
+    throw new BadRequestError("invalid image");
   }
 
-  const command = new PutObjectCommand({
-    Bucket: server.config.MINIO_ACCOUNT_LOGO_BUCKET_NAME,
-    Key: `${id}/${fileName}`,
-    Body: Buffer.from(image, "base64url"),
+  const newLogo = await server.services.logo.uploadLogo({
+    id,
+    fileName,
+    image: imageBuffer,
   });
-  await s3.send(command);
-  // TODO result の検証
-  server.log.info(result);
-
-  // TODO: public access 用の R2 の URL にして
-  const url = `${server.config.MINIO_ENDPOINT}/${server.config.MINIO_ACCOUNT_LOGO_BUCKET_NAME}/${id}/${fileName}`;
-
-  const newLogo = await server.services.account.upsertMainLogo(id, { url });
-  if (newLogo instanceof Error) throw new BadRequestError("Invalid request");
 
   return newLogo;
 }
