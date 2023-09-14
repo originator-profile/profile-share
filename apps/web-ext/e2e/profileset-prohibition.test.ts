@@ -1,8 +1,8 @@
-import { promises as fs } from 'node:fs';
-import path from 'node:path';
+import { promises as fs } from "node:fs";
+import path from "node:path";
 import { Page } from "@playwright/test";
-import {expect, popup, test } from "./fixtures";
-import { execSync } from 'node:child_process'; 
+import { expect, popup, test } from "./fixtures";
+import { execSync } from "node:child_process";
 
 function executeCommand(command: string, directory?: string): void {
   try {
@@ -23,7 +23,7 @@ let ext: Page | undefined;
 let tempDir: string;
 
 test.beforeEach(async () => {
-  tempDir = await fs.mkdtemp(path.join(__dirname, 'temp-'));
+  tempDir = await fs.mkdtemp(path.join(__dirname, "temp-"));
 });
 
 test.afterEach(async ({ page }, testInfo) => {
@@ -31,45 +31,83 @@ test.afterEach(async ({ page }, testInfo) => {
   if (ext && !ext.isClosed()) {
     await ext.screenshot({ path: `screenshots/${testInfo.title}-web-ext.png` });
   }
-  executeCommand('bin/dev publisher:website -i account-key.example.priv.json --id localhost --input website.example.json -o update', '../registry');
-  executeCommand('bin/dev cert:issue -i account-key.example.priv.json --certifier localhost --holder localhost', '../registry');
+  executeCommand(
+    "bin/dev publisher:website -i account-key.example.priv.json --id localhost --input website.example.json -o update",
+    "../registry",
+  );
+  executeCommand(
+    "bin/dev cert:issue -i account-key.example.priv.json --certifier localhost --holder localhost",
+    "../registry",
+  );
   await fs.rm(tempDir, { recursive: true });
 });
 
-
 test("DPの検証失敗時は閲覧を禁止する", async ({ context, page }) => {
-  executeCommand('bin/dev key-gen --output ' + path.join(tempDir, 'evil'),'../registry');
-  executeCommand(`bin/dev publisher:website -i ${path.join(tempDir, 'evil.priv.json')} --id localhost --input website.example.json -o update`,'../registry');
-  
+  executeCommand(
+    "bin/dev key-gen --output " + path.join(tempDir, "evil"),
+    "../registry",
+  );
+  executeCommand(
+    `bin/dev publisher:website -i ${path.join(
+      tempDir,
+      "evil.priv.json",
+    )} --id localhost --input website.example.json -o update`,
+    "../registry",
+  );
+
   await page.goto("http://localhost:8080/");
 
   ext = await popup(context);
 
-  const foundText1 = await ext?.textContent(':text(" アクセスにはご注意ください")');
+  const foundText1 = await ext?.textContent(
+    ':text(" アクセスにはご注意ください")',
+  );
   expect(foundText1).toBe(" アクセスにはご注意ください");
-  
-  const foundText2 = await ext?.textContent(':text("このサイトの発信元が確認できません")');
+
+  const foundText2 = await ext?.textContent(
+    ':text("このサイトの発信元が確認できません")',
+  );
   expect(foundText2).toBe("このサイトの発信元が確認できません");
-  
-  const foundText3 = await ext?.textContent(':text("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。")');
-  expect(foundText3).toBe("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。");
-  
-  });
+
+  const foundText3 = await ext?.textContent(
+    ':text("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。")',
+  );
+  expect(foundText3).toBe(
+    "本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。",
+  );
+});
 
 test("OPの検証失敗時は閲覧を禁止する", async ({ context, page }) => {
-  executeCommand('bin/dev key-gen --output ' + path.join(tempDir, 'evil'),'../registry');
-  executeCommand(`bin/dev cert:issue -i ${path.join(tempDir, 'evil.priv.json')} --certifier localhost --holder localhost`, '../registry');
-  
+  executeCommand(
+    "bin/dev key-gen --output " + path.join(tempDir, "evil"),
+    "../registry",
+  );
+  executeCommand(
+    `bin/dev cert:issue -i ${path.join(
+      tempDir,
+      "evil.priv.json",
+    )} --certifier localhost --holder localhost`,
+    "../registry",
+  );
+
   await page.goto("http://localhost:8080/");
-  
+
   ext = await popup(context);
 
-  const foundText1 = await ext?.textContent(':text(" アクセスにはご注意ください")');
+  const foundText1 = await ext?.textContent(
+    ':text(" アクセスにはご注意ください")',
+  );
   expect(foundText1).toBe(" アクセスにはご注意ください");
-  
-  const foundText2 = await ext?.textContent(':text("このサイトの発信元が確認できません")');
+
+  const foundText2 = await ext?.textContent(
+    ':text("このサイトの発信元が確認できません")',
+  );
   expect(foundText2).toBe("このサイトの発信元が確認できません");
-  
-  const foundText3 = await ext?.textContent(':text("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。")');
-  expect(foundText3).toBe("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。");
-  });
+
+  const foundText3 = await ext?.textContent(
+    ':text("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。")',
+  );
+  expect(foundText3).toBe(
+    "本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。",
+  );
+});
