@@ -21,19 +21,19 @@ const Config = {
     NODE_ENV: {
       type: "string",
     },
-    MINIO_ACCOUNT_LOGO_BUCKET_NAME: {
+    R2_ACCOUNT_LOGO_BUCKET_NAME: {
       type: "string",
     },
-    MINIO_ENDPOINT: {
+    R2_API_ENDPOINT: {
       type: "string",
     },
-    MINIO_ROOT_USER: {
+    R2_ACCESS_KEY_ID: {
       type: "string",
     },
-    MINIO_ROOT_PASSWORD: {
+    R2_SECRET_KEY: {
       type: "string",
     },
-    MINIO_ACCOUNT_LOGO_PUBLIC_ENDPOINT: {
+    R2_ACCOUNT_LOGO_PUBLIC_ENDPOINT: {
       type: "string",
     },
   },

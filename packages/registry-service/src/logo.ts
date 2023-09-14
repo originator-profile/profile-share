@@ -49,10 +49,10 @@ export const LogoService = ({ config }: Options) => ({
 
     const s3 = new S3Client({
       region: "auto",
-      endpoint: config.MINIO_ENDPOINT,
+      endpoint: config.R2_API_ENDPOINT,
       credentials: {
-        accessKeyId: `${config.MINIO_ROOT_USER}`,
-        secretAccessKey: `${config.MINIO_ROOT_PASSWORD}`,
+        accessKeyId: `${config.R2_ACCESS_KEY_ID}`,
+        secretAccessKey: `${config.R2_SECRET_KEY}`,
       },
       // minio のために設定。 R2 の場合値関係なく動作している
       forcePathStyle: true,
@@ -65,14 +65,14 @@ export const LogoService = ({ config }: Options) => ({
       // 古いメインロゴが R2 にある場合は削除する
       const oldKey = this.getObjectKeyFromUrl(mainLogo.url);
       const deleteCommand = new DeleteObjectCommand({
-        Bucket: config.MINIO_ACCOUNT_LOGO_BUCKET_NAME,
+        Bucket: config.R2_ACCOUNT_LOGO_BUCKET_NAME,
         Key: oldKey,
       });
       await s3.send(deleteCommand);
     }
 
     const command = new PutObjectCommand({
-      Bucket: config.MINIO_ACCOUNT_LOGO_BUCKET_NAME,
+      Bucket: config.R2_ACCOUNT_LOGO_BUCKET_NAME,
       Key: `${id}/${fileName}`,
       Body: image,
     });
@@ -132,7 +132,7 @@ export const LogoService = ({ config }: Options) => ({
    * @return URL
    */
   makeUrl(id: AccountId, fileName: string) {
-    return `${config.MINIO_ACCOUNT_LOGO_PUBLIC_ENDPOINT}/${id}/${fileName}`;
+    return `${config.R2_ACCOUNT_LOGO_PUBLIC_ENDPOINT}/${id}/${fileName}`;
   },
   /**
    * 画像のサイズを検証して、小さすぎる場合は例外を投げる
@@ -145,7 +145,7 @@ export const LogoService = ({ config }: Options) => ({
     }
     if (width < 396 || height < 396) {
       throw new BadRequestError(
-        `too small image (width: ${width}, height: ${height})`,
+        `too small image (width: ${width}, height: ${height})`
       );
     }
   },
