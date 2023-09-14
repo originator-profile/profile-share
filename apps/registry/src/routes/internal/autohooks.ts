@@ -1,7 +1,8 @@
-import { FastifyInstance, FastifyRequest } from "fastify";
+import { FastifyInstance, FastifyRequest, onRouteHookHandler } from "fastify";
 import helmet from "@fastify/helmet";
 import auth0Verify from "fastify-auth0-verify";
 import { ForbiddenError } from "http-errors-enhanced";
+import { ErrorResponse } from "../../error";
 
 export async function preHandler(request: FastifyRequest) {
   const user = request.user;
@@ -9,6 +10,21 @@ export async function preHandler(request: FastifyRequest) {
     throw new ForbiddenError("Insufficient permissions");
   }
 }
+
+const addErrorResponseSchema: onRouteHookHandler = async (opt) => {
+  if (!opt.schema?.response) {
+    const method = [opt.method].flat().join();
+
+    throw new Error(
+      `The property schema.response is missing on ${method} ${opt.path}`,
+    );
+  }
+
+  Object.assign(opt.schema.response, {
+    401: ErrorResponse,
+    403: ErrorResponse,
+  });
+};
 
 async function autohooks(fastify: FastifyInstance): Promise<void> {
   fastify.register(auth0Verify, {
@@ -22,6 +38,7 @@ async function autohooks(fastify: FastifyInstance): Promise<void> {
   fastify.register(helmet, {
     hsts: { preload: true },
   });
+  fastify.addHook("onRoute", addErrorResponseSchema);
 }
 
 export default autohooks;
