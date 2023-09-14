@@ -5,11 +5,11 @@ import { BadRequestError, NotFoundError } from "http-errors-enhanced";
 
 const schema: FastifySchema = {
   params: Params,
-  description: "会員情報の取得",
-  security: [{ bearerAuth: ["write:requests"] }],
+  description: "ユーザーアカウント情報の取得",
+  security: [{ bearerAuth: [] }],
   response: {
     200: {
-      title: "会員",
+      title: "ユーザーアカウント",
       type: "object",
       additionalProperties: true,
     },
@@ -26,7 +26,7 @@ async function get({
 }>) {
   const { id } = params;
 
-  const data = await server.services.account.read({ id });
+  const data = await server.services.userAccount.read({ id });
 
   if (data instanceof NotFoundError) {
     throw data;

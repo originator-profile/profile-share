@@ -26,7 +26,6 @@ const schema: FastifySchema = {
       additionalProperties: true,
     },
     400: ErrorResponse,
-    403: ErrorResponse,
   },
 };
 
