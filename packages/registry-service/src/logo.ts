@@ -63,11 +63,7 @@ export const LogoService = ({ config }: Options) => ({
 
     if (!(mainLogo instanceof NotFoundError)) {
       // 古いメインロゴが R2 にある場合は削除する
-      const components = mainLogo.url.split("/");
-      const oldKey = `${components[components.length - 2]}/${
-        components[components.length - 1]
-      }`;
-
+      const oldKey = this.getObjectKeyFromUrl(mainLogo.url);
       const deleteCommand = new DeleteObjectCommand({
         Bucket: config.MINIO_ACCOUNT_LOGO_BUCKET_NAME,
         Key: oldKey,
@@ -83,8 +79,7 @@ export const LogoService = ({ config }: Options) => ({
 
     await s3.send(command);
 
-    // TODO: public access 用の R2 の URL にして
-    const url = `${config.MINIO_ENDPOINT}/${config.MINIO_ACCOUNT_LOGO_BUCKET_NAME}/${id}/${fileName}`;
+    const url = this.makeUrl(id, fileName);
 
     const newLogo = await this.upsertMainLogo(id, { url });
     if (newLogo instanceof Error) throw new BadRequestError("Invalid request");
@@ -118,6 +113,26 @@ export const LogoService = ({ config }: Options) => ({
         })
         .catch((e: Error) => e);
     }
+  },
+  /**
+   * ロゴ画像の公開 URL から、オブジェクトキーを取得する
+   * @param url URL
+   * @return オブジェクトキー
+   */
+  getObjectKeyFromUrl(url: string) {
+    const components = url.split("/");
+    return `${components[components.length - 2]}/${
+      components[components.length - 1]
+    }`;
+  },
+  /**
+   * ロゴ画像をインターネットに公開する際の URL を生成する
+   * @param id アカウントID
+   * @param fileName ファイル名
+   * @return URL
+   */
+  makeUrl(id: AccountId, fileName: string) {
+    return `${config.MINIO_ACCOUNT_LOGO_PUBLIC_ENDPOINT}/${id}/${fileName}`;
   },
   /**
    * 画像のサイズを検証して、小さすぎる場合は例外を投げる

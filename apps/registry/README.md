@@ -674,4 +674,7 @@ MINIO_ACCOUNT_LOGO_BUCKET_NAME
 MINIO_ENDPOINT
 : minio または R2 のエンドポイント（ R2 の場合、バケット名、末尾スラッシュは不要）
 
+MINIO_ACCOUNT_LOGO_PUBLIC_ENDPOINT
+: 画像ファイルをインターネットに公開する場合のエンドポイント
+
 [^gh-770]: 未実装。[審査結果メール通知機能](https://github.com/originator-profile/profile/issues/770)にて実装予定。

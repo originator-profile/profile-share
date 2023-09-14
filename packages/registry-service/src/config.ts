@@ -33,6 +33,9 @@ const Config = {
     MINIO_ROOT_PASSWORD: {
       type: "string",
     },
+    MINIO_ACCOUNT_LOGO_PUBLIC_ENDPOINT: {
+      type: "string",
+    },
   },
   required: ["ISSUER_UUID"],
 } as const;
