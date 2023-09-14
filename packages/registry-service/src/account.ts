@@ -1,4 +1,4 @@
-import { Prisma, accounts } from "@prisma/client";
+import { Prisma, accounts, logos } from "@prisma/client";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { fromUnixTime } from "date-fns";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
@@ -26,6 +26,18 @@ export const AccountService = ({ validator }: Options) => ({
   }: Prisma.accountsCreateInput): Promise<accounts | Error> {
     const prisma = getClient();
     return await prisma.accounts.create({ data: input }).catch((e: Error) => e);
+  },
+  /**
+   * ロゴの取得
+   * @param input.id 会員 ID
+   * @return 会員
+   */
+  async readMainLogo({ id }: { id: AccountId }): Promise<logos | Error> {
+    const prisma = getClient();
+    const data = await prisma.logos
+      .findFirst({ where: { accountId: id, isMain: true } })
+      .catch((e: Error) => e);
+    return data ?? new NotFoundError();
   },
   /**
    * 会員の表示
@@ -122,6 +134,34 @@ export const AccountService = ({ validator }: Options) => ({
     const jwks: Jwks = { keys: data.map((key) => key.jwk as Jwk) };
     return jwks;
   },
+  /**
+   * メインロゴの登録・更新 (upsert)
+   * @param id 会員 ID
+   * @param data ロゴのメタデータ
+   * @return 更新後のメタデータ
+   */
+  async upsertMainLogo(id: AccountId, data: { url: string }) {
+    const prisma = getClient();
+    const oldLogo = await prisma.logos.findFirst({
+      where: { accountId: id, isMain: true },
+    });
+
+    if (oldLogo) {
+      return await prisma.logos
+        .update({
+          where: { accountId: id, url: oldLogo.url },
+          data: { url: data.url },
+        })
+        .catch((e: Error) => e);
+    } else {
+      return await prisma.logos
+        .create({
+          data: { accountId: id, url: data.url, isMain: true },
+        })
+        .catch((e: Error) => e);
+    }
+  },
+
   /**
    * 公開鍵の登録
    * @param id 会員 ID

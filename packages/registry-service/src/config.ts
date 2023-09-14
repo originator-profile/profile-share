@@ -21,6 +21,12 @@ const Config = {
     NODE_ENV: {
       type: "string",
     },
+    MINIO_ACCOUNT_LOGO_BUCKET_NAME: {
+      type: "string",
+    },
+    MINIO_ENDPOINT: {
+      type: "string",
+    },
   },
   required: ["ISSUER_UUID"],
 } as const;
