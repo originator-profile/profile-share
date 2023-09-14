@@ -656,4 +656,23 @@ SMTP_AUTH_USER [^gh-770]
 SMTP_AUTH_PASSWORD [^gh-770]
 : SMTPサーバーの認証に使用するパスワード
 
+MINIO_PORT
+: 開発用 minio サーバーのAPIポート
+
+MINIO_CONSOLE_PORT
+: 開発用 minio サーバーのWeb管理画面のポート
+
+MINIO_ROOT_USER
+: 開発用 minio サーバーの管理者ユーザー名 または、 R2 のアクセスキー
+
+MINIO_ROOT_PASSWORD
+: 開発用 minio サーバーの管理者パスワード または、 R2 のシークレットキー
+
+MINIO_ACCOUNT_LOGO_BUCKET_NAME
+: アカウントロゴを保存するバケット名
+
+MINIO_ENDPOINT
+: minio または R2 のエンドポイント（ R2 の場合、バケット名、末尾スラッシュは不要）
+
+
 [^gh-770]: 未実装。[審査結果メール通知機能](https://github.com/originator-profile/profile/issues/770)にて実装予定。

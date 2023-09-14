@@ -27,6 +27,18 @@
     },
     "SMTP_AUTH_PASSWORD": {
       "description": "SMTPサーバーの認証に使用するパスワード (SendGridの場合: https://app.sendgrid.com/settings/api_keys -> Create API Key -> Mail Send -> Custom Access -> Mail Send)"
+    },
+    "MINIO_ROOT_USER": {
+      "description": "開発用 minio サーバーの管理者ユーザー名 または、 R2 のアクセスキー"
+    },
+    "MINIO_ROOT_PASSWORD": {
+      "description": "開発用 minio サーバーの管理者パスワード または、 R2 のシークレットキー"
+    },
+    "MINIO_ENDPOINT": {
+      "description": "minio または R2 のエンドポイント"
+    },
+    "MINIO_ACCOUNT_LOGO_BUCKET_NAME": {
+      "description": "アカウントロゴを保存するバケット名"
     }
   }
 }
