@@ -20,6 +20,9 @@ export const UserAccountService = ({ userAccountRepository }: Options) => ({
    * ユーザーアカウントの更新・作成
    * @param input ユーザーアカウント
    * @return ユーザーアカウント
+   * @remarks
+   * ユーザーアカウント作成時、同時に仮の会員を作成します。
+   * 少なくとも会員のドメイン名は、OP発行前に正式なものに変更する必要があることに注意してください。
    */
   async upsert(
     input: Omit<
