@@ -1,4 +1,3 @@
-import "cross-fetch/polyfill";
 import { beforeAll, afterAll } from "vitest";
 import { PrismaClient } from "@prisma/client";
 import { waitForDb } from "../src/seed";
