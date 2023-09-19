@@ -33,6 +33,7 @@ services:
     environment:
       MINIO_ROOT_USER: ${R2_ACCESS_KEY_ID}
       MINIO_ROOT_PASSWORD: ${R2_SECRET_ACCESS_KEY}
-    command: server --console-address ":9001" /data
+    entrypoint: sh
+    command: -c 'mkdir -p /data/${R2_ACCOUNT_LOGO_BUCKET_NAME} && /opt/bin/minio server --console-address ":9001" /data'
 volumes:
   postgres_data_v15:
