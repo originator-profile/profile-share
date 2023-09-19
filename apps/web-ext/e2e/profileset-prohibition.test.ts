@@ -45,14 +45,9 @@ test("DPの検証失敗時は閲覧を禁止する", async ({ context, page }) =
 
   ext = await popup(context);
 
-  const foundText1 = await ext?.textContent(':text(" アクセスにはご注意ください")');
-  expect(foundText1).toBe(" アクセスにはご注意ください");
-  
-  const foundText2 = await ext?.textContent(':text("このサイトの発信元が確認できません")');
-  expect(foundText2).toBe("このサイトの発信元が確認できません");
-  
-  const foundText3 = await ext?.textContent(':text("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。")');
-  expect(foundText3).toBe("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。");
+  await expect(ext?.locator(':text(" アクセスにはご注意ください")')).toContainText(" アクセスにはご注意ください");
+  await expect(ext?.locator(':text("このサイトの発信元が確認できません")')).toContainText("このサイトの発信元が確認できません");
+  await expect(ext?.locator(':text("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。")')).toContainText("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。");
   
   });
 
@@ -64,12 +59,8 @@ test("OPの検証失敗時は閲覧を禁止する", async ({ context, page }) =
   
   ext = await popup(context);
 
-  const foundText1 = await ext?.textContent(':text(" アクセスにはご注意ください")');
-  expect(foundText1).toBe(" アクセスにはご注意ください");
+  await expect(ext?.locator(':text(" アクセスにはご注意ください")')).toContainText(" アクセスにはご注意ください");
+  await expect(ext?.locator(':text("このサイトの発信元が確認できません")')).toContainText("このサイトの発信元が確認できません");
+  await expect(ext?.locator(':text("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。")')).toContainText("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。");
   
-  const foundText2 = await ext?.textContent(':text("このサイトの発信元が確認できません")');
-  expect(foundText2).toBe("このサイトの発信元が確認できません");
-  
-  const foundText3 = await ext?.textContent(':text("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。")');
-  expect(foundText3).toBe("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。");
   });
