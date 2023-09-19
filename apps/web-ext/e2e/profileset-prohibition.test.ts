@@ -1,8 +1,8 @@
-import { promises as fs } from 'node:fs';
-import path from 'node:path';
+import { promises as fs } from "node:fs";
+import path from "node:path";
 import { Page } from "@playwright/test";
-import {expect, popup, test } from "./fixtures";
-import { execSync } from 'node:child_process'; 
+import { expect, popup, test } from "./fixtures";
+import { execSync } from "node:child_process";
 
 function executeCommand(command: string, directory?: string): void {
   try {
@@ -19,7 +19,7 @@ let ext: Page | undefined;
 let tempDir: string;
 
 test.beforeEach(async () => {
-  tempDir = await fs.mkdtemp(path.join(__dirname, 'temp-'));
+  tempDir = await fs.mkdtemp(path.join(__dirname, "temp-"));
 });
 
 test.afterEach(async ({ page }, testInfo) => {
@@ -36,11 +36,19 @@ test.afterEach(async ({ page }, testInfo) => {
   await fs.rm(tempDir, { recursive: true });
 });
 
-
 test("DPの検証失敗時は閲覧を禁止する", async ({ context, page }) => {
-  executeCommand('bin/dev key-gen --output ' + path.join(tempDir, 'evil'),'../registry');
-  executeCommand(`bin/dev publisher:website -i ${path.join(tempDir, 'evil.priv.json')} --id localhost --input website.example.json -o update`,'../registry');
-  
+  executeCommand(
+    "bin/dev key-gen --output " + path.join(tempDir, "evil"),
+    "../registry",
+  );
+  executeCommand(
+    `bin/dev publisher:website -i ${path.join(
+      tempDir,
+      "evil.priv.json",
+    )} --id localhost --input website.example.json -o update`,
+    "../registry",
+  );
+
   await page.goto("http://localhost:8080/");
 
   ext = await popup(context);
@@ -52,11 +60,20 @@ test("DPの検証失敗時は閲覧を禁止する", async ({ context, page }) =
   });
 
 test("OPの検証失敗時は閲覧を禁止する", async ({ context, page }) => {
-  executeCommand('bin/dev key-gen --output ' + path.join(tempDir, 'evil'),'../registry');
-  executeCommand(`bin/dev cert:issue -i ${path.join(tempDir, 'evil.priv.json')} --certifier localhost --holder localhost`, '../registry');
-  
+  executeCommand(
+    "bin/dev key-gen --output " + path.join(tempDir, "evil"),
+    "../registry",
+  );
+  executeCommand(
+    `bin/dev cert:issue -i ${path.join(
+      tempDir,
+      "evil.priv.json",
+    )} --certifier localhost --holder localhost`,
+    "../registry",
+  );
+
   await page.goto("http://localhost:8080/");
-  
+
   ext = await popup(context);
 
   await expect(ext?.locator(':text(" アクセスにはご注意ください")')).toContainText(" アクセスにはご注意ください");
