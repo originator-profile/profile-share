@@ -125,7 +125,6 @@ Step4.
 
 http://localhost:19001/ にブラウザして確認。`Username`として`root`、`Password`として`kHslkqy4n2hMDvQabcwkOl_NCqdX1M2QEX_XjGe807o`を入力しログインすること
 
-
 ## GitHub Actions
 
 GitHub リポジトリ上での変更は自動的にチェックされます。
