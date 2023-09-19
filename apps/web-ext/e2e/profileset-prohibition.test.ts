@@ -6,11 +6,7 @@ import { execSync } from 'node:child_process';
 
 function executeCommand(command: string, directory?: string): void {
   try {
-    const options: { cwd?: string } = {};
-    if (directory) {
-      options.cwd = directory;
-    }
-    execSync(command, options).toString();
+    execSync(command, { cwd: directory });
   } catch (error) {
     console.error(`Error executing command: ${command}`);
     console.error(error);
