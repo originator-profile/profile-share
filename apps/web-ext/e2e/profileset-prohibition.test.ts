@@ -27,11 +27,17 @@ test.afterEach(async ({ page }, testInfo) => {
   if (ext && !ext.isClosed()) {
     await ext.screenshot({ path: `screenshots/${testInfo.title}-web-ext.png` });
   }
-  if(testInfo.title === "DPの検証失敗時は閲覧を禁止する"){
-    executeCommand('bin/dev publisher:website -i account-key.example.priv.json --id localhost --input website.example.json -o update', '../registry');
+  if (testInfo.title === "DPの検証失敗時は閲覧を禁止する") {
+    executeCommand(
+      "bin/dev publisher:website -i account-key.example.priv.json --id localhost --input website.example.json -o update",
+      "../registry",
+    );
   }
   if (testInfo.title === "OPの検証失敗時は閲覧を禁止する") {
-    executeCommand('bin/dev cert:issue -i account-key.example.priv.json --certifier localhost --holder localhost', '../registry');
+    executeCommand(
+      "bin/dev cert:issue -i account-key.example.priv.json --certifier localhost --holder localhost",
+      "../registry",
+    );
   }
   await fs.rm(tempDir, { recursive: true });
 });
@@ -53,11 +59,20 @@ test("DPの検証失敗時は閲覧を禁止する", async ({ context, page }) =
 
   ext = await popup(context);
 
-  await expect(ext?.locator(':text(" アクセスにはご注意ください")')).toContainText(" アクセスにはご注意ください");
-  await expect(ext?.locator(':text("このサイトの発信元が確認できません")')).toContainText("このサイトの発信元が確認できません");
-  await expect(ext?.locator(':text("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。")')).toContainText("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。");
-  
-  });
+  await expect(
+    ext?.locator(':text(" アクセスにはご注意ください")'),
+  ).toContainText(" アクセスにはご注意ください");
+  await expect(
+    ext?.locator(':text("このサイトの発信元が確認できません")'),
+  ).toContainText("このサイトの発信元が確認できません");
+  await expect(
+    ext?.locator(
+      ':text("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。")',
+    ),
+  ).toContainText(
+    "本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。",
+  );
+});
 
 test("OPの検証失敗時は閲覧を禁止する", async ({ context, page }) => {
   executeCommand(
@@ -76,8 +91,17 @@ test("OPの検証失敗時は閲覧を禁止する", async ({ context, page }) =
 
   ext = await popup(context);
 
-  await expect(ext?.locator(':text(" アクセスにはご注意ください")')).toContainText(" アクセスにはご注意ください");
-  await expect(ext?.locator(':text("このサイトの発信元が確認できません")')).toContainText("このサイトの発信元が確認できません");
-  await expect(ext?.locator(':text("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。")')).toContainText("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。");
-  
-  });
+  await expect(
+    ext?.locator(':text(" アクセスにはご注意ください")'),
+  ).toContainText(" アクセスにはご注意ください");
+  await expect(
+    ext?.locator(':text("このサイトの発信元が確認できません")'),
+  ).toContainText("このサイトの発信元が確認できません");
+  await expect(
+    ext?.locator(
+      ':text("本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。")',
+    ),
+  ).toContainText(
+    "本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。",
+  );
+});
