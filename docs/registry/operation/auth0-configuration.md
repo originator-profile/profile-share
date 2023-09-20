@@ -50,7 +50,7 @@ Auth0 の管理画面で作業します。
 
 コードエディタの画面に遷移するので、この画面で次の設定をしてください。
 
-1. post login action のスクリプトをコピペしてください。
+1. post login action のスクリプトをペーストしてください。スクリプトは git で管理されています： https://github.com/originator-profile/profile/blob/gh-801-logo-api/packages/auth0/actions/add-default-role-to-new-user.js
 
 2. スクリプト内の次の行を、初めにメモした role ID で書き換えてください。
 
