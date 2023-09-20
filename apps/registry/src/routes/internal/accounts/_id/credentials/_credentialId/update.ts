@@ -21,7 +21,7 @@ const schema: FastifySchema = {
   body: Body,
   params: Params,
   description: "資格情報の更新",
-  security: [],
+  security: [{ bearerAuth: ["write:requests"] }],
   response: {
     200: {
       title: "会員",
