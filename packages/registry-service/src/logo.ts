@@ -46,10 +46,10 @@ export const LogoService = ({ config }: Options) => ({
 
     const s3 = new S3Client({
       region: "auto",
-      endpoint: config.R2_API_ENDPOINT,
+      endpoint: config.S3_API_ENDPOINT,
       credentials: {
-        accessKeyId: `${config.R2_ACCESS_KEY_ID}`,
-        secretAccessKey: `${config.R2_SECRET_ACCESS_KEY}`,
+        accessKeyId: `${config.S3_ACCESS_KEY_ID}`,
+        secretAccessKey: `${config.S3_SECRET_ACCESS_KEY}`,
       },
       // minio のために設定。 R2 の場合値関係なく動作している
       forcePathStyle: true,
@@ -60,7 +60,7 @@ export const LogoService = ({ config }: Options) => ({
     const newFileName = `${checksum}${extension}`;
 
     const command = new PutObjectCommand({
-      Bucket: config.R2_ACCOUNT_LOGO_BUCKET_NAME,
+      Bucket: config.S3_ACCOUNT_LOGO_BUCKET_NAME,
       Key: `${id}/${newFileName}`,
       Body: image,
     });
@@ -109,7 +109,7 @@ export const LogoService = ({ config }: Options) => ({
    * @return URL
    */
   makeUrl(id: AccountId, fileName: string) {
-    return `${config.R2_ACCOUNT_LOGO_PUBLIC_ENDPOINT}/${id}/${fileName}`;
+    return `${config.S3_ACCOUNT_LOGO_PUBLIC_ENDPOINT}/${id}/${fileName}`;
   },
   /**
    * 画像のサイズを検証して、小さすぎる場合は例外を投げる
@@ -122,7 +122,7 @@ export const LogoService = ({ config }: Options) => ({
     }
     if (width < 396 || height < 396) {
       throw new BadRequestError(
-        `too small image (width: ${width}, height: ${height})`,
+        `too small image (width: ${width}, height: ${height})`
       );
     }
   },

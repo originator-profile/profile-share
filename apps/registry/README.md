@@ -662,19 +662,19 @@ MINIO_PORT
 MINIO_CONSOLE_PORT
 : 開発用 minio サーバーのWeb管理画面のポート
 
-R2_ACCESS_KEY_ID
+S3_ACCESS_KEY_ID
 : 開発用 minio サーバーの管理者ユーザー名 または、 R2 のアクセスキー
 
-R2_SECRET_ACCESS_KEY
+S3_SECRET_ACCESS_KEY
 : 開発用 minio サーバーの管理者パスワード または、 R2 のシークレットキー
 
-R2_ACCOUNT_LOGO_BUCKET_NAME
+S3_ACCOUNT_LOGO_BUCKET_NAME
 : アカウントロゴを保存するバケット名
 
-R2_API_ENDPOINT
+S3_API_ENDPOINT
 : minio または R2 のエンドポイント（ R2 の場合、バケット名、末尾スラッシュは不要）
 
-R2_ACCOUNT_LOGO_PUBLIC_ENDPOINT
+S3_ACCOUNT_LOGO_PUBLIC_ENDPOINT
 : 画像ファイルをインターネットに公開する場合のエンドポイント
 
 [^gh-770]: 未実装。[審査結果メール通知機能](https://github.com/originator-profile/profile/issues/770)にて実装予定。

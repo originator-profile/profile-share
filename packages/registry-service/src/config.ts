@@ -21,19 +21,19 @@ const Config = {
     NODE_ENV: {
       type: "string",
     },
-    R2_ACCOUNT_LOGO_BUCKET_NAME: {
+    S3_ACCOUNT_LOGO_BUCKET_NAME: {
       type: "string",
     },
-    R2_API_ENDPOINT: {
+    S3_API_ENDPOINT: {
       type: "string",
     },
-    R2_ACCESS_KEY_ID: {
+    S3_ACCESS_KEY_ID: {
       type: "string",
     },
-    R2_SECRET_ACCESS_KEY: {
+    S3_SECRET_ACCESS_KEY: {
       type: "string",
     },
-    R2_ACCOUNT_LOGO_PUBLIC_ENDPOINT: {
+    S3_ACCOUNT_LOGO_PUBLIC_ENDPOINT: {
       type: "string",
     },
   },

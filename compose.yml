@@ -31,9 +31,9 @@ services:
       - "${MINIO_PORT:-19000}:9000"
       - "${MINIO_CONSOLE_PORT:-19001}:9001"
     environment:
-      MINIO_ROOT_USER: ${R2_ACCESS_KEY_ID}
-      MINIO_ROOT_PASSWORD: ${R2_SECRET_ACCESS_KEY}
+      MINIO_ROOT_USER: ${S3_ACCESS_KEY_ID}
+      MINIO_ROOT_PASSWORD: ${S3_SECRET_ACCESS_KEY}
     entrypoint: sh
-    command: -c 'mkdir -p /data/${R2_ACCOUNT_LOGO_BUCKET_NAME} && /opt/bin/minio server --console-address ":9001" /data'
+    command: -c 'mkdir -p /data/${S3_ACCOUNT_LOGO_BUCKET_NAME} && /opt/bin/minio server --console-address ":9001" /data'
 volumes:
   postgres_data_v15:

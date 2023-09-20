@@ -102,7 +102,7 @@ Step1.
 
 Step2.
 
-apps/registry/.env.development の R2_ACCOUNT_LOGO_BUCKET_NAME の値を覚えておきます。このバケットにファイルをアップロードします。以下ではこの値が oprdev-account-logos だとします。
+apps/registry/.env.development の S3_ACCOUNT_LOGO_BUCKET_NAME の値を覚えておきます。このバケットにファイルをアップロードします。以下ではこの値が oprdev-account-logos だとします。
 
 Step2.
 
