@@ -7,7 +7,6 @@
 
 ここでは1つのテナントに対してデフォルトロールを付与する Action を付与する手順を説明します。次のQ&Aポストを参考にしています: [How can I use the Management API in Actions?](https://community.auth0.com/t/how-can-i-use-the-management-api-in-actions/64947)
 
-
 ### ロールの ID の確認
 
 Auth0 の管理画面で作業します。
@@ -21,6 +20,7 @@ Auth0 の管理画面で作業します。
 ### Management API の認証情報の作成
 
 まず Action から Auth0 の Management API を呼び出すための準備をします。
+
 #### 手順
 
 Auth0 の管理画面で作業します。
@@ -55,22 +55,22 @@ Auth0 の管理画面で作業します。
 2. スクリプト内の次の行を、初めにメモした role ID で書き換えてください。
 
 ```node
-  const role = 'rol_qIO1J5yAQS6dtvfS'; // 'group' role
+const role = "rol_qIO1J5yAQS6dtvfS"; // 'group' role
 ```
 
 3. エディタの欄の左端の鍵マークで次のように設定してください
 
-|Key|Value|
-|:-:|:-:|
-|DOMAIN|上で作成した Management API の認証情報の Domain の値|
-|CLIENT_ID|上で作成した Management API の認証情報の Client Id の値|
-|CLIENT_SECRET|上で作成した Management API の認証情報の Client Secret の値|
+|      Key      |                            Value                            |
+| :-----------: | :---------------------------------------------------------: |
+|    DOMAIN     |    上で作成した Management API の認証情報の Domain の値     |
+|   CLIENT_ID   |   上で作成した Management API の認証情報の Client Id の値   |
+| CLIENT_SECRET | 上で作成した Management API の認証情報の Client Secret の値 |
 
 4. 鍵マークの下の箱のマークをクリックして dependencies を設定してください
 
-|Name|Version|
-|:-:|:-:|
-|auth0|latest|
+| Name  | Version |
+| :---: | :-----: |
+| auth0 | latest  |
 
 5. （任意）鍵マークの上の再生ボタンをクリックして作成したスクリプトをテストしてください。ロールの付与が正しくできているかまでは、このテストだと分かりにくいですが、実行してみてエラーが出ないことの確認は可能かと思います。
 
