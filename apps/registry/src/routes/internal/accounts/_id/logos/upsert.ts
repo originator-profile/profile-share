@@ -9,6 +9,8 @@ const Body = {
   properties: {
     image: {
       title: "画像（ base64url でエンコード）",
+      description:
+        "画像データを base64url でエンコードして文字列として与えてください。画像データはエンコード前のサイズでおおよそ 750kB まで受け付けます。これは Fastify の設定によります。Fastify の設定により、リクエストの body 全体で 1MiB を超える場合には、 413 エラーレスポンスを返します。 https://fastify.dev/docs/latest/Reference/Server/#bodylimit",
       type: "string",
     },
     fileName: {
