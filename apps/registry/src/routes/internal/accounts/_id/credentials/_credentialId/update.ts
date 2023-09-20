@@ -12,7 +12,7 @@ const { type, image, ...properties } = OpCredential.properties;
 const Body = {
   type: "object",
   properties: properties,
-  required: ["certifier", "verifier", "issuedAt", "expiredAt"],
+  required: [],
 } as const;
 
 type Body = FromSchema<typeof Body>;
@@ -50,8 +50,11 @@ async function update({
   const data = {
     certifierId: certifier,
     verifierId: verifier,
-    issuedAt: new Date(issuedAt),
-    expiredAt: parseExpirationDate(expiredAt),
+    issuedAt: typeof issuedAt !== "undefined" ? new Date(issuedAt) : undefined,
+    expiredAt:
+      typeof expiredAt !== "undefined"
+        ? parseExpirationDate(expiredAt)
+        : undefined,
     name,
   };
 
