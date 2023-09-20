@@ -11,8 +11,6 @@
     "@prisma/client": "^5.2.0",
     "@types/bcryptjs": "^2.4.3",
     "@types/jsonld": "^1.5.9",
-    "@types/ungap__structured-clone": "^0.3.0",
-    "@ungap/structured-clone": "^1.2.0",
     "@originator-profile/core": "*",
     "@originator-profile/model": "*",
     "@originator-profile/registry-db": "*",

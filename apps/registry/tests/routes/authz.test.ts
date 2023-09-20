@@ -9,9 +9,6 @@ import { rest } from "msw";
 import { SetupServer, setupServer } from "msw/node";
 import { Server, create } from "../../src/server";
 
-// Node.js v16 にまだ存在しない機能しないのでインポート
-import structuredClone from "@ungap/structured-clone";
-
 const originalEnv = structuredClone(process.env);
 
 function resetEnv() {

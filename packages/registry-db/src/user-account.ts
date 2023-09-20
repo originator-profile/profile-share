@@ -59,3 +59,5 @@ export const UserAccountRepository = () => ({
     });
   },
 });
+
+export type UserAccountRepository = ReturnType<typeof UserAccountRepository>;

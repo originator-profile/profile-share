@@ -21,11 +21,7 @@ function Image({
 }: Props) {
   return (
     <figure
-      className={clsx(
-        "flex justify-center items-center",
-        { "bg-white": !rounded },
-        className,
-      )}
+      className={clsx("flex justify-center items-center", className)}
       style={{ height, minWidth: width }}
     >
       <img

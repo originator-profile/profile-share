@@ -6,8 +6,6 @@ import {
   SignedProfileValidator,
   TokenDecoder,
 } from "@originator-profile/verify";
-// TODO: Node.js 17+ ならば不要
-import structuredClone from "@ungap/structured-clone";
 
 export function ValidatorService() {
   const ajv = addFormats(new Ajv({ removeAdditional: true }));

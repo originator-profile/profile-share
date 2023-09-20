@@ -54,3 +54,8 @@ Document Profile の発行者です。次の作業を実施します。
 - [Profile Set 作成](./profile-set-creation.md)
 - [WordPress 連携](../wordpress-integration.md)
 - [Web サイト連携](../website-integration.md)
+
+## OP登録サイトの管理者
+
+- [Auth0 の設定](./auth0-configuration.md)
+- [Auth0 ユーザーの role の変更](./auth0-role-assigning.md)
