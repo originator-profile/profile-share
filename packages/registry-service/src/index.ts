@@ -7,11 +7,14 @@ import { ValidatorService } from "./validator";
 import { PublisherService } from "./publisher";
 import { WebsiteService } from "./website";
 import { CredentialService } from "./credential";
+import { RequestService } from "./request";
+
 import {
   DpRepository,
   WebsiteRepository,
   CredentialRepository,
   UserAccountRepository,
+  RequestRepository,
 } from "@originator-profile/registry-db";
 import { UserAccountService } from "./user-account";
 
@@ -42,6 +45,8 @@ export const Services = (options: Options) => {
   const credential = CredentialService({ credentialRepository, certificate });
   const userAccountRepository = UserAccountRepository();
   const userAccount = UserAccountService({ ...options, userAccountRepository });
+  const requestRepository = RequestRepository();
+  const request = RequestService({ requestRepository });
   return {
     validator,
     account,
@@ -52,6 +57,7 @@ export const Services = (options: Options) => {
     website,
     credential,
     userAccount,
+    request,
   };
 };
 

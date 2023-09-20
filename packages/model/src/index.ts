@@ -17,3 +17,4 @@ export { default as Jwk } from "./jwk";
 export { default as JwtOpPayload } from "./jwt-op-payload";
 export { default as JwtDpPayload } from "./jwt-dp-payload";
 export { default as User } from "./user";
+export { default as Request } from "./request";
