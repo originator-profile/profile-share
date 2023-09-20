@@ -27,11 +27,17 @@ test.afterEach(async ({ page }, testInfo) => {
   if (ext && !ext.isClosed()) {
     await ext.screenshot({ path: `screenshots/${testInfo.title}-web-ext.png` });
   }
-  if(testInfo.title === "DPの検証失敗時は閲覧を禁止する"){
-    executeCommand('bin/dev publisher:website -i account-key.example.priv.json --id localhost --input website.example.json -o update', '../registry');
+  if (testInfo.title === "DPの検証失敗時は閲覧を禁止する") {
+    executeCommand(
+      "bin/dev publisher:website -i account-key.example.priv.json --id localhost --input website.example.json -o update",
+      "../registry",
+    );
   }
   if (testInfo.title === "OPの検証失敗時は閲覧を禁止する") {
-    executeCommand('bin/dev cert:issue -i account-key.example.priv.json --certifier localhost --holder localhost', '../registry');
+    executeCommand(
+      "bin/dev cert:issue -i account-key.example.priv.json --certifier localhost --holder localhost",
+      "../registry",
+    );
   }
   await fs.rm(tempDir, { recursive: true });
 });
