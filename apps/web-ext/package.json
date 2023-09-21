@@ -27,6 +27,7 @@
     "commander": "^11.0.0",
     "date-fns": "^2.30.0",
     "dompurify": "^3.0.5",
+    "dotenv-cli": "^7.3.0",
     "esbuild": "^0.19.2",
     "esbuild-copy-static-files": "^0.1.0",
     "eslint": "^8.48.0",
@@ -71,7 +72,7 @@
     "lint": "eslint --fix .",
     "start:chromium": "web-ext run --source-dir dist-chromium --target=chromium --no-reload",
     "start:firefox": "web-ext run --source-dir dist-firefox-desktop --target=firefox-desktop --no-reload",
-    "e2e": "playwright test",
+    "e2e": "dotenv -e ../registry/.env.development playwright test",
     "test": "vitest run"
   }
 }
