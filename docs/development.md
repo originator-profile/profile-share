@@ -86,6 +86,45 @@ docker compose run --rm -w /var/www/html/wp-content/plugins/profile wordpress co
 
 コードの整形を行います。
 
+## Docker
+
+### minio
+
+ローカルでの開発では、 S3 互換ストレージとして minio を利用しています（試験運用環境、本番環境では R2 を利用）。
+
+次のような手順で minio へのファイルアップロードを試すことができます。
+
+#### ファイルアップロードのテスト (minio)
+
+Step1.
+
+[aws-cli](https://github.com/aws/aws-cli)をインストールする。例として、Ubuntu(WSL含む)の場合`apt install awscli`, macOSの場合`brew install awscli`
+
+Step2.
+
+apps/registry/.env.development の S3_ACCOUNT_LOGO_BUCKET_NAME の値を覚えておきます。このバケットにファイルをアップロードします。以下ではこの値が oprdev-account-logos だとします。
+
+Step2.
+
+```
+$ yarn dev
+```
+
+Step3.
+
+```console
+$ cat << EOF > test-file
+test file
+EOF
+$ AWS_ACCESS_KEY_ID=root AWS_SECRET_ACCESS_KEY=kHslkqy4n2hMDvQabcwkOl_NCqdX1M2QEX_XjGe807o aws --endpoint-url http://localhost:19000 s3 cp test-file s3://oprdev-account-logos/
+$ AWS_ACCESS_KEY_ID=root AWS_SECRET_ACCESS_KEY=kHslkqy4n2hMDvQabcwkOl_NCqdX1M2QEX_XjGe807o aws --endpoint-url http://localhost:19000 s3 ls s3://oprdev-account-logos/
+2023-09-04 13:26:06         10 test-file
+```
+
+Step4.
+
+http://localhost:19001/ にブラウザして確認。`Username`として`root`、`Password`として`kHslkqy4n2hMDvQabcwkOl_NCqdX1M2QEX_XjGe807o`を入力しログインすること
+
 ## GitHub Actions
 
 GitHub リポジトリ上での変更は自動的にチェックされます。

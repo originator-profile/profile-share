@@ -31,8 +31,21 @@ services:
       - "${MINIO_PORT:-19000}:9000"
       - "${MINIO_CONSOLE_PORT:-19001}:9001"
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-    command: server --console-address ":9001" /data
+      MINIO_ROOT_USER: ${S3_ACCESS_KEY_ID}
+      MINIO_ROOT_PASSWORD: ${S3_SECRET_ACCESS_KEY}
+    command: 'minio server --console-address ":9001" /data'
+    healthcheck:
+      test: curl -f http://localhost:9000/minio/health/live
+      interval: 5s
+  minio_setup:
+    image: quay.io/minio/minio:RELEASE.2023-08-31T15-31-16Z
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: sh
+    command: -c '
+      mc alias set local http://minio:9000 ${S3_ACCESS_KEY_ID} ${S3_SECRET_ACCESS_KEY} &&
+      mc mb -p local/${S3_ACCOUNT_LOGO_BUCKET_NAME} &&
+      mc anonymous set download local/${S3_ACCOUNT_LOGO_BUCKET_NAME}'
 volumes:
   postgres_data_v15:

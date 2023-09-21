@@ -16,6 +16,7 @@ import {
   UserAccountRepository,
   RequestRepository,
 } from "@originator-profile/registry-db";
+import { LogoService } from "./logo";
 import { UserAccountService } from "./user-account";
 
 export type { Website } from "./website";
@@ -40,6 +41,7 @@ export const Services = (options: Options) => {
     dpRepository,
     websiteRepository,
   });
+  const logo = LogoService({ ...options });
   const website = WebsiteService({ ...options, websiteRepository });
   const credentialRepository = CredentialRepository();
   const credential = CredentialService({ credentialRepository, certificate });
@@ -56,6 +58,7 @@ export const Services = (options: Options) => {
     publisher,
     website,
     credential,
+    logo,
     userAccount,
     request,
   };

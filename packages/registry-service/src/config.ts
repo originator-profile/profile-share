@@ -21,6 +21,21 @@ const Config = {
     NODE_ENV: {
       type: "string",
     },
+    S3_ACCOUNT_LOGO_BUCKET_NAME: {
+      type: "string",
+    },
+    S3_API_ENDPOINT: {
+      type: "string",
+    },
+    S3_ACCESS_KEY_ID: {
+      type: "string",
+    },
+    S3_SECRET_ACCESS_KEY: {
+      type: "string",
+    },
+    S3_ACCOUNT_LOGO_PUBLIC_ENDPOINT: {
+      type: "string",
+    },
   },
   required: ["ISSUER_UUID"],
 } as const;

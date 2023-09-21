@@ -18,10 +18,9 @@
     "build:ui": "run-s ui:clean ui:build",
     "build:cli": "oclif manifest",
     "build:api": "bin/run openapi-gen",
-    "dev": "dotenv -e .env.development run-p dev:{db,build}",
-    "dev:db": "docker compose --env-file .env.development up db",
+    "dev": "dotenv -e .env.development run-p dev:{docker,build}",
+    "dev:docker": "docker compose --env-file .env.development up db minio minio_setup",
     "//TODO:gh-770:dev:docker": "docker compose --env-file .env.development up db mailpit",
-    "//TODO:gh-801:dev:docker": "docker compose --env-file .env.development up db minio",
     "dev:build": "tsup src --watch --ignore-watch src/router.ts --onSuccess 'run-p dev:{docs,server}'",
     "dev:docs": "run-s build:{cli,api} docs",
     "dev:server": "run-s dev:{prisma,start}",
@@ -39,6 +38,7 @@
     "start": "bin/run start"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.410.0",
     "@fastify/vite": "^4.0.0",
     "@oclif/core": "^2.13.0",
     "@oclif/plugin-help": "^5.2.18",
@@ -47,6 +47,7 @@
     "dotenv": "^16.3.1",
     "dotenv-expand": "^10.0.0",
     "fastify-auth0-verify": "^1.2.0",
+    "image-size": "^1.0.2",
     "jsonld": "^8.2.0",
     "metascraper": "^5.36.0",
     "metascraper-author": "^5.36.0",
