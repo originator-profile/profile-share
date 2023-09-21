@@ -6,7 +6,7 @@ import Params from "./params";
 const schema: FastifySchema = {
   params: Params,
   description: "資格情報の削除",
-  security: [],
+  security: [{ bearerAuth: ["write:requests"] }],
   response: {
     200: {
       title: "会員",
