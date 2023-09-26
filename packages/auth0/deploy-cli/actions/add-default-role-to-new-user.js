@@ -6,7 +6,7 @@
  */
 exports.onExecutePostLogin = async (event, api) => {
   const userId = event.user.user_id;
-  const role = "rol_qIO1J5yAQS6dtvfS"; // 'group' role
+  const role = event.secrets.GROUP_ROLE_ID; // 'group' role
 
   const count =
     event.stats && event.stats.logins_count ? event.stats.logins_count : 0;
