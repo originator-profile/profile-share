@@ -58,5 +58,4 @@ Document Profile の発行者です。次の作業を実施します。
 ## OP登録サイトの管理者
 
 - [Auth0 テナントのデプロイ](./auth0-deploy.md)
-- [Auth0 の設定](./auth0-configuration.md)
 - [Auth0 ユーザーの role の変更](./auth0-role-assigning.md)
