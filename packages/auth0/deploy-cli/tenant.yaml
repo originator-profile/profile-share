@@ -84,19 +84,19 @@ clientGrants:
       - update:users
       - read:stats
 roles:
-  - name: admin (Created by CLI)
+  - name: admin
     description: 管理者
     permissions:
       - permission_name: write:users
         resource_server_identifier: @@REGISTRY_API_URL@@
-  - name: certifier (Created by CLI)
+  - name: certifier
     description: 認証機関
     permissions:
       - permission_name: issue:ops
         resource_server_identifier: @@REGISTRY_API_URL@@
       - permission_name: write:reviews
         resource_server_identifier: @@REGISTRY_API_URL@@
-  - name: group (Created by CLI)
+  - name: group
     description: 組織
     permissions:
       - permission_name: write:requests
