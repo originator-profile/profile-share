@@ -3,7 +3,6 @@
   "AUTH0_PRESERVE_KEYWORDS": false,
   "AUTH0_EXCLUDED": ["databases"],
   "AUTH0_KEYWORD_REPLACE_MAPPINGS": {
-    "ENV": "dev",
     "REGISTRY_API_URL": "https://api.example.org/",
     "SPA_ALLOWED_LOGOUT_URLS": [
       "http://localhost:8080/app/",
