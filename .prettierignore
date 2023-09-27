@@ -1,1 +1,2 @@
 composer.lock
+packages/auth0/deploy-cli/*.yaml
