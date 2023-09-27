@@ -1,15 +1,21 @@
 {
   "AUTH0_DOMAIN": "oprdev.jp.auth0.com",
-  "AUTH0_CLIENT_ID": "xxxxx",
-  "AUTH0_CLIENT_SECRET": "xxxxx",
+  "AUTH0_CLIENT_ID": "a9YwztHhPFwykYMk3Dm7edXdOwgNo9UE",
+  "AUTH0_CLIENT_SECRET": "z4bX9LrPkoQTRdJ_AXQWyp9y3hrv9mfE6EHP30SJy6Mcd7yRMqeK5Nahmcwdq-H1",
   "AUTH0_ALLOW_DELETE": false,
-  "AUTH0_PRESERVE_KEYWORDS": true,
+  "AUTH0_PRESERVE_KEYWORDS": false,
   "AUTH0_KEYWORD_REPLACE_MAPPINGS": {
     "ENV": "dev",
     "REGISTRY_API_URL": "https://registry-api.oprdev.jp/",
-    "SPA_ALLOWED_LOGOUT_URLS": ["http://localhost:8080/app/", "http://localhost:8080/"],
+    "SPA_ALLOWED_LOGOUT_URLS": [
+      "http://localhost:8080/app/",
+      "http://localhost:8080/"
+    ],
     "SPA_ALLOWED_ORIGINS": [],
-    "SPA_CALLBACKS": ["http://localhost:8080/app/", "http://localhost:8080/documentation/static/oauth2-redirect.html"],
+    "SPA_CALLBACKS": [
+      "http://localhost:8080/app/",
+      "http://localhost:8080/documentation/static/oauth2-redirect.html"
+    ],
     "SPA_WEB_ORIGINS": ["http://localhost:8080"],
     "DEFAULT_FROM_ADDRESS": "\"OP Registry (dev)\" <watanabe@webdino.org>",
     "SENDGRID_API_KEY": "xxxxx",

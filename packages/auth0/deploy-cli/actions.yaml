@@ -8,13 +8,13 @@ actions:
     runtime: node18-actions
     secrets:
       - name: DOMAIN
-        value: '##AUTH0_ACTION_DOMAIN##'
+        value: "##AUTH0_ACTION_DOMAIN##"
       - name: CLIENT_ID
-        value: '##AUTH0_ACTION_CLIENT_ID##'
+        value: "##AUTH0_ACTION_CLIENT_ID##"
       - name: CLIENT_SECRET
-        value: '##AUTH0_ACTION_CLIENT_SECRET##'
+        value: "##AUTH0_ACTION_CLIENT_SECRET##"
       - name: GROUP_ROLE_ID
-        value: '##GROUP_ROLE_ID##'
+        value: "##GROUP_ROLE_ID##"
     status: built
     supported_triggers:
       - id: post-login
