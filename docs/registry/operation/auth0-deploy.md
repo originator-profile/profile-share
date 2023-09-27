@@ -39,7 +39,7 @@ Machine to Machine Application を作成します。作成した Application の
 |        `SPA_WEB_ORIGINS`         |                         Allowed Web Origins を指定してください                         |
 |        `SENDGRID_API_KEY`        |            Email Provider として使う Sendgrid の API キーを指定してください            |
 |      `DEFAULT_FROM_ADDRESS`      |                        メールの From アドレスを指定してください                        |
-| `AUTH_MANAGEMENT_API_IDENTIFIER` |   Application -> APIs -> Auth0 Management API -> Identifier の値を貼り付けてください   |
+| `AUTH0_MANAGEMENT_API_IDENTIFIER` |   Application -> APIs -> Auth0 Management API -> Identifier の値を貼り付けてください   |
 
 3. auth0-deploy-cli を実行します（1回目）。
 
