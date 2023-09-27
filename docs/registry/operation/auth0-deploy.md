@@ -1,6 +1,6 @@
-# Auth0 テナントのデプロイ
+# Auth0 テナント構成の適用
 
-auth0-deploy-cli を利用して Auth0 テナントをデプロイする手順を説明します。
+auth0-deploy-cli を利用して、Auth0 テナントに構成を適用する手順を説明します。作成直後の Auth0 テナントで作業することを想定しています。
 
 ## auth0-deploy-cli のインストール
 
