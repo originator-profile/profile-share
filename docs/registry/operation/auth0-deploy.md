@@ -24,27 +24,20 @@ Machine to Machine Application を作成します。作成した Application の
 
 1. profile レポジトリの `./packages/auth0/deploy-cli/` ディレクトリに移動してください。
 
-2. `config.json` に必要な設定を追加します。
+2. `config.json` に必要な設定を追加します。`tenant.yaml`, `actions.yaml` の中で一部変数を使っています。変数の値を`config.json` の `AUTH0_KEYWORD_REPLACE_MAPPINGS` の中に記載することで、デプロイする環境に適した設定でデプロイします。
 
-   1. `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, `AUTH0_CLIENT_SECRET` に、前節で作成した CLI 用の Application の認証情報を設定します。
-
-   2. デプロイする環境の設定をします。 `tenant.yaml`, `actions.yaml` の中で一部変数を使っています。変数の値を`config.json` の `AUTH0_KEYWORD_REPLACE_MAPPINGS` の中に記載することで、デプロイする環境に適した設定でデプロイします。
-
-|              変数名              |                                          説明                                          |
-| :------------------------------: | :------------------------------------------------------------------------------------: |
-|        `REGISTRY_API_URL`        | OP/DPレジストリの URL を指定してください。例: `https://oprdev.originator-profile.org/` |
-|    `SPA_ALLOWED_LOGOUT_URLS`     |                         Allowed Logout URLs を指定してください                         |
-|      `SPA_ALLOWED_ORIGINS`       |                       Allowed Origins (CORS) を指定してください                        |
-|         `SPA_CALLBACKS`          |                        Allowed Callback URLs を指定してください                        |
-|        `SPA_WEB_ORIGINS`         |                         Allowed Web Origins を指定してください                         |
-|        `SENDGRID_API_KEY`        |            Email Provider として使う Sendgrid の API キーを指定してください            |
-|      `DEFAULT_FROM_ADDRESS`      |                        メールの From アドレスを指定してください                        |
+|              変数名               |                                          説明                                          |
+| :-------------------------------: | :------------------------------------------------------------------------------------: |
+|        `REGISTRY_API_URL`         | OP/DPレジストリの URL を指定してください。例: `https://oprdev.originator-profile.org/` |
+|          `SPA_HOME_URL`           |                   OP登録サイトのトップページのURLを指定してください                    |
+|        `SENDGRID_API_KEY`         |            Email Provider として使う Sendgrid の API キーを指定してください            |
+|      `DEFAULT_FROM_ADDRESS`       |                        メールの From アドレスを指定してください                        |
 | `AUTH0_MANAGEMENT_API_IDENTIFIER` |   Application -> APIs -> Auth0 Management API -> Identifier の値を貼り付けてください   |
 
-3. auth0-deploy-cli を実行します（1回目）。
+3. auth0-deploy-cli を実行します（1回目）。実行時に前節で作成した CLI 用の Application の認証情報を、環境変数 `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, `AUTH0_CLIENT_SECRET` に指定してください。
 
 ```console
-a0deploy import -c config.json -i tenant.yaml
+AUTH0_DOMAIN=xxxx AUTH0_CLIENT_ID=xxxx AUTH0_CLIENT_SECRET=xxxx a0deploy import -c config.json -i tenant.yaml
 ```
 
 4. 1回目の実行で作成したリソースの値を`config.json` に追記します。
