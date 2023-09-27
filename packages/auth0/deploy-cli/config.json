@@ -1,6 +1,7 @@
 {
   "AUTH0_ALLOW_DELETE": false,
   "AUTH0_PRESERVE_KEYWORDS": false,
+  "AUTH0_EXCLUDED": ["databases"],
   "AUTH0_KEYWORD_REPLACE_MAPPINGS": {
     "ENV": "dev",
     "REGISTRY_API_URL": "https://api.example.org/",
