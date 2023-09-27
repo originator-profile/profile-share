@@ -12,8 +12,8 @@ export function useAccount(accountId: string | null) {
     return getAccessTokenSilently();
   });
 
-  return useSWR<{ roleValue: string }>(
+  return useSWR(
     token && accountId && { url: `/internal/accounts/${accountId}/`, token },
-    fetcher,
+    fetcher<{ roleValue: string }>,
   );
 }

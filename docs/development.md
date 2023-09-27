@@ -22,6 +22,7 @@ git clone https://github.com/originator-profile/profile-share profile
 cd profile
 corepack enable yarn
 yarn install
+yarn playwright install --with-deps
 # profile-registry CLIのインストール
 npm i -g ./apps/registry
 # 開発用サーバーの起動

@@ -14,7 +14,7 @@ async function fetcher([, dpLocator, jwks]: [
   _: typeof key,
   dpLocator: DpLocator,
   jwks?: Jwks,
-]) {
+]): Promise<Awaited<ReturnType<typeof verifyBody>> | ProfileBodyExtractFailed> {
   const document = window.parent.document;
   const body = await extractBody(
     document.location.href,
@@ -27,9 +27,10 @@ async function fetcher([, dpLocator, jwks]: [
 }
 
 function useVerifyBody(dpLocator: DpLocator, jwks?: Jwks) {
-  const { data: result, error } = useSWRImmutable<
-    Awaited<ReturnType<typeof verifyBody>> | ProfileBodyExtractFailed
-  >([key, dpLocator, jwks], fetcher);
+  const { data: result, error } = useSWRImmutable(
+    [key, dpLocator, jwks],
+    fetcher,
+  );
   return { result, error };
 }
 

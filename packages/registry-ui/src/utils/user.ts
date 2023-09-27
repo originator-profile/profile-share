@@ -20,13 +20,13 @@ export function useUser(userAccountId: string | null) {
     return getAccessTokenSilently();
   });
 
-  return useSWR<User>(
+  return useSWR(
     token &&
       userAccountId && {
         url: `/internal/user-accounts/${userAccountId}/`,
         token,
       },
-    fetcher,
+    fetcher<User>,
   );
 }
 
@@ -39,8 +39,8 @@ export function useUserUpsert() {
     return getAccessTokenSilently();
   });
 
-  return useSWR<User>(
+  return useSWR(
     token && { method: "PUT", url: "/internal/user-accounts/", token },
-    fetcher,
+    fetcher<User>,
   );
 }
