@@ -33,10 +33,10 @@ auth0-deploy-cli を利用して Auth0 テナントをデプロイする手順�
 |変数名|説明|
 |:-:|:-:|
 |`REGISTRY_API_URL`| OP/DPレジストリの URL を指定してください。例: `https://oprdev.originator-profile.org/`|
-|`ALLOWED_LOGOUT_URLS`| Allowed Logout URLs を指定してください|
-|`ALLOWED_ORIGINS`| Allowed Origins (CORS) を指定してください|
-|`CALLBACKS`| Allowed Callback URLs を指定してください|
-|`WEB_ORIGINS`| Allowed Web Origins を指定してください|
+|`SPA_ALLOWED_LOGOUT_URLS`| Allowed Logout URLs を指定してください|
+|`SPA_ALLOWED_ORIGINS`| Allowed Origins (CORS) を指定してください|
+|`SPA_CALLBACKS`| Allowed Callback URLs を指定してください|
+|`SPA_WEB_ORIGINS`| Allowed Web Origins を指定してください|
 |`SENDGRID_API_KEY`| Email Provider として使う Sendgrid の API キーを指定してください|
 |`DEFAULT_FROM_ADDRESS`| メールの From アドレスを指定してください|
 |`AUTH_MANAGEMENT_API_IDENTIFIER`| Application -> APIs -> Auth0 Management API -> Identifier の値を貼り付けてください|
