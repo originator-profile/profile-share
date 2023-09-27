@@ -13,22 +13,22 @@
     "@originator-profile/tsconfig": "*",
     "@originator-profile/ui": "*",
     "@originator-profile/verify": "*",
-    "@types/react": "^18.2.21",
+    "@types/react": "^18.2.23",
     "@types/react-dom": "^18.2.7",
     "clsx": "^2.0.0",
-    "eslint": "^8.48.0",
+    "eslint": "^8.50.0",
     "eslint-config-originator-profile": "*",
     "just-extend": "^6.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-use": "^17.4.0",
-    "swr": "^2.2.2"
+    "swr": "^2.2.4"
   },
   "dependencies": {
-    "@generouted/react-router": "^1.15.7",
-    "autoprefixer": "^10.4.15",
-    "postcss": "^8.4.29",
-    "react-router-dom": "^6.15.0",
+    "@generouted/react-router": "^1.15.8",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.30",
+    "react-router-dom": "^6.16.0",
     "tailwind-config-originator-profile": "*",
     "tailwindcss": "^3.3.3"
   }

@@ -3,6 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@tsconfig/recommended": "^1.0.2"
+    "@tsconfig/recommended": "^1.0.3"
   }
 }
