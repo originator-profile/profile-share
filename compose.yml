@@ -12,21 +12,21 @@ services:
       ISSUER_UUID: ${ISSUER_UUID}
     ports: ["8080:8080"]
   db:
-    image: postgres:15.4-alpine
+    image: postgres:16.0-alpine
     healthcheck:
       test: pg_isready -U postgres
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports: ["5432:5432"]
     volumes:
-      - postgres_data_v15:/var/lib/postgresql/data
+      - postgres_data_v16:/var/lib/postgresql/data
   mailpit:
-    image: axllent/mailpit:v1.8
+    image: axllent/mailpit:v1.9
     ports:
       - "8025:8025"
       - "${SMTP_PORT:-1025}:1025"
   minio:
-    image: quay.io/minio/minio:RELEASE.2023-08-31T15-31-16Z
+    image: quay.io/minio/minio:RELEASE.2023-09-23T03-47-50Z
     ports:
       - "${MINIO_PORT:-19000}:9000"
       - "${MINIO_CONSOLE_PORT:-19001}:9001"
@@ -38,7 +38,7 @@ services:
       test: curl -f http://localhost:9000/minio/health/live
       interval: 5s
   minio_setup:
-    image: quay.io/minio/minio:RELEASE.2023-08-31T15-31-16Z
+    image: quay.io/minio/minio:RELEASE.2023-09-23T03-47-50Z
     depends_on:
       minio:
         condition: service_healthy
@@ -48,4 +48,4 @@ services:
       mc mb -p local/${S3_ACCOUNT_LOGO_BUCKET_NAME} &&
       mc anonymous set download local/${S3_ACCOUNT_LOGO_BUCKET_NAME}'
 volumes:
-  postgres_data_v15:
+  postgres_data_v16:
