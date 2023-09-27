@@ -49,10 +49,10 @@ AUTH0_DOMAIN=xxxx AUTH0_CLIENT_ID=xxxx AUTH0_CLIENT_SECRET=xxxx a0deploy import 
 |   `AUTH0_ACTION_CLIENT_ID`   |        1回目の実行で作成した "Post Login Actions Management API Client" の認証情報を指定してください         |
 | `AUTH0_ACTION_CLIENT_SECRET` |        1回目の実行で作成した "Post Login Actions Management API Client" の認証情報を指定してください         |
 
-5. auth0-deploy-cli を実行します（2回目）。先ほどと指定する yaml ファイルが違うことに注意してください。
+5. auth0-deploy-cli を実行します（2回目）。先ほどと指定する yaml ファイルが違うことに注意してください。認証情報は1度目の実行と同じです。
 
 ```console
-a0deploy import -c config.json -i actions.yaml
+AUTH0_DOMAIN=xxxx AUTH0_CLIENT_ID=xxxx AUTH0_CLIENT_SECRET=xxxx a0deploy import -c config.json -i actions.yaml
 ```
 
 これでデプロイは完了しました。
