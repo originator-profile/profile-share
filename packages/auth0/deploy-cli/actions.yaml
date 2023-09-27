@@ -1,0 +1,25 @@
+actions:
+  - name: add default role to new user (Created by CLI)
+    code: ./actions/add-default-role-to-new-user.js
+    dependencies:
+      - name: auth0
+        version: 4.0.1
+    deployed: true
+    runtime: node18-actions
+    secrets:
+      - name: DOMAIN
+        value: '##AUTH0_ACTION_DOMAIN##'
+      - name: CLIENT_ID
+        value: '##AUTH0_ACTION_CLIENT_ID##'
+      - name: CLIENT_SECRET
+        value: '##AUTH0_ACTION_CLIENT_SECRET##'
+      - name: GROUP_ROLE_ID
+        value: '##GROUP_ROLE_ID##'
+    status: built
+    supported_triggers:
+      - id: post-login
+        version: v3
+triggers:
+  post-login:
+    - action_name: add default role to new user (Created by CLI)
+      display_name: add default role to new user (Created by CLI)
