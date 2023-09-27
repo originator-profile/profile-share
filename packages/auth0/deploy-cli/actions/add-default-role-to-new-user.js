@@ -23,15 +23,12 @@ exports.onExecutePostLogin = async (event, api) => {
 
   const params = { id: userId };
   const data = { roles: [role] };
-
-  management.users.assignRoles(params, data, function (err, user) {
-    if (err) {
-      // Handle error.
-      console.log(err);
+  const response = await management.users.assignRoles(params, data);
+  if (response.status >= 400) {
+      console.log(response.data);
       // Prevent the user from logging in.
       api.access.deny("Something went wrong. Plaese try again later.");
-    }
-  });
+  }
 };
 
 /**
