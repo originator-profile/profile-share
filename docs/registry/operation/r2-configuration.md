@@ -12,3 +12,32 @@
 ## public access 設定
 
 [Connect a bucket to a custom domain](https://developers.cloudflare.com/r2/buckets/public-buckets/#connect-a-bucket-to-a-custom-domain) を参考にして設定してください。
+
+## API Token の作成
+
+1. R2 のタブをクリック
+2. Manage API Tokens -> Create API Token を順にクリック
+3. 次のように設定してください。記載していない項目はデフォルトのままで結構です。
+
+|     設定項目      |                                値                                |
+| :---------------: | :--------------------------------------------------------------: |
+|    Token name     |                       `<環境名> R2 token`                        |
+|    Permissions    |                       Object Read & Write                        |
+| Specify bucket(s) | "Apply to specific buckets only" -> 前節で作成したバケットを選択 |
+
+4. Create API Token をクリック
+5. 表示される認証情報をメモしてください。
+
+## レジストリ環境変数の設定
+
+作成したバケットの設定をレジストリに反映します。
+
+app/registry/.env に次の環境変数を設定してください。
+
+|            環境変数             |                                            説明                                            |
+| :-----------------------------: | :----------------------------------------------------------------------------------------: |
+|        R2_ACCESS_KEY_ID         |                                 API Token の Access Key ID                                 |
+|      R2_SECRET_ACCESS_KEY       |                               API Token の Secret Access Key                               |
+|         R2_API_ENDPOINT         | `https://<CloudflareアカウントID>.r2.cloudflarestorage.com`。末尾の`/`、バケット名は不要。 |
+|   R2_ACCOUNT_LOGO_BUCKET_NAME   |                                     作成したバケット名                                     |
+| R2_ACCOUNT_LOGO_PUBLIC_ENDPOINT |             `https://<設定した custom domain>` Origin形式で指定してください。              |
