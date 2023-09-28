@@ -2,6 +2,8 @@
 
 auth0-deploy-cli を利用して、Auth0 テナントに構成を適用する手順を説明します。作成直後の Auth0 テナントで作業することを想定しています。
 
+テナントの作成方法については Auth0 のドキュメントの [Create Tenants](https://auth0.com/docs/get-started/auth0-overview/create-tenants) を参照してください。
+
 ## auth0-deploy-cli のインストール
 
 [Auth0 のドキュメント](https://auth0.com/docs/deploy-monitor/deploy-cli-tool) を参照してください。
@@ -28,7 +30,7 @@ Machine to Machine Application を作成します。作成した Application の
 
 |              変数名               |                                          説明                                          |
 | :-------------------------------: | :------------------------------------------------------------------------------------: |
-|        `REGISTRY_API_URL`         | OP/DPレジストリの URL を指定してください。例: `https://oprdev.originator-profile.org/` |
+|        `REGISTRY_API_URL`         | レジストリの URL を指定してください。例: `https://oprdev.originator-profile.org/` |
 |          `SPA_HOME_URL`           |                   OP登録サイトのトップページのURLを指定してください                    |
 |        `SENDGRID_API_KEY`         |            Email Provider として使う Sendgrid の API キーを指定してください            |
 |      `DEFAULT_FROM_ADDRESS`       |                        メールの From アドレスを指定してください                        |
