@@ -36,8 +36,8 @@ app/registry/.env に次の環境変数を設定してください。
 
 |            環境変数             |                                            説明                                            |
 | :-----------------------------: | :----------------------------------------------------------------------------------------: |
-|        R2_ACCESS_KEY_ID         |                                 API Token の Access Key ID                                 |
-|      R2_SECRET_ACCESS_KEY       |                               API Token の Secret Access Key                               |
-|         R2_API_ENDPOINT         | `https://<CloudflareアカウントID>.r2.cloudflarestorage.com`。末尾の`/`、バケット名は不要。 |
-|   R2_ACCOUNT_LOGO_BUCKET_NAME   |                                     作成したバケット名                                     |
-| R2_ACCOUNT_LOGO_PUBLIC_ENDPOINT |             `https://<設定した custom domain>` Origin形式で指定してください。              |
+|        S3_ACCESS_KEY_ID         |                                 API Token の Access Key ID                                 |
+|      S3_SECRET_ACCESS_KEY       |                               API Token の Secret Access Key                               |
+|         S3_API_ENDPOINT         | `https://<CloudflareアカウントID>.r2.cloudflarestorage.com`。末尾の`/`、バケット名は不要。 |
+|   S3_ACCOUNT_LOGO_BUCKET_NAME   |                                     作成したバケット名                                     |
+| S3_ACCOUNT_LOGO_PUBLIC_ENDPOINT |             `https://<設定した custom domain>` Origin形式で指定してください。              |
