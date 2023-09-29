@@ -1,7 +1,7 @@
 import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
 import { Icon } from "@iconify/react";
-import { useLocation } from 'react-router-dom';
-import {useState } from 'react';
+import { useLocation } from "react-router-dom";
+import { useState } from "react";
 import useProfileSet from "../utils/use-profile-set";
 import { toRoles } from "@originator-profile/ui/src/utils";
 import { isOp, isOpHolder } from "@originator-profile/core";
@@ -43,11 +43,12 @@ function WarningDetails({ navigateToOrg }: WarningDetailsProps) {
         tabIndex={0}
         onClick={navigateToOrg}
         onKeyUp={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
+          if (e.key === "Enter" || e.key === " ") {
             navigateToOrg();
           }
         }}
-        className="text-gray-500 pb-3 pt-3 cursor-pointer">
+        className="text-gray-500 pb-3 pt-3 cursor-pointer"
+      >
         上記を理解して組織情報や出版物の内容を閲覧する
       </div>
     </div>
@@ -55,15 +56,11 @@ function WarningDetails({ navigateToOrg }: WarningDetailsProps) {
 }
 
 function Prohibition() {
-  const [view, setView] = useState("warning"); 
+  const [view, setView] = useState("warning");
 
   const location = useLocation();
 
-  const {
-    advertisers = [],
-    publishers = [],
-    profiles,
-  } = useProfileSet();
+  const { advertisers = [], publishers = [], profiles } = useProfileSet();
 
   if (!profiles) {
     return <Loading />;
@@ -75,8 +72,8 @@ function Prohibition() {
       (profile) =>
         profile.issuer === "localhost" && profile.subject === "localhost",
     );
-  
-    if (!op) {
+
+  if (!op) {
     return <NotFound variant="op" />;
   }
 
