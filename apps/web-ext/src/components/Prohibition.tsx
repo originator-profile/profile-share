@@ -1,7 +1,18 @@
 import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
 import { Icon } from "@iconify/react";
+import { useLocation } from 'react-router-dom';
+import {useState } from 'react';
+import useProfileSet from "../utils/use-profile-set";
+import { toRoles } from "@originator-profile/ui/src/utils";
+import { isOp, isOpHolder } from "@originator-profile/core";
+import Loading from "../components/Loading";
+import NotFound from "../components/NotFound";
+import Template from "../templates/Org";
 
-function WarningDetails() {
+type WarningDetailsProps = {
+  navigateToOrg: () => void;
+};
+function WarningDetails({ navigateToOrg }: WarningDetailsProps) {
   return (
     <div className="pt-3">
       <p>
@@ -25,15 +36,64 @@ function WarningDetails() {
         <br />
         証明書は改ざん・偽装されている可能性があるのでご注意ください。
         <br />
-        <div className="text-gray-500 pb-3 pt-3">
-          上記を理解して組織情報や出版物の内容を閲覧する
-        </div>
       </p>
+
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={navigateToOrg}
+        onKeyUp={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            navigateToOrg();
+          }
+        }}
+        className="text-gray-500 pb-3 pt-3 cursor-pointer">
+        上記を理解して組織情報や出版物の内容を閲覧する
+      </div>
     </div>
   );
 }
 
 function Prohibition() {
+  const [view, setView] = useState("warning"); 
+
+  const location = useLocation();
+
+  const {
+    advertisers = [],
+    publishers = [],
+    profiles,
+  } = useProfileSet();
+
+  if (!profiles) {
+    return <Loading />;
+  }
+
+  const op = profiles
+    .filter(isOp)
+    .find(
+      (profile) =>
+        profile.issuer === "localhost" && profile.subject === "localhost",
+    );
+  
+    if (!op) {
+    return <NotFound variant="op" />;
+  }
+
+  const holder = op.item.find(isOpHolder);
+  if (!holder) {
+    return <NotFound variant="holder" />;
+  }
+
+  const roles = toRoles(op.subject, advertisers, publishers);
+
+  const paths = {
+    back: location.pathname,
+  } as const;
+
+  if (view === "org") {
+    return <Template paths={paths} op={op} holder={holder} roles={roles} />;
+  }
   return (
     <main className="fixed top-0 left-0 z-10 bg-white w-screen h-screen overflow-y-auto px-4 py-12">
       <ProjectTitle className="mb-12" as="header" />
@@ -63,7 +123,7 @@ function Prohibition() {
           <summary>
             このメッセージが表示される理由についてもっと詳しく...
           </summary>
-          <WarningDetails />
+          <WarningDetails navigateToOrg={() => setView("org")} />
         </details>
         <div className="pt-3">
           <ProjectSummary as="footer" />
