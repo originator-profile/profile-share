@@ -60,3 +60,4 @@ Document Profile の発行者です。次の作業を実施します。
 - [Auth0 テナント構成の適用](./auth0-deploy.md)
 - [Auth0 ユーザーの role の変更](./auth0-role-assigning.md)
 - [Auth0 ユーザー管理](./auth0-user-management.md)
+- [R2 の設定](./r2-configuration.md)
