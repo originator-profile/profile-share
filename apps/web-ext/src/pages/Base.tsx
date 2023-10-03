@@ -11,7 +11,7 @@ import useProfileSet from "../utils/use-profile-set";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
-import Prohibition from "../components/Prohibition";
+import Prohibition from "./Prohibition";
 import { ProfileTokenVerifyFailed } from "@originator-profile/verify";
 
 function Redirect({
