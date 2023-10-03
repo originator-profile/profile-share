@@ -13,7 +13,14 @@ type ProhibitionProps = {
   roles: Role[];
 };
 
-function Prohibition({ view, setView, paths, op, holder, roles }: ProhibitionProps) {
+function Prohibition({
+  view,
+  setView,
+  paths,
+  op,
+  holder,
+  roles,
+}: ProhibitionProps) {
   type WarningDetailsProps = {
     navigateToOrg: () => void;
   };
@@ -42,17 +49,18 @@ function Prohibition({ view, setView, paths, op, holder, roles }: ProhibitionPro
           証明書は改ざん・偽装されている可能性があるのでご注意ください。
           <br />
         </p>
-  
+
         <div
           role="button"
           tabIndex={0}
           onClick={navigateToOrg}
           onKeyUp={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
+            if (e.key === "Enter" || e.key === " ") {
               navigateToOrg();
             }
           }}
-          className="text-gray-500 pb-3 pt-3 cursor-pointer">
+          className="text-gray-500 pb-3 pt-3 cursor-pointer"
+        >
           上記を理解して組織情報や出版物の内容を閲覧する
         </div>
       </div>
@@ -99,7 +107,6 @@ function Prohibition({ view, setView, paths, op, holder, roles }: ProhibitionPro
         </div>
       </article>
     </main>
-
   );
 }
 

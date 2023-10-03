@@ -1,10 +1,10 @@
-import { useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useLocation } from "react-router-dom";
+import { useState } from "react";
 import useProfileSet from "../utils/use-profile-set";
 import { isOp, isOpHolder } from "@originator-profile/core";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
-import Template from '../templates/Prohibition';
+import Template from "../templates/Prohibition";
 import { toRoles } from "@originator-profile/ui/src/utils";
 
 function Prohibition() {
@@ -40,11 +40,11 @@ function Prohibition() {
   } as const;
 
   return (
-    <Template 
-      view={view} 
-      setView={setView} 
-      paths={paths} 
-      op={op} 
+    <Template
+      view={view}
+      setView={setView}
+      paths={paths}
+      op={op}
       holder={holder}
       roles={roles}
     />
