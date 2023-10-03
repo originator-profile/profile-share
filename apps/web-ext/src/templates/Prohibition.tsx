@@ -1,14 +1,16 @@
 import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
 import { Icon } from "@iconify/react";
 import Template from "./Org";
+import { Op, Role } from "@originator-profile/ui/src/types";
+import { OpHolder } from "@originator-profile/model";
 
 type ProhibitionProps = {
   view: string;
   setView: React.Dispatch<React.SetStateAction<string>>;
   paths: { back: string };
-  op: any;
-  holder: any;
-  roles: any[];
+  op: Op;
+  holder: OpHolder;
+  roles: Role[];
 };
 
 function Prohibition({ view, setView, paths, op, holder, roles }: ProhibitionProps) {
