@@ -11,7 +11,6 @@ import useProfileSet from "../utils/use-profile-set";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
-import Prohibition from "./Prohibition";
 import { ProfileTokenVerifyFailed } from "@originator-profile/verify";
 
 function Redirect({
@@ -58,7 +57,14 @@ function Base() {
       (profile) => profile.error instanceof ProfileTokenVerifyFailed,
     )
   ) {
-    return <Prohibition />;
+return (
+    <Navigate
+      to={[
+        routes.base.build({ tabId: String(tabId) }),
+        routes.prohibition.build({}),
+      ].join("/")}
+    />
+    );
   }
 
   const result = findProfileGenericError(profiles);

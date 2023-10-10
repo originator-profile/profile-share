@@ -6,12 +6,24 @@ import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Template from '../templates/Prohibition';
 import { toRoles } from "@originator-profile/ui/src/utils";
+import { Profile } from '@originator-profile/model';
+import Unsupported from "../components/Unsupported";
 
 function Prohibition() {
   const [view, setView] = useState("warning");
 
   const location = useLocation();
-  const { advertisers = [], publishers = [], profiles } = useProfileSet();
+  const passedProfiles = location.state?.profiles;
+  const {
+      advertisers = [],
+      publishers = [],
+      error,
+      profiles,
+  } = useProfileSet();
+
+  if (error) {
+    return <Unsupported error={error} />;
+  }
 
   if (!profiles) {
     return <Loading />;
@@ -20,7 +32,7 @@ function Prohibition() {
   const op = profiles
     .filter(isOp)
     .find(
-      (profile) =>
+      (profile: Profile) =>
         profile.issuer === "localhost" && profile.subject === "localhost",
     );
 
