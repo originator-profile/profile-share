@@ -3,7 +3,7 @@ import { FromHandler } from "../../../../../../types";
 import { update, schema } from "./update";
 import { deleteOne, schema as schemaDelete } from "./delete";
 import Params from "./params";
-import { preHandler } from "../hooks";
+import { preHandler } from "../../hooks";
 
 async function index(fastify: FastifyInstance): Promise<void> {
   fastify.put<FromHandler<typeof update, Params>>(
