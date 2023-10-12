@@ -42,12 +42,15 @@ function Publ() {
     return <NotFound variant="holder" />;
   }
 
-  const unsafeQuery = hasUnsafeParam ? "?unsafe" : '';
+  const unsafeQuery = hasUnsafeParam ? "?unsafe" : "";
 
   const paths = {
-    org: `${routes.org.build({ orgIssuer: op.issuer, orgSubject: op.subject })}${unsafeQuery}`,
+    org: `${routes.org.build({
+      orgIssuer: op.issuer,
+      orgSubject: op.subject,
+    })}${unsafeQuery}`,
   } as const;
-  
+
   return (
     <Template op={op} dp={dp} website={website} holder={holder} paths={paths} />
   );
