@@ -1,19 +1,17 @@
 import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
 import { Icon } from "@iconify/react";
-import Template from "./Org";
-import { Op, Role } from "@originator-profile/ui/src/types";
-import { OpHolder } from "@originator-profile/model";
+import { Dp } from "@originator-profile/ui/src/types";
+import { Navigate } from "react-router-dom";
+import { routes } from "../utils/routes";
 
 type ProhibitionProps = {
   view: string;
   setView: React.Dispatch<React.SetStateAction<string>>;
-  paths: { back: string };
-  op: Op;
-  holder: OpHolder;
-  roles: Role[];
+  dp: Dp;
+  tabId: number;
 };
 
-function Prohibition({ view, setView, paths, op, holder, roles }: ProhibitionProps) {
+function Prohibition({ view, setView, dp ,tabId }: ProhibitionProps) {
   type WarningDetailsProps = {
     navigateToOrg: () => void;
   };
@@ -60,7 +58,15 @@ function Prohibition({ view, setView, paths, op, holder, roles }: ProhibitionPro
   }
 
   if (view === "org") {
-    return <Template paths={paths} op={op} holder={holder} roles={roles} />;
+    return (
+      <Navigate
+        to={[
+          routes.base.build({ tabId: String(tabId) }),
+          routes.publ.build(dp),
+          "?unsafe"
+        ].join("/")}
+      />
+    );
   }
 
   return (
