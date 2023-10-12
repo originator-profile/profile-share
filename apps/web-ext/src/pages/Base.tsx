@@ -57,13 +57,13 @@ function Base() {
       (profile) => profile.error instanceof ProfileTokenVerifyFailed,
     )
   ) {
-  return (
-    <Navigate
-      to={[
-        routes.base.build({ tabId: String(tabId) }),
-        routes.prohibition.build({}),
-      ].join("/")}
-    />
+    return (
+      <Navigate
+        to={[
+          routes.base.build({ tabId: String(tabId) }),
+          routes.prohibition.build({}),
+        ].join("/")}
+      />
     );
   }
 

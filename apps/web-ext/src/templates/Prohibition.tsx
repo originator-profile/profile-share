@@ -11,7 +11,7 @@ type ProhibitionProps = {
   tabId: number;
 };
 
-function Prohibition({ view, setView, dp ,tabId }: ProhibitionProps) {
+function Prohibition({ view, setView, dp, tabId }: ProhibitionProps) {
   type WarningDetailsProps = {
     navigateToOrg: () => void;
   };
@@ -64,7 +64,7 @@ function Prohibition({ view, setView, dp ,tabId }: ProhibitionProps) {
         to={[
           routes.base.build({ tabId: String(tabId) }),
           routes.publ.build(dp),
-          "?unsafe"
+          "?unsafe",
         ].join("/")}
       />
     );

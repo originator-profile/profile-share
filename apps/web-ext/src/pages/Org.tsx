@@ -35,7 +35,6 @@ function Org(props: Props) {
   const result = findProfileGenericError(profiles);
   // TODO: 禁止のケースの見た目を実装して
   if (result && !hasUnsafeParam) {
-    
     return <Unsupported error={result} />;
   }
   const op = profiles
