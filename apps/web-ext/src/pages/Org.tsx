@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { isOp, isOpHolder } from "@originator-profile/core";
 import {
   toRoles,
@@ -13,6 +13,9 @@ import Template from "../templates/Org";
 type Props = { back: string };
 
 function Org(props: Props) {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const hasUnsafeParam = queryParams.has("unsafe");
   const { orgIssuer, orgSubject } = useParams<{
     orgIssuer: string;
     orgSubject: string;
@@ -31,7 +34,8 @@ function Org(props: Props) {
   }
   const result = findProfileGenericError(profiles);
   // TODO: 禁止のケースの見た目を実装して
-  if (result) {
+  if (result && !hasUnsafeParam) {
+    
     return <Unsupported error={result} />;
   }
   const op = profiles

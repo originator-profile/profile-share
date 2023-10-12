@@ -57,7 +57,7 @@ function Base() {
       (profile) => profile.error instanceof ProfileTokenVerifyFailed,
     )
   ) {
-return (
+  return (
     <Navigate
       to={[
         routes.base.build({ tabId: String(tabId) }),
