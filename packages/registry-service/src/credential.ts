@@ -20,6 +20,7 @@ export const CredentialService = ({
    * @param name 資格名
    * @param issuedAt 資格発行日
    * @param expiredAt 期限切れ日時
+   * @param url 説明情報の URL
    * @param imageUrl 資格画像の URL
    * @return
    */
@@ -30,6 +31,7 @@ export const CredentialService = ({
     name: string,
     issuedAt: Date,
     expiredAt: Date,
+    url?: string,
     imageUrl?: string,
   ): Promise<credentials | Error> {
     const isCertifier = await certificate.isCertifier(certifierId);
@@ -43,6 +45,7 @@ export const CredentialService = ({
       name,
       issuedAt,
       expiredAt,
+      url,
       imageUrl,
     );
   },
@@ -61,6 +64,7 @@ export const CredentialService = ({
       name?: string;
       issuedAt?: Date;
       expiredAt?: Date;
+      url?: string;
       imageUrl?: string;
     },
   ): Promise<credentials | Error> {

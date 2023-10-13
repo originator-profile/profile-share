@@ -101,8 +101,8 @@ FLAG DESCRIPTIONS
 
 ```
 USAGE
-  $ profile-registry account:register-credential --id <value> --certifier <value> --verifier <value> --name <value> [--image
-    <value>] [--issued-at <value>] [--expired-at <value>]
+  $ profile-registry account:register-credential --id <value> --certifier <value> --verifier <value> --name <value> [--url
+    <value>] [--image <value>] [--issued-at <value>] [--expired-at <value>]
 
 FLAGS
   --certifier=<value>   (required) 認証機関の ID またはドメイン名
@@ -111,6 +111,7 @@ FLAGS
   --image=<value>       画像URL
   --issued-at=<value>   発行日時 (ISO 8601)
   --name=<value>        (required) 資格名
+  --url=<value>         説明情報のURL
   --verifier=<value>    (required) 検証機関の ID またはドメイン名
 
 DESCRIPTION
@@ -132,6 +133,10 @@ FLAG DESCRIPTIONS
   --image=<value>  画像URL
 
     拡張機能Webページへの埋め込みが可能な(CORSが許可されている)画像URL
+
+  --url=<value>  説明情報のURL
+
+    資格情報についての説明情報の(CORSが許可されている)URL
 
   --verifier=<value>  検証機関の ID またはドメイン名
 

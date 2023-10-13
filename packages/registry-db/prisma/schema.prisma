@@ -269,6 +269,8 @@ model admins {
 /// 資格情報
 model credentials {
   id          Int      @id @default(autoincrement())
+  /// 説明情報のURL
+  url         String?
   /// 会員
   account     accounts @relation(fields: [accountId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   accountId   String   @db.Uuid

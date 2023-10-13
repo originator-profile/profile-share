@@ -20,6 +20,7 @@ export const CredentialRepository = () => ({
     name: string,
     issuedAt: Date,
     expiredAt: Date,
+    url?: string,
     imageUrl?: string,
   ): Promise<credentials | Error> {
     const input: Prisma.credentialsCreateInput = {
@@ -34,6 +35,7 @@ export const CredentialRepository = () => ({
       },
       name: name,
       image: imageUrl,
+      url,
       issuedAt,
       expiredAt,
     };
@@ -57,6 +59,7 @@ export const CredentialRepository = () => ({
       name?: string;
       issuedAt?: Date;
       expiredAt?: Date;
+      url?: string;
       imageUrl?: string;
     },
   ): Promise<credentials | Error> {

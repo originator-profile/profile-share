@@ -24,6 +24,9 @@ export class RegisterCredential extends Command {
       description: "資格名",
       required: true,
     }),
+    url: Flags.url({
+      summary: "説明情報のURL",
+    }),
     image: Flags.url({
       summary: "画像URL",
       description:
@@ -51,6 +54,7 @@ export class RegisterCredential extends Command {
       flags.name,
       issuedAt,
       expiredAt,
+      flags.url?.toString(),
       flags.image?.toString(),
     );
     if (result instanceof Error) this.error(result);
