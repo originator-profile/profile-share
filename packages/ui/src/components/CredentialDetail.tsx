@@ -31,6 +31,7 @@ function CredentialDetail({
   verifier,
 }: Props) {
   const verificationType = getVerificationType(credential, holder);
+
   return (
     <div id={id} className={clsx("jumpu-card p-4", className)}>
       <Image
@@ -65,6 +66,7 @@ function CredentialDetail({
           header="有効期限"
           data={expirationDateTimeLocaleFrom(credential.expiredAt)}
         />
+        <TableRow header="URL" data={credential.url} />
       </Table>
     </div>
   );
