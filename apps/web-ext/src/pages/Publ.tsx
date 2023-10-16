@@ -59,7 +59,7 @@ function Publ() {
       search: queryParams.toString(), 
     },
   } as const;
-  
+
   return (
     <Template op={op} dp={dp} website={website} holder={holder} paths={paths} />
   );
