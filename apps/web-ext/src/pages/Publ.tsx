@@ -22,10 +22,9 @@ function Publ() {
     return <Loading />;
   }
   if (
-    !(profiles.find(
+    !profiles.find(
       (profile) => profile.error instanceof ProfileTokenVerifyFailed,
-    ))
-    && 
+    ) &&
     !hasUnsafeParam
   ) {
     const result = findProfileGenericError(profiles);
@@ -51,12 +50,12 @@ function Publ() {
   }
 
   const paths = {
-  org: {
+    org: {
       pathname: routes.org.build({
         orgIssuer: op.issuer,
         orgSubject: op.subject,
       }),
-      search: queryParams.toString(), 
+      search: queryParams.toString(),
     },
   } as const;
 
