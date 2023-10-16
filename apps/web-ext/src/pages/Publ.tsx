@@ -7,6 +7,7 @@ import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Template from "../templates/Publ";
 import Unsupported from "../components/Unsupported";
+import { ProfileTokenVerifyFailed } from "@originator-profile/verify";
 
 function Publ() {
   const [queryParams] = useSearchParams();
@@ -20,10 +21,18 @@ function Publ() {
   if (!profiles) {
     return <Loading />;
   }
-  const result = findProfileGenericError(profiles);
-  // TODO: 禁止のケースの見た目を実装して
-  if (result && !hasUnsafeParam) {
-    return <Unsupported error={result} />;
+  if (
+    !(profiles.find(
+      (profile) => profile.error instanceof ProfileTokenVerifyFailed,
+    ))
+    && 
+    !hasUnsafeParam
+  ) {
+    const result = findProfileGenericError(profiles);
+    // TODO: 禁止のケースの見た目を実装して
+    if (result) {
+      return <Unsupported error={result} />;
+    }
   }
   const dp = profiles
     .filter(isDp)
