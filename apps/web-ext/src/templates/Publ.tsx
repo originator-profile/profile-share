@@ -18,7 +18,12 @@ type Props = {
   dp: Dp;
   website: OgWebsite;
   holder: OpHolder;
-  paths: { org: string };
+  paths: {     
+    org: {
+    pathname: string;
+    search: string;
+    }; 
+  };
 };
 
 function Publ({ op, dp, website, holder, paths }: Props) {

@@ -1,4 +1,4 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { isOp, isOpHolder, isDp, isOgWebsite } from "@originator-profile/core";
 import { findProfileGenericError } from "@originator-profile/ui/src/utils";
 import useProfileSet from "../utils/use-profile-set";
@@ -9,8 +9,7 @@ import Template from "../templates/Publ";
 import Unsupported from "../components/Unsupported";
 
 function Publ() {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
+  const [queryParams] = useSearchParams();
   const hasUnsafeParam = queryParams.has("unsafe");
 
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
@@ -42,10 +41,14 @@ function Publ() {
     return <NotFound variant="holder" />;
   }
 
-  const unsafeQuery = hasUnsafeParam ? "?unsafe" : '';
-
   const paths = {
-    org: `${routes.org.build({ orgIssuer: op.issuer, orgSubject: op.subject })}${unsafeQuery}`,
+  org: {
+      pathname: routes.org.build({
+        orgIssuer: op.issuer,
+        orgSubject: op.subject,
+      }),
+      search: queryParams.toString(), 
+    },
   } as const;
   
   return (
