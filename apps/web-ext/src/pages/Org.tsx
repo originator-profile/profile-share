@@ -1,4 +1,4 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { isOp, isOpHolder } from "@originator-profile/core";
 import {
   toRoles,
@@ -13,8 +13,7 @@ import Template from "../templates/Org";
 type Props = { back: string };
 
 function Org(props: Props) {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
+  const [queryParams] = useSearchParams();
   const hasUnsafeParam = queryParams.has("unsafe");
   const { orgIssuer, orgSubject } = useParams<{
     orgIssuer: string;
