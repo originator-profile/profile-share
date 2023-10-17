@@ -21,6 +21,8 @@ export type RequestLog = requestLogs & {
 
 export type RequestLogCreate = Omit<RequestLog, "id">;
 
+export type RequestList = (requests & { accountName: string })[];
+
 /**
  * 審査コメントの配列を受け取って、 prisma の update() や create() に渡せる形式にします。
  * @param reviewComments 審査コメントの配列
@@ -161,6 +163,50 @@ export const RequestRepository = () => ({
     return prisma.requestLogs
       .create({ data: input, include: { reviewComments: true } })
       .catch((e: Error) => e);
+  },
+
+  /**
+   * 最新の申請情報リストの取得
+   * @param options オプション
+   * @return 取得した申請情報またはエラー
+   */
+  async readList({
+    pending,
+  }: {
+    /** 審査待ちかどうか (undefined: すべての申請情報, true: pending, false: pending以外) */
+    pending?: boolean;
+  }): Promise<RequestList | Error> {
+    const prisma = getClient();
+    const data = await prisma.requests
+      .findMany({
+        where:
+          pending === undefined
+            ? undefined
+            : {
+                status: {
+                  [pending ? "is" : "isNot"]: {
+                    value: "pending",
+                  },
+                },
+              },
+        include: {
+          group: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      })
+      .catch((e: Error) => e);
+    if (!data) return new NotFoundError();
+    if (data instanceof Error) return data;
+    return data.map((request) => {
+      const { group, ...rest } = request;
+      return {
+        ...rest,
+        accountName: group.name,
+      };
+    });
   },
 });
 
