@@ -2,17 +2,13 @@ import { useTitle, useMount } from "react-use";
 import { Navigate } from "react-router-dom";
 import { isDp } from "@originator-profile/core";
 import { Dp, Profile } from "@originator-profile/ui/src/types";
-import {
-  sortDps,
-  findProfileGenericError,
-} from "@originator-profile/ui/src/utils";
+import { sortDps, findProfileError } from "@originator-profile/ui/src/utils";
 import { routes } from "../utils/routes";
 import useProfileSet from "../utils/use-profile-set";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
 import Prohibition from "../components/Prohibition";
-import { ProfileTokenVerifyFailed } from "@originator-profile/verify";
 
 function Redirect({
   dp,
@@ -53,15 +49,10 @@ function Base() {
     return <Loading />;
   }
 
-  if (
-    profiles.find(
-      (profile) => profile.error instanceof ProfileTokenVerifyFailed,
-    )
-  ) {
+  const result = findProfileError(profiles);
+  if (result?.code === "ERR_PROFILE_TOKEN_VERIFY_FAILED") {
     return <Prohibition />;
   }
-
-  const result = findProfileGenericError(profiles);
 
   if (result) {
     return <Unsupported error={result} />;
