@@ -1,0 +1,5 @@
+extends: originator-profile
+overrides:
+  - files: [prisma-client.ts]
+    rules:
+      "filenames/match-exported": "off"
