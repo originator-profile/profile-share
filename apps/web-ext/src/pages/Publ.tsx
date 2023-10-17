@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { isOp, isOpHolder, isDp, isOgWebsite } from "@originator-profile/core";
-import { findProfileGenericError } from "@originator-profile/ui/src/utils";
+import { findProfileError } from "@originator-profile/ui/src/utils";
 import useProfileSet from "../utils/use-profile-set";
 import { routes } from "../utils/routes";
 import Loading from "../components/Loading";
@@ -17,7 +17,7 @@ function Publ() {
   if (!profiles) {
     return <Loading />;
   }
-  const result = findProfileGenericError(profiles);
+  const result = findProfileError(profiles);
   // TODO: 禁止のケースの見た目を実装して
   if (result) {
     return <Unsupported error={result} />;

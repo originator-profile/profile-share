@@ -1,6 +1,15 @@
 import { Dp as DpModel, Op as OpModel } from "@originator-profile/model";
-import { ProfileGenericError } from "@originator-profile/verify";
+import * as errors from "@originator-profile/verify/src/errors";
 
-export type Op = OpModel & { error?: ProfileGenericError };
-export type Dp = DpModel & { error?: ProfileGenericError };
+export type ProfileError = InstanceType<
+  (typeof errors)[Extract<
+    keyof typeof errors,
+    | "ProfileClaimsValidationFailed"
+    | "ProfileTokenVerifyFailed"
+    | "ProfilesResolveFailed"
+    | "ProfilesVerifyFailed"
+  >]
+>;
+export type Op = OpModel & { error?: ProfileError };
+export type Dp = DpModel & { error?: ProfileError };
 export type Profile = Op | Dp;
