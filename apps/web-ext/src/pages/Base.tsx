@@ -2,7 +2,7 @@ import { useTitle, useMount } from "react-use";
 import { Navigate } from "react-router-dom";
 import { isDp } from "@originator-profile/core";
 import { Dp, Profile } from "@originator-profile/ui/src/types";
-import { sortDps, findProfileError } from "@originator-profile/ui/src/utils";
+import { sortDps, findProfileErrors } from "@originator-profile/ui/src/utils";
 import { routes } from "../utils/routes";
 import useProfileSet from "../utils/use-profile-set";
 import Loading from "../components/Loading";
@@ -49,13 +49,15 @@ function Base() {
     return <Loading />;
   }
 
-  const result = findProfileError(profiles);
-  if (result?.code === "ERR_PROFILE_TOKEN_VERIFY_FAILED") {
+  const results = findProfileErrors(profiles);
+  if (
+    results.find((result) => result.code === "ERR_PROFILE_TOKEN_VERIFY_FAILED")
+  ) {
     return <Prohibition />;
   }
 
-  if (result) {
-    return <Unsupported error={result} />;
+  if (results[0]) {
+    return <Unsupported error={results[0]} />;
   }
   const [dp] = sortDps(profiles.filter(isDp), main);
   if (!dp) {
