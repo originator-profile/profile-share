@@ -51,7 +51,7 @@ function Base() {
 
   const results = findProfileErrors(profiles);
   if (
-    results.find((result) => result.code === "ERR_PROFILE_TOKEN_VERIFY_FAILED")
+    results.some((result) => result.code === "ERR_PROFILE_TOKEN_VERIFY_FAILED")
   ) {
     return <Prohibition />;
   }
