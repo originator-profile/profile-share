@@ -1,5 +1,5 @@
 export * from "./credential";
-export { default as findProfileGenericError } from "./find-profile-generic-error";
+export { default as findProfileErrors } from "./find-profile-errors";
 export * from "./role";
 export { default as sortDps } from "./sort-dps";
 export { default as toProfile } from "./to-profile";
