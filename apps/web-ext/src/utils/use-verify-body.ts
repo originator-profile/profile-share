@@ -22,7 +22,7 @@ async function fetcher([, dpLocator, jwks]: [
       Array.from(document.querySelectorAll<HTMLElement>(location)),
     dpLocator,
   );
-  if (body instanceof Error) return body;
+  if (body instanceof ProfileBodyExtractFailed) return body;
   return verifyBody(body, dpLocator.proof.jws, LocalKeys(jwks ?? { keys: [] }));
 }
 
