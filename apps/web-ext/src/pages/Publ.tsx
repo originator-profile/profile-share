@@ -1,38 +1,41 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams, Navigate } from "react-router-dom";
 import { isOp, isOpHolder, isDp, isOgWebsite } from "@originator-profile/core";
-import { findProfileGenericError } from "@originator-profile/ui/src/utils";
+import { findProfileErrors } from "@originator-profile/ui/src/utils";
 import useProfileSet from "../utils/use-profile-set";
 import { routes } from "../utils/routes";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Template from "../templates/Publ";
 import Unsupported from "../components/Unsupported";
-import { ProfileTokenVerifyFailed } from "@originator-profile/verify";
 
 function Publ() {
   const [queryParams] = useSearchParams();
   const hasUnsafeParam = queryParams.has("unsafe");
 
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
-  const { profiles, error } = useProfileSet();
+  const { tabId, profiles, error } = useProfileSet();
   if (error) {
     return <Unsupported error={error} />;
   }
   if (!profiles) {
     return <Loading />;
   }
-  if (
-    !(profiles.find(
-      (profile) => profile.error instanceof ProfileTokenVerifyFailed,
-    ))
-    && 
-    !hasUnsafeParam
-  ) {
-    const result = findProfileGenericError(profiles);
-    // TODO: 禁止のケースの見た目を実装して
-    if (result) {
-      return <Unsupported error={result} />;
+  const results = findProfileErrors(profiles);
+  const hasProfileTokenVerifyFailed = results.some(
+      (result) => result.code === "ERR_PROFILE_TOKEN_VERIFY_FAILED",
+    );
+    if (hasProfileTokenVerifyFailed && !hasUnsafeParam) {
+      return (
+        <Navigate
+          to={[
+            routes.base.build({ tabId: String(tabId) }),
+            routes.prohibition.build({}),
+          ].join("/")}
+        />
+      );
     }
+    if (!hasProfileTokenVerifyFailed && results[0]) {
+      return <Unsupported error={results[0]} />;
   }
   const dp = profiles
     .filter(isDp)

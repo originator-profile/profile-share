@@ -16,7 +16,7 @@ const schema: FastifySchema = {
   },
 };
 
-async function upsert(req: FastifyRequest<{ Body: Body }>) {
+async function upsert(req: FastifyRequest) {
   const accessToken = req.server.jwt.lookupToken(req);
   const userinfoResponse = await fetch(
     `https://${

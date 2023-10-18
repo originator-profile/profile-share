@@ -45,7 +45,7 @@ async function update({
     throw new BadRequestError("Invalid id");
   }
 
-  const { certifier, verifier, issuedAt, expiredAt, name } = body;
+  const { certifier, verifier, issuedAt, expiredAt, name, url } = body;
 
   const data = {
     certifierId: certifier,
@@ -56,6 +56,7 @@ async function update({
         ? parseExpirationDate(expiredAt)
         : undefined,
     name,
+    url,
   };
 
   const result = await server.services.credential.update(

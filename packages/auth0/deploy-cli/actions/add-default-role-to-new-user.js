@@ -6,7 +6,7 @@
  */
 exports.onExecutePostLogin = async (event, api) => {
   const userId = event.user.user_id;
-  const role = "rol_qIO1J5yAQS6dtvfS"; // 'group' role
+  const role = event.secrets.GROUP_ROLE_ID; // 'group' role
 
   const count =
     event.stats && event.stats.logins_count ? event.stats.logins_count : 0;
@@ -23,15 +23,12 @@ exports.onExecutePostLogin = async (event, api) => {
 
   const params = { id: userId };
   const data = { roles: [role] };
-
-  management.users.assignRoles(params, data, function (err, user) {
-    if (err) {
-      // Handle error.
-      console.log(err);
-      // Prevent the user from logging in.
-      api.access.deny("Something went wrong. Plaese try again later.");
-    }
-  });
+  const response = await management.users.assignRoles(params, data);
+  if (response.status >= 400) {
+    console.log(response.data);
+    // Prevent the user from logging in.
+    api.access.deny("Something went wrong. Plaese try again later.");
+  }
 };
 
 /**

@@ -10,7 +10,7 @@
   "devDependencies": {
     "@headlessui/react": "^1.7.17",
     "@iconify/react": "^4.1.1",
-    "@types/react": "^18.2.21",
+    "@types/react": "^18.2.23",
     "@types/react-dom": "^18.2.7",
     "@originator-profile/core": "*",
     "@originator-profile/model": "*",
@@ -18,11 +18,11 @@
     "@originator-profile/verify": "*",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
-    "eslint": "^8.48.0",
+    "eslint": "^8.50.0",
     "eslint-config-originator-profile": "*",
     "dompurify": "^3.0.5",
     "react-use": "^17.4.0",
     "typescript": "^5.2.2",
-    "vitest": "^0.34.3"
+    "vitest": "^0.34.5"
   }
 }

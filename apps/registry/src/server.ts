@@ -62,6 +62,7 @@ export async function create(options: Options): Promise<Server> {
         additionalQueryStringParams: {
           audience: app.config.APP_URL,
         },
+        scopes: "openid profile email",
         usePkceWithAuthorizationCodeGrant: true,
       },
       transformStaticCSP: (header) =>
@@ -70,6 +71,10 @@ export async function create(options: Options): Promise<Server> {
           .filter(
             // TrustedTypePolicyが存在せず、DOM要素が表示されないので回避
             (dir) => !/^(?:trusted-types|require-trusted-types-for) /.test(dir),
+          )
+          .map(
+            // data: schemeを使用したリソースが表示されないので回避
+            (dir) => (/^img-src /.test(dir) ? `${dir} data:` : dir),
           )
           .join(";"),
       // NOTE: esbuild でのバンドルに失敗する問題の回避策

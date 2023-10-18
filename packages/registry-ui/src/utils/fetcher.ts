@@ -3,13 +3,13 @@
  * @param req.method リクエストメソッド
  * @param req.url URL
  * @param token アクセストークン
- * @returns リクエストボディ
+ * @returns レスポンスコンテンツ
  */
-export default async function fetcher(req: {
+export default async function fetcher<Data>(req: {
   method?: string;
   url: string;
   token: string;
-}) {
+}): Promise<Data> {
   const res = await fetch(req.url, {
     method: req.method,
     headers: {

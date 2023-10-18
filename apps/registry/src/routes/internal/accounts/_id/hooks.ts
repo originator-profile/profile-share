@@ -1,6 +1,6 @@
 import { FastifyRequest } from "fastify";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
-import Params from "../params";
+import Params from "./params";
 
 export async function preHandler({
   user,

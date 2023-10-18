@@ -1,31 +1,94 @@
-import { Prisma, requests } from "@prisma/client";
-import { getClient } from "@originator-profile/registry-db";
-import { NotFoundError } from "http-errors-enhanced";
+import { Prisma, requestLogs, requests } from "@prisma/client";
+import { beginTransaction, getClient } from "@originator-profile/registry-db";
+import { BadRequestError, NotFoundError } from "http-errors-enhanced";
+
+type AccountId = requests["groupId"];
+export type Request = requests & {
+  reviewComments: Array<{
+    id: number;
+    requestFieldName: string;
+    comment: string;
+  }>;
+};
+
+export type RequestLog = requestLogs & {
+  reviewComments?: Array<{
+    id: number;
+    requestFieldName: string;
+    comment: string;
+  }>;
+};
+
+export type RequestLogCreate = Omit<RequestLog, "id">;
+
+export type RequestList = (requests & { accountName: string })[];
+
+/**
+ * 審査コメントの配列を受け取って、 prisma の update() や create() に渡せる形式にします。
+ * @param reviewComments 審査コメントの配列
+ * @return connectOrCreate プロパティに渡せる値
+ */
+const convertReviewCommentsToPrismaCreateMany = (
+  reviewComments: RequestLog["reviewComments"],
+):
+  | Prisma.requestLogReviewCommentsCreateNestedManyWithoutRequestLogInput
+  | undefined => {
+  if (!reviewComments) {
+    return undefined;
+  }
+
+  const reviewCommentsCreateMany = reviewComments?.map((rc) => {
+    return {
+      reviewCommentId: rc.id,
+    };
+  });
+  return { createMany: { data: reviewCommentsCreateMany } };
+};
 
 export const RequestRepository = () => ({
   /**
    * 申請情報の作成
-   * @param author 申請担当者 ID
    * @param accountId 会員 ID
-   * @return
+   * @param authorId 申請者 ID
+   * @param requestSummary 申請の概要
+   * @return 作成した申請情報またはエラー
    */
   async create(
-    accountId: string,
+    accountId: AccountId,
     authorId: string,
     requestSummary: string,
-  ): Promise<requests | Error> {
-    const input: Prisma.requestsCreateInput = {
-      author: {
-        connect: { id: authorId },
-      },
-      group: {
-        connect: { id: accountId },
-      },
-      requestSummary: requestSummary,
-    };
-
-    const prisma = getClient();
-    return prisma.requests.create({ data: input }).catch((e: Error) => e);
+  ): Promise<Request | Error> {
+    return await beginTransaction<ReturnType<typeof this.create>>(async () => {
+      const prisma = getClient();
+      const request = await prisma.requests.upsert({
+        where: { groupId: accountId },
+        create: {
+          group: { connect: { id: accountId } },
+          author: { connect: { id: authorId } },
+          requestSummary,
+        },
+        update: {
+          group: { connect: { id: accountId } },
+          author: { connect: { id: authorId } },
+          status: { connect: { value: "pending" } },
+          /* 新規の申請に際して同組織の既存申請に対する以下の情報は無効である */
+          requestSummary,
+          reviewSummary: null,
+          reviewComments: {
+            set: [],
+          },
+          reviewer: { disconnect: true },
+          certifier: { disconnect: true },
+          op: { disconnect: true },
+        },
+      });
+      if (request instanceof Error) throw request;
+      /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+      const { id: _, ...logData } = request;
+      const requestLog = await this.log(logData);
+      if (requestLog instanceof Error) throw requestLog;
+      return { reviewComments: [], ...request };
+    }).catch((e: Error) => e);
   },
 
   /**
@@ -33,18 +96,117 @@ export const RequestRepository = () => ({
    * @param accountId 会員 ID
    * @return 取得した申請情報またはエラー
    */
-  async read(accountId: string): Promise<requests | Error> {
+  async read(accountId: AccountId): Promise<Request | Error> {
     const prisma = getClient();
     const data = await prisma.requests
-      .findFirst({
+      .findUnique({
         where: { groupId: accountId },
-        orderBy: {
-          updatedAt: "desc",
-        },
-        take: 1,
+        include: { reviewComments: true },
       })
       .catch((e: Error) => e);
     return data ?? new NotFoundError();
+  },
+
+  /**
+   * 申請情報の取り下げ
+   * @param accountId 会員 ID
+   * @return 取り下げ後の申請情報またはエラー
+   */
+  async cancel(accountId: AccountId): Promise<Request | Error> {
+    return await beginTransaction<ReturnType<typeof this.read>>(async () => {
+      const prisma = getClient();
+      const old = await prisma.requests
+        .findUnique({
+          where: { groupId: accountId },
+        })
+        .catch((e: Error) => e);
+      if (old instanceof Error) throw old;
+      if (!old) throw new NotFoundError();
+      if (old.statusValue === "cancelled")
+        throw new BadRequestError("Request already cancelled.");
+      const updated = await prisma.requests
+        .update({
+          where: { groupId: accountId },
+          data: { status: { connect: { value: "cancelled" } } },
+        })
+        .catch((e: Error) => e);
+      if (
+        updated instanceof Prisma.PrismaClientKnownRequestError &&
+        updated.code === "P2025"
+      )
+        throw new NotFoundError();
+      if (updated instanceof Error) throw updated;
+      const newest = await this.read(accountId);
+      if (newest instanceof Error) throw newest;
+      /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+      const { id: _, ...logData } = newest;
+      const requestLog = await this.log(logData);
+      if (requestLog instanceof Error) throw requestLog;
+      return newest;
+    }).catch((e: Error) => e);
+  },
+
+  /**
+   * 申請情報ログの追加
+   * @param requestLog 申請ログ
+   * @return 作成したログ
+   */
+  async log(requestLog: RequestLogCreate): Promise<requestLogs | Error> {
+    const prisma = getClient();
+    const { reviewComments, ...createInput } = requestLog;
+
+    const input = {
+      reviewComments: convertReviewCommentsToPrismaCreateMany(reviewComments),
+      ...createInput,
+    } as const satisfies Prisma.requestLogsCreateInput;
+
+    return prisma.requestLogs
+      .create({ data: input, include: { reviewComments: true } })
+      .catch((e: Error) => e);
+  },
+
+  /**
+   * 最新の申請情報リストの取得
+   * @param options オプション
+   * @return 取得した申請情報またはエラー
+   */
+  async readList({
+    pending,
+  }: {
+    /** 審査待ちかどうか (undefined: すべての申請情報, true: pending, false: pending以外) */
+    pending?: boolean;
+  }): Promise<RequestList | Error> {
+    const prisma = getClient();
+    const data = await prisma.requests
+      .findMany({
+        where:
+          pending === undefined
+            ? undefined
+            : {
+                status: {
+                  [pending ? "is" : "isNot"]: {
+                    value: "pending",
+                  },
+                },
+              },
+        include: {
+          group: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      })
+      .catch((e: Error) => e);
+    if (!data) return new NotFoundError();
+    if (data instanceof Error) return data;
+    return data.map((request) => {
+      const { group, ...rest } = request;
+      return {
+        ...rest,
+        accountName: group.name,
+      };
+    });
   },
 });
 

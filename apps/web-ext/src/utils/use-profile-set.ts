@@ -15,12 +15,18 @@ import {
 } from "../types/message";
 import { routes } from "./routes";
 
-const key = "profiles";
+const key = "profiles" as const;
 
 async function fetchVerifiedProfiles([, tabId]: [
   _: typeof key,
   tabId: number,
-]) {
+]): Promise<{
+  advertisers: string[];
+  publishers: string[];
+  main: string[];
+  profiles: Profile[];
+  origin: string;
+}> {
   const { ok, data, origin }: fetchProfileSetMessageResponse =
     await chrome.tabs.sendMessage(tabId, {
       type: "fetch-profiles",
@@ -54,13 +60,7 @@ function useProfileSet() {
   const params = useParams<{ tabId: string }>();
   const tabId = Number(params.tabId);
   // TODO: 自動再検証する場合は取得エンドポイントが変わりうることをUIの振る舞いで考慮して
-  const { data, error } = useSWRImmutable<{
-    advertisers: string[];
-    publishers: string[];
-    main: string[];
-    profiles: Profile[];
-    origin: string;
-  }>([key, tabId], fetchVerifiedProfiles);
+  const { data, error } = useSWRImmutable([key, tabId], fetchVerifiedProfiles);
 
   useEvent("unload", async function () {
     await chrome.tabs.sendMessage(tabId, { type: "close-window" });

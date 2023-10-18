@@ -42,7 +42,7 @@ async function create({
 }>) {
   const { id } = params;
 
-  const { certifier, verifier, issuedAt, expiredAt, name } = body;
+  const { certifier, verifier, issuedAt, expiredAt, name, url } = body;
 
   const result = await server.services.credential.create(
     id,
@@ -51,6 +51,7 @@ async function create({
     name,
     new Date(issuedAt),
     parseExpirationDate(expiredAt),
+    url,
   );
 
   if (result instanceof Error) throw new BadRequestError("Invalid request");
