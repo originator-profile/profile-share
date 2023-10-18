@@ -18,11 +18,11 @@ type Props = {
   dp: Dp;
   website: OgWebsite;
   holder: OpHolder;
-  paths: {     
+  paths: {
     org: {
-    pathname: string;
-    search: string;
-    }; 
+      pathname: string;
+      search: string;
+    };
   };
 };
 

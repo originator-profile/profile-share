@@ -54,12 +54,12 @@ function Publ() {
   }
 
   const paths = {
-  org: {
+    org: {
       pathname: routes.org.build({
         orgIssuer: op.issuer,
         orgSubject: op.subject,
       }),
-      search: queryParams.toString(), 
+      search: queryParams.toString(),
     },
   } as const;
 
