@@ -18,6 +18,10 @@ const OpCredential = {
       title: "資格名",
       type: "string",
     },
+    url: {
+      title: "説明情報のURL",
+      type: "string",
+    },
     image: {
       title: "画像URL",
       type: "string",
