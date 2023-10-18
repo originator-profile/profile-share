@@ -1,14 +1,12 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { Navigate, useParams, useSearchParams } from "react-router-dom";
 import { isOp, isOpHolder } from "@originator-profile/core";
-import {
-  toRoles,
-  findProfileGenericError,
-} from "@originator-profile/ui/src/utils";
+import { toRoles, findProfileErrors } from "@originator-profile/ui/src/utils";
 import useProfileSet from "../utils/use-profile-set";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
 import Template from "../templates/Org";
+import { routes } from "../utils/routes";
 
 type Props = { back: string };
 
@@ -20,6 +18,7 @@ function Org(props: Props) {
     orgSubject: string;
   }>();
   const {
+    tabId,
     advertisers = [],
     publishers = [],
     profiles,
@@ -31,10 +30,22 @@ function Org(props: Props) {
   if (!profiles) {
     return <Loading />;
   }
-  const result = findProfileGenericError(profiles);
-  // TODO: 禁止のケースの見た目を実装して
-  if (result && !hasUnsafeParam) {
-    return <Unsupported error={result} />;
+  const results = findProfileErrors(profiles);
+  const hasProfileTokenVerifyFailed = results.some(
+    (result) => result.code === "ERR_PROFILE_TOKEN_VERIFY_FAILED",
+  );
+  if (hasProfileTokenVerifyFailed && !hasUnsafeParam) {
+    return (
+      <Navigate
+        to={[
+          routes.base.build({ tabId: String(tabId) }),
+          routes.prohibition.build({}),
+        ].join("/")}
+      />
+    );
+  }
+  if (!hasProfileTokenVerifyFailed && results[0]) {
+    return <Unsupported error={results[0]} />;
   }
   const op = profiles
     .filter(isOp)
@@ -51,8 +62,11 @@ function Org(props: Props) {
   }
   const roles = toRoles(op.subject, advertisers, publishers);
   const paths = {
-    back: props.back,
-  } as const;
+    back: {
+        pathname: props.back,
+        search: queryParams.toString(),
+    }
+};
   return <Template paths={paths} op={op} holder={holder} roles={roles} />;
 }
 

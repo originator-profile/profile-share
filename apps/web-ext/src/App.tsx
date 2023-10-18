@@ -9,7 +9,7 @@ import Prohibition from "./pages/Prohibition";
 const org: RouteObject = {
   path: routes.org.path,
   element: <Outlet />,
-  children: [{ path: "", element: <Org back="../.." /> }],
+  children: [{ path: "", element: <Org back=".." /> }],
 };
 const publ: RouteObject = {
   path: routes.publ.path,
