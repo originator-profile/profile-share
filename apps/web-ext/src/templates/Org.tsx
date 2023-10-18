@@ -27,11 +27,11 @@ type Props = {
   holder: OpHolder;
   roles: Role[];
   paths: {
-      back: {
-        pathname: string;
-        search: string;
-      };
+    back: {
+      pathname: string;
+      search: string;
     };
+  };
 };
 
 function Org({ op, holder, roles, paths }: Props) {
