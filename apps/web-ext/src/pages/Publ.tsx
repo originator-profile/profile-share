@@ -22,20 +22,20 @@ function Publ() {
   }
   const results = findProfileErrors(profiles);
   const hasProfileTokenVerifyFailed = results.some(
-      (result) => result.code === "ERR_PROFILE_TOKEN_VERIFY_FAILED",
+    (result) => result.code === "ERR_PROFILE_TOKEN_VERIFY_FAILED",
+  );
+  if (hasProfileTokenVerifyFailed && !hasUnsafeParam) {
+    return (
+      <Navigate
+        to={[
+          routes.base.build({ tabId: String(tabId) }),
+          routes.prohibition.build({}),
+        ].join("/")}
+      />
     );
-    if (hasProfileTokenVerifyFailed && !hasUnsafeParam) {
-      return (
-        <Navigate
-          to={[
-            routes.base.build({ tabId: String(tabId) }),
-            routes.prohibition.build({}),
-          ].join("/")}
-        />
-      );
-    }
-    if (!hasProfileTokenVerifyFailed && results[0]) {
-      return <Unsupported error={results[0]} />;
+  }
+  if (!hasProfileTokenVerifyFailed && results[0]) {
+    return <Unsupported error={results[0]} />;
   }
   const dp = profiles
     .filter(isDp)
