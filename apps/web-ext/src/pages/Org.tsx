@@ -63,10 +63,10 @@ function Org(props: Props) {
   const roles = toRoles(op.subject, advertisers, publishers);
   const paths = {
     back: {
-        pathname: props.back,
-        search: queryParams.toString(),
-    }
-};
+      pathname: props.back,
+      search: queryParams.toString(),
+    },
+  };
   return <Template paths={paths} op={op} holder={holder} roles={roles} />;
 }
 
