@@ -29,13 +29,13 @@ function Org(props: Props) {
   if (!profiles) {
     return <Loading />;
   }
-  
+
   const result = usecheckErrorsAndNavigate({ profiles, tabId, queryParams });
   if (result) {
-    if (result.type === 'navigate') {
+    if (result.type === "navigate") {
       return <Navigate to={result.path} />;
     }
-    if (result.type === 'error') {
+    if (result.type === "error") {
       return <Unsupported error={result.error} />;
     }
   }
