@@ -1,18 +1,17 @@
 import { Navigate, useParams, useSearchParams } from "react-router-dom";
 import { isOp, isOpHolder } from "@originator-profile/core";
-import { toRoles, findProfileErrors } from "@originator-profile/ui/src/utils";
+import { toRoles } from "@originator-profile/ui/src/utils";
 import useProfileSet from "../utils/use-profile-set";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
 import Template from "../templates/Org";
-import { routes } from "../utils/routes";
+import usecheckErrorsAndNavigate from "../utils/usecheck-errors-and-navigate";
 
 type Props = { back: string };
 
 function Org(props: Props) {
   const [queryParams] = useSearchParams();
-  const hasUnsafeParam = queryParams.has("unsafe");
   const { orgIssuer, orgSubject } = useParams<{
     orgIssuer: string;
     orgSubject: string;
@@ -30,23 +29,17 @@ function Org(props: Props) {
   if (!profiles) {
     return <Loading />;
   }
-  const results = findProfileErrors(profiles);
-  const hasProfileTokenVerifyFailed = results.some(
-    (result) => result.code === "ERR_PROFILE_TOKEN_VERIFY_FAILED",
-  );
-  if (hasProfileTokenVerifyFailed && !hasUnsafeParam) {
-    return (
-      <Navigate
-        to={[
-          routes.base.build({ tabId: String(tabId) }),
-          routes.prohibition.build({}),
-        ].join("/")}
-      />
-    );
+  
+  const result = usecheckErrorsAndNavigate({ profiles, tabId, queryParams });
+  if (result) {
+    if (result.type === 'navigate') {
+      return <Navigate to={result.path} />;
+    }
+    if (result.type === 'error') {
+      return <Unsupported error={result.error} />;
+    }
   }
-  if (!hasProfileTokenVerifyFailed && results[0]) {
-    return <Unsupported error={results[0]} />;
-  }
+
   const op = profiles
     .filter(isOp)
     .find(

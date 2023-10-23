@@ -1,47 +1,12 @@
 import { useParams, useSearchParams, Navigate } from "react-router-dom";
 import { isOp, isOpHolder, isDp, isOgWebsite } from "@originator-profile/core";
-import { findProfileErrors } from "@originator-profile/ui/src/utils";
 import useProfileSet from "../utils/use-profile-set";
 import { routes } from "../utils/routes";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Template from "../templates/Publ";
 import Unsupported from "../components/Unsupported";
-import {Profile } from "@originator-profile/ui/src/types";
-
-function checkErrorsAndNavigate({
-  profiles, 
-  tabId,
-  queryParams
-}:{
-  profiles: Profile[];
-  tabId: number;
-  queryParams: URLSearchParams;
-}) {
-  
-  const hasUnsafeParam = queryParams.has("unsafe");
-  const errors = findProfileErrors(profiles);
-  const hasProfileTokenVerifyFailed = errors.some(
-    (result) => result.code === "ERR_PROFILE_TOKEN_VERIFY_FAILED"
-  );
-
-  if (hasProfileTokenVerifyFailed && !hasUnsafeParam) {
-    return (
-      <Navigate
-        to={[
-          routes.base.build({ tabId: String(tabId) }),
-          routes.prohibition.build({})
-        ].join("/")}
-      />
-    );
-  }
-  
-  if (!hasProfileTokenVerifyFailed && errors[0]) {
-    return <Unsupported error={errors[0]} />;
-  }
-
-  return;
-}
+import usecheckErrorsAndNavigate from "../utils/usecheck-errors-and-navigate";
 
 function Publ() {
   const [queryParams] = useSearchParams();
@@ -54,8 +19,15 @@ function Publ() {
     return <Loading />;
   }
 
-  const errorComponent = checkErrorsAndNavigate({ profiles, tabId, queryParams });
-  if (errorComponent) return errorComponent;
+  const result = usecheckErrorsAndNavigate({ profiles, tabId, queryParams });
+  if (result) {
+    if (result.type === 'navigate') {
+      return <Navigate to={result.path} />;
+    }
+    if (result.type === 'error') {
+      return <Unsupported error={result.error} />;
+    }
+  }
 
   const dp = profiles.filter(isDp).find((dp) => dp.issuer === issuer && dp.subject === subject);
   const op = profiles.filter(isOp).find((op) => op.subject === issuer);
