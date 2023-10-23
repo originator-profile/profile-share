@@ -5,7 +5,7 @@ import {
   exportJWK,
   generateKeyPair,
 } from "jose";
-import { rest } from "msw";
+import { http, HttpResponse } from "msw";
 import { SetupServer, setupServer } from "msw/node";
 import { Server, create } from "../../src/server";
 
@@ -38,12 +38,10 @@ beforeAll(async () => {
   };
 
   idp = setupServer(
-    rest.get(
+    http.get(
       // JWKSエンドポイントのモック
       `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`,
-      (_, res, ctx) => {
-        return res(ctx.json(jwks));
-      },
+      () => HttpResponse.json(jwks),
     ),
   );
 
