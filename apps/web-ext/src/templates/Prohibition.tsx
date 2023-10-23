@@ -5,17 +5,12 @@ import { Link, Navigate } from "react-router-dom";
 import { routes } from "../utils/routes";
 
 type ProhibitionProps = {
-  view: string;
-  setView: React.Dispatch<React.SetStateAction<string>>;
   dp: Dp;
   tabId: number;
 };
 
-function Prohibition({ view, setView, dp, tabId }: ProhibitionProps) {
-  type WarningDetailsProps = {
-    navigateToOrg: () => void;
-  };
-  function WarningDetails({ navigateToOrg }: WarningDetailsProps) {
+  function Prohibition({ dp, tabId }: ProhibitionProps) {
+  function WarningDetails() {
     return (
       <div className="pt-3">
         <p>
@@ -48,25 +43,12 @@ function Prohibition({ view, setView, dp, tabId }: ProhibitionProps) {
               routes.publ.build(dp),
               "?unsafe",
             ].join("/")}
-            onClick={navigateToOrg}
             className="text-gray-500"
           >
             上記を理解して組織情報や出版物の内容を閲覧する
           </Link>
         </div>
       </div>
-    );
-  }
-
-  if (view === "org") {
-    return (
-      <Navigate
-        to={[
-          routes.base.build({ tabId: String(tabId) }),
-          routes.publ.build(dp),
-          "?unsafe",
-        ].join("/")}
-      />
     );
   }
 
@@ -99,7 +81,7 @@ function Prohibition({ view, setView, dp, tabId }: ProhibitionProps) {
           <summary>
             このメッセージが表示される理由についてもっと詳しく...
           </summary>
-          <WarningDetails navigateToOrg={() => setView("org")} />
+          <WarningDetails />
         </details>
         <div className="pt-3">
           <ProjectSummary as="footer" />
