@@ -1,4 +1,3 @@
-import { useState } from "react";
 import useProfileSet from "../utils/use-profile-set";
 import { isDp } from "@originator-profile/core";
 import Loading from "../components/Loading";
@@ -8,8 +7,6 @@ import { sortDps } from "@originator-profile/ui/src/utils";
 import Unsupported from "../components/Unsupported";
 
 function Prohibition() {
-  const [view, setView] = useState("warning");
-
   const { tabId, main = [], error, profiles } = useProfileSet();
 
   if (error) {
@@ -24,8 +21,7 @@ function Prohibition() {
   if (!dp) {
     return <NotFound variant="dp" />;
   }
-
-  return <Template view={view} setView={setView} dp={dp} tabId={tabId} />;
+  return <Template dp={dp} tabId={tabId} />;
 }
 
 export default Prohibition;
