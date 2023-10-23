@@ -29,7 +29,9 @@ function Publ() {
     }
   }
 
-  const dp = profiles.filter(isDp).find((dp) => dp.issuer === issuer && dp.subject === subject);
+  const dp = profiles
+    .filter(isDp)
+    .find((dp) => dp.issuer === issuer && dp.subject === subject);
   const op = profiles.filter(isOp).find((op) => op.subject === issuer);
   if (!(dp && op)) {
     return <NotFound variant="profile" />;
