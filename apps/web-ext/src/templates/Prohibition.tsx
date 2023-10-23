@@ -1,7 +1,7 @@
 import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
 import { Icon } from "@iconify/react";
 import { Dp } from "@originator-profile/ui/src/types";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { routes } from "../utils/routes";
 
 type ProhibitionProps = {
@@ -41,18 +41,18 @@ function Prohibition({ view, setView, dp, tabId }: ProhibitionProps) {
           <br />
         </p>
 
-        <div
-          role="button"
-          tabIndex={0}
-          onClick={navigateToOrg}
-          onKeyUp={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              navigateToOrg();
-            }
-          }}
-          className="text-gray-500 pb-3 pt-3 cursor-pointer"
-        >
-          上記を理解して組織情報や出版物の内容を閲覧する
+        <div className="text-gray-500 pb-3 pt-3 cursor-pointer">
+          <Link
+            to={[
+              routes.base.build({ tabId: String(tabId) }),
+              routes.publ.build(dp),
+              "?unsafe",
+            ].join("/")}
+            onClick={navigateToOrg}
+            className="text-gray-500"
+          >
+            上記を理解して組織情報や出版物の内容を閲覧する
+          </Link>
         </div>
       </div>
     );
