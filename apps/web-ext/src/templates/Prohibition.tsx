@@ -1,7 +1,7 @@
 import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
 import { Icon } from "@iconify/react";
 import { Dp } from "@originator-profile/ui/src/types";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { routes } from "../utils/routes";
 
 type ProhibitionProps = {
@@ -35,21 +35,21 @@ function WarningDetails({ dp, tabId }: ProhibitionProps) {
         <br />
       </p>
       <Link
-          className="block text-gray-500 pb-3 pt-3"
-          to={[
-            routes.base.build({ tabId: String(tabId) }),
-            routes.publ.build(dp),
-            "?unsafe",
-          ].join("/")}
-        >
-          上記を理解して組織情報や出版物の内容を閲覧する
+        className="block text-gray-500 pb-3 pt-3"
+        to={[
+          routes.base.build({ tabId: String(tabId) }),
+          routes.publ.build(dp),
+          "?unsafe",
+        ].join("/")}
+      >
+        上記を理解して組織情報や出版物の内容を閲覧する
       </Link>
     </div>
   );
 }
 
 function Prohibition({ dp, tabId }: ProhibitionProps) {
-    return (
+  return (
     <main className="fixed top-0 left-0 z-10 bg-white w-screen h-screen overflow-y-auto px-4 py-12">
       <ProjectTitle className="mb-12" as="header" />
       <h1 className="flex items-center flex-col gap-4 mb-12">
@@ -78,7 +78,7 @@ function Prohibition({ dp, tabId }: ProhibitionProps) {
           <summary>
             このメッセージが表示される理由についてもっと詳しく...
           </summary>
-          <WarningDetails dp={dp} tabId={tabId}/>
+          <WarningDetails dp={dp} tabId={tabId} />
         </details>
         <div className="pt-3">
           <ProjectSummary as="footer" />
