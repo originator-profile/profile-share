@@ -34,19 +34,16 @@ function WarningDetails({ dp, tabId }: ProhibitionProps) {
         証明書は改ざん・偽装されている可能性があるのでご注意ください。
         <br />
       </p>
-
-      <div className="text-gray-500 pb-3 pt-3 cursor-pointer">
-        <Link
+      <Link
+          className="block text-gray-500 pb-3 pt-3"
           to={[
             routes.base.build({ tabId: String(tabId) }),
             routes.publ.build(dp),
             "?unsafe",
           ].join("/")}
-          className="text-gray-500"
         >
           上記を理解して組織情報や出版物の内容を閲覧する
-        </Link>
-      </div>
+      </Link>
     </div>
   );
 }
