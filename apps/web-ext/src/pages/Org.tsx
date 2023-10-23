@@ -6,7 +6,7 @@ import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
 import Template from "../templates/Org";
-import usecheckErrorsAndNavigate from "../utils/usecheck-errors-and-navigate";
+import usecheckErrorsAndNavigate from "../utils/use-check-errors-and-navigate";
 
 type Props = { back: string };
 
