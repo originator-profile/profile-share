@@ -1,7 +1,7 @@
 import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
 import { Icon } from "@iconify/react";
 import { Dp } from "@originator-profile/ui/src/types";
-import { Link, Navigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { routes } from "../utils/routes";
 
 type ProhibitionProps = {
