@@ -134,10 +134,6 @@ FLAG DESCRIPTIONS
 
     拡張機能Webページへの埋め込みが可能な(CORSが許可されている)画像URL
 
-  --url=<value>  説明情報のURL
-
-    資格情報についての説明情報の(CORSが許可されている)URL
-
   --verifier=<value>  検証機関の ID またはドメイン名
 
     UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
