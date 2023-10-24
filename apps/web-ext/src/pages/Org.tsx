@@ -6,7 +6,7 @@ import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
 import Template from "../templates/Org";
-import usecheckErrorsAndNavigate from "../utils/use-check-errors-and-navigate";
+import useCheckErrorsAndNavigate from "../utils/use-check-errors-and-navigate";
 
 type Props = { back: string };
 
@@ -23,6 +23,9 @@ function Org(props: Props) {
     profiles,
     error,
   } = useProfileSet();
+
+  const result = useCheckErrorsAndNavigate({ profiles, tabId, queryParams });
+
   if (error) {
     return <Unsupported error={error} />;
   }
@@ -30,7 +33,6 @@ function Org(props: Props) {
     return <Loading />;
   }
 
-  const result = usecheckErrorsAndNavigate({ profiles, tabId, queryParams });
   if (result) {
     if (result.type === "navigate") {
       return <Navigate to={result.path} />;

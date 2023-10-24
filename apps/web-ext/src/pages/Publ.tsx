@@ -6,12 +6,15 @@ import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Template from "../templates/Publ";
 import Unsupported from "../components/Unsupported";
-import usecheckErrorsAndNavigate from "../utils/use-check-errors-and-navigate";
+import useCheckErrorsAndNavigate from "../utils/use-check-errors-and-navigate";
 
 function Publ() {
   const [queryParams] = useSearchParams();
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
   const { tabId, profiles, error } = useProfileSet();
+
+  const result = useCheckErrorsAndNavigate({ profiles, tabId, queryParams });
+
   if (error) {
     return <Unsupported error={error} />;
   }
@@ -19,7 +22,6 @@ function Publ() {
     return <Loading />;
   }
 
-  const result = usecheckErrorsAndNavigate({ profiles, tabId, queryParams });
   if (result) {
     if (result.type === "navigate") {
       return <Navigate to={result.path} />;

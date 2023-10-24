@@ -6,15 +6,16 @@ type CheckResult =
   | { type: "navigate"; path: string }
   | { type: "error"; error: ProfileError };
 
-function usecheckErrorsAndNavigate({
+function useCheckErrorsAndNavigate({
   profiles,
   tabId,
   queryParams,
 }: {
-  profiles: Profile[];
+  profiles?: Profile[];
   tabId: number;
   queryParams: URLSearchParams;
 }): CheckResult | undefined {
+  if (!profiles) return;
   const hasUnsafeParam = queryParams.has("unsafe");
   const errors = findProfileErrors(profiles);
   const hasProfileTokenVerifyFailed = errors.some(
@@ -36,4 +37,4 @@ function usecheckErrorsAndNavigate({
   return;
 }
 
-export default usecheckErrorsAndNavigate;
+export default useCheckErrorsAndNavigate;
