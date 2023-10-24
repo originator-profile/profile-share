@@ -32,11 +32,26 @@ export const AccountService = ({ validator }: Options) => ({
    * @param input.id 会員 ID
    * @return 会員
    */
-  async read({ id }: { id: AccountId }): Promise<accounts | Error> {
+  async read({
+    id,
+  }: {
+    id: AccountId;
+  }): Promise<(accounts & { businessCategory?: string[] }) | Error> {
     const prisma = getClient();
     const data = await prisma.accounts
-      .findUnique({ where: { id } })
+      .findUnique({ where: { id }, include: { businessCategories: true } })
       .catch((e: Error) => e);
+    if (data && "businessCategories" in data) {
+      const businessCategories = data.businessCategories.map(
+        (cat) => cat.businessCategoryValue,
+      );
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { businessCategories: _, ...omitBusinessCategories } = data;
+      return {
+        ...omitBusinessCategories,
+        businessCategory: businessCategories,
+      };
+    }
     return data ?? new NotFoundError();
   },
   /**
@@ -48,20 +63,30 @@ export const AccountService = ({ validator }: Options) => ({
     id,
     businessCategory,
     ...input
-  }: Omit<Partial<OpHolder>, "logos" | "type"> & { id: string }): Promise<
-    accounts | Error
-  > {
+  }: Omit<Partial<OpHolder>, "logos" | "type"> & {
+    id: string;
+  }): Promise<accounts | Error> {
     const prisma = getClient();
     await this.raiseIfDomainNameCannotChange(id, input.domainName);
     if (businessCategory) {
-      const createManyInput = businessCategory.map((cat) => {
-        return { accountId: id, businessCategoryValue: cat };
+      // businessCategory は、複数値としてモデルで定義されているが、
+      // 単一値しか取らないと思われるので、配列の最初の要素だけを取り出す。
+      const businessCategoryValue = businessCategory[0];
+      await prisma.businessCategories.upsert({
+        where: { value: businessCategoryValue },
+        update: { value: businessCategoryValue },
+        create: { value: businessCategoryValue },
       });
+
       await prisma.accountBusinessCategories.deleteMany({
         where: { accountId: id },
       });
-      await prisma.accountBusinessCategories.createMany({
-        data: createManyInput,
+
+      await prisma.accountBusinessCategories.create({
+        data: {
+          accountId: id,
+          businessCategoryValue: businessCategoryValue,
+        },
       });
     }
 

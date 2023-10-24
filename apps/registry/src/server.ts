@@ -98,7 +98,7 @@ export async function create(options: Options): Promise<Server> {
     contentSecurityPolicy: {
       directives: {
         "script-src": ["'self'", "'unsafe-inline'"],
-        "img-src": ["'self'", "http:", "https:"],
+        "img-src": ["'self'", "http:", "https:", "data:"],
         "connect-src": ["'self'", "https:", ...viteHmr],
         "frame-ancestors": "'self'",
         "trusted-types": "*",
