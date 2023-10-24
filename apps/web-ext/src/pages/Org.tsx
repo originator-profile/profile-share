@@ -24,7 +24,11 @@ function Org(props: Props) {
     error,
   } = useProfileSet();
 
-  const renderedElement = useCheckErrorsAndNavigate({ profiles, tabId, queryParams });
+  const renderedElement = useCheckErrorsAndNavigate({
+    profiles,
+    tabId,
+    queryParams,
+  });
 
   if (renderedElement) {
     return renderedElement;

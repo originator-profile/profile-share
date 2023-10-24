@@ -7,9 +7,9 @@ import Loading from "../components/Loading";
 import Unsupported from "../components/Unsupported";
 
 interface UseCheckErrorsAndNavigateProps {
-  profiles?: Profile[]; 
+  profiles?: Profile[];
   tabId: number;
-  queryParams: URLSearchParams; 
+  queryParams: URLSearchParams;
 }
 
 function useCheckErrorsAndNavigate({
@@ -17,8 +17,7 @@ function useCheckErrorsAndNavigate({
   tabId,
   queryParams,
 }: UseCheckErrorsAndNavigateProps): React.ReactNode {
-
-  if (!profiles) return React.createElement(Loading); 
+  if (!profiles) return React.createElement(Loading);
 
   const hasUnsafeParam = queryParams.has("unsafe");
   const errors = findProfileErrors(profiles);
