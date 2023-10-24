@@ -1,21 +1,25 @@
+import React from "react";
 import { findProfileErrors } from "@originator-profile/ui/src/utils";
 import { routes } from "./routes";
-import { Profile, ProfileError } from "@originator-profile/ui/src/types";
+import { Profile } from "@originator-profile/ui/src/types";
+import { Navigate } from "react-router-dom";
+import Loading from "../components/Loading";
+import Unsupported from "../components/Unsupported";
 
-type CheckResult =
-  | { type: "navigate"; path: string }
-  | { type: "error"; error: ProfileError };
+interface UseCheckErrorsAndNavigateProps {
+  profiles?: Profile[]; 
+  tabId: number;
+  queryParams: URLSearchParams; 
+}
 
 function useCheckErrorsAndNavigate({
   profiles,
   tabId,
   queryParams,
-}: {
-  profiles?: Profile[];
-  tabId: number;
-  queryParams: URLSearchParams;
-}): CheckResult | undefined {
-  if (!profiles) return;
+}: UseCheckErrorsAndNavigateProps): React.ReactNode {
+
+  if (!profiles) return React.createElement(Loading); 
+
   const hasUnsafeParam = queryParams.has("unsafe");
   const errors = findProfileErrors(profiles);
   const hasProfileTokenVerifyFailed = errors.some(
@@ -27,14 +31,14 @@ function useCheckErrorsAndNavigate({
       routes.base.build({ tabId: String(tabId) }),
       routes.prohibition.build({}),
     ].join("/");
-    return { type: "navigate", path };
+    return React.createElement(Navigate, { to: path });
   }
 
   if (!hasProfileTokenVerifyFailed && errors[0]) {
-    return { type: "error", error: errors[0] };
+    return React.createElement(Unsupported, { error: errors[0] });
   }
 
-  return;
+  return null;
 }
 
 export default useCheckErrorsAndNavigate;

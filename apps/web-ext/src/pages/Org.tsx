@@ -24,22 +24,17 @@ function Org(props: Props) {
     error,
   } = useProfileSet();
 
-  const result = useCheckErrorsAndNavigate({ profiles, tabId, queryParams });
+  const renderedElement = useCheckErrorsAndNavigate({ profiles, tabId, queryParams });
+
+  if (renderedElement) {
+    return renderedElement;
+  }
 
   if (error) {
     return <Unsupported error={error} />;
   }
   if (!profiles) {
     return <Loading />;
-  }
-
-  if (result) {
-    if (result.type === "navigate") {
-      return <Navigate to={result.path} />;
-    }
-    if (result.type === "error") {
-      return <Unsupported error={result.error} />;
-    }
   }
 
   const op = profiles
