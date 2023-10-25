@@ -1,4 +1,4 @@
-import { useParams, useSearchParams, Navigate } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { isOp, isOpHolder, isDp, isOgWebsite } from "@originator-profile/core";
 import useProfileSet from "../utils/use-profile-set";
 import { routes } from "../utils/routes";
