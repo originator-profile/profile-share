@@ -13,16 +13,16 @@
     "@originator-profile/model": "*",
     "@originator-profile/sign": "*",
     "@originator-profile/tsconfig": "*",
-    "@playwright/test": "^1.38.1",
+    "@playwright/test": "^1.39.0",
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
     "date-fns": "^2.30.0",
-    "eslint": "^8.50.0",
+    "eslint": "^8.52.0",
     "eslint-config-originator-profile": "*",
-    "happy-dom": "^12.2.0",
-    "jose": "^4.14.6",
+    "happy-dom": "^12.9.1",
+    "jose": "^4.15.4",
     "jsonld": "^8.3.1",
     "vi-fetch": "^0.8.0",
-    "vitest": "^0.34.5"
+    "vitest": "^0.34.6"
   }
 }

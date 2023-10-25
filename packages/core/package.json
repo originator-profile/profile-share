@@ -11,10 +11,10 @@
     "@js-temporal/polyfill": "^0.4.4",
     "@originator-profile/model": "*",
     "@originator-profile/tsconfig": "*",
-    "@types/uuid": "^9.0.4",
-    "eslint": "^8.50.0",
+    "@types/uuid": "^9.0.6",
+    "eslint": "^8.52.0",
     "eslint-config-originator-profile": "*",
     "uuid": "^9.0.1",
-    "vitest": "^0.34.5"
+    "vitest": "^0.34.6"
   }
 }
