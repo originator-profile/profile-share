@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <ruleset name="Profile">
-  <config name="installed_paths" value="vendor/wp-coding-standards/wpcs" />
   <rule ref="WordPress" />
   <exclude-pattern>vendor</exclude-pattern>
   <exclude-pattern>node_modules</exclude-pattern>
