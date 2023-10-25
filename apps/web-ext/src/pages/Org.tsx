@@ -1,4 +1,4 @@
-import { Navigate, useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { isOp, isOpHolder } from "@originator-profile/core";
 import { toRoles } from "@originator-profile/ui/src/utils";
 import useProfileSet from "../utils/use-profile-set";
