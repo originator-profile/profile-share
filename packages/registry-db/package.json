@@ -9,15 +9,15 @@
   },
   "devDependencies": {
     "@originator-profile/tsconfig": "*",
-    "@prisma/client": "^5.3.1",
-    "@prisma/generator-helper": "^5.3.1",
-    "@types/jsonld": "^1.5.10",
+    "@prisma/client": "^5.5.0",
+    "@prisma/generator-helper": "^5.5.0",
+    "@types/jsonld": "^1.5.11",
     "date-fns": "^2.30.0",
-    "eslint": "^8.50.0",
+    "eslint": "^8.52.0",
     "eslint-config-originator-profile": "*",
-    "http-errors-enhanced": "^1.0.13",
+    "http-errors-enhanced": "^1.1.2",
     "jsonld": "^8.3.1",
-    "prisma": "^5.3.1",
+    "prisma": "^5.5.0",
     "prisma-erd-generator": "^1.11.1",
     "uuid": "^9.0.1"
   }
