@@ -6,7 +6,7 @@ import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
 import Template from "../templates/Org";
-import useCheckErrorsAndNavigate from "../utils/use-check-errors-and-navigate";
+import useVerifyFailureFeedback from "../utils/use-verify-failure-feedback";
 
 type Props = { back: string };
 
@@ -24,7 +24,7 @@ function Org(props: Props) {
     error,
   } = useProfileSet();
 
-  const element = useCheckErrorsAndNavigate({
+  const element = useVerifyFailureFeedback({
     profiles,
     tabId,
     queryParams,

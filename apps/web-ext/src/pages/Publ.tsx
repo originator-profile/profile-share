@@ -6,14 +6,14 @@ import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Template from "../templates/Publ";
 import Unsupported from "../components/Unsupported";
-import useCheckErrorsAndNavigate from "../utils/use-check-errors-and-navigate";
+import useVerifyFailureFeedback from "../utils/use-verify-failure-feedback";
 
 function Publ() {
   const [queryParams] = useSearchParams();
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
   const { tabId, profiles, error } = useProfileSet();
 
-  const element = useCheckErrorsAndNavigate({
+  const element = useVerifyFailureFeedback({
     profiles,
     tabId,
     queryParams,
