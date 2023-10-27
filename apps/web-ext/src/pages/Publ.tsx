@@ -13,14 +13,14 @@ function Publ() {
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
   const { tabId, profiles, error } = useProfileSet();
 
-  const renderedElement = useCheckErrorsAndNavigate({
+  const element = useCheckErrorsAndNavigate({
     profiles,
     tabId,
     queryParams,
   });
 
-  if (renderedElement) {
-    return renderedElement;
+  if (element) {
+    return element;
   }
 
   if (error) {
