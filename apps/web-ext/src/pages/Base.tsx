@@ -8,7 +8,6 @@ import useProfileSet from "../utils/use-profile-set";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
-import Prohibition from "../components/Prohibition";
 
 function Redirect({
   dp,
@@ -53,7 +52,14 @@ function Base() {
   if (
     results.some((result) => result.code === "ERR_PROFILE_TOKEN_VERIFY_FAILED")
   ) {
-    return <Prohibition />;
+    return (
+      <Navigate
+        to={[
+          routes.base.build({ tabId: String(tabId) }),
+          routes.prohibition.build({}),
+        ].join("/")}
+      />
+    );
   }
 
   if (results[0]) {

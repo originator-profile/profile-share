@@ -4,21 +4,17 @@ import Base from "./pages/Base";
 import Org from "./pages/Org";
 import Publ from "./pages/Publ";
 import Publs from "./pages/Publs";
+import Prohibition from "./pages/Prohibition";
 
 const org: RouteObject = {
   path: routes.org.path,
   element: <Outlet />,
-  children: [{ path: "", element: <Org back="../.." /> }],
+  children: [{ path: "", element: <Org back=".." /> }],
 };
 const publ: RouteObject = {
   path: routes.publ.path,
   element: <Outlet />,
   children: [{ path: "", element: <Publ /> }, org],
-};
-const base: RouteObject = {
-  path: routes.base.path,
-  element: <Outlet />,
-  children: [{ path: "", element: <Base /> }, publ],
 };
 const layout: RouteObject = {
   element: (
@@ -31,11 +27,20 @@ const layout: RouteObject = {
       </main>
     </div>
   ),
-  children: [base],
+  children: [publ],
+};
+const prohibition: RouteObject = {
+  path: routes.prohibition.path,
+  element: <Prohibition />,
+};
+const base: RouteObject = {
+  path: routes.base.path,
+  element: <Outlet />,
+  children: [{ path: "", element: <Base /> }, layout, prohibition],
 };
 
 function App() {
-  const element = useRoutes([layout]);
+  const element = useRoutes([base]);
   return element;
 }
 

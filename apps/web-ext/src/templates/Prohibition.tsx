@@ -1,7 +1,15 @@
 import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
 import { Icon } from "@iconify/react";
+import { Dp } from "@originator-profile/ui/src/types";
+import { Link } from "react-router-dom";
+import { routes } from "../utils/routes";
 
-function WarningDetails() {
+type ProhibitionProps = {
+  dp: Dp;
+  tabId: number;
+};
+
+function WarningDetails({ dp, tabId }: ProhibitionProps) {
   return (
     <div className="pt-3">
       <p>
@@ -25,15 +33,22 @@ function WarningDetails() {
         <br />
         証明書は改ざん・偽装されている可能性があるのでご注意ください。
         <br />
-        <div className="text-gray-500 pb-3 pt-3">
-          上記を理解して組織情報や出版物の内容を閲覧する
-        </div>
       </p>
+      <Link
+        className="block text-gray-500 pb-3 pt-3"
+        to={[
+          routes.base.build({ tabId: String(tabId) }),
+          routes.publ.build(dp),
+          "?unsafe",
+        ].join("/")}
+      >
+        上記を理解して組織情報や出版物の内容を閲覧する
+      </Link>
     </div>
   );
 }
 
-function Prohibition() {
+function Prohibition({ dp, tabId }: ProhibitionProps) {
   return (
     <main className="fixed top-0 left-0 z-10 bg-white w-screen h-screen overflow-y-auto px-4 py-12">
       <ProjectTitle className="mb-12" as="header" />
@@ -63,7 +78,7 @@ function Prohibition() {
           <summary>
             このメッセージが表示される理由についてもっと詳しく...
           </summary>
-          <WarningDetails />
+          <WarningDetails dp={dp} tabId={tabId} />
         </details>
         <div className="pt-3">
           <ProjectSummary as="footer" />
