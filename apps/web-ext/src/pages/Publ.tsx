@@ -1,27 +1,35 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { isOp, isOpHolder, isDp, isOgWebsite } from "@originator-profile/core";
-import { findProfileErrors } from "@originator-profile/ui/src/utils";
 import useProfileSet from "../utils/use-profile-set";
 import { routes } from "../utils/routes";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Template from "../templates/Publ";
 import Unsupported from "../components/Unsupported";
+import useVerifyFailureFeedback from "../utils/use-verify-failure-feedback";
 
 function Publ() {
+  const [queryParams] = useSearchParams();
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
-  const { profiles, error } = useProfileSet();
+  const { tabId, profiles, error } = useProfileSet();
+
+  const element = useVerifyFailureFeedback({
+    profiles,
+    tabId,
+    queryParams,
+  });
+
+  if (element) {
+    return element;
+  }
+
   if (error) {
     return <Unsupported error={error} />;
   }
   if (!profiles) {
     return <Loading />;
   }
-  const results = findProfileErrors(profiles);
-  // TODO: 禁止のケースの見た目を実装して
-  if (results[0]) {
-    return <Unsupported error={results[0]} />;
-  }
+
   const dp = profiles
     .filter(isDp)
     .find((dp) => dp.issuer === issuer && dp.subject === subject);
@@ -39,8 +47,15 @@ function Publ() {
   }
 
   const paths = {
-    org: routes.org.build({ orgIssuer: op.issuer, orgSubject: op.subject }),
+    org: {
+      pathname: routes.org.build({
+        orgIssuer: op.issuer,
+        orgSubject: op.subject,
+      }),
+      search: queryParams.toString(),
+    },
   } as const;
+
   return (
     <Template op={op} dp={dp} website={website} holder={holder} paths={paths} />
   );

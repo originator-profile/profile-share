@@ -1,36 +1,46 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { isOp, isOpHolder } from "@originator-profile/core";
-import { toRoles, findProfileErrors } from "@originator-profile/ui/src/utils";
+import { toRoles } from "@originator-profile/ui/src/utils";
 import useProfileSet from "../utils/use-profile-set";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
 import Template from "../templates/Org";
+import useVerifyFailureFeedback from "../utils/use-verify-failure-feedback";
 
 type Props = { back: string };
 
 function Org(props: Props) {
+  const [queryParams] = useSearchParams();
   const { orgIssuer, orgSubject } = useParams<{
     orgIssuer: string;
     orgSubject: string;
   }>();
   const {
+    tabId,
     advertisers = [],
     publishers = [],
     profiles,
     error,
   } = useProfileSet();
+
+  const element = useVerifyFailureFeedback({
+    profiles,
+    tabId,
+    queryParams,
+  });
+
+  if (element) {
+    return element;
+  }
+
   if (error) {
     return <Unsupported error={error} />;
   }
   if (!profiles) {
     return <Loading />;
   }
-  const results = findProfileErrors(profiles);
-  // TODO: 禁止のケースの見た目を実装して
-  if (results[0]) {
-    return <Unsupported error={results[0]} />;
-  }
+
   const op = profiles
     .filter(isOp)
     .find(
@@ -46,8 +56,11 @@ function Org(props: Props) {
   }
   const roles = toRoles(op.subject, advertisers, publishers);
   const paths = {
-    back: props.back,
-  } as const;
+    back: {
+      pathname: props.back,
+      search: queryParams.toString(),
+    },
+  };
   return <Template paths={paths} op={op} holder={holder} roles={roles} />;
 }
 
