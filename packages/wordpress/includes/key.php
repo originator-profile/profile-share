@@ -29,7 +29,7 @@ function activate_key() {
  */
 function key_exists() {
 	return \file_exists( PROFILE_PRIVATE_KEY_FILENAME );
-};
+}
 
 /**
  * PEM形式のECDSAP256SHA256プライベート鍵の生成
