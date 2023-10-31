@@ -26,7 +26,7 @@ services:
       - "8025:8025"
       - "${SMTP_PORT:-1025}:1025"
   minio:
-    image: quay.io/minio/minio:RELEASE.2023-09-23T03-47-50Z
+    image: quay.io/minio/minio:RELEASE.2023-10-24T04-42-36Z
     ports:
       - "${MINIO_PORT:-19000}:9000"
       - "${MINIO_CONSOLE_PORT:-19001}:9001"

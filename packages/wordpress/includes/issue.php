@@ -67,7 +67,7 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 	}
 
 	foreach ( $dp_list as $page => $dp ) {
-		$page++;
+		++$page;
 		$jwt = issue_dp( $dp, $endpoint, $admin_secret, $privatekey );
 
 		if ( ! $jwt ) {
@@ -112,7 +112,7 @@ function create_dp_list( \WP_Post $post, string $domain_name, string $privatekey
 	$pages = $postdata['pages'];
 
 	foreach ( $pages as $page => $content ) {
-		$page++;
+		++$page;
 		$content = \apply_filters( 'the_content', $content );
 		$text    = content_to_text( $content );
 

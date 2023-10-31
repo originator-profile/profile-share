@@ -77,9 +77,6 @@ export async function create(options: Options): Promise<Server> {
             (dir) => (/^img-src /.test(dir) ? `${dir} data:` : dir),
           )
           .join(";"),
-      // NOTE: esbuild でのバンドルに失敗する問題の回避策
-      //       ロゴが失われる代わりに require.resolve() を呼び出さないようにする
-      logo: { type: "text/plain", content: "" },
     });
   }
   app.register(autoload, {
