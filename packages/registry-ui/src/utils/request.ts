@@ -19,6 +19,6 @@ export function useLatestRequest(accountId: string | null) {
         url: `/internal/accounts/${accountId}/requests/latest/`,
         token,
       },
-    fetcher<Request>
+    fetcher<Request>,
   );
 }
