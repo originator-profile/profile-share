@@ -1,5 +1,9 @@
 import clsx from "clsx";
 import { Request } from "@originator-profile/model";
+import {
+  useCreateRequestHandler,
+  useDeleteRequestHandler,
+} from "../utils/request";
 
 type Props = {
   className?: string;
@@ -23,10 +27,7 @@ function Heading(props: { className?: string; children: React.ReactNode }) {
 }
 
 function Pending(props: Props) {
-  const handleClick = () => {
-    // TODO: 申請を取り下げて
-    // see https://docs.originator-profile.org/registry/assets/api/#delete_internal_accountsidrequests_latest
-  };
+  const handleClick = useDeleteRequestHandler();
   return (
     <Card className={clsx("bg-yellow-50", props.className)}>
       <Heading className="text-yellow-700 mb-2">
@@ -80,10 +81,7 @@ function Rejected(props: Props) {
 }
 
 function RequestReady(props: Props) {
-  const handleClick = () => {
-    // TODO: 申請を開始して
-    // see https://docs.originator-profile.org/registry/assets/api/#post_internal_accountsidrequests
-  };
+  const handleClick = useCreateRequestHandler();
   return (
     <Card className={clsx("bg-yellow-50", props.className)}>
       <Heading className="text-yellow-700 mb-2">
