@@ -86,6 +86,7 @@ export function useCreateRequestHandler() {
   const handler = async () => {
     const token = await getAccessTokenSilently();
     // TODO: 失敗時の通知を実装して
+    // TODO: 申請概要を入力するダイアログを実装して
     return createRequest({ token, accountId, requestSummary: "test" }).finally(
       () => mutate(),
     );
