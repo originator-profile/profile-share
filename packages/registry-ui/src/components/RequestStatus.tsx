@@ -104,13 +104,11 @@ function RequestReady(props: Props) {
 }
 
 function RequestStatus(props: Props) {
-  const content: { [key in Request["status"]]: React.ReactNode } = {
-    pending: <Pending {...props} />,
-    approved: <Approved {...props} />,
-    rejected: <Rejected {...props} />,
-    cancelled: <RequestReady {...props} />,
-  };
-  return content[props.request.status];
+  if (props.request.status === "pending") return <Pending {...props} />;
+  if (props.request.status === "rejected") return <Rejected {...props} />;
+  if (props.request.status === "cancelled") return <RequestReady {...props} />;
+  // TODO: OPの発行日時より後に登録内容を更新したらRequestReadyを表示して
+  return <Approved {...props} />;
 }
 
 export default RequestStatus;
