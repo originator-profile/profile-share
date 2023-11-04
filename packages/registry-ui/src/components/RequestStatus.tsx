@@ -39,9 +39,9 @@ function Pending(props: Props) {
         ご登録いただいた内容で審査を行っています。メールにてご連絡を行いますので今しばらくお待ちください。
         <time
           className="block mt-1 text-xs text-gray-500"
-          dateTime={props.request.updatedAt}
+          dateTime={props.request.createdAt}
         >
-          最終申請日 {new Date(props.request.updatedAt).toLocaleDateString()}
+          最終申請日 {new Date(props.request.createdAt).toLocaleDateString()}
         </time>
       </p>
       <button
@@ -91,9 +91,9 @@ function RequestReady(props: Props) {
         OPに含まれていない内容があります。OPに含めるにはOP発行申請が必要です。
         <time
           className="block mt-1 text-xs text-gray-500"
-          dateTime={props.request.updatedAt}
+          dateTime={props.request.createdAt}
         >
-          最終申請日 {new Date(props.request.updatedAt).toLocaleDateString()}
+          最終申請日 {new Date(props.request.createdAt).toLocaleDateString()}
         </time>
       </p>
       <button className="jumpu-button font-bold" onClick={handleClick}>
