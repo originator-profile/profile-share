@@ -8,3 +8,4 @@ sidebar_position: 0
 - [開発ガイド](development.md)
 - [Profile Registry](registry/README.md)
 - [Profile Web Extension](web-ext/README.md)
+- [リリース方法](release.md)

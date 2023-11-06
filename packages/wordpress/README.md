@@ -124,3 +124,13 @@ WORDPRESS_DB_PASSWORD
 
 WORDPRESS_DB_ROOT_PASSWORD
 : データベースの root ユーザーの初期パスワード
+
+## パッケージング
+
+プラグインをパッケージングします:
+
+```
+$ docker build --output=dist .
+```
+
+デプロイするには「[リリース方法](https://docs.originator-profile.org/release/)」を参照してください。
