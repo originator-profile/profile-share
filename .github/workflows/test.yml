@@ -3,6 +3,7 @@ on: push
 jobs:
   main:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     # format ステップで新しいコミットを push するために write 権限を与える
     permissions:
       contents: write
