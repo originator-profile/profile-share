@@ -23,14 +23,14 @@ module.exports = {
           DEFAULT: "#65a30d",
         },
         caution: {
-          extralight: "#f9fafb",
-          light: "#f9fafb",
-          DEFAULT: "#f3f4f6",
+          extralight: "#fefce8",
+          light: "#fde047",
+          DEFAULT: "#facc15",
         },
         danger: {
           extralight: "#fef2f2",
           light: "#f87171",
-          DEFAULT: "#dc2626",
+          DEFAULT: "#b80000",
         },
       },
     },
