@@ -8,7 +8,7 @@ const Request = {
   properties: {
     status: {
       title: "承認フローステータス",
-      const: ["pending", "approved", "rejected", "cancelled"],
+      enum: ["pending", "approved", "rejected", "cancelled"],
     },
     requestSummary: {
       title: "申請概要",

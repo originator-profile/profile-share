@@ -13,6 +13,7 @@
     "@originator-profile/tsconfig": "*",
     "@originator-profile/ui": "*",
     "@originator-profile/verify": "*",
+    "@prisma/client": "^5.5.0",
     "@types/react": "^18.2.31",
     "@types/react-dom": "^18.2.14",
     "clsx": "^2.0.0",
