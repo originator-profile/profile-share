@@ -1,120 +1,142 @@
-import { type FormEvent } from "react";
+import { SyntheticEvent, useCallback, useEffect } from "react";
+import clsx from "clsx";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { ErrorMessage } from "@hookform/error-message";
 import FormRow from "../../../components/FormRow";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useUser } from "../../../utils/user";
-import { useAccount } from "../../../utils/account";
+import { updateAccount, useAccount } from "../../../utils/account";
 import UrlAndTitleInput from "../../../components/UrlAndTitleInput";
+import { useAccountDraft } from "../../../utils/draft";
+import {
+  prefectures,
+  normalizePhoneNumber,
+  normalizeJapanPostalCode,
+  validateUrlString,
+} from "../../../utils/account-form";
+
+interface IFormInput {
+  domainName: string;
+  name: string;
+  postalCode: string;
+  addressRegion: string;
+  addressLocality: string;
+  streetAddress: string;
+  phoneNumber: string;
+  email: string;
+  corporateNumber: string;
+  businessCategory: string;
+  url: string;
+  contactTitle: string;
+  contactUrl: string;
+  publishingPrincipleTitle: string;
+  publishingPrincipleUrl: string;
+  privacyPolicyTitle: string;
+  privacyPolicyUrl: string;
+  description: string;
+}
 
 export default function Holder() {
   const { user: token, getAccessTokenSilently } = useAuth0();
-  const { data: user } = useUser(token?.sub ?? null);
-  const { data: account } = useAccount(user?.accountId ?? null);
-  const prefectures = [
-    "北海道",
-    "青森県",
-    "岩手県",
-    "宮城県",
-    "秋田県",
-    "山形県",
-    "福島県",
-    "茨城県",
-    "栃木県",
-    "群馬県",
-    "埼玉県",
-    "千葉県",
-    "東京都",
-    "神奈川県",
-    "新潟県",
-    "富山県",
-    "石川県",
-    "福井県",
-    "山梨県",
-    "長野県",
-    "岐阜県",
-    "静岡県",
-    "愛知県",
-    "三重県",
-    "滋賀県",
-    "京都府",
-    "大阪府",
-    "兵庫県",
-    "奈良県",
-    "和歌山県",
-    "鳥取県",
-    "島根県",
-    "岡山県",
-    "広島県",
-    "山口県",
-    "徳島県",
-    "香川県",
-    "愛媛県",
-    "高知県",
-    "福岡県",
-    "佐賀県",
-    "長崎県",
-    "熊本県",
-    "大分県",
-    "宮崎県",
-    "鹿児島県",
-    "沖縄県",
-  ];
+  const { data: user, mutate: mutateUser } = useUser(token?.sub ?? null);
+  const { data: account, mutate: mutateAccount } = useAccount(
+    user?.accountId ?? null,
+  );
+  const [hasDraft, getDraft, clearDraft, saveDraftToStorage] = useAccountDraft<
+    Partial<IFormInput>
+  >(user?.id);
 
-  // TODO: フォームをちゃんと実装して
-  async function onSubmit(e: FormEvent<HTMLFormElement>) {
-    // TODO: 必須項目が入力されていない場合、「保存」はできるが「申請開始」はできないようにして
-    // TODO: 審査コメントを各入力欄の下に表示して
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    setValue,
+    getValues,
+    reset,
+  } = useForm<Partial<IFormInput>>({
+    mode: "onBlur",
+    // フォームのデータは useEffect() 内で初期化するので最初は undefined にしておく。
+    defaultValues: undefined,
+  });
 
+  /*
+   * フォームの入力項目の値をリセットする。
+   * この関数が呼ばれたタイミングで下書きがあれば下書きの値に、なければ account の値に戻す。
+   */
+  const resetFormState = useCallback(() => {
+    reset(
+      getDraft() || {
+        ...account,
+        businessCategory:
+          account?.businessCategory && account.businessCategory[0],
+      },
+    );
+  }, [getDraft, account, reset]);
+
+  useEffect(() => {
+    // account に新しいデータが入ったときにフォームを（再）初期化する。
+    resetFormState();
+  }, [resetFormState]);
+
+  const onSubmit: SubmitHandler<Partial<IFormInput>> = async (
+    data: Partial<IFormInput>,
+  ) => {
     if (!account) {
       return;
     }
-
-    const formData = new FormData(e.currentTarget);
-    const newAccountData: Record<string, unknown> = {};
-    for (const [key, value] of formData.entries()) {
-      newAccountData[key] = value;
-    }
-
     const token = await getAccessTokenSilently();
-
-    const endpoint = `http://localhost:8080/internal/accounts/${account.id}/`;
-    const response = await fetch(endpoint, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newAccountData),
-    });
+    const response = await updateAccount(data, account.id, token);
     if (!response.ok) {
-      // TODO: 失敗したことをユーザーに知らせて
-      // なぜ失敗したのかを知らせる必要がある
-      // internal error の場合はよい
-      // ユーザーの入力が不正だったときにちゃんと知らせたほうがよい
-      // フォームの validation を実装したほうがいいのか
-      // 変換 - 全角・半角、ハイフンの有無、国際電話番号許可
-      // 説明は html を受け付けるのか？
+      // TODO: エラーを表示して
       throw new Error();
+    } else {
+      // 成功の場合、SWR のキャッシュの revalidate を行う。
+      mutateUser();
+      mutateAccount();
+      clearDraft();
     }
+  };
 
-    // TODO: 成功レスポンスの場合、結果をフォームに反映して
-    // const result = await response.json();
-  }
+  const saveDraft = () => {
+    saveDraftToStorage(getValues());
+  };
 
-  // TODO: 見た目をデザイン通りに実装して
-  // タブのデザインを修正（選択されていないタブにも枠を表示する。下線の長さを横いっぱいに伸ばす）
-  // 修正が必要なタブには「要修正」と表示する
-  // 「保存する」ボタンのデザインを修正（色、他あれば）
-  // 「郵便番号」、「電話番号」、「都道府県」の <input> の幅を縮める
+  // TODO: タブのデザインを修正して（選択されていないタブにも枠を表示する。下線の長さを横いっぱいに伸ばす）
+  // TODO: タブに「要修正」や「下書きあり」を表示して
+  // TODO: 審査コメントを各入力欄の下に表示して
   return (
     account && (
-      <form className="max-w-2xl mb-8" onSubmit={onSubmit}>
+      <form
+        className="max-w-2xl mb-8"
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        {/* Enter キーで下書き保存する。*/}
+        <button
+          className="hidden"
+          onClick={(e) => {
+            e.preventDefault();
+            saveDraft();
+          }}
+        />
         <div className="flex mb-6 flex-row md:items-center">
           <h2 className="text-3xl font-bold">組織情報</h2>
+          <button
+            className="jumpu-text-button text-danger mr-1 ml-auto"
+            onClick={(e) => {
+              e.preventDefault();
+              clearDraft();
+              resetFormState();
+            }}
+            disabled={!hasDraft}
+          >
+            下書きをリセット
+          </button>
           <input
-            className="jumpu-outlined-button text-base text-[#00AFB4] font-bold border-[#00AFB4] ml-auto"
+            className="jumpu-outlined-button px-8 text-base text-[#00AFB4] font-bold border-[#00AFB4]"
             type="submit"
             value="保存する"
+            disabled={!hasDraft || !isValid}
           />
         </div>
         <p className="text-sm mb-6">
@@ -129,43 +151,106 @@ export default function Holder() {
           className="mb-7"
           label="組織代表ドメイン名"
           required
+          htmlFor="domainNameInput"
           // TODO helpText を本物に差し替えて
           // helpText="あいうえお"
         >
           <input
-            className="jumpu-input flex-1 h-12"
-            name="domainName"
-            required
-            defaultValue={account?.domainName}
+            id="domainNameInput"
+            className={clsx("jumpu-input h-12", {
+              "border-orange-700 !border-2 !text-orange-700": errors.domainName,
+            })}
             placeholder="media.example.com"
+            {...register("domainName", {
+              required: "このフィールドを入力してください。",
+              onBlur: saveDraft,
+            })}
+          />
+          <ErrorMessage
+            errors={errors}
+            name="domainName"
+            render={({ message }) => (
+              <p className="text-sm text-orange-700">{message}</p>
+            )}
           />
         </FormRow>
         <FormRow
           className="mb-7"
+          htmlFor="nameInput"
           label="所有者 / 法人・組織名"
           required
           helpText="法人・組織の正式名称(省略無し)を記載してください"
         >
           <input
-            className="jumpu-input flex-1 h-12"
+            id="nameInput"
+            className={clsx("jumpu-input h-12", {
+              "border-orange-700 !border-2 !text-orange-700": errors.name,
+            })}
+            placeholder="○△新聞社"
+            {...register("name", {
+              required: "このフィールドを入力してください。",
+              onBlur: saveDraft,
+            })}
+          />
+          <ErrorMessage
+            errors={errors}
             name="name"
-            defaultValue={account?.name}
-            placeholder="⚪○△新聞社"
+            render={({ message }) => (
+              <p className="text-sm text-orange-700">{message}</p>
+            )}
           />
         </FormRow>
-        <FormRow className="mb-7" label="郵便番号" required>
+        <FormRow
+          className="mb-7"
+          label="郵便番号"
+          required
+          htmlFor="postalCodeInput"
+        >
           <input
-            className="jumpu-input flex-1 h-12"
-            name="postalCode"
-            defaultValue={account?.postalCode}
+            id="postalCodeInput"
+            className={clsx("jumpu-input w-40 h-12", {
+              "border-orange-700 !border-2 !text-orange-700": errors.postalCode,
+            })}
+            {...register("postalCode", {
+              required: "このフィールドを入力してください。",
+              pattern: {
+                value: /^[ー\p{Dash}\p{Nl}\d]{7,8}$/u,
+                message: "不正な郵便番号です。",
+              },
+              onBlur: (e: SyntheticEvent) => {
+                const element = e.target as HTMLInputElement;
+                const value = normalizeJapanPostalCode(element.value);
+                setValue("postalCode", value);
+                saveDraft();
+              },
+            })}
             placeholder="100-0001"
           />
+          <ErrorMessage
+            errors={errors}
+            name="postalCode"
+            render={({ message }) => (
+              <p className="text-sm text-orange-700">{message}</p>
+            )}
+          />
         </FormRow>
-        <FormRow className="mb-7" label="都道府県" required>
+
+        <FormRow
+          className="mb-7"
+          label="都道府県"
+          required
+          htmlFor="addressRegionSelect"
+        >
           <select
-            className="jumpu-select flex-1 h-12"
-            name="addressRegion"
-            defaultValue={account?.addressRegion}
+            id="addressRegionSelect"
+            className={clsx("jumpu-select w-48 h-12", {
+              "border-orange-700 !border-2 !text-orange-700":
+                errors.addressRegion,
+            })}
+            {...register("addressRegion", {
+              required: "このフィールドを入力してください。",
+              onBlur: saveDraft,
+            })}
             placeholder="東京都"
           >
             {prefectures.map((prefecture) => (
@@ -174,34 +259,94 @@ export default function Holder() {
               </option>
             ))}
           </select>
+          <ErrorMessage
+            errors={errors}
+            name="addressRegion"
+            render={({ message }) => (
+              <p className="text-sm text-orange-700">{message}</p>
+            )}
+          />
         </FormRow>
-        <FormRow className="mb-7" label="市区町村" required>
+        <FormRow
+          className="mb-7"
+          label="市区町村"
+          required
+          htmlFor="addressLocalityInput"
+        >
           <input
-            className="jumpu-input flex-1 h-12"
-            name="addressLocality"
-            defaultValue={account?.addressLocality}
+            id="addressLocalityInput"
+            className={clsx("jumpu-input h-12", {
+              "border-orange-700 !border-2 !text-orange-700":
+                errors.addressLocality,
+            })}
+            {...register("addressLocality", {
+              required: "このフィールドを入力してください。",
+              onBlur: saveDraft,
+            })}
             placeholder="千代田区"
+          />
+          <ErrorMessage
+            errors={errors}
+            name="addressLocality"
+            render={({ message }) => (
+              <p className="text-sm text-orange-700">{message}</p>
+            )}
           />
         </FormRow>
         <FormRow
           className="mb-7"
           label="町名・番地・ビル名・部屋番号など"
           required
+          htmlFor="streetAddressInput"
         >
           <input
-            className="jumpu-input flex-1 h-12"
-            name="streetAddress"
-            defaultValue={account?.streetAddress}
+            id="streetAddressInput"
+            className={clsx("jumpu-input h-12", {
+              "border-orange-700 !border-2 !text-orange-700":
+                errors.streetAddress,
+            })}
+            // 算用数字の全角を半角に変換したほうがいいのだろうか
+            {...register("streetAddress", {
+              required: "このフィールドを入力してください。",
+              onBlur: saveDraft,
+            })}
             placeholder="大手町3丁目1-1 ○△ビル 1F"
           />
+          <ErrorMessage
+            errors={errors}
+            name="streetAddress"
+            render={({ message }) => (
+              <p className="text-sm text-orange-700">{message}</p>
+            )}
+          />
         </FormRow>
-        <FormRow className="mb-7" label="電話番号">
+        <FormRow className="mb-7" label="電話番号" htmlFor="phoneNumberInput">
           <input
-            className="jumpu-input flex-1 h-12"
-            name="phoneNumber"
+            id="phoneNumberInput"
+            className={clsx("jumpu-input w-48 h-12", {
+              "border-orange-700 !border-2 !text-orange-700":
+                errors.phoneNumber,
+            })}
+            {...register("phoneNumber", {
+              pattern: {
+                value: /^[ー\p{Dash}\p{Nl}\d]+$/u,
+                message: "電話番号を入力してください。",
+              },
+              onBlur: (e) => {
+                const value = normalizePhoneNumber(e.target.value);
+                setValue("phoneNumber", value);
+                saveDraft();
+              },
+            })}
             type="tel"
-            defaultValue={account?.phoneNumber}
             placeholder="03-1111-1111"
+          />
+          <ErrorMessage
+            errors={errors}
+            name="phoneNumber"
+            render={({ message }) => (
+              <p className="text-sm text-orange-700">{message}</p>
+            )}
           />
         </FormRow>
         <FormRow
@@ -209,13 +354,23 @@ export default function Holder() {
           label="メールアドレス"
           // TODO helpText を本物に差し替えて
           helpText="あいうえお"
+          htmlFor="emailInput"
         >
           <input
-            className="jumpu-input flex-1 h-12"
-            name="email"
+            id="emailInput"
+            className={clsx("jumpu-input w-5/6 h-12", {
+              "border-orange-700 !border-2 !text-orange-700": errors.email,
+            })}
+            {...register("email", { onBlur: saveDraft })}
             type="email"
-            defaultValue={account?.email}
-            placeholder="contact@marusankaku.co.jp"
+            placeholder="contact@example.com"
+          />
+          <ErrorMessage
+            errors={errors}
+            name="email"
+            render={({ message }) => (
+              <p className="text-sm text-orange-700">{message}</p>
+            )}
           />
         </FormRow>
         <FormRow
@@ -223,13 +378,34 @@ export default function Holder() {
           label="法人番号"
           // TODO helpText を本物に差し替えて
           helpText="あいうえお"
+          htmlFor="corporateNumberInput"
         >
           <input
-            className="jumpu-input flex-1 h-12"
-            name="corporateNumber"
+            id="corporateNumberInput"
+            className={clsx("jumpu-input h-12", {
+              "border-orange-700 !border-2 !text-orange-700":
+                errors.corporateNumber,
+            })}
+            {...register("corporateNumber", {
+              minLength: {
+                value: 13,
+                message: "不正な法人番号です。",
+              },
+              maxLength: {
+                value: 13,
+                message: "不正な法人番号です。",
+              },
+              onBlur: saveDraft,
+            })}
             type="number"
-            defaultValue={account?.corporateNumber}
-            placeholder="68724562888454"
+            placeholder="1234567890123"
+          />
+          <ErrorMessage
+            errors={errors}
+            name="corporateNumber"
+            render={({ message }) => (
+              <p className="text-sm text-orange-700">{message}</p>
+            )}
           />
         </FormRow>
         <FormRow
@@ -237,12 +413,23 @@ export default function Holder() {
           label="事業種目"
           // TODO helpText を本物に差し替えて
           helpText="あいうえお"
+          htmlFor="businessCategoryInput"
         >
           <input
-            className="jumpu-input flex-1 h-12"
+            id="businessCategoryInput"
+            className={clsx("jumpu-input h-12", {
+              "border-orange-700 !border-2 !text-orange-700":
+                errors.businessCategory,
+            })}
+            {...register("businessCategory", { onBlur: saveDraft })}
+            placeholder="新聞業"
+          />
+          <ErrorMessage
+            errors={errors}
             name="businessCategory"
-            defaultValue={account?.businessCategory}
-            placeholder=""
+            render={({ message }) => (
+              <p className="text-sm text-orange-700">{message}</p>
+            )}
           />
         </FormRow>
         <FormRow
@@ -251,13 +438,27 @@ export default function Holder() {
           required
           // TODO helpText を本物に差し替えて
           helpText="あいうえお"
+          htmlFor="urlInput"
         >
           <input
-            className="jumpu-input flex-1 h-12"
-            name="url"
+            id="urlInput"
+            className={clsx("jumpu-input h-12", {
+              "border-orange-700 !border-2 !text-orange-700": errors.url,
+            })}
+            {...register("url", {
+              required: "このフィールドを入力してください。",
+              validate: validateUrlString,
+              onBlur: saveDraft,
+            })}
             type="url"
-            defaultValue={account?.url}
-            placeholder="https://www.marusankaku.co.jp/"
+            placeholder="https://www.example.com/"
+          />
+          <ErrorMessage
+            errors={errors}
+            name="url"
+            render={({ message }) => (
+              <p className="text-sm text-orange-700">{message}</p>
+            )}
           />
         </FormRow>
 
@@ -266,39 +467,161 @@ export default function Holder() {
           label="お問い合わせ情報"
           titleLabel="お問い合わせページの名称"
           urlLabel="リンク"
-          titlePlaceholder="○△へのお問い合わせ"
-          urlPlaceholder="https://www.marusankaku.co.jp/contact/"
-          urlDefaultValue={account?.contactUrl}
-          titleDefaultValue={account?.contactTitle}
-          namePrefix="contact"
+          titleInput={
+            <>
+              <input
+                className={clsx("jumpu-input h-12 w-full", {
+                  "border-orange-700 !border-2 !text-orange-700":
+                    errors.contactTitle,
+                })}
+                {...register("contactTitle", { onBlur: saveDraft })}
+                placeholder="○△へのお問い合わせ"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="contactTitle"
+                render={({ message }) => (
+                  <p className="text-sm text-orange-700">{message}</p>
+                )}
+              />
+            </>
+          }
+          urlInput={
+            <>
+              <input
+                className={clsx("jumpu-input h-12 w-full", {
+                  "border-orange-700 !border-2 !text-orange-700":
+                    errors.contactUrl,
+                })}
+                {...register("contactUrl", {
+                  onBlur: saveDraft,
+                  validate: validateUrlString,
+                })}
+                type="url"
+                placeholder="https://www.example.com/contact/"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="contactUrl"
+                render={({ message }) => (
+                  <p className="text-sm text-orange-700">{message}</p>
+                )}
+              />
+            </>
+          }
         />
         <UrlAndTitleInput
           label="編集ガイドライン"
           titleLabel="ページの名称"
           urlLabel="リンク"
-          titlePlaceholder="○△ガイドライン"
-          urlPlaceholder="https://www.marusankaku.co.jp/guidelines/"
-          titleDefaultValue={account?.publishingPrincipleTitle}
-          urlDefaultValue={account?.publishingPrincipleUrl}
-          namePrefix="publishingPrinciple"
+          titleInput={
+            <>
+              <input
+                className={clsx("jumpu-input h-12 w-full", {
+                  "border-orange-700 !border-2 !text-orange-700":
+                    errors.publishingPrincipleTitle,
+                })}
+                {...register("publishingPrincipleTitle", {
+                  onBlur: saveDraft,
+                })}
+                placeholder="○△ガイドライン"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="publishingPrincipleTitle"
+                render={({ message }) => (
+                  <p className="text-sm text-orange-700">{message}</p>
+                )}
+              />
+            </>
+          }
+          urlInput={
+            <>
+              <input
+                className={clsx("jumpu-input h-12 w-full", {
+                  "border-orange-700 !border-2 !text-orange-700":
+                    errors.publishingPrincipleUrl,
+                })}
+                {...register("publishingPrincipleUrl", {
+                  onBlur: saveDraft,
+                  validate: validateUrlString,
+                })}
+                type="url"
+                placeholder="https://www.example.com/guidelines/"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="publishingPrincipleUrl"
+                render={({ message }) => (
+                  <p className="text-sm text-orange-700">{message}</p>
+                )}
+              />
+            </>
+          }
         />
         <UrlAndTitleInput
           label="プライバシーボリシー"
           titleLabel="ページの名称"
           urlLabel="リンク"
-          titlePlaceholder="○△プライバシーセンター"
-          urlPlaceholder="https://www.marusankaku.co.jp/privacy/"
-          titleDefaultValue={account?.privacyPolicyTitle}
-          urlDefaultValue={account?.privacyPolicyUrl}
-          namePrefix="privacyPolicy"
+          titleInput={
+            <>
+              <input
+                className={clsx("jumpu-input h-12 w-full", {
+                  "border-orange-700 !border-2 !text-orange-700":
+                    errors.privacyPolicyTitle,
+                })}
+                {...register("privacyPolicyTitle", { onBlur: saveDraft })}
+                placeholder="○△プライバシーセンター"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="privacyPolicyTitle"
+                render={({ message }) => (
+                  <p className="text-sm text-orange-700">{message}</p>
+                )}
+              />
+            </>
+          }
+          urlInput={
+            <>
+              <input
+                className={clsx("jumpu-input h-12 w-full", {
+                  "border-orange-700 !border-2 !text-orange-700":
+                    errors.privacyPolicyUrl,
+                })}
+                {...register("privacyPolicyUrl", {
+                  onBlur: saveDraft,
+                  validate: validateUrlString,
+                })}
+                type="url"
+                placeholder="https://www.example.com/privacy/"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="privacyPolicyUrl"
+                render={({ message }) => (
+                  <p className="text-sm text-orange-700">{message}</p>
+                )}
+              />
+            </>
+          }
         />
 
         <FormRow className="mb-7" label="説明">
           <textarea
-            className="jumpu-input flex-1"
-            name="description"
-            defaultValue={account?.description}
+            className={clsx("jumpu-textarea flex-1", {
+              "border-orange-700 !border-2 !text-orange-700":
+                errors.description,
+            })}
+            {...register("description", { onBlur: saveDraft })}
             placeholder="追加の説明情報（任意）"
+          />
+          <ErrorMessage
+            errors={errors}
+            name="description"
+            render={({ message }) => (
+              <p className="text-sm text-orange-700">{message}</p>
+            )}
           />
         </FormRow>
       </form>

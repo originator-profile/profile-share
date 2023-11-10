@@ -20,3 +20,22 @@ export function useAccount(accountId: string | null) {
     >,
   );
 }
+
+/**
+ * アカウントを更新する API を呼び出す（OP ID の変更も可能）
+ */
+export async function updateAccount(
+  data: unknown,
+  accountId: string,
+  token: string,
+) {
+  const endpoint = `/internal/accounts/${accountId}/`;
+  return await fetch(endpoint, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+}

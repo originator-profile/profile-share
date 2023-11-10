@@ -27,8 +27,10 @@
   },
   "dependencies": {
     "@generouted/react-router": "^1.16.1",
+    "@hookform/error-message": "^2.0.1",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
+    "react-hook-form": "^7.47.0",
     "react-router-dom": "^6.17.0",
     "tailwind-config-originator-profile": "*",
     "tailwindcss": "^3.3.4"

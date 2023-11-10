@@ -104,15 +104,16 @@ export default function Index() {
       <article className="max-w-3xl px-4 pt-12 pb-8 mx-auto">
         <h1 className="text-4xl font-bold mb-8">{document.title}</h1>
         <form className="mb-8" onSubmit={onSubmit}>
-          <FormRow className="mb-4" label="Registry">
+          <FormRow className="mb-4" label="Registry" htmlFor="registryInput">
             <input
+              id="registryInput"
               className="jumpu-input flex-1"
               name="registry"
               required
               defaultValue={initialValues.registry}
             />
           </FormRow>
-          <FormRow as="span" className="mb-4" label="Profile Set Presentation">
+          <FormRow className="mb-4" label="Profile Set Presentation">
             <label className="flex gap-1 items-center py-1">
               <input
                 name="presentation"
@@ -137,8 +138,10 @@ export default function Index() {
           <FormRow
             className={clsx("mb-4", { hidden: presentation !== "url" })}
             label="Endpoint"
+            htmlFor="endpointInput"
           >
             <input
+              id="endpointInput"
               className="jumpu-input flex-1"
               name="endpoint"
               hidden={presentation !== "url"}
@@ -149,8 +152,10 @@ export default function Index() {
           <FormRow
             className={clsx("mb-4", { hidden: presentation !== "direct" })}
             label="Profile Set"
+            htmlFor="jsonldTextArea"
           >
             <textarea
+              id="jsonldTextArea"
               className="jumpu-textarea resize flex-1"
               name="jsonld"
               hidden={presentation !== "direct"}
