@@ -13,8 +13,15 @@ export const UserAccountService = ({ userAccountRepository }: Options) => ({
    * @param input.id ユーザーアカウントID
    * @return ユーザーアカウント
    */
-  async read(input: Pick<userAccounts, "id">): Promise<userAccounts | Error> {
-    return await userAccountRepository.read(input);
+  async read(
+    input: Pick<userAccounts, "id">,
+  ): Promise<
+    Pick<userAccounts, "id" | "name" | "picture" | "accountId"> | Error
+  > {
+    const data = await userAccountRepository.read(input);
+    if (data instanceof Error) return data;
+    const { id, name, picture, accountId } = data;
+    return { id, name, picture, accountId };
   },
   /**
    * ユーザーアカウントの更新・作成
@@ -50,5 +57,17 @@ export const UserAccountService = ({ userAccountRepository }: Options) => ({
     } else {
       return await userAccountRepository.update(input);
     }
+  },
+  /**
+   * 審査担当者かどうか
+   * @throws {NotFoundError} 審査担当者ではない
+   */
+  async reviewerMembershipOrThrow(input: {
+    /** ユーザーID */
+    id: string;
+    /** 審査担当者ID */
+    reviewerId: string;
+  }) {
+    return await userAccountRepository.reviewerMembershipOrThrow(input);
   },
 });

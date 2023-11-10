@@ -1,3 +1,10 @@
+import {
+  DpRepository,
+  WebsiteRepository,
+  CredentialRepository,
+  UserAccountRepository,
+  RequestRepository,
+} from "@originator-profile/registry-db";
 import Config from "./config";
 import { AccountService } from "./account";
 import { AdminService } from "./admin";
@@ -8,14 +15,6 @@ import { PublisherService } from "./publisher";
 import { WebsiteService } from "./website";
 import { CredentialService } from "./credential";
 import { RequestService } from "./request";
-
-import {
-  DpRepository,
-  WebsiteRepository,
-  CredentialRepository,
-  UserAccountRepository,
-  RequestRepository,
-} from "@originator-profile/registry-db";
 import { LogoService } from "./logo";
 import { UserAccountService } from "./user-account";
 

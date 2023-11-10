@@ -28,7 +28,7 @@ export const UserAccountRepository = () => ({
     const data = await prisma.userAccounts
       .findUnique({ where: { id } })
       .catch((e: Error) => e);
-    return data ?? new NotFoundError();
+    return data ?? new NotFoundError("User not found.");
   },
   /**
    * ユーザーアカウントの更新
@@ -57,6 +57,26 @@ export const UserAccountRepository = () => ({
     return await prisma.userAccounts.delete({
       where: { id },
     });
+  },
+  /**
+   * 審査担当者かどうか
+   * @throws {NotFoundError} 審査担当者ではない
+   */
+  async reviewerMembershipOrThrow(input: {
+    id: UserAccountId;
+    reviewerId: UserAccountId;
+  }): Promise<void> {
+    const prisma = getClient();
+    const user = await prisma.userAccounts.count({
+      where: {
+        id: input.id,
+        OR: [
+          { requests: { some: { reviewerId: input.reviewerId } } },
+          { requestLogs: { some: { reviewerId: input.reviewerId } } },
+        ],
+      },
+    });
+    if (user === 0) throw new NotFoundError("User not found.");
   },
 });
 
