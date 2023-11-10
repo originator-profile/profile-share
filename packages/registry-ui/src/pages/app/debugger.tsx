@@ -6,8 +6,8 @@ import {
   expandProfileSet,
 } from "@originator-profile/verify";
 import { ProjectSummary } from "@originator-profile/ui";
-import FormRow from "../components/FormRow";
-import AppBar from "../components/AppBar";
+import FormRow from "../../components/FormRow";
+import AppBar from "../../components/AppBar";
 
 type InitialValues = {
   registry: string;
@@ -99,7 +99,6 @@ export default function Debugger() {
   }
   return (
     <>
-      <AppBar />
       <article className="max-w-3xl px-4 pt-12 pb-8 mx-auto">
         <h1 className="text-4xl font-bold mb-8">{document.title}</h1>
         <form className="mb-8" onSubmit={onSubmit}>
