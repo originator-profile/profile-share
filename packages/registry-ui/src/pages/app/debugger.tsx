@@ -7,7 +7,6 @@ import {
 } from "@originator-profile/verify";
 import { ProjectSummary } from "@originator-profile/ui";
 import FormRow from "../../components/FormRow";
-import AppBar from "../../components/AppBar";
 
 type InitialValues = {
   registry: string;
