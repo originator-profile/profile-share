@@ -26,7 +26,7 @@ async function read({
 }>) {
   const { id } = params;
 
-  const data = await server.services.logo.readMainLogo({id});
+  const data = await server.services.logo.readMainLogo({ id });
 
   if (data instanceof NotFoundError) {
     throw data;
