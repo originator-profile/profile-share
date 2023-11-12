@@ -1,4 +1,10 @@
-import { type ChangeEvent, type MouseEvent, useRef, useState, useEffect } from "react";
+import {
+  type ChangeEvent,
+  type MouseEvent,
+  useRef,
+  useState,
+  useEffect,
+} from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useUser } from "../../../utils/user";
 import { useAccount } from "../../../utils/account";
@@ -17,7 +23,6 @@ export default function Logo() {
   const [previewContent, setPreviewContent] = useState("");
 
   async function preloadLogo() {
-    console.log(account);
     if (!account) {
       return;
     }
@@ -40,7 +45,7 @@ export default function Logo() {
       setPreviewContent(logoObjURL);
       setShowPreview(true);
     }
-  };
+  }
 
   async function onUploadChange(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
@@ -110,7 +115,7 @@ export default function Logo() {
         });
         setSubmitButtonDisabled(true);
         if (!response.ok) {
-          let text = await response.text();
+          const text = await response.text();
           let error =
             "使用できない画像です。画像の形式やサイズを確認して再アップロードしてください。";
           if (/too small image/.test(text)) {
