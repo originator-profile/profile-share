@@ -90,13 +90,15 @@ export async function create(options: Options): Promise<Server> {
     app.config.NODE_ENV === "development"
       ? ["http://localhost:24678", "ws://localhost:24678"]
       : [];
+  const minio =
+    app.config.NODE_ENV === "development" ? ["http://localhost:19000"] : [];
   app.register(helmet, {
     hsts: { preload: true },
     contentSecurityPolicy: {
       directives: {
         "script-src": ["'self'", "'unsafe-inline'"],
-        "img-src": ["'self'", "http:", "https:", "data:"],
-        "connect-src": ["'self'", "https:", ...viteHmr],
+        "img-src": ["'self'", "http:", "https:", "data:", "blob:"],
+        "connect-src": ["'self'", "https:", ...viteHmr, ...minio],
         "frame-ancestors": "'self'",
         "trusted-types": "*",
         "require-trusted-types-for": "'script'",
