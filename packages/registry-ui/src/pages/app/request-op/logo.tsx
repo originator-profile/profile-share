@@ -33,7 +33,7 @@ export default function Logo() {
       return;
     }
     const logoURL = (await response.json())?.url;
-    if (logoURL || true) {
+    if (logoURL) {
       const logoRes = await fetch(logoURL);
       const logoBlob = await logoRes.blob();
       const logoObjURL = URL.createObjectURL(logoBlob);
