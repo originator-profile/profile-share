@@ -1,4 +1,4 @@
-import { type ChangeEvent, type MouseEvent, useRef, useState } from "react";
+import { type ChangeEvent, type MouseEvent, useRef, useState, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useUser } from "../../../utils/user";
 import { useAccount } from "../../../utils/account";
@@ -15,6 +15,32 @@ export default function Logo() {
   const [errorMessage, setErrorMessage] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [previewContent, setPreviewContent] = useState("");
+
+  async function preloadLogo() {
+    console.log(account);
+    if (!account) {
+      return;
+    }
+    const token = await getAccessTokenSilently();
+    const endpoint = `http://localhost:8080/internal/accounts/${account.id}/logos/`;
+    const response = await fetch(endpoint, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      return;
+    }
+    const logoURL = (await response.json())?.url;
+    if (logoURL || true) {
+      const logoRes = await fetch(logoURL);
+      const logoBlob = await logoRes.blob();
+      const logoObjURL = URL.createObjectURL(logoBlob);
+      setPreviewContent(logoObjURL);
+      setShowPreview(true);
+    }
+  };
 
   async function onUploadChange(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
@@ -98,6 +124,10 @@ export default function Logo() {
       reader.readAsDataURL(file);
     }
   }
+
+  useEffect(() => {
+    preloadLogo();
+  }, [account]);
 
   return (
     account && (
