@@ -47,6 +47,7 @@ export default function Logo() {
     const file = e.target.files && e.target.files[0];
 
     if (file) {
+      setShowErrors(false);
       const reader = new FileReader();
       reader.onload = (e) => {
         if (!e.target) {
