@@ -19,5 +19,4 @@ export default function Index() {
   if (isLoading || !isAuthenticated) {
     return <div>Loading...</div>;
   }
-
 }
