@@ -33,6 +33,9 @@ async function addErrorResponseSchema(opt: RouteOptions) {
 }
 
 async function autohooks(fastify: FastifyInstance): Promise<void> {
+  // @ts-expect-error NOTE: **テスト用** 認証の無効化
+  if (fastify.dangerouslyDisabledAuth) return;
+
   fastify.addHook("preHandler", requiredGroupMembership);
   fastify.addHook("onRoute", addErrorResponseSchema);
 }
