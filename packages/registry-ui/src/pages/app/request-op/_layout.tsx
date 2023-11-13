@@ -58,6 +58,7 @@ function RegisterTabs() {
       <nav role="tablist" className="!justify-end">
         {registerTabs.map((registerTab) => (
           <Link
+            key={registerTab.route}
             role="tab"
             aria-selected={isTabSelected(registerTab.route)}
             className="min-w-[10rem]"
