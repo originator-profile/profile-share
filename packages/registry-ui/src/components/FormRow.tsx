@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { Icon } from "@iconify/react";
 
 type Props = {
-  as?: keyof JSX.IntrinsicElements;
+  htmlFor?: string;
   className?: string;
   label: string;
   required?: boolean;
@@ -11,7 +11,7 @@ type Props = {
 };
 
 function FormRow({
-  as: As = "label",
+  htmlFor,
   className,
   label,
   required = false,
@@ -19,15 +19,18 @@ function FormRow({
   children,
 }: Props) {
   return (
-    <As
+    <div
       className={clsx(
         "flex flex-col md:flex-row gap-2 md:gap-4 md:items-center",
         className,
       )}
     >
       <div className="text-sm md:w-40 w-full flex-shrink-0">
-        <span>{label}</span>
-        {required && <span className="text-xs text-red-600 ml-1">必須</span>}
+        <label htmlFor={htmlFor}>
+          <span>{label}</span>
+          {required && <span className="text-xs text-danger ml-1">必須</span>}
+        </label>
+
         {helpText && (
           <Icon
             className="text-lg text-gray-400"
@@ -38,9 +41,8 @@ function FormRow({
           />
         )}
       </div>
-
-      {children}
-    </As>
+      <div className="w-full flex flex-col gap-2">{children}</div>
+    </div>
   );
 }
 

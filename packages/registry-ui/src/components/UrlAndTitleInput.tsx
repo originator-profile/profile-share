@@ -2,53 +2,47 @@ type Props = {
   label: string;
   titleLabel: string;
   urlLabel: string;
-  titlePlaceholder: string;
-  urlPlaceholder: string;
-  urlDefaultValue?: string;
-  titleDefaultValue?: string;
-  namePrefix: string;
+  titleInput: React.ReactNode;
+  urlInput: React.ReactNode;
+  titleError?: string;
+  urlError?: string;
 };
 
 export default function UrlAndTitleInput({
   label,
   titleLabel,
   urlLabel,
-  titlePlaceholder,
-  urlPlaceholder,
-  urlDefaultValue,
-  titleDefaultValue,
-  namePrefix,
+  titleInput,
+  urlInput,
+  titleError,
+  urlError,
 }: Props) {
   return (
-    <label className="mb-3 py-2 flex flex-col md:flex-row gap-2 md:gap-4 md:items-center">
-      <span className="text-sm flex-shrink-0 w-40 self-start">{label}</span>
+    <div className="mb-7 flex flex-col md:flex-row gap-2 md:gap-4 md:items-center">
+      <span className="text-sm leading-normal flex-shrink-0 w-40 self-start">
+        {label}
+      </span>
+      <div className="bg-gray-100 p-4 flex flex-col w-full rounded-lg gap-4">
+        <div className="flex flex-col gap-2">
+          <label className="flex flex-col gap-2">
+            <span className="text-sm leading-normal">{titleLabel}</span>
+            {titleInput}
+          </label>
 
-      <div className="bg-gray-100 p-4 flex-col gap-20 w-full rounded-lg">
-        <label className="mb-2 block">
-          <span className="text-sm leading-normal mr-auto block mb-2">
-            {titleLabel}
-          </span>
-          <input
-            className="jumpu-input h-12 w-full"
-            name={`${namePrefix}Title`}
-            defaultValue={titleDefaultValue}
-            placeholder={titlePlaceholder}
-          />
+          {titleError && (
+            <p className="text-sm leading-normal text-orange-700">
+              {titleError}
+            </p>
+          )}
+        </div>
+        <label className="flex flex-col gap-2">
+          <span className="text-sm leading-normal">{urlLabel}</span>
+          {urlInput}
         </label>
-
-        <label className="mb-2 mb-2 gap-2 md:gap-4 md:items-center">
-          <span className="text-sm leading-normal mr-auto block mb-2">
-            {urlLabel}
-          </span>
-          <input
-            className="jumpu-input flex-1 h-12 w-full"
-            name={`${namePrefix}Url`}
-            type="url"
-            defaultValue={urlDefaultValue}
-            placeholder={urlPlaceholder}
-          />
-        </label>
+        {urlError && (
+          <p className="text-sm leading-normal text-orange-700">{urlError}</p>
+        )}
       </div>
-    </label>
+    </div>
   );
 }
