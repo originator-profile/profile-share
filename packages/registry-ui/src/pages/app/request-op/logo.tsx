@@ -1,10 +1,4 @@
-import {
-  type ChangeEvent,
-  type MouseEvent,
-  useRef,
-  useState,
-  useEffect,
-} from "react";
+import { type ChangeEvent, type MouseEvent, useRef, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useUser } from "../../../utils/user";
 import { useAccount } from "../../../utils/account";
@@ -22,37 +16,11 @@ export default function Logo() {
   const [showPreview, setShowPreview] = useState(false);
   const [previewContent, setPreviewContent] = useState("");
 
-  async function preloadLogo() {
-    if (!account) {
-      return;
-    }
-    const token = await getAccessTokenSilently();
-    const endpoint = `http://localhost:8080/internal/accounts/${account.id}/logos/`;
-    const response = await fetch(endpoint, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (!response.ok) {
-      return;
-    }
-    const logoURL = (await response.json())?.url;
-    if (logoURL) {
-      const logoRes = await fetch(logoURL);
-      const logoBlob = await logoRes.blob();
-      const logoObjURL = URL.createObjectURL(logoBlob);
-      setPreviewContent(logoObjURL);
-      setShowPreview(true);
-    }
-  }
-
   async function onUploadChange(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     const file = e.target.files && e.target.files[0];
 
     if (file) {
-      setShowErrors(false);
       const reader = new FileReader();
       reader.onload = (e) => {
         if (!e.target) {
@@ -115,7 +83,7 @@ export default function Logo() {
         });
         setSubmitButtonDisabled(true);
         if (!response.ok) {
-          const text = await response.text();
+          let text = await response.text();
           let error =
             "使用できない画像です。画像の形式やサイズを確認して再アップロードしてください。";
           if (/too small image/.test(text)) {
@@ -130,10 +98,6 @@ export default function Logo() {
       reader.readAsDataURL(file);
     }
   }
-
-  useEffect(() => {
-    preloadLogo();
-  }, [account]);
 
   return (
     account && (
