@@ -156,6 +156,7 @@ export const AccountService = ({ validator }: Options) => ({
     const prisma = getClient();
     const jwk = validator.jwkValidate(input);
     if (jwk instanceof Error) return jwk;
+    if (jwk.d) return new BadRequestError("Private key not allowed.");
     const data = await prisma.keys
       .create({ data: { accountId: id, jwk: jwk as Prisma.InputJsonValue } })
       .catch((e: Error) => e);
@@ -164,6 +165,20 @@ export const AccountService = ({ validator }: Options) => ({
 
     const jwks: Jwks = { keys: [data.jwk as Jwk] };
     return jwks;
+  },
+  /**
+   * 公開鍵の削除
+   * @param id 会員 ID
+   * @param kid Key ID
+   * @return 成功した場合: Key ID, 失敗した場合: Error
+   */
+  async destroyKey(id: AccountId, kid: string): Promise<string | Error> {
+    const prisma = getClient();
+    const data = await prisma.keys
+      .delete({ where: { accountId: id, id: kid } })
+      .catch((e: Error) => e);
+    if (data instanceof Error) return data;
+    return kid;
   },
   /**
    * Signed Originator Profile の登録 (Document Profile Registry 用)

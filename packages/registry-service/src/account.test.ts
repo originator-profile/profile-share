@@ -2,6 +2,7 @@ import { test, expect, describe, vi } from "vitest";
 import crypto from "node:crypto";
 import Ajv from "ajv";
 import { Jwks } from "@originator-profile/model";
+import { generateKey } from "@originator-profile/sign";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
 
@@ -16,7 +17,7 @@ describe("AccountService", () => {
 
   test("getKeys() returns valid JWKS", async () => {
     prisma.keys.findMany.mockResolvedValue([
-      { id: 1, accountId, jwk: { kid: "1", kty: "RSA", n: "1", e: "1" } },
+      { id: "1", accountId, jwk: { kid: "1", kty: "RSA", n: "1", e: "1" } },
     ]);
 
     const ajv = new Ajv();
@@ -27,5 +28,15 @@ describe("AccountService", () => {
     const data: Jwks = await account.getKeys(crypto.randomUUID());
     const valid = ajv.validate(Jwks, data);
     expect(valid).toBe(true);
+  });
+
+  test("registerKey()はプライベート鍵を許可しない", async () => {
+    const { privateKey } = await generateKey();
+    const data = await AccountService({ validator }).registerKey(
+      accountId,
+      privateKey,
+    );
+    expect(data).toBeInstanceOf(Error);
+    expect(data.message).toBe("Private key not allowed.");
   });
 });

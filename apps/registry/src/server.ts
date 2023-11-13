@@ -17,6 +17,8 @@ type Options = {
   isDev: boolean;
   routes?: string;
   quiet?: boolean;
+  /** テスト用の認証の無効化オプション (**本番環境では厳禁**) */
+  dangerouslyDisabledAuth?: boolean;
 };
 
 export type Server = FastifyInstance;
@@ -51,6 +53,10 @@ export async function create(options: Options): Promise<Server> {
   });
 
   await app.register(env, { schema: Config });
+
+  if (options.isDev && options.dangerouslyDisabledAuth === true) {
+    app.decorate("dangerouslyDisabledAuth", true);
+  }
 
   if (options.isDev) {
     await app.register(swagger, {

@@ -93,7 +93,7 @@ describe("CertificateService", () => {
       url: "https://example.com/",
     });
     prisma.keys.findMany.mockResolvedValue([
-      { id: 1, accountId, jwk: publicKey as Prisma.JsonValue },
+      { id: publicKey.kid, accountId, jwk: publicKey as Prisma.JsonValue },
     ]);
     const jwt = await certificate.signOp(id, accountId, privateKey);
     // @ts-expect-error assert
