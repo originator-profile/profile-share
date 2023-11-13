@@ -36,7 +36,7 @@ const Jwk = {
       type: "string",
     },
   },
-  required: ["kty"],
+  required: ["kty", "kid"],
   additionalProperties: true,
 } as const;
 
