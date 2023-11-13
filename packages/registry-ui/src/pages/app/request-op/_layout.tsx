@@ -7,59 +7,59 @@ type Props = {
 
 function Layout({ children }: Props) {
   const location = useLocation();
+  const registerTabs = [
+    {
+      route: "holder",
+      label: "組織情報",
+      status: null,
+    },
+    {
+      route: "public-key",
+      label: "公開鍵",
+      status: null,
+    },
+    {
+      route: "logo",
+      label: "ロゴマーク",
+      status: null,
+    },
+    {
+      route: "credential",
+      label: "資格情報",
+      status: null,
+    },
+  ] as const;
 
   // URLのパスを見て、どのタブが選択されているかを判定する
   const isTabSelected = (pathSubstring: string) =>
-    location.pathname.endsWith(pathSubstring) ||
-    location.pathname.endsWith(`${pathSubstring}/`);
+    location.pathname.split("/").filter(Boolean).pop() === pathSubstring;
+  const registerTabsSelected = registerTabs
+    .map((tab) => isTabSelected(tab.route))
+    .some((selected) => selected);
 
   return (
     <article className="max-w-5xl px-4 pt-12 pb-8 mx-auto">
-      <div className="flex flex-col mb-6">
-        <div className="jumpu-boxed-tabs">
-          <h1 className="text-4xl font-bold">登録</h1>
-          <div className="ml-auto">
-            <div role="tablist" aria-label="Sample BoxedTabs">
-              <button
+      {registerTabsSelected && (
+        <div className="jumpu-boxed-tabs flex justify-between mb-6">
+          <h1 className="text-4xl font-bold border-b">登録</h1>
+          {/**
+           * NOTE: .jumpu-boxed-tabs がナビゲーションタブの実装に対応しておらずARIA APGタブパターンに逸脱した実装になっている
+           * see https://github.com/tuqulore/jumpu-ui/issues/544
+           */}
+          <nav role="tablist" className="!justify-end">
+            {registerTabs.map((tab) => (
+              <Link
                 role="tab"
-                aria-selected={isTabSelected("holder")}
-                aria-controls="panel-1"
-                id="tab-1"
-                tabIndex={0}
+                aria-selected={isTabSelected(tab.route)}
+                className="min-w-[10rem]"
+                to={tab.route}
               >
-                <Link to="./holder">組織情報</Link>
-              </button>
-              <button
-                role="tab"
-                aria-selected={isTabSelected("public-key")}
-                aria-controls="panel-2"
-                id="tab-2"
-                tabIndex={-2}
-              >
-                <Link to="./public-key">公開鍵</Link>
-              </button>
-              <button
-                role="tab"
-                aria-selected={isTabSelected("logo")}
-                aria-controls="panel-3"
-                id="tab-3"
-                tabIndex={-3}
-              >
-                <Link to="./logo">ロゴマーク</Link>
-              </button>
-              <button
-                role="tab"
-                aria-selected={isTabSelected("credential")}
-                aria-controls="panel-4"
-                id="tab-4"
-                tabIndex={-4}
-              >
-                <Link to="./credential">資格情報</Link>
-              </button>
-            </div>
-          </div>
+                {tab.label}
+              </Link>
+            ))}
+          </nav>
         </div>
-      </div>
+      )}
       <Outlet />
       {children}
     </article>
