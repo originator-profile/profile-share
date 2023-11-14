@@ -59,7 +59,7 @@ function Approved(props: Props) {
     <Card className={clsx("bg-primary-50", props.className)}>
       <Heading className="text-success mb-2">OPが発行されました。</Heading>
       <p className="text-xs">
-        おめでとうございます。ご登録いただいた内容でOPが発行済みです。OPを活用して担当者さまの組織の身元を検証可能な形式で表明することができます。
+        ご登録ありがとうございます。ご登録いただいた内容でOPが発行済みです。OPを活用して担当者さまの組織の身元を検証可能な形式で表明することができます。
       </p>
     </Card>
   );
