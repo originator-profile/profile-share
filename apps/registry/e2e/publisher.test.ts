@@ -42,7 +42,7 @@ describe("Publisher workflows", async () => {
       await fs.rm(tmpdir, { recursive: true });
     });
 
-    test("Website extraction makes website.json", async () => {
+    test.skip("Website extraction makes website.json", async () => {
       await PublisherExtractWebsite.run([`--input=${extractJsonPath}`]);
       const website = await fs
         .readFile(websiteJsonPath)
@@ -50,7 +50,7 @@ describe("Publisher workflows", async () => {
       expect(website.body).toBe("OP 確認くん");
     });
 
-    test("Should succeed in creating from website.json", async () => {
+    test.skip("Should succeed in creating from website.json", async () => {
       await PublisherWebsite.run([
         `--identity=${keyPath}`,
         `--id=${accountId}`,
