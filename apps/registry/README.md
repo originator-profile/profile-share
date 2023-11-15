@@ -235,7 +235,7 @@ OP の発行
 ```
 USAGE
   $ profile-registry cert:issue -i <value> --certifier <value> --holder <value> [--issued-at <value>]
-    [--expired-at <value>]
+    [--expired-at <value>] [--valid-at <value>]
 
 FLAGS
   -i, --identity=<value>  (required) プライベート鍵のファイルパス
@@ -243,6 +243,7 @@ FLAGS
   --expired-at=<value>    有効期限 (ISO 8601)
   --holder=<value>        (required) 所有者となる会員 ID またはドメイン名
   --issued-at=<value>     発行日時 (ISO 8601)
+  --valid-at=<value>      この日時に既に失効している資格情報を含めない。デフォルトは issued-at と同じ日時。
 
 DESCRIPTION
   OP の発行
