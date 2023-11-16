@@ -97,23 +97,22 @@ export default function Debugger() {
     setValues((values) => ({ ...values, results }));
   }
   return (
-    <>
-      <article className="max-w-3xl px-4 pt-12 pb-8 mx-auto">
-        <h1 className="text-4xl font-bold mb-8">{document.title}</h1>
-        <form className="mb-8" onSubmit={onSubmit}>
-          <FormRow className="mb-4" label="Registry" htmlFor="registry">
-            <input
-              id="registry"
-              className="jumpu-input flex-1"
-              name="registry"
-              required
-              defaultValue={initialValues.registry}
-            />
-          </FormRow>
+    <article className="max-w-3xl px-4 pt-12 pb-8 mx-auto">
+      <h1 className="text-4xl font-bold mb-8">OP 確認くん</h1>
+      <form className="mb-8" onSubmit={onSubmit}>
+        <FormRow className="mb-4" label="Registry" htmlFor="registry">
+          <input
+            id="registry"
+            className="jumpu-input flex-1"
+            name="registry"
+            required
+            defaultValue={initialValues.registry}
+          />
+        </FormRow>
 
-          <div className="mb-4">
-            <span className="text-sm">Profile Set Presentation</span>
-            <div className="flex gap-1 items-center py-1">
+        <FormRow className="mb-4" label="Profile Set Presentation">
+          <div className="flex gap-1 items-center">
+            <label className="flex items-center py-1">
               <input
                 id="presentation-url"
                 name="presentation"
@@ -122,9 +121,9 @@ export default function Debugger() {
                 checked={presentation === "url"}
                 onChange={handleChange}
               />
-              <label htmlFor="presentation-url">URL</label>
-            </div>
-            <div className="flex gap-1 items-center py-1">
+              URL
+            </label>
+            <label className="flex items-center py-1">
               <input
                 id="presentation-direct"
                 name="presentation"
@@ -133,54 +132,55 @@ export default function Debugger() {
                 checked={presentation === "direct"}
                 onChange={handleChange}
               />
-              <label htmlFor="presentation-direct">Direct Input</label>
-            </div>
+              Direct Input
+            </label>
           </div>
+        </FormRow>
 
-          <FormRow
-            className={clsx("mb-4", { hidden: presentation !== "url" })}
-            label="Endpoint"
-            htmlFor="endpoint"
-          >
-            <input
-              id="endpoint"
-              className="jumpu-input flex-1"
-              name="endpoint"
-              type="url"
-              defaultValue={initialValues.endpoint}
-              hidden={presentation !== "url"}
-            />
-          </FormRow>
 
-          <FormRow
-            className={clsx("mb-4", { hidden: presentation !== "direct" })}
-            label="Profile Set"
-            htmlFor="jsonld"
-          >
-            <textarea
-              id="jsonld"
-              className="jumpu-textarea resize flex-1"
-              name="jsonld"
-              cols={12}
-              rows={18}
-              style={{ fontFamily: "monospace" }}
-              defaultValue={
-                initialValues.profileSet
-                  ? JSON.stringify(initialValues.profileSet)
-                  : ""
-              }
-              hidden={presentation !== "direct"}
-            />
-          </FormRow>
+        <FormRow
+          className={clsx("mb-4", { hidden: presentation !== "url" })}
+          label="Endpoint"
+          htmlFor="endpoint"
+        >
+          <input
+            id="endpoint"
+            className="jumpu-input flex-1"
+            name="endpoint"
+            type="url"
+            defaultValue={initialValues.endpoint}
+            hidden={presentation !== "url"}
+          />
+        </FormRow>
 
-          <input className="jumpu-button" type="submit" value="Verify" />
-        </form>
-        {Object.entries(values).length > 0 && (
-          <h2 className="text-2xl font-bold mb-4">Result</h2>
-        )}
+        <FormRow
+          className={clsx("mb-4", { hidden: presentation !== "direct" })}
+          label="Profile Set"
+          htmlFor="jsonld"
+        >
+          <textarea
+            id="jsonld"
+            className="jumpu-textarea resize flex-1"
+            name="jsonld"
+            cols={12}
+            rows={18}
+            style={{ fontFamily: "monospace" }}
+            defaultValue={
+              initialValues.profileSet
+                ? JSON.stringify(initialValues.profileSet)
+                : ""
+            }
+            hidden={presentation !== "direct"}
+          />
+        </FormRow>
 
-        <ProjectSummary />
-      </article>
-    </>
+        <input className="jumpu-button" type="submit" value="Verify" />
+      </form>
+      {Object.entries(values).length > 0 && (
+        <h2 className="text-2xl font-bold mb-4">Result</h2>
+      )}
+
+      <ProjectSummary />
+    </article>
   );
 }
