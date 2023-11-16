@@ -98,7 +98,7 @@ export default function Debugger() {
   }
   return (
     <article className="max-w-3xl px-4 pt-12 pb-8 mx-auto">
-      <h1 className="text-4xl font-bold mb-8">OP 確認くん</h1>
+      <h1 className="text-4xl font-bold mb-8">Profile Set Debugger</h1>
       <form className="mb-8" onSubmit={onSubmit}>
         <FormRow className="mb-4" label="Registry" htmlFor="registry">
           <input
