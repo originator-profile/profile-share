@@ -60,6 +60,7 @@ export const CertificateService = ({ account, validator }: Options) => ({
     const credentials = await prisma.credentials
       .findMany({
         where: { accountId, expiredAt: { gt: options.validAt } },
+        orderBy: { id: "asc" },
         include: {
           certifier: true,
           verifier: true,
