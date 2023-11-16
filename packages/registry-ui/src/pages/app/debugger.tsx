@@ -137,7 +137,6 @@ export default function Debugger() {
           </div>
         </FormRow>
 
-
         <FormRow
           className={clsx("mb-4", { hidden: presentation !== "url" })}
           label="Endpoint"
