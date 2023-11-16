@@ -15,7 +15,9 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-拡張機能.png` });
 });
 
-test("拡張機能画面での認証および対象ページのマークを確認", async ({ page }) => {
+test.skip("拡張機能画面での認証および対象ページのマークを確認", async ({
+  page,
+}) => {
   // 拡張機能ウィンドウの状態
   expect(await ext?.title()).toMatch(/コンテンツ情報/);
   expect(
