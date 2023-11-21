@@ -7,13 +7,14 @@ import {
 } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useUser } from "../../../utils/user";
-import { useAccount } from "../../../utils/account";
+import { useAccount, useAccountLogo } from "../../../utils/account";
 import clsx from "clsx";
 
 export default function Logo() {
   const { user: token, getAccessTokenSilently } = useAuth0();
   const { data: user } = useUser(token?.sub ?? null);
   const { data: account } = useAccount(user?.accountId ?? null);
+  const { data: logo } = useAccountLogo(user?.accountId ?? null);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const imagePreviewRef = useRef<HTMLImageElement>(null);
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
@@ -22,27 +23,12 @@ export default function Logo() {
   const [showPreview, setShowPreview] = useState(false);
   const [previewContent, setPreviewContent] = useState("");
 
-  async function preloadLogo() {
-    if (!account) {
-      return;
-    }
-    const token = await getAccessTokenSilently();
-    const endpoint = `/internal/accounts/${account.id}/logos/`;
-    const response = await fetch(endpoint, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (!response.ok) {
-      return;
-    }
-    const logoURL = (await response.json())?.url;
-    if (logoURL) {
-      setPreviewContent(logoURL);
+  useEffect(() => {
+    if (logo?.url) {
+      setPreviewContent(logo.url);
       setShowPreview(true);
     }
-  }
+  }, [logo?.url]);
 
   async function onUploadChange(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
@@ -127,10 +113,6 @@ export default function Logo() {
       reader.readAsDataURL(file);
     }
   }
-
-  useEffect(() => {
-    preloadLogo();
-  }, [account]);
 
   return (
     account && (
