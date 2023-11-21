@@ -21,6 +21,10 @@ export class CertIssue extends Command {
       description: "発行日時 (ISO 8601)",
     }),
     "expired-at": expirationDate(),
+    "valid-at": Flags.string({
+      description:
+        "この日時に既に失効している資格情報を含めない。デフォルトは issued-at と同じ日時。",
+    }),
   };
 
   async run(): Promise<void> {
@@ -36,11 +40,13 @@ export class CertIssue extends Command {
       : new Date();
     const expiredAt = flags["expired-at"] ?? addYears(new Date(), 1);
 
+    const validAt = flags["valid-at"] ? new Date(flags["valid-at"]) : issuedAt;
+
     const jwt = await services.certificate.signOp(
       flags.certifier,
       flags.holder,
       jwk,
-      { issuedAt, expiredAt },
+      { issuedAt, expiredAt, validAt },
     );
     if (jwt instanceof Error) this.error(jwt);
 

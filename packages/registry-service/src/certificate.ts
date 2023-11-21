@@ -53,12 +53,14 @@ export const CertificateService = ({ account, validator }: Options) => ({
     options = {
       issuedAt: new Date(),
       expiredAt: addYears(new Date(), 10),
+      validAt: new Date(),
     },
   ): Promise<string | Error> {
     const prisma = getClient();
     const credentials = await prisma.credentials
       .findMany({
-        where: { accountId },
+        where: { accountId, expiredAt: { gt: options.validAt } },
+        orderBy: { id: "asc" },
         include: {
           certifier: true,
           verifier: true,
