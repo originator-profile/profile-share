@@ -1,10 +1,5 @@
-import {
-  type ChangeEvent,
-  type MouseEvent,
-  useRef,
-  useState,
-  useEffect,
-} from "react";
+import { type ChangeEvent, type MouseEvent, useRef, useState } from "react";
+import { useAsync } from "react-use";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useUser } from "../../../utils/user";
 import { useAccount } from "../../../utils/account";
@@ -22,7 +17,7 @@ export default function Logo() {
   const [showPreview, setShowPreview] = useState(false);
   const [previewContent, setPreviewContent] = useState("");
 
-  async function preloadLogo() {
+  useAsync(async () => {
     if (!account) {
       return;
     }
@@ -42,7 +37,7 @@ export default function Logo() {
       setPreviewContent(logoURL);
       setShowPreview(true);
     }
-  }
+  }, [account, getAccessTokenSilently]);
 
   async function onUploadChange(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
@@ -127,10 +122,6 @@ export default function Logo() {
       reader.readAsDataURL(file);
     }
   }
-
-  useEffect(() => {
-    preloadLogo();
-  }, [account]);
 
   return (
     account && (
