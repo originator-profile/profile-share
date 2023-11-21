@@ -17,6 +17,7 @@ function AccountHeader() {
         <img
           className="rounded border border-gray-200 bg-gray-100"
           src={logo?.url}
+          alt=""
           width={52}
           height={52}
         />
