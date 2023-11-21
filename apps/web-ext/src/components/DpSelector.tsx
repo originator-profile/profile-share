@@ -12,7 +12,7 @@ type Props = {
   main: string[];
 };
 
-function Publs({ profiles, main }: Props) {
+function DpSelector({ profiles, main }: Props) {
   const { issuer, subject, ...params } = useParams<{
     issuer: string;
     subject: string;
@@ -78,4 +78,4 @@ function Publs({ profiles, main }: Props) {
   );
 }
 
-export default Publs;
+export default DpSelector;
