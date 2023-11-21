@@ -11,7 +11,7 @@ import useVerifyFailureFeedback from "../utils/use-verify-failure-feedback";
 function Publ() {
   const [queryParams] = useSearchParams();
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
-  const { tabId, profiles, error } = useProfileSet();
+  const { tabId, profiles, main = [], error } = useProfileSet();
 
   const element = useVerifyFailureFeedback({
     profiles,
@@ -57,7 +57,15 @@ function Publ() {
   } as const;
 
   return (
-    <Template op={op} dp={dp} website={website} holder={holder} paths={paths} />
+    <Template
+      profiles={profiles}
+      main={main}
+      op={op}
+      dp={dp}
+      website={website}
+      holder={holder}
+      paths={paths}
+    />
   );
 }
 
