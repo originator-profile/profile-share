@@ -47,7 +47,6 @@ describe("Publisher workflows", async () => {
       const website = await fs
         .readFile(websiteJsonPath)
         .then((buffer) => JSON.parse(buffer.toString()));
-      console.log(website.body);
       expect(website.body).toBe("Profile Set Debugger");
     });
 
