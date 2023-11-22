@@ -1,19 +1,12 @@
 import { Outlet } from "react-router-dom";
-import { withAuthenticationRequired } from "@auth0/auth0-react";
 import AppBar from "../../components/AppBar";
+import React from "react";
 
-type Props = {
-  children: React.ReactNode;
-};
+const Layout: React.FC = () => (
+  <>
+    <AppBar />
+    <Outlet />
+  </>
+);
 
-function Layout({ children }: Props) {
-  return (
-    <>
-      <AppBar />
-      <Outlet />
-      {children}
-    </>
-  );
-}
-
-export default withAuthenticationRequired(Layout);
+export default Layout;

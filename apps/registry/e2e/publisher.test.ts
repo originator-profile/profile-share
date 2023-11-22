@@ -23,7 +23,7 @@ describe("Publisher workflows", async () => {
         JSON.stringify([
           {
             id: websiteId,
-            url: "http://localhost:8080",
+            url: "http://localhost:8080/app/debugger",
             bodyFormat: "visibleText",
             location: "h1",
             output: websiteJsonPath,
@@ -42,15 +42,15 @@ describe("Publisher workflows", async () => {
       await fs.rm(tmpdir, { recursive: true });
     });
 
-    test.skip("Website extraction makes website.json", async () => {
+    test("Website extraction makes website.json", async () => {
       await PublisherExtractWebsite.run([`--input=${extractJsonPath}`]);
       const website = await fs
         .readFile(websiteJsonPath)
         .then((buffer) => JSON.parse(buffer.toString()));
-      expect(website.body).toBe("OP 確認くん");
+      expect(website.body).toBe("Profile Set Debugger");
     });
 
-    test.skip("Should succeed in creating from website.json", async () => {
+    test("Should succeed in creating from website.json", async () => {
       await PublisherWebsite.run([
         `--identity=${keyPath}`,
         `--id=${accountId}`,
