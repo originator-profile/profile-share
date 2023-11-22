@@ -42,7 +42,7 @@ test.afterEach(async ({ page }, testInfo) => {
   await fs.rm(tempDir, { recursive: true });
 });
 
-test.skip("DPの検証失敗時は閲覧を禁止する", async ({ context, page }) => {
+test("DPの検証失敗時は閲覧を禁止する", async ({ context, page }) => {
   executeCommand(
     "bin/dev key-gen --output " + path.join(tempDir, "evil"),
     "../registry",
@@ -55,7 +55,7 @@ test.skip("DPの検証失敗時は閲覧を禁止する", async ({ context, page
     "../registry",
   );
 
-  await page.goto("http://localhost:8080/");
+  await page.goto("http://localhost:8080/app/debugger");
 
   ext = await popup(context);
 
@@ -70,7 +70,7 @@ test.skip("DPの検証失敗時は閲覧を禁止する", async ({ context, page
   ).toHaveCount(1);
 });
 
-test.skip("OPの検証失敗時は閲覧を禁止する", async ({ context, page }) => {
+test("OPの検証失敗時は閲覧を禁止する", async ({ context, page }) => {
   executeCommand(
     "bin/dev key-gen --output " + path.join(tempDir, "evil"),
     "../registry",
@@ -83,7 +83,7 @@ test.skip("OPの検証失敗時は閲覧を禁止する", async ({ context, page
     "../registry",
   );
 
-  await page.goto("http://localhost:8080/");
+  await page.goto("http://localhost:8080/app/debugger");
 
   ext = await popup(context);
 
