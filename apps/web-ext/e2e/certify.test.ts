@@ -6,7 +6,8 @@ let ext: Page | undefined;
 
 test.beforeEach(async ({ context, page }) => {
   // Profile Registry にアクセス (apps/registry)
-  await page.goto("http://localhost:8080/");
+  await page.goto("http://localhost:8080/app/debugger");
+
   ext = await popup(context);
 });
 
@@ -15,7 +16,7 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-拡張機能.png` });
 });
 
-test.skip("拡張機能画面での認証および対象ページのマークを確認", async ({
+test("拡張機能画面での認証および対象ページのマークを確認", async ({
   page,
 }) => {
   // 拡張機能ウィンドウの状態
@@ -39,12 +40,12 @@ test.skip("拡張機能画面での認証および対象ページのマークを
   await page.waitForSelector("iframe");
 
   // 対象Webページにマークは表示されているか
-  expect(await page.title()).toMatch(/OP 確認くん/);
+  expect(await page.title()).toMatch(/OP登録サイト/);
   expect(
     await page
       .frameLocator("iframe")
       .getByRole("button", {
-        name: "Originator Profile 技術研究組合 OP 確認くん OP 確認くん",
+        name: "Originator Profile 技術研究組合 OP 確認くん",
       })
       .count(),
     "ピンが少なくとも1つ存在する",
