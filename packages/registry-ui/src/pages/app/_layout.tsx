@@ -11,7 +11,6 @@ const LayoutComponent: React.FC<LayoutProps> = ({ children }) => (
   <>
     <AppBar />
     <Outlet />
-    {children}
   </>
 );
 
