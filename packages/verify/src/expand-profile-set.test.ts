@@ -16,6 +16,31 @@ describe("expand-profiles", async () => {
     mockFetch.clearAll();
   });
 
+  test("expand empty Profile Set", async () => {
+    const profiles: JsonLdDocument = [];
+    const result = await expandProfileSet(profiles);
+    expect(result).toEqual({
+      ad: [],
+      advertisers: [],
+      publishers: [],
+      main: [],
+      profile: [],
+      website: [],
+    });
+  });
+  test("expand empty Profile Set", async () => {
+    const profiles: JsonLdDocument = {};
+    const result = await expandProfileSet(profiles);
+    expect(result).toEqual({
+      ad: [],
+      advertisers: [],
+      publishers: [],
+      main: [],
+      profile: [],
+      website: [],
+    });
+  });
+
   test("expand Profile Set JSON-LD Document", async () => {
     const profiles: JsonLdDocument = [
       {
