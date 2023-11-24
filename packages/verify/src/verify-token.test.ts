@@ -20,7 +20,7 @@ test("verify OP Token", async () => {
   const { publicKey, privateKey } = await generateKey();
   const decoder = TokenDecoder(null);
   const keys = LocalKeys({ keys: [publicKey] });
-  const verifier = TokenVerifier(keys, "http://localhost:8080", decoder);
+  const verifier = TokenVerifier(keys, "example.org", decoder);
   const jwt = await signOp(op, privateKey);
   const result = await verifier(jwt);
   // @ts-expect-error assert
@@ -41,7 +41,7 @@ test("verify DP Token", async () => {
   const { publicKey, privateKey } = await generateKey();
   const decoder = TokenDecoder(null);
   const keys = LocalKeys({ keys: [publicKey] });
-  const verifier = TokenVerifier(keys, "http://localhost:8080", decoder);
+  const verifier = TokenVerifier(keys, "example.org", decoder);
   const jwt = await signDp(dp, privateKey);
   const result = await verifier(jwt);
   // @ts-expect-error assert
