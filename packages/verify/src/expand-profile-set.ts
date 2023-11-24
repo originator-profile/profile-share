@@ -32,7 +32,7 @@ const getValueOf = (value: { "@value": string }) => value["@value"];
 
 function Values(node: NodeObject) {
   function values<Key extends "advertiser" | "publisher" | "main" | "profile">(
-    key: Key
+    key: Key,
   ): string[] {
     return (
       (node[`${context}${key}`] ?? [])
@@ -88,12 +88,12 @@ export function expandProfilePairs(profiles: JsonLdDocument) {
   };
 
   const websiteProfilePairs = (profiles as JsonLdDocument[]).filter(
-    isWebsiteProfilePair
+    isWebsiteProfilePair,
   ) as WebsiteProfilePair[];
   const website = websiteProfilePairs.map((doc) => doc.website);
 
   const adProfilePairs = (profiles as JsonLdDocument[]).filter(
-    isAdProfilePair
+    isAdProfilePair,
   ) as AdProfilePair[];
   const ad = adProfilePairs.map((doc) => doc.ad);
 

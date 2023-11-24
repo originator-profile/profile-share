@@ -5,7 +5,7 @@ import { fetchWebsiteProfilePair } from "./fetch-website-profile-pair";
 function getEndpoints(doc: Document): string[] {
   const endpoints = [
     ...doc.querySelectorAll(
-      `link[rel="alternate"][type="application/ld+json"]`
+      `link[rel="alternate"][type="application/ld+json"]`,
     ),
   ].map((e) => new URL(e.getAttribute("href") ?? "", doc.location.href).href);
 
@@ -39,7 +39,7 @@ function getEmbeddedProfileSets(doc: Document): NodeObject[] {
  * @param doc Document オブジェクト
  */
 export async function fetchProfileSet(
-  doc: Document
+  doc: Document,
 ): Promise<JsonLdDocument | ProfilesFetchFailed> {
   let profiles: JsonLdDocument[] = [];
   try {
@@ -63,7 +63,7 @@ export async function fetchProfileSet(
         }
 
         return await res.json();
-      })
+      }),
     );
     profiles = profiles.concat(profileSetFromEndpoints);
   } catch (e) {
@@ -72,7 +72,7 @@ export async function fetchProfileSet(
         `プロファイルを取得できませんでした:\n${e.message}`,
         {
           cause: e,
-        }
+        },
       );
     } else {
       throw new Error("Unknown error", { cause: e });

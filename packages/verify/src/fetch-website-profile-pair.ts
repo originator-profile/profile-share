@@ -10,7 +10,7 @@ function getProfilePairUrl(origin: string) {
  * @param doc Document オブジェクト
  */
 export async function fetchWebsiteProfilePair(
-  doc: Document
+  doc: Document,
 ): Promise<JsonLdDocument | ProfilesFetchFailed> {
   const profilePairUrl = getProfilePairUrl(doc.location.origin);
   try {
@@ -21,7 +21,7 @@ export async function fetchWebsiteProfilePair(
       return json;
     } else {
       return new ProfilesFetchFailed(
-        `HTTP ステータスコード ${response.status}`
+        `HTTP ステータスコード ${response.status}`,
       );
     }
     // Profile Pair が見つからない場合はエラーにはしない。
@@ -32,7 +32,7 @@ export async function fetchWebsiteProfilePair(
         `プロファイルを取得できませんでした:\n${e.message}`,
         {
           cause: e,
-        }
+        },
       );
     } else {
       throw new Error("Unknown error", { cause: e });
