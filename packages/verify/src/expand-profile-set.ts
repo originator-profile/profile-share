@@ -2,11 +2,6 @@ import jsonld, { JsonLdDocument, NodeObject } from "jsonld";
 
 const context = "https://originator-profile.org/context#";
 
-interface Leaf {
-  "@value": string;
-  "@type": string;
-}
-
 interface ProfilePair {
   op: {
     iss: string[];
@@ -19,6 +14,16 @@ interface ProfilePair {
   };
 }
 
+interface WebsiteProfilePair {
+  "@context": string;
+  website: ProfilePair;
+}
+
+interface AdProfilePair {
+  "@context": string;
+  ad: ProfilePair;
+}
+
 function getNodeOf(key: string, node: NodeObject) {
   return node[`${context}${key}`];
 }
@@ -27,7 +32,7 @@ const getValueOf = (value: { "@value": string }) => value["@value"];
 
 function Values(node: NodeObject) {
   function values<Key extends "advertiser" | "publisher" | "main" | "profile">(
-    key: Key,
+    key: Key
   ): string[] {
     return (
       (node[`${context}${key}`] ?? [])
@@ -39,40 +44,62 @@ function Values(node: NodeObject) {
   return values;
 }
 
-function getProfilePair(node: NodeObject): ProfilePair {
-  const op = getNodeOf("op", node) as NodeObject;
-  const dp = getNodeOf("dp", node) as NodeObject;
-  const opProfiles = (getNodeOf("profile", op) as Leaf[])?.map(getValueOf);
-  const dpProfiles = (getNodeOf("profile", dp) as Leaf[])?.map(getValueOf);
-  const iss = (getNodeOf("iss", op) as Leaf[])?.map(getValueOf);
-  const sub = (getNodeOf("sub", op) as Leaf[])?.map(getValueOf);
-  const dpSub = (getNodeOf("sub", dp) as Leaf[])?.map(getValueOf);
-  return {
-    op: {
-      iss,
-      sub,
-      profiles: opProfiles,
-    },
-    dp: {
-      sub: dpSub,
-      profiles: dpProfiles,
-    },
-  };
-}
-
 function nodeToObj(node: NodeObject) {
   const values = Values(node);
 
-  const webSiteNode = getNodeOf("website", node);
-  const adNode = getNodeOf("ad", node);
+  // const webSiteNode = getNodeOf("website", node);
+  // const adNode = getNodeOf("ad", node);
 
   return {
     advertisers: values("advertiser"),
     publishers: values("publisher"),
     main: values("main"),
     profile: values("profile"),
-    website: webSiteNode && getProfilePair(webSiteNode as NodeObject),
-    ad: adNode && getProfilePair(adNode as NodeObject),
+  };
+}
+
+/**
+ * Profile Set と Profile Pair の配列の中から Profile Pair を取り出す
+ * @param profiles Profile Set の JSON-LD 表現
+ */
+export function expandProfilePairs(profiles: JsonLdDocument) {
+  const isWebsiteProfilePair = (doc: unknown) => {
+    return (
+      typeof doc === "object" &&
+      doc &&
+      "website" in doc &&
+      typeof doc.website === "object" &&
+      doc.website &&
+      "op" in doc.website &&
+      "dp" in doc.website
+    );
+  };
+
+  const isAdProfilePair = (doc: unknown) => {
+    return (
+      typeof doc === "object" &&
+      doc &&
+      "ad" in doc &&
+      typeof doc.ad === "object" &&
+      doc.ad &&
+      "op" in doc.ad &&
+      "dp" in doc.ad
+    );
+  };
+
+  const websiteProfilePairs = (profiles as JsonLdDocument[]).filter(
+    isWebsiteProfilePair
+  ) as WebsiteProfilePair[];
+  const website = websiteProfilePairs.map((doc) => doc.website);
+
+  const adProfilePairs = (profiles as JsonLdDocument[]).filter(
+    isAdProfilePair
+  ) as AdProfilePair[];
+  const ad = adProfilePairs.map((doc) => doc.ad);
+
+  return {
+    website,
+    ad,
   };
 }
 
@@ -81,23 +108,25 @@ function nodeToObj(node: NodeObject) {
  * @param profiles Profile Set の JSON-LD 表現
  */
 export async function expandProfileSet(profiles: JsonLdDocument) {
+  const profilePairs = expandProfilePairs(profiles);
   const expanded = await jsonld.expand(profiles);
   const res: {
     advertisers: string[];
     publishers: string[];
     main: string[];
     profile: string[];
-  } = { advertisers: [], publishers: [], main: [], profile: [] };
+    website: any[];
+    ad: any[];
+  } = {
+    advertisers: [],
+    publishers: [],
+    main: [],
+    profile: [],
+    website: profilePairs.website,
+    ad: profilePairs.ad,
+  };
   for (const node of expanded) {
     const obj = nodeToObj(node);
-    if (obj.website) {
-      res.profile.push(...obj.website.op.profiles);
-      res.profile.push(...obj.website.dp.profiles);
-    }
-    if (obj.ad) {
-      res.profile.push(...obj.ad.op.profiles);
-      res.profile.push(...obj.ad.dp.profiles);
-    }
     res.advertisers.push(...obj.advertisers);
     res.publishers.push(...obj.publishers);
     res.main.push(...obj.main);
