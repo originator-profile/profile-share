@@ -24,12 +24,6 @@ interface AdProfilePair {
   ad: ProfilePair;
 }
 
-function getNodeOf(key: string, node: NodeObject) {
-  return node[`${context}${key}`];
-}
-
-const getValueOf = (value: { "@value": string }) => value["@value"];
-
 function Values(node: NodeObject) {
   function values<Key extends "advertiser" | "publisher" | "main" | "profile">(
     key: Key,
@@ -46,9 +40,6 @@ function Values(node: NodeObject) {
 
 function nodeToObj(node: NodeObject) {
   const values = Values(node);
-
-  // const webSiteNode = getNodeOf("website", node);
-  // const adNode = getNodeOf("ad", node);
 
   return {
     advertisers: values("advertiser"),
