@@ -79,16 +79,12 @@ exports[`fetch-profiles > Profile Pair が存在するとき > 有効な Profile
   {
     "@context": "https://originator-profile.org/context.jsonld",
     "dp": {
-      "profiles": [
-        "sdp1...",
-      ],
+      "profile": "sdp1...",
       "sub": "ca729848-9265-48bf-8e33-887a43ba34b9",
     },
     "op": {
       "iss": "originator-profile.org",
-      "profiles": [
-        "sop1...",
-      ],
+      "profile": "sop1...",
       "sub": "example.com",
     },
   },
