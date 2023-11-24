@@ -60,7 +60,16 @@ function nodeToObj(node: NodeObject) {
 
 /**
  * Profile Set と Profile Pair の配列の中から Profile Pair を取り出す
- * @param profiles Profile Set の JSON-LD 表現
+ *
+ * @remarks
+ * トップレベルのプロパティが `website` または `ad` であるオブジェクトを Profile Pair とみなす。
+ * 将来的にはこれらのプロパティは Profile Set でも使われる可能性があるが、
+ * その場合は、この関数の条件判定をより厳しくするか、 JSON-LD を廃止するかして対応したい。
+ *
+ * オブジェクトのネストが多い構造を jsonld.expand() で展開した際に、
+ * 余分な Array が挟まって冗長だったため、この関数では Profile Pair を JSON-LD として
+ * 扱わないようにした。
+ * @param profiles Profile Set と Profile Pair の JSON-LD 表現
  */
 export function expandProfilePairs(profiles: JsonLdDocument) {
   const isWebsiteProfilePair = (doc: unknown) => {
@@ -123,6 +132,7 @@ export async function expandProfileSet(profiles: JsonLdDocument) {
     main: [],
     profile: [],
     website: profilePairs.website,
+    // TODO ad Profile Pair の使い方に合わせて返し方を検討して
     ad: profilePairs.ad,
   };
   for (const node of expanded) {
