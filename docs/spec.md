@@ -309,6 +309,12 @@ Signed Document Profile が利用可能なオリジンのリストを表明す�
 
 :::
 
+:::note
+
+オリジンの同一性は、仕様と実装の単純さを優先してバイト列の一致によってのみ確認します。[URL](https://url.spec.whatwg.org/#concept-url)のシリアライズに伴う正規化は、[opaque origin](https://html.spec.whatwg.org/multipage/browsers.html#concept-origin-opaque)では正規化不可能なのでおこなっていません。
+
+:::
+
 ### `dp` クレームの `item` プロパティ
 
 下記のオブジェクトの集合です。
