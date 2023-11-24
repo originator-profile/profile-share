@@ -8,7 +8,7 @@ import { expandProfileSet } from "./expand-profile-set";
 describe("expand-profiles", async () => {
   beforeEach(() => {
     mockGet("https://originator-profile.org/context.jsonld").willResolve(
-      context
+      context,
     );
   });
 
