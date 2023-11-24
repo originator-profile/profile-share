@@ -114,6 +114,72 @@ describe("expand-profiles", async () => {
     });
   });
 
+  test("expand multiple ad Profile Pair", async () => {
+    const profiles: JsonLdDocument = [
+      {
+        "@context": "https://originator-profile.org/context.jsonld",
+        ad: {
+          op: {
+            iss: "oprdev.originator-profile.org",
+            sub: "localhost",
+            profile: "sop1...",
+          },
+          dp: {
+            sub: "ca729848-9265-48bf-8e33-887a43ba34b9",
+            profile: "sdp1...",
+          },
+        },
+      },
+      {
+        "@context": "https://originator-profile.org/context.jsonld",
+        ad: {
+          op: {
+            iss: "oprdev.originator-profile.org",
+            sub: "localhost",
+            profile: "sop1...",
+          },
+          dp: {
+            sub: "ca729848-9265-48bf-8e33-887a43ba34b9",
+            profile: "sdp1...",
+          },
+        },
+      },
+    ];
+
+    const result = await expandProfileSet(profiles);
+    expect(result).toEqual({
+      ad: [
+        {
+          op: {
+            iss: "oprdev.originator-profile.org",
+            sub: "localhost",
+            profile: "sop1...",
+          },
+          dp: {
+            sub: "ca729848-9265-48bf-8e33-887a43ba34b9",
+            profile: "sdp1...",
+          },
+        },
+        {
+          op: {
+            iss: "oprdev.originator-profile.org",
+            sub: "localhost",
+            profile: "sop1...",
+          },
+          dp: {
+            sub: "ca729848-9265-48bf-8e33-887a43ba34b9",
+            profile: "sdp1...",
+          },
+        },
+      ],
+      advertisers: [],
+      publishers: [],
+      main: [],
+      profile: [],
+      website: [],
+    });
+  });
+
   test("expand one website Profile Pair and Profile Sets", async () => {
     const profiles: JsonLdDocument = [
       {
