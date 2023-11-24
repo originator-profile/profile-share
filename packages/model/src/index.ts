@@ -11,6 +11,7 @@ export { default as DpItem } from "./dp-item";
 export { default as DpVisibleText } from "./dp-visible-text";
 export { default as DpText } from "./dp-text";
 export { default as DpHtml } from "./dp-html";
+export { default as DpAllowedOrigins } from "./dp-allowed-origins";
 export { default as OgWebsite } from "./og-website";
 export { default as Jwks } from "./jwks";
 export { default as Jwk } from "./jwk";
