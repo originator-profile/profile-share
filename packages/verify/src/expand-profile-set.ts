@@ -62,7 +62,7 @@ function nodeToObj(node: NodeObject) {
  * 扱わないようにした。
  * @param profiles Profile Set と Profile Pair の JSON-LD 表現
  */
-export function expandProfilePairs(profiles: JsonLdDocument) {
+function expandProfilePairs(profiles: JsonLdDocument) {
   const isWebsiteProfilePair = (doc: unknown) => {
     return (
       typeof doc === "object" &&
