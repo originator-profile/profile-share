@@ -24,8 +24,6 @@ export async function fetchWebsiteProfilePair(
         `HTTP ステータスコード ${response.status}`,
       );
     }
-    // Profile Pair が見つからない場合はエラーにはしない。
-    // Profile Pair の設置は必須ではないため。
   } catch (e) {
     if (e instanceof Error) {
       return new ProfilesFetchFailed(
