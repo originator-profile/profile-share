@@ -6,7 +6,7 @@ import { JsonLdDocument } from "jsonld";
 import { ProfilesFetchFailed } from "./errors";
 import { fetchWebsiteProfilePair } from "./fetch-website-profile-pair";
 
-describe("fetch-profiles", async () => {
+describe("fetch-website-profile-pair", async () => {
   const profiles: JsonLdDocument = {
     "@context": "https://originator-profile.org/context.jsonld",
     website: {
