@@ -4,12 +4,12 @@ const context = "https://originator-profile.org/context#";
 
 interface ProfilePair {
   op: {
-    iss: string[];
-    sub: string[];
+    iss: string;
+    sub: string;
     profile: string;
   };
   dp: {
-    sub: string[];
+    sub: string;
     profile: string;
   };
 }
