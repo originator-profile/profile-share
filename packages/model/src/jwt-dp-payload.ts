@@ -1,5 +1,6 @@
 import { FromSchema } from "json-schema-to-ts";
 import DpItem from "./dp-item";
+import DpAllowedOrigins from "./dp-allowed-origins";
 
 const JwtDpPayload = {
   title: "DP JWT Claims Set object",
@@ -33,6 +34,7 @@ const JwtDpPayload = {
       type: "object",
       properties: {
         item: { type: "array", items: DpItem },
+        allowedOrigins: DpAllowedOrigins,
       },
       required: ["item"],
       additionalProperties: false,
