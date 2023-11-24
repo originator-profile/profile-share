@@ -87,12 +87,15 @@ function expandProfilePairs(profiles: JsonLdDocument) {
     );
   };
 
-  const websiteProfilePairs = (profiles as JsonLdDocument[]).filter(
+  // profiles が配列でなかったときに [] で包んで配列にする
+  const profileArray = Array.isArray(profiles) ? profiles : [profiles];
+
+  const websiteProfilePairs = (profileArray as JsonLdDocument[]).filter(
     isWebsiteProfilePair,
   ) as WebsiteProfilePair[];
   const website = websiteProfilePairs.map((doc) => doc.website);
 
-  const adProfilePairs = (profiles as JsonLdDocument[]).filter(
+  const adProfilePairs = (profileArray as JsonLdDocument[]).filter(
     isAdProfilePair,
   ) as AdProfilePair[];
   const ad = adProfilePairs.map((doc) => doc.ad);
