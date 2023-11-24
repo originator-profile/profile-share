@@ -39,3 +39,19 @@ export async function updateAccount(
     body: JSON.stringify(data),
   });
 }
+
+/**
+ * 組織のロゴを取得するカスタムフック
+ */
+export function useAccountLogo(accountId: string | null) {
+  const { getAccessTokenSilently } = useAuth0();
+  const { value: token = null } = useAsync(async () => {
+    return getAccessTokenSilently();
+  });
+
+  return useSWR(
+    token &&
+      accountId && { url: `/internal/accounts/${accountId}/logos/`, token },
+    fetcher<{ url: string }>,
+  );
+}

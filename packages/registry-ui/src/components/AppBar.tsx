@@ -74,22 +74,19 @@ export default function AppBar({ className }: Props) {
     none: "/",
   };
   return (
-    <header
-      className={clsx(
-        "flex gap-2 justify-between items-center bg-black",
-        className,
-      )}
-    >
-      <Link to={link[account?.roleValue ?? "none"]}>
-        <Image
-          className="px-2"
-          placeholderSrc={logoDark}
-          alt="Originator Profile"
-          width={140}
-          height={30}
-        />
-      </Link>
-      <UserProfile />
+    <header className={clsx("bg-black", className)}>
+      <div className="max-w-5xl px-4 mx-auto flex gap-2 justify-between items-center">
+        <Link to={link[account?.roleValue ?? "none"]}>
+          <Image
+            className="px-2"
+            placeholderSrc={logoDark}
+            alt="Originator Profile"
+            width={140}
+            height={30}
+          />
+        </Link>
+        <UserProfile />
+      </div>
     </header>
   );
 }
