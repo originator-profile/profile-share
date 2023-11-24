@@ -21,7 +21,8 @@ test("verify OP Token", async () => {
   const { publicKey, privateKey } = await generateKey();
   const decoder = TokenDecoder(null);
   const keys = LocalKeys({ keys: [publicKey] });
-  const verifier = TokenVerifier(keys, "example.org", decoder);
+  const origin = "https://example.com";
+  const verifier = TokenVerifier(keys, "example.org", decoder, origin);
   const jwt = await signOp(op, privateKey);
   const result = await verifier(jwt);
   // @ts-expect-error assert
@@ -42,7 +43,8 @@ test("OP Token の issuer が検証者にとって未知ならば検証に失敗
   const { publicKey, privateKey } = await generateKey();
   const decoder = TokenDecoder(null);
   const keys = LocalKeys({ keys: [publicKey] });
-  const verifier = TokenVerifier(keys, "example.org", decoder);
+  const origin = "https://example.com";
+  const verifier = TokenVerifier(keys, "example.org", decoder, origin);
   const jwt = await signOp(op, privateKey);
   const result = await verifier(jwt);
   expect(result).toBeInstanceOf(ProfileTokenVerifyFailed);
@@ -58,15 +60,39 @@ test("verify DP Token", async () => {
     issuer: "example.com",
     subject: "https://example.com/article/42",
     item: [],
+    allowedOrigins: ["https://example.com"],
   };
   const { publicKey, privateKey } = await generateKey();
   const decoder = TokenDecoder(null);
   const keys = LocalKeys({ keys: [publicKey] });
-  const verifier = TokenVerifier(keys, "example.com", decoder);
+  const origin = "https://example.com";
+  const verifier = TokenVerifier(keys, "example.com", decoder, origin);
   const jwt = await signDp(dp, privateKey);
   const result = await verifier(jwt);
   // @ts-expect-error assert
   expect(result.dp).toEqual(dp);
+});
+
+test("DP Token の利用可能なオリジンに対象とするオリジンが含まれないならば検証に失敗", async () => {
+  const iat = getUnixTime(new Date());
+  const exp = getUnixTime(addYears(new Date(), 10));
+  const dp: Dp = {
+    type: "dp",
+    issuedAt: fromUnixTime(iat).toISOString(),
+    expiredAt: fromUnixTime(exp).toISOString(),
+    issuer: "example.com",
+    subject: "https://example.com/article/42",
+    item: [],
+    allowedOrigins: ["https://example.com"],
+  };
+  const { publicKey, privateKey } = await generateKey();
+  const decoder = TokenDecoder(null);
+  const keys = LocalKeys({ keys: [publicKey] });
+  const evilOrigin = "https://evil.example.com";
+  const verifier = TokenVerifier(keys, "example.com", decoder, evilOrigin);
+  const jwt = await signDp(dp, privateKey);
+  const result = await verifier(jwt);
+  expect(result).instanceOf(ProfileTokenVerifyFailed);
 });
 
 test("DP Token の issuer が検証者にとって未知ならば検証に失敗", async () => {
@@ -83,7 +109,8 @@ test("DP Token の issuer が検証者にとって未知ならば検証に失敗
   const { publicKey, privateKey } = await generateKey();
   const decoder = TokenDecoder(null);
   const keys = LocalKeys({ keys: [publicKey] });
-  const verifier = TokenVerifier(keys, "example.com", decoder);
+  const origin = "https://example.com";
+  const verifier = TokenVerifier(keys, "example.com", decoder, origin);
   const jwt = await signDp(dp, privateKey);
   const result = await verifier(jwt);
   expect(result).toBeInstanceOf(ProfileTokenVerifyFailed);

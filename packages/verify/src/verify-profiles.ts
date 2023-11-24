@@ -29,6 +29,7 @@ type Token = ReturnType<typeof getToken>;
  * @param registryKeys OPレジストリの公開鍵
  * @param registry OPレジストリ
  * @param validator ペイロード確認のためのバリデーター (null: 無効)
+ * @param origin 対象とするオリジン
  * @return 検証者
  */
 export function ProfilesVerifier(
@@ -36,10 +37,11 @@ export function ProfilesVerifier(
   registryKeys: Keys,
   registry: string,
   validator: SignedProfileValidator | null,
+  origin: URL["origin"],
 ) {
   const results = new Map<Token | symbol, VerifyResult>();
   const decoder = TokenDecoder(validator);
-  const opVerifier = TokenVerifier(registryKeys, registry, decoder);
+  const opVerifier = TokenVerifier(registryKeys, registry, decoder, origin);
   const opTokens: Array<{ op: true; payload: JwtOpPayload; jwt: string }> = [];
   const dpTokens: Array<{ dp: true; payload: JwtDpPayload; jwt: string }> = [];
 
@@ -92,7 +94,7 @@ export function ProfilesVerifier(
       const subject = res.payload.sub ?? "";
       const jwks = "op" in res ? res.op.jwks : undefined;
       const keys = LocalKeys(jwks ?? { keys: [] });
-      const dpVerifier = TokenVerifier(keys, subject, decoder);
+      const dpVerifier = TokenVerifier(keys, subject, decoder, origin);
       const verify = async (jwt: string) => {
         const dp = await dpVerifier(jwt);
         if (dp instanceof ProfileGenericError) {

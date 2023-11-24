@@ -72,7 +72,8 @@ describe("複数のSigned Document Profilesが存在する場合", async () => {
     const keys = RemoteKeys(
       new URL("http://localhost:8080/.well-known/jwks.json"),
     );
-    const verify = ProfilesVerifier({ profile }, keys, registry, null);
+    const origin = "http://localhost:8080";
+    const verify = ProfilesVerifier({ profile }, keys, registry, null, origin);
     const verifyResults = await verify();
     verifyResults.forEach((result) => {
       expect(result).not.toBeInstanceOf(Error);

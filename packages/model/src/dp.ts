@@ -1,5 +1,6 @@
 import { FromSchema } from "json-schema-to-ts";
 import DpItem from "./dp-item";
+import DpAllowedOrigins from "./dp-allowed-origins";
 
 const Dp = {
   title: "Document Profile",
@@ -31,6 +32,7 @@ const Dp = {
       type: "array",
       items: DpItem,
     },
+    allowedOrigins: DpAllowedOrigins,
   },
   required: ["type", "issuer", "subject", "issuedAt", "expiredAt", "item"],
   additionalProperties: false,
