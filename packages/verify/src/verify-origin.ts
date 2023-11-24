@@ -1,9 +1,9 @@
 import { JwtDpPayload } from "@originator-profile/model";
 
 /**
- * 対象のオリジンで利用可能な Dp ペイロードの検証
+ * 対象のオリジンで利用可能な Dp Token ペイロードの検証
  * @param origin 対象とするオリジン
- * @param payload Dp ペイロード
+ * @param payload Dp Token ペイロード
  * @return 検証結果: allowedOrigins プロパティに`*`かオリジンが含まれていれば true、それ以外ならば false
  */
 export function verifyOrigin(
