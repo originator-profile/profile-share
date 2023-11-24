@@ -93,6 +93,7 @@ export default function Debugger() {
       RemoteKeys(jwksEndpoint),
       registry,
       null,
+      document.location.origin,
     )();
     setValues((values) => ({ ...values, results }));
   }

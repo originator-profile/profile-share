@@ -33,10 +33,12 @@ describe("verify-profiles", async () => {
     issuer: "example.com",
     subject: "https://example.com/article/42",
     item: [],
+    allowedOrigins: ["https://example.com"],
   };
   const opToken = await signOp(op, certKeys.privateKey);
   const dpToken = await signDp(dp, subKeys.privateKey);
   const registryKeys = LocalKeys({ keys: [certKeys.publicKey] });
+  const origin = "https://example.com";
 
   test("Verify Profiles", async () => {
     const verifier = ProfilesVerifier(
@@ -44,6 +46,7 @@ describe("verify-profiles", async () => {
       registryKeys,
       op.issuer,
       null,
+      origin,
     );
     const verified = await verifier();
     expect(verified[0]).toMatchObject({ op });
@@ -58,6 +61,7 @@ describe("verify-profiles", async () => {
       registryKeys,
       op.issuer,
       null,
+      origin,
     );
     const results = await verifier();
     expect(results[0]).instanceOf(ProfileTokenVerifyFailed);
@@ -83,6 +87,7 @@ describe("verify-profiles", async () => {
       registryKeys,
       op.issuer,
       signedProfileValidator,
+      origin,
     );
     const results = await verifier();
     expect(results[0]).instanceOf(ProfileClaimsValidationFailed);
@@ -105,6 +110,7 @@ describe("verify-profiles", async () => {
       registryKeys,
       op.issuer,
       null,
+      origin,
     );
     const results = await verifier();
     expect(results[1]).instanceOf(ProfileTokenVerifyFailed);
@@ -116,6 +122,7 @@ describe("verify-profiles", async () => {
       registryKeys,
       op.issuer,
       null,
+      origin,
     );
     const results = await verifier();
     expect(results.length).toBe(3);
@@ -129,6 +136,7 @@ describe("verify-profiles", async () => {
       registryKeys,
       op.issuer,
       null,
+      origin,
     );
     const results = await verifier();
     expect(results[0]).instanceOf(ProfilesVerifyFailed);
@@ -142,6 +150,7 @@ describe("verify-profiles", async () => {
       registryKeys,
       op.issuer,
       null,
+      origin,
     );
     const results = await verifier();
     expect(results[0]).instanceOf(ProfilesVerifyFailed);
