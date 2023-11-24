@@ -202,11 +202,11 @@ describe("fetch-profiles", async () => {
         op: {
           iss: "originator-profile.org",
           sub: "example.com",
-          profiles: ["sop1..."],
+          profile: "sop1...",
         },
         dp: {
           sub: "ca729848-9265-48bf-8e33-887a43ba34b9",
-          profiles: ["sdp1..."],
+          profile: "sdp1...",
         },
       });
       mockGet("https://example.com/1/ps.json").willResolve({

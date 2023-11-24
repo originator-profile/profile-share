@@ -6,11 +6,11 @@ interface ProfilePair {
   op: {
     iss: string[];
     sub: string[];
-    profiles: string[];
+    profile: string;
   };
   dp: {
     sub: string[];
-    profiles: string[];
+    profile: string;
   };
 }
 
