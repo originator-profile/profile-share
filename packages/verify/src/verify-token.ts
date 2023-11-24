@@ -39,8 +39,7 @@ export function TokenVerifier(
       !verifyOrigin(origin, decoded.payload)
     )
       return new ProfileTokenVerifyFailed("Unavailable origin", decoded);
-    const verifyOptions = isJwtOpPayload(decoded) ? { issuer } : {};
-    const verified = await jwtVerify(jwt, keys, verifyOptions).catch(
+    const verified = await jwtVerify(jwt, keys, { issuer }).catch(
       (e: JOSEError) => e,
     );
     if (verified instanceof Error) {
