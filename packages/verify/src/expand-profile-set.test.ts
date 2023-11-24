@@ -42,7 +42,7 @@ describe("expand-profiles", async () => {
     });
   });
 
-  test("expand website Profile Pair", async () => {
+  test("expand one website Profile Pair", async () => {
     const profiles: JsonLdDocument = [
       {
         "@context": "https://originator-profile.org/context.jsonld",
@@ -55,20 +55,6 @@ describe("expand-profiles", async () => {
           dp: {
             sub: "ca729848-9265-48bf-8e33-887a43ba34b9",
             profile: "sdp1...",
-          },
-        },
-      },
-      {
-        "@context": "https://originator-profile.org/context.jsonld",
-        website: {
-          op: {
-            iss: "oprdev.originator-profile.org",
-            sub: "localhost",
-            profile: "sop2...",
-          },
-          dp: {
-            sub: "ca729848-9265-48bf-8e33-887a43ba34b9",
-            profile: "sdp2...",
           },
         },
       },
@@ -93,15 +79,57 @@ describe("expand-profiles", async () => {
             profile: "sdp1...",
           },
         },
+      ],
+    });
+  });
+
+  test("expand one Profile Pair and Profile Sets", async () => {
+    const profiles: JsonLdDocument = [
+      {
+        "@context": "https://originator-profile.org/context.jsonld",
+        website: {
+          op: {
+            iss: "oprdev.originator-profile.org",
+            sub: "localhost",
+            profile: "sop1...",
+          },
+          dp: {
+            sub: "ca729848-9265-48bf-8e33-887a43ba34b9",
+            profile: "sdp1...",
+          },
+        },
+      },
+      {
+        "@context": "https://originator-profile.org/context.jsonld",
+        advertiser: [],
+        publisher: "example.com",
+        main: "example.com",
+        profile: ["sop1...", "sdp1..."],
+      },
+      {
+        "@context": "https://originator-profile.org/context.jsonld",
+        advertiser: "example",
+        profile: ["sop2...", "sdp2..."],
+      },
+    ];
+
+    const result = await expandProfileSet(profiles);
+    expect(result).toEqual({
+      ad: [],
+      advertisers: ["example"],
+      publishers: ["example.com"],
+      main: ["example.com"],
+      profile: ["sop1...", "sdp1...", "sop2...", "sdp2..."],
+      website: [
         {
           op: {
             iss: "oprdev.originator-profile.org",
             sub: "localhost",
-            profile: "sop2...",
+            profile: "sop1...",
           },
           dp: {
             sub: "ca729848-9265-48bf-8e33-887a43ba34b9",
-            profile: "sdp2...",
+            profile: "sdp1...",
           },
         },
       ],
