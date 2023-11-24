@@ -148,13 +148,15 @@ Originator Profile レジストリサーバー-->>検証者: Originator Profile 
 
 検証者->>検証者: Signed Originator Profile の署名を検証
 検証者->>検証者: Signed Document Profile を抽出
+検証者->>検証者: Signed Document Profile の利用可能なオリジンを検証
 検証者->>検証者: Signed Document Profile の署名を検証
 ```
 
 1. HTML 文書の中に含まれる `<script>` 要素または `<link>` 要素によって表明された URL にアクセスし Profile Set を取得
 2. Originator Profile を検証
 3. Profile Set の `profile` プロパティの中から Signed Document Profile を抽出
-4. Signed Document Profile の署名を検証
+4. Signed Document Profile の利用可能なオリジンを検証
+5. Signed Document Profile の署名を検証
 
 :::note
 
@@ -284,7 +286,8 @@ Signed Document Profile ならば、必ずその組織の Signed Originator Prof
           "jws": "eyJhbGciOiJIUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..0rtsrVk5MGzQx-Lvf6y-0i74Wx3n7gExd7QLCTDMbuU"
         }
       }
-    ]
+    ],
+    "allowedOrigins": ["https://example.com"]
   }
 }
 ```
@@ -292,6 +295,18 @@ Signed Document Profile ならば、必ずその組織の Signed Originator Prof
 ### `jwks` プロパティ
 
 Signed Document Profile のためのプロパティです。
+
+### `allowedOrigins` プロパティ
+
+Signed Document Profile が利用可能なオリジンのリストを表明するためのプロパティです。
+必ずリストに列挙されたオリジンに `*` か、アクセスしたHTML 文書のオリジンが含まれていなければなりません。
+リストに `*` を含むとき、すべてのオリジンでの利用を許可します。
+
+:::note
+
+`allowedOrigins` プロパティ未定義時点の仕様との互換性をもたせる目的で、`allowedOrigins` プロパティがない場合は、すべてのオリジンでの利用を許可しているものとみなします。
+
+:::
 
 ### `dp` クレームの `item` プロパティ
 
