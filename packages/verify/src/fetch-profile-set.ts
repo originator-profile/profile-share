@@ -42,14 +42,11 @@ export async function fetchProfileSet(
   doc: Document,
 ): Promise<JsonLdDocument | ProfilesFetchFailed> {
   let profiles: JsonLdDocument[] = [];
-  try {
-    const websiteProfilePair = await fetchWebsiteProfilePair(doc);
-    if (!(websiteProfilePair instanceof ProfilesFetchFailed)) {
-      profiles.push(websiteProfilePair);
-    }
-  } catch (e) {
-    // website Profile Pair の設置は任意のため、エラーは無視する。
+  const websiteProfilePair = await fetchWebsiteProfilePair(doc);
+  if (!(websiteProfilePair instanceof ProfilesFetchFailed)) {
+    profiles.push(websiteProfilePair);
   }
+  // website Profile Pair の設置は任意のため、 ProfilesFetchFailed の場合は無視する。
   profiles = profiles.concat(getEmbeddedProfileSets(doc));
   try {
     const profileEndpoints = getEndpoints(doc);
