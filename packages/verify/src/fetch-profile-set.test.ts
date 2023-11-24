@@ -199,14 +199,16 @@ describe("fetch-profiles", async () => {
     beforeEach(() => {
       mockGet("https://example.com/.well-known/pp.json").willResolve({
         "@context": "https://originator-profile.org/context.jsonld",
-        op: {
-          iss: "originator-profile.org",
-          sub: "example.com",
-          profile: "sop1...",
-        },
-        dp: {
-          sub: "ca729848-9265-48bf-8e33-887a43ba34b9",
-          profile: "sdp1...",
+        website: {
+          op: {
+            iss: "originator-profile.org",
+            sub: "example.com",
+            profile: "sop1...",
+          },
+          dp: {
+            sub: "ca729848-9265-48bf-8e33-887a43ba34b9",
+            profile: "sdp1...",
+          },
         },
       });
       mockGet("https://example.com/1/ps.json").willResolve({
