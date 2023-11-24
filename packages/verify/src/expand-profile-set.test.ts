@@ -8,7 +8,7 @@ import { expandProfileSet } from "./expand-profile-set";
 describe("expand-profiles", async () => {
   beforeEach(() => {
     mockGet("https://originator-profile.org/context.jsonld").willResolve(
-      context,
+      context
     );
   });
 
@@ -28,15 +28,21 @@ describe("expand-profiles", async () => {
       website: [],
     });
   });
-  test("expand empty Profile Set", async () => {
-    const profiles: JsonLdDocument = {};
+  test("expand non-array Profile Set", async () => {
+    const profiles: JsonLdDocument = {
+      "@context": "https://originator-profile.org/context.jsonld",
+      advertiser: [],
+      publisher: "example.com",
+      main: "example.com",
+      profile: ["sop1...", "sdp1..."],
+    };
     const result = await expandProfileSet(profiles);
     expect(result).toEqual({
       ad: [],
       advertisers: [],
-      publishers: [],
-      main: [],
-      profile: [],
+      publishers: ["example.com"],
+      main: ["example.com"],
+      profile: ["sop1...", "sdp1..."],
       website: [],
     });
   });
