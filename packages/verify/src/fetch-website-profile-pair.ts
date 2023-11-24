@@ -1,4 +1,4 @@
-import { JsonLdDocument, NodeObject } from "jsonld";
+import { JsonLdDocument } from "jsonld";
 import { ProfilesFetchFailed } from "./errors";
 
 function getProfilePairUrl(origin: string) {
