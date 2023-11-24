@@ -31,7 +31,7 @@ export function TokenVerifier(
   async function verifyToken(jwt: string): Promise<VerifyTokenResult> {
     const decoded = decoder(jwt);
     if (decoded instanceof Error) return decoded;
-    const verifyOptions = isJwtOpPayload(decoded) ? { issuer } : {};
+    const verifyOptions = isJwtOpPayload(decoded.payload) ? { issuer } : {};
     const verified = await jwtVerify(jwt, keys, verifyOptions).catch(
       (e: JOSEError) => e,
     );
