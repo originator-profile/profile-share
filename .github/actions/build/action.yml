@@ -3,7 +3,7 @@ description: Build
 runs:
   using: composite
   steps:
-    - run: yarn build
+    - run: pnpm build
       shell: bash
     - uses: actions/upload-artifact@v3
       with:
