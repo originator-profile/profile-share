@@ -114,7 +114,7 @@ describe("expand-profiles", async () => {
     });
   });
 
-  test("expand one Profile Pair and Profile Sets", async () => {
+  test("expand one website Profile Pair and Profile Sets", async () => {
     const profiles: JsonLdDocument = [
       {
         "@context": "https://originator-profile.org/context.jsonld",
