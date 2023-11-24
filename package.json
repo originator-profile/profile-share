@@ -13,9 +13,9 @@
     "test": "turbo run test",
     "lint": "turbo run lint",
     "format": "prettier --write .",
-    "update": "run-s update:{npm,dedupe}",
-    "update:npm": "npm-check-updates --deep --upgrade",
-    "update:dedupe": "yarn-deduplicate",
+    "update": "run-s update:pnpm update:dedupe",
+    "update:pnpm": "pnpm --recursive update --latest",
+    "update:dedupe": "pnpm dedupe",
     "docs": "run-s build docs:{ts,build}",
     "docs:ts": "typedoc",
     "docs:build": "docusaurus build --out-dir pages",
@@ -36,8 +36,7 @@
     "react": "17.0.2",
     "start-server-and-test": "^2.0.1",
     "turbo": "1.10.16",
-    "typedoc": "^0.25.2",
-    "yarn-deduplicate": "^6.0.2"
+    "typedoc": "^0.25.2"
   },
   "engines": {
     "node": "^18.18.0 || ^20.5.1"
