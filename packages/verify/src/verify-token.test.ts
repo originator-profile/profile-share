@@ -62,9 +62,29 @@ test("verify DP Token", async () => {
   const { publicKey, privateKey } = await generateKey();
   const decoder = TokenDecoder(null);
   const keys = LocalKeys({ keys: [publicKey] });
-  const verifier = TokenVerifier(keys, "example.org", decoder);
+  const verifier = TokenVerifier(keys, "example.com", decoder);
   const jwt = await signDp(dp, privateKey);
   const result = await verifier(jwt);
   // @ts-expect-error assert
   expect(result.dp).toEqual(dp);
+});
+
+test("DP Token の issuer が検証者にとって未知ならば検証に失敗", async () => {
+  const iat = getUnixTime(new Date());
+  const exp = getUnixTime(addYears(new Date(), 10));
+  const dp: Dp = {
+    type: "dp",
+    issuedAt: fromUnixTime(iat).toISOString(),
+    expiredAt: fromUnixTime(exp).toISOString(),
+    issuer: "evil.example.com",
+    subject: "https://example.com/article/42",
+    item: [],
+  };
+  const { publicKey, privateKey } = await generateKey();
+  const decoder = TokenDecoder(null);
+  const keys = LocalKeys({ keys: [publicKey] });
+  const verifier = TokenVerifier(keys, "example.com", decoder);
+  const jwt = await signDp(dp, privateKey);
+  const result = await verifier(jwt);
+  expect(result).toBeInstanceOf(ProfileTokenVerifyFailed);
 });
