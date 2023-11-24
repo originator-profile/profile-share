@@ -115,8 +115,8 @@ export async function expandProfileSet(profiles: JsonLdDocument) {
     publishers: string[];
     main: string[];
     profile: string[];
-    website: any[];
-    ad: any[];
+    website: ProfilePair[];
+    ad: ProfilePair[];
   } = {
     advertisers: [],
     publishers: [],
