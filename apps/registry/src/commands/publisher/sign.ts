@@ -30,11 +30,11 @@ imageプロパティの画像リソースは拡張機能Webページから参照
 
 {
   "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc7",
-  "url": "https://example.com/",
   "location": "h1",
-  "bodyFormat": "visibleText",
   "body": "OP 確認くん",
 
+  "url": "https://example.com/",
+  "bodyFormat": "visibleText",
   "title": "OP 確認くん",
   "image": "https://example.com/image.png",
   "description": "このウェブページの説明です。",
