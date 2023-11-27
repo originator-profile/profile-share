@@ -15,6 +15,7 @@ test("signDp() return a valid JWT", async () => {
     issuer: "example.com",
     subject: "https://example.com/article/42",
     item: [],
+    allowedOrigins: ["https://example.com"],
   };
   const { publicKey, privateKey } = await generateKey();
   const jwt = await signDp(dp, privateKey);
@@ -23,6 +24,7 @@ test("signDp() return a valid JWT", async () => {
   expect(valid).toMatchObject({
     "https://originator-profile.org/dp": {
       item: dp.item,
+      allowedOrigins: dp.allowedOrigins,
     },
   });
 });

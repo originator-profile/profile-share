@@ -23,6 +23,7 @@ export async function signDp(
   const payload: Pick<JwtDpPayload, "https://originator-profile.org/dp"> = {
     "https://originator-profile.org/dp": {
       item: dp.item,
+      allowedOrigins: dp.allowedOrigins,
     },
   };
   const privateKeyImported = await importJWK(privateKey, alg);
