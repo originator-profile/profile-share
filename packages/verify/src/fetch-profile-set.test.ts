@@ -194,4 +194,48 @@ describe("fetch-profiles", async () => {
       expect(result).toMatchSnapshot();
     });
   });
+
+  describe("Profile Pair が存在するとき", async () => {
+    beforeEach(() => {
+      mockGet("https://example.com/.well-known/pp.json").willResolve({
+        "@context": "https://originator-profile.org/context.jsonld",
+        website: {
+          op: {
+            iss: "originator-profile.org",
+            sub: "example.com",
+            profile: "sop1...",
+          },
+          dp: {
+            sub: "ca729848-9265-48bf-8e33-887a43ba34b9",
+            profile: "sdp1...",
+          },
+        },
+      });
+      mockGet("https://example.com/1/ps.json").willResolve({
+        "@context": "https://originator-profile.org/context.jsonld",
+        profiles: "{Signed Document Profile または Signed Originator Profile}",
+      });
+    });
+
+    test("有効な Profile Pair と Profile Set が得られる", async () => {
+      const window = new Window({ url: "https:/example.com" });
+      const profileEndpoints = ["https://example.com/1/ps.json"];
+      window.document.body.innerHTML = profileEndpoints
+        .map(
+          (endpoint) => `
+<link
+  href="${endpoint}"
+  rel="alternate"
+  type="application/ld+json"
+/>
+  `,
+        )
+        .join("");
+      const result = await fetchProfileSet(
+        window.document as unknown as Document,
+      );
+      expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
+      expect(result).toMatchSnapshot();
+    });
+  });
 });
