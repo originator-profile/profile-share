@@ -195,7 +195,7 @@ describe("fetch-profiles", async () => {
     });
   });
 
-  describe("Profile Pair が存在するとき", async () => {
+  describe("website Profile Pair が存在するとき", async () => {
     beforeEach(() => {
       mockGet("https://example.com/.well-known/pp.json").willResolve({
         "@context": "https://originator-profile.org/context.jsonld",
@@ -217,9 +217,58 @@ describe("fetch-profiles", async () => {
       });
     });
 
-    test("有効な Profile Pair と Profile Set が得られる", async () => {
+    test("有効な website Profile Pair と Profile Set が得られる", async () => {
       const window = new Window({ url: "https:/example.com" });
       const profileEndpoints = ["https://example.com/1/ps.json"];
+      window.document.body.innerHTML = profileEndpoints
+        .map(
+          (endpoint) => `
+<link
+  href="${endpoint}"
+  rel="alternate"
+  type="application/ld+json"
+/>
+  `,
+        )
+        .join("");
+      const result = await fetchProfileSet(
+        window.document as unknown as Document,
+      );
+      expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
+      expect(result).toMatchSnapshot();
+    });
+  });
+
+  describe("ad Profile Pair が存在するとき", async () => {
+    beforeEach(() => {
+      mockGet(
+        "https://ad.example.com/pps/9a96268b-a937-4468-8b4e-5dc488a7865f/pp.json",
+      ).willResolve({
+        "@context": "https://originator-profile.org/context.jsonld",
+        ad: {
+          op: {
+            iss: "originator-profile.org",
+            sub: "example.com",
+            profile: "sop1...",
+          },
+          dp: {
+            sub: "9a96268b-a937-4468-8b4e-5dc488a7865f",
+            profile: "sdp1...",
+          },
+        },
+      });
+      mockGet("https://example.com/1/ps.json").willResolve({
+        "@context": "https://originator-profile.org/context.jsonld",
+        profiles: "{Signed Document Profile または Signed Originator Profile}",
+      });
+    });
+
+    test("有効な ad Profile Pair と Profile Set が得られる", async () => {
+      const window = new Window({ url: "https:/example.com" });
+      const profileEndpoints = [
+        "https://ad.example.com/pps/9a96268b-a937-4468-8b4e-5dc488a7865f/pp.json",
+        "https://example.com/1/ps.json",
+      ];
       window.document.body.innerHTML = profileEndpoints
         .map(
           (endpoint) => `
