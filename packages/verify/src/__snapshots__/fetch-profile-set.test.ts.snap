@@ -73,3 +73,26 @@ exports[`fetch-profiles > <script>要素から Profile Set を取得する > <sc
   },
 ]
 `;
+
+exports[`fetch-profiles > Profile Pair が存在するとき > 有効な Profile Pair と Profile Set が得られる 1`] = `
+[
+  {
+    "@context": "https://originator-profile.org/context.jsonld",
+    "website": {
+      "dp": {
+        "profile": "sdp1...",
+        "sub": "ca729848-9265-48bf-8e33-887a43ba34b9",
+      },
+      "op": {
+        "iss": "originator-profile.org",
+        "profile": "sop1...",
+        "sub": "example.com",
+      },
+    },
+  },
+  {
+    "@context": "https://originator-profile.org/context.jsonld",
+    "profiles": "{Signed Document Profile または Signed Originator Profile}",
+  },
+]
+`;
