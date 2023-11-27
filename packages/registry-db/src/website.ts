@@ -6,7 +6,7 @@ import { getClient } from "./lib/prisma-client";
 
 export interface Website {
   id: string;
-  url: string;
+  url?: string;
   title?: string | null;
   image?: string | null;
   description?: string | null;
@@ -18,7 +18,7 @@ export interface Website {
   proofJws: string;
   accountId: string;
   categories?: Array<{ cat: string; cattax?: number; name?: string }>;
-  bodyFormat: string;
+  bodyFormat?: string;
 }
 
 export type WebsiteCreate = Omit<Website, "id"> & { id?: Website["id"] };
