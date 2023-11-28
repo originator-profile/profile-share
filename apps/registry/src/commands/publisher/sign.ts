@@ -96,7 +96,7 @@ imageプロパティの画像リソースは拡張機能Webページから参照
           }),
         },
       ],
-      allowedOrigins: input.allowedOrigins
+      allowedOrigins: input.allowedOrigins,
     } satisfies Dp;
     const sdp = await signDp(dp, privateKey);
     this.log(sdp);
