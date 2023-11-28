@@ -19,6 +19,7 @@ export interface Website {
   accountId: string;
   categories?: Array<{ cat: string; cattax?: number; name?: string }>;
   bodyFormat: string;
+  allowedOrigins?: string[];
 }
 
 export type WebsiteCreate = Omit<Website, "id"> & { id?: Website["id"] };
