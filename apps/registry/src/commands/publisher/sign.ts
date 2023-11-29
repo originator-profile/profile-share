@@ -66,12 +66,15 @@ imageプロパティの画像リソースは拡張機能Webページから参照
     const domainName = flags.id.toLowerCase().replace(/^dns:/, "");
     const inputBuffer = await fs.readFile(flags.input);
     const { body, ...input } = JSON.parse(inputBuffer.toString()) as Website & {
-      body: string;
+      body?: string;
     };
     const privateKey = flags.identity;
 
     // body に署名して proofJws パラメータを生成
-    const proofJws = await signBody(body, privateKey);
+    let proofJws = "";
+    if (body !== undefined) {
+      proofJws = await signBody(body, privateKey);
+    }
 
     const issuedAt = flags["issued-at"]
       ? new Date(flags["issued-at"])
