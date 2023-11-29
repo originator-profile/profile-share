@@ -103,12 +103,14 @@ imageプロパティの画像リソースは拡張機能Webページから参照
           }),
         },
         ...(flags.includevisibleText
-          ? [{
-              type: input.bodyFormat as "visibleText" | "text" | "html",
-              url: input.url,
-              location: input.location ?? undefined,
-              proof: { jws: proofJws },
-            }]
+          ? [
+              {
+                type: input.bodyFormat as "visibleText" | "text" | "html",
+                url: input.url,
+                location: input.location ?? undefined,
+                proof: { jws: proofJws },
+              },
+            ]
           : []),
       ],
       allowedOrigins: input.allowedOrigins,
