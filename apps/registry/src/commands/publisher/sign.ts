@@ -55,6 +55,10 @@ imageプロパティの画像リソースは拡張機能Webページから参照
       description: "発行日時 (ISO 8601)",
     }),
     "expired-at": expirationDate(),
+    "site-profile": Flags.boolean({
+      description: "出力にvisibleText型等を含めない",
+      default: false,
+    }),
   };
 
   async run(): Promise<void> {
@@ -62,12 +66,15 @@ imageプロパティの画像リソースは拡張機能Webページから参照
     const domainName = flags.id.toLowerCase().replace(/^dns:/, "");
     const inputBuffer = await fs.readFile(flags.input);
     const { body, ...input } = JSON.parse(inputBuffer.toString()) as Website & {
-      body: string;
+      body?: string;
     };
     const privateKey = flags.identity;
 
     // body に署名して proofJws パラメータを生成
-    const proofJws = await signBody(body, privateKey);
+    let proofJws = "";
+    if (body !== undefined) {
+      proofJws = await signBody(body, privateKey);
+    }
 
     const issuedAt = flags["issued-at"]
       ? new Date(flags["issued-at"])
@@ -98,13 +105,18 @@ imageプロパティの画像リソースは拡張機能Webページから参照
             "https://schema.org/dateModified": input.dateModified,
           }),
         },
-        {
-          type: input.bodyFormat as "visibleText" | "text" | "html",
-          url: input.url,
-          location: input.location ?? undefined,
-          proof: { jws: proofJws },
-        },
+        ...(flags["site-profile"]
+          ? []
+          : [
+              {
+                type: input.bodyFormat as "visibleText" | "text" | "html",
+                url: input.url,
+                location: input.location ?? undefined,
+                proof: { jws: proofJws },
+              },
+            ]),
       ],
+      allowedOrigins: input.allowedOrigins,
     } satisfies Dp;
     const sdp = await signDp(dp, privateKey);
     this.log(sdp);

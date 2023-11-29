@@ -487,7 +487,7 @@ Signed Document Profile (SDP) の生成
 ```
 USAGE
   $ profile-registry publisher:sign -i <value> --id <value> --input <value> [--issued-at <value>] [--expired-at
-    <value>]
+    <value>] [--site-profile]
 
 FLAGS
   -i, --identity=<value>  (required) プライベート鍵のファイルパス
@@ -495,6 +495,7 @@ FLAGS
   --id=<value>            (required) OP ID (ドメイン名)
   --input=<value>         (required) JSON file
   --issued-at=<value>     発行日時 (ISO 8601)
+  --site-profile          出力にvisibleText型等を含めない
 
 DESCRIPTION
   Signed Document Profile (SDP) の生成
