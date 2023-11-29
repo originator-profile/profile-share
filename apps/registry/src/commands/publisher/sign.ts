@@ -55,7 +55,7 @@ imageプロパティの画像リソースは拡張機能Webページから参照
       description: "発行日時 (ISO 8601)",
     }),
     "expired-at": expirationDate(),
-    includeContentProof : Flags.boolean({
+    "include-content-proof" : Flags.boolean({
       description: "出力にvisibleText型を含める",
       default: false,
     }),
@@ -102,7 +102,7 @@ imageプロパティの画像リソースは拡張機能Webページから参照
             "https://schema.org/dateModified": input.dateModified,
           }),
         },
-        ...(flags.includeContentProof 
+        ...(flags["include-content-proof"]
           ? [{
               type: input.bodyFormat as "visibleText" | "text" | "html",
               url: input.url,
