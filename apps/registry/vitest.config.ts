@@ -10,6 +10,7 @@ export default defineConfig(({ mode }) => {
           inline: ["@fastify/autoload"],
         },
       },
+      threads: false,
     },
     e2e: {
       dir: "e2e",
