@@ -6,7 +6,7 @@ import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import { expirationDate, privateKey } from "../../flags";
 import { Dp } from "@originator-profile/model";
-import { signDp } from "@originator-profile/sign";
+import { signBody, signDp } from "@originator-profile/sign";
 
 type Website = Omit<WebsiteType, "accountId" | "proofJws">;
 
@@ -55,16 +55,23 @@ imageプロパティの画像リソースは拡張機能Webページから参照
       description: "発行日時 (ISO 8601)",
     }),
     "expired-at": expirationDate(),
+    includevisibleText: Flags.boolean({
+      description: "出力にvisibleText型を含める",
+      default: false,
+    }),
   };
 
   async run(): Promise<void> {
     const { flags } = await this.parse(PublisherSign);
     const domainName = flags.id.toLowerCase().replace(/^dns:/, "");
     const inputBuffer = await fs.readFile(flags.input);
-    const { ...input } = JSON.parse(inputBuffer.toString()) as Website & {
+    const { body, ...input } = JSON.parse(inputBuffer.toString()) as Website & {
       body: string;
     };
     const privateKey = flags.identity;
+
+    // body に署名して proofJws パラメータを生成
+    const proofJws = await signBody(body, privateKey);
 
     const issuedAt = flags["issued-at"]
       ? new Date(flags["issued-at"])
@@ -95,8 +102,16 @@ imageプロパティの画像リソースは拡張機能Webページから参照
             "https://schema.org/dateModified": input.dateModified,
           }),
         },
+        ...(flags.includevisibleText
+          ? [{
+              type: input.bodyFormat as "visibleText" | "text" | "html",
+              url: input.url,
+              location: input.location ?? undefined,
+              proof: { jws: proofJws },
+            }]
+          : []),
       ],
-      allowedOrigins: input.allowedOrigins
+      allowedOrigins: input.allowedOrigins,
     } satisfies Dp;
     const sdp = await signDp(dp, privateKey);
     this.log(sdp);
