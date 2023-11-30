@@ -9,7 +9,7 @@ type Props = {
   credential: OpCredential;
   holder: OpHolder;
   certifier?: OpCertifier;
-  onClick(): void;
+  onClick(credential: OpCredential): void;
 };
 
 function CredentialSummary({
@@ -19,13 +19,14 @@ function CredentialSummary({
   certifier,
   onClick,
 }: Props) {
+  const handleClick = () => onClick(credential);
   return (
     <button
       className={clsx(
         "jumpu-card flex items-center gap-4 hover:bg-blue-50 px-4 py-3 rounded-lg",
         className,
       )}
-      onClick={onClick}
+      onClick={handleClick}
     >
       <Image
         src={credential.image}

@@ -4,6 +4,7 @@ export { default as Description } from "./Description";
 export { default as Header } from "./Header";
 export { default as HolderTable } from "./HolderTable";
 export { default as Image } from "./Image";
+export { default as Modal } from "./Modal";
 export { default as ProjectSummary } from "./ProjectSummary";
 export { default as ProjectTitle } from "./ProjectTitle";
 export { default as Roles } from "./Roles";

@@ -31,7 +31,7 @@ function CredentialDetail({
   const verificationType = getVerificationType(credential, holder);
 
   return (
-    <div className={clsx("jumpu-card p-4", className)}>
+    <div className={clsx("jumpu-card p-5 rounded-2xl", className)}>
       <Image
         className="mb-4"
         src={credential.image}
