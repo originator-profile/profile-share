@@ -56,7 +56,11 @@ imageプロパティの画像リソースは拡張機能Webページから参照
     }),
     "expired-at": expirationDate(),
     "site-profile": Flags.boolean({
-      description: "出力にvisibleText型等を含めない",
+      description: "出力にサイトプロファイルを使用する",
+      default: false,
+    }),
+    "ad-profile": Flags.boolean({
+      description: "出力に広告プロファイルを使用する",
       default: false,
     }),
   };
@@ -86,7 +90,25 @@ imageプロパティの画像リソースは拡張機能Webページから参照
       subject: input.id ?? crypto.randomUUID(),
       issuedAt: issuedAt.toISOString(),
       expiredAt: expiredAt.toISOString(),
-      item: [
+      item: flags["ad-profile"]
+      ? [
+        {
+          type: "advertisement",
+          ...flush({
+            url: input.url,
+            title: input.title,
+            image: input.image,
+            description: input.description,
+          }),
+        },
+        {
+          type: input.bodyFormat as "visibleText" | "text" | "html",
+          url: input.url,
+          location: input.location ?? undefined,
+          proof: { jws: proofJws },
+        },
+      ]
+      : [
         {
           type: "website",
           ...flush({
