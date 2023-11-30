@@ -93,3 +93,24 @@ export class ProfilesFetchFailed extends ProfileGenericError {
   }
   readonly code = ProfilesFetchFailed.code;
 }
+
+export class CertificationSystemValidationFailed extends ProfileGenericError {
+  static get code() {
+    return "ERR_CERTIFICATION_SYSTEM_VALIDATION_FAILED" as const;
+  }
+  readonly code = CertificationSystemValidationFailed.code;
+
+  /** 検証結果 */
+  result: {
+    errors?: ErrorObject[];
+    payload?: unknown;
+  };
+
+  constructor(
+    message: string,
+    result: CertificationSystemValidationFailed["result"],
+  ) {
+    super(message);
+    this.result = result;
+  }
+}
