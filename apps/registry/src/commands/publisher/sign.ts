@@ -59,10 +59,6 @@ imageプロパティの画像リソースは拡張機能Webページから参照
       description: "出力にサイトプロファイルを使用する",
       default: false,
     }),
-    "ad-profile": Flags.boolean({
-      description: "出力に広告プロファイルを使用する",
-      default: false,
-    }),
   };
 
   async run(): Promise<void> {
@@ -90,25 +86,7 @@ imageプロパティの画像リソースは拡張機能Webページから参照
       subject: input.id ?? crypto.randomUUID(),
       issuedAt: issuedAt.toISOString(),
       expiredAt: expiredAt.toISOString(),
-      item: flags["ad-profile"]
-      ? [
-        {
-          type: "advertisement",
-          ...flush({
-            url: input.url,
-            title: input.title,
-            image: input.image,
-            description: input.description,
-          }),
-        },
-        {
-          type: input.bodyFormat as "visibleText" | "text" | "html",
-          url: input.url,
-          location: input.location ?? undefined,
-          proof: { jws: proofJws },
-        },
-      ]
-      : [
+      item: [
         {
           type: "website",
           ...flush({
