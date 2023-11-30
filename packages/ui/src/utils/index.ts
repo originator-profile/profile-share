@@ -5,3 +5,4 @@ export { default as sortDps } from "./sort-dps";
 export { default as toProfile } from "./to-profile";
 export { default as useModal } from "./use-modal";
 export { default as useSanitizedHtml } from "./use-sanitized-html";
+export { default as useCertificationSystem } from "./use-certification-system";

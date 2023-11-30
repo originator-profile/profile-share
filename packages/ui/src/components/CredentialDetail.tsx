@@ -5,13 +5,16 @@ import {
   OpCertifier,
   OpVerifier,
 } from "@originator-profile/model";
+import { Icon } from "@iconify/react";
 import { expirationDateTimeLocaleFrom } from "@originator-profile/core";
 import { getVerificationType } from "../utils/credential";
-import Image from "../components/Image";
+import Image from "./Image";
 import Table from "./Table";
 import TableRow from "./TableRow";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
-import logomarkUrl from "../assets/logomark.svg";
+import useCertificationSystem from "../utils/use-certification-system";
+import range from "just-range";
+import useSanitizedHtml from "../utils/use-sanitized-html";
 
 type Props = {
   className?: string;
@@ -28,25 +31,46 @@ function CredentialDetail({
   certifier,
   verifier,
 }: Props) {
-  const verificationType = getVerificationType(credential, holder);
+  const { data } = useCertificationSystem(credential.url);
+  const description = useSanitizedHtml(data?.description);
 
   return (
     <div className={clsx("jumpu-card p-5 rounded-2xl", className)}>
-      <Image
-        className="mb-4"
-        src={credential.image}
-        placeholderSrc={placeholderLogoMainUrl}
-        alt=""
-        width={110}
-        height={70}
-      />
-      <div className="inline-flex items-center gap-2 bg-blue-50 px-2 py-1 mb-3 rounded-sm">
-        <img src={logomarkUrl} alt="" width={16} height={14} />
-        <p className="flex-1 font-bold text-blue-500 text-xs">
-          {verificationType}による認証です
-        </p>
-      </div>
-      <Table>
+      <header className="flex items-center gap-4 mb-4">
+        <Image
+          src={credential.image}
+          placeholderSrc={placeholderLogoMainUrl}
+          alt=""
+          width={60}
+          height={40}
+        />
+        <div>
+          <h2 className="text-xs font-bold mb-1.5">
+            {credential.name} {getVerificationType(credential, holder)}
+          </h2>
+          {certifier && (
+            <p className="text-xs text-gray-600">{certifier.name} 発行</p>
+          )}
+        </div>
+      </header>
+      {description ? (
+        <div
+          className="text-sm text-gray-600 mb-2"
+          dangerouslySetInnerHTML={{ __html: description }}
+        />
+      ) : (
+        <div className="animate-pulse flex flex-col gap-2 mb-2">
+          {range(0, 5).map((i) => (
+            <div
+              key={i}
+              className={clsx("bg-slate-200 rounded h-3", {
+                ["w-4/5"]: i === 4,
+              })}
+            />
+          ))}
+        </div>
+      )}
+      <Table className="mb-2">
         <TableRow header="資格名" data={credential.name} />
         <TableRow
           header="認証機関"
@@ -65,6 +89,24 @@ function CredentialDetail({
           data={expirationDateTimeLocaleFrom(credential.expiredAt)}
         />
       </Table>
+      {data ? (
+        <a
+          className="card border px-5 py-3 flex items-center justify-between gap-2.5 rounded-2xl"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={data.url}
+        >
+          <span className="flex flex-col gap-1">
+            <span className="text-xs text-gray-500">くわしくはこちら</span>
+            <span className="text-sm">{data.urlTitle}</span>
+          </span>
+          <Icon icon="fa6-solid:arrow-right" />
+        </a>
+      ) : (
+        <div className="animate-pulse">
+          <div className="bg-slate-200 rounded h-14 rounded-2xl" />
+        </div>
+      )}
     </div>
   );
 }
