@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
-import { OpHolder } from "@originator-profile/model";
-import { isOpCredential } from "@originator-profile/core";
+import { OpHolder, OpCertifier } from "@originator-profile/model";
+import { isOpCredential, isOpCertifier } from "@originator-profile/core";
 import {
   Image,
   Roles,
@@ -29,6 +29,9 @@ type Props = {
 };
 
 function Org({ op, holder, roles, paths }: Props) {
+  const certifiers = new Map<string, OpCertifier>(
+    op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
+  );
   const logo = holder.logos?.find(({ isMain }) => isMain);
   const credentials = op.item.filter(isOpCredential);
   return (
@@ -79,13 +82,14 @@ function Org({ op, holder, roles, paths }: Props) {
             この組織は認証を受けています
           </p>
         </div>
-        <ul className="mb-4 -mx-2">
+        <ul className="mb-4">
           {credentials.map((credential, index) => (
             <li className="mb-2" key={index}>
               <CredentialSummary
                 className="w-full"
                 credential={credential}
                 holder={holder}
+                certifier={certifiers.get(credential.certifier)}
                 onClick={() => {
                   // TODO: モーダル表示を実装して
                 }}
