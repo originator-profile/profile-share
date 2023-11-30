@@ -91,53 +91,53 @@ imageプロパティの画像リソースは拡張機能Webページから参照
       issuedAt: issuedAt.toISOString(),
       expiredAt: expiredAt.toISOString(),
       item: flags["ad-profile"]
-      ? [
-        {
-          type: "advertisement",
-          ...flush({
-            url: input.url,
-            title: input.title,
-            image: input.image,
-            description: input.description,
-          }),
-        },
-        {
-          type: input.bodyFormat as "visibleText" | "text" | "html",
-          url: input.url,
-          location: input.location ?? undefined,
-          proof: { jws: proofJws },
-        },
-      ]
-      : [
-        {
-          type: "website",
-          ...flush({
-            url: input.url,
-            title: input.title,
-            image: input.image,
-            description: input.description,
-            "https://schema.org/author": input.author,
-            category: input.categories?.map((category) => ({
-              cat: category.cat,
-              cattax: category.cattax,
-              name: category.name,
-            })),
-            "https://schema.org/editor": input.editor,
-            "https://schema.org/datePublished": input.datePublished,
-            "https://schema.org/dateModified": input.dateModified,
-          }),
-        },
-        ...(flags["site-profile"]
-          ? []
-          : [
-              {
-                type: input.bodyFormat as "visibleText" | "text" | "html",
+        ? [
+            {
+              type: "advertisement",
+              ...flush({
                 url: input.url,
-                location: input.location ?? undefined,
-                proof: { jws: proofJws },
-              },
-            ]),
-      ],
+                title: input.title,
+                image: input.image,
+                description: input.description,
+              }),
+            },
+            {
+              type: input.bodyFormat as "visibleText" | "text" | "html",
+              url: input.url,
+              location: input.location ?? undefined,
+              proof: { jws: proofJws },
+            },
+          ]
+        : [
+            {
+              type: "website",
+              ...flush({
+                url: input.url,
+                title: input.title,
+                image: input.image,
+                description: input.description,
+                "https://schema.org/author": input.author,
+                category: input.categories?.map((category) => ({
+                  cat: category.cat,
+                  cattax: category.cattax,
+                  name: category.name,
+                })),
+                "https://schema.org/editor": input.editor,
+                "https://schema.org/datePublished": input.datePublished,
+                "https://schema.org/dateModified": input.dateModified,
+              }),
+            },
+            ...(flags["site-profile"]
+              ? []
+              : [
+                  {
+                    type: input.bodyFormat as "visibleText" | "text" | "html",
+                    url: input.url,
+                    location: input.location ?? undefined,
+                    proof: { jws: proofJws },
+                  },
+                ]),
+          ],
       allowedOrigins: input.allowedOrigins,
     } satisfies Dp;
     const sdp = await signDp(dp, privateKey);

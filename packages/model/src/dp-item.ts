@@ -7,7 +7,7 @@ import Advertisement from "./advertisement";
 
 const DpItem = {
   title: "Document Profile Item",
-  anyOf: [DpVisibleText, DpText, DpHtml, OgWebsite ,Advertisement],
+  anyOf: [DpVisibleText, DpText, DpHtml, OgWebsite, Advertisement],
 } as const;
 
 type DpItem = FromSchema<typeof DpItem>;
