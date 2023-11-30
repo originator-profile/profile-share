@@ -66,7 +66,6 @@ function CredentialDetail({
           header="有効期限"
           data={expirationDateTimeLocaleFrom(credential.expiredAt)}
         />
-        <TableRow header="URL" data={credential.url} />
       </Table>
     </div>
   );
