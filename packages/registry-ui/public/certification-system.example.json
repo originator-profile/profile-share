@@ -1,0 +1,7 @@
+{
+  "type": "certification-system",
+  "name": "ブランドセーフティ認証",
+  "description": "この部分には JICDAQ のブランドセーフティ認証に関する説明やその詳細が確認できるリンクを記載する想定です。現時点では実験段階で UI や記載内容の検討・調整段階であり具体的な説明内容は未定です。",
+  "url": "https://www.jicdaq.or.jp/certification_system/",
+  "urlTitle": "JICDAQ認証制度について | 一般社団法人 デジタル広告品質認証機構"
+}
