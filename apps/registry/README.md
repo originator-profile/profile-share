@@ -487,15 +487,16 @@ Signed Document Profile (SDP) の生成
 ```
 USAGE
   $ profile-registry publisher:sign -i <value> --id <value> --input <value> [--issued-at <value>] [--expired-at
-    <value>] [--site-profile]
+    <value>] [--site-profile] [--ad-profile]
 
 FLAGS
   -i, --identity=<value>  (required) プライベート鍵のファイルパス
+  --ad-profile            出力に広告プロファイルを使用する
   --expired-at=<value>    有効期限 (ISO 8601)
   --id=<value>            (required) OP ID (ドメイン名)
   --input=<value>         (required) JSON file
   --issued-at=<value>     発行日時 (ISO 8601)
-  --site-profile          出力にvisibleText型等を含めない
+  --site-profile          出力にサイトプロファイルを使用する
 
 DESCRIPTION
   Signed Document Profile (SDP) の生成
