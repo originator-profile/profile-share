@@ -25,6 +25,7 @@ async function fetchVerifiedProfiles([, tabId]: [
   publishers: string[];
   main: string[];
   profiles: Profile[];
+  websites: Profile[];
   origin: string;
 }> {
   const { ok, data, origin }: fetchProfileSetMessageResponse =
@@ -33,7 +34,7 @@ async function fetchVerifiedProfiles([, tabId]: [
     });
   const parsed = JSON.parse(data);
   if (!ok) throw Object.assign(new Error(parsed.message), parsed);
-  const { advertisers, publishers, main, profile, ad } =
+  const { advertisers, publishers, main, profile, ad, website } =
     await expandProfileSet(parsed);
 
   const profilesFromAd = ad.flatMap((pair) => [
@@ -49,18 +50,35 @@ async function fetchVerifiedProfiles([, tabId]: [
   );
   const keys = RemoteKeys(jwksEndpoint);
   const verify = ProfilesVerifier(
-    { profile: [...new Set([...profile, ...profilesFromAd])] },
+    {
+      profile: [...new Set([...profile, ...profilesFromAd])],
+    },
     keys,
     registry,
     null,
     origin,
   );
   const verifyResults = await verify();
+
+  const verifyWebsiteResults =
+    (website[0] &&
+      (await ProfilesVerifier(
+        {
+          profile: [website[0].op.profile, website[0].dp.profile],
+        },
+        keys,
+        registry,
+        null,
+        origin,
+      )())) ??
+    [];
+
   return {
     advertisers,
     publishers,
     main,
     profiles: verifyResults.map(toProfile),
+    websites: verifyWebsiteResults.map(toProfile),
     origin,
   };
 }
