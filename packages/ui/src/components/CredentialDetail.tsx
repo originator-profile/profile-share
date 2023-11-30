@@ -100,7 +100,10 @@ function CredentialDetail({
             <span className="text-xs text-gray-500">くわしくはこちら</span>
             <span className="text-sm">{data.urlTitle}</span>
           </span>
-          <Icon icon="fa6-solid:arrow-right" />
+          <Icon
+            className="text-sm text-gray-500"
+            icon="fa6-solid:arrow-right"
+          />
         </a>
       ) : (
         <div className="animate-pulse">
