@@ -55,6 +55,7 @@ running command...
 * [`profile-registry account:register-op`](#profile-registry-accountregister-op)
 * [`profile-registry admin:create`](#profile-registry-admincreate)
 * [`profile-registry admin:delete`](#profile-registry-admindelete)
+* [`profile-registry advertiser:sign`](#profile-registry-advertisersign)
 * [`profile-registry cert:issue`](#profile-registry-certissue)
 * [`profile-registry db:init`](#profile-registry-dbinit)
 * [`profile-registry db:prisma`](#profile-registry-dbprisma)
@@ -226,6 +227,69 @@ FLAG DESCRIPTIONS
   --id=<value>  会員 ID またはドメイン名
 
     UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+```
+
+## `profile-registry advertiser:sign`
+
+Signed Advertisement Profile (SAP) の生成
+
+```
+USAGE
+  $ profile-registry advertiser:sign -i <value> --id <value> --input <value> [--issued-at <value>] [--expired-at
+    <value>]
+
+FLAGS
+  -i, --identity=<value>  (required) プライベート鍵のファイルパス
+  --expired-at=<value>    有効期限 (ISO 8601)
+  --id=<value>            (required) OP ID (ドメイン名)
+  --input=<value>         (required) JSON file
+  --issued-at=<value>     発行日時 (ISO 8601)
+
+DESCRIPTION
+  Signed Advertisement Profile (SAP) の生成
+
+  Web ページの情報 (DP) に対して署名を行います。
+  署名済み AP (SAP) を生成し、それを標準出力に出力します。
+
+FLAG DESCRIPTIONS
+  -i, --identity=<value>  プライベート鍵のファイルパス
+
+    プライベート鍵のファイルパスを渡してください。プライベート鍵は JWK 形式か、PEM base64 でエンコードされた PKCS #8
+    形式にしてください。
+
+  --expired-at=<value>  有効期限 (ISO 8601)
+
+    日付のみの場合、その日の 24:00:00.000 より前まで有効、それ以外の場合、期限切れとなる日付・時刻・秒を指定します。
+
+  --id=<value>  OP ID (ドメイン名)
+
+    ドメイン名 (RFC 4501) を指定します。
+
+  --input=<value>  JSON file
+
+    ファイル名。ファイルには次のようなフォーマットの JSON を入れてください。空白行より上が必須プロパティです。
+    imageプロパティの画像リソースは拡張機能Webページから参照されます。埋め込み可能なようCORS許可しておいてください。
+
+    {
+    "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc7",
+    "url": "https://example.com/",
+    "location": "h1",
+    "bodyFormat": "visibleText",
+    "body": "OP 確認くん",
+
+    "title": "OP 確認くん",
+    "image": "https://example.com/image.png",
+    "description": "このウェブページの説明です。",
+    "author": "山田太郎",
+    "editor": "山田花子",
+    "datePublished": "2023-07-04T19:14:00Z",
+    "dateModified": "2023-07-04T19:14:00Z",
+    "categories": [{
+    "cat": "IAB1-1",
+    "name": "Books & Literature",
+    "cattax": 1
+    }]
+    }
 ```
 
 ## `profile-registry cert:issue`
@@ -487,11 +551,10 @@ Signed Document Profile (SDP) の生成
 ```
 USAGE
   $ profile-registry publisher:sign -i <value> --id <value> --input <value> [--issued-at <value>] [--expired-at
-    <value>] [--site-profile] [--ad-profile]
+    <value>] [--site-profile]
 
 FLAGS
   -i, --identity=<value>  (required) プライベート鍵のファイルパス
-  --ad-profile            出力に広告プロファイルを使用する
   --expired-at=<value>    有効期限 (ISO 8601)
   --id=<value>            (required) OP ID (ドメイン名)
   --input=<value>         (required) JSON file
