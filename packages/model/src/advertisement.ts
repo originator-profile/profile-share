@@ -7,9 +7,9 @@ const Advertisement = {
   properties: {
     type: { const: "advertisement" },
     url: {
-      title: "Advertisement HTML Delivery URL",
+      title: "Published URL",
       type: "string",
-      description: "広告 HTML 配信元 URL",
+      description: "掲載先 URL",
     },
     title: { title: "Title", type: "string" },
     description: { title: "Description", type: "string" },
