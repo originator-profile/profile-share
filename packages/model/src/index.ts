@@ -20,3 +20,4 @@ export { default as JwtDpPayload } from "./jwt-dp-payload";
 export { default as User } from "./user";
 export { default as Request } from "./request";
 export { default as Advertisement } from "./advertisement";
+export { default as CertificationSystem } from "./certification-system";

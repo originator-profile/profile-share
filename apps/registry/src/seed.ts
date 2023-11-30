@@ -104,7 +104,7 @@ export async function seed(): Promise<void> {
       "ブランドセーフティ認証",
       new Date(),
       addYears(new Date(), 1),
-      new URL("/credential-description.json", process.env.APP_URL).href,
+      new URL("/certification-system.example.json", process.env.APP_URL).href,
       new URL("/credential-brand-safety-certified.png", process.env.APP_URL)
         .href,
     );

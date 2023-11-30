@@ -20,6 +20,8 @@ const OpCredential = {
     },
     url: {
       title: "説明情報のURL",
+      description:
+        "CertificationSystem 型の JSON が配信されている URL を期待します。",
       type: "string",
     },
     image: {
