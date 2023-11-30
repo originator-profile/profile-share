@@ -25,7 +25,7 @@ async function fetchVerifiedProfiles([, tabId]: [
   publishers: string[];
   main: string[];
   profiles: Profile[];
-  websites: Profile[];
+  website: Profile[];
   origin: string;
 }> {
   const { ok, data, origin }: fetchProfileSetMessageResponse =
@@ -78,7 +78,7 @@ async function fetchVerifiedProfiles([, tabId]: [
     publishers,
     main,
     profiles: verifyResults.map(toProfile),
-    websites: verifyWebsiteResults.map(toProfile),
+    website: verifyWebsiteResults.map(toProfile),
     origin,
   };
 }
