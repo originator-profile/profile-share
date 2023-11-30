@@ -1,6 +1,15 @@
 import { Icon } from "@iconify/react";
-import { OpHolder, OpCertifier } from "@originator-profile/model";
-import { isOpCredential, isOpCertifier } from "@originator-profile/core";
+import {
+  OpCredential,
+  OpHolder,
+  OpCertifier,
+  OpVerifier,
+} from "@originator-profile/model";
+import {
+  isOpCredential,
+  isOpCertifier,
+  isOpVerifier,
+} from "@originator-profile/core";
 import {
   Image,
   Roles,
@@ -10,7 +19,10 @@ import {
   Table,
   TableRow,
   CredentialSummary,
+  CredentialDetail,
+  Modal,
 } from "@originator-profile/ui";
+import { useModal } from "@originator-profile/ui/src/utils";
 import { Op, Role } from "@originator-profile/ui/src/types";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
 import logomarkUrl from "@originator-profile/ui/src/assets/logomark.svg";
@@ -32,8 +44,12 @@ function Org({ op, holder, roles, paths }: Props) {
   const certifiers = new Map<string, OpCertifier>(
     op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
   );
+  const verifiers = new Map<string, OpVerifier>(
+    op.item.filter(isOpVerifier).map((c) => [c.domainName, c]),
+  );
   const logo = holder.logos?.find(({ isMain }) => isMain);
   const credentials = op.item.filter(isOpCredential);
+  const credentialModal = useModal<OpCredential>();
   return (
     <>
       <BackHeader className="sticky top-0" to={paths.back}>
@@ -90,13 +106,22 @@ function Org({ op, holder, roles, paths }: Props) {
                 credential={credential}
                 holder={holder}
                 certifier={certifiers.get(credential.certifier)}
-                onClick={() => {
-                  // TODO: モーダル表示を実装して
-                }}
+                onClick={credentialModal.onOpen}
               />
             </li>
           ))}
         </ul>
+        <Modal open={credentialModal.open} onClose={credentialModal.onClose}>
+          {credentialModal.value && (
+            <CredentialDetail
+              className="rounded-b-none"
+              credential={credentialModal.value}
+              holder={holder}
+              certifier={certifiers.get(credentialModal.value.certifier)}
+              verifier={verifiers.get(credentialModal.value.verifier)}
+            />
+          )}
+        </Modal>
         <h2 className="text-sm text-gray-600 font-bold mb-3">所有者情報</h2>
         <div className="jumpu-card p-4 mb-4">
           <HolderTable holder={holder} />
