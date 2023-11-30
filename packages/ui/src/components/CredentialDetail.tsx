@@ -14,7 +14,6 @@ import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
 import logomarkUrl from "../assets/logomark.svg";
 
 type Props = {
-  id: string;
   className?: string;
   credential: OpCredential;
   holder: OpHolder;
@@ -23,7 +22,6 @@ type Props = {
 };
 
 function CredentialDetail({
-  id,
   className,
   credential,
   holder,
@@ -33,7 +31,7 @@ function CredentialDetail({
   const verificationType = getVerificationType(credential, holder);
 
   return (
-    <div id={id} className={clsx("jumpu-card p-4", className)}>
+    <div className={clsx("jumpu-card p-4", className)}>
       <Image
         className="mb-4"
         src={credential.image}

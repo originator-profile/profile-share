@@ -1,11 +1,6 @@
-import { useId } from "react";
 import { Icon } from "@iconify/react";
-import { OpHolder, OpCertifier, OpVerifier } from "@originator-profile/model";
-import {
-  isOpCredential,
-  isOpCertifier,
-  isOpVerifier,
-} from "@originator-profile/core";
+import { OpHolder } from "@originator-profile/model";
+import { isOpCredential } from "@originator-profile/core";
 import {
   Image,
   Roles,
@@ -15,7 +10,6 @@ import {
   Table,
   TableRow,
   CredentialSummary,
-  CredentialDetail,
 } from "@originator-profile/ui";
 import { Op, Role } from "@originator-profile/ui/src/types";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
@@ -37,17 +31,6 @@ type Props = {
 function Org({ op, holder, roles, paths }: Props) {
   const logo = holder.logos?.find(({ isMain }) => isMain);
   const credentials = op.item.filter(isOpCredential);
-  const certifiers = new Map<string, OpCertifier>(
-    op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
-  );
-  const verifiers = new Map<string, OpVerifier>(
-    op.item.filter(isOpVerifier).map((v) => [v.domainName, v]),
-  );
-  const handleClick = (id: string) => () => {
-    const element = document.querySelector("#" + CSS.escape(id));
-    element?.scrollIntoView({ behavior: "smooth" });
-  };
-  const credentialIdFragment = useId();
   return (
     <>
       <BackHeader className="sticky top-0" to={paths.back}>
@@ -103,7 +86,9 @@ function Org({ op, holder, roles, paths }: Props) {
                 className="w-full"
                 credential={credential}
                 holder={holder}
-                onClick={handleClick(credentialIdFragment + index)}
+                onClick={() => {
+                  // TODO: モーダル表示を実装して
+                }}
               />
             </li>
           ))}
@@ -115,18 +100,6 @@ function Org({ op, holder, roles, paths }: Props) {
             <Description description={holder.description} />
           )}
         </div>
-        <h2 className="text-sm text-gray-600 font-bold mb-3">資格情報</h2>
-        {credentials.map((credential, index) => (
-          <CredentialDetail
-            key={index}
-            id={credentialIdFragment + index}
-            className="mb-4"
-            credential={credential}
-            holder={holder}
-            certifier={certifiers.get(credential.certifier)}
-            verifier={verifiers.get(credential.verifier)}
-          />
-        ))}
         <h2 className="text-sm text-gray-600 font-bold mb-3">技術情報</h2>
         <div className="jumpu-card p-4">
           <TechTable className="p-4" profile={op} />
