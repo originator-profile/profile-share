@@ -10,7 +10,7 @@ async function fetcher(url: string): Promise<CertificationSystem> {
   const payload = await response.json();
   const certificationSystem = validateCertificationSystem(payload);
   if (certificationSystem instanceof CertificationSystemValidationFailed) {
-    throw CertificationSystem;
+    throw certificationSystem;
   }
   return certificationSystem;
 }
