@@ -10,11 +10,11 @@ import { signBody, signDp } from "@originator-profile/sign";
 
 type Website = Omit<WebsiteType, "accountId" | "proofJws">;
 
-export class PublisherSign extends Command {
-  static summary = "Signed Document Profile (SDP) の生成";
+export class AdvertiserSign extends Command {
+  static summary = "Signed Advertisement Profile (SAP) の生成";
   static description = `\
 Web ページの情報 (DP) に対して署名を行います。
-署名済み DP (SDP) を生成し、それを標準出力に出力します。`;
+署名済み AP (SAP) を生成し、それを標準出力に出力します。`;
   static flags = {
     identity: privateKey({ required: true }),
     id: Flags.string({
@@ -55,26 +55,19 @@ imageプロパティの画像リソースは拡張機能Webページから参照
       description: "発行日時 (ISO 8601)",
     }),
     "expired-at": expirationDate(),
-    "site-profile": Flags.boolean({
-      description: "出力にサイトプロファイルを使用する",
-      default: false,
-    }),
   };
 
   async run(): Promise<void> {
-    const { flags } = await this.parse(PublisherSign);
+    const { flags } = await this.parse(AdvertiserSign);
     const domainName = flags.id.toLowerCase().replace(/^dns:/, "");
     const inputBuffer = await fs.readFile(flags.input);
     const { body, ...input } = JSON.parse(inputBuffer.toString()) as Website & {
-      body?: string;
+      body: string;
     };
     const privateKey = flags.identity;
 
     // body に署名して proofJws パラメータを生成
-    let proofJws = "";
-    if (body !== undefined) {
-      proofJws = await signBody(body, privateKey);
-    }
+    let proofJws = await signBody(body, privateKey);
 
     const issuedAt = flags["issued-at"]
       ? new Date(flags["issued-at"])
@@ -88,33 +81,20 @@ imageプロパティの画像リソースは拡張機能Webページから参照
       expiredAt: expiredAt.toISOString(),
       item: [
         {
-          type: "website",
+          type: "advertisement",
           ...flush({
             url: input.url,
             title: input.title,
             image: input.image,
             description: input.description,
-            "https://schema.org/author": input.author,
-            category: input.categories?.map((category) => ({
-              cat: category.cat,
-              cattax: category.cattax,
-              name: category.name,
-            })),
-            "https://schema.org/editor": input.editor,
-            "https://schema.org/datePublished": input.datePublished,
-            "https://schema.org/dateModified": input.dateModified,
           }),
         },
-        ...(flags["site-profile"]
-          ? []
-          : [
-              {
-                type: input.bodyFormat as "visibleText" | "text" | "html",
-                url: input.url,
-                location: input.location ?? undefined,
-                proof: { jws: proofJws },
-              },
-            ]),
+        {
+          type: input.bodyFormat as "visibleText" | "text" | "html",
+          url: input.url,
+          location: input.location ?? undefined,
+          proof: { jws: proofJws },
+        },
       ],
       allowedOrigins: input.allowedOrigins,
     } satisfies Dp;
