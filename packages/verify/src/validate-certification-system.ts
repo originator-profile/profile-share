@@ -25,18 +25,20 @@ export function CertificationSystemValidator() {
         "should be contain required properties or no contain the other properties",
         { payload },
       );
-    const entries = Object.entries(payload);
+    const entries = Object.entries(payload) as Array<
+      [keyof CertificationSystem, unknown]
+    >;
     for (const entry of entries) {
       const [key, value] = entry;
-      if (key === "type" && value !== CertificationSystem.properties.type.const)
+      const propertySchema = CertificationSystem.properties[key];
+      if ("const" in propertySchema && value !== propertySchema.const)
         return new CertificationSystemValidationFailed(
-          "should be contain value of 'certification-system' in 'type' property",
+          `should be contain value of '${value}' in '${key}' property`,
           { payload },
         );
-      if (key === "type") continue;
-      if (typeof value !== "string")
+      if ("type" in propertySchema && typeof value !== propertySchema.type)
         return new CertificationSystemValidationFailed(
-          `should be contain string value in '${key}' property`,
+          `should be contain ${propertySchema.type} value in '${key}' property`,
           { payload },
         );
     }
