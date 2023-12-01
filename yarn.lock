@@ -11856,6 +11856,11 @@ just-omit@^2.2.0:
   resolved "https://registry.yarnpkg.com/just-omit/-/just-omit-2.2.0.tgz#8558395e7d7083f2a98a9907aaa096927fe3c26f"
   integrity sha512-Js7+HxDOGcB3RhI38Mird/RgyMf3t0DAJFda1QWqqlAKTa36NeSYIufJXxrZUbysFTRcTOFcoMCiFK5FwCoI7Q==
 
+just-range@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/just-range/-/just-range-4.2.0.tgz#34d901f76b2d0ce3a0d2c98cb691b06303945122"
+  integrity sha512-z2Ip8H2j7a9Vr8rKFi0IZf4IXn2Yuq2lGZFS41GjfPwksoHWTaTx1xIjU6C0HyQ1jBXEoz/FzjS5eyVXeW19tg==
+
 jwa@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/jwa/-/jwa-1.4.1.tgz#743c32985cb9e98655530d53641b66c8645b039a"

@@ -1,6 +1,10 @@
-import { useId } from "react";
 import { Icon } from "@iconify/react";
-import { OpHolder, OpCertifier, OpVerifier } from "@originator-profile/model";
+import {
+  OpCredential,
+  OpHolder,
+  OpCertifier,
+  OpVerifier,
+} from "@originator-profile/model";
 import {
   isOpCredential,
   isOpCertifier,
@@ -16,7 +20,9 @@ import {
   TableRow,
   CredentialSummary,
   CredentialDetail,
+  Modal,
 } from "@originator-profile/ui";
+import { useModal } from "@originator-profile/ui/src/utils";
 import { Op, Role } from "@originator-profile/ui/src/types";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
 import logomarkUrl from "@originator-profile/ui/src/assets/logomark.svg";
@@ -35,19 +41,15 @@ type Props = {
 };
 
 function Org({ op, holder, roles, paths }: Props) {
-  const logo = holder.logos?.find(({ isMain }) => isMain);
-  const credentials = op.item.filter(isOpCredential);
   const certifiers = new Map<string, OpCertifier>(
     op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
   );
   const verifiers = new Map<string, OpVerifier>(
-    op.item.filter(isOpVerifier).map((v) => [v.domainName, v]),
+    op.item.filter(isOpVerifier).map((c) => [c.domainName, c]),
   );
-  const handleClick = (id: string) => () => {
-    const element = document.querySelector("#" + CSS.escape(id));
-    element?.scrollIntoView({ behavior: "smooth" });
-  };
-  const credentialIdFragment = useId();
+  const logo = holder.logos?.find(({ isMain }) => isMain);
+  const credentials = op.item.filter(isOpCredential);
+  const credentialModal = useModal<OpCredential>();
   return (
     <>
       <BackHeader className="sticky top-0" to={paths.back}>
@@ -96,18 +98,30 @@ function Org({ op, holder, roles, paths }: Props) {
             この組織は認証を受けています
           </p>
         </div>
-        <ul className="mb-4 -mx-2">
+        <ul className="mb-4">
           {credentials.map((credential, index) => (
             <li className="mb-2" key={index}>
               <CredentialSummary
                 className="w-full"
                 credential={credential}
                 holder={holder}
-                onClick={handleClick(credentialIdFragment + index)}
+                certifier={certifiers.get(credential.certifier)}
+                onClick={credentialModal.onOpen}
               />
             </li>
           ))}
         </ul>
+        <Modal open={credentialModal.open} onClose={credentialModal.onClose}>
+          {credentialModal.value && (
+            <CredentialDetail
+              className="rounded-b-none"
+              credential={credentialModal.value}
+              holder={holder}
+              certifier={certifiers.get(credentialModal.value.certifier)}
+              verifier={verifiers.get(credentialModal.value.verifier)}
+            />
+          )}
+        </Modal>
         <h2 className="text-sm text-gray-600 font-bold mb-3">所有者情報</h2>
         <div className="jumpu-card p-4 mb-4">
           <HolderTable holder={holder} />
@@ -115,18 +129,6 @@ function Org({ op, holder, roles, paths }: Props) {
             <Description description={holder.description} />
           )}
         </div>
-        <h2 className="text-sm text-gray-600 font-bold mb-3">資格情報</h2>
-        {credentials.map((credential, index) => (
-          <CredentialDetail
-            key={index}
-            id={credentialIdFragment + index}
-            className="mb-4"
-            credential={credential}
-            holder={holder}
-            certifier={certifiers.get(credential.certifier)}
-            verifier={verifiers.get(credential.verifier)}
-          />
-        ))}
         <h2 className="text-sm text-gray-600 font-bold mb-3">技術情報</h2>
         <div className="jumpu-card p-4">
           <TechTable className="p-4" profile={op} />
