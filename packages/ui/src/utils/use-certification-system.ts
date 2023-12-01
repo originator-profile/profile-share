@@ -9,5 +9,5 @@ async function fetcher(url: string): Promise<CertificationSystem> {
 
 /** 認証制度を取得するカスタムフック */
 export default function useCertificationSystem(url: OpCredential["url"]) {
-  return useSWR(url && url, fetcher);
+  return useSWR(url || null, fetcher);
 }
