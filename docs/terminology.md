@@ -31,7 +31,6 @@ DP は対象となるものの種類に応じて最適なスキーマを定義�
 
 本来 DPR はコンテンツ作者(またはその委任を受けたもの)が自身で運用する CMS 内の一機能として実装・統合されることを想定しているが、実装/運用都合により外部提供の DPR と CMS を連携する形で利用することもある。
 
-
 ## Document Profile Store (DPS)
 
 DPR の果たす役割の一部またはその役割だけを実装し独立運用するサーバ。
@@ -43,7 +42,7 @@ DPR の果たす役割の一部またはその役割だけを実装し独立運�
 [RFC7519](https://datatracker.ietf.org/doc/html/rfc7519) として標準化されたトークン表現。詳しくは https://jwt.io/ などを参照。
 
 > JSON Web Token (JWT) is a compact, URL-safe means of representing
-   claims to be transferred between two parties.
+> claims to be transferred between two parties.
 
 SOP や SDP は現在この JWT 形式でシリアライズした Verifiable Credential をベースとしている。
 
@@ -68,7 +67,7 @@ DP と出所組織の OP を 1:1 で組み合わせたペアのデータ。ま�
 
 DP は必ず出所組織の OP と組み合わせて信頼性を確認するモデルであり、DP 単独ではなく対応する OP とペアで取り扱うことが基本となるため、それら 2 つをまとめて読んだり JSON ファイルとして取り扱ったりする。
 
-Profile Pair は Profile Set の一種である (Profile Pair を Profile Set に展開することも可能である) が、利用の容易さとデータサイズ削減のため専用形式としている。 
+Profile Pair は Profile Set の一種である (Profile Pair を Profile Set に展開することも可能である) が、利用の容易さとデータサイズ削減のため専用形式としている。
 
 ## Profile Set (PS)
 
@@ -78,7 +77,7 @@ Web ページなどの単位でその中に含まれるコンテンツに対応�
 
 ## Signed Document Profile (SDP)
 
-サイトやコンテンツを表明し検証可能にするためのデータ表現であり、サイトやコンテンツの情報に対して運営者や作成者自身が  JSON Web Token (JWT) として署名する。
+サイトやコンテンツを表明し検証可能にするためのデータ表現であり、サイトやコンテンツの情報に対して運営者や作成者自身が JSON Web Token (JWT) として署名する。
 
 運営者や作成者の SOP と併せて、SDP の対象サイトやコンテンツと一緒に配信する。
 
