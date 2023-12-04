@@ -102,7 +102,6 @@ export class CertificationSystemValidationFailed extends ProfileGenericError {
 
   /** 検証結果 */
   result: {
-    errors?: ErrorObject[];
     payload?: unknown;
   };
 

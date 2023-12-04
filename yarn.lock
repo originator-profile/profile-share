@@ -11826,6 +11826,11 @@ jszip@^3.2.2:
     readable-stream "~2.3.6"
     set-immediate-shim "~1.0.1"
 
+just-compare@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/just-compare/-/just-compare-2.3.0.tgz#a2adcc1d1940536263275f5a1ef1298bcacfeda7"
+  integrity sha512-6shoR7HDT+fzfL3gBahx1jZG3hWLrhPAf+l7nCwahDdT9XDtosB9kIF0ZrzUp5QY8dJWfQVr5rnsPqsbvflDzg==
+
 just-diff-apply@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/just-diff-apply/-/just-diff-apply-5.2.0.tgz#15da3888ab3acecc14ce9a067f2d7589c653cb89"

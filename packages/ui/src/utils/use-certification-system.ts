@@ -1,9 +1,17 @@
 import { OpCredential, CertificationSystem } from "@originator-profile/model";
+import {
+  validateCertificationSystem,
+  CertificationSystemValidationFailed,
+} from "@originator-profile/verify";
 import useSWR from "swr";
 
 async function fetcher(url: string): Promise<CertificationSystem> {
   const response = await fetch(url);
-  const certificationSystem = await response.json();
+  const payload = await response.json();
+  const certificationSystem = validateCertificationSystem(payload);
+  if (certificationSystem instanceof CertificationSystemValidationFailed) {
+    throw certificationSystem;
+  }
   return certificationSystem;
 }
 
