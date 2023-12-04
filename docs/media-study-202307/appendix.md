@@ -25,13 +25,13 @@ sidebar_position: 11
 - [レジストリ運用](/registry/operation/)
   - Originator Profile、Document Profile の発行手順と Web サイトへの紐づけ方法
 - [Document Profile レジストリ構築](/registry/document-profile-registry-creation.md)
-  - Document Profile 　レジストリの構築手順
+  - Document Profile レジストリの構築手順
 - [WordPress 連携](/registry/wordpress-integration.md)
-  - WordPress サイト と Document Profile 　レジストリとの連携方法
-  - 前提として Document Profile 　レジストリの構築が完了していること
+  - WordPress サイト と Document Profile レジストリとの連携方法
+  - 前提として Document Profile レジストリの構築が完了していること
 - [ウェブサイト　連携](/registry/website-integration.md)
-  - ウェブサイト　と　 Document Profile レジストリとの連携方法
-  - 前提として Document Profile 　レジストリの構築が完了していること
+  - ウェブサイトと Document Profile レジストリとの連携方法
+  - 前提として Document Profile レジストリの構築が完了していること
 - [API](/registry/assets/api/)
   - Profile Registry で使用されている API 一覧
 - [ER 図](/registry/assets/erd/)
@@ -49,25 +49,4 @@ sidebar_position: 11
 
 # 用語集
 
-Originator Profile 技術研究組合またはその配下の技術開発 WG において OP 技術開発に際して独自に定義している用語について説明します。
-
-- Document Profile (DP) レジストリ
-  - 下記のような役割を持つレジストリ
-    - Profile Set (PS) を保存、ブラウザのリクエストに応じて返す
-    - OP レジストリから SOP を受け取り(更新などもしつつ) DP 発行時に使う
-- Originator Profile (OP) レジストリ
-  - 下記のような役割を持つレジストリ
-    - OP CIP 加盟組織の情報を用いて組織情報の登録を行う
-    - 登録したい組織情報、認証機関、プライベート鍵を用いて Signed Originator Profile を発行
-- Profile Set (PS)
-  - Web ページ発行組織単位で管理されている SOP と SDP の総称
-  - この情報を用いて Web サイトの信頼性を判断する
-  - Signed Profile Set という名称もこの用語と同義
-- Signed Document Profile (SDP)
-  - 署名付き Web ページ情報
-  - SOP を持つ組織によって作成された Web ページに付与される
-- Signed Originator Profile (SOP)
-  - 署名付き組織情報
-  - この組織情報を用いて SOP を発行する
-
-(随時追記します)
+[用語集ページ](/terminology.md)に移動しました。
