@@ -1,5 +1,5 @@
 import { Prisma, credentials } from "@prisma/client";
-import { getClient } from "@originator-profile/registry-db";
+import { getClient } from "./lib/prisma-client";
 
 export const CredentialRepository = () => ({
   /**

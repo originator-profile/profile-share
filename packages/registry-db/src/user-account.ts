@@ -1,6 +1,6 @@
 import { Prisma, userAccounts } from "@prisma/client";
 import { NotFoundError } from "http-errors-enhanced";
-import { getClient } from "@originator-profile/registry-db";
+import { getClient } from "./lib/prisma-client";
 
 type UserAccountId = userAccounts["id"];
 
