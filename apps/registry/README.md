@@ -332,7 +332,7 @@ USAGE
   $ profile-registry db:init [--schema <value>] [--seed]
 
 FLAGS
-  --schema=<value>  [default: node_modules/@originator-profile/registry/dist/prisma/schema.prisma] Prisma schema file
+  --schema=<value>  Prisma schema file
   --[no-]seed       Seed database
 
 DESCRIPTION
@@ -669,7 +669,7 @@ USAGE
 
 FLAGS
   -p, --port=<value>  [default: 8080] Listen port
-  --schema=<value>    [default: node_modules/@originator-profile/registry/dist/prisma/schema.prisma] Prisma schema file
+  --schema=<value>    Prisma schema file
   --[no-]seed         Seed database
 
 DESCRIPTION

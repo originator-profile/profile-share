@@ -18,7 +18,9 @@ export default class Start extends Command {
   async run(): Promise<void> {
     const { flags } = await this.parse(Start);
     await DbInit.run([
-      `--schema=${flags.schema}`,
+      `--schema=${
+        flags.schema ?? path.join(__dirname, "../../prisma/schema.prisma")
+      }`,
       `--${flags.seed ? "" : "no-"}seed`,
     ]);
     const isDev = process.env.NODE_ENV === "development";

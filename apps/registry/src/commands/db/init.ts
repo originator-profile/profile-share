@@ -1,3 +1,4 @@
+import path from "node:path";
 import { Command, Flags } from "@oclif/core";
 import { waitForDb } from "../../seed";
 import { DbPrisma } from "./prisma";
@@ -9,8 +10,6 @@ export class DbInit extends Command {
   static flags = {
     schema: Flags.string({
       description: "Prisma schema file",
-      default:
-        "node_modules/@originator-profile/registry/dist/prisma/schema.prisma",
     }),
     seed: Flags.boolean({
       description: "Seed database",
@@ -23,7 +22,13 @@ export class DbInit extends Command {
     const { flags } = await this.parse(DbInit);
     await waitForDb(prisma);
     await prisma.$disconnect();
-    await DbPrisma.run(["migrate", "deploy", `--schema=${flags.schema}`]);
+    await DbPrisma.run([
+      "migrate",
+      "deploy",
+      `--schema=${
+        flags.schema ?? path.join(__dirname, "../../prisma/schema.prisma")
+      }`,
+    ]);
     if (flags.seed) await DbSeed.run();
   }
 }
