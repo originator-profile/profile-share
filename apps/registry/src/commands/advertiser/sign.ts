@@ -13,7 +13,7 @@ type Website = Omit<WebsiteType, "accountId" | "proofJws">;
 export class AdvertiserSign extends Command {
   static summary = "Signed Advertisement Profile (SAP) の生成";
   static description = `\
-Web ページの情報 (DP) に対して署名を行います。
+広告の情報 (AP) に対して署名を行います。
 署名済み AP (SAP) を生成し、それを標準出力に出力します。`;
   static flags = {
     identity: privateKey({ required: true }),
@@ -29,24 +29,16 @@ Web ページの情報 (DP) に対して署名を行います。
 imageプロパティの画像リソースは拡張機能Webページから参照されます。埋め込み可能なようCORS許可しておいてください。
 
 {
+  "allowedOrigins": ["https://example.com"],
+
   "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc7",
   "url": "https://example.com/",
   "location": "h1",
   "bodyFormat": "visibleText",
-  "body": "OP 確認くん",
-
-  "title": "OP 確認くん",
+  "body": "広告テキスト",
+  "title": "広告タイトル",
   "image": "https://example.com/image.png",
-  "description": "このウェブページの説明です。",
-  "author": "山田太郎",
-  "editor": "山田花子",
-  "datePublished": "2023-07-04T19:14:00Z",
-  "dateModified": "2023-07-04T19:14:00Z",
-  "categories": [{
-    "cat": "IAB1-1",
-    "name": "Books & Literature",
-    "cattax": 1
-  }]
+  "description": "この広告の説明です。"
 }
 `,
       required: true,
