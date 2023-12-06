@@ -13,6 +13,11 @@ const Advertisement = {
     },
     title: { title: "Title", type: "string" },
     description: { title: "Description", type: "string" },
+    image: {
+      title: "Image URL",
+      type: "string",
+      description: "広告のサムネイル表示用 URL",
+    },
   },
   required: ["type"],
 } as const;
