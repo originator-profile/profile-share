@@ -2,7 +2,7 @@
 
 ## ビルド
 
-ルートディレクトリで `yarn && yarn build` を実行すると `apps/web-ext/web-ext-artifacts/profile_web_extension-0.0.0.zip` のような ZIP ファイル
+ルートディレクトリで `pnpm i && pnpm build` を実行すると `apps/web-ext/web-ext-artifacts/profile_web_extension-0.0.0.zip` のような ZIP ファイル
 が生成されます。
 
 ## 配布

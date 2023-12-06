@@ -26,13 +26,13 @@ index 9f904ae4..99547169 100644
 Step2.
 
 ```
-$ yarn dev
+$ pnpm dev
 ```
 
 Step3.
 
 ```
-$ yarn dotenv -- -e apps/registry/.env.development -- sh -c 'printf "From: ${MAIL_FROM}\nTo: Bob <bob@example.com>\nSubject: Hello\n\nHello World" | curl smtp://${SMTP_HOST}:${SMTP_PORT} --mail-from oprdev@localhost --mail-rcpt bob@example.com -u any:any -T -'
+$ pnpm --filter @originator-profile/registry exec dotenv -e .env.development -- sh -c 'printf "From: ${MAIL_FROM}\nTo: Bob <bob@example.com>\nSubject: Hello\n\nHello World" | curl smtp://${SMTP_HOST}:${SMTP_PORT} --mail-from oprdev@localhost --mail-rcpt bob@example.com -u any:any -T -'
 ```
 
 or
@@ -72,7 +72,7 @@ console.log(info.messageId);
 ```
 
 ```
-$ yarn dotenv -- -e apps/registry/.env.development -- node smtp-test.mjs
+$ node --env-file=.env.development smtp-test.mjs
 ```
 
 Step4.

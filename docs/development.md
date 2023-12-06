@@ -20,15 +20,15 @@ sidebar_position: 2
 ```sh
 git clone https://github.com/originator-profile/profile-share profile
 cd profile
-corepack enable yarn
-yarn install
-yarn playwright install --with-deps
+corepack enable pnpm
+pnpm install
+pnpm --filter @originator-profile/registry exec playwright install --with-deps
 # profile-registry CLIのインストール
 npm i -g ./apps/registry
 # 開発用サーバーの起動
-yarn dev
+pnpm dev
 # WSL2 使用の場合、ホスト側ではなく WSL 側の Chrome を使用します
-CHROME_PATH=/usr/bin/google-chrome yarn dev
+CHROME_PATH=/usr/bin/google-chrome pnpm dev
 # => 開発用サーバーとWebブラウザーが起動します (<Ctrl-C>: 終了)
 ```
 
@@ -60,32 +60,35 @@ Step2. ログイン (またはサインアップ)
 
 テストやビルドの実行など開発に便利なコマンドを紹介します。
 
-### `yarn lint`
+npm scripts の実行:
 
-すべてのパッケージの静的コード解析を行います。
+```
+$ pnpm run
+```
 
-### `yarn test`
+### npm scripts
 
-すべてのパッケージのテストを行います。
+lint
+: すべてのパッケージの静的コード解析を行います。
 
-### `yarn e2e`
+test
+: すべてのパッケージのテストを行います。
 
-開発用サーバーを起動し E2E テストを行います。ただし、実行するにはあらかじめ Composer 依存関係の解決する必要があります。
+e2e
+: 開発用サーバーを起動し E2E テストを行います。ただし、実行するにはあらかじめ Composer 依存関係の解決する必要があります。
 
-#### Composer 依存関係の解決
+Composer 依存関係の解決:
 
 ```
 cd packages/wordpress
 docker compose run --rm -w /var/www/html/wp-content/plugins/profile wordpress composer install
 ```
 
-### `yarn build`
+build
+: 拡張機能の生成などすべてのパッケージのビルドを行います。
 
-拡張機能の生成などすべてのパッケージのビルドを行います。
-
-### `yarn format`
-
-コードの整形を行います。
+format
+: コードの整形を行います。
 
 ## Docker
 
@@ -108,7 +111,7 @@ apps/registry/.env.development の S3_ACCOUNT_LOGO_BUCKET_NAME の値を覚え�
 Step2.
 
 ```
-$ yarn dev
+$ pnpm dev
 ```
 
 Step3.
@@ -139,5 +142,5 @@ GitHub リポジトリ上での変更は自動的にチェックされます。
 GitHub Actions での E2E テストに失敗すると playwright によるレポートおよびスナップショット画像が artifacts としてアップロードされます。Zip ファイルを展開することで得られるレポートディレクトリ`playwright-report`を以下のように使用することで、失敗の原因を知ることができるかもしれません。
 
 ```
-npx playwright show-report path-to/playwright-report
+npx playwright@latest show-report path-to/playwright-report
 ```
