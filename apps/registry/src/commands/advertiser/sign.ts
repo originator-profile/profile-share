@@ -59,7 +59,7 @@ imageプロパティの画像リソースは拡張機能Webページから参照
     const privateKey = flags.identity;
 
     // body に署名して proofJws パラメータを生成
-    let proofJws = await signBody(body, privateKey);
+    const proofJws = await signBody(body, privateKey);
 
     const issuedAt = flags["issued-at"]
       ? new Date(flags["issued-at"])
