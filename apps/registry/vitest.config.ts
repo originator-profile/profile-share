@@ -10,13 +10,17 @@ export default defineConfig(({ mode }) => {
           inline: ["@fastify/autoload"],
         },
       },
-      threads: false,
+      pool: "forks",
     },
     e2e: {
       dir: "e2e",
       setupFiles: "e2e/setup.ts",
       testTimeout: 10_000,
-      singleThread: true,
+      poolOptions: {
+        threads: {
+          singleThread: true,
+        },
+      },
     },
   } satisfies Record<string, UserConfig["test"]>;
   const config: UserConfig = {

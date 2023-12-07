@@ -150,7 +150,7 @@ USAGE
 
 FLAGS
   -k, --key=<value>  (required) JWK 公開鍵ファイル
-  --id=<value>       (required) 会員 ID またはドメイン名
+      --id=<value>   (required) 会員 ID またはドメイン名
 
 DESCRIPTION
   公開鍵の登録
@@ -239,12 +239,12 @@ USAGE
     <value>] [--allowed-origins <value>]
 
 FLAGS
-  -i, --identity=<value>     (required) プライベート鍵のファイルパス
-  --allowed-origins=<value>  allowedOrigins プロパティ
-  --expired-at=<value>       有効期限 (ISO 8601)
-  --id=<value>               (required) OP ID (ドメイン名)
-  --input=<value>            (required) JSON file
-  --issued-at=<value>        発行日時 (ISO 8601)
+  -i, --identity=<value>         (required) プライベート鍵のファイルパス
+      --allowed-origins=<value>  allowedOrigins プロパティ
+      --expired-at=<value>       有効期限 (ISO 8601)
+      --id=<value>               (required) OP ID (ドメイン名)
+      --input=<value>            (required) JSON file
+      --issued-at=<value>        発行日時 (ISO 8601)
 
 DESCRIPTION
   Signed Advertisement Profile (SAP) の生成
@@ -300,12 +300,12 @@ USAGE
     [--expired-at <value>] [--valid-at <value>]
 
 FLAGS
-  -i, --identity=<value>  (required) プライベート鍵のファイルパス
-  --certifier=<value>     (required) 認証機関 ID またはドメイン名
-  --expired-at=<value>    有効期限 (ISO 8601)
-  --holder=<value>        (required) 所有者となる会員 ID またはドメイン名
-  --issued-at=<value>     発行日時 (ISO 8601)
-  --valid-at=<value>      この日時に既に失効している資格情報を含めない。デフォルトは issued-at と同じ日時。
+  -i, --identity=<value>    (required) プライベート鍵のファイルパス
+      --certifier=<value>   (required) 認証機関 ID またはドメイン名
+      --expired-at=<value>  有効期限 (ISO 8601)
+      --holder=<value>      (required) 所有者となる会員 ID またはドメイン名
+      --issued-at=<value>   発行日時 (ISO 8601)
+      --valid-at=<value>    この日時に既に失効している資格情報を含めない。デフォルトは issued-at と同じ日時。
 
 DESCRIPTION
   OP の発行
@@ -388,7 +388,7 @@ DESCRIPTION
   Display help for profile-registry.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.0.4/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.0.7/src/commands/help.ts)_
 
 ## `profile-registry key-gen`
 
@@ -432,8 +432,8 @@ USAGE
 FLAGS
   -o, --operation=<option>  (required) 操作
                             <options: createMany>
-  --glob-input=<value>      (required) [default: **/category.json] JSON files match with glob pattern
-  --input=<value>           JSON file
+      --glob-input=<value>  (required) [default: **/category.json] JSON files match with glob pattern
+      --input=<value>       JSON file
 
 DESCRIPTION
   カテゴリーの作成・表示・削除
@@ -536,7 +536,7 @@ USAGE
 
 FLAGS
   -o, --output=<value>  [default: -] 出力先ファイル ("-": 標準出力)
-  --url=<value>         (required) ウェブページのURL
+      --url=<value>     (required) ウェブページのURL
 
 DESCRIPTION
   Profile Set の生成
@@ -552,13 +552,13 @@ USAGE
     <value>] [--site-profile] [--allowed-origins <value>]
 
 FLAGS
-  -i, --identity=<value>     (required) プライベート鍵のファイルパス
-  --allowed-origins=<value>  allowedOrigins プロパティ
-  --expired-at=<value>       有効期限 (ISO 8601)
-  --id=<value>               (required) OP ID (ドメイン名)
-  --input=<value>            (required) JSON file
-  --issued-at=<value>        発行日時 (ISO 8601)
-  --site-profile             出力にサイトプロファイルを使用する
+  -i, --identity=<value>         (required) プライベート鍵のファイルパス
+      --allowed-origins=<value>  allowedOrigins プロパティ
+      --expired-at=<value>       有効期限 (ISO 8601)
+      --id=<value>               (required) OP ID (ドメイン名)
+      --input=<value>            (required) JSON file
+      --issued-at=<value>        発行日時 (ISO 8601)
+      --site-profile             出力にサイトプロファイルを使用する
 
 DESCRIPTION
   Signed Document Profile (SDP) の生成
@@ -625,11 +625,11 @@ FLAGS
   -i, --identity=<value>    (required) プライベート鍵のファイルパス
   -o, --operation=<option>  (required) 操作
                             <options: create|read|update|delete>
-  --expired-at=<value>      有効期限 (ISO 8601)
-  --glob-input=<value>      (required) [default: **/.website.json] JSON files match with glob pattern
-  --id=<value>              (required) 会員 ID またはドメイン名
-  --input=<value>           JSON file
-  --issued-at=<value>       発行日時 (ISO 8601)
+      --expired-at=<value>  有効期限 (ISO 8601)
+      --glob-input=<value>  (required) [default: **/.website.json] JSON files match with glob pattern
+      --id=<value>          (required) 会員 ID またはドメイン名
+      --input=<value>       JSON file
+      --issued-at=<value>   発行日時 (ISO 8601)
 
 DESCRIPTION
   ウェブページの作成・表示・更新・削除
@@ -680,9 +680,9 @@ USAGE
   $ profile-registry start [--schema <value>] [--seed] [-p <value>]
 
 FLAGS
-  -p, --port=<value>  [default: 8080] Listen port
-  --schema=<value>    Prisma schema file
-  --[no-]seed         Seed database
+  -p, --port=<value>    [default: 8080] Listen port
+      --schema=<value>  Prisma schema file
+      --[no-]seed       Seed database
 
 DESCRIPTION
   API サーバーの起動

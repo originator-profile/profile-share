@@ -40,7 +40,6 @@ export default class Start extends Command {
         break;
       }
     }
-    // @ts-expect-error TODO: Expected 1 arguments
     this.exit();
   }
 }
