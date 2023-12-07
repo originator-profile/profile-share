@@ -14,7 +14,7 @@ sidebar_position: 11
 - [オリジネータープロファイル リポジトリ](https://github.com/originator-profile/profile-share)
 - [仕様](/spec.md)
   - リポジトリ全体での仕様
-- [環境構築手順書](/development.md)
+- [環境構築手順書](/development/)
   - Linux, macOS または Windows (WSL2)で開発環境を構築するための手順
 
 ## Profile Registry

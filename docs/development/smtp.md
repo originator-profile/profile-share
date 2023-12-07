@@ -1,6 +1,8 @@
+# SMTP
+
 **TODO: [審査結果メール通知機能](https://github.com/originator-profile/profile/issues/770)にて実装予定。このテスト方法は実装後変更される可能性あります。実装次第もし不要になったら削除してください。**
 
-# メール送信テスト
+## ローカル環境でのメール送信テスト
 
 Step1.
 
@@ -72,7 +74,7 @@ console.log(info.messageId);
 ```
 
 ```
-$ node --env-file=.env.development smtp-test.mjs
+$ node --env-file=apps/registry/.env.development smtp-test.mjs
 ```
 
 Step4.
