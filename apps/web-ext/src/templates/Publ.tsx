@@ -15,21 +15,58 @@ import HolderSummary from "../components/HolderSummary";
 import DpSelector from "../components/DpSelector";
 
 type Props = {
-  profiles: Profile[];
-  main: string[];
-  op: Op;
-  dp: Dp;
-  website: OgWebsite;
-  holder: OpHolder;
-  paths: {
-    org: {
-      pathname: string;
-      search: string;
+  article?: {
+    profiles: Profile[];
+    main: string[];
+    op: Op;
+    dp: Dp;
+    website: OgWebsite;
+    holder: OpHolder;
+    paths: {
+      org: {
+        pathname: string;
+        search: string;
+      };
+    };
+  };
+  website?: {
+    op: Op;
+    dp: Dp;
+    website: OgWebsite;
+    holder: OpHolder;
+    paths: {
+      org: {
+        pathname: string;
+        search: string;
+      };
     };
   };
 };
 
-function Main({ op, dp, website, holder, paths }: Props) {
+function Site({ op, website, holder, paths }: Required<Props>["website"]) {
+  const credentials = op.item.filter(isOpCredential);
+  return (
+    <div className="bg-gray-50 p-4">
+      <div className="flex flex-col items-center gap-4">
+        <p className="jumpu-badge w-fit bg-white text-xs border border-gray-300">
+          サイト
+        </p>
+        <Image
+          className="flex-shrink-0 w-fit bg-white"
+          src={website.image}
+          placeholderSrc={placeholderLogoMainUrl}
+          alt=""
+          width={80}
+          height={45}
+        />
+        <h1 className="w-fit text-base text-gray-700 mb-2">{website.title}</h1>
+      </div>
+      <HolderSummary to={paths.org} holder={holder} credentials={credentials} />
+    </div>
+  );
+}
+
+function Main({ op, dp, website, holder, paths }: Required<Props>["article"]) {
   const credentials = op.item.filter(isOpCredential);
   return (
     <div className="bg-gray-50 min-h-screen p-4">
@@ -92,13 +129,25 @@ function Main({ op, dp, website, holder, paths }: Props) {
 
 function Publ(props: Props) {
   return (
-    <div className="flex">
-      <nav className="flex-shrink-0 w-20 h-screen overflow-y-auto bg-white sticky top-0 shadow-xl z-10">
-        <DpSelector profiles={props.profiles} main={props.main} />
-      </nav>
-      <main className="flex-1">
-        <Main {...props} />
-      </main>
+    <div>
+      {props.website && (
+        <header>
+          <Site {...props.website} />
+        </header>
+      )}
+      {props.article && (
+        <div className="flex">
+          <nav className="flex-shrink-0 w-20 h-screen overflow-y-auto bg-white sticky top-0 shadow-xl z-10">
+            <DpSelector
+              profiles={props.article.profiles}
+              main={props.article.main}
+            />
+          </nav>
+          <main className="flex-1">
+            <Main {...props.article} />
+          </main>
+        </div>
+      )}
     </div>
   );
 }
