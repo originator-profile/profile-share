@@ -108,6 +108,28 @@ image プロパティを参照した画像表示は、本実験に対応した�
 
 #### SDP の発行
 
+:::info
+
+事前に最新の profile-registry CLI をインストールしてください。
+
+Step 1
+: Git と [Node.js](https://nodejs.org/) のインストール
+
+Step 2
+: 下記のコマンドをターミナルで実行
+
+```console
+git clone https://github.com/originator-profile/profile-share
+cd profile-share
+corepack enable yarn
+yarn install
+yarn build
+# profile-registry CLIのインストール
+npm i -g ./apps/registry
+```
+
+:::
+
 以下のコマンドを参考に発行してください。
 
 `profile-registry advertiser:sign -i <SMN社のプライベート鍵へのファイルパス> --id www.so-netmedia.jp --input <入力ファイル（JSON 形式）>`
