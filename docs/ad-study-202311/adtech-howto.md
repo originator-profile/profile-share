@@ -72,7 +72,7 @@ advertiser:sign コマンドおよび拡張機能の実装は随時変更され�
 ```jsonc
 {
     // 内容を更新して再発行する場合、id プロパティを指定することをおすすめします
-    "id": <UUID>,
+    "id": <UUID 形式の値>,
     // 広告表示箇所 ID を使用した CSS ID セレクターを指定してください
     "location": "#ad-791377e6-e7fa-4d00-9e66-ba9c72390475",
     "bodyFormat": "visibleText", // "visibleText" を指定してください
