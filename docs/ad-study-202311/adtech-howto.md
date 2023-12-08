@@ -44,7 +44,6 @@ sidebar_position: 3
 広告プロファイルの作成には以下が必要です。いずれもお手元にあることを確認してから、後続の作業を実施してください。
 
 - OP レジストリ登録時に用意した組織のプライベート鍵
-- OP レジストリ登録時に受け取った [SOP](/terminology.md#signed-originator-profile-sop)
 - OP レジストリ登録時に受け取った [OP ID](/spec.md#%E8%AA%8D%E8%A8%BC%E6%A9%9F%E9%96%A2%E7%B5%84%E7%B9%94%E3%81%AE%E8%AD%98%E5%88%A5%E5%AD%90)
   - SMN社の場合、`www.so-netmedia.jp`
 
@@ -92,7 +91,6 @@ advertiser:sign コマンドおよび拡張機能の実装は随時変更され�
 :::danger
 
 url プロパティを受け付けますが、現在の実装では指定すると広告掲載先 URL の完全一致を要求したとみなされるので指定しないでください。
-
 :::
 
 :::caution
@@ -115,9 +113,15 @@ image プロパティを参照した画像表示は、本実験に対応した�
 
 その他、CLI の使用方法については [CLI のドキュメント](https://github.com/originator-profile/profile-share/tree/main/apps/registry#profile-registry-advertisersign)を参照してください。
 
-### 広告プロファイルの作成
+### 広告プロファイルに使用する [SDP](/terminology.md#signed-document-profile-sdp) の提出
 
-広告プロファイルは Originator Profile が定義した語彙を使用した JSON-LD 形式のデータです。以下を参考にテキストファイルを作成してください。ファイル名は pp.json にしてください。
+[発行して得られた SDP](#広告プロファイルに使用する-sdp-の発行) をご提出ください。
+
+以後、開発チームによって以下の作業が実施されます。
+
+#### 広告プロファイルの作成
+
+広告プロファイルは Originator Profile が定義した語彙を使用した JSON-LD 形式のデータです。
 
 ```jsonld
 {
@@ -129,23 +133,13 @@ image プロパティを参照した画像表示は、本実験に対応した�
       "profile": "<OP レジストリ登録時に受け取った SOP>"
     },
     "dp": {
-      "sub": "<SDP 作成時入力ファイルに指定した id プロパティの値>",
+      "sub": "<SDP の sub クレームの値>",
       "profile": "<作成した SDP>"
     }
   }
 }
 ```
 
-:::info
+#### 広告プロファイルの設置
 
-SDP 作成時用意した入力ファイルにて id プロパティ未指定の場合は、SDP を https://jwt.io/ 等でデコードして得られる sub クレームを確認してください。
-
-:::
-
-### 広告プロファイルの設置
-
-:::note
-
-以降の手順は近日中に記載します。
-
-:::
+開発チームが管理するウェブサーバーから配信されます。
