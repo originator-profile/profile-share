@@ -151,7 +151,7 @@ npm i -g ./apps/registry
     },
     "dp": {
       "sub": "<SDP の sub クレームの値>",
-      "profile": "<提出された SDP>"
+      "profile": "<SDP>"
     }
   }
 }
