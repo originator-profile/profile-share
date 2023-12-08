@@ -59,12 +59,6 @@ sidebar_position: 3
 
 ### 広告プロファイルに使用する [SDP](/terminology.md#signed-document-profile-sdp) の発行
 
-:::caution
-
-advertiser:sign コマンドおよび拡張機能の実装は随時変更されます。本セクションに影響のある変更がくわえられた場合、随時内容を更新します。
-
-:::
-
 #### 入力ファイル（JSON 形式）の用意
 
 広告プロファイルに使用する SDP を本実験の想定にあわせた内容で作成するため、以下を参考に用意してください。
