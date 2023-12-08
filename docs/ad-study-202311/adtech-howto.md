@@ -121,7 +121,7 @@ image プロパティを参照した画像表示は、本実験に対応した�
 
 #### 広告プロファイルの作成
 
-広告プロファイルは Originator Profile が定義した語彙を使用した JSON-LD 形式のデータです。
+広告プロファイルは Originator Profile が定義した語彙を使用した以下に示す JSON-LD 形式のデータです。
 
 ```jsonld
 {
