@@ -5,6 +5,7 @@ import {
   DpHtml,
   OgWebsite,
   JwtDpPayload,
+  Advertisement,
 } from "@originator-profile/model";
 import { dpNamespace } from "./jwt-payload";
 
@@ -39,6 +40,14 @@ export const isDpHtml = (dpItem: DpItem): dpItem is DpHtml =>
  */
 export const isOgWebsite = (dpItem: DpItem): dpItem is OgWebsite =>
   dpItem.type === OgWebsite.properties.type.const;
+
+/**
+ * DpItem が Advertisement 型であるか否か
+ * @param dpItem
+ * @return Advertisement 型であれば true、それ以外ならば false
+ */
+export const isAdvertisement = (dpItem: DpItem): dpItem is Advertisement =>
+  dpItem.type === Advertisement.properties.type.const;
 
 /**
  * DpPayload から DpVisibleText, DpHtml, DpText 型の最初の Item を返す
