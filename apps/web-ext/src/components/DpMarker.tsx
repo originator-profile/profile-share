@@ -1,7 +1,11 @@
 import { useEffect } from "react";
 import clsx from "clsx";
 import { Advertisement, OgWebsite, OpHolder } from "@originator-profile/model";
-import { isAdvertisement, isOgWebsite, isOpHolder } from "@originator-profile/core";
+import {
+  isAdvertisement,
+  isOgWebsite,
+  isOpHolder,
+} from "@originator-profile/core";
 import { Image } from "@originator-profile/ui";
 import { Op, Dp } from "@originator-profile/ui/src/types";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
