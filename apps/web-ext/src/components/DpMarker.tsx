@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import clsx from "clsx";
-import { OgWebsite, OpHolder } from "@originator-profile/model";
-import { isOgWebsite, isOpHolder } from "@originator-profile/core";
+import { Advertisement, OgWebsite, OpHolder } from "@originator-profile/model";
+import { isAdvertisement, isOgWebsite, isOpHolder } from "@originator-profile/core";
 import { Image } from "@originator-profile/ui";
 import { Op, Dp } from "@originator-profile/ui/src/types";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
@@ -11,17 +11,19 @@ import useElements from "../utils/use-elements";
 import useRects from "../utils/use-rects";
 import useVerifyBody from "../utils/use-verify-body";
 
+type WebsiteOrAdvertisement = OgWebsite | Advertisement;
+
 function Marker({
   result,
   rect,
-  ogWebsite,
+  dpTitle,
   opHolder,
   active,
   onClick,
 }: {
   result: ReturnType<typeof useVerifyBody>["result"];
   rect: ResizeObserverEntry["contentRect"];
-  ogWebsite: OgWebsite;
+  dpTitle: WebsiteOrAdvertisement;
   opHolder: OpHolder;
   active: boolean;
   onClick: () => void;
@@ -48,7 +50,7 @@ function Marker({
           "relative border-4 rounded-full shadow-xl",
           active ? "bg-blue-500 border-blue-500" : "bg-white border-white",
         )}
-        title={`${opHolder.name} ${ogWebsite.title} ${
+        title={`${opHolder.name} ${dpTitle.title} ${
           result &&
           (result instanceof Error
             ? result.message
@@ -129,7 +131,9 @@ type Props = {
 
 function DpMarker({ dp, op, active, onClickDp }: Props) {
   const ogWebsite = dp.item.find(isOgWebsite);
-  if (!ogWebsite) return null;
+  const advertisement = dp.item.find(isAdvertisement);
+  const dpTitle = ogWebsite || advertisement;
+  if (!dpTitle) return null;
   const handleClick = () => onClickDp(dp);
   const dpLocator = dp.item.find(isDpLocator);
   if (!dpLocator) return null;
@@ -141,7 +145,7 @@ function DpMarker({ dp, op, active, onClickDp }: Props) {
         <Marker
           result={result}
           rect={rect}
-          ogWebsite={ogWebsite}
+          dpTitle={dpTitle}
           opHolder={opHolder}
           active={active}
           onClick={handleClick}
