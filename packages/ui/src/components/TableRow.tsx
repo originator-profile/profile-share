@@ -1,12 +1,25 @@
+import clsx from "clsx";
+
 type Props = {
   header: React.ReactNode;
   data: React.ReactNode;
+  border?: boolean;
 };
 
-function TableRow({ header, data }: Props) {
+function TableRow({ header, data, border = false }: Props) {
   return (
-    <tr className="text-xs">
-      <th className="w-0 whitespace-nowrap text-left pr-4 py-1 text-gray-600 font-normal">
+    <tr
+      className={clsx(
+        "text-xs w-full",
+        border ? "border-b last:border-0 h-7" : "h-6",
+      )}
+    >
+      <th
+        className={clsx(
+          "whitespace-nowrap text-left pr-5 py-1 text-gray-600 font-normal",
+          border ? "w-20" : "w-24",
+        )}
+      >
         {header}
       </th>
       <td className="py-1 break-all">{data}</td>
