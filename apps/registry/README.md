@@ -236,14 +236,15 @@ Signed Advertisement Profile (SAP) の生成
 ```
 USAGE
   $ profile-registry advertiser:sign -i <value> --id <value> --input <value> [--issued-at <value>] [--expired-at
-    <value>]
+    <value>] [--allowed-origins <value>]
 
 FLAGS
-  -i, --identity=<value>  (required) プライベート鍵のファイルパス
-  --expired-at=<value>    有効期限 (ISO 8601)
-  --id=<value>            (required) OP ID (ドメイン名)
-  --input=<value>         (required) JSON file
-  --issued-at=<value>     発行日時 (ISO 8601)
+  -i, --identity=<value>     (required) プライベート鍵のファイルパス
+  --allowed-origins=<value>  allowedOrigins プロパティ
+  --expired-at=<value>       有効期限 (ISO 8601)
+  --id=<value>               (required) OP ID (ドメイン名)
+  --input=<value>            (required) JSON file
+  --issued-at=<value>        発行日時 (ISO 8601)
 
 DESCRIPTION
   Signed Advertisement Profile (SAP) の生成
@@ -256,6 +257,11 @@ FLAG DESCRIPTIONS
 
     プライベート鍵のファイルパスを渡してください。プライベート鍵は JWK 形式か、PEM base64 でエンコードされた PKCS #8
     形式にしてください。
+
+  --allowed-origins=<value>  allowedOrigins プロパティ
+
+    DP による記事の信頼性証明を許可するサイトをオリジン形式で指定します。複数のオリジンを許可する場合は、オリジンをコン
+    マ区切りで並べてください。
 
   --expired-at=<value>  有効期限 (ISO 8601)
 
@@ -543,15 +549,16 @@ Signed Document Profile (SDP) の生成
 ```
 USAGE
   $ profile-registry publisher:sign -i <value> --id <value> --input <value> [--issued-at <value>] [--expired-at
-    <value>] [--site-profile]
+    <value>] [--site-profile] [--allowed-origins <value>]
 
 FLAGS
-  -i, --identity=<value>  (required) プライベート鍵のファイルパス
-  --expired-at=<value>    有効期限 (ISO 8601)
-  --id=<value>            (required) OP ID (ドメイン名)
-  --input=<value>         (required) JSON file
-  --issued-at=<value>     発行日時 (ISO 8601)
-  --site-profile          出力にサイトプロファイルを使用する
+  -i, --identity=<value>     (required) プライベート鍵のファイルパス
+  --allowed-origins=<value>  allowedOrigins プロパティ
+  --expired-at=<value>       有効期限 (ISO 8601)
+  --id=<value>               (required) OP ID (ドメイン名)
+  --input=<value>            (required) JSON file
+  --issued-at=<value>        発行日時 (ISO 8601)
+  --site-profile             出力にサイトプロファイルを使用する
 
 DESCRIPTION
   Signed Document Profile (SDP) の生成
@@ -564,6 +571,11 @@ FLAG DESCRIPTIONS
 
     プライベート鍵のファイルパスを渡してください。プライベート鍵は JWK 形式か、PEM base64 でエンコードされた PKCS #8
     形式にしてください。
+
+  --allowed-origins=<value>  allowedOrigins プロパティ
+
+    DP による記事の信頼性証明を許可するサイトをオリジン形式で指定します。複数のオリジンを許可する場合は、オリジンをコン
+    マ区切りで並べてください。
 
   --expired-at=<value>  有効期限 (ISO 8601)
 

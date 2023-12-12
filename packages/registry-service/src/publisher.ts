@@ -143,6 +143,12 @@ export const PublisherService = ({
         "Document Profile doesn't contain item with proof",
       );
     }
+
+    if (typeof locator.url !== "string") {
+      return new BadRequestError(
+        "Document Profile doesn't contain item with url",
+      );
+    }
     const websiteId = payload.sub;
     const websiteInput = {
       id: websiteId,

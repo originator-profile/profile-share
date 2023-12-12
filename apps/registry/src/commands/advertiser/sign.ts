@@ -1,14 +1,26 @@
 import { Command, Flags } from "@oclif/core";
 import { addYears } from "date-fns";
 import flush from "just-flush";
-import { type Website as WebsiteType } from "@originator-profile/registry-service";
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
-import { expirationDate, privateKey } from "../../flags";
-import { Dp } from "@originator-profile/model";
+import {
+  expirationDate,
+  privateKey,
+  allowedOrigins as allowedOriginsFlag,
+} from "../../flags";
+import {
+  Dp,
+  type Advertisement as AdvertisementType,
+} from "@originator-profile/model";
 import { signBody, signDp } from "@originator-profile/sign";
 
-type Website = Omit<WebsiteType, "accountId" | "proofJws">;
+type Advertisement = AdvertisementType & {
+  id?: string;
+  body?: string;
+  bodyFormat?: string;
+  location?: string;
+  allowedOrigins?: string[];
+};
 
 export class AdvertiserSign extends Command {
   static summary = "Signed Advertisement Profile (SAP) の生成";
@@ -47,19 +59,26 @@ imageプロパティの画像リソースは拡張機能Webページから参照
       description: "発行日時 (ISO 8601)",
     }),
     "expired-at": expirationDate(),
+    "allowed-origins": allowedOriginsFlag({ required: false }),
   };
 
   async run(): Promise<void> {
     const { flags } = await this.parse(AdvertiserSign);
     const domainName = flags.id.toLowerCase().replace(/^dns:/, "");
     const inputBuffer = await fs.readFile(flags.input);
-    const { body, ...input } = JSON.parse(inputBuffer.toString()) as Website & {
-      body: string;
-    };
+    const { body, ...input } = JSON.parse(
+      inputBuffer.toString(),
+    ) as Advertisement;
     const privateKey = flags.identity;
 
+    const allowedOrigins = flags["allowed-origins"] || input.allowedOrigins;
+
+    if (!allowedOrigins) {
+      this.error("allowedOrigins is not specified.");
+    }
+
     // body に署名して proofJws パラメータを生成
-    const proofJws = await signBody(body, privateKey);
+    const proofJws = await signBody(body || "", privateKey);
 
     const issuedAt = flags["issued-at"]
       ? new Date(flags["issued-at"])
@@ -84,11 +103,11 @@ imageプロパティの画像リソースは拡張機能Webページから参照
         {
           type: input.bodyFormat as "visibleText" | "text" | "html",
           url: input.url,
-          location: input.location ?? undefined,
+          location: input.location,
           proof: { jws: proofJws },
         },
       ],
-      allowedOrigins: input.allowedOrigins,
+      allowedOrigins,
     } satisfies Dp;
     const sdp = await signDp(dp, privateKey);
     this.log(sdp);

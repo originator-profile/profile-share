@@ -13,7 +13,7 @@ const DpText = {
     location: DpLocation,
     proof: DpProof,
   },
-  required: ["type", "url", "proof"],
+  required: ["type", "proof"],
   additionalProperties: false,
 } as const;
 

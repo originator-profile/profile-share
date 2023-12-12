@@ -1,14 +1,24 @@
 import { Command, Flags } from "@oclif/core";
 import { addYears } from "date-fns";
 import flush from "just-flush";
-import { type Website as WebsiteType } from "@originator-profile/registry-service";
 import crypto from "node:crypto";
 import fs from "node:fs/promises";
-import { expirationDate, privateKey } from "../../flags";
-import { Dp } from "@originator-profile/model";
+import {
+  expirationDate,
+  privateKey,
+  allowedOrigins as allowedOriginsFlag,
+} from "../../flags";
+import { Dp, OgWebsite } from "@originator-profile/model";
 import { signBody, signDp } from "@originator-profile/sign";
 
-type Website = Omit<WebsiteType, "accountId" | "proofJws">;
+type Website = OgWebsite & {
+  id?: string;
+  body?: string;
+  bodyFormat?: string;
+  location?: string;
+  categories: OgWebsite["category"];
+  allowedOrigins?: string[];
+};
 
 export class PublisherSign extends Command {
   static summary = "Signed Document Profile (SDP) の生成";
@@ -59,21 +69,26 @@ imageプロパティの画像リソースは拡張機能Webページから参照
       description: "出力にサイトプロファイルを使用する",
       default: false,
     }),
+    "allowed-origins": allowedOriginsFlag({ required: false }),
   };
 
   async run(): Promise<void> {
     const { flags } = await this.parse(PublisherSign);
     const domainName = flags.id.toLowerCase().replace(/^dns:/, "");
     const inputBuffer = await fs.readFile(flags.input);
-    const { body, ...input } = JSON.parse(inputBuffer.toString()) as Website & {
-      body?: string;
-    };
+    const { body, ...input } = JSON.parse(inputBuffer.toString()) as Website;
     const privateKey = flags.identity;
+
+    const allowedOrigins = flags["allowed-origins"] || input.allowedOrigins;
+
+    if (flags["site-profile"] && !allowedOrigins) {
+      this.error("allowedOrigins is not specified.");
+    }
 
     // body に署名して proofJws パラメータを生成
     let proofJws = "";
-    if (body !== undefined) {
-      proofJws = await signBody(body, privateKey);
+    if (!flags["site-profile"]) {
+      proofJws = await signBody(body ?? "", privateKey);
     }
 
     const issuedAt = flags["issued-at"]
@@ -111,12 +126,12 @@ imageプロパティの画像リソースは拡張機能Webページから参照
               {
                 type: input.bodyFormat as "visibleText" | "text" | "html",
                 url: input.url,
-                location: input.location ?? undefined,
+                location: input.location,
                 proof: { jws: proofJws },
               },
             ]),
       ],
-      allowedOrigins: input.allowedOrigins,
+      allowedOrigins,
     } satisfies Dp;
     const sdp = await signDp(dp, privateKey);
     this.log(sdp);

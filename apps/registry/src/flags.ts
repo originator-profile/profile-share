@@ -46,3 +46,12 @@ export const expirationDate = Flags.custom<Date>({
     return parseExpirationDate(input);
   },
 });
+
+export const allowedOrigins = Flags.custom<string[]>({
+  summary: "allowedOrigins プロパティ",
+  description:
+    "DP による記事の信頼性証明を許可するサイトをオリジン形式で指定します。複数のオリジンを許可する場合は、オリジンをコンマ区切りで並べてください。",
+  async parse(input: string): Promise<string[]> {
+    return input.split(",");
+  },
+});
