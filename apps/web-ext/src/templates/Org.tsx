@@ -131,7 +131,11 @@ function Org({ op, holder, roles, paths }: Props) {
         </div>
         <h2 className="text-sm text-gray-600 font-bold mb-3">技術情報</h2>
         <div className="jumpu-card p-4">
-          <TechTable className="p-4" profile={op} />
+          <TechTable
+            className="p-4"
+            profile={op}
+            issuer={certifiers.get(op.issuer)?.name}
+          />
         </div>
       </div>
     </>

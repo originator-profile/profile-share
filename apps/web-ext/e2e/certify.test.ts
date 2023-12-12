@@ -20,19 +20,13 @@ test("拡張機能画面での認証および対象ページのマークを確�
   // 拡張機能ウィンドウの状態
   expect(await ext?.title()).toMatch(/コンテンツ情報/);
   expect(
-    await ext?.locator(':text("この記事を発行した組織") + p').textContent(),
-  ).toMatch("Originator Profile 技術研究組合");
-  expect(
-    await ext?.locator(':text("この組織は認証を受けています")').count(),
+    await ext?.locator(':text("Originator Profile 技術研究組合")').count(),
   ).toEqual(1);
   expect(
-    await ext?.locator('span:has-text("ブランドセーフティ認証")').textContent(),
-  ).toMatch(/自己検証/);
-  expect(
     await ext
-      ?.locator('p:has-text("ブランドセーフティ認証") + p')
-      .textContent(),
-  ).toMatch("有効期限内");
+      ?.locator(':text("この記事の発行者には信頼性情報があります")')
+      .count(),
+  ).toEqual(1);
 
   // 対象のWebページにオーバーレイ表示が読み込まれるまで待機
   await page.waitForSelector("iframe");

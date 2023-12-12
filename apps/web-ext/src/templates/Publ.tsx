@@ -1,18 +1,23 @@
 import { Icon } from "@iconify/react";
-import { Disclosure, Transition } from "@headlessui/react";
-import { OgWebsite, OpHolder } from "@originator-profile/model";
-import { isOpCredential } from "@originator-profile/core";
+import {
+  Advertisement,
+  OgWebsite,
+  OpCertifier,
+  OpHolder,
+} from "@originator-profile/model";
+import { isOpCertifier } from "@originator-profile/core";
 import {
   Image,
+  TechInfo,
   WebsiteMainTable,
-  WebsiteSubTable,
-  TechTable,
+  Modal,
   Description,
 } from "@originator-profile/ui";
 import { Profile, Op, Dp } from "@originator-profile/ui/src/types";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
 import HolderSummary from "../components/HolderSummary";
 import DpSelector from "../components/DpSelector";
+import { useModal } from "@originator-profile/ui/src/utils";
 
 type Props = {
   article?: {
@@ -20,7 +25,7 @@ type Props = {
     main: string[];
     op: Op;
     dp: Dp;
-    website: OgWebsite;
+    dpItemContent: OgWebsite | Advertisement;
     holder: OpHolder;
     paths: {
       org: {
@@ -43,8 +48,7 @@ type Props = {
   };
 };
 
-function Site({ op, website, holder, paths }: Required<Props>["website"]) {
-  const credentials = op.item.filter(isOpCredential);
+function Site({ website, holder, paths }: Required<Props>["website"]) {
   return (
     <div className="bg-gray-50 p-4">
       <div className="flex flex-col items-center gap-4">
@@ -61,68 +65,86 @@ function Site({ op, website, holder, paths }: Required<Props>["website"]) {
         />
         <h1 className="w-fit text-base text-gray-700 mb-2">{website.title}</h1>
       </div>
-      <HolderSummary to={paths.org} holder={holder} credentials={credentials} />
+      <HolderSummary to={paths.org} holder={holder} />
     </div>
   );
 }
 
-function Main({ op, dp, website, holder, paths }: Required<Props>["article"]) {
-  const credentials = op.item.filter(isOpCredential);
+function Main({
+  op,
+  dp,
+  dpItemContent,
+  holder,
+  paths,
+}: Required<Props>["article"]) {
+  const certifiers = new Map<string, OpCertifier>(
+    op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
+  );
+  const techTableModal = useModal<{ op: Op; dp: Dp }>();
+  const handleClick = () => techTableModal.onOpen({ op, dp });
   return (
-    <div className="bg-gray-50 min-h-screen p-4">
-      <div className="flex gap-4">
-        <Image
-          className="flex-shrink-0 bg-white mt-8"
-          src={website.image}
-          placeholderSrc={placeholderLogoMainUrl}
-          alt=""
-          width={80}
-          height={45}
-        />
-        <div className="mb-4">
-          <p className="jumpu-badge bg-white text-xs border border-gray-300">
-            記事
+    <div className="bg-gray-100 min-h-screen p-4">
+      <div>
+        <Modal open={techTableModal.open} onClose={techTableModal.onClose}>
+          {techTableModal.value && (
+            <TechInfo
+              className="rounded-b-none"
+              op={techTableModal.value.op}
+              dp={techTableModal.value.dp}
+              holder={holder.name}
+              certifier={certifiers.get(op.issuer)?.name}
+            />
+          )}
+        </Modal>
+        <p className="jumpu-badge bg-gray-600 text-xs text-white font-normal border border-gray-300 mb-3">
+          {dpItemContent.type === "website" ? "記事" : "広告"}
+        </p>
+        <button
+          className="jumpu-icon-button text-xs rounded-full bg-gray-100 border-gray-200 w-6 h-6 ml-1"
+          onClick={handleClick}
+        >
+          <Icon className="inline" icon={"fa6-solid:wrench"} />
+        </button>
+        <div className="mb-3">
+          <p className="text-base font-bold text-primary-800">
+            {`この${
+              dpItemContent.type === "website" ? "記事" : "広告"
+            }の発行者には信頼性情報があります`}
           </p>
-          <h1 className="text-base text-gray-700 mb-2">{website.title}</h1>
-          <WebsiteMainTable className="mb-1" website={website} />
-          <Disclosure>
-            {({ open }) => (
-              <>
-                <Disclosure.Button>
-                  <Icon
-                    className="inline mr-1"
-                    icon={
-                      open
-                        ? "ant-design:minus-square-outlined"
-                        : "ant-design:plus-square-outlined"
-                    }
-                  />
-                  <span className="text-xs font-bold">
-                    この記事についてさらに詳しく...
-                  </span>
-                </Disclosure.Button>
-                <Transition
-                  enter="transition duration-100 ease-out"
-                  enterFrom="transform scale-95 opacity-0"
-                  enterTo="transform scale-100 opacity-100"
-                  leave="transition duration-75 ease-out"
-                  leaveFrom="transition scale-100 opacity-100"
-                  leaveTo="transform scale-95 opacity-0"
-                >
-                  <Disclosure.Panel>
-                    <WebsiteSubTable website={website} />
-                    {website.description && (
-                      <Description description={website.description} />
-                    )}
-                    <TechTable profile={dp} />
-                  </Disclosure.Panel>
-                </Transition>
-              </>
-            )}
-          </Disclosure>
+          <p className="text-primary-700 py-1">
+            <Icon
+              className="inline w-3 h-3 mr-1"
+              icon={"material-symbols:help"}
+            />
+            信頼性情報について
+          </p>
         </div>
+        <div className="mb-3">
+          <HolderSummary to={paths.org} holder={holder} />
+        </div>
+        <hr className="mb-3" />
+        <div className="flex flex-row gap-3 mb-2">
+          <Image
+            className="flex-shrink-0 bg-white rounded-md"
+            src={dpItemContent.image}
+            placeholderSrc={placeholderLogoMainUrl}
+            alt=""
+            width={120}
+            height={80}
+          />
+          <div>
+            <p className="text-sm text-gray-900 font-bold">
+              {dpItemContent.title}
+            </p>
+          </div>
+        </div>
+        {dpItemContent.type === "website" && (
+          <WebsiteMainTable className="mb-1 w-full" website={dpItemContent} />
+        )}
+        {dpItemContent.description && (
+          <Description description={dpItemContent.description} />
+        )}
       </div>
-      <HolderSummary to={paths.org} holder={holder} credentials={credentials} />
     </div>
   );
 }

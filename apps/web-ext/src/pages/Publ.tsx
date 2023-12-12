@@ -1,7 +1,13 @@
 import { isValidElement } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { isOp, isOpHolder, isDp, isOgWebsite } from "@originator-profile/core";
-import { Profile } from "@originator-profile/model";
+import {
+  isOp,
+  isOpHolder,
+  isDp,
+  isOgWebsite,
+  isAdvertisement,
+} from "@originator-profile/core";
+import { OgWebsite, Profile } from "@originator-profile/model";
 import useProfileSet from "../utils/use-profile-set";
 import { routes } from "../utils/routes";
 import NotFound from "../components/NotFound";
@@ -28,7 +34,9 @@ function extractFromProfiles(
     return <NotFound variant="profile" />;
   }
   const website = dp.item.find(isOgWebsite);
-  if (!website) {
+  const advertisement = dp.item.find(isAdvertisement);
+  const content = website || advertisement;
+  if (!content) {
     return <NotFound variant="website" />;
   }
   const holder = op.item.find(isOpHolder);
@@ -48,7 +56,7 @@ function extractFromProfiles(
   return {
     op,
     dp,
-    website,
+    content,
     holder,
     paths,
   };
@@ -95,9 +103,17 @@ function Publ() {
   return (
     <Template
       /* ここに来る場合は article はかならずdpを持つはずだが型チェックがエラーにならないように */
-      article={"dp" in article ? { profiles, main, ...article } : undefined}
+      article={
+        "dp" in article
+          ? { profiles, main, dpItemContent: article.content, ...article }
+          : undefined
+      }
       /* 技術情報の表示を実装する際にはwebsiteProfiles を追加する必要がある */
-      website={"dp" in website ? website : undefined}
+      website={
+        "dp" in website
+          ? { website: website.content as OgWebsite, ...website }
+          : undefined
+      }
     />
   );
 }
