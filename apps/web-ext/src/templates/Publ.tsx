@@ -48,24 +48,52 @@ type Props = {
   };
 };
 
-function Site({ website, holder, paths }: Required<Props>["website"]) {
+function Site({ op, dp, website, holder, paths }: Required<Props>["website"]) {
+  const certifiers = new Map<string, OpCertifier>(
+    op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
+  );
+  const techTableModal = useModal<{ op: Op; dp: Dp }>();
+  const handleClick = () => techTableModal.onOpen({ op, dp });
   return (
     <div className="bg-gray-50 p-4">
-      <div className="flex flex-col items-center gap-4">
-        <p className="jumpu-badge w-fit bg-white text-xs border border-gray-300">
-          サイト
-        </p>
-        <Image
-          className="flex-shrink-0 w-fit bg-white"
-          src={website.image}
-          placeholderSrc={placeholderLogoMainUrl}
-          alt=""
-          width={80}
-          height={45}
-        />
-        <h1 className="w-fit text-base text-gray-700 mb-2">{website.title}</h1>
+      <div>
+        <div className="flex justify-center">
+          <Modal open={techTableModal.open} onClose={techTableModal.onClose}>
+            {techTableModal.value && (
+              <TechInfo
+                className="rounded-b-none"
+                op={techTableModal.value.op}
+                dp={techTableModal.value.dp}
+                holder={holder.name}
+                certifier={certifiers.get(op.issuer)?.name}
+              />
+            )}
+          </Modal>
+          <p className="jumpu-badge bg-gray-600 text-xs text-white font-normal border border-gray-300 mb-3">
+            サイト
+          </p>
+          <button
+            className="jumpu-icon-button text-xs rounded-full bg-gray-100 border-gray-200 w-6 h-6 ml-1"
+            onClick={handleClick}
+          >
+            <Icon className="inline" icon={"fa6-solid:wrench"} />
+          </button>
+        </div>
+        <div className="flex flex-col items-center gap-4">
+          <Image
+            className="flex-shrink-0 w-fit bg-white"
+            src={website.image}
+            placeholderSrc={placeholderLogoMainUrl}
+            alt=""
+            width={80}
+            height={45}
+          />
+          <h1 className="w-fit text-base text-gray-700 mb-2">
+            {website.title}
+          </h1>
+        </div>
+        <HolderSummary to={paths.org} holder={holder} />
       </div>
-      <HolderSummary to={paths.org} holder={holder} />
     </div>
   );
 }
