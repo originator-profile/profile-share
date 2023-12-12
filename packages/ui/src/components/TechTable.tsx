@@ -6,9 +6,10 @@ import TableRow from "./TableRow";
 type Props = {
   className?: string;
   profile: Profile;
+  issuer?: string;
 };
 
-function TechTable({ className, profile }: Props) {
+function TechTable({ className, profile, issuer }: Props) {
   return (
     <Table className={className}>
       <TableRow
@@ -21,10 +22,8 @@ function TechTable({ className, profile }: Props) {
           data={`${profile.error.name}: ${profile.error.message}`}
         />
       )}
-      <TableRow
-        header={`${isOp(profile) ? "OP" : "DP"} 識別子`}
-        data={profile.subject}
-      />
+      <TableRow header={`識別子`} data={profile.subject} />
+      <TableRow header={"発行者"} data={issuer ?? profile.issuer} />
       <TableRow
         header={`${isOp(profile) ? "OP レジストリ" : "OP 識別子"}`}
         data={profile.issuer}
