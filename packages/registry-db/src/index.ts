@@ -1,4 +1,5 @@
 export * as default from "@prisma/client";
+export * from "./ad";
 export * from "./dp";
 export * from "./website";
 export * from "./credential";

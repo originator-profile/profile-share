@@ -6,7 +6,7 @@ import { getClient } from "./lib/prisma-client";
 
 export const DpRepository = () => ({
   /**
-   * Signed Document Profile の登録
+   * Signed Document Profile の登録 (ウェブページ)
    * @param decoded Signed Document Profile とデコード結果
    * @return Signed Document Profile
    */

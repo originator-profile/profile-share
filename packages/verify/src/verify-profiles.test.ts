@@ -116,7 +116,7 @@ describe("verify-profiles", async () => {
     expect(results[1]).instanceOf(ProfileTokenVerifyFailed);
   });
 
-  test("重複するJWTが含まれるときProfile Setの検証に失敗", async () => {
+  test("重複するJWTは取り除く", async () => {
     const verifier = ProfilesVerifier(
       { profile: [opToken, opToken, dpToken] },
       registryKeys,
@@ -125,9 +125,10 @@ describe("verify-profiles", async () => {
       origin,
     );
     const results = await verifier();
-    expect(results.length).toBe(3);
-    expect(results[0]).instanceOf(ProfilesVerifyFailed);
-    expect(results[0]).toBe(results[1]);
+    expect(results.length).toBe(2);
+    expect(results[0]).toMatchObject({ op });
+    expect(results[1]).toMatchObject({ dp });
+    expect(results[0]).not.toEqual(results[1]);
   });
 
   test("DPの持たないOPが存在するときProfile Setの検証に失敗", async () => {
@@ -155,5 +156,33 @@ describe("verify-profiles", async () => {
     const results = await verifier();
     expect(results[0]).instanceOf(ProfilesVerifyFailed);
     expect(results[1]).instanceOf(ProfileTokenVerifyFailed);
+  });
+
+  test("Ad Profile Pair", async () => {
+    const verifier = ProfilesVerifier(
+      {
+        profile: [],
+        ad: [
+          {
+            op: {
+              iss: op.issuer,
+              sub: op.subject,
+              profile: opToken,
+            },
+            dp: {
+              sub: dp.subject,
+              profile: dpToken,
+            },
+          },
+        ],
+      },
+      registryKeys,
+      op.issuer,
+      null,
+      origin,
+    );
+    const verified = await verifier();
+    expect(verified[0]).toMatchObject({ op });
+    expect(verified[1]).toMatchObject({ dp });
   });
 });

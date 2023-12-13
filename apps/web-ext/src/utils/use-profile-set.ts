@@ -37,11 +37,6 @@ async function fetchVerifiedProfiles([, tabId]: [
   const { advertisers, publishers, main, profile, ad, website } =
     await expandProfileSet(parsed);
 
-  const profilesFromAd = ad.flatMap((pair) => [
-    pair.op.profile,
-    pair.dp.profile,
-  ]);
-
   const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(
     import.meta.env.MODE === "development" && registry === "localhost"
@@ -50,9 +45,7 @@ async function fetchVerifiedProfiles([, tabId]: [
   );
   const keys = RemoteKeys(jwksEndpoint);
   const verify = ProfilesVerifier(
-    {
-      profile: [...new Set([...profile, ...profilesFromAd])],
-    },
+    { profile, ad },
     keys,
     registry,
     null,

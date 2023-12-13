@@ -1,9 +1,10 @@
 import {
-  DpRepository,
-  WebsiteRepository,
+  AdRepository,
   CredentialRepository,
-  UserAccountRepository,
+  DpRepository,
   RequestRepository,
+  UserAccountRepository,
+  WebsiteRepository,
 } from "@originator-profile/registry-db";
 import Config from "./config";
 import { AccountService } from "./account";
@@ -60,6 +61,7 @@ export const Services = (options: Options) => {
     logo,
     userAccount,
     request,
+    adRepository: AdRepository(),
   };
 };
 

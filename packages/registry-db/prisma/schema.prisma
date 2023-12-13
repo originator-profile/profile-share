@@ -47,6 +47,9 @@ model dps {
   /// ウェブページ
   website   websites? @relation(fields: [websiteId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   websiteId String?   @db.Uuid
+  /// 広告
+  ad        ads?      @relation(fields: [adId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  adId      String?   @db.Uuid
 }
 
 /// 会員
@@ -106,6 +109,8 @@ model accounts {
   keys                     keys[]
   /// ウェブページ
   websites                 websites[]
+  /// 広告
+  ads                      ads[]
   /// 管理者権限
   admins                   admins?
   /// 資格情報
@@ -249,12 +254,39 @@ model websiteCategories {
   @@id([websiteId, categoryCat, categoryCattax])
 }
 
+/// 広告
+model ads {
+  id              String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  /// 会員
+  account         accounts    @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId       String      @db.Uuid
+  /// タイトル
+  title           String?
+  /// 画像URL
+  image           String?
+  /// 説明
+  description     String?
+  /// 対象の要素の場所 (CSS セレクター)
+  location        String?
+  /// 対象のテキストの形式
+  bodyFormat      bodyFormats @relation(fields: [bodyFormatValue], references: [value])
+  bodyFormatValue String
+  /// 対象のテキストへの署名 (Detached JSON Web Signature)
+  proofJws        String
+  /// 許可するオリジンのリスト
+  allowedOrigins  String[]
+  /// Signed Document Profile
+  dps             dps[]
+}
+
 /// 本文の形式
 model bodyFormats {
   /// "visibleText" "text" "html"
   value    String     @id
   /// ウェブページ
   websites websites[]
+  /// 広告
+  ads      ads[]
 }
 
 /// 管理者
