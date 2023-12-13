@@ -1,28 +1,7 @@
 import jsonld, { JsonLdDocument, NodeObject } from "jsonld";
+import { AdProfilePair, ProfilePair, WebsiteProfilePair } from "./types";
 
 const context = "https://originator-profile.org/context#";
-
-interface ProfilePair {
-  op: {
-    iss: string;
-    sub: string;
-    profile: string;
-  };
-  dp: {
-    sub: string;
-    profile: string;
-  };
-}
-
-interface WebsiteProfilePair {
-  "@context": string;
-  website: ProfilePair;
-}
-
-interface AdProfilePair {
-  "@context": string;
-  ad: ProfilePair;
-}
 
 function Values(node: NodeObject) {
   function values<Key extends "advertiser" | "publisher" | "main" | "profile">(

@@ -7,6 +7,28 @@ import {
   ProfilesVerifyFailed,
 } from "./errors";
 
+export interface ProfilePair {
+  op: {
+    iss: string;
+    sub: string;
+    profile: string;
+  };
+  dp: {
+    sub: string;
+    profile: string;
+  };
+}
+
+export interface WebsiteProfilePair {
+  "@context": string;
+  website: ProfilePair;
+}
+
+export interface AdProfilePair {
+  "@context": string;
+  ad: ProfilePair;
+}
+
 /** Profile の Token の復号結果 */
 export type DecodeResult =
   | { op: true; payload: JwtOpPayload; jwt: string }
@@ -22,7 +44,7 @@ export type VerifyTokenResult =
   | ProfileTokenVerifyFailed;
 
 /** Profile Set */
-export type Profiles = { profile: string[] };
+export type Profiles = { profile: string[]; ad?: ProfilePair[] };
 
 /** Profile の検証結果 */
 export type VerifyResult =

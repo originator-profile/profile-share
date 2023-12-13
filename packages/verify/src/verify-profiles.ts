@@ -44,17 +44,13 @@ export function ProfilesVerifier(
   const opVerifier = TokenVerifier(registryKeys, registry, decoder, origin);
   const opTokens: Array<{ op: true; payload: JwtOpPayload; jwt: string }> = [];
   const dpTokens: Array<{ dp: true; payload: JwtDpPayload; jwt: string }> = [];
+  const profilesFromAd =
+    profiles.ad?.flatMap((pair) => [pair.op.profile, pair.dp.profile]) ?? [];
 
-  for (const token of profiles.profile) {
+  for (const token of new Set([...profiles.profile, ...profilesFromAd])) {
     const res = decoder(token);
     if (res instanceof ProfileClaimsValidationFailed) {
       results.set(token, res);
-      continue;
-    }
-    if (results.has(token)) {
-      const error = new ProfilesVerifyFailed("Duplicated token", res);
-      results.set(token, error);
-      results.set(Symbol(error.message), error);
       continue;
     }
     const pending = new ProfilesResolveFailed("Unresolved Profiles", res);
