@@ -96,10 +96,12 @@ function DpLocator({
   dpLocator,
   children,
   active,
+  isAdvertisement,
 }: {
   op: Op;
   dpLocator: DpLocator;
   active: boolean;
+  isAdvertisement: boolean;
   children: ({
     result,
     rect,
@@ -108,7 +110,7 @@ function DpLocator({
     rect: DOMRect;
   }) => React.ReactNode;
 }) {
-  const { result } = useVerifyBody(dpLocator, op.jwks);
+  const { result } = useVerifyBody(dpLocator, isAdvertisement, op.jwks);
   const { elements } = useElements(dpLocator.location);
   useEffect(() => {
     const [element] = elements;
@@ -144,7 +146,7 @@ function DpMarker({ dp, op, active, onClickDp }: Props) {
   const opHolder = op.item.find(isOpHolder);
   if (!opHolder) return null;
   return (
-    <DpLocator op={op} dpLocator={dpLocator} active={active}>
+    <DpLocator op={op} dpLocator={dpLocator} active={active} isAdvertisement>
       {({ result, rect }) => (
         <Marker
           result={result}
