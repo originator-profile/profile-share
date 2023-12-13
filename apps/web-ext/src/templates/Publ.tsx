@@ -91,8 +91,22 @@ function Site({ op, dp, website, holder, paths }: Required<Props>["website"]) {
           <h1 className="w-fit text-base text-gray-700 mb-2">
             {website.title}
           </h1>
+          <div className="flex flex-col items-center mb-3">
+            <p className="text-base font-bold text-primary-800">
+              このサイトの運営者には信頼性情報があります
+            </p>
+            <p className="text-primary-700 py-1">
+              <Icon
+                className="inline w-3 h-3 mr-1"
+                icon={"material-symbols:help"}
+              />
+              信頼性情報について
+            </p>
+          </div>
         </div>
-        <HolderSummary to={paths.org} holder={holder} />
+        <div className="mb-3">
+          <HolderSummary to={paths.org} holder={holder} />
+        </div>
       </div>
     </div>
   );

@@ -21,6 +21,7 @@ function Org(props: Props) {
     advertisers = [],
     publishers = [],
     profiles,
+    website,
     error,
   } = useProfileSet();
 
@@ -37,11 +38,11 @@ function Org(props: Props) {
   if (error) {
     return <Unsupported error={error} />;
   }
-  if (!profiles) {
+  if (!profiles && !website) {
     return <Loading />;
   }
 
-  const op = profiles
+  const op = [...(profiles ?? []), ...(website ?? [])]
     .filter(isOp)
     .find(
       (profile) =>
