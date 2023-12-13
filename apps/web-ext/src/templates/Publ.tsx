@@ -17,7 +17,7 @@ import { Profile, Op, Dp } from "@originator-profile/ui/src/types";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
 import HolderSummary from "../components/HolderSummary";
 import DpSelector from "../components/DpSelector";
-import { useModal } from "@originator-profile/ui/src/utils";
+import { useModal, getContentType } from "@originator-profile/ui/src/utils";
 
 type Props = {
   article?: {
@@ -115,6 +115,7 @@ function Site({ op, dp, website, holder, paths }: Required<Props>["website"]) {
 function Main({
   op,
   dp,
+  main,
   dpItemContent,
   holder,
   paths,
@@ -123,6 +124,7 @@ function Main({
     op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
   );
   const techTableModal = useModal<{ op: Op; dp: Dp }>();
+  const contentType = getContentType(dp, dpItemContent, main);
   const handleClick = () => techTableModal.onOpen({ op, dp });
   return (
     <div className="bg-gray-100 min-h-screen p-4">
@@ -138,20 +140,23 @@ function Main({
             />
           )}
         </Modal>
-        <p className="jumpu-badge bg-gray-600 text-xs text-white font-normal border border-gray-300 mb-3">
-          {dpItemContent.type === "website" ? "記事" : "広告"}
-        </p>
-        <button
-          className="jumpu-icon-button text-xs rounded-full bg-gray-100 border-gray-200 w-6 h-6 ml-1"
-          onClick={handleClick}
-        >
-          <Icon className="inline" icon={"fa6-solid:wrench"} />
-        </button>
+        <div className="flex items-center gap-1 mb-3">
+          <p className="jumpu-badge inline-flex items-center gap-1 bg-gray-600 text-xs text-white font-normal border border-gray-300">
+            {contentType === "メインコンテンツ" && (
+              <Icon className="text-base" icon="fluent:window-text-20-filled" />
+            )}
+            {contentType}
+          </p>
+          <button
+            className="jumpu-icon-button text-xs rounded-full bg-gray-100 border-gray-200 w-6 h-6 ml-1"
+            onClick={handleClick}
+          >
+            <Icon className="inline" icon={"fa6-solid:wrench"} />
+          </button>
+        </div>
         <div className="mb-3">
           <p className="text-base font-bold text-primary-800">
-            {`この${
-              dpItemContent.type === "website" ? "記事" : "広告"
-            }の発行者には信頼性情報があります`}
+            {`この${contentType}の発行者には信頼性情報があります`}
           </p>
           <p className="text-primary-700 py-1">
             <Icon
