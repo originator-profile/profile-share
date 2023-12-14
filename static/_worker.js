@@ -19,7 +19,7 @@ const users = new Map(
   Object.entries({
     op: "l17Fx7U7feOp",
     tw: "KCkYg12B^Ofs",
-  })
+  }),
 );
 
 /**
@@ -82,7 +82,7 @@ function verifyCredentials(user, pass) {
     // @ts-expect-error "This is a non-standard extension to the Web Crypto API." https://developers.cloudflare.com/workers/runtime-apis/web-crypto/#timingsafeequal
     !crypto.subtle.timingSafeEqual(
       new TextEncoder().encode(users.get(user)),
-      new TextEncoder().encode(pass)
+      new TextEncoder().encode(pass),
     )
   ) {
     throw new UnauthorizedException("Invalid password.");
@@ -109,7 +109,7 @@ function basicAuthentication(request) {
   // @see https://datatracker.ietf.org/doc/html/rfc7613#section-3.3.2 (and #section-4.2.2)
   // @see https://dev.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/normalize
   const buffer = Uint8Array.from(atob(encoded), (character) =>
-    character.charCodeAt(0)
+    character.charCodeAt(0),
   );
   const decoded = new TextDecoder().decode(buffer).normalize();
 
