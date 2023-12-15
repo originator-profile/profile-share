@@ -44,33 +44,30 @@ sidebar_position: 3
 広告プロファイルの作成には以下が必要です。いずれもお手元にあることを確認してから、後続の作業を実施してください。
 
 - OP レジストリ登録時に用意した組織のプライベート鍵
-- OP レジストリ登録時に受け取った [OP ID](/spec.md#%E8%AA%8D%E8%A8%BC%E6%A9%9F%E9%96%A2%E7%B5%84%E7%B9%94%E3%81%AE%E8%AD%98%E5%88%A5%E5%AD%90)
+- [OP レジストリ登録時](https://github.com/originator-profile/ad-study/issues/2)に受け取った [OP ID](/spec.md#%E8%AA%8D%E8%A8%BC%E6%A9%9F%E9%96%A2%E7%B5%84%E7%B9%94%E3%81%AE%E8%AD%98%E5%88%A5%E5%AD%90)
+  - Fluct社の場合、`corp.fluct.jp`
   - SMN社の場合、`www.so-netmedia.jp`
 
 ### 広告プロファイルに使用する [SDP](/terminology.md#signed-document-profile-sdp) の発行
 
-#### 使用する広告表示箇所 ID の確認
+#### 使用する広告表示箇所 ID について
 
-本実験で対象とする広告の位置を特定するために用いられる [`id`](https://developer.mozilla.org/ja/docs/Web/API/Element/id) です。
-広告プロファイルのSDPの件数に応じて使用します。
-5件以上必要な場合はご連絡ください。
+広告プロファイルの location をページ中の該当広告の表示位置特定に利用します (実験初期、ダミー広告プロファイル利用時に限る)。メディア側では OP 対応広告枠の周囲をここで (CSS セレクタとして) 指定する [`id`](https://developer.mozilla.org/ja/docs/Web/API/Element/id) と同一の ID 属性を付与した `<div>` タグで囲むことで、各広告プロファイルに対応する広告の表示位置をブラウザに知らせます。
 
-1. `ad-791377e6-e7fa-4d00-9e66-ba9c72390475`
-2. `ad-8ca0fe8e-3bde-4fb3-ac08-6a8e36eb83e9`
-3. `ad-9c7070f5-c2a5-4afa-8522-e51dee55373a`
-4. `ad-e27dc783-5971-48ed-a04d-4a4b34c9deb6`
-5. `ad-d66e5319-c756-4e0a-8160-13633c67d6af`
+これは設置対象サイト毎に発行します (複数箇所に広告を入れる場合は複数発行します)
+
+- ot.yomiuri.co.jp
+  - ad-9047fd04-362b-45a6-a35c-6ea240bb65fa
+- pot.asahi.com
+  - ad-d20605f8-813e-425e-b268-79a55fa82855
+- www.chugoku-np.co.jp
+  - ad-8a79c9b1-39bb-4589-9984-09d86ed4ee48
 
 #### 入力ファイル（JSON 形式）の用意
 
 広告プロファイルに使用する SDP を本実験の想定にあわせた内容で作成します。
-以下を参考にご用意ください。
 
-1. [ad-1.json](pathname:///ad-study-202311/ad-1.json)
-1. [ad-2.json](pathname:///ad-study-202311/ad-2.json)
-1. [ad-3.json](pathname:///ad-study-202311/ad-3.json)
-1. [ad-4.json](pathname:///ad-study-202311/ad-4.json)
-1. [ad-5.json](pathname:///ad-study-202311/ad-5.json)
+フォーマットは次の通りです。
 
 ```jsonc
 {
@@ -90,9 +87,27 @@ sidebar_position: 3
 }
 ```
 
+id, location は表示箇所に挿入するタグに指定する id と揃えたものを、allowedOrigins には掲載先サイトのオリジンを (`https://example.com/` のような形式または `*` で任意オリジンとして) 指定することで、ブラウ側で表示場所の特定や掲載先の検証処理(別サイトへの掲載禁止)を行います。
+
+title, description, image プロパティは広告のタイトル、説明、サムネイルを指定してください。タイトル、説明、サムネイルはブラウザでの表示に利用するもので、省略しても広告情報として表示されないだけです。
+
+初回実験参加サイトについては各サイト毎の入力ファイルを用意しましたのでこちらをご利用ください:
+
+- [ad-ot.yomiuri.co.jp.json](pathname:///ad-study-202311/ad-ot.yomiuri.co.jp.json)
+- [ad-pot.asahi.com.json](pathname:///ad-study-202311/ad-pot.asahi.com.json)
+- [ad-www.chugoku-np.co.jp.json](pathname:///ad-study-202311/ad-www.chugoku-np.co.jp.json)
+
+テンプレファイルのサンプル (任意サイト掲載用):
+
+1. [ad-1.json](pathname:///ad-study-202311/ad-1.json)
+2. [ad-2.json](pathname:///ad-study-202311/ad-2.json)
+3. [ad-3.json](pathname:///ad-study-202311/ad-3.json)
+4. [ad-4.json](pathname:///ad-study-202311/ad-4.json)
+5. [ad-5.json](pathname:///ad-study-202311/ad-5.json)
+
 :::note
 
-url プロパティは広告掲載先が複数あるため指定しません。
+プロファイル仕様としては url プロパティも指定可能ですが、これを指定すると特定の url 以外での表示をエラーとして扱うようになります。今回の実験では同一の広告枠を複数の url で表示/使い回しするため指定しません。
 
 :::
 
@@ -139,12 +154,9 @@ npm i -g ./apps/registry
 実行例:
 
 ```
-$ profile-registry advertiser:sign -i example.priv.json --id www.so-netmedia.jp --input ad-1.json
-$ profile-registry advertiser:sign -i example.priv.json --id www.so-netmedia.jp --input ad-2.json
-$ profile-registry advertiser:sign -i example.priv.json --id www.so-netmedia.jp --input ad-3.json
-$ profile-registry advertiser:sign -i example.priv.json --id www.so-netmedia.jp --input ad-4.json
-$ profile-registry advertiser:sign -i example.priv.json --id www.so-netmedia.jp --input ad-5.json
-$ profile-registry advertiser:sign -i example.priv.json --id www.so-netmedia.jp --input ad-6.json
+$ profile-registry advertiser:sign -i example.priv.json --id www.so-netmedia.jp --input ad-ot.yomiuri.co.jp.json
+$ profile-registry advertiser:sign -i example.priv.json --id www.so-netmedia.jp --input ad-pot.asahi.com.json
+$ profile-registry advertiser:sign -i example.priv.json --id www.so-netmedia.jp --input ad-www.chugoku-np.co.jp.json
 ```
 
 profile-registry コマンドの使用方法は「[Signed Advertisement Profile (SAP) の生成](https://github.com/originator-profile/profile-share/tree/main/apps/registry#profile-registry-advertisersign)」を参照してください。
@@ -178,4 +190,4 @@ profile-registry コマンドの使用方法は「[Signed Advertisement Profile 
 
 #### 広告プロファイルの設置
 
-開発チームが管理するウェブサーバーから配信されます。
+開発チームが管理するウェブサーバー(本サイトの /public/ ディレクトリ配下) から配信され、メディアサイトの広告枠周囲に追加して頂く `<link>` タグから参照頂くことで、ブラウザが読み込みます。
