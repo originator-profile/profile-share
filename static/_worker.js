@@ -42,6 +42,11 @@ async function handleRequest(request, env) {
     throw new BadRequestException("Please use a HTTPS connection.");
   }
 
+  // allow access to public dir without basic auth
+  if (pathname.startsWith("/public/")) {
+    return env.ASSETS.fetch(request);
+  }
+
   if (request.headers.has("Authorization")) {
     // Throws exception when authorization fails.
     const { user, pass } = basicAuthentication(request);
