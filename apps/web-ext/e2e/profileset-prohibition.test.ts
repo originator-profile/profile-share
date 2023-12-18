@@ -59,7 +59,7 @@ test.skip("DPの検証失敗時は閲覧を禁止する", async ({ context, page
 
   ext = await popup(context);
 
-  await expect(ext.getByText(" アクセスにはご注意ください")).toHaveCount(1);z
+  await expect(ext.getByText(" アクセスにはご注意ください")).toHaveCount(1);
   await expect(ext.getByText("このサイトの発信元が確認できません")).toHaveCount(
     1,
   );
