@@ -43,5 +43,4 @@ test("サイトプロファイルにおける表示の確認", async ({ page }) 
   expect(
     await ext?.locator(':text("Website Profile Pair description")').count(),
   ).toEqual(1);
-
 });
