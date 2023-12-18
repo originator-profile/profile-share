@@ -114,7 +114,7 @@ test("ProfileSet不在時(エンドポイントなし)の確認", async ({
   context,
   page,
 }) => {
-  await runTest(context, page, "http://localhost:8080/");
+  await runTest(context, page, "https://www.google.co.jp/");
   await expect(ext?.locator("details dd").textContent()).resolves.toBe(
     "No profile sets found",
   );
