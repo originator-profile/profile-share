@@ -31,7 +31,7 @@ const responseMap: Record<string, Response> = {
       </html>
     `,
   },
-  "/": {
+  "/app/debugger": {
     status: 200,
     contentType: "text/html",
     body: `
@@ -49,11 +49,17 @@ const responseMap: Record<string, Response> = {
   },
 };
 
-async function runTest(ctx: BrowserContext, page: Page, url: string) {
+async function runTest(ctx: BrowserContext, page: Page, url: string, noEndpoint: boolean) {
   await page.route("**", (route) => {
     const url = new URL(route.request().url());
 
-    if (url.pathname === "/ps.json") {
+    //プロファイルの取得失敗を再現のため
+    if (url.pathname === "/ps.json" && noEndpoint) {
+      return route.abort();
+    }
+
+    //エンドポイントなし時、.well-known/pp.jsonの取得が必ず実行されるので拒否
+    if (url.pathname === "/.well-known/pp.json" && !noEndpoint) {
       return route.abort();
     }
 
@@ -114,7 +120,8 @@ test("ProfileSet不在時(エンドポイントなし)の確認", async ({
   context,
   page,
 }) => {
-  await runTest(context, page, "https://www.google.co.jp/");
+  let noEndpoint = false;
+  await runTest(context, page, "http://localhost:8080/app/debugger",noEndpoint);
   await expect(ext?.locator("details dd").textContent()).resolves.toBe(
     "No profile sets found",
   );
@@ -124,7 +131,8 @@ test("ProfileSet不在時(エンドポイントあり、取得できない)の�
   context,
   page,
 }) => {
-  await runTest(context, page, "http://localhost:8080/test");
+  let noEndpoint = true;
+  await runTest(context, page, "http://localhost:8080/test",noEndpoint);
   await expect(ext?.locator("details dd").textContent()).resolves.toBe(
     "プロファイルを取得できませんでした:\nFailed to fetch",
   );
