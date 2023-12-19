@@ -49,7 +49,12 @@ const responseMap: Record<string, Response> = {
   },
 };
 
-async function runTest(ctx: BrowserContext, page: Page, url: string, noEndpoint: boolean) {
+async function runTest(
+  ctx: BrowserContext,
+  page: Page,
+  url: string,
+  noEndpoint: boolean,
+) {
   await page.route("**", (route) => {
     const url = new URL(route.request().url());
 
@@ -121,7 +126,12 @@ test("ProfileSet不在時(エンドポイントなし)の確認", async ({
   page,
 }) => {
   let noEndpoint = false;
-  await runTest(context, page, "http://localhost:8080/app/debugger",noEndpoint);
+  await runTest(
+    context,
+    page,
+    "http://localhost:8080/app/debugger",
+    noEndpoint,
+  );
   await expect(ext?.locator("details dd").textContent()).resolves.toBe(
     "No profile sets found",
   );
@@ -132,7 +142,7 @@ test("ProfileSet不在時(エンドポイントあり、取得できない)の�
   page,
 }) => {
   let noEndpoint = true;
-  await runTest(context, page, "http://localhost:8080/test",noEndpoint);
+  await runTest(context, page, "http://localhost:8080/test", noEndpoint);
   await expect(ext?.locator("details dd").textContent()).resolves.toBe(
     "プロファイルを取得できませんでした:\nFailed to fetch",
   );
