@@ -49,7 +49,12 @@ const responseMap: Record<string, Response> = {
   },
 };
 
-async function runTest(ctx: BrowserContext, page: Page, url: string, noEndpoint: boolean) {
+async function runTest(
+  ctx: BrowserContext,
+  page: Page,
+  url: string,
+  noEndpoint: boolean,
+) {
   await page.route("**", (route) => {
     const url = new URL(route.request().url());
 
