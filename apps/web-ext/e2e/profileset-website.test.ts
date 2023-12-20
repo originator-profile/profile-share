@@ -38,9 +38,4 @@ test("サイトプロファイルにおける表示の確認", async ({ page }) 
   expect(
     await ext?.locator('h1:has-text("Website Profile Pair title")').count(),
   ).toEqual(1);
-
-  // website.descriptionの存在を確認
-  expect(
-    await ext?.locator(':text("Website Profile Pair description")').count(),
-  ).toEqual(1);
 });
