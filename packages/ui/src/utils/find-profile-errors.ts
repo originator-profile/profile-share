@@ -1,6 +1,5 @@
-import { Profile } from "../types/profile";
+import { Profile, ProfileError } from "../types/profile";
 import { ProfileGenericError } from "@originator-profile/verify";
-import { ProfileError } from "@originator-profile/ui/src/types";
 
 /**
  * エラーを検出する関数

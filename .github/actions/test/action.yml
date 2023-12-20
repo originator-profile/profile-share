@@ -3,7 +3,7 @@ description: Test
 runs:
   using: composite
   steps:
-    - run: yarn test
+    - run: pnpm test
       shell: bash
     - name: Test for WordPress plugin
       uses: "./.github/actions/wordpress_test"

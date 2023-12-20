@@ -14,6 +14,7 @@
     "@types/uuid": "^9.0.6",
     "eslint": "^8.52.0",
     "eslint-config-originator-profile": "*",
+    "jose": "^4.15.4",
     "uuid": "^9.0.1",
     "vitest": "^0.34.6"
   }
