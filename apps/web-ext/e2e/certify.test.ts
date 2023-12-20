@@ -18,7 +18,9 @@ test.afterEach(async ({ page }, testInfo) => {
 
 test("拡張機能画面での認証および対象ページのマークを確認", async ({ page }) => {
   // 初期画面がサイトプロファイルなので記事に移動
-  await ext?.click('a[href*="/publ/localhost/"][href*="/ef9d78e0-d81a-4e39-b7a0-27e15405edc"]');
+  await ext?.click(
+    'a[href*="/publ/localhost/"][href*="/ef9d78e0-d81a-4e39-b7a0-27e15405edc"]',
+  );
 
   // 拡張機能ウィンドウの状態
   expect(await ext?.title()).toMatch(/コンテンツ情報/);
