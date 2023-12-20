@@ -138,9 +138,9 @@ Step 2
 ```console
 git clone https://github.com/originator-profile/profile-share
 cd profile-share
-corepack enable yarn
-yarn install
-yarn build
+corepack enable pnpm
+pnpm install
+pnpm build
 # profile-registry CLIのインストール
 npm i -g ./apps/registry
 ```

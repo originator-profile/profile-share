@@ -4,7 +4,7 @@ sidebar_position: 14
 
 # 編集履歴
 
-## 2023年12月8日
+## 2023年12月19日
 
 - パッケージマネージャーをyarnからpnpmに移行しました。移行手順は「[pnpmへの移行](../development/yarn-to-pnpm.md)」をご確認ください。
 
