@@ -27,7 +27,7 @@ Originator Profile と Document Profile の管理を行うシステムです。
 
 ```
 # CLI を含む Profile レジストリのビルド
-$ yarn build
+$ pnpm build
 # CLI のグローバルインストール
 $ npm i -g .
 # CLI の実行
@@ -39,7 +39,7 @@ running command...
 
 ```
 # 自動ビルドの実行と開発用サーバーの起動
-$ yarn dev
+$ pnpm dev
 # CLI の実行 (本ドキュメント内の profile-registry は bin/dev で置き換え可能です)
 $ bin/dev COMMAND
 running command...
@@ -338,7 +338,7 @@ USAGE
   $ profile-registry db:init [--schema <value>] [--seed]
 
 FLAGS
-  --schema=<value>  [default: node_modules/@originator-profile/registry/dist/prisma/schema.prisma] Prisma schema file
+  --schema=<value>  Prisma schema file
   --[no-]seed       Seed database
 
 DESCRIPTION
@@ -681,7 +681,7 @@ USAGE
 
 FLAGS
   -p, --port=<value>  [default: 8080] Listen port
-  --schema=<value>    [default: node_modules/@originator-profile/registry/dist/prisma/schema.prisma] Prisma schema file
+  --schema=<value>    Prisma schema file
   --[no-]seed         Seed database
 
 DESCRIPTION

@@ -5,10 +5,6 @@
   "repository": "https://github.com/originator-profile/profile",
   "version": "0.0.1",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
@@ -17,32 +13,33 @@
     "test": "turbo run test",
     "lint": "turbo run lint",
     "format": "prettier --write .",
-    "update": "run-s update:{npm,dedupe}",
-    "update:npm": "npm-check-updates --deep --upgrade",
-    "update:dedupe": "yarn-deduplicate",
+    "update": "run-s update:pnpm update:dedupe",
+    "update:pnpm": "pnpm --recursive update --latest",
+    "update:dedupe": "pnpm dedupe",
     "docs": "run-s build docs:{ts,build}",
     "docs:ts": "typedoc",
     "docs:build": "docusaurus build --out-dir pages",
     "docs:preview": "docusaurus start",
-    "start": "profile-registry start"
+    "start": "profile-registry start --schema=packages/registry-db/prisma/schema.prisma"
   },
   "//": "TODO: mdx-mermaidはアップデートしたいがdocusaurus.config.cjsがESM非対応なのでv1.3系のまま残している",
   "devDependencies": {
     "@docusaurus/core": "^2.4.3",
     "@docusaurus/preset-classic": "^2.4.3",
     "@docusaurus/types": "^2.4.3",
+    "@mdx-js/react": "^1.6.22",
     "mdx-mermaid": "^1.3.2",
     "mermaid": "^10.5.1",
     "npm-check-updates": "^16.14.6",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.0.3",
+    "react": "17.0.2",
     "start-server-and-test": "^2.0.1",
-    "turbo": "latest",
-    "typedoc": "^0.25.2",
-    "yarn-deduplicate": "^6.0.2"
+    "turbo": "1.10.16",
+    "typedoc": "^0.25.2"
   },
   "engines": {
     "node": "^18.18.0 || ^20.5.1"
   },
-  "packageManager": "yarn@1.22.19"
+  "packageManager": "pnpm@8.11.0"
 }

@@ -1,6 +1,7 @@
 import { Prisma, requestLogs, requests } from "@prisma/client";
-import { beginTransaction, getClient } from "@originator-profile/registry-db";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
+import { beginTransaction } from "./lib/transaction";
+import { getClient } from "./lib/prisma-client";
 
 type AccountId = requests["groupId"];
 export type Request = requests & {

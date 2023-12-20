@@ -3,7 +3,7 @@
 レジストリのフロントエンドのソースコードです。
 
 - 開発時は apps/registry のサーバーを起動すると HMR サーバーが起動するのでそれを使ってください。
-- 本番環境向けのビルドはこのディレクトリで `yarn build:prod` を実行してください。
+  - 本番環境向けのビルドは `pnpm --filter @originator-profile/registry ui:build`
 - 依存パッケージのインストールはこのディレクトリで行ってください。
 
 フレームワークとして[vite](https://vitejs.dev/)を使っています。

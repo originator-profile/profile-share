@@ -21,6 +21,7 @@
       "outputs": []
     },
     "lint": {
+      "dependsOn": ["@originator-profile/registry-db#build"],
       "outputs": []
     }
   }

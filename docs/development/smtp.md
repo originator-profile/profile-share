@@ -1,6 +1,8 @@
+# SMTP
+
 **TODO: [審査結果メール通知機能](https://github.com/originator-profile/profile/issues/770)にて実装予定。このテスト方法は実装後変更される可能性あります。実装次第もし不要になったら削除してください。**
 
-# メール送信テスト
+## ローカル環境でのメール送信テスト
 
 Step1.
 
@@ -26,13 +28,13 @@ index 9f904ae4..99547169 100644
 Step2.
 
 ```
-$ yarn dev
+$ pnpm dev
 ```
 
 Step3.
 
 ```
-$ yarn dotenv -- -e apps/registry/.env.development -- sh -c 'printf "From: ${MAIL_FROM}\nTo: Bob <bob@example.com>\nSubject: Hello\n\nHello World" | curl smtp://${SMTP_HOST}:${SMTP_PORT} --mail-from oprdev@localhost --mail-rcpt bob@example.com -u any:any -T -'
+$ pnpm --filter @originator-profile/registry exec dotenv -e .env.development -- sh -c 'printf "From: ${MAIL_FROM}\nTo: Bob <bob@example.com>\nSubject: Hello\n\nHello World" | curl smtp://${SMTP_HOST}:${SMTP_PORT} --mail-from oprdev@localhost --mail-rcpt bob@example.com -u any:any -T -'
 ```
 
 or
@@ -72,7 +74,7 @@ console.log(info.messageId);
 ```
 
 ```
-$ yarn dotenv -- -e apps/registry/.env.development -- node smtp-test.mjs
+$ node --env-file=apps/registry/.env.development smtp-test.mjs
 ```
 
 Step4.
