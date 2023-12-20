@@ -24,7 +24,7 @@ test("サイトプロファイルにおける表示の確認", async ({ page }) 
   ).toEqual(2);
   expect(
     await ext
-      ?.locator(':text("この記事の発行者には信頼性情報があります")')
+      ?.locator(':text("このサイトの運営者には信頼性情報があります")')
       .count(),
   ).toEqual(1);
 
