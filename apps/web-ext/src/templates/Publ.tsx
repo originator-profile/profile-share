@@ -53,6 +53,7 @@ function Site({ op, dp, website, holder, paths }: Required<Props>["website"]) {
     op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
   );
   const techTableModal = useModal<{ op: Op; dp: Dp }>();
+  const handleClick = () => techTableModal.onOpen({ op, dp });
   return (
     <div className="bg-gray-50 p-4">
       <div>
