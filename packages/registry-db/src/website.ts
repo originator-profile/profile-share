@@ -203,6 +203,7 @@ export const WebsiteRepository = () => ({
     contextDefinition:
       | ContextDefinition
       | string = "https://originator-profile.org/context.jsonld",
+    main?: string,
   ): Promise<JsonLdDocument | Error> {
     const prisma = getClient();
     const data = await prisma.websites
@@ -244,6 +245,7 @@ export const WebsiteRepository = () => ({
     const sdps = data.flatMap(({ dps }) => dps.map((dp) => dp.jwt));
     const profiles: JsonLdDocument = {
       "@context": contextDefinition,
+      main,
       profile: [...sops, ...sdps],
     };
     return profiles;

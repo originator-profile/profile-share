@@ -124,8 +124,9 @@ export const WebsiteService = ({ websiteRepository }: Options) => ({
     contextDefinition:
       | ContextDefinition
       | string = "https://originator-profile.org/context.jsonld",
+    main?: string,
   ): Promise<JsonLdDocument | Error> {
-    return websiteRepository.getProfileSet(url, contextDefinition);
+    return websiteRepository.getProfileSet(url, contextDefinition, main);
   },
 
   /**

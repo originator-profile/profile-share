@@ -9,6 +9,11 @@ const Query = {
   type: "object",
   properties: {
     url: { type: "string", format: "uri" },
+    main: {
+      type: "string",
+      format: "uuid",
+      title: "メインコンテンツの ID (UUID)",
+    },
   },
   required: ["url"],
 } as const;
@@ -43,7 +48,11 @@ async function getProfileSet(
   const contextDefinition: ContextDefinition | undefined =
     server.config.NODE_ENV === "development" ? context["@context"] : undefined;
   const data: JsonLdDocument | Error =
-    await server.services.website.getProfileSet(query.url, contextDefinition);
+    await server.services.website.getProfileSet(
+      query.url,
+      contextDefinition,
+      query.main,
+    );
   if (data instanceof HttpError) return data;
   if (data instanceof Error) {
     return new BadRequestError("invalid query.url", data);
