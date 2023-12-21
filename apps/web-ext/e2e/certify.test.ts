@@ -20,6 +20,11 @@ test("拡張機能画面での認証および対象ページのマークを確�
   // 初期画面がサイトプロファイルなので記事に移動
   await ext?.click('a[href*="/publ/localhost/"][href*="/ef9d78e0-d81a-4e39-b7a0-27e15405edc"]');
 
+  // 記事発行者の名前を持つ要素が存在するか確認
+  expect(  
+    await page.getByTestId('ps-json-holder')
+  ).toBeDefined();
+
   // 拡張機能ウィンドウの状態
   expect(await ext?.title()).toMatch(/コンテンツ情報/);
   expect(
