@@ -23,9 +23,7 @@ test("拡張機能画面での認証および対象ページのマークを確�
   );
 
   // 記事発行者の名前を持つ要素が存在するか確認
-  expect(  
-    await page.getByTestId('ps-json-holder')
-  ).toBeDefined();
+  expect(await page.getByTestId("ps-json-holder")).toBeDefined();
 
   // 拡張機能ウィンドウの状態
   expect(await ext?.title()).toMatch(/コンテンツ情報/);
