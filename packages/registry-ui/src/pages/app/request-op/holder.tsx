@@ -251,8 +251,10 @@ export default function Holder() {
               required: "このフィールドを入力してください。",
               onBlur: saveDraft,
             })}
-            placeholder="東京都"
           >
+            <option disabled value="">
+              未選択
+            </option>
             {prefectures.map((prefecture) => (
               <option key={prefecture} value={prefecture}>
                 {prefecture}
