@@ -53,7 +53,6 @@ function Site({ op, dp, website, holder, paths }: Required<Props>["website"]) {
     op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
   );
   const techTableModal = useModal<{ op: Op; dp: Dp }>();
-  const handleClick = () => techTableModal.onOpen({ op, dp });
   return (
     <div className="bg-gray-50 p-4">
       <div>
@@ -166,7 +165,7 @@ function Main({
             信頼性情報について
           </p>
         </div>
-        <div className="mb-3">
+        <div className="mb-3" data-testid="ps-json-holder">
           <HolderSummary to={paths.org} holder={holder} />
         </div>
         <hr className="mb-3" />
