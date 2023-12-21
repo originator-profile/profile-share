@@ -10,8 +10,6 @@ runs:
         git config user.name "bot"
         git config user.email "bot@originator-profile.org"
       shell: bash
-    - name: Format for WordPress plugin
-      uses: "./.github/actions/wordpress_format"
     - name: Commit
       run: |-
         if git commit -am 'bot: format [skip ci]'; then

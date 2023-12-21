@@ -1,0 +1,12 @@
+name: wordpress_build
+description: Build for WordPress plugin
+runs:
+  using: composite
+  steps:
+    - name: Build for WordPress plugin
+      run: docker build --output=dist .
+      working-directory: packages/wordpress
+      shell: bash
+    - uses: actions/upload-artifact@v3
+      with:
+        path: packages/wordpress/dist/*.zip

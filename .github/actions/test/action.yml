@@ -5,5 +5,3 @@ runs:
   steps:
     - run: pnpm test
       shell: bash
-    - name: Test for WordPress plugin
-      uses: "./.github/actions/wordpress_test"
