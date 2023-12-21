@@ -1,18 +1,20 @@
 import clsx from "clsx";
 import { useParams, Link } from "react-router-dom";
-import { isOp, isDp, isOpHolder } from "@originator-profile/core";
+import { isDp, isAdvertisement, isOgWebsite } from "@originator-profile/core";
 import { Image } from "@originator-profile/ui";
 import { Profile, Dp } from "@originator-profile/ui/src/types";
 import { sortDps } from "@originator-profile/ui/src/utils";
-import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
+import placeholderDpThumbnail from "@originator-profile/ui/src/assets/placeholder-dp-thumbnail.png";
 import { routes } from "../utils/routes";
+import { Advertisement, OgWebsite } from "@originator-profile/model";
 
 type Props = {
   profiles: Profile[];
   main: string[];
+  contentType: "all" | "main" | "other" | "advertisement";
 };
 
-function DpSelector({ profiles, main }: Props) {
+function DpSelector({ profiles, main, contentType }: Props) {
   const { issuer, subject, ...params } = useParams<{
     issuer: string;
     subject: string;
@@ -26,15 +28,32 @@ function DpSelector({ profiles, main }: Props) {
       activeDp: dp,
     });
   };
+
+  const filterFunction = (dp: Dp) => {
+    switch (contentType) {
+      case "all":
+        return true;
+      case "main":
+        return main.includes(dp.subject);
+      case "other":
+        return !main.includes(dp.subject) && !dp.item.some(isAdvertisement);
+      case "advertisement":
+        return dp.item.some(isAdvertisement);
+    }
+  };
+
+  const filteredDps = sortDps(
+    profiles.filter(isDp).filter(filterFunction),
+    main,
+  );
+
   return (
     <ul>
-      {sortDps(profiles.filter(isDp), main).map((dp) => {
+      {filteredDps.map((dp) => {
         const active = dp.issuer === issuer && dp.subject === subject;
-        const op = profiles
-          .filter(isOp)
-          .find(({ subject }) => subject === dp.issuer);
-        const holder = op?.item.find(isOpHolder);
-        const logo = holder?.logos?.find(({ isMain }) => isMain);
+        const content = dp.item.find(
+          (i) => isAdvertisement(i) || isOgWebsite(i),
+        ) as OgWebsite | Advertisement | undefined;
         return (
           <li
             key={`${encodeURIComponent(dp.issuer)}/${encodeURIComponent(
@@ -43,7 +62,7 @@ function DpSelector({ profiles, main }: Props) {
           >
             <Link
               className={clsx(
-                "flex justify-center items-center h-20 hover:bg-blue-50 relative",
+                "flex justify-center items-center h-16 hover:bg-blue-50 relative",
                 { ["bg-blue-50"]: active },
               )}
               to={[
@@ -52,23 +71,14 @@ function DpSelector({ profiles, main }: Props) {
               ].join("/")}
               onClick={handleClickDp(dp)}
             >
-              {active && (
-                <svg
-                  viewBox="0 0 10 10"
-                  width="10"
-                  height="10"
-                  className="absolute left-0 -translate-x-1/2 fill-blue-500 stroke-transparent"
-                >
-                  <circle cx="5" cy="5" r="5" />
-                </svg>
-              )}
               <Image
-                src={logo?.url}
-                placeholderSrc={placeholderLogoMainUrl}
-                alt={holder?.name ?? ""}
-                width={54}
-                height={54}
-                rounded
+                className="bg-gray-200 rounded-lg"
+                src={content?.image}
+                placeholderSrc={placeholderDpThumbnail}
+                alt={content?.title ?? ""}
+                width={44}
+                height={44}
+                cover
               />
             </Link>
           </li>

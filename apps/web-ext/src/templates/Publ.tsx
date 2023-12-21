@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Icon } from "@iconify/react";
 import {
   Advertisement,
@@ -17,6 +18,7 @@ import { Profile, Op, Dp } from "@originator-profile/ui/src/types";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
 import HolderSummary from "../components/HolderSummary";
 import DpSelector from "../components/DpSelector";
+import DpFilter from "../components/DpFilter";
 import { useModal, getContentType } from "@originator-profile/ui/src/utils";
 
 type Props = {
@@ -197,21 +199,32 @@ function Main({
 }
 
 function Publ(props: Props) {
+  const [contentType, setContentType] = useState<
+    "advertisement" | "main" | "all" | "other"
+  >("all");
+
   return (
     <div>
       {props.website && (
-        <header>
+        <header className="border-b border-gray-200">
           <Site {...props.website} />
         </header>
       )}
       {props.article && (
         <div className="flex">
-          <nav className="flex-shrink-0 w-20 h-screen overflow-y-auto bg-white sticky top-0 shadow-xl z-10">
-            <DpSelector
-              profiles={props.article.profiles}
-              main={props.article.main}
+          <div className="flex flex-col border-r border-gray-200">
+            <DpFilter
+              contentType={contentType}
+              setContentType={setContentType}
             />
-          </nav>
+            <nav className="flex-shrink-0 w-16 overflow-y-auto bg-white sticky top-0 z-10 border-t border-gray-200">
+              <DpSelector
+                profiles={props.article.profiles}
+                main={props.article.main}
+                contentType={contentType}
+              />
+            </nav>
+          </div>
           <main className="flex-1">
             <Main {...props.article} />
           </main>

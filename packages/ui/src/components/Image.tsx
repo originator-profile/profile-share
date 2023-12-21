@@ -8,6 +8,7 @@ type Props = {
   width: number;
   height: number;
   rounded?: boolean;
+  cover?: boolean;
 };
 
 function Image({
@@ -18,15 +19,24 @@ function Image({
   width,
   height,
   rounded = false,
+  cover = false,
 }: Props) {
   return (
     <figure
-      className={clsx("flex justify-center items-center", className)}
+      className={clsx(
+        "flex justify-center items-center overflow-hidden",
+        className,
+      )}
       style={{ height, minWidth: width }}
     >
       <img
-        className={clsx("w-auto", { ["rounded-full"]: rounded })}
-        style={{ maxWidth: width, maxHeight: height }}
+        className={clsx("w-auto", {
+          ["rounded-full"]: rounded,
+          ["object-cover"]: cover,
+        })}
+        style={
+          cover ? { width, height } : { maxWidth: width, maxHeight: height }
+        }
         src={src ?? placeholderSrc}
         alt={alt}
         width={width}
