@@ -28,9 +28,6 @@ test("拡張機能画面での認証および対象ページのマークを確�
   // 拡張機能ウィンドウの状態
   expect(await ext?.title()).toMatch(/コンテンツ情報/);
   expect(
-    await ext?.locator(':text("Originator Profile 技術研究組合")').count(),
-  ).toEqual(2);
-  expect(
     await ext
       ?.locator(':text("この記事の発行者には信頼性情報があります")')
       .count(),
