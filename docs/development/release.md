@@ -55,8 +55,7 @@ Step 3
 2. 最新のワークフローを選択
 3. Artifacts > [artifact] から、Zipファイルをダウンロード
 4. ダウンロードしたZipファイルを展開
-5. web-ext-artifacts/profile_web_extension-x.x.x.zip を profile_web_extension.zip に、web-ext-artifacts-firefox-desktop/profile_web_extension-x.x.x.zip を profile_web_extension-firefox.zip に変更
-6. .zip をリリースアセットとしてアップロード
+5. web-ext-artifacts/\*.zip をリリースアセットとしてアップロード
 
 ### WordPress Plugin のアップロード
 

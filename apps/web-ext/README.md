@@ -33,14 +33,14 @@ Step 4
 次のコマンドをターミナルで実行し、拡張機能をプレビューします。
 
 ```
-$ pnpm dev --issuer=oprexpt.originator-profile.org --url=https://oprexpt.originator-profile.org/
+$ pnpm dev --issuer=oprexpt.originator-profile.org --url=https://originator-profile.org/
 ```
 
 ### ローカル環境での動作確認
 
 1. プロジェクトのルートディレクトリに移動します。
 2. `pnpm dev` コマンドを実行し、ローカル環境でChrome用拡張機能をプレビューします。
-   - http://localhost:8080/ にアクセスし、ローカル環境の開発用サーバー http://localhost:8080/ での動作を確認できます。
+   - http://localhost:8080/app/debugger にアクセスし、ローカル環境の開発用サーバーでの動作を確認できます。
 
 ## 環境変数
 
@@ -51,20 +51,16 @@ $ pnpm dev --issuer=oprexpt.originator-profile.org --url=https://oprexpt.origina
 ## npm スクリプト
 
 - `pnpm build`: 拡張機能をビルドしたのち、パッケージングします。
-- `pnpm build:esbuild`: `dist-chromium` を出力先として、Chrome用拡張機能を esbuild でビルドします。
-  - `-t, --target`: 拡張機能をプレビューする対象のランタイムを指定します。ランタイムを変更すると出力先も変更されます。
+- `pnpm build:chromium` `pnpm build:firefox`: 拡張機能をビルドしパッケージングします。
+  - `-t, --target`: 対象のランタイムを指定します。ランタイムを変更すると出力先も変更されます。
   - `-i, --issuer`: 環境変数 `PROFILE_ISSUER` と同じです。
-- `pnpm build:web-ext`: `dist-chromium` をソースとして、拡張機能を[パッケージング](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/#packaging-your-extension)します。
-- `pnpm dev`: `dist-chromium` を出力先として、Chrome用拡張機能を esbuild で差分ビルドしてブラウザーでプレビューします。
-  - `-t, --target`: 拡張機能をプレビューする対象のランタイムを指定します。ランタイムを変更すると出力先も変更されます。
+- `pnpm dev`: 拡張機能をブラウザーでプレビューします。
+  - `-t, --target`: プレビューする対象のランタイムを指定します。
   - `-u, --url`: プレビュー開始時に表示される URL を指定します。
   - `-i, --issuer`: 環境変数 `PROFILE_ISSUER` と同じです。
 - `pnpm lint`: コードリントと fixable なリントエラーを修正します。
 - `pnpm test`: ユニットテストを実行します。
 - `pnpm e2e`: Chrome用拡張機能のe2eテストを実行します。`pnpm dev`で拡張機能をビルドした状態で実行してください。
-- `pnpm build:esbuild-firefox`: `pnpm build:esbuild -t firefox-desktop`のエイリアスです。
-- `pnpm dev:firefox`: `pnpm dev -t firefox-desktop`のエイリアスです。
-- `pnpm build:web-ext-firefox`: `dist-firefox-desktop` をソースとして、拡張機能を[パッケージング](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/#packaging-your-extension)します。
 
 ## ドキュメント
 
