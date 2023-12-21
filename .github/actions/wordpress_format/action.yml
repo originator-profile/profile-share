@@ -7,3 +7,9 @@ runs:
       run: docker compose exec -w /var/www/html/wp-content/plugins/profile wordpress composer run format
       working-directory: packages/wordpress
       shell: bash
+    - name: Commit
+      run: |-
+        if git commit -am 'bot: format [skip ci]'; then
+          git push origin HEAD:"${{ github.ref }}"
+        fi
+      shell: bash

@@ -1,3 +1,4 @@
 composer.lock
 packages/auth0/deploy-cli/*.yaml
 pnpm-lock.yaml
+lerna.json

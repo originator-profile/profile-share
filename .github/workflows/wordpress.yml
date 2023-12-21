@@ -1,0 +1,27 @@
+name: originator-profile/profile/wordpress
+on:
+  push:
+    paths:
+      - "packages/wordpress/**"
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup
+        uses: "./.github/actions/setup"
+      - name: Setup for WordPress Plugin
+        uses: "./.github/actions/wordpress_setup"
+      - name: Lint for WordPress Plugin
+        uses: "./.github/actions/wordpress_lint"
+      - name: Format for WordPress Plugin
+        uses: "./.github/actions/wordpress_format"
+      - name: Build for WordPress Plugin
+        uses: "./.github/actions/wordpress_build"
+      - name: Test for WordPress Plugin
+        uses: "./.github/actions/wordpress_test"
+      - name: End-to-End Test for WordPress Plugin
+        uses: "./.github/actions/wordpress_e2e"

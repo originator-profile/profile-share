@@ -19,5 +19,3 @@ runs:
     - name: Install browsers and system dependencies
       run: pnpm --filter @originator-profile/registry exec playwright install --with-deps
       shell: bash
-    - name: Setup for WordPress plugin
-      uses: "./.github/actions/wordpress_setup"

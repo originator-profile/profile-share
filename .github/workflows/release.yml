@@ -1,0 +1,34 @@
+name: release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Increment "major", "minor", "patch", "prerelease" or "pre*" version; or specify version'
+        default: prerelease
+        required: true
+jobs:
+  main:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup
+        uses: "./.github/actions/setup"
+      - name: Bump version
+        run: |
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git config user.name "${GITHUB_ACTOR}"
+          pnpm exec lerna version --yes "${{ github.event.inputs.version }}"
+      - name: Build
+        uses: "./.github/actions/build"
+      - name: Build for WordPress plugin
+        uses: "./.github/actions/wordpress_build"
+      - if: github.event.inputs.version != 'prerelease'
+        name: Prerelease
+        run: |
+          pnpm exec lerna version --yes prerelease

@@ -873,6 +873,9 @@ importers:
       '@wordpress/e2e-test-utils-playwright':
         specifier: ^0.15.0
         version: 0.15.0(@playwright/test@1.40.1)(typescript@5.3.3)
+      shx:
+        specifier: ^0.3.4
+        version: 0.3.4
 
 packages:
 

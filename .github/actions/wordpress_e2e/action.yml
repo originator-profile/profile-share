@@ -1,5 +1,5 @@
-name: e2e
-description: End-to-End Test
+name: wordpress_e2e
+description: End-to-End Test for WordPress plugin
 runs:
   using: composite
   steps:
@@ -7,7 +7,7 @@ runs:
       run: sudo apt-get install -y fonts-noto-cjk
       shell: bash
     - name: E2E tests
-      run: pnpm e2e
+      run: pnpm wordpress:e2e
       shell: bash
     - name: テスト結果の保存(失敗時レポート)
       uses: actions/upload-artifact@v3
@@ -15,7 +15,5 @@ runs:
       with:
         name: e2e-report
         path: |
-          packages/verify/playwright-report
-          apps/web-ext/playwright-report
-          apps/web-ext/screenshots
+          packages/wordpress/playwright-report
         retention-days: 7
