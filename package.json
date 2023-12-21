@@ -20,7 +20,7 @@
     "docs:ts": "typedoc",
     "docs:build": "docusaurus build --out-dir pages",
     "docs:preview": "docusaurus start",
-    "start": "profile-registry start --schema=packages/registry-db/prisma/schema.prisma"
+    "start": "pnpm --filter=@originator-profile/registry build:ui && profile-registry start"
   },
   "devDependencies": {
     "@docusaurus/core": "^3.0.1",

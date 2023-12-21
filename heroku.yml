@@ -1,0 +1,5 @@
+build:
+  docker:
+    web: Dockerfile
+  config:
+    NODE_VERSION: 20.10-alpine3.19

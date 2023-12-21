@@ -7,4 +7,4 @@ RUN corepack enable pnpm \
   && pnpm build \
   && npm i -g ./apps/registry
 ENV NODE_ENV=production
-CMD ["profile-registry", "start"]
+CMD ["pnpm", "start"]
