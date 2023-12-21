@@ -1,6 +1,6 @@
 {
   "name": "@originator-profile/registry-service",
-  "version": "0.0.5-alpha.0",
+  "version": "0.0.5-alpha.1",
   "private": true,
   "main": "src/index.ts",
   "scripts": {

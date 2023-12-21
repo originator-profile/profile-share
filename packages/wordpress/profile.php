@@ -3,7 +3,7 @@
  * Profile Plugin
  *
  * Plugin Name: Profile
- * Version: 0.0.5-alpha.0
+ * Version: 0.0.5-alpha.1
  * License: MIT
  *
  * @package Profile
