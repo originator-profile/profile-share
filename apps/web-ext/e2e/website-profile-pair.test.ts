@@ -16,22 +16,17 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-拡張機能.png` });
 });
 
-test("拡張機能画面での認証および対象ページのマークを確認", async ({ page }) => {
-  // 初期画面がサイトプロファイルなので記事に移動
-  await ext?.click(
-    'a[href*="/publ/localhost/"][href*="/ef9d78e0-d81a-4e39-b7a0-27e15405edc"]',
-  );
+test("サイトプロファイルにおける表示の確認", async ({ page }) => {
+  expect(await ext?.title()).toMatch(/コンテンツ情報/);
 
-  // 記事発行者の名前を持つ要素が存在するか確認
-  expect(await ext?.getByTestId("ps-json-holder").innerText()).toMatch(
+  // サイトプロファイルの発行者を持つ要素が存在するか確認
+  expect(await ext?.getByTestId("pp-json-holder").innerText()).toMatch(
     /Originator Profile 技術研究組合/,
   );
 
-  // 拡張機能ウィンドウの状態
-  expect(await ext?.title()).toMatch(/コンテンツ情報/);
   expect(
     await ext
-      ?.locator(':text("この記事の発行者には信頼性情報があります")')
+      ?.locator(':text("このサイトの運営者には信頼性情報があります")')
       .count(),
   ).toEqual(1);
 
@@ -40,13 +35,9 @@ test("拡張機能画面での認証および対象ページのマークを確�
 
   // 対象Webページにマークは表示されているか
   expect(await page.title()).toMatch(/OP登録サイト/);
+
+  // website.titleの存在を確認
   expect(
-    await page
-      .frameLocator("iframe")
-      .getByRole("button", {
-        name: "Originator Profile 技術研究組合 OP 確認くん",
-      })
-      .count(),
-    "ピンが少なくとも1つ存在する",
-  ).toBeGreaterThanOrEqual(1);
+    await ext?.locator('h1:has-text("Website Profile Pair title")').count(),
+  ).toEqual(1);
 });
