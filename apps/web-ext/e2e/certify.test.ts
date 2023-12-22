@@ -30,7 +30,7 @@ test("拡張機能画面での認証および対象ページのマークを確�
   expect(await ext?.locator("header").innerText()).toMatch(
     /このサイトの運営者には信頼性情報があります/,
   );
-  
+
   // 拡張機能ウィンドウの状態
   expect(await ext?.title()).toMatch(/コンテンツ情報/);
   expect(
