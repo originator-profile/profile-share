@@ -104,7 +104,7 @@ function Site({ op, dp, website, holder, paths }: Required<Props>["website"]) {
             </p>
           </div>
         </div>
-        <div className="mb-3">
+        <div className="mb-3" data-testid="pp-json-holder">
           <HolderSummary to={paths.org} holder={holder} />
         </div>
       </div>
