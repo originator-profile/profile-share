@@ -17,14 +17,14 @@ test.afterEach(async ({ page }, testInfo) => {
 });
 
 test("拡張機能画面での認証および対象ページのマークを確認", async ({ page }) => {
-  if(ext){
+  if (ext) {
     // 初期画面がサイトプロファイルなので記事に移動
     await ext.click(
       'a[href*="/publ/localhost/"][href*="/ef9d78e0-d81a-4e39-b7a0-27e15405edc"]',
     );
 
     // 記事発行者の名前を持つ要素が存在するか確認
-    await expect(ext.getByTestId('ps-json-holder')).toContainText(
+    await expect(ext.getByTestId("ps-json-holder")).toContainText(
       "Originator Profile 技術研究組合",
     );
     await expect(ext.locator("header")).toContainText(
