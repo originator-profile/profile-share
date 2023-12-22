@@ -26,7 +26,7 @@ test("拡張機能画面での認証および対象ページのマークを確�
   expect(await ext?.getByTestId("ps-json-holder").innerText()).toMatch(
     /Originator Profile 技術研究組合/,
   );
-  
+
   // 拡張機能ウィンドウの状態
   expect(await ext?.title()).toMatch(/コンテンツ情報/);
   expect(

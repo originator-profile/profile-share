@@ -17,14 +17,13 @@ test.afterEach(async ({ page }, testInfo) => {
 });
 
 test("サイトプロファイルにおける表示の確認", async ({ page }) => {
-  
   expect(await ext?.title()).toMatch(/コンテンツ情報/);
 
   // サイトプロファイルの発行者を持つ要素が存在するか確認
   expect(await ext?.getByTestId("pp-json-holder").innerText()).toMatch(
     /Originator Profile 技術研究組合/,
   );
-  
+
   expect(
     await ext
       ?.locator(':text("このサイトの運営者には信頼性情報があります")')
