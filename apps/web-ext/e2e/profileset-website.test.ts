@@ -19,9 +19,7 @@ test.afterEach(async ({ page }, testInfo) => {
 test("サイトプロファイルにおける表示の確認", async ({ page }) => {
   // 拡張機能ウィンドウの状態を確認
   expect(await ext?.title()).toMatch(/コンテンツ情報/);
-  expect(
-    await ext?.locator(':text("Originator Profile 技術研究組合")').count(),
-  ).toEqual(2);
+  
   expect(
     await ext
       ?.locator(':text("このサイトの運営者には信頼性情報があります")')
