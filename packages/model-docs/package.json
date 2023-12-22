@@ -1,6 +1,6 @@
 {
   "name": "@originator-profile/model-docs",
-  "version": "0.0.5",
+  "version": "0.0.6-alpha.1",
   "private": true,
   "scripts": {
     "build": "run-s build:schema build:docs",
