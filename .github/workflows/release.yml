@@ -32,4 +32,4 @@ jobs:
       - if: github.event.inputs.version != 'prerelease'
         name: Prerelease
         run: |
-          pnpm exec lerna version --yes prerelease
+          pnpm exec lerna version --force-publish --yes prerelease
