@@ -106,7 +106,7 @@ function Site({ op, dp, website, holder, paths }: Required<Props>["website"]) {
             </p>
           </div>
         </div>
-        <div className="mb-3">
+        <div className="mb-3" data-testid="pp-json-holder">
           <HolderSummary to={paths.org} holder={holder} />
         </div>
       </div>
@@ -168,7 +168,7 @@ function Main({
             信頼性情報について
           </p>
         </div>
-        <div className="mb-3">
+        <div className="mb-3" data-testid="ps-json-holder">
           <HolderSummary to={paths.org} holder={holder} />
         </div>
         <hr className="mb-3" />
