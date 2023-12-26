@@ -79,56 +79,58 @@ async function runTest(
   }
   ext = await popup(ctx);
 
-  if(noProfilePair){
+  if (noProfilePair) {
     const messages = [
       "組織の信頼性情報と出版物の流通経路が正しく読み取れませんでした",
       "組織の信頼性情報と出版物の流通経路がまだありません",
       "組織の信頼性情報と出版物の流通経路の取得に失敗しました",
     ];
-  
+
     const counts = await Promise.all(
       messages.map((message) => ext?.locator(`:text("${message}")`).count()),
     );
-  
+
     counts.forEach((count) => {
       expect(count).toEqual(1);
     });
-  
+
     const details = ["メッセージ"];
-  
+
     await Promise.all(
       details.map(
-        (detail) => ext && expect(ext.locator(`:text("${detail}")`)).toBeHidden(),
+        (detail) =>
+          ext && expect(ext.locator(`:text("${detail}")`)).toBeHidden(),
       ),
     );
-  
+
     await ext?.locator("details>summary").click();
-  
+
     await Promise.all(
       details.map(
         (detail) =>
           ext && expect(ext.locator(`:text("${detail}")`)).toBeVisible(),
       ),
     );
-  }else{
+  } else {
     const messages = [
       "出版物の情報が",
       "見つかりませんでした",
       "ページの移動によって出版物の情報が",
       "失われた可能性があります",
     ];
-    
+
     // NotFoundの文言が存在するかを確認
     const pageText01 = await ext?.locator("h1").innerText();
-    const pageText02 = await ext?.locator("p.text-xs.text-gray-700.mb-8").innerText();
-    
+    const pageText02 = await ext
+      ?.locator("p.text-xs.text-gray-700.mb-8")
+      .innerText();
+
     const combinedTexts = `${pageText01}\n${pageText02}`;
-    
-    messages.forEach(message => {
+
+    messages.forEach((message) => {
       expect(combinedTexts).toMatch(message);
     });
   }
-
 }
 
 test.afterEach(async ({ page }, testInfo) => {
@@ -136,10 +138,7 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-web-ext.png` });
 });
 
-test("pp.json取得成功(エンドポイントなし)の確認", async ({
-  context,
-  page,
-}) => {
+test("pp.json取得成功(エンドポイントなし)の確認", async ({ context, page }) => {
   const noProfilePair = false;
   await runTest(
     context,
@@ -149,10 +148,7 @@ test("pp.json取得成功(エンドポイントなし)の確認", async ({
   );
 });
 
-test("pp.json取得失敗(エンドポイントなし)の確認", async ({
-  context,
-  page,
-}) => {
+test("pp.json取得失敗(エンドポイントなし)の確認", async ({ context, page }) => {
   const noProfilePair = true;
   await runTest(
     context,
