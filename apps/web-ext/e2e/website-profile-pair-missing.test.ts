@@ -104,8 +104,8 @@ test("pp.json取得成功(エンドポイントなし)の確認", async ({ conte
   const message2 = "見つかりませんでした";
   expect(pageText01).toMatch(message2);
   
-  const pageText02 = await ext?.getByTestId("pp-json-holder").innerText();
-  
+  const pageText02 = await ext?.getByTestId("p-elm-notfound-message").innerText();
+
   const message3 = "ページの移動によって出版物の情報が";
   expect(pageText02).toMatch(message3);
   const message4 = "失われた可能性があります";
