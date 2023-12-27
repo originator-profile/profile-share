@@ -79,58 +79,6 @@ async function runTest(
   }
   ext = await popup(ctx);
 
-  if (noProfilePair) {
-    const messages = [
-      "組織の信頼性情報と出版物の流通経路が正しく読み取れませんでした",
-      "組織の信頼性情報と出版物の流通経路がまだありません",
-      "組織の信頼性情報と出版物の流通経路の取得に失敗しました",
-    ];
-
-    const counts = await Promise.all(
-      messages.map((message) => ext?.locator(`:text("${message}")`).count()),
-    );
-
-    counts.forEach((count) => {
-      expect(count).toEqual(1);
-    });
-
-    const details = ["メッセージ"];
-
-    await Promise.all(
-      details.map(
-        (detail) =>
-          ext && expect(ext.locator(`:text("${detail}")`)).toBeHidden(),
-      ),
-    );
-
-    await ext?.locator("details>summary").click();
-
-    await Promise.all(
-      details.map(
-        (detail) =>
-          ext && expect(ext.locator(`:text("${detail}")`)).toBeVisible(),
-      ),
-    );
-  } else {
-    const messages = [
-      "出版物の情報が",
-      "見つかりませんでした",
-      "ページの移動によって出版物の情報が",
-      "失われた可能性があります",
-    ];
-
-    // NotFoundの文言が存在するかを確認
-    const pageText01 = await ext?.locator("h1").innerText();
-    const pageText02 = await ext
-      ?.locator("p.text-xs.text-gray-700.mb-8")
-      .innerText();
-
-    const combinedTexts = `${pageText01}\n${pageText02}`;
-
-    messages.forEach((message) => {
-      expect(combinedTexts).toMatch(message);
-    });
-  }
 }
 
 test.afterEach(async ({ page }, testInfo) => {
@@ -146,6 +94,24 @@ test("pp.json取得成功(エンドポイントなし)の確認", async ({ conte
     "http://localhost:8080/app/debugger",
     noProfilePair,
   );
+  const messages = [
+    "出版物の情報が",
+    "見つかりませんでした",
+    "ページの移動によって出版物の情報が",
+    "失われた可能性があります",
+  ];
+
+  // NotFoundの文言が存在するかを確認
+  const pageText01 = await ext?.locator("h1").innerText();
+  const pageText02 = await ext
+    ?.locator("p.text-xs.text-gray-700.mb-8")
+    .innerText();
+
+  const combinedTexts = `${pageText01}\n${pageText02}`;
+
+  messages.forEach((message) => {
+    expect(combinedTexts).toMatch(message);
+  });
 });
 
 test("pp.json取得失敗(エンドポイントなし)の確認", async ({ context, page }) => {
@@ -155,6 +121,37 @@ test("pp.json取得失敗(エンドポイントなし)の確認", async ({ conte
     page,
     "http://localhost:8080/app/debugger",
     noProfilePair,
+  );
+  const messages = [
+    "組織の信頼性情報と出版物の流通経路が正しく読み取れませんでした",
+    "組織の信頼性情報と出版物の流通経路がまだありません",
+    "組織の信頼性情報と出版物の流通経路の取得に失敗しました",
+  ];
+
+  const counts = await Promise.all(
+    messages.map((message) => ext?.locator(`:text("${message}")`).count()),
+  );
+
+  counts.forEach((count) => {
+    expect(count).toEqual(1);
+  });
+
+  const details = ["メッセージ"];
+
+  await Promise.all(
+    details.map(
+      (detail) =>
+        ext && expect(ext.locator(`:text("${detail}")`)).toBeHidden(),
+    ),
+  );
+
+  await ext?.locator("details>summary").click();
+
+  await Promise.all(
+    details.map(
+      (detail) =>
+        ext && expect(ext.locator(`:text("${detail}")`)).toBeVisible(),
+    ),
   );
   await expect(ext?.locator("details dd").textContent()).resolves.toBe(
     "No profile sets found",
