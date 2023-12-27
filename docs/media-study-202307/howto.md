@@ -452,12 +452,19 @@ DP を定義する `website.json` ファイルは[website.example.json](https://
 {
   "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc8",
   "url": "https://media.example.com/2023/06/hello/",
+  "image": "https://media.example.com/static/images/2023-06-hello-1.png",
   "location": "body",
   "bodyFormat": "visibleText",
   "body": "本文の例",
   "title": "メディア (試験用)"
 }
 ```
+
+:::info
+
+image プロパティを参照した画像表示は、本実験に対応した拡張機能の初版では幅 120px \* 高さ 80px の表示領域にアスペクト比を保持して表示されます。また、CORS を許可しておいてください。表示のされ方の詳細は[画像の表示](./image.md)を参照してください。
+
+:::
 
 公開鍵のパス、登録する組織、Web ページの情報を引数として使用して下記のように実行します。
 

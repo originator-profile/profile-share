@@ -37,6 +37,12 @@ sidebar_position: 8
 }
 ```
 
+:::info
+
+image プロパティを参照した画像表示は、本実験に対応した拡張機能の初版では幅 120px \* 高さ 80px の表示領域にアスペクト比を保持して表示されます。また、CORS を許可しておいてください。表示のされ方の詳細は[画像の表示](../../media-study-202307/image.md)を参照してください。
+
+:::
+
 ### 情報カテゴリーについて
 
 `website.json` の項目 `categories` に [IAB Tech Lab Content Category Taxonomy 1.0](https://iabtechlab.com/wp-content/uploads/2023/03/Content-Taxonomy-1.0-1.xlsx) にもとづく文字列を記載することで、対象となる Web ページの情報カテゴリーを表すことが可能です。
