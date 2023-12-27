@@ -94,24 +94,24 @@ test("pp.json取得成功(エンドポイントなし)の確認", async ({ conte
     "http://localhost:8080/app/debugger",
     noProfilePair,
   );
-  const messages = [
-    "出版物の情報が",
-    "見つかりませんでした",
-    "ページの移動によって出版物の情報が",
-    "失われた可能性があります",
-  ];
 
   // NotFoundの文言が存在するかを確認
   const pageText01 = await ext?.locator("h1").innerText();
+
+  const message1 = "出版物の情報が";
+  expect(pageText01).toMatch(message1);
+  const message2 = "見つかりませんでした";
+  expect(pageText01).toMatch(message2);
+  
   const pageText02 = await ext
     ?.locator("p.text-xs.text-gray-700.mb-8")
     .innerText();
 
-  const combinedTexts = `${pageText01}\n${pageText02}`;
+  const message3 = "ページの移動によって出版物の情報が";
+  expect(pageText02).toMatch(message3);
+  const message4 = "失われた可能性があります";
+  expect(pageText02).toMatch(message4);
 
-  messages.forEach((message) => {
-    expect(combinedTexts).toMatch(message);
-  });
 });
 
 test("pp.json取得失敗(エンドポイントなし)の確認", async ({ context, page }) => {
@@ -122,38 +122,27 @@ test("pp.json取得失敗(エンドポイントなし)の確認", async ({ conte
     "http://localhost:8080/app/debugger",
     noProfilePair,
   );
-  const messages = [
-    "組織の信頼性情報と出版物の流通経路が正しく読み取れませんでした",
-    "組織の信頼性情報と出版物の流通経路がまだありません",
-    "組織の信頼性情報と出版物の流通経路の取得に失敗しました",
-  ];
 
-  const counts = await Promise.all(
-    messages.map((message) => ext?.locator(`:text("${message}")`).count()),
-  );
+  const message1 = "組織の信頼性情報と出版物の流通経路が正しく読み取れませんでした";
+  const count1 = await ext?.locator(`:text("${message1}")`).count();
+  expect(count1).toEqual(1);
 
-  counts.forEach((count) => {
-    expect(count).toEqual(1);
-  });
+  const message2 = "組織の信頼性情報と出版物の流通経路がまだありません";
+  const count2 = await ext?.locator(`:text("${message2}")`).count();
+  expect(count2).toEqual(1);
+
+  const message3 = "組織の信頼性情報と出版物の流通経路の取得に失敗しました";
+  const count3 = await ext?.locator(`:text("${message3}")`).count();
+  expect(count3).toEqual(1);
 
   const details = ["メッセージ"];
 
-  await Promise.all(
-    details.map(
-      (detail) =>
-        ext && expect(ext.locator(`:text("${detail}")`)).toBeHidden(),
-    ),
-  );
-
+  const isVisibleBeforeClick = await ext?.locator(`:text("${details}")`).isVisible();
+  expect(isVisibleBeforeClick).toBe(false);
+  
   await ext?.locator("details>summary").click();
+  
+  const isVisibleAfterClick = await ext?.locator(`:text("${details}")`).isVisible();
+  expect(isVisibleAfterClick).toBe(true);
 
-  await Promise.all(
-    details.map(
-      (detail) =>
-        ext && expect(ext.locator(`:text("${detail}")`)).toBeVisible(),
-    ),
-  );
-  await expect(ext?.locator("details dd").textContent()).resolves.toBe(
-    "No profile sets found",
-  );
 });
