@@ -96,6 +96,7 @@ test("pp.json取得成功(エンドポイントなし)の確認", async ({ conte
   );
 
   // NotFoundの文言が存在するかを確認
+  //h1要素内に文言が表示するか確認
   const pageText01 = await ext?.locator("h1").innerText();
 
   const message1 = "出版物の情報が";
@@ -103,10 +104,8 @@ test("pp.json取得成功(エンドポイントなし)の確認", async ({ conte
   const message2 = "見つかりませんでした";
   expect(pageText01).toMatch(message2);
   
-  const pageText02 = await ext
-    ?.locator("p.text-xs.text-gray-700.mb-8")
-    .innerText();
-
+  const pageText02 = await ext?.getByTestId("pp-json-holder").innerText();
+  
   const message3 = "ページの移動によって出版物の情報が";
   expect(pageText02).toMatch(message3);
   const message4 = "失われた可能性があります";
@@ -123,6 +122,7 @@ test("pp.json取得失敗(エンドポイントなし)の確認", async ({ conte
     noProfilePair,
   );
 
+  //Unsuportedの文言が存在するか確認
   const message1 = "組織の信頼性情報と出版物の流通経路が正しく読み取れませんでした";
   const count1 = await ext?.locator(`:text("${message1}")`).count();
   expect(count1).toEqual(1);
@@ -137,11 +137,14 @@ test("pp.json取得失敗(エンドポイントなし)の確認", async ({ conte
 
   const details = ["メッセージ"];
 
+  // 要素が隠れていることを確認
   const isVisibleBeforeClick = await ext?.locator(`:text("${details}")`).isVisible();
   expect(isVisibleBeforeClick).toBe(false);
   
+  // 要素をクリックして状態を変更
   await ext?.locator("details>summary").click();
   
+  // 要素が表示されていることを確認
   const isVisibleAfterClick = await ext?.locator(`:text("${details}")`).isVisible();
   expect(isVisibleAfterClick).toBe(true);
 
