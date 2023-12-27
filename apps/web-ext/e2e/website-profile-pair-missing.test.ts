@@ -78,7 +78,6 @@ async function runTest(
     console.error(`Error navigating to ${url}`);
   }
   ext = await popup(ctx);
-
 }
 
 test.afterEach(async ({ page }, testInfo) => {
@@ -110,7 +109,6 @@ test("pp.json取得成功(エンドポイントなし)の確認", async ({ conte
   expect(pageText02).toMatch(message3);
   const message4 = "失われた可能性があります";
   expect(pageText02).toMatch(message4);
-
 });
 
 test("pp.json取得失敗(エンドポイントなし)の確認", async ({ context, page }) => {
@@ -123,7 +121,8 @@ test("pp.json取得失敗(エンドポイントなし)の確認", async ({ conte
   );
 
   //Unsuportedの文言が存在するか確認
-  const message1 = "組織の信頼性情報と出版物の流通経路が正しく読み取れませんでした";
+  const message1 =
+    "組織の信頼性情報と出版物の流通経路が正しく読み取れませんでした";
   const count1 = await ext?.locator(`:text("${message1}")`).count();
   expect(count1).toEqual(1);
 
@@ -138,14 +137,17 @@ test("pp.json取得失敗(エンドポイントなし)の確認", async ({ conte
   const details = ["メッセージ"];
 
   // 要素が隠れていることを確認
-  const isVisibleBeforeClick = await ext?.locator(`:text("${details}")`).isVisible();
+  const isVisibleBeforeClick = await ext
+    ?.locator(`:text("${details}")`)
+    .isVisible();
   expect(isVisibleBeforeClick).toBe(false);
-  
+
   // 要素をクリックして状態を変更
   await ext?.locator("details>summary").click();
-  
-  // 要素が表示されていることを確認
-  const isVisibleAfterClick = await ext?.locator(`:text("${details}")`).isVisible();
-  expect(isVisibleAfterClick).toBe(true);
 
+  // 要素が表示されていることを確認
+  const isVisibleAfterClick = await ext
+    ?.locator(`:text("${details}")`)
+    .isVisible();
+  expect(isVisibleAfterClick).toBe(true);
 });
