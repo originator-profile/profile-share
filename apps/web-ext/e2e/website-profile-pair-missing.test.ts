@@ -134,7 +134,7 @@ test("pp.json取得失敗(エンドポイントなし)の確認", async ({ conte
   const count3 = await ext?.locator(`:text("${message3}")`).count();
   expect(count3).toEqual(1);
 
-  const details = ["メッセージ"];
+  const details = "メッセージ";
 
   // 要素が隠れていることを確認
   const isVisibleBeforeClick = await ext
