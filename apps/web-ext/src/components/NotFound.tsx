@@ -26,7 +26,10 @@ function NotFound({ variant }: Props) {
           <br />
           見つかりませんでした
         </h1>
-        <p className="text-xs text-gray-700 mb-8">
+        <p
+          className="text-xs text-gray-700 mb-8"
+          data-testid="p-elm-notfound-message"
+        >
           ページの移動によって{label[variant]}の情報が
           <br />
           失われた可能性があります
