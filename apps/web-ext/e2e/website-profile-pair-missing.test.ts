@@ -55,14 +55,17 @@ async function checkNotFoundMessages() {
   expect(pageText01).toMatch("出版物の情報が");
   expect(pageText01).toMatch("見つかりませんでした");
 
-  const pageText02 = await ext?.getByTestId("p-elm-notfound-message").innerText();
+  const pageText02 = await ext
+    ?.getByTestId("p-elm-notfound-message")
+    .innerText();
   expect(pageText02).toMatch("ページの移動によって出版物の情報が");
   expect(pageText02).toMatch("失われた可能性があります");
 }
 
 // Unsupportedの文言を確認する関数
 async function checkUnsupportedMessages() {
-  const message1 = "組織の信頼性情報と出版物の流通経路が正しく読み取れませんでした";
+  const message1 =
+    "組織の信頼性情報と出版物の流通経路が正しく読み取れませんでした";
   const count1 = await ext?.locator(`:text("${message1}")`).count();
   expect(count1).toEqual(1);
 
@@ -124,7 +127,7 @@ test("pp.json取得成功(エンドポイントなし)の確認", async ({ conte
     page,
     "http://localhost:8080/app/debugger",
     noProfilePair,
-    false
+    false,
   );
 
   await checkNotFoundMessages();
@@ -137,13 +140,16 @@ test("pp.json取得失敗(エンドポイントなし)の確認", async ({ conte
     page,
     "http://localhost:8080/app/debugger",
     noProfilePair,
-    false
+    false,
   );
 
   await checkUnsupportedMessages();
 });
 
-test("ps.jsonの取得失敗、pp.json取得失敗(エンドポイントあり)の確認", async ({ context, page }) => {
+test("ps.jsonの取得失敗、pp.json取得失敗(エンドポイントあり)の確認", async ({
+  context,
+  page,
+}) => {
   const noProfilePair = true;
   const noProfileSet = true;
   await runTest(
@@ -151,13 +157,16 @@ test("ps.jsonの取得失敗、pp.json取得失敗(エンドポイントあり)�
     page,
     "http://localhost:8080/test",
     noProfilePair,
-    noProfileSet
+    noProfileSet,
   );
 
   await checkUnsupportedMessages();
 });
 
-test("ps.jsonの取得失敗、pp.json取得成功(エンドポイントあり)の確認", async ({ context, page }) => {
+test("ps.jsonの取得失敗、pp.json取得成功(エンドポイントあり)の確認", async ({
+  context,
+  page,
+}) => {
   const noProfilePair = false;
   const noProfileSet = true;
   await runTest(
@@ -165,9 +174,8 @@ test("ps.jsonの取得失敗、pp.json取得成功(エンドポイントあり)�
     page,
     "http://localhost:8080/test",
     noProfilePair,
-    noProfileSet
+    noProfileSet,
   );
 
   await checkUnsupportedMessages();
 });
-
