@@ -54,12 +54,18 @@ async function runTest(
   page: Page,
   url: string,
   noProfilePair: boolean,
+  noProfileSet: boolean,
 ) {
   await page.route("**", (route) => {
     const url = new URL(route.request().url());
 
-    // エンドポイントなし時、.well-known/pp.jsonの取得が必ず実行されるので拒否
+    // .well-known/pp.jsonの取得が必ず実行されるのでnoProfilePair=trueで拒否
     if (url.pathname === "/.well-known/pp.json" && noProfilePair) {
+      return route.abort();
+    }
+
+    // /ps.json へのリクエストを拒否で取得失敗を再現
+    if (url.pathname === "/ps.json" && noProfileSet) {
       return route.abort();
     }
 
@@ -92,6 +98,7 @@ test("pp.json取得成功(エンドポイントなし)の確認", async ({ conte
     page,
     "http://localhost:8080/app/debugger",
     noProfilePair,
+    false
   );
 
   // NotFoundの文言が存在するかを確認
@@ -120,6 +127,7 @@ test("pp.json取得失敗(エンドポイントなし)の確認", async ({ conte
     page,
     "http://localhost:8080/app/debugger",
     noProfilePair,
+    false
   );
 
   //Unsuportedの文言が存在するか確認
@@ -153,3 +161,90 @@ test("pp.json取得失敗(エンドポイントなし)の確認", async ({ conte
     .isVisible();
   expect(isVisibleAfterClick).toBe(true);
 });
+
+test("ps.jsonの取得失敗、pp.json取得失敗(エンドポイントあり)の確認", async ({ context, page }) => {
+  const noProfilePair = true;
+  const noProfileSet = true;
+  await runTest(
+    context,
+    page,
+    "http://localhost:8080/test",
+    noProfilePair,
+    noProfileSet
+  );
+
+  //Unsuportedの文言が存在するか確認
+  const message1 =
+    "組織の信頼性情報と出版物の流通経路が正しく読み取れませんでした";
+  const count1 = await ext?.locator(`:text("${message1}")`).count();
+  expect(count1).toEqual(1);
+
+  const message2 = "組織の信頼性情報と出版物の流通経路がまだありません";
+  const count2 = await ext?.locator(`:text("${message2}")`).count();
+  expect(count2).toEqual(1);
+
+  const message3 = "組織の信頼性情報と出版物の流通経路の取得に失敗しました";
+  const count3 = await ext?.locator(`:text("${message3}")`).count();
+  expect(count3).toEqual(1);
+
+  const details = "メッセージ";
+
+  // 要素が隠れていることを確認
+  const isVisibleBeforeClick = await ext
+    ?.locator(`:text("${details}")`)
+    .isVisible();
+  expect(isVisibleBeforeClick).toBe(false);
+
+  // 要素をクリックして状態を変更
+  await ext?.locator("details>summary").click();
+
+  // 要素が表示されていることを確認
+  const isVisibleAfterClick = await ext
+    ?.locator(`:text("${details}")`)
+    .isVisible();
+  expect(isVisibleAfterClick).toBe(true);
+});
+
+test("ps.jsonの取得失敗、pp.json取得成功(エンドポイントあり)の確認", async ({ context, page }) => {
+  const noProfilePair = false;
+  const noProfileSet = true;
+  await runTest(
+    context,
+    page,
+    "http://localhost:8080/test",
+    noProfilePair,
+    noProfileSet
+  );
+
+  //Unsuportedの文言が存在するか確認
+  const message1 =
+    "組織の信頼性情報と出版物の流通経路が正しく読み取れませんでした";
+  const count1 = await ext?.locator(`:text("${message1}")`).count();
+  expect(count1).toEqual(1);
+
+  const message2 = "組織の信頼性情報と出版物の流通経路がまだありません";
+  const count2 = await ext?.locator(`:text("${message2}")`).count();
+  expect(count2).toEqual(1);
+
+  const message3 = "組織の信頼性情報と出版物の流通経路の取得に失敗しました";
+  const count3 = await ext?.locator(`:text("${message3}")`).count();
+  expect(count3).toEqual(1);
+
+  const details = "メッセージ";
+
+  // 要素が隠れていることを確認
+  const isVisibleBeforeClick = await ext
+    ?.locator(`:text("${details}")`)
+    .isVisible();
+  expect(isVisibleBeforeClick).toBe(false);
+
+  // 要素をクリックして状態を変更
+  await ext?.locator("details>summary").click();
+
+  // 要素が表示されていることを確認
+  const isVisibleAfterClick = await ext
+    ?.locator(`:text("${details}")`)
+    .isVisible();
+  expect(isVisibleAfterClick).toBe(true);
+});
+
