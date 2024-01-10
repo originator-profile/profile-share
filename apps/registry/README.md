@@ -94,6 +94,13 @@ FLAG DESCRIPTIONS
     詳細はTSDocを参照してください。
     https://docs.originator-profile.org/ts/modules/_originator_profile_registry_db.default.Prisma
     "id" フィールドの値には会員 ID またはドメイン名を指定可能です。
+
+  -o, --operation=create|read|update|delete  操作
+
+    操作を指定します。
+
+    read, update, delete を指定した場合、--input で指定した JSON ファイルの中に id を必ず含めてください。
+    create の場合、id を省略できます。その場合 id は自動的に生成されます。
 ```
 
 ## `profile-registry account:register-credential`
@@ -614,7 +621,7 @@ FLAG DESCRIPTIONS
 
 ## `profile-registry publisher:website`
 
-ウェブページの作成・表示・更新・削除
+ウェブページ・SDPの作成・表示・更新・削除
 
 ```
 USAGE
@@ -632,13 +639,53 @@ FLAGS
       --issued-at=<value>   発行日時 (ISO 8601)
 
 DESCRIPTION
-  ウェブページの作成・表示・更新・削除
+  ウェブページ・SDPの作成・表示・更新・削除
+
+  ウェブページ・SDPの作成・表示・更新・削除を行います。
+
+  一度発行した SDP を更新したいときには、-o update オプションをつけて実行してください。
+  この際、発行した SDP の id を --input に指定する JSON ファイルに含める必要があります。
+
+  {
+  "id": "0eb206ec-7b09-47cb-b879-abbb83f387a0",
+  "author": "山田 一郎"
+  }
+
+  上のような JSON ファイルを用意し、コマンドを実行します。
+
+  $ profile-registry publisher:website -i holder-key.priv.json --id example.com --input website.json -o update
+
+  SDP を DP レジストリから削除したいときには、-o delete オプションをつけて実行してください。
+  この際、発行した SDP の id を --input に指定する JSON ファイルに含める必要があります。
+
+  {
+  "id": "0eb206ec-7b09-47cb-b879-abbb83f387a0"
+  }
+
+  上のような JSON ファイルを用意し、コマンドを実行します。
+
+  $ profile-registry publisher:website -i holder-key.priv.json --id example.com --input website.json -o delete
+
+
+
+EXAMPLES
+  $ profile-registry publisher:website -o update -i holder-key.priv.json --id example.com --input website.json
+
+  $ profile-registry publisher:website -o delete -i holder-key.priv.json --id example.com --input website.json
 
 FLAG DESCRIPTIONS
   -i, --identity=<value>  プライベート鍵のファイルパス
 
     プライベート鍵のファイルパスを渡してください。プライベート鍵は JWK 形式か、PEM base64 でエンコードされた PKCS #8
     形式にしてください。
+
+  -o, --operation=create|read|update|delete  操作
+
+    操作を指定します。
+
+    read, update, delete を指定した場合、--input で指定した JSON ファイルの中に id を必ず含めてください。
+    create の場合、id を省略できます。その場合 id は自動的に生成されます。
+
 
   --expired-at=<value>  有効期限 (ISO 8601)
 

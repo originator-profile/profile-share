@@ -56,7 +56,7 @@ Document Profile の発行者です。次の作業を実施します。
 
 - [Document Profile レジストリ構築](../document-profile-registry-creation.md)
 - [レジストリ DB 参照](./registry-db-access.md)
-- [Signed Document Profile 発行](./signed-document-profile-issuance.md)
+- [Signed Document Profile 発行・更新](./signed-document-profile-issuance.md)
 - [Profile Set 作成](./profile-set-creation.md)
 - [WordPress 連携](../wordpress-integration.md)
 - [Web サイト連携](../website-integration.md)

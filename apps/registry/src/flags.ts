@@ -15,7 +15,13 @@ UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定し
 
 export const operation = Flags.custom<"create" | "read" | "update" | "delete">({
   char: "o",
-  description: "操作",
+  summary: "操作",
+  description: `\
+  操作を指定します。
+
+  read, update, delete を指定した場合、--input で指定した JSON ファイルの中に id を必ず含めてください。
+  create の場合、id を省略できます。その場合 id は自動的に生成されます。
+  `,
   options: ["create", "read", "update", "delete"],
   required: true,
 });

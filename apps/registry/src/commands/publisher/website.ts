@@ -12,7 +12,54 @@ import { Jwk } from "@originator-profile/model";
 type Website = Omit<WebsiteType, "accountId" | "proofJws">;
 
 export class PublisherWebsite extends Command {
-  static description = "ウェブページの作成・表示・更新・削除";
+  static summary = "ウェブページ・SDPの作成・表示・更新・削除";
+  static description = `ウェブページ・SDPの作成・表示・更新・削除を行います。
+
+一度発行した SDP を更新したいときには、-o update オプションをつけて実行してください。
+この際、発行した SDP の id を --input に指定する JSON ファイルに含める必要があります。
+
+{
+  "id": "0eb206ec-7b09-47cb-b879-abbb83f387a0",
+  "author": "山田 一郎"
+}
+
+上のような JSON ファイルを用意し、コマンドを実行します。
+
+$ <%= config.bin %> <%= command.id %> \
+-i holder-key.priv.json \
+--id example.com \
+--input website.json \
+-o update
+
+SDP を DP レジストリから削除したいときには、-o delete オプションをつけて実行してください。
+この際、発行した SDP の id を --input に指定する JSON ファイルに含める必要があります。
+
+{
+  "id": "0eb206ec-7b09-47cb-b879-abbb83f387a0"
+}
+
+上のような JSON ファイルを用意し、コマンドを実行します。
+
+$ <%= config.bin %> <%= command.id %> \
+-i holder-key.priv.json \
+--id example.com \
+--input website.json \
+-o delete
+
+`;
+  static examples = [
+    `<%= config.bin %> <%= command.id %> \
+-o update \
+-i holder-key.priv.json \
+--id example.com \
+--input website.json`,
+    `<%= config.bin %> <%= command.id %> \
+-o delete \
+-i holder-key.priv.json \
+--id example.com \
+--input website.json`,
+  ];
+
   static flags = {
     identity: privateKey({ required: true }),
     id: accountId({
