@@ -49,19 +49,6 @@ const responseMap: Record<string, Response> = {
   },
 };
 
-// NotFoundの文言を確認する関数
-async function checkNotFoundMessages() {
-  const pageText01 = await ext?.locator("h1").innerText();
-  expect(pageText01).toMatch("出版物の情報が");
-  expect(pageText01).toMatch("見つかりませんでした");
-
-  const pageText02 = await ext
-    ?.getByTestId("p-elm-notfound-message")
-    .innerText();
-  expect(pageText02).toMatch("ページの移動によって出版物の情報が");
-  expect(pageText02).toMatch("失われた可能性があります");
-}
-
 // Unsupportedの文言を確認する関数
 async function checkUnsupportedMessages() {
   const message1 =
@@ -76,6 +63,29 @@ async function checkUnsupportedMessages() {
   const message3 = "組織の信頼性情報と出版物の流通経路の取得に失敗しました";
   const count3 = await ext?.locator(`:text("${message3}")`).count();
   expect(count3).toEqual(1);
+}
+
+// サイトプロファイルのみ表示の文言を確認する
+async function checkSiteProfileWithoutOtherProfiles() {
+  expect(await ext?.title()).toMatch(/コンテンツ情報/);
+
+  // サイトプロファイルの発行者を持つ要素が存在するか確認
+  expect(await ext?.getByTestId("pp-json-holder").innerText()).toMatch(
+    /Originator Profile 技術研究組合/,
+  );
+
+  expect(
+    await ext
+      ?.locator(':text("このサイトの運営者には信頼性情報があります")')
+      .count(),
+  ).toEqual(1);
+
+  // website.titleの存在を確認
+  expect(
+    await ext?.locator('h1:has-text("Website Profile Pair title")').count(),
+  ).toEqual(1);
+
+  expect(await ext?.locator("main").count()).toEqual(0);
 }
 
 async function runTest(
@@ -130,7 +140,7 @@ test("pp.json取得成功(エンドポイントなし)の確認", async ({ conte
     false,
   );
 
-  await checkNotFoundMessages();
+  await checkSiteProfileWithoutOtherProfiles();
 });
 
 test("pp.json取得失敗(エンドポイントなし)の確認", async ({ context, page }) => {

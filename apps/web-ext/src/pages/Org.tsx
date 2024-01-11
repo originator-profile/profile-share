@@ -2,11 +2,8 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { isOp, isOpHolder } from "@originator-profile/core";
 import { toRoles } from "@originator-profile/ui/src/utils";
 import useProfileSet from "../utils/use-profile-set";
-import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
-import Unsupported from "../components/Unsupported";
 import Template from "../templates/Org";
-import useVerifyFailureFeedback from "../utils/use-verify-failure-feedback";
 
 type Props = { back: string };
 
@@ -17,30 +14,11 @@ function Org(props: Props) {
     orgSubject: string;
   }>();
   const {
-    tabId,
     advertisers = [],
     publishers = [],
     profiles,
     website,
-    error,
   } = useProfileSet();
-
-  const element = useVerifyFailureFeedback({
-    profiles,
-    tabId,
-    queryParams,
-  });
-
-  if (element) {
-    return element;
-  }
-
-  if (error) {
-    return <Unsupported error={error} />;
-  }
-  if (!profiles && !website) {
-    return <Loading />;
-  }
 
   const op = [...(profiles ?? []), ...(website ?? [])]
     .filter(isOp)

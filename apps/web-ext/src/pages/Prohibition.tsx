@@ -7,17 +7,20 @@ import { sortDps } from "@originator-profile/ui/src/utils";
 import Unsupported from "../components/Unsupported";
 
 function Prohibition() {
-  const { tabId, main = [], error, profiles } = useProfileSet();
+  const { tabId, main = [], error, profiles, website } = useProfileSet();
 
   if (error) {
     return <Unsupported error={error} />;
   }
 
-  if (!profiles) {
+  if (!profiles && !website) {
     return <Loading />;
   }
 
-  const [dp] = sortDps(profiles.filter(isDp), main);
+  const [dp] = sortDps(
+    [...(profiles ?? []), ...(website ?? [])].filter(isDp),
+    main,
+  );
   if (!dp) {
     return <NotFound variant="dp" />;
   }

@@ -1,4 +1,3 @@
-import { isValidElement } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import {
   isOp,
@@ -12,8 +11,6 @@ import useProfileSet from "../utils/use-profile-set";
 import { routes } from "../utils/routes";
 import NotFound from "../components/NotFound";
 import Template from "../templates/Publ";
-import Unsupported from "../components/Unsupported";
-import useVerifyFailureFeedback from "../utils/use-verify-failure-feedback";
 
 function extractFromProfiles(
   profiles: Profile[],
@@ -65,47 +62,33 @@ function extractFromProfiles(
 function Publ() {
   const [queryParams] = useSearchParams();
   const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
-  const {
-    tabId,
-    profiles = [],
-    main = [],
-    error,
-    website: websiteProfiles = [],
-  } = useProfileSet();
+  const { profiles, main = [], website: websiteProfiles } = useProfileSet();
 
-  const element = useVerifyFailureFeedback({
-    profiles: [...profiles, ...websiteProfiles],
-    tabId,
+  const article = extractFromProfiles(
+    profiles ?? [],
     queryParams,
-  });
-
-  if (element) {
-    return element;
-  }
-  if (error) {
-    return <Unsupported error={error} />;
-  }
-
-  const article = extractFromProfiles(profiles, queryParams, issuer, subject);
+    issuer,
+    subject,
+  );
   const website = extractFromProfiles(
-    websiteProfiles,
+    websiteProfiles ?? [],
     queryParams,
     undefined,
     undefined,
     true,
   );
-  /* 記事について ReactElement(有効なプロファイルがない)なら記事のElementを表示することにする */
-  /* そもそもそのケースではPublが呼ばれないはずではある */
-  if (isValidElement(article)) {
-    return article;
-  }
 
   return (
     <Template
       /* ここに来る場合は article はかならずdpを持つはずだが型チェックがエラーにならないように */
       article={
         "dp" in article
-          ? { profiles, main, dpItemContent: article.content, ...article }
+          ? {
+              profiles: profiles ?? [],
+              main,
+              dpItemContent: article.content,
+              ...article,
+            }
           : undefined
       }
       /* 技術情報の表示を実装する際にはwebsiteProfiles を追加する必要がある */

@@ -31,5 +31,6 @@ export const routes = {
   base: route("/tab/:tabId"),
   org: urlParamsRoute("org/:orgIssuer/:orgSubject"),
   publ: urlParamsRoute("publ/:issuer/:subject"),
+  site: urlParamsRoute("site"),
   prohibition: route("prohibition"),
 } as const;
