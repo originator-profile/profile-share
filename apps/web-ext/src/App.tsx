@@ -15,6 +15,11 @@ const publ: RouteObject = {
   element: <Outlet />,
   children: [{ path: "", element: <Publ /> }, org],
 };
+const site: RouteObject = {
+  path: routes.site.path,
+  element: <Outlet />,
+  children: [{ path: "", element: <Publ /> }, org],
+};
 const prohibition: RouteObject = {
   path: routes.prohibition.path,
   element: <Prohibition />,
@@ -22,7 +27,7 @@ const prohibition: RouteObject = {
 const base: RouteObject = {
   path: routes.base.path,
   element: <Outlet />,
-  children: [{ path: "", element: <Base /> }, publ, prohibition],
+  children: [{ path: "", element: <Base /> }, publ, site, prohibition],
 };
 
 function App() {

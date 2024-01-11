@@ -8,19 +8,22 @@ import Unsupported from "../components/Unsupported";
 
 interface useVerifyFailureFeedbackProps {
   profiles?: Profile[];
+  websiteProfiles?: Profile[];
   tabId: number;
   queryParams: URLSearchParams;
 }
 
 function useVerifyFailureFeedback({
   profiles,
+  websiteProfiles,
   tabId,
   queryParams,
 }: useVerifyFailureFeedbackProps): React.ReactNode {
-  if (!profiles) return React.createElement(Loading);
+  if (!profiles && !websiteProfiles) return React.createElement(Loading);
+  const allProfiles = [...(profiles ?? []), ...(websiteProfiles ?? [])];
 
   const hasUnsafeParam = queryParams.has("unsafe");
-  const errors = findProfileErrors(profiles);
+  const errors = findProfileErrors(allProfiles);
   const hasProfileTokenVerifyFailed = errors.some(
     (result) => result.code === "ERR_PROFILE_TOKEN_VERIFY_FAILED",
   );
