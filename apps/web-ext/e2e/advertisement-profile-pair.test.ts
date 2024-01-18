@@ -22,7 +22,11 @@ test("広告プロファイルにおける表示の確認", async () => {
   //   'a[href*="/publ/localhost/"][href*="/6a65e608-6b3e-4184-9fd2-0aafd1ddd38e"]',
   // );
 
-  expect(await ext?.locator(':text("この広告の発行者には信頼性情報があります")').count()).toEqual(1);
+  expect(
+    await ext
+      ?.locator(':text("この広告の発行者には信頼性情報があります")')
+      .count(),
+  ).toEqual(1);
 
   expect(await ext?.title()).toMatch(/コンテンツ情報/);
 
