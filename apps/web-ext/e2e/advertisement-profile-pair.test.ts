@@ -6,7 +6,7 @@ let ext: Page | undefined;
 
 test.beforeEach(async ({ context, page }) => {
   // Profile Registry にアクセス (apps/registry)
-  await page.goto("http://localhost:8080/examples/many-dps.html");
+  await page.goto("http://localhost:8080/examples/ad.html");
 
   ext = await popup(context);
 });
@@ -18,9 +18,9 @@ test.afterEach(async ({ page }, testInfo) => {
 
 test("広告プロファイルにおける表示の確認", async () => {
   // 広告に移動
-  await ext?.click(
-    'a[href*="/publ/localhost/"][href*="/6a65e608-6b3e-4184-9fd2-0aafd1ddd38e"]',
-  );
+  // await ext?.click(
+  //   'a[href*="/publ/localhost/"][href*="/6a65e608-6b3e-4184-9fd2-0aafd1ddd38e"]',
+  // );
 
   expect(await ext?.locator(':text("この広告の発行者には信頼性情報があります")').count()).toEqual(1);
 
