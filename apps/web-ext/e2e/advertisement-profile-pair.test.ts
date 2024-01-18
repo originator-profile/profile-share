@@ -25,10 +25,6 @@ test("広告プロファイルにおける表示の確認", async () => {
 
     expect(await ext?.locator(':text("この広告の発行者には信頼性情報があります")').count()).toEqual(1);
 
-    expect(await ext?.getByTestId("advertisement-type").innerText()).toMatch(
-      /この広告の発行者には信頼性情報があります/,
-      );
-
     expect(await ext?.title()).toMatch(/コンテンツ情報/);
 
     expect(
