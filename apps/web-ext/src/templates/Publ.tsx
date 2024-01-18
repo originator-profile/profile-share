@@ -157,10 +157,7 @@ function Main({
           </button>
         </div>
         <div className="mb-3">
-          <p 
-          className="text-base font-bold text-primary-800"
-          data-testid={contentType === "広告" ? "advertisement-type" : undefined}
-          >
+          <p className="text-base font-bold text-primary-800">
             {`この${contentType}の発行者には信頼性情報があります`}
           </p>
           <p className="text-primary-700 py-1">
