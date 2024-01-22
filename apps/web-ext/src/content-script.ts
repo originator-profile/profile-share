@@ -1,4 +1,7 @@
-import { fetchProfileSet } from "@originator-profile/verify";
+import {
+  fetchProfileSet,
+  fetchWebsiteProfilePair,
+} from "@originator-profile/verify";
 import { Profile, Dp } from "@originator-profile/ui/src/types";
 import {
   ContentScriptMessageRequest,
@@ -19,6 +22,18 @@ async function handleMessageResponse(
       const data = await fetchProfileSet(document);
       return {
         type: "fetch-profiles",
+        ok: !(data instanceof Error),
+        data:
+          data instanceof Error
+            ? JSON.stringify(data, Object.getOwnPropertyNames(data))
+            : JSON.stringify(data),
+        origin: document.location.origin,
+      };
+    }
+    case "fetch-website-profile-pair": {
+      const data = await fetchWebsiteProfilePair(document);
+      return {
+        type: "fetch-website-profile-pair",
         ok: !(data instanceof Error),
         data:
           data instanceof Error

@@ -3,7 +3,7 @@ import { mockFetch, mockGet } from "vi-fetch";
 import { describe, beforeEach, afterEach, test, expect } from "vitest";
 import { JsonLdDocument } from "jsonld";
 import context from "@originator-profile/model/context.json";
-import { expandProfileSet } from "./expand-profile-set";
+import { expandProfileSet, expandProfilePairs } from "./expand-profile-set";
 
 describe("expand-profiles", async () => {
   beforeEach(() => {
@@ -20,12 +20,10 @@ describe("expand-profiles", async () => {
     const profiles: JsonLdDocument = [];
     const result = await expandProfileSet(profiles);
     expect(result).toEqual({
-      ad: [],
       advertisers: [],
       publishers: [],
       main: [],
       profile: [],
-      website: [],
     });
   });
   test("expand non-array Profile Set", async () => {
@@ -38,12 +36,10 @@ describe("expand-profiles", async () => {
     };
     const result = await expandProfileSet(profiles);
     expect(result).toEqual({
-      ad: [],
       advertisers: [],
       publishers: ["example.com"],
       main: ["example.com"],
       profile: ["sop1...", "sdp1..."],
-      website: [],
     });
   });
 
@@ -64,11 +60,29 @@ describe("expand-profiles", async () => {
     ];
     const result = await expandProfileSet(profiles);
     expect(result).toEqual({
-      ad: [],
       advertisers: ["example"],
       publishers: ["example.com"],
       main: ["example.com"],
       profile: ["sop1...", "sdp1...", "sop2...", "sdp2..."],
+    });
+  });
+});
+
+describe("expand-profile-pairs", async () => {
+  beforeEach(() => {
+    mockGet("https://originator-profile.org/context.jsonld").willResolve(
+      context,
+    );
+  });
+  afterEach(() => {
+    mockFetch.clearAll();
+  });
+
+  test("expand empty Profile Pair", async () => {
+    const profiles: JsonLdDocument = [];
+    const result = await expandProfilePairs(profiles);
+    expect(result).toEqual({
+      ad: [],
       website: [],
     });
   });
@@ -91,13 +105,9 @@ describe("expand-profiles", async () => {
       },
     ];
 
-    const result = await expandProfileSet(profiles);
+    const result = await expandProfilePairs(profiles);
     expect(result).toEqual({
       ad: [],
-      advertisers: [],
-      publishers: [],
-      main: [],
-      profile: [],
       website: [
         {
           op: {
@@ -111,6 +121,29 @@ describe("expand-profiles", async () => {
           },
         },
       ],
+    });
+  });
+
+  test("expand malformed ad profile pair", async () => {
+    const profiles: JsonLdDocument = [
+      {
+        "@context": "https://originator-profile.org/context.jsonld",
+        ad: {
+          op: {
+            sub: "localhost",
+            profile: "sop1...",
+          },
+          dp: {
+            sub: "ca729848-9265-48bf-8e33-887a43ba34b9",
+            profile: "sdp1...",
+          },
+        },
+      },
+    ];
+    const result = await expandProfilePairs(profiles);
+    expect(result).toEqual({
+      ad: [],
+      website: [],
     });
   });
 
@@ -146,7 +179,7 @@ describe("expand-profiles", async () => {
       },
     ];
 
-    const result = await expandProfileSet(profiles);
+    const result = await expandProfilePairs(profiles);
     expect(result).toEqual({
       ad: [
         {
@@ -172,64 +205,7 @@ describe("expand-profiles", async () => {
           },
         },
       ],
-      advertisers: [],
-      publishers: [],
-      main: [],
-      profile: [],
       website: [],
-    });
-  });
-
-  test("expand one website Profile Pair and Profile Sets", async () => {
-    const profiles: JsonLdDocument = [
-      {
-        "@context": "https://originator-profile.org/context.jsonld",
-        website: {
-          op: {
-            iss: "oprdev.originator-profile.org",
-            sub: "localhost",
-            profile: "sop1...",
-          },
-          dp: {
-            sub: "ca729848-9265-48bf-8e33-887a43ba34b9",
-            profile: "sdp1...",
-          },
-        },
-      },
-      {
-        "@context": "https://originator-profile.org/context.jsonld",
-        advertiser: [],
-        publisher: "example.com",
-        main: "example.com",
-        profile: ["sop1...", "sdp1..."],
-      },
-      {
-        "@context": "https://originator-profile.org/context.jsonld",
-        advertiser: "example",
-        profile: ["sop2...", "sdp2..."],
-      },
-    ];
-
-    const result = await expandProfileSet(profiles);
-    expect(result).toEqual({
-      ad: [],
-      advertisers: ["example"],
-      publishers: ["example.com"],
-      main: ["example.com"],
-      profile: ["sop1...", "sdp1...", "sop2...", "sdp2..."],
-      website: [
-        {
-          op: {
-            iss: "oprdev.originator-profile.org",
-            sub: "localhost",
-            profile: "sop1...",
-          },
-          dp: {
-            sub: "ca729848-9265-48bf-8e33-887a43ba34b9",
-            profile: "sdp1...",
-          },
-        },
-      ],
     });
   });
 });

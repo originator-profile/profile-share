@@ -12,6 +12,19 @@ export type fetchProfileSetMessageResponse = {
   /** 閲覧しているコンテンツの URL の origin 文字列 */
   origin: string;
 };
+export type fetchWebsiteProfilePairMessageRequest = {
+  type: "fetch-website-profile-pair";
+};
+export type fetchWebsiteProfilePairMessageResponse = {
+  type: "fetch-website-profile-pair";
+  /** JsonLdDocument の場合 true、ProfilesFetchFailed の場合 false */
+  ok: boolean;
+  /** JSON 文字列 (JsonLdDocument または ProfilesFetchFailed) */
+  data: string;
+  /** 閲覧しているコンテンツの URL の origin 文字列 */
+  origin: string;
+};
+
 export type OverlayProfilesMessageRequest = {
   type: "overlay-profiles";
   profiles: Profile[];
@@ -32,10 +45,12 @@ export type SelectOverlayDpMessageRequest = {
 };
 export type ContentScriptMessageRequest =
   | fetchProfileSetMessageRequest
+  | fetchWebsiteProfilePairMessageRequest
   | OverlayProfilesMessageRequest
   | CloseWindowMessageRequest;
 export type ContentScriptMessageResponse =
   | fetchProfileSetMessageResponse
+  | fetchWebsiteProfilePairMessageResponse
   | OverlayProfilesMessageResponse
   | CloseWindowMessageResponse;
 export type BackgroundMessageRequest = SelectOverlayDpMessageRequest;

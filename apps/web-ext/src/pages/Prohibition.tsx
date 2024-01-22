@@ -13,7 +13,7 @@ function Prohibition() {
     return <Unsupported error={error} />;
   }
 
-  if (!profiles && !website) {
+  if (!profiles || !website) {
     return <Loading />;
   }
 

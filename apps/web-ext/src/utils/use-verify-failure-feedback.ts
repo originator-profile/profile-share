@@ -19,7 +19,7 @@ function useVerifyFailureFeedback({
   tabId,
   queryParams,
 }: useVerifyFailureFeedbackProps): React.ReactNode {
-  if (!profiles && !websiteProfiles) return React.createElement(Loading);
+  if (!profiles || !websiteProfiles) return React.createElement(Loading);
   const allProfiles = [...(profiles ?? []), ...(websiteProfiles ?? [])];
 
   const hasUnsafeParam = queryParams.has("unsafe");

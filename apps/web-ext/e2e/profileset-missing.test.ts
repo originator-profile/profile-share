@@ -133,7 +133,7 @@ test("ProfileSet不在時(エンドポイントなし)の確認", async ({
     noEndpoint,
   );
   await expect(ext?.locator("details dd").textContent()).resolves.toBe(
-    "No profile sets found",
+    "プロファイルが見つかりませんでした",
   );
 });
 

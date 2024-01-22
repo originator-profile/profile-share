@@ -1,5 +1,5 @@
 import jsonld, { JsonLdDocument, NodeObject } from "jsonld";
-import { AdProfilePair, ProfilePair, WebsiteProfilePair } from "./types";
+import { ProfilePair } from "./types";
 
 const context = "https://originator-profile.org/context#";
 
@@ -31,53 +31,68 @@ function nodeToObj(node: NodeObject) {
 /**
  * Profile Set と Profile Pair の配列の中から Profile Pair を取り出す
  *
- * @remarks
- * トップレベルのプロパティが `website` または `ad` であるオブジェクトを Profile Pair とみなす。
- * 将来的にはこれらのプロパティは Profile Set でも使われる可能性があるが、
- * その場合は、この関数の条件判定をより厳しくするか、 JSON-LD を廃止するかして対応したい。
- *
- * オブジェクトのネストが多い構造を jsonld.expand() で展開した際に、
- * 余分な Array が挟まって冗長だったため、この関数では Profile Pair を JSON-LD として
- * 扱わないようにした。
  * @param profiles Profile Set と Profile Pair の JSON-LD 表現
  */
-function expandProfilePairs(profiles: JsonLdDocument) {
-  const isWebsiteProfilePair = (doc: unknown) => {
-    return (
-      typeof doc === "object" &&
-      doc &&
-      "website" in doc &&
-      typeof doc.website === "object" &&
-      doc.website &&
-      "op" in doc.website &&
-      "dp" in doc.website
-    );
+export async function expandProfilePairs(profiles: JsonLdDocument) {
+  const getValue = (
+    node: NodeObject | undefined,
+    key: string,
+  ): NodeObject | undefined => {
+    if (typeof node !== "undefined") {
+      const value = node[`${context}${key}`] as NodeObject;
+
+      if (typeof value !== "undefined") {
+        return value[0] as NodeObject;
+      }
+    }
+  };
+  const extractValues = (node?: NodeObject): ProfilePair | undefined => {
+    if (typeof node === "undefined") {
+      return undefined;
+    }
+
+    const dp = getValue(node, "dp");
+    const dpProfile = getValue(dp, "profile")?.["@value"];
+    const dpSub = getValue(dp, "sub")?.["@value"];
+
+    const op = getValue(node, "op");
+    const opProfile = getValue(op, "profile")?.["@value"];
+    const opSub = getValue(op, "sub")?.["@value"];
+    const opIss = getValue(op, "iss")?.["@value"];
+
+    if (!dpProfile || !dpSub || !opProfile || !opSub || !opIss) {
+      return undefined;
+    }
+
+    return {
+      op: {
+        profile: opProfile as string,
+        sub: opSub as string,
+        iss: opIss as string,
+      },
+      dp: {
+        profile: dpProfile as string,
+        sub: dpSub as string,
+      },
+    };
   };
 
-  const isAdProfilePair = (doc: unknown) => {
-    return (
-      typeof doc === "object" &&
-      doc &&
-      "ad" in doc &&
-      typeof doc.ad === "object" &&
-      doc.ad &&
-      "op" in doc.ad &&
-      "dp" in doc.ad
-    );
-  };
+  const expanded = await jsonld.expand(profiles);
 
-  // profiles が配列でなかったときに [] で包んで配列にする
-  const profileArray = Array.isArray(profiles) ? profiles : [profiles];
+  const websiteProfilePairs = expanded.filter(
+    (node) => `${context}website` in node,
+  );
+  const adProfilePairs = expanded.filter((node) => `${context}ad` in node);
 
-  const websiteProfilePairs = (profileArray as JsonLdDocument[]).filter(
-    isWebsiteProfilePair,
-  ) as WebsiteProfilePair[];
-  const website = websiteProfilePairs.map((doc) => doc.website);
+  const website = websiteProfilePairs
+    .map((node) => getValue(node, "website"))
+    .map(extractValues)
+    .filter((node) => typeof node !== "undefined") as ProfilePair[];
 
-  const adProfilePairs = (profileArray as JsonLdDocument[]).filter(
-    isAdProfilePair,
-  ) as AdProfilePair[];
-  const ad = adProfilePairs.map((doc) => doc.ad);
+  const ad = adProfilePairs
+    .map((node) => getValue(node, "ad"))
+    .map(extractValues)
+    .filter((node) => typeof node !== "undefined") as ProfilePair[];
 
   return {
     website,
@@ -90,23 +105,17 @@ function expandProfilePairs(profiles: JsonLdDocument) {
  * @param profiles Profile Set の JSON-LD 表現
  */
 export async function expandProfileSet(profiles: JsonLdDocument) {
-  const profilePairs = expandProfilePairs(profiles);
   const expanded = await jsonld.expand(profiles);
   const res: {
     advertisers: string[];
     publishers: string[];
     main: string[];
     profile: string[];
-    website: ProfilePair[];
-    ad: ProfilePair[];
   } = {
     advertisers: [],
     publishers: [],
     main: [],
     profile: [],
-    website: profilePairs.website,
-    // TODO ad Profile Pair の使い方に合わせて返し方を検討して
-    ad: profilePairs.ad,
   };
   for (const node of expanded) {
     const obj = nodeToObj(node);

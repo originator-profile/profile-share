@@ -17,7 +17,6 @@ export async function fetchWebsiteProfilePair(
     const response = await fetch(profilePairUrl);
     if (response.ok) {
       const json = await response.json();
-      // Profile Pair は最も優先度が高いため、先頭に追加する。
       return json;
     } else {
       return new ProfilesFetchFailed(
@@ -25,9 +24,9 @@ export async function fetchWebsiteProfilePair(
       );
     }
   } catch (e) {
-    if (e instanceof Error) {
+    if (e instanceof Error || e instanceof window.Error) {
       return new ProfilesFetchFailed(
-        `プロファイルを取得できませんでした:\n${e.message}`,
+        `website Profile Pairを取得できませんでした:\n${e.message}`,
         {
           cause: e,
         },
