@@ -6,16 +6,19 @@ import {
   RemoteKeys,
   ProfilesVerifier,
   expandProfileSet,
+  expandProfilePairs,
 } from "@originator-profile/verify";
 import { Profile } from "@originator-profile/ui/src/types";
 import { toProfile } from "@originator-profile/ui/src/utils";
 import {
   fetchProfileSetMessageResponse,
+  fetchWebsiteProfilePairMessageResponse,
   PopupMessageRequest,
 } from "../types/message";
 import { routes } from "./routes";
 
 const key = "profiles" as const;
+const WebsiteProfilePairKey = "website-profile-pair" as const;
 
 async function fetchVerifiedProfiles([, tabId]: [
   _: typeof key,
@@ -25,7 +28,6 @@ async function fetchVerifiedProfiles([, tabId]: [
   publishers: string[];
   main: string[];
   profiles: Profile[];
-  website: Profile[];
   origin: string;
 }> {
   const { ok, data, origin }: fetchProfileSetMessageResponse =
@@ -34,8 +36,9 @@ async function fetchVerifiedProfiles([, tabId]: [
     });
   const parsed = JSON.parse(data);
   if (!ok) throw Object.assign(new Error(parsed.message), parsed);
-  const { advertisers, publishers, main, profile, ad, website } =
+  const { advertisers, publishers, main, profile } =
     await expandProfileSet(parsed);
+  const { ad } = await expandProfilePairs(parsed);
 
   const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(
@@ -53,7 +56,42 @@ async function fetchVerifiedProfiles([, tabId]: [
   );
   const verifyResults = await verify();
 
-  const verifyWebsiteResults =
+  return {
+    advertisers,
+    publishers,
+    main,
+    profiles: verifyResults.map(toProfile),
+    origin,
+  };
+}
+
+async function fetchVerifiedWebsiteProfilePair([, tabId]: [
+  _: typeof WebsiteProfilePairKey,
+  tabId: number,
+]): Promise<{
+  website: Profile[];
+  origin: string;
+}> {
+  const { ok, data, origin }: fetchWebsiteProfilePairMessageResponse =
+    await chrome.tabs.sendMessage(tabId, {
+      type: "fetch-website-profile-pair",
+    });
+  if (!ok) {
+    // 取得に失敗した場合にはエラーにしない（ website PP の設置は任意のため）
+    return { website: [], origin };
+  }
+  const parsed = JSON.parse(data);
+  const { website } = await expandProfilePairs([parsed]);
+
+  const registry = import.meta.env.PROFILE_ISSUER;
+  const jwksEndpoint = new URL(
+    import.meta.env.MODE === "development" && registry === "localhost"
+      ? `http://localhost:8080/.well-known/jwks.json`
+      : `https://${registry}/.well-known/jwks.json`,
+  );
+  const keys = RemoteKeys(jwksEndpoint);
+
+  const verifyResults =
     (website[0] &&
       (await ProfilesVerifier(
         {
@@ -67,11 +105,7 @@ async function fetchVerifiedProfiles([, tabId]: [
     [];
 
   return {
-    advertisers,
-    publishers,
-    main,
-    profiles: verifyResults.map(toProfile),
-    website: verifyWebsiteResults.map(toProfile),
+    website: verifyResults.map(toProfile),
     origin,
   };
 }
@@ -84,6 +118,10 @@ function useProfileSet() {
   const tabId = Number(params.tabId);
   // TODO: 自動再検証する場合は取得エンドポイントが変わりうることをUIの振る舞いで考慮して
   const { data, error } = useSWRImmutable([key, tabId], fetchVerifiedProfiles);
+  const { data: dataWebsite, error: errorWebsite } = useSWRImmutable(
+    [WebsiteProfilePairKey, tabId],
+    fetchVerifiedWebsiteProfilePair,
+  );
 
   useEvent("unload", async function () {
     await chrome.tabs.sendMessage(tabId, { type: "close-window" });
@@ -110,8 +148,14 @@ function useProfileSet() {
   }, [tabId, navigate]);
 
   return {
+    ...dataWebsite,
     ...data,
-    error,
+    error:
+      error ||
+      errorWebsite ||
+      (dataWebsite?.website.length === 0 && data?.profiles.length === 0
+        ? new Error("プロファイルが見つかりませんでした")
+        : null),
     tabId,
   };
 }

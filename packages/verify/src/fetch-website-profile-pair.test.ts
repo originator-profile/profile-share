@@ -26,13 +26,16 @@ describe("fetch-website-profile-pair", async () => {
   beforeEach(() => {
     mockGet(profileEndpoint).willResolve(profiles);
     mockGet("https://error.example.org/.well-known/pp.json").willFail({}, 404);
+    mockGet("https://not-json.example.org/.well-known/pp.json").willResolve(
+      "<html></html>",
+    );
   });
 
   afterEach(() => {
     mockFetch.clearAll();
   });
 
-  test("Profile Pair のあるサイトで Profile Pair が得られる", async () => {
+  test("website Profile Pair のあるサイトで Profile Pair が得られる", async () => {
     const window = new Window({ url: "https://example.com" });
     window.document.body.innerHTML = `
 <body></body>`;
@@ -42,7 +45,7 @@ describe("fetch-website-profile-pair", async () => {
     expect(result).toEqual(profiles);
   });
 
-  test("Profile Pair が設置されていないとき Profile Pair の取得に失敗", async () => {
+  test("website Profile Pair が設置されていないとき Profile Pair の取得に失敗", async () => {
     const window = new Window({ url: "https://error.example.org" });
     window.document.body.innerHTML = `
     <body></body>`;
@@ -52,5 +55,19 @@ describe("fetch-website-profile-pair", async () => {
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
     // @ts-expect-error result is ProfilesFetchFailed
     expect(result.message).toBe(`HTTP ステータスコード 404`);
+  });
+
+  test("website Profile Pair の JSON parse に失敗したときエラーが返る", async () => {
+    const window = new Window({ url: "https://not-json.example.org" });
+    window.document.body.innerHTML = `
+    <body></body>`;
+    const result = await fetchWebsiteProfilePair(
+      window.document as unknown as Document,
+    );
+    expect(result).toBeInstanceOf(ProfilesFetchFailed);
+    // @ts-expect-error result is ProfilesFetchFailed
+    expect(result.message).toContain(
+      `website Profile Pairを取得できませんでした:`,
+    );
   });
 });

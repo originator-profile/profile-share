@@ -1,6 +1,5 @@
 import { JsonLdDocument, NodeObject } from "jsonld";
 import { ProfilesFetchFailed } from "./errors";
-import { fetchWebsiteProfilePair } from "./fetch-website-profile-pair";
 
 function getEndpoints(doc: Document): string[] {
   const endpoints = [
@@ -41,13 +40,7 @@ function getEmbeddedProfileSets(doc: Document): NodeObject[] {
 export async function fetchProfileSet(
   doc: Document,
 ): Promise<JsonLdDocument | ProfilesFetchFailed> {
-  let profiles: JsonLdDocument[] = [];
-  const websiteProfilePair = await fetchWebsiteProfilePair(doc);
-  if (!(websiteProfilePair instanceof ProfilesFetchFailed)) {
-    profiles.push(websiteProfilePair);
-  }
-  // website Profile Pair の設置は任意のため、 ProfilesFetchFailed の場合は無視する。
-  profiles = profiles.concat(getEmbeddedProfileSets(doc));
+  let profiles = getEmbeddedProfileSets(doc);
   try {
     const profileEndpoints = getEndpoints(doc);
 
@@ -64,7 +57,7 @@ export async function fetchProfileSet(
     );
     profiles = profiles.concat(profileSetFromEndpoints);
   } catch (e) {
-    if (e instanceof Error) {
+    if (e instanceof Error || e instanceof window.Error) {
       return new ProfilesFetchFailed(
         `プロファイルを取得できませんでした:\n${e.message}`,
         {
@@ -74,10 +67,6 @@ export async function fetchProfileSet(
     } else {
       throw new Error("Unknown error", { cause: e });
     }
-  }
-
-  if (profiles.length === 0) {
-    return new ProfilesFetchFailed("No profile sets found");
   }
 
   return profiles as JsonLdDocument;
