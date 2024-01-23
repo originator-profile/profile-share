@@ -21,6 +21,7 @@ const base = {
     {
       match_about_blank: true,
       matches: ["<all_urls>"],
+      all_frames: true,
       js: ["content-script.js"],
     },
   ],
@@ -30,7 +31,7 @@ const base = {
       resources: ["content-script/iframe.js", "main.css", "*.map"],
     },
   ],
-  permissions: ["activeTab"],
+  permissions: ["activeTab", "webNavigation"],
 };
 
 const chromium = {
