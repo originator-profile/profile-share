@@ -16,7 +16,7 @@ examples/
 # examplesディレクトリを対象としてサーバーを起動
 $ npx serve examples
 # 起動したサーバーから対象のテキストを抽出
-$ profile-registry publisher:extract-website --input <(echo '[{ "url": "http://localhost:3000/iframe", "bodyFormat": "visibleText", "location": "body", "output": "./ad.json" }]')
+$ profile-registry publisher:extract-website --input <(echo '[{ "url": "http://localhost:3000/iframe", "bodyFormat": "html", "location": "body", "output": "./ad.json" }]')
 ```
 
 ad.json は以下のような JSON データを含んで出力されます。この方法では、実行するごとに異なる id が採番されます。それ以外の結果は変わりません。
@@ -26,8 +26,8 @@ ad.json は以下のような JSON データを含んで出力されます。こ
   "id": "29164cbb-3775-402e-9c0e-243a639c06e8",
   "url": "http://localhost:3000/iframe",
   "location": "body",
-  "bodyFormat": "visibleText",
-  "body": "埋め込みHTMLコンテンツ",
+  "bodyFormat": "html",
+  "body": "<body>\n    <h1>埋め込みHTMLコンテンツ</h1>\n  \n\n</body>",
   "datePublished": null,
   "author": null,
   "description": null,
