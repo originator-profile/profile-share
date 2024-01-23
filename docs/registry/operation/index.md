@@ -35,9 +35,13 @@ Originator Profile レジストリの会員となり、Originator Profile によ
 
 - [website Profile Pair の発行・設置](./website-profile-pair-installation.md)
 
-## 広告主
+## 広告主・広告代理店（DSP）
 
-TBD
+ad Profile Pair を発行して広告主の広告を表明します。次の作業を実施します。
+
+- [iframe に埋め込む HTML コンテンツからの対象テキストの抽出](/registry/operation/iframe-html-extraction.md)
+- [ad Profile Pair の発行](./ad-profile-pair-issuance.md)
+- [iframe に埋め込む HTML コンテンツへの Profile Set あるいは ad Profile Pair の設置](/registry/operation/iframe-profile-installation.md)
 
 ## Originator Profile レジストリ管理者
 

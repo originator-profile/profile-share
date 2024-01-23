@@ -191,3 +191,107 @@ profile-registry コマンドの使用方法は「[Signed Advertisement Profile 
 #### 広告プロファイルの設置
 
 開発チームが管理するウェブサーバー(本サイトの /public/ ディレクトリ配下) から配信され、メディアサイトの広告枠周囲に追加して頂く `<link>` タグから参照頂くことで、ブラウザが読み込みます。
+
+## 広告連携実験 2nd ステップ対応
+
+本セクションでは、DSPにSMN社を想定して、iframe 内コンテンツに広告プロファイルを埋め込む手順について説明します。
+
+### 埋め込み用広告プロファイルの作成の準備
+
+広告連携実験 1st ステップ対応での[広告プロファイルの作成の準備](#広告プロファイルの作成の準備)で示したものに加えて、iframeによる埋め込みに使用される HTML ファイルが必要です。本ドキュメントでは、[サンプル](pathname:///examples/iframe.html)を用いて説明します。
+
+### 埋め込み用広告プロファイルの作成
+
+広告連携実験 1st ステップ対応とは異なり、広告コンテンツをテキストとして抽出し、署名をおこないます。そのためには、[iframe に埋め込む HTML コンテンツからの対象テキストの抽出](/registry/operation/iframe-html-extraction.md)を実施します。
+
+:::note
+
+本実験ではlocationプロパティ（署名対象のテキストを抽出する CSS セレクター）は`"body"`を指定します。
+
+:::
+
+:::caution
+
+インプレッション毎に動的に HTML を生成する場合は、動的に署名とプロファイル生成も都度行う必要があるため、本実験の想定に含めていません。
+
+:::
+
+得られる ad.json は以下のような JSON データです。
+
+```json
+{
+  "id": "29164cbb-3775-402e-9c0e-243a639c06e8",
+  "url": "http://localhost:3000/iframe",
+  "location": "body",
+  "bodyFormat": "html",
+  "body": "<body>\n    <h1>埋め込みHTMLコンテンツ</h1>\n  \n\n</body>",
+  "datePublished": null,
+  "author": null,
+  "description": null,
+  "image": null,
+  "title": "埋め込みHTMLコンテンツ"
+}
+```
+
+ad.json を次のように編集し、本実験で想定する広告プロファイル作成のため内容に調整します。具体的には、urlプロパティを未指定にし、代わりにallowedOriginsプロパティを指定します。
+
+:::info
+
+allowedOrigins プロパティの値は、iframe 要素ごとではなく、最上位の[閲覧コンテキスト](https://developer.mozilla.org/ja/docs/Glossary/Browsing_context)（通常タブ）の URL オリジンと照合されます。
+
+:::
+
+```diff
+--- a/ad.json	2024-01-19 18:49:08.133183713 +0900
++++ b/ad.json	2024-01-19 18:50:04.328711037 +0900
+@@ -1,12 +1,12 @@
+ {
+   "id": "29164cbb-3775-402e-9c0e-243a639c06e8",
+-  "url": "http://localhost:3000/iframe",
+   "location": "body",
+   "bodyFormat": "html",
+   "body": "<body>\n    <h1>埋め込みHTMLコンテンツ</h1>\n  \n\n</body>",
++  "allowedOrigins": ["*"],
+   "datePublished": null,
+   "author": null,
+   "description": null,
+   "image": null,
+   "title": "埋め込みHTMLコンテンツ"
+ }
+```
+
+ad.json を用意できたら、[ad Profile Pair の発行](/registry/operation/ad-profile-pair-issuance/)をおこないます。
+
+### 埋め込み用広告プロファイルの設置
+
+[iframe に埋め込む HTML コンテンツへの ad Profile Pair の設置](/registry/operation/iframe-profile-installation.md)を参考に実施します。
+
+iframe に埋め込む HTML コンテンツの内容は以下のようになります。
+
+```html
+<!doctype html>
+<html lang="ja">
+  <head>
+    <title>埋め込みHTMLコンテンツ</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://originator-profile.org/context.jsonld",
+        "ad": {
+          "op": {
+            "iss": "oprexpt.originator-profile.org",
+            "sub": "www.so-netmedia.jp",
+            "profile": "eyJhbGciOiJFUzI1NiIsImtpZCI6IjIwX1hDazM2dFFrUlpsQnhEckhzMVhldHBUZUZYdDRfVlRSbHlEa0YyQWsiLCJ0eXAiOiJKV1QifQ.eyJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvb3AiOnsiaXRlbSI6W3sidHlwZSI6ImNyZWRlbnRpYWwiLCJuYW1lIjoiSklDREFRIOODluODqeODs-ODieOCu-ODvOODleODhuOCo-iqjeiovCIsImltYWdlIjoiaHR0cHM6Ly9vcC1sb2dvcy5kZW1vc2l0ZXMucGFnZXMuZGV2L3d3dy5zby1uZXRtZWRpYS5qcC9lMGI5Nzc5OC1kM2M2LTU5MWUtYTlhOS00YTM3ZmI3YTRhYWIvamljZGFxLWJyYW5kLXNhZmV0eS1jZXJ0aWZpZWQtc2VsZi1kZWNsYXJhdGlvbi5wbmciLCJpc3N1ZWRBdCI6IjIwMjEtMTAtMzFUMTU6MDA6MDAuMDAwWiIsImV4cGlyZWRBdCI6IjIwMjQtMTAtMzFUMTQ6NTk6NTkuOTk5WiIsImNlcnRpZmllciI6ImppY2RhcS5vci5qcCIsInZlcmlmaWVyIjoiamljZGFxLm9yLmpwIn0seyJ0eXBlIjoiY3JlZGVudGlhbCIsIm5hbWUiOiJKSUNEQVEg54Sh5Yq544OI44Op44OV44Kj44OD44Kv5a--562W6KqN6Ki8IiwiaW1hZ2UiOiJodHRwczovL29wLWxvZ29zLmRlbW9zaXRlcy5wYWdlcy5kZXYvd3d3LnNvLW5ldG1lZGlhLmpwL2UwYjk3Nzk4LWQzYzYtNTkxZS1hOWE5LTRhMzdmYjdhNGFhYi9qaWNkYXEtY2VydGlmaWVkLWFnYWluc3QtYWQtZnJhdWQtc2VsZi1kZWNsYXJhdGlvbi5wbmciLCJpc3N1ZWRBdCI6IjIwMjEtMTAtMzFUMTU6MDA6MDAuMDAwWiIsImV4cGlyZWRBdCI6IjIwMjQtMTAtMzFUMTQ6NTk6NTkuOTk5WiIsImNlcnRpZmllciI6ImppY2RhcS5vci5qcCIsInZlcmlmaWVyIjoiamljZGFxLm9yLmpwIn0seyJ0eXBlIjoiY2VydGlmaWVyIiwiZG9tYWluTmFtZSI6Im9wcmV4cHQub3JpZ2luYXRvci1wcm9maWxlLm9yZyIsInVybCI6Imh0dHBzOi8vb3JpZ2luYXRvci1wcm9maWxlLm9yZy8iLCJuYW1lIjoiT3JpZ2luYXRvciBQcm9maWxlIOaKgOihk-eglOeptue1hOWQiCIsInBvc3RhbENvZGUiOiIxMDgtMDA3MyIsImFkZHJlc3NDb3VudHJ5IjoiSlAiLCJhZGRyZXNzUmVnaW9uIjoi5p2x5Lqs6YO9IiwiYWRkcmVzc0xvY2FsaXR5Ijoi5riv5Yy6Iiwic3RyZWV0QWRkcmVzcyI6IuS4ieeUsCIsImNvbnRhY3RUaXRsZSI6IuOBiuWVj-OBhOWQiOOCj-OBmyIsImNvbnRhY3RVcmwiOiJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvamEtSlAvaW5xdWlyeS8iLCJwcml2YWN5UG9saWN5VGl0bGUiOiLjg5fjg6njgqTjg5Djgrfjg7zjg53jg6rjgrfjg7wiLCJwcml2YWN5UG9saWN5VXJsIjoiaHR0cHM6Ly9vcmlnaW5hdG9yLXByb2ZpbGUub3JnL2phLUpQL3ByaXZhY3kvIiwibG9nb3MiOltdLCJidXNpbmVzc0NhdGVnb3J5IjpbXX0seyJ0eXBlIjoiY2VydGlmaWVyIiwiZG9tYWluTmFtZSI6ImppY2RhcS5vci5qcCIsInVybCI6Imh0dHBzOi8vd3d3LmppY2RhcS5vci5qcC8iLCJuYW1lIjoi5LiA6Iis56S-5Zuj5rOV5Lq6IOODh-OCuOOCv-ODq-W6g-WRiuWTgeizquiqjeiovOapn-aniyIsInBvc3RhbENvZGUiOiIxMDQtMDA2MSIsImFkZHJlc3NDb3VudHJ5IjoiSlAiLCJhZGRyZXNzUmVnaW9uIjoi5p2x5Lqs6YO9IiwiYWRkcmVzc0xvY2FsaXR5Ijoi5Lit5aSu5Yy6Iiwic3RyZWV0QWRkcmVzcyI6IumKgOW6pzMtMTAtNyDjg5Ljg6Xjg7zjg6rjg4Pjgq_pioDluqfkuInkuIHnm67jg5Pjg6sgOOmajiIsImNvbnRhY3RUaXRsZSI6IuOBiuWVj-OBhOWQiOOCj-OBmyIsImNvbnRhY3RVcmwiOiJodHRwczovL3d3dy5qaWNkYXEub3IuanAvY29udGFjdC5odG1sIiwicHJpdmFjeVBvbGljeVRpdGxlIjoi44OX44Op44Kk44OQ44K344O844Od44Oq44K344O8IiwicHJpdmFjeVBvbGljeVVybCI6Imh0dHBzOi8vd3d3LmppY2RhcS5vci5qcC9wcml2YWN5cG9saWN5Lmh0bWwiLCJsb2dvcyI6W10sImJ1c2luZXNzQ2F0ZWdvcnkiOltdfSx7InR5cGUiOiJ2ZXJpZmllciIsImRvbWFpbk5hbWUiOiJqaWNkYXEub3IuanAiLCJ1cmwiOiJodHRwczovL3d3dy5qaWNkYXEub3IuanAvIiwibmFtZSI6IuS4gOiIrOekvuWbo-azleS6uiDjg4fjgrjjgr_jg6vluoPlkYrlk4Hos6roqo3oqLzmqZ_mp4siLCJwb3N0YWxDb2RlIjoiMTA0LTAwNjEiLCJhZGRyZXNzQ291bnRyeSI6IkpQIiwiYWRkcmVzc1JlZ2lvbiI6IuadseS6rOmDvSIsImFkZHJlc3NMb2NhbGl0eSI6IuS4reWkruWMuiIsInN0cmVldEFkZHJlc3MiOiLpioDluqczLTEwLTcg44OS44Ol44O844Oq44OD44Kv6YqA5bqn5LiJ5LiB55uu44OT44OrIDjpmo4iLCJjb250YWN0VGl0bGUiOiLjgYrllY_jgYTlkIjjgo_jgZsiLCJjb250YWN0VXJsIjoiaHR0cHM6Ly93d3cuamljZGFxLm9yLmpwL2NvbnRhY3QuaHRtbCIsInByaXZhY3lQb2xpY3lUaXRsZSI6IuODl-ODqeOCpOODkOOCt-ODvOODneODquOCt-ODvCIsInByaXZhY3lQb2xpY3lVcmwiOiJodHRwczovL3d3dy5qaWNkYXEub3IuanAvcHJpdmFjeXBvbGljeS5odG1sIiwibG9nb3MiOltdLCJidXNpbmVzc0NhdGVnb3J5IjpbXX0seyJ0eXBlIjoiaG9sZGVyIiwiZG9tYWluTmFtZSI6Ind3dy5zby1uZXRtZWRpYS5qcCIsInVybCI6Imh0dHBzOi8vd3d3LnNvLW5ldG1lZGlhLmpwLyIsIm5hbWUiOiJTTU7moKrlvI_kvJrnpL4iLCJwaG9uZU51bWJlciI6IiIsInBvc3RhbENvZGUiOiIxNDEtMDAzMiIsImFkZHJlc3NDb3VudHJ5IjoiSlAiLCJhZGRyZXNzUmVnaW9uIjoi5p2x5Lqs6YO9IiwiYWRkcmVzc0xvY2FsaXR5Ijoi5ZOB5bed5Yy6Iiwic3RyZWV0QWRkcmVzcyI6IuWkp-W0jjItMTEtMSDlpKfltI7jgqbjgqPjgrrjgr_jg6_jg7wgMTJGIiwiY29udGFjdFRpdGxlIjoi5ZWG5ZOB44O744K144O844OT44K56Zai6YCj44Gu44GK5ZWP44GE5ZCI44KP44GbIiwiY29udGFjdFVybCI6Imh0dHBzOi8vd3d3LnNvLW5ldG1lZGlhLmpwL2NvbnRhY3QvIiwicHJpdmFjeVBvbGljeVRpdGxlIjoi44OX44Op44Kk44OQ44K344O844Od44Oq44K344O8IiwicHJpdmFjeVBvbGljeVVybCI6Imh0dHBzOi8vd3d3LnNvLW5ldG1lZGlhLmpwL3ByaXZhY3lwb2xpY3kvIiwibG9nb3MiOlt7InVybCI6Imh0dHBzOi8vb3AtbG9nb3MuZGVtb3NpdGVzLnBhZ2VzLmRldi93d3cuc28tbmV0bWVkaWEuanAvZTBiOTc3OTgtZDNjNi01OTFlLWE5YTktNGEzN2ZiN2E0YWFiL3Ntbl9sb2dvMV9jb2xvcl9zcXVhcmUuanBnIiwiaXNNYWluIjp0cnVlfV0sImJ1c2luZXNzQ2F0ZWdvcnkiOlsi5oOF5aCx6YCa5L-h5qWtIl19XSwiandrcyI6eyJrZXlzIjpbeyJ4IjoiVUhKd3gwNWI4TVlQYkJwZGZPTHd2ay05M3AzeVdrS3IyNUh6OW5UbDd6OCIsInkiOiJORWJxSUJ1OWdDLXNteURfX0prc1gzUVZhS2lyTld3TDJBdHhsTTlSTkxRIiwiY3J2IjoiUC0yNTYiLCJraWQiOiJpcHdUVklDdTBKQUpoa1NOLWVQVGViTDR6WmRaSlVERDhPQThkVU9rb05JIiwia3R5IjoiRUMifV19fSwiaXNzIjoib3ByZXhwdC5vcmlnaW5hdG9yLXByb2ZpbGUub3JnIiwic3ViIjoid3d3LnNvLW5ldG1lZGlhLmpwIiwiaWF0IjoxNzAwMTA2MTkyLCJleHAiOjE3MzE3Mjg1OTJ9.aQNlnHV5BEYwWnOeD1zKlwifipICuMJjmU3CH_EQlzXB1lLoz1N6OuDc1o4Dev9TTei-LpsbHbdeG1PEPynG1g"
+          },
+          "dp": {
+            "sub": "<SDP の sub クレームの値>",
+            "profile": "<SDP>"
+          }
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>埋め込みHTMLコンテンツ</h1>
+  </body>
+</html>
+```
