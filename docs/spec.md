@@ -160,7 +160,10 @@ actor 検証者
 participant Web サーバー
 participant Originator Profile レジストリサーバー
 
-検証者->>Web サーバー: GET /.well-known/ps.json
+検証者->>Web サーバー: GET /index.html
+Web サーバー-->>検証者: HTML 文書
+
+検証者->>Web サーバー: GET /ps.json
 Web サーバー-->>検証者: Profile Set
 
 検証者->>検証者: Profile Set から Signed Originator Profile を抽出
@@ -171,7 +174,7 @@ Originator Profile レジストリサーバー-->>検証者: Originator Profile 
 検証者->>検証者: Signed Originator Profile の署名を検証
 ```
 
-1. 組織の識別子の先頭に `https://`、末尾に `/.well-known/ps.json` を加えた URL にアクセスし Profile Set を取得
+1. HTML 文書の中に含まれる `<script>` 要素または `<link>` 要素によって表明された URL にアクセスし Profile Set を取得
 2. Profile Set の `profile` プロパティに含まれる JWT をデコードして、組織の識別子と `sub` クレームの文字列が一致するものを絞り込み、Signed Originator Profile を抽出
 3. その `iss` クレームによって表明される認証機関の識別子の先頭に`https://`、末尾に `/.well-known/jwks.json` を加えた URL にアクセスして公開鍵を取得
 4. Signed Originator Profile の署名を検証
@@ -505,10 +508,3 @@ Signed Document Profile の場合、署名の際に `location` として含ま�
   type="application/ld+json"
 />
 ```
-
-## Well-Known URL
-
-### `ps.json`
-
-組織の身元を表明にするためのエンドポイントです。
-組織の識別子の先頭に `https://`、末尾に `/.well-known/ps.json` を加えた URL に必ずアクセスできなければなりません (MUST)。
