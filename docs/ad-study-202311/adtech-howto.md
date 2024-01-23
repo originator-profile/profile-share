@@ -233,7 +233,7 @@ profile-registry コマンドの使用方法は「[Signed Advertisement Profile 
 }
 ```
 
-ad.json を次のように編集し、本実験で想定する広告プロファイル作成のため内容に調整します。具体的には、urlプロパティを未指定にし、変わりにallowedOriginsプロパティを指定します。
+ad.json を次のように編集し、本実験で想定する広告プロファイル作成のため内容に調整します。具体的には、urlプロパティを未指定にし、代わりにallowedOriginsプロパティを指定します。
 
 ```diff
 --- a/ad.json	2024-01-19 18:49:08.133183713 +0900
