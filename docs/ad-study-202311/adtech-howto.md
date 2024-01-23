@@ -235,6 +235,12 @@ profile-registry コマンドの使用方法は「[Signed Advertisement Profile 
 
 ad.json を次のように編集し、本実験で想定する広告プロファイル作成のため内容に調整します。具体的には、urlプロパティを未指定にし、代わりにallowedOriginsプロパティを指定します。
 
+:::info
+
+allowedOrigins プロパティの値は、iframe 要素ごとではなく、最上位の[閲覧コンテキスト](https://developer.mozilla.org/ja/docs/Glossary/Browsing_context)（通常タブ）の URL オリジンと照合されます。
+
+:::
+
 ```diff
 --- a/ad.json	2024-01-19 18:49:08.133183713 +0900
 +++ b/ad.json	2024-01-19 18:50:04.328711037 +0900
