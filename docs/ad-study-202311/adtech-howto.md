@@ -258,7 +258,7 @@ ad.json を用意できたら、[ad Profile Pair の発行](/registry/operation/
 
 ### 埋め込み用広告プロファイルの設置
 
-[iframe に埋め込む HTML コンテンツへの Profile Set あるいは ad Profile Pair の設置](/registry/operation/iframe-profile-installation.md)を参考に実施します。
+[iframe に埋め込む HTML コンテンツへの ad Profile Pair の設置](/registry/operation/iframe-profile-installation.md)を参考に実施します。
 
 iframe に埋め込む HTML コンテンツの内容は以下のようになります。
 

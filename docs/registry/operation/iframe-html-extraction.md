@@ -36,4 +36,4 @@ ad.json は以下のような JSON データを含んで出力されます。こ
 }
 ```
 
-ここで得た JSON ファイルを編集して、[ad Profile Pair の発行](./ad-profile-pair-issuance.md)や、[Signed Document Profile 発行](./signed-document-profile-issuance.md)をおこなうことができます。
+ここで得た JSON ファイルを編集して、[ad Profile Pair の発行](./ad-profile-pair-issuance.md)をおこなうことができます。

@@ -45,4 +45,4 @@ profile-registry advertiser:sign -i example.priv.json --id example.com --input a
 }
 ```
 
-ad Profile Pair を設置するには、[iframe に埋め込む HTML コンテンツへの Profile Set あるいは ad Profile Pair の設置](./iframe-profile-installation.md)を参照してください。
+ad Profile Pair を設置するには、[iframe に埋め込む HTML コンテンツへの ad Profile Pair の設置](./iframe-profile-installation.md)を参照してください。
