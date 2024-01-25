@@ -6,7 +6,7 @@ let ext: Page | undefined;
 
 test.beforeEach(async ({ context, page }) => {
   // Profile Registry にアクセス (apps/registry)
-  await page.goto("http://localhost:8080/app/debugger");
+  await page.goto("http://localhost:8080/examples/many-dps.html");
 
   ext = await popup(context);
 });
@@ -33,8 +33,8 @@ test("サイトプロファイルにおける表示の確認", async ({ page }) 
   // 対象のWebページにオーバーレイ表示が読み込まれるまで待機
   await page.waitForSelector("iframe");
 
-  // 対象Webページにマークは表示されているか
-  expect(await page.title()).toMatch(/OP登録サイト/);
+  // 対象Webページにのタイトル確認
+  expect(await page.title()).toMatch("複数の DP (Demo)");
 
   // website.titleの存在を確認
   expect(
