@@ -22,6 +22,16 @@ type Advertisement = AdvertisementType & {
   allowedOrigins?: string[];
 };
 
+const example: Omit<Advertisement, "type"> = {
+  url: "https://example.com/",
+  location: "h1",
+  bodyFormat: "visibleText",
+  body: "広告テキスト",
+  title: "広告タイトル",
+  image: "https://example.com/image.png",
+  description: "この広告の説明です。",
+};
+
 export class AdvertiserSign extends Command {
   static summary = "Signed Advertisement Profile (SAP) の生成";
   static description = `\
@@ -35,24 +45,12 @@ export class AdvertiserSign extends Command {
       required: true,
     }),
     input: Flags.string({
-      summary: "JSON file",
+      summary: "入力ファイルのパス (JSON 形式)",
+      helpValue: "<filepath>",
       description: `\
-ファイル名。ファイルには次のようなフォーマットの JSON を入れてください。空白行より上が必須プロパティです。
-imageプロパティの画像リソースは拡張機能Webページから参照されます。埋め込み可能なようCORS許可しておいてください。
+入力ファイルの例:
 
-{
-  "allowedOrigins": ["https://example.com"],
-
-  "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc7",
-  "url": "https://example.com/",
-  "location": "h1",
-  "bodyFormat": "visibleText",
-  "body": "広告テキスト",
-  "title": "広告タイトル",
-  "image": "https://example.com/image.png",
-  "description": "この広告の説明です。"
-}
-`,
+${JSON.stringify(example, null, "  ")}`,
       required: true,
     }),
     "issued-at": Flags.string({
@@ -61,6 +59,14 @@ imageプロパティの画像リソースは拡張機能Webページから参照
     "expired-at": expirationDate(),
     "allowed-origins": allowedOriginsFlag({ required: false }),
   };
+  static examples = [
+    `\
+$ <%= config.bin %> <%= command.id %> \\
+    -i example.priv.json \\
+    --id ad.example.com \\
+    --allowed-origins '*' \\
+    --input ad.json`,
+  ];
 
   async run(): Promise<void> {
     const { flags } = await this.parse(AdvertiserSign);

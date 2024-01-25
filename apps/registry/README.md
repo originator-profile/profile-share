@@ -246,12 +246,12 @@ USAGE
     <value>] [--allowed-origins <value>]
 
 FLAGS
-  -i, --identity=<value>         (required) プライベート鍵のファイルパス
-      --allowed-origins=<value>  allowedOrigins プロパティ
-      --expired-at=<value>       有効期限 (ISO 8601)
-      --id=<value>               (required) OP ID (ドメイン名)
-      --input=<value>            (required) JSON file
-      --issued-at=<value>        発行日時 (ISO 8601)
+  -i, --identity=<value>           (required) プライベート鍵のファイルパス
+      --allowed-origins=<origins>  許可する掲載先
+      --expired-at=<value>         有効期限 (ISO 8601)
+      --id=<value>                 (required) OP ID (ドメイン名)
+      --input=<filepath>           (required) 入力ファイルのパス (JSON 形式)
+      --issued-at=<value>          発行日時 (ISO 8601)
 
 DESCRIPTION
   Signed Advertisement Profile (SAP) の生成
@@ -259,16 +259,29 @@ DESCRIPTION
   広告の情報 (AP) に対して署名を行います。
   署名済み AP (SAP) を生成し、それを標準出力に出力します。
 
+EXAMPLES
+  $ profile-registry advertiser:sign \
+      -i example.priv.json \
+      --id ad.example.com \
+      --allowed-origins '*' \
+      --input ad.json
+
 FLAG DESCRIPTIONS
   -i, --identity=<value>  プライベート鍵のファイルパス
 
     プライベート鍵のファイルパスを渡してください。プライベート鍵は JWK 形式か、PEM base64 でエンコードされた PKCS #8
     形式にしてください。
 
-  --allowed-origins=<value>  allowedOrigins プロパティ
+  --allowed-origins=<origins>  許可する掲載先
 
-    DP による記事の信頼性証明を許可するサイトをオリジン形式で指定します。複数のオリジンを許可する場合は、オリジンをコン
-    マ区切りで並べてください。
+    掲載先を許可するために使用されます。
+    URL オリジン "https://<ホスト>" 形式で指定します。
+    複数指定する場合はコンマ "," で区切ります。
+    "*" は任意の掲載先での利用の許可を意味します。
+
+    例1: "*"
+    例2: "https://example.com,https://www.example.com"
+
 
   --expired-at=<value>  有効期限 (ISO 8601)
 
@@ -278,15 +291,11 @@ FLAG DESCRIPTIONS
 
     ドメイン名 (RFC 4501) を指定します。
 
-  --input=<value>  JSON file
+  --input=<filepath>  入力ファイルのパス (JSON 形式)
 
-    ファイル名。ファイルには次のようなフォーマットの JSON を入れてください。空白行より上が必須プロパティです。
-    imageプロパティの画像リソースは拡張機能Webページから参照されます。埋め込み可能なようCORS許可しておいてください。
+    入力ファイルの例:
 
     {
-    "allowedOrigins": ["https://example.com"],
-
-    "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc7",
     "url": "https://example.com/",
     "location": "h1",
     "bodyFormat": "visibleText",
@@ -559,13 +568,13 @@ USAGE
     <value>] [--site-profile] [--allowed-origins <value>]
 
 FLAGS
-  -i, --identity=<value>         (required) プライベート鍵のファイルパス
-      --allowed-origins=<value>  allowedOrigins プロパティ
-      --expired-at=<value>       有効期限 (ISO 8601)
-      --id=<value>               (required) OP ID (ドメイン名)
-      --input=<value>            (required) JSON file
-      --issued-at=<value>        発行日時 (ISO 8601)
-      --site-profile             出力にサイトプロファイルを使用する
+  -i, --identity=<value>           (required) プライベート鍵のファイルパス
+      --allowed-origins=<origins>  許可する掲載先
+      --expired-at=<value>         有効期限 (ISO 8601)
+      --id=<value>                 (required) OP ID (ドメイン名)
+      --input=<filepath>           (required) 入力ファイルのパス (JSON 形式)
+      --issued-at=<value>          発行日時 (ISO 8601)
+      --site-profile               サイトプロファイルを出力する
 
 DESCRIPTION
   Signed Document Profile (SDP) の生成
@@ -573,16 +582,36 @@ DESCRIPTION
   Web ページの情報 (DP) に対して署名を行います。
   署名済み DP (SDP) を生成し、それを標準出力に出力します。
 
+EXAMPLES
+  $ profile-registry publisher:sign \
+      --site-profile \
+      -i example.priv.json \
+      --id media.example.com \
+      --allowed-origins '*' \
+      --input site-profile.json
+
+  $ profile-registry publisher:sign \
+      -i example.priv.json \
+      --id media.example.com \
+      --allowed-origins '*' \
+      --input webpage.json
+
 FLAG DESCRIPTIONS
   -i, --identity=<value>  プライベート鍵のファイルパス
 
     プライベート鍵のファイルパスを渡してください。プライベート鍵は JWK 形式か、PEM base64 でエンコードされた PKCS #8
     形式にしてください。
 
-  --allowed-origins=<value>  allowedOrigins プロパティ
+  --allowed-origins=<origins>  許可する掲載先
 
-    DP による記事の信頼性証明を許可するサイトをオリジン形式で指定します。複数のオリジンを許可する場合は、オリジンをコン
-    マ区切りで並べてください。
+    掲載先を許可するために使用されます。
+    URL オリジン "https://<ホスト>" 形式で指定します。
+    複数指定する場合はコンマ "," で区切ります。
+    "*" は任意の掲載先での利用の許可を意味します。
+
+    例1: "*"
+    例2: "https://example.com,https://www.example.com"
+
 
   --expired-at=<value>  有効期限 (ISO 8601)
 
@@ -592,30 +621,48 @@ FLAG DESCRIPTIONS
 
     ドメイン名 (RFC 4501) を指定します。
 
-  --input=<value>  JSON file
+  --input=<filepath>  入力ファイルのパス (JSON 形式)
 
-    ファイル名。ファイルには次のようなフォーマットの JSON を入れてください。空白行より上が必須プロパティです。
-    imageプロパティの画像リソースは拡張機能Webページから参照されます。埋め込み可能なようCORS許可しておいてください。
+    サイトプロファイルの例:
+
+    {
+    "title": "サイト名",
+    "image": "https://example.com/image.png",
+    "description": "サイトの説明"
+    }
+
+    ウェブページの例 (最小限):
+
+    {
+    "url": "https://media.example.com/2023/06/hello/",
+    "location": "body",
+    "bodyFormat": "visibleText",
+    "body": "本文の例"
+    }
+
+
+    ウェブページの例:
 
     {
     "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc7",
-    "url": "https://example.com/",
-    "location": "h1",
+    "url": "http://localhost:8080/app/debugger",
+    "location": "body",
     "bodyFormat": "visibleText",
-    "body": "OP 確認くん",
-
-    "title": "OP 確認くん",
+    "body": "本文",
+    "title": "ウェブページのタイトル",
     "image": "https://example.com/image.png",
-    "description": "このウェブページの説明です。",
+    "description": "ウェブページの説明",
     "author": "山田太郎",
     "editor": "山田花子",
     "datePublished": "2023-07-04T19:14:00Z",
     "dateModified": "2023-07-04T19:14:00Z",
-    "categories": [{
+    "categories": [
+    {
     "cat": "IAB1-1",
     "name": "Books & Literature",
     "cattax": 1
-    }]
+    }
+    ]
     }
 ```
 

@@ -20,6 +20,41 @@ type Website = OgWebsite & {
   allowedOrigins?: string[];
 };
 
+const exampleSiteProfile: Omit<Website, "type"> = {
+  title: "サイト名",
+  image: "https://example.com/image.png",
+  description: "サイトの説明",
+};
+
+const exampleWebpageMinimal: Omit<Website, "type"> = {
+  url: "https://media.example.com/2023/06/hello/",
+  location: "body",
+  bodyFormat: "visibleText",
+  body: "本文の例",
+};
+
+const exampleWebpage: Omit<Website, "type"> = {
+  id: "ef9d78e0-d81a-4e39-b7a0-27e15405edc7",
+  url: "http://localhost:8080/app/debugger",
+  location: "body",
+  bodyFormat: "visibleText",
+  body: "本文",
+  title: "ウェブページのタイトル",
+  image: "https://example.com/image.png",
+  description: "ウェブページの説明",
+  author: "山田太郎",
+  editor: "山田花子",
+  datePublished: "2023-07-04T19:14:00Z",
+  dateModified: "2023-07-04T19:14:00Z",
+  categories: [
+    {
+      cat: "IAB1-1",
+      name: "Books & Literature",
+      cattax: 1,
+    },
+  ],
+};
+
 export class PublisherSign extends Command {
   static summary = "Signed Document Profile (SDP) の生成";
   static description = `\
@@ -33,32 +68,21 @@ Web ページの情報 (DP) に対して署名を行います。
       required: true,
     }),
     input: Flags.string({
-      summary: "JSON file",
+      summary: "入力ファイルのパス (JSON 形式)",
+      helpValue: "<filepath>",
       description: `\
-ファイル名。ファイルには次のようなフォーマットの JSON を入れてください。空白行より上が必須プロパティです。
-imageプロパティの画像リソースは拡張機能Webページから参照されます。埋め込み可能なようCORS許可しておいてください。
+サイトプロファイルの例:
 
-{
-  "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc7",
-  "url": "https://example.com/",
-  "location": "h1",
-  "bodyFormat": "visibleText",
-  "body": "OP 確認くん",
+${JSON.stringify(exampleSiteProfile, null, "  ")}
 
-  "title": "OP 確認くん",
-  "image": "https://example.com/image.png",
-  "description": "このウェブページの説明です。",
-  "author": "山田太郎",
-  "editor": "山田花子",
-  "datePublished": "2023-07-04T19:14:00Z",
-  "dateModified": "2023-07-04T19:14:00Z",
-  "categories": [{
-    "cat": "IAB1-1",
-    "name": "Books & Literature",
-    "cattax": 1
-  }]
-}
-`,
+ウェブページの例 (最小限):
+
+${JSON.stringify(exampleWebpageMinimal, null, "  ")}
+
+
+ウェブページの例:
+
+${JSON.stringify(exampleWebpage, null, "  ")}`,
       required: true,
     }),
     "issued-at": Flags.string({
@@ -66,11 +90,26 @@ imageプロパティの画像リソースは拡張機能Webページから参照
     }),
     "expired-at": expirationDate(),
     "site-profile": Flags.boolean({
-      description: "出力にサイトプロファイルを使用する",
+      description: "サイトプロファイルを出力する",
       default: false,
     }),
     "allowed-origins": allowedOriginsFlag({ required: false }),
   };
+  static examples = [
+    `\
+$ <%= config.bin %> <%= command.id %> \\
+    --site-profile \\
+    -i example.priv.json \\
+    --id media.example.com \\
+    --allowed-origins '*' \\
+    --input site-profile.json`,
+    `\
+$ <%= config.bin %> <%= command.id %> \\
+    -i example.priv.json \\
+    --id media.example.com \\
+    --allowed-origins '*' \\
+    --input webpage.json`,
+  ];
 
   async run(): Promise<void> {
     const { flags } = await this.parse(PublisherSign);

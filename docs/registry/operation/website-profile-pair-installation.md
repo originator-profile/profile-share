@@ -2,15 +2,14 @@
 
 1. OP ID とプライベート鍵を用意してください。プライベート鍵は Site Profile の署名に利用します。
 
-2. 次のような JSON ファイルを用意してください。`site-profile.json` というファイル名だとします。 id には UUID を利用してください。
+2. 次のような `site-profile.json` ファイルをご用意ください。id には UUID を生成して指定します。
 
 ```json
 {
-  "id": "ca729848-9265-48bf-8e33-887a43ba34b9",
+  "id": "<UUID>",
   "title": "<サイト名>",
   "image": "<サイトを表すサムネイル画像のURL>",
-  "description": "<このサイトの説明>",
-  "allowedOrigins": ["<保有するサイト（ドメイン）をオリジン形式で列挙>"]
+  "description": "<サイトの説明>"
 }
 ```
 
@@ -20,10 +19,16 @@ image プロパティを参照した画像表示は、本実験に対応した�
 
 :::
 
-3. 次のコマンドを実行してください。ここで OP ID は example.com 、署名に使うプライベート鍵は example.priv.json とします。コマンドの出力が Site Profile です。
+3. 次のコマンドを実行してください。ここで OP ID は example.com 、署名に使うプライベート鍵は example.priv.json とします。コマンド実行後、画面上に表示される "eyJ" から始まる文字列が Site Profile です。
 
 ```
-profile-registry publisher:sign --site-profile -i example.priv.json --id example.com --input site-profile.json　
+$ profile-registry publisher:sign \
+    --site-profile \
+    -i example.priv.json \
+    --id example.com \
+    --allowed-origins '*' \
+    --input site-profile.json
+eyJ…
 ```
 
 4. レジストリから発行された SOP と Site Profile を合わせて website Profile Pair を作成します。 website Profile Pair は次のような形式の JSON です。ここで OP ID は example.com とします。
@@ -38,8 +43,8 @@ profile-registry publisher:sign --site-profile -i example.priv.json --id example
       "profile": "<SOP の JWT>"
     },
     "dp": {
-      "sub": "ca729848-9265-48bf-8e33-887a43ba34b9",
-      "profile": "<Site Profile の JWT>"
+      "sub": "<UUID>",
+      "profile": "<Site Profile>"
     }
   }
 }
