@@ -224,7 +224,8 @@ $ profile-registry advertiser:sign \
 
 :::note
 
-本実験ではlocationプロパティ（署名対象のテキストを抽出する CSS セレクター）は`"body"`を指定します。
+本実験では location プロパティに `img` を指定します。
+location プロパティは署名対象のテキストの抽出するための CSS セレクターです。
 
 :::
 
@@ -240,13 +241,13 @@ $ profile-registry advertiser:sign \
 {
   "id": "29164cbb-3775-402e-9c0e-243a639c06e8",
   "url": "http://localhost:3000/iframe",
-  "location": "body",
+  "location": "img",
   "bodyFormat": "html",
-  "body": "<body>\n    <h1>埋め込みHTMLコンテンツ</h1>\n  \n\n</body>",
+  "body": "<img src=\"https://op-logos.demosites.pages.dev/placeholder-120x80.png\" width=\"120\" height=\"80\" decoding=\"async\" alt=\"ダミー画像\">",
   "datePublished": null,
   "author": null,
   "description": null,
-  "image": null,
+  "image": "https://op-logos.demosites.pages.dev/placeholder-120x80.png",
   "title": "埋め込みHTMLコンテンツ"
 }
 ```
@@ -260,9 +261,9 @@ $ profile-registry advertiser:sign \
  {
    "id": "29164cbb-3775-402e-9c0e-243a639c06e8",
 -  "url": "http://localhost:3000/iframe",
-   "location": "body",
+   "location": "img",
    "bodyFormat": "html",
-   "body": "<body>\n    <h1>埋め込みHTMLコンテンツ</h1>\n  \n\n</body>",
+   "body": "<img src=\"https://op-logos.demosites.pages.dev/placeholder-120x80.png\" width=\"120\" height=\"80\" decoding=\"async\" alt=\"ダミー画像\">",
 ```
 
 広告プロファイルの発行:
@@ -286,7 +287,18 @@ iframe に埋め込む HTML コンテンツの内容は以下のようになり�
 <!doctype html>
 <html lang="ja">
   <head>
+    <meta charset="UTF-8" />
     <title>埋め込みHTMLコンテンツ</title>
+  </head>
+  <body>
+    <h1>埋め込みHTMLコンテンツ</h1>
+    <img
+      src="https://op-logos.demosites.pages.dev/placeholder-120x80.png"
+      width="120"
+      height="80"
+      decoding="async"
+      alt="ダミー画像"
+    />
     <script type="application/ld+json">
       {
         "@context": "https://originator-profile.org/context.jsonld",
@@ -303,9 +315,6 @@ iframe に埋め込む HTML コンテンツの内容は以下のようになり�
         }
       }
     </script>
-  </head>
-  <body>
-    <h1>埋め込みHTMLコンテンツ</h1>
   </body>
 </html>
 ```

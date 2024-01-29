@@ -18,12 +18,12 @@
 ad Profile Pairの設置は iframe に埋め込む HTML コンテンツに対しておこないます。設置には[利用可能な HTML 表現](/spec/#html)を使用します。ここでは、\<script\>要素を使用した設置をおこなう場合の差分を示します。
 
 ```diff
---- a/iframe.html	2024-01-19 17:51:13.978204068 +0900
-+++ b/iframe.html	2024-01-19 17:52:54.296118149 +0900
-@@ -2,6 +2,22 @@
- <html lang="ja">
-   <head>
-     <title>埋め込み HTML コンテンツ</title>
+--- a/iframe.html
++++ b/iframe.html
+@@ -13,5 +13,21 @@
+       decoding="async"
+       alt="ダミー画像"
+     />
 +    <script type="application/ld+json">
 +      {
 +        "@context": "https://originator-profile.org/context.jsonld",
@@ -40,7 +40,6 @@ ad Profile Pairの設置は iframe に埋め込む HTML コンテンツに対し
 +        }
 +      }
 +    </script>
-   </head>
-   <body>
-     <h1>埋め込み HTML コンテンツ</h1>
+   </body>
+ </html>
 ```
