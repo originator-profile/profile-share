@@ -1,7 +1,4 @@
-import {
-  fetchProfileSet,
-  fetchWebsiteProfilePair,
-} from "@originator-profile/verify";
+import { fetchWebsiteProfilePair } from "@originator-profile/verify";
 import { Profile, Dp } from "@originator-profile/ui/src/types";
 import {
   ContentScriptMessageRequest,
@@ -16,20 +13,8 @@ const iframe = initialize();
 
 async function handleMessageResponse(
   message: ContentScriptMessageRequest,
-): Promise<ContentScriptMessageResponse> {
+): Promise<ContentScriptMessageResponse | void> {
   switch (message.type) {
-    case "fetch-profiles": {
-      const data = await fetchProfileSet(document);
-      return {
-        type: "fetch-profiles",
-        ok: !(data instanceof Error),
-        data:
-          data instanceof Error
-            ? JSON.stringify(data, Object.getOwnPropertyNames(data))
-            : JSON.stringify(data),
-        origin: document.location.origin,
-      };
-    }
     case "fetch-website-profile-pair": {
       const data = await fetchWebsiteProfilePair(document);
       return {
@@ -65,9 +50,11 @@ async function handleMessageResponse(
 chrome.runtime.onMessage.addListener(function (
   message: ContentScriptMessageRequest,
   _,
-  sendResponse: (response: ContentScriptMessageResponse) => void,
+  sendResponse: (response: ContentScriptMessageResponse | void) => void,
 ): true /* NOTE: Chrome の場合、Promise には非対応 */ {
-  handleMessageResponse(message).then(sendResponse);
+  handleMessageResponse(message).then(
+    (response) => response && sendResponse(response),
+  );
   return true;
 });
 

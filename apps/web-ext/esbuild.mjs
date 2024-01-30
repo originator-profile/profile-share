@@ -87,6 +87,7 @@ const buildOptions = {
     "src/background.ts",
     "src/content-script.ts",
     "src/content-script/iframe.tsx",
+    "src/content-script-all-frames.ts",
   ],
   outdir,
   color: true,

@@ -21,8 +21,13 @@ const base = {
     {
       match_about_blank: true,
       matches: ["<all_urls>"],
-      all_frames: true,
       js: ["content-script.js"],
+    },
+    {
+      match_about_blank: true,
+      matches: ["<all_urls>"],
+      all_frames: true,
+      js: ["content-script-all-frames.js"],
     },
   ],
   web_accessible_resources: [
