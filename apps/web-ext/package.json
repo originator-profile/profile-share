@@ -19,6 +19,7 @@
     "@originator-profile/verify": "workspace:*",
     "@playwright/test": "^1.40.1",
     "@types/chrome": "^0.0.254",
+    "@types/jsonld": "^1.5.13",
     "@types/react": "^18.2.42",
     "@types/react-dom": "^18.2.17",
     "autoprefixer": "^10.4.16",
