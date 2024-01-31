@@ -33,36 +33,46 @@ async function fetchVerifiedProfiles([, tabId]: [
   origin: string;
 }> {
   const frames = (await chrome.webNavigation.getAllFrames({ tabId })) ?? [];
-  const responses: Array<{ data: NodeObject; origin: string }> =
-    await Promise.all(
-      frames.map((frame) =>
-        chrome.tabs
-          .sendMessage<
-            fetchProfileSetMessageRequest,
-            fetchProfileSetMessageResponse
-          >(
-            tabId,
-            {
-              type: "fetch-profiles",
-            },
-            {
-              frameId: frame.frameId,
-            },
-          )
-          .then((response) => {
-            const data = JSON.parse(response.data);
-            if (!response.ok) throw data;
-            return { data, origin: response.origin };
-          }),
-      ),
-    ).catch((data) => {
-      throw Object.assign(new Error(data.message), data);
-    });
+  const responses: Array<{
+    data: NodeObject;
+    origin: string;
+    frameId: number;
+  }> = await Promise.all(
+    frames.map((frame) =>
+      chrome.tabs
+        .sendMessage<
+          fetchProfileSetMessageRequest,
+          fetchProfileSetMessageResponse
+        >(
+          tabId,
+          {
+            type: "fetch-profiles",
+          },
+          {
+            frameId: frame.frameId,
+          },
+        )
+        .then((response) => {
+          const data = JSON.parse(response.data);
+          if (!response.ok) throw data;
+          return { data, origin: response.origin, frameId: frame.frameId };
+        }),
+    ),
+  ).catch((data) => {
+    throw Object.assign(new Error(data.message), data);
+  });
   const topLevelResponse =
     responses[frames.findIndex((frame) => frame.parentFrameId === -1)];
 
   const profileSet = await expandProfileSet(topLevelResponse?.data ?? []);
-  const { ad } = await expandProfilePairs(responses.map(({ data }) => data));
+  const ads = await Promise.all(
+    responses.map(({ data, frameId }) =>
+      expandProfilePairs(data).then(({ ad }) => ({
+        ad,
+        frameId,
+      })),
+    ),
+  );
 
   const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(
@@ -75,7 +85,7 @@ async function fetchVerifiedProfiles([, tabId]: [
   const verify = ProfilesVerifier(
     {
       profile: profileSet.profile,
-      ad,
+      ad: ads.flatMap(({ ad }) => ad),
     },
     keys,
     registry,
@@ -86,7 +96,10 @@ async function fetchVerifiedProfiles([, tabId]: [
 
   return {
     advertisers: [
-      ...new Set([...profileSet.advertisers, ...ad.map(({ op }) => op.sub)]),
+      ...new Set([
+        ...profileSet.advertisers,
+        ...ads.flatMap(({ ad }) => ad.map(({ op }) => op.sub)),
+      ]),
     ],
     publishers: profileSet.publishers,
     main: profileSet.main,
