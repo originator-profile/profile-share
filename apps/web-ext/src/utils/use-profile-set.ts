@@ -86,7 +86,7 @@ async function fetchVerifiedProfiles([, tabId]: [
 
   return {
     advertisers: [
-      ...new Set(...ad.map(({ op }) => op.sub), profileSet.advertisers),
+      ...new Set([...profileSet.advertisers, ...ad.map(({ op }) => op.sub)]),
     ],
     publishers: profileSet.publishers,
     main: profileSet.main,
