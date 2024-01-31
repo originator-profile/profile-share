@@ -2,7 +2,6 @@ import { fetchProfileSet } from "@originator-profile/verify";
 import {
   ContentScriptMessageRequest,
   ContentScriptMessageResponse,
-  ContentWindowPostMessageEvent,
 } from "./types/message";
 
 async function handleMessageResponse(
@@ -34,12 +33,3 @@ chrome.runtime.onMessage.addListener(function (
   );
   return true;
 });
-
-function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
-  switch (event.data.type) {
-    default:
-      break;
-  }
-}
-
-window.addEventListener("message", handlePostMessageResponse);
