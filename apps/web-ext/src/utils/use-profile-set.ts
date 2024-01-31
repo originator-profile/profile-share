@@ -8,9 +8,11 @@ import {
   expandProfileSet,
   expandProfilePairs,
 } from "@originator-profile/verify";
+import { NodeObject } from "jsonld";
 import { Profile } from "@originator-profile/ui/src/types";
 import { toProfile } from "@originator-profile/ui/src/utils";
 import {
+  fetchProfileSetMessageRequest,
   fetchProfileSetMessageResponse,
   fetchWebsiteProfilePairMessageResponse,
   PopupMessageRequest,
@@ -31,59 +33,46 @@ async function fetchVerifiedProfiles([, tabId]: [
   origin: string;
 }> {
   const frames = (await chrome.webNavigation.getAllFrames({ tabId })) ?? [];
-  const responses: fetchProfileSetMessageResponse[] = await Promise.all(
+  const responses: Array<{
+    data: NodeObject;
+    origin: string;
+    frameId: number;
+  }> = await Promise.all(
     frames.map((frame) =>
-      chrome.tabs.sendMessage(
-        tabId,
-        {
-          type: "fetch-profiles",
-        },
-        {
-          frameId: frame.frameId,
-        },
-      ),
+      chrome.tabs
+        .sendMessage<
+          fetchProfileSetMessageRequest,
+          fetchProfileSetMessageResponse
+        >(
+          tabId,
+          {
+            type: "fetch-profiles",
+          },
+          {
+            frameId: frame.frameId,
+          },
+        )
+        .then((response) => {
+          const data = JSON.parse(response.data);
+          if (!response.ok) throw data;
+          return { data, origin: response.origin, frameId: frame.frameId };
+        }),
+    ),
+  ).catch((data) => {
+    throw Object.assign(new Error(data.message), data);
+  });
+  const topLevelResponse =
+    responses[frames.findIndex((frame) => frame.parentFrameId === -1)];
+
+  const profileSet = await expandProfileSet(topLevelResponse?.data ?? []);
+  const ads = await Promise.all(
+    responses.map(({ data, frameId }) =>
+      expandProfilePairs(data).then(({ ad }) => ({
+        ad,
+        frameId,
+      })),
     ),
   );
-
-  const toplevel = frames.findIndex((frame) => frame.parentFrameId === -1);
-  const profileSets = await Promise.allSettled(
-    responses.map(async ({ ok, data }, index: number) => {
-      const parsed = JSON.parse(data);
-      if (!ok) {
-        return new Promise<ReturnType<typeof expandProfileSet>>((_, reject) => {
-          reject(Object.assign(new Error(parsed.message), parsed));
-        });
-      }
-      const { ad } = await expandProfilePairs([parsed]);
-      const advertisersFromProfilePairs = new Set<string>(
-        ad.map((e) => e.op.sub),
-      );
-
-      if (toplevel === index) {
-        const { advertisers, ...rest } = await expandProfileSet(parsed);
-        return {
-          ad,
-          advertisers: Array.from(
-            new Set<string>([...advertisers, ...advertisersFromProfilePairs]),
-          ),
-          ...rest,
-        };
-      } else {
-        return { ad, advertisers: Array.from(advertisersFromProfilePairs) };
-      }
-    }),
-  ).then((v) => {
-    /* 複数rejectされていても最初のひとつだけthrow */
-    const error = v.find((result) => result.status === "rejected");
-    /* errorが存在する場合はかならず rejected であるが、型チェックのため確認 */
-    if (error && error.status === "rejected") {
-      throw error.reason;
-    }
-    return v.map((result) =>
-      /* かならず fulfilled であるが、型チェックのため確認 */
-      result.status === "fulfilled" ? result.value : undefined,
-    );
-  });
 
   const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(
@@ -92,52 +81,30 @@ async function fetchVerifiedProfiles([, tabId]: [
       : `https://${registry}/.well-known/jwks.json`,
   );
   const keys = RemoteKeys(jwksEndpoint);
-
-  const toplevelProfileSet = profileSets[toplevel] as
-    | Awaited<ReturnType<typeof expandProfileSet>>
-    | undefined;
-  const toplevelOrigin = responses[toplevel]?.origin ?? "";
-  const verifyResultsSet = await Promise.allSettled(
-    profileSets.map((ps, index) => {
-      if (ps) {
-        const verify = ProfilesVerifier(
-          {
-            profile: index === toplevel && "profile" in ps ? ps.profile : [],
-            ad: "ad" in ps ? ps.ad : [],
-          },
-          keys,
-          registry,
-          null,
-          toplevelOrigin,
-        );
-        return verify();
-      } else {
-        return undefined;
-      }
-    }),
-  ).then((v) => {
-    /* 複数rejectされていても最初のひとつだけthrow */
-    const error = v.find((result) => result.status === "rejected");
-    /* errorが存在する場合はかならず rejected であるが、型チェックのため確認 */
-    if (error && error.status === "rejected") {
-      throw error.reason;
-    }
-    return v.map((result) =>
-      /* かならず fulfilled であるが、型チェックのため確認 */
-      result.status === "fulfilled" ? result.value : undefined,
-    );
-  });
+  const origin = topLevelResponse?.origin ?? "";
+  const verify = ProfilesVerifier(
+    {
+      profile: profileSet.profile,
+      ad: ads.flatMap(({ ad }) => ad),
+    },
+    keys,
+    registry,
+    null,
+    origin,
+  );
+  const verifyResult = await verify();
 
   return {
     advertisers: [
-      ...new Set(profileSets.flatMap((v) => (v ? v.advertisers : []))),
+      ...new Set([
+        ...profileSet.advertisers,
+        ...ads.flatMap(({ ad }) => ad.map(({ op }) => op.sub)),
+      ]),
     ],
-    publishers: toplevelProfileSet?.publishers ?? [],
-    main: toplevelProfileSet?.main ?? [],
-    profiles: verifyResultsSet.flatMap((results) =>
-      results ? results.map(toProfile) : [],
-    ),
-    origin: toplevelOrigin,
+    publishers: profileSet.publishers,
+    main: profileSet.main,
+    profiles: verifyResult.map(toProfile),
+    origin,
   };
 }
 
