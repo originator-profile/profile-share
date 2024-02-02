@@ -224,14 +224,15 @@ $ profile-registry advertiser:sign \
 
 :::note
 
-本実験では location プロパティに `img` を指定します。
-location プロパティは署名対象のテキストの抽出するための CSS セレクターです。
+本実験では location プロパティに `img` を、bodyFormat プロパティに `html` を指定します。
+location プロパティは署名対象のテキストの抽出するための CSS セレクター、bodyFormat は CSS セレクターにマッチする要素から署名対象テキストを生成するアルゴリズムの指定です。
 
 :::
 
 :::caution
 
-インプレッション毎に動的に HTML を生成する場合は、動的に署名とプロファイル生成も都度行う必要があるため、本実験の想定に含めていません。
+インプレッション毎に広告クリエイティブの iframe HTML 全体が生成され、ユーザが表示する画像や動画などの要素の中身まで変化する場合、動的に署名とプロファイル生成も都度行う必要があります。
+a, script タグなどは動的生成されても、ユーザに表示する要素 (`img` タグや `svg` タグなど) は静的で変わらない場合、任意の配信サンプル HTML から抽出し、事前に生成・署名した広告プロファイルを利用頂けます。
 
 :::
 
@@ -265,6 +266,9 @@ location プロパティは署名対象のテキストの抽出するための C
    "bodyFormat": "html",
    "body": "<img src=\"https://op-logos.demosites.pages.dev/placeholder-120x80.png\" width=\"120\" height=\"80\" decoding=\"async\" alt=\"ダミー画像\">",
 ```
+
+合わせて、各広告クリエイティブの内容に応じて title, description, image プロパティを書き換えてください。
+SMS 社の Logicad 広告を例に挙げると title は `Logicad by SMN` のような広告名、description は `Logicadは、独自の人工知能を搭載し、ソニーグループの優れた技術を元に開発された国産の広告配信最適化プラットフォームです。` のような広告の説明、image は `https://cd.ladsp.com/creative/03/055/126/1902603484.jpg` のようなサムネイル画像の URL で、OP 拡張機能での広告情報表示に利用されます。
 
 広告プロファイルの発行:
 
