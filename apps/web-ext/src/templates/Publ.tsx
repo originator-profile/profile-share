@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import {
   Advertisement,
@@ -35,6 +35,7 @@ type Props = {
         search: string;
       };
     };
+    filteredDps: Dp[];
   };
   website?: {
     op: Op;
@@ -121,13 +122,30 @@ function Main({
   dpItemContent,
   holder,
   paths,
+  filteredDps,
 }: Required<Props>["article"]) {
   const certifiers = new Map<string, OpCertifier>(
     op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
   );
-  const techTableModal = useModal<{ op: Op; dp: Dp }>();
-  const contentType = getContentType(dp, dpItemContent, main);
-  const handleClick = () => techTableModal.onOpen({ op, dp });
+
+  const [localDp, setLocalDp] = useState(dp);
+  const [localDpItemContent, setLocalDpItemContent] = useState(dpItemContent);
+
+  useEffect(() => {
+    setLocalDp(dp);
+    setLocalDpItemContent(dpItemContent);
+  }, [dp, dpItemContent]);
+
+  useEffect(() => {
+    if (filteredDps.length > 0 && filteredDps[0] !== undefined) {
+      setLocalDp(filteredDps[0]);
+      setLocalDpItemContent(filteredDps[0].item[0] as OgWebsite | Advertisement);
+    }
+  }, [filteredDps]);
+
+  const techTableModal = useModal<{ op: Op; localDp: Dp }>();
+  const contentType = getContentType(localDp, localDpItemContent, main);
+  const handleClick = () => techTableModal.onOpen({ op, localDp });
   return (
     <div className="bg-gray-100 min-h-screen p-4">
       <div>
@@ -136,7 +154,7 @@ function Main({
             <TechInfo
               className="rounded-b-none"
               op={techTableModal.value.op}
-              dp={techTableModal.value.dp}
+              dp={techTableModal.value.localDp}
               holder={holder.name}
               certifier={certifiers.get(op.issuer)?.name}
             />
@@ -175,7 +193,7 @@ function Main({
         <div className="flex flex-row gap-3 mb-2">
           <Image
             className="flex-shrink-0 bg-white rounded-md"
-            src={dpItemContent.image}
+            src={localDpItemContent.image}
             placeholderSrc={placeholderLogoMainUrl}
             alt=""
             width={120}
@@ -183,15 +201,15 @@ function Main({
           />
           <div>
             <p className="text-sm text-gray-900 font-bold">
-              {dpItemContent.title}
+              {localDpItemContent.title}
             </p>
           </div>
         </div>
-        {dpItemContent.type === "website" && (
-          <WebsiteMainTable className="mb-1 w-full" website={dpItemContent} />
+        {localDpItemContent.type === "website" && (
+          <WebsiteMainTable className="mb-1 w-full" website={localDpItemContent} />
         )}
-        {dpItemContent.description && (
-          <Description description={dpItemContent.description} />
+        {localDpItemContent.description && (
+          <Description description={localDpItemContent.description} />
         )}
       </div>
     </div>
@@ -202,6 +220,12 @@ function Publ(props: Props) {
   const [contentType, setContentType] = useState<
     "advertisement" | "main" | "all" | "other"
   >("all");
+  
+  const [filteredDps, setFilteredDps] = useState<
+  Dp[]
+  >([]);
+
+  console.log("props.website is",props.website)
 
   return (
     <div>
@@ -222,11 +246,12 @@ function Publ(props: Props) {
                 profiles={props.article.profiles}
                 main={props.article.main}
                 contentType={contentType}
+                setFilteredDps={setFilteredDps}
               />
             </nav>
           </div>
           <main className="flex-1">
-            <Main {...props.article} />
+            <Main {...props.article} filteredDps={filteredDps}/>
           </main>
         </div>
       )}
