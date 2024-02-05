@@ -44,16 +44,13 @@ function DpSelector({ profiles, main, contentType, setFilteredDps }: Props) {
           return dp.item.some(isAdvertisement);
       }
     };
-    return sortDps(
-      profiles.filter(isDp).filter(filterFunction),
-      main
-    );
+    return sortDps(profiles.filter(isDp).filter(filterFunction), main);
   }, [profiles, main, contentType]);
 
   useEffect(() => {
     setFilteredDps(filteredDps);
   }, [filteredDps, setFilteredDps]);
-  
+
   return (
     <ul>
       {filteredDps.map((dp) => {
