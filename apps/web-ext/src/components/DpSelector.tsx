@@ -7,14 +7,16 @@ import { sortDps } from "@originator-profile/ui/src/utils";
 import placeholderDpThumbnail from "@originator-profile/ui/src/assets/placeholder-dp-thumbnail.png";
 import { routes } from "../utils/routes";
 import { Advertisement, OgWebsite } from "@originator-profile/model";
+import { Dispatch, SetStateAction, useEffect, useMemo } from "react";
 
 type Props = {
   profiles: Profile[];
   main: string[];
   contentType: "all" | "main" | "other" | "advertisement";
+  setFilteredDps: Dispatch<SetStateAction<Dp[]>>;
 };
 
-function DpSelector({ profiles, main, contentType }: Props) {
+function DpSelector({ profiles, main, contentType, setFilteredDps }: Props) {
   const { issuer, subject, ...params } = useParams<{
     issuer: string;
     subject: string;
@@ -29,24 +31,29 @@ function DpSelector({ profiles, main, contentType }: Props) {
     });
   };
 
-  const filterFunction = (dp: Dp) => {
-    switch (contentType) {
-      case "all":
-        return true;
-      case "main":
-        return main.includes(dp.subject);
-      case "other":
-        return !main.includes(dp.subject) && !dp.item.some(isAdvertisement);
-      case "advertisement":
-        return dp.item.some(isAdvertisement);
-    }
-  };
+  const filteredDps = useMemo(() => {
+    const filterFunction = (dp: Dp) => {
+      switch (contentType) {
+        case "all":
+          return true;
+        case "main":
+          return main.includes(dp.subject);
+        case "other":
+          return !main.includes(dp.subject) && !dp.item.some(isAdvertisement);
+        case "advertisement":
+          return dp.item.some(isAdvertisement);
+      }
+    };
+    return sortDps(
+      profiles.filter(isDp).filter(filterFunction),
+      main
+    );
+  }, [profiles, main, contentType]);
 
-  const filteredDps = sortDps(
-    profiles.filter(isDp).filter(filterFunction),
-    main,
-  );
-
+  useEffect(() => {
+    setFilteredDps(filteredDps);
+  }, [filteredDps, setFilteredDps]);
+  
   return (
     <ul>
       {filteredDps.map((dp) => {
