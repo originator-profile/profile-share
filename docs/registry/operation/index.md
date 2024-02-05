@@ -37,11 +37,10 @@ Originator Profile レジストリの会員となり、Originator Profile によ
 
 ## 広告主・広告代理店（DSP）
 
-ad Profile Pair を発行して広告主の広告を表明します。次の作業を実施します。
+署名付き広告プロファイルを作成し、Profile Pairを設置することで広告主の広告を表明します。
 
-- [iframe に埋め込む HTML コンテンツからの対象テキストの抽出](/registry/operation/iframe-html-extraction.md)
-- [ad Profile Pair の発行](./ad-profile-pair-issuance.md)
-- [iframe に埋め込む HTML コンテンツへの Profile Set あるいは ad Profile Pair の設置](/registry/operation/iframe-profile-installation.md)
+- [iframe に埋め込む HTML コンテンツからの対象テキストの抽出](./iframe-html-extraction.md)
+- [署名付き広告プロファイルの作成と設置](./ad-profile-pair-installation.md)
 
 ## Originator Profile レジストリ管理者
 

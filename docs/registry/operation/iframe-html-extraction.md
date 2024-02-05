@@ -1,6 +1,17 @@
 # iframe に埋め込む HTML コンテンツからの対象テキストの抽出
 
-本ページでは iframe による埋め込み HTML コンテンツから、署名の対象テキストを抽出する方法を示します。
+iframe に埋め込む HTML コンテンツから、署名の対象テキストを抽出する方法を説明します。
+
+## 対象読者
+
+- 広告主・広告代理店（DSP）
+
+## 前提条件
+
+- Node.js
+- profile-registry CLI
+
+## テキストの抽出方法
 
 以下のサンプルを用いて説明します。
 
@@ -36,4 +47,4 @@ ad.json は以下のような JSON データを含んで出力されます。こ
 }
 ```
 
-ここで得た JSON ファイルを編集して、[ad Profile Pair の発行](./ad-profile-pair-issuance.md)をおこなうことができます。
+この ad.json ファイルを元にして「[署名付き広告プロファイルの作成と設置](./ad-profile-pair-installation.md)」を行うことができます。
