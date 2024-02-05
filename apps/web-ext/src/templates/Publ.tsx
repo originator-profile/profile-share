@@ -139,7 +139,9 @@ function Main({
   useEffect(() => {
     if (filteredDps.length > 0 && filteredDps[0] !== undefined) {
       setLocalDp(filteredDps[0]);
-      setLocalDpItemContent(filteredDps[0].item[0] as OgWebsite | Advertisement);
+      setLocalDpItemContent(
+        filteredDps[0].item[0] as OgWebsite | Advertisement,
+      );
     }
   }, [filteredDps]);
 
@@ -206,7 +208,10 @@ function Main({
           </div>
         </div>
         {localDpItemContent.type === "website" && (
-          <WebsiteMainTable className="mb-1 w-full" website={localDpItemContent} />
+          <WebsiteMainTable
+            className="mb-1 w-full"
+            website={localDpItemContent}
+          />
         )}
         {localDpItemContent.description && (
           <Description description={localDpItemContent.description} />
@@ -220,12 +225,10 @@ function Publ(props: Props) {
   const [contentType, setContentType] = useState<
     "advertisement" | "main" | "all" | "other"
   >("all");
-  
-  const [filteredDps, setFilteredDps] = useState<
-  Dp[]
-  >([]);
 
-  console.log("props.website is",props.website)
+  const [filteredDps, setFilteredDps] = useState<Dp[]>([]);
+
+  console.log("props.website is", props.website);
 
   return (
     <div>
@@ -251,7 +254,7 @@ function Publ(props: Props) {
             </nav>
           </div>
           <main className="flex-1">
-            <Main {...props.article} filteredDps={filteredDps}/>
+            <Main {...props.article} filteredDps={filteredDps} />
           </main>
         </div>
       )}
