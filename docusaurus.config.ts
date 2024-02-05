@@ -43,7 +43,7 @@ export default {
       },
       items: [
         {
-          href: `${url}/ts/`,
+          href: "pathname:///ts/",
           label: "TSDoc",
           position: "right",
         },
