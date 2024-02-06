@@ -7,10 +7,11 @@ import exampleWebsite from "./website.example.json";
 import exampleWebsite2 from "./seeds/website.2.example.json";
 import exampleWebsite3 from "./seeds/website.3.example.json";
 import exampleCategories from "./category.example.json";
-import { Dp, Jwk } from "@originator-profile/model";
+import exampleAd from "./seeds/example-ad";
+import { OpHolder, Jwk } from "@originator-profile/model";
 import addYears from "date-fns/addYears";
 import { isJwtDpPayload, parseAccountId } from "@originator-profile/core";
-import { signBody, signDp } from "@originator-profile/sign";
+import { signDp } from "@originator-profile/sign";
 import { prisma } from "@originator-profile/registry-db";
 
 export async function waitForDb(prisma: PrismaClient): Promise<void> {
@@ -93,6 +94,27 @@ async function issueDp(
   }
 }
 
+async function issueAd(
+  services: Services,
+  issuer: OpHolder["domainName"],
+  allowedOrigin: URL["origin"],
+  privateKey: Jwk,
+) {
+  for (const dp of await Promise.all(
+    [exampleAd].map((ad) => ad(issuer, allowedOrigin, privateKey)),
+  )) {
+    const sdp = await signDp(dp, privateKey);
+    const decoded = services.validator.decodeToken(sdp);
+    if (decoded instanceof Error || !isJwtDpPayload(decoded.payload)) {
+      throw decoded;
+    }
+    await services.adRepository.upsert({
+      jwt: decoded.jwt,
+      payload: decoded.payload,
+    });
+  }
+}
+
 export async function seed(): Promise<void> {
   const issuerUuid: string =
     process.env.ISSUER_UUID ?? "cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc";
@@ -137,39 +159,12 @@ export async function seed(): Promise<void> {
       await issueDp(services, issuerUuid, privateKey);
     }
 
-    // サンプル Ad Profile Pair の登録 (packages/registry-ui/public/examples/ad.html で使用)
-    const proofJws = await signBody("", privateKey);
-    const dp = {
-      type: "dp",
-      issuer: exampleAccount.domainName,
-      subject: "6a65e608-6b3e-4184-9fd2-0aafd1ddd38e",
-      issuedAt: new Date().toISOString(),
-      expiredAt: addYears(new Date(), 10).toISOString(),
-      item: [
-        {
-          type: "advertisement",
-          title: "Originator Profile",
-          description:
-            "Originator Profile 技術は、ウェブコンテンツの作成者や広告主などの情報を検証可能な形で付与することで、第三者認証済みの良質な記事やメディアを容易に見分けられるようにする技術です。",
-          image: "https://op-logos.demosites.pages.dev/placeholder-120x80.png",
-        },
-        {
-          type: "visibleText",
-          location: "#ad-6a65e608-6b3e-4184-9fd2-0aafd1ddd38e",
-          proof: { jws: proofJws },
-        },
-      ],
-      allowedOrigins: [new URL(appUrl).origin],
-    } satisfies Dp;
-    const sdp = await signDp(dp, privateKey);
-    const decoded = services.validator.decodeToken(sdp);
-    if (decoded instanceof Error || !isJwtDpPayload(decoded.payload)) {
-      throw decoded;
-    }
-    await services.adRepository.upsert({
-      jwt: decoded.jwt,
-      payload: decoded.payload,
-    });
+    await issueAd(
+      services,
+      exampleAccount.domainName,
+      new URL(appUrl).origin,
+      privateKey,
+    );
   }
 }
 
