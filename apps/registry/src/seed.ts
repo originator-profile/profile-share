@@ -4,6 +4,8 @@ import fs from "node:fs/promises";
 import { Services } from "@originator-profile/registry-service";
 import exampleAccount from "./account.example.json";
 import exampleWebsite from "./website.example.json";
+import exampleWebsite2 from "./seeds/website.2.example.json";
+import exampleWebsite3 from "./seeds/website.3.example.json";
 import exampleCategories from "./category.example.json";
 import { Dp, Jwk } from "@originator-profile/model";
 import addYears from "date-fns/addYears";
@@ -58,34 +60,11 @@ async function issueDp(
   const exampleCategory = Array.isArray(exampleCategories)
     ? exampleCategories[0]
     : exampleCategories;
-
-  const example2 = {
-    id: "41264c8a-4796-4206-a45c-7245f2315979",
-    url: "http://localhost:8080/examples/many-dps.html",
-    location: "#webpage-41264c8a-4796-4206-a45c-7245f2315979",
-    bodyFormat: "visibleText",
-    body: "署名対象のテキストです。",
-    title: "DP 例ページ",
-    image: "http://localhost:8080/credential-brand-safety-certified.png",
-    description: "このページは開発時に DP を確認する際に使うことができます。",
-    author: "山田太郎",
-    editor: "山田花子",
-    datePublished: "2023-12-20T19:14:00Z",
-    dateModified: "2023-12-20T19:14:00Z",
-  };
-  const example3 = {
-    id: "040a260d-b677-4f6f-9fb8-f1d4c990825c",
-    url: "http://localhost:8080/examples/many-dps.html",
-    location: "#webpage-040a260d-b677-4f6f-9fb8-f1d4c990825c",
-    bodyFormat: "visibleText",
-    body: "これはサブコンテンツです。",
-    title: "サブコンテンツの例",
-    author: "山田太郎",
-    editor: "山田花子",
-    datePublished: "2023-12-20T19:14:00Z",
-    dateModified: "2023-12-20T19:14:00Z",
-  };
-  for (const { body, ...input } of [exampleWebsite, example2, example3]) {
+  for (const { body, ...input } of [
+    exampleWebsite,
+    exampleWebsite2,
+    exampleWebsite3,
+  ]) {
     const proofJws = await services.website.signBody(privateKey, body);
     if (proofJws instanceof Error) throw proofJws;
     const website = await services.website.create({
