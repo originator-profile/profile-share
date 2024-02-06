@@ -24,7 +24,7 @@
     "dev:build": "tsup src --watch --ignore-watch src/router.ts --onSuccess 'run-p dev:{docs,server}'",
     "dev:docs": "run-s build:{cli,api} docs",
     "dev:server": "run-s dev:{prisma,start}",
-    "dev:server:static": "serve --listen 8081 --config serve.json",
+    "dev:server:static": "serve --listen 8081 --cors --config serve.json",
     "dev:prisma": "pnpm --filter @originator-profile/registry-db build",
     "dev:start": "bin/dev start --seed --schema=../../packages/registry-db/prisma/schema.prisma",
     "ui:build": "vite build",

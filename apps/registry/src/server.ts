@@ -96,6 +96,8 @@ export async function create(options: Options): Promise<Server> {
     app.config.NODE_ENV === "development"
       ? ["http://localhost:24678", "ws://localhost:24678"]
       : [];
+  const staticServer =
+    app.config.NODE_ENV === "development" ? ["http://localhost:8081"] : [];
   app.register(helmet, {
     hsts: { preload: true },
     contentSecurityPolicy: {
@@ -103,6 +105,7 @@ export async function create(options: Options): Promise<Server> {
         "script-src": ["'self'", "'unsafe-inline'"],
         "img-src": ["'self'", "http:", "https:", "data:"],
         "connect-src": ["'self'", "https:", ...viteHmr],
+        "frame-src": ["'self'", ...staticServer],
         "frame-ancestors": "'self'",
         "trusted-types": "*",
         "require-trusted-types-for": "'script'",

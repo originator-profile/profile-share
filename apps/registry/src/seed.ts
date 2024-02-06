@@ -8,6 +8,9 @@ import exampleWebsite2 from "./seeds/website.2.example.json" assert { type: "jso
 import exampleWebsite3 from "./seeds/website.3.example.json" assert { type: "json" };
 import exampleCategories from "./category.example.json" assert { type: "json" };
 import exampleAd from "./seeds/example-ad";
+import exampleAd1 from "./seeds/example-ad-1";
+import exampleAd2 from "./seeds/example-ad-2";
+import exampleAd3 from "./seeds/example-ad-3";
 import { OpHolder, Jwk } from "@originator-profile/model";
 import addYears from "date-fns/addYears";
 import { isJwtDpPayload, parseAccountId } from "@originator-profile/core";
@@ -101,7 +104,9 @@ async function issueAd(
   privateKey: Jwk,
 ) {
   for (const dp of await Promise.all(
-    [exampleAd].map((ad) => ad(issuer, allowedOrigin, privateKey)),
+    [exampleAd, exampleAd1, exampleAd2, exampleAd3].map((ad) =>
+      ad(issuer, allowedOrigin, privateKey),
+    ),
   )) {
     const sdp = await signDp(dp, privateKey);
     const decoded = services.validator.decodeToken(sdp);
