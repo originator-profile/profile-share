@@ -48,7 +48,7 @@ sidebar_position: 3
   - Fluct社の場合、`corp.fluct.jp`
   - SMN社の場合、`www.so-netmedia.jp`
 
-### 広告プロファイルに使用する [SDP](/terminology.md#signed-document-profile-sdp) の発行
+### [署名付き広告プロファイル](/terminology/signed-advertisement-profile.md)の作成
 
 #### 使用する広告表示箇所 ID について
 
@@ -181,7 +181,7 @@ $ profile-registry advertiser:sign \
 
 詳しい profile-registry コマンドの使用方法は「[署名付き広告プロファイルの作成](https://github.com/originator-profile/profile-share/tree/main/apps/registry#profile-registry-advertisersign)」をご確認ください。
 
-### 広告プロファイルに使用する [SDP](/terminology.md#signed-document-profile-sdp) の提出
+### 署名付き広告プロファイルの提出
 
 発行したSDPはいずれも開発チームにご提出ください。
 
