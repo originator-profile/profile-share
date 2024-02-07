@@ -79,7 +79,6 @@ ${JSON.stringify(exampleSiteProfile, null, "  ")}
 
 ${JSON.stringify(exampleWebpageMinimal, null, "  ")}
 
-
 ウェブページの例:
 
 ${JSON.stringify(exampleWebpage, null, "  ")}`,
