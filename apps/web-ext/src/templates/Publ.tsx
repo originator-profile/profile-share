@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import {
   Advertisement,
@@ -6,7 +7,7 @@ import {
   OpCertifier,
   OpHolder,
 } from "@originator-profile/model";
-import { isOpCertifier } from "@originator-profile/core";
+import { isAdvertisement, isDp, isOpCertifier } from "@originator-profile/core";
 import {
   Image,
   TechInfo,
@@ -19,7 +20,12 @@ import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholde
 import HolderSummary from "../components/HolderSummary";
 import DpSelector from "../components/DpSelector";
 import DpFilter from "../components/DpFilter";
-import { useModal, getContentType } from "@originator-profile/ui/src/utils";
+import {
+  useModal,
+  getContentType,
+  sortDps,
+} from "@originator-profile/ui/src/utils";
+import { routes } from "../utils/routes";
 
 type Props = {
   article?: {
@@ -122,7 +128,6 @@ function Main({
   dpItemContent,
   holder,
   paths,
-  filteredDps,
 }: Required<Props>["article"]) {
   const certifiers = new Map<string, OpCertifier>(
     op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
@@ -135,13 +140,6 @@ function Main({
     setLocalDp(dp);
     setLocalDpItemContent(dpItemContent);
   }, [dp, dpItemContent]);
-
-  useEffect(() => {
-    if (filteredDps.length > 0 && filteredDps[0] !== undefined) {
-      setLocalDp(filteredDps[0]);
-      setLocalDpItemContent(filteredDps[0].item[0] as OgWebsite | Advertisement);
-    }
-  }, [filteredDps]);
 
   const techTableModal = useModal<{ op: Op; localDp: Dp }>();
   const contentType = getContentType(localDp, localDpItemContent, main);
@@ -221,11 +219,52 @@ function Publ(props: Props) {
     "advertisement" | "main" | "all" | "other"
   >("all");
   
-  const [filteredDps, setFilteredDps] = useState<
-  Dp[]
-  >([]);
+  const filterFunction =
+    (contentType: "advertisement" | "main" | "all" | "other") => (dp: Dp) => {
+      switch (contentType) {
+        case "all":
+          return true;
+        case "main":
+          return props.article?.main.includes(dp.subject);
+        case "other":
+          return (
+            !props.article?.main.includes(dp.subject) &&
+            !dp.item.some(isAdvertisement)
+          );
+        case "advertisement":
+          return dp.item.some(isAdvertisement);
+      }
+    };
 
-  console.log("props.website is",props.website)
+  const filteredDps = sortDps(
+    props.article?.profiles.filter(isDp).filter(filterFunction(contentType)) ??
+      [],
+    props.article?.main ?? [],
+  );
+
+  const { tabId } = useParams<{ tabId: string }>();
+  const navigate = useNavigate();
+
+  function onFilterUpdate(
+    contentType: "advertisement" | "main" | "all" | "other",
+  ) {
+    setContentType(contentType);
+    const filteredDps = sortDps(
+      props.article?.profiles
+        .filter(isDp)
+        .filter(filterFunction(contentType)) ?? [],
+      props.article?.main ?? [],
+    );
+    const dp = filteredDps[0];
+    if (dp) {
+      navigate(
+        [
+          routes.base.build({ tabId: String(tabId) }),
+          routes.publ.build(dp),
+        ].join("/"),
+      );
+    }
+  }
 
   return (
     <div>
@@ -239,15 +278,10 @@ function Publ(props: Props) {
           <div className="flex flex-col border-r border-gray-200">
             <DpFilter
               contentType={contentType}
-              setContentType={setContentType}
+              setContentType={onFilterUpdate}
             />
             <nav className="flex-shrink-0 w-16 overflow-y-auto bg-white sticky top-0 z-10 border-t border-gray-200">
-              <DpSelector
-                profiles={props.article.profiles}
-                main={props.article.main}
-                contentType={contentType}
-                setFilteredDps={setFilteredDps}
-              />
+              <DpSelector filteredDps={filteredDps} />
             </nav>
           </div>
           <main className="flex-1">
