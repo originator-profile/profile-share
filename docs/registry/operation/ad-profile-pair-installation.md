@@ -22,12 +22,12 @@
 ```json
 {
   "id": "<UUID>",
-  "title": "<広告名>",
-  "image": "<画像URL>",
-  "description": "<広告の説明>",
   "location": "img",
   "bodyFormat": "html",
-  "body": "<img>"
+  "body": "<img>",
+  "title": "<広告名>",
+  "image": "<画像URL>",
+  "description": "<広告の説明>"
 }
 ```
 
@@ -39,11 +39,9 @@
   "location": "img",
   "bodyFormat": "html",
   "body": "<img src=\"https://op-logos.demosites.pages.dev/placeholder-120x80.png\" width=\"120\" height=\"80\" decoding=\"async\" alt=\"ダミー画像\">",
-  "datePublished": null,
-  "author": null,
-  "description": null,
+  "title": "埋め込みHTMLコンテンツ",
   "image": "https://op-logos.demosites.pages.dev/placeholder-120x80.png",
-  "title": "埋め込みHTMLコンテンツ"
+  "description": "広告の説明"
 }
 ```
 
@@ -79,6 +77,8 @@ $ profile-registry advertiser:sign \
     --input ad.json
 eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.e30.84MsC1qvUkYy8YPLH02iBZG54QR8KkYfmg_Y9bRRNP6y6wiIAlmpnD1JFcZpFCz4Z4BkOwx0-kk2obwnAkf_EA
 ```
+
+詳しい profile-registry コマンドの使用方法は「[署名付き広告プロファイルの作成](https://github.com/originator-profile/profile-share/tree/main/apps/registry#profile-registry-advertisersign)」をご確認ください。
 
 ## Profile Pair の作成
 

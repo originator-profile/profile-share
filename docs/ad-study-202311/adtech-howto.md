@@ -177,7 +177,7 @@ $ profile-registry advertiser:sign \
 
 `--allowed-origins` オプションは広告の掲載先を許可するために使用されます。例えば `https://media.example.com` のように、URL オリジン `https://<ホスト>` 形式で指定します。複数指定する場合は `,` で区切ります。`*` は任意の掲載先での利用の許可を意味します。
 
-詳しい profile-registry コマンドの使用方法は「[Signed Advertisement Profile (SAP) の生成](https://github.com/originator-profile/profile-share/tree/main/apps/registry#profile-registry-advertisersign)」をご確認ください。
+詳しい profile-registry コマンドの使用方法は「[署名付き広告プロファイルの作成](https://github.com/originator-profile/profile-share/tree/main/apps/registry#profile-registry-advertisersign)」をご確認ください。
 
 ### 広告プロファイルに使用する [SDP](/terminology.md#signed-document-profile-sdp) の提出
 

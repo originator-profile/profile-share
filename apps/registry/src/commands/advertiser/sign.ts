@@ -22,21 +22,36 @@ type Advertisement = AdvertisementType & {
   allowedOrigins?: string[];
 };
 
+const adJsonFormat: Omit<Advertisement, "type"> = {
+  id: "<UUID>",
+  location: "img",
+  bodyFormat: "html",
+  body: `<本文>`,
+  title: "<広告名>",
+  image: "<画像URL>",
+  description: "<広告の説明>",
+};
+
+const exampleMinimal: Omit<Advertisement, "type"> = {
+  location: "img",
+  bodyFormat: "html",
+  body: `<img src="https://example.com/image.png" alt="広告画像">`,
+};
+
 const example: Omit<Advertisement, "type"> = {
-  url: "https://example.com/",
-  location: "h1",
-  bodyFormat: "visibleText",
-  body: "広告テキスト",
-  title: "広告タイトル",
+  location: "img",
+  bodyFormat: "html",
+  body: `<img src="https://example.com/image.png" alt="広告画像">`,
+  title: "広告名",
   image: "https://example.com/image.png",
-  description: "この広告の説明です。",
+  description: "広告の説明",
 };
 
 export class AdvertiserSign extends Command {
-  static summary = "Signed Advertisement Profile (SAP) の生成";
+  static summary = "署名付き広告プロファイルの作成";
   static description = `\
-広告の情報 (AP) に対して署名を行います。
-署名済み AP (SAP) を生成し、それを標準出力に出力します。`;
+広告プロファイル (AP) に署名します。
+標準出力に署名付き広告プロファイル (SAP) を出力します。`;
   static flags = {
     identity: privateKey({ required: true }),
     id: Flags.string({
@@ -48,6 +63,14 @@ export class AdvertiserSign extends Command {
       summary: "入力ファイルのパス (JSON 形式)",
       helpValue: "<filepath>",
       description: `\
+書式:
+
+${JSON.stringify(adJsonFormat, null, "  ")}
+
+入力ファイルの例 (最小限):
+
+${JSON.stringify(exampleMinimal, null, "  ")}
+
 入力ファイルの例:
 
 ${JSON.stringify(example, null, "  ")}`,

@@ -238,7 +238,7 @@ FLAG DESCRIPTIONS
 
 ## `profile-registry advertiser:sign`
 
-Signed Advertisement Profile (SAP) の生成
+署名付き広告プロファイルの作成
 
 ```
 USAGE
@@ -254,10 +254,10 @@ FLAGS
       --issued-at=<value>          発行日時 (ISO 8601)
 
 DESCRIPTION
-  Signed Advertisement Profile (SAP) の生成
+  署名付き広告プロファイルの作成
 
-  広告の情報 (AP) に対して署名を行います。
-  署名済み AP (SAP) を生成し、それを標準出力に出力します。
+  広告プロファイル (AP) に署名します。
+  標準出力に署名付き広告プロファイル (SAP) を出力します。
 
 EXAMPLES
   $ profile-registry advertiser:sign \
@@ -293,16 +293,35 @@ FLAG DESCRIPTIONS
 
   --input=<filepath>  入力ファイルのパス (JSON 形式)
 
+    書式:
+
+    {
+    "id": "<UUID>",
+    "location": "img",
+    "bodyFormat": "html",
+    "body": "<本文>",
+    "title": "<広告名>",
+    "image": "<画像URL>",
+    "description": "<広告の説明>"
+    }
+
+    入力ファイルの例 (最小限):
+
+    {
+    "location": "img",
+    "bodyFormat": "html",
+    "body": "<img src=\"https://example.com/image.png\" alt=\"広告画像\">"
+    }
+
     入力ファイルの例:
 
     {
-    "url": "https://example.com/",
-    "location": "h1",
-    "bodyFormat": "visibleText",
-    "body": "広告テキスト",
-    "title": "広告タイトル",
+    "location": "img",
+    "bodyFormat": "html",
+    "body": "<img src=\"https://example.com/image.png\" alt=\"広告画像\">",
+    "title": "広告名",
     "image": "https://example.com/image.png",
-    "description": "この広告の説明です。"
+    "description": "広告の説明"
     }
 ```
 
@@ -639,7 +658,6 @@ FLAG DESCRIPTIONS
     "bodyFormat": "visibleText",
     "body": "本文の例"
     }
-
 
     ウェブページの例:
 
