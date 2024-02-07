@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import {
   Advertisement,
@@ -6,7 +7,7 @@ import {
   OpCertifier,
   OpHolder,
 } from "@originator-profile/model";
-import { isOpCertifier } from "@originator-profile/core";
+import { isAdvertisement, isDp, isOpCertifier } from "@originator-profile/core";
 import {
   Image,
   TechInfo,
@@ -19,7 +20,12 @@ import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholde
 import HolderSummary from "../components/HolderSummary";
 import DpSelector from "../components/DpSelector";
 import DpFilter from "../components/DpFilter";
-import { useModal, getContentType } from "@originator-profile/ui/src/utils";
+import {
+  useModal,
+  getContentType,
+  sortDps,
+} from "@originator-profile/ui/src/utils";
+import { routes } from "../utils/routes";
 
 type Props = {
   article?: {
@@ -35,6 +41,7 @@ type Props = {
         search: string;
       };
     };
+    filteredDps: Dp[];
   };
   website?: {
     op: Op;
@@ -125,6 +132,7 @@ function Main({
   const certifiers = new Map<string, OpCertifier>(
     op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
   );
+
   const techTableModal = useModal<{ op: Op; dp: Dp }>();
   const contentType = getContentType(dp, dpItemContent, main);
   const handleClick = () => techTableModal.onOpen({ op, dp });
@@ -203,6 +211,53 @@ function Publ(props: Props) {
     "advertisement" | "main" | "all" | "other"
   >("all");
 
+  const filterFunction =
+    (contentType: "advertisement" | "main" | "all" | "other") => (dp: Dp) => {
+      switch (contentType) {
+        case "all":
+          return true;
+        case "main":
+          return props.article?.main.includes(dp.subject);
+        case "other":
+          return (
+            !props.article?.main.includes(dp.subject) &&
+            !dp.item.some(isAdvertisement)
+          );
+        case "advertisement":
+          return dp.item.some(isAdvertisement);
+      }
+    };
+
+  const filteredDps = sortDps(
+    props.article?.profiles.filter(isDp).filter(filterFunction(contentType)) ??
+      [],
+    props.article?.main ?? [],
+  );
+
+  const { tabId } = useParams<{ tabId: string }>();
+  const navigate = useNavigate();
+
+  function onFilterUpdate(
+    contentType: "advertisement" | "main" | "all" | "other",
+  ) {
+    setContentType(contentType);
+    const filteredDps = sortDps(
+      props.article?.profiles
+        .filter(isDp)
+        .filter(filterFunction(contentType)) ?? [],
+      props.article?.main ?? [],
+    );
+    const dp = filteredDps[0];
+    if (dp) {
+      navigate(
+        [
+          routes.base.build({ tabId: String(tabId) }),
+          routes.publ.build(dp),
+        ].join("/"),
+      );
+    }
+  }
+
   return (
     <div>
       {props.website && (
@@ -215,14 +270,10 @@ function Publ(props: Props) {
           <div className="flex flex-col border-r border-gray-200">
             <DpFilter
               contentType={contentType}
-              setContentType={setContentType}
+              setContentType={onFilterUpdate}
             />
             <nav className="flex-shrink-0 w-16 overflow-y-auto bg-white sticky top-0 z-10 border-t border-gray-200">
-              <DpSelector
-                profiles={props.article.profiles}
-                main={props.article.main}
-                contentType={contentType}
-              />
+              <DpSelector filteredDps={filteredDps} />
             </nav>
           </div>
           <main className="flex-1">
