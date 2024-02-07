@@ -7,6 +7,6 @@ runs:
       run: docker build --output=dist .
       working-directory: packages/wordpress
       shell: bash
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         path: packages/wordpress/dist/*.zip
