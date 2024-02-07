@@ -204,7 +204,10 @@ function Main({
           </div>
         </div>
         {localDpItemContent.type === "website" && (
-          <WebsiteMainTable className="mb-1 w-full" website={localDpItemContent} />
+          <WebsiteMainTable
+            className="mb-1 w-full"
+            website={localDpItemContent}
+          />
         )}
         {localDpItemContent.description && (
           <Description description={localDpItemContent.description} />
@@ -285,7 +288,7 @@ function Publ(props: Props) {
             </nav>
           </div>
           <main className="flex-1">
-            <Main {...props.article} filteredDps={filteredDps}/>
+            <Main {...props.article} filteredDps={filteredDps} />
           </main>
         </div>
       )}
