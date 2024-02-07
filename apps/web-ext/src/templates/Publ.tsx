@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import {
@@ -133,17 +133,9 @@ function Main({
     op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
   );
 
-  const [localDp, setLocalDp] = useState(dp);
-  const [localDpItemContent, setLocalDpItemContent] = useState(dpItemContent);
-
-  useEffect(() => {
-    setLocalDp(dp);
-    setLocalDpItemContent(dpItemContent);
-  }, [dp, dpItemContent]);
-
-  const techTableModal = useModal<{ op: Op; localDp: Dp }>();
-  const contentType = getContentType(localDp, localDpItemContent, main);
-  const handleClick = () => techTableModal.onOpen({ op, localDp });
+  const techTableModal = useModal<{ op: Op; dp: Dp }>();
+  const contentType = getContentType(dp, dpItemContent, main);
+  const handleClick = () => techTableModal.onOpen({ op, dp });
   return (
     <div className="bg-gray-100 min-h-screen p-4">
       <div>
@@ -152,7 +144,7 @@ function Main({
             <TechInfo
               className="rounded-b-none"
               op={techTableModal.value.op}
-              dp={techTableModal.value.localDp}
+              dp={techTableModal.value.dp}
               holder={holder.name}
               certifier={certifiers.get(op.issuer)?.name}
             />
@@ -191,7 +183,7 @@ function Main({
         <div className="flex flex-row gap-3 mb-2">
           <Image
             className="flex-shrink-0 bg-white rounded-md"
-            src={localDpItemContent.image}
+            src={dpItemContent.image}
             placeholderSrc={placeholderLogoMainUrl}
             alt=""
             width={120}
@@ -199,18 +191,18 @@ function Main({
           />
           <div>
             <p className="text-sm text-gray-900 font-bold">
-              {localDpItemContent.title}
+              {dpItemContent.title}
             </p>
           </div>
         </div>
-        {localDpItemContent.type === "website" && (
+        {dpItemContent.type === "website" && (
           <WebsiteMainTable
             className="mb-1 w-full"
-            website={localDpItemContent}
+            website={dpItemContent}
           />
         )}
-        {localDpItemContent.description && (
-          <Description description={localDpItemContent.description} />
+        {dpItemContent.description && (
+          <Description description={dpItemContent.description} />
         )}
       </div>
     </div>
@@ -288,7 +280,7 @@ function Publ(props: Props) {
             </nav>
           </div>
           <main className="flex-1">
-            <Main {...props.article} filteredDps={filteredDps} />
+            <Main {...props.article}/>
           </main>
         </div>
       )}
