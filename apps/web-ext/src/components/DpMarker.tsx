@@ -13,7 +13,6 @@ import { DpLocator } from "../types/dp-locator";
 import { isDpLocator } from "../utils/dp-locator";
 import useElements from "../utils/use-elements";
 import useRects from "../utils/use-rects";
-import useVerifyBody from "../utils/use-verify-body";
 
 type WebsiteOrAdvertisement = OgWebsite | Advertisement;
 
@@ -25,7 +24,7 @@ function Marker({
   active,
   onClick,
 }: {
-  result: ReturnType<typeof useVerifyBody>["result"];
+  result: { body?: string; bodyError?: string };
   rect: ResizeObserverEntry["contentRect"];
   dpTitle: WebsiteOrAdvertisement;
   opHolder: OpHolder;
@@ -55,10 +54,7 @@ function Marker({
           active ? "bg-blue-500 border-blue-500" : "bg-white border-white",
         )}
         title={`${opHolder.name} ${dpTitle.title} ${
-          result &&
-          (result instanceof Error
-            ? result.message
-            : new TextDecoder().decode(result.payload))
+          result && (result.bodyError ? result.bodyError : result.body ?? "")
         }`}
         onClick={onClick}
       >
@@ -92,25 +88,14 @@ function Marker({
 }
 
 function DpLocator({
-  op,
   dpLocator,
   children,
   active,
-  isAdvertisement,
 }: {
-  op: Op;
   dpLocator: DpLocator;
   active: boolean;
-  isAdvertisement: boolean;
-  children: ({
-    result,
-    rect,
-  }: {
-    result: ReturnType<typeof useVerifyBody>["result"];
-    rect: DOMRect;
-  }) => React.ReactNode;
+  children: ({ rect }: { rect: DOMRect }) => React.ReactNode;
 }) {
-  const { result } = useVerifyBody(dpLocator, isAdvertisement, op.jwks);
   const { elements } = useElements(dpLocator.location);
   useEffect(() => {
     const [element] = elements;
@@ -125,7 +110,7 @@ function DpLocator({
     rects: [rect],
   } = useRects(elements);
   if (!rect) return null;
-  return <>{children({ result, rect })}</>;
+  return <>{children({ rect })}</>;
 }
 
 type Props = {
@@ -146,10 +131,10 @@ function DpMarker({ dp, op, active, onClickDp }: Props) {
   const opHolder = op.item.find(isOpHolder);
   if (!opHolder) return null;
   return (
-    <DpLocator op={op} dpLocator={dpLocator} active={active} isAdvertisement>
-      {({ result, rect }) => (
+    <DpLocator dpLocator={dpLocator} active={active}>
+      {({ rect }) => (
         <Marker
-          result={result}
+          result={{ body: dp.body, bodyError: dp.bodyError }}
           rect={rect}
           dpTitle={dpTitle}
           opHolder={opHolder}

@@ -1,6 +1,7 @@
 import { decodeProtectedHeader, flattenedVerify } from "jose";
 import { JOSEError } from "jose/dist/types/util/errors";
 import { Keys } from "./keys";
+import { ProfileBodyVerifyFailed } from "./errors";
 
 /**
  * 対象のテキストの検証
@@ -21,5 +22,8 @@ export async function verifyBody(body: string, jws: string, keys: Keys) {
   const result = await flattenedVerify(flattenedJws, key).catch(
     (e: JOSEError) => e,
   );
+  if (result instanceof Error) {
+    return new ProfileBodyVerifyFailed(result.message, { error: result, body });
+  }
   return result;
 }

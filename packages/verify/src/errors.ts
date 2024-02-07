@@ -57,6 +57,24 @@ export class ProfileBodyExtractFailed extends ProfileGenericError {
   readonly code = ProfileBodyExtractFailed.code;
 }
 
+export class ProfileBodyVerifyFailed extends ProfileGenericError {
+  static get code() {
+    return "ERR_PROFILE_BODY_VERIFY_FAILED" as const;
+  }
+  readonly code = ProfileBodyVerifyFailed.code;
+
+  /** 検証結果 */
+  result: {
+    error?: JOSEError;
+    body: string;
+  };
+
+  constructor(message: string, result: ProfileBodyVerifyFailed["result"]) {
+    super(message);
+    this.result = result;
+  }
+}
+
 export class ProfilesResolveFailed extends ProfileGenericError {
   static get code() {
     return "ERR_PROFILES_RESOLVE_FAILED" as const;
