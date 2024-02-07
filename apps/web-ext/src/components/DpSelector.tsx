@@ -25,7 +25,7 @@ function DpSelector({ filteredDps }: Props) {
       activeDp: dp,
     });
   };
-  
+
   return (
     <ul>
       {filteredDps.map((dp) => {
