@@ -1,12 +1,12 @@
-import { fetchProfileSet } from "@originator-profile/verify";
+import { extractBody, fetchProfileSet } from "@originator-profile/verify";
 import {
-  ContentScriptMessageRequest,
-  ContentScriptMessageResponse,
+  ContentScriptAllFramesMessageRequest,
+  ContentScriptAllFramesMessageResponse,
 } from "./types/message";
 
 async function handleMessageResponse(
-  message: ContentScriptMessageRequest,
-): Promise<ContentScriptMessageResponse | void> {
+  message: ContentScriptAllFramesMessageRequest,
+): Promise<ContentScriptAllFramesMessageResponse> {
   switch (message.type) {
     case "fetch-profiles": {
       const data = await fetchProfileSet(document);
@@ -20,13 +20,31 @@ async function handleMessageResponse(
         origin: document.location.origin,
       };
     }
+    case "extract-body": {
+      const data = await extractBody(
+        document.location.href,
+        async (location) =>
+          Array.from(document.querySelectorAll<HTMLElement>(location)),
+        JSON.parse(message.dpLocator),
+        !message.isAdvertisement,
+      );
+      return {
+        type: "extract-body",
+        ok: !(data instanceof Error),
+        data:
+          data instanceof Error
+            ? JSON.stringify(data, Object.getOwnPropertyNames(data))
+            : JSON.stringify(data),
+        url: document.location.href,
+      };
+    }
   }
 }
 
 chrome.runtime.onMessage.addListener(function (
-  message: ContentScriptMessageRequest,
+  message: ContentScriptAllFramesMessageRequest,
   _,
-  sendResponse: (response: ContentScriptMessageResponse | void) => void,
+  sendResponse: (response: ContentScriptAllFramesMessageResponse) => void,
 ): true /* NOTE: Chrome の場合、Promise には非対応 */ {
   handleMessageResponse(message).then(
     (response) => response && sendResponse(response),

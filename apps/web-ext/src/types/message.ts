@@ -25,6 +25,24 @@ export type fetchWebsiteProfilePairMessageResponse = {
   origin: string;
 };
 
+export type extractBodyRequest = {
+  type: "extract-body";
+  /** 署名対象テキストを指定する JSON 文字列 (DpLocator 型) */
+  dpLocator: string;
+  /** Dp が広告か否か (boolean) */
+  isAdvertisement: boolean;
+};
+
+export type extractBodyResponse = {
+  type: "extract-body";
+  /** 署名対象テキストの場合 true、ProfileBodyExtractFailed の場合 false */
+  ok: boolean;
+  /** JSON 文字列（署名対象の文字列 または ProfileBodyExtractFailed） */
+  data: string;
+  /** iframe の URL 文字列 */
+  url: string;
+};
+
 export type OverlayProfilesMessageRequest = {
   type: "overlay-profiles";
   profiles: Profile[];
@@ -44,15 +62,19 @@ export type SelectOverlayDpMessageRequest = {
   dp: Dp;
 };
 export type ContentScriptMessageRequest =
-  | fetchProfileSetMessageRequest
   | fetchWebsiteProfilePairMessageRequest
   | OverlayProfilesMessageRequest
   | CloseWindowMessageRequest;
 export type ContentScriptMessageResponse =
-  | fetchProfileSetMessageResponse
   | fetchWebsiteProfilePairMessageResponse
   | OverlayProfilesMessageResponse
   | CloseWindowMessageResponse;
+export type ContentScriptAllFramesMessageRequest =
+  | fetchProfileSetMessageRequest
+  | extractBodyRequest;
+export type ContentScriptAllFramesMessageResponse =
+  | fetchProfileSetMessageResponse
+  | extractBodyResponse;
 export type BackgroundMessageRequest = SelectOverlayDpMessageRequest;
 export type PopupMessageRequest = SelectOverlayDpMessageRequest;
 export type EnterOverlayMessageRequest = {

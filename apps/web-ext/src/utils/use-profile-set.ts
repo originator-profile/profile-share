@@ -7,20 +7,28 @@ import {
   ProfilesVerifier,
   expandProfileSet,
   expandProfilePairs,
+  LocalKeys,
+  verifyBody,
+  ProfileBodyVerifyFailed,
 } from "@originator-profile/verify";
 import { NodeObject } from "jsonld";
-import { Profile } from "@originator-profile/ui/src/types";
+import { Profile, Dp } from "@originator-profile/ui/src/types";
 import { toProfile } from "@originator-profile/ui/src/utils";
 import {
+  extractBodyRequest,
+  extractBodyResponse,
   fetchProfileSetMessageRequest,
   fetchProfileSetMessageResponse,
   fetchWebsiteProfilePairMessageResponse,
   PopupMessageRequest,
 } from "../types/message";
 import { routes } from "./routes";
+import { isDpLocator } from "./dp-locator";
+import { isAdvertisement, isDp, isOp } from "@originator-profile/core";
 
 const key = "profiles" as const;
 const WebsiteProfilePairKey = "website-profile-pair" as const;
+const bodiesKey = "bodies" as const;
 
 async function fetchVerifiedProfiles([, tabId]: [
   _: typeof key,
@@ -61,8 +69,11 @@ async function fetchVerifiedProfiles([, tabId]: [
   ).catch((data) => {
     throw Object.assign(new Error(data.message), data);
   });
-  const topLevelResponse =
-    responses[frames.findIndex((frame) => frame.parentFrameId === -1)];
+  const topLevelFrameIndex = frames.findIndex(
+    (frame) => frame.parentFrameId === -1,
+  );
+  const topLevelFrameId = frames[topLevelFrameIndex]?.frameId;
+  const topLevelResponse = responses[topLevelFrameIndex];
 
   const profileSet = await expandProfileSet(topLevelResponse?.data ?? []);
   const ads = await Promise.all(
@@ -94,6 +105,34 @@ async function fetchVerifiedProfiles([, tabId]: [
   );
   const verifyResult = await verify();
 
+  // verifyResult を frameId に紐付けて、 Profile 型に変換する
+  const profiles = verifyResult
+    .map((result) => {
+      let sub: string | undefined;
+      let iss: string | undefined;
+      if (result instanceof Error || "op" in result) {
+        return toProfile(result);
+      }
+      if ("dp" in result) {
+        sub = result.dp.subject;
+        iss = result.dp.issuer;
+      }
+
+      const frames = ads.filter(({ ad }) =>
+        ad.some((value) => value.op.sub === iss && value.dp.sub === sub),
+      );
+
+      // frame が見つからなかった場合、 topLevelFrameId に紐付ける
+      const frameIds =
+        frames.length > 0
+          ? frames.map((f) => f.frameId)
+          : typeof topLevelFrameId !== "undefined"
+            ? [topLevelFrameId]
+            : [];
+      return { frameIds, ...toProfile(result) } as Dp;
+    })
+    .filter((value) => typeof value !== "undefined");
+
   return {
     advertisers: [
       ...new Set([
@@ -103,9 +142,116 @@ async function fetchVerifiedProfiles([, tabId]: [
     ],
     publishers: profileSet.publishers,
     main: profileSet.main,
-    profiles: verifyResult.map(toProfile),
+    profiles,
     origin,
   };
+}
+
+async function fetchVerifiedBodies([, tabId, profiles]: [
+  _: typeof bodiesKey,
+  tabId: number,
+  profiles: Profile[],
+]): Promise<Profile[]> {
+  const extractedBodies = await Promise.all(
+    profiles.map<Promise<{ profile: Profile; bodies?: string[] }>>(
+      async (profile) => {
+        if (profile instanceof Error || !isDp(profile) || !profile.frameIds) {
+          return { profile };
+        }
+        const dp = profile;
+        const dpLocator = dp.item.find(isDpLocator);
+        const isAd = dp.item.some(isAdvertisement);
+
+        if (!dpLocator) {
+          return {
+            profile: {
+              ...dp,
+              bodyError: "dpLocator not found in dp",
+            },
+          };
+        }
+        const responses = await Promise.all(
+          profile.frameIds.map((frameId) => {
+            return chrome.tabs
+              .sendMessage<extractBodyRequest, extractBodyResponse>(
+                tabId,
+                {
+                  type: "extract-body",
+                  dpLocator: JSON.stringify(dpLocator),
+                  isAdvertisement: isAd,
+                },
+                {
+                  frameId,
+                },
+              )
+              .then((response) => {
+                const data = JSON.parse(response.data);
+                if (!response.ok) {
+                  return Object.assign(new Error(data.message), data);
+                }
+                return data;
+              });
+          }),
+        );
+        const error = responses.find((response) => response instanceof Error);
+        if (error) {
+          return {
+            profile: {
+              ...dp,
+              bodyError: error.message,
+            },
+          };
+        }
+        const bodies = Array.from(new Set(responses));
+        return { profile: dp, bodies };
+      },
+    ),
+  );
+
+  const ops = profiles.filter(isOp);
+
+  const verifiedProfiles = extractedBodies.map<Promise<Profile>>(
+    async ({ profile, bodies }) => {
+      if (!isDp(profile) || !bodies) {
+        return profile;
+      }
+      const dpLocator = profile.item.find(isDpLocator);
+      if (!dpLocator) {
+        return {
+          ...profile,
+          bodyError: "dpLocator not found in dp",
+        };
+      }
+      const jwks = ops.find((op) => op.subject === profile.issuer)?.jwks;
+      const verifyBodyResults = await Promise.all(
+        bodies?.map((body) =>
+          verifyBody(
+            body,
+            dpLocator.proof.jws,
+            LocalKeys(jwks ?? { keys: [] }),
+          ),
+        ),
+      );
+      const errorIndex = verifyBodyResults.findIndex(
+        (result) => result instanceof Error,
+      );
+      if (errorIndex >= 0) {
+        const error = verifyBodyResults[errorIndex] as ProfileBodyVerifyFailed;
+        return {
+          ...profile,
+          bodyError: error.message,
+          body: error.result.body,
+        };
+      }
+
+      return {
+        ...profile,
+        body: bodies[0],
+      };
+    },
+  );
+
+  return Promise.all(verifiedProfiles);
 }
 
 async function fetchVerifiedWebsiteProfilePair([, tabId]: [
@@ -165,6 +311,11 @@ function useProfileSet() {
     [WebsiteProfilePairKey, tabId],
     fetchVerifiedWebsiteProfilePair,
   );
+  const { data: dataVerifiedBodies, error: errorVerifiedBodies } =
+    useSWRImmutable(
+      data?.profiles ? [bodiesKey, tabId, data.profiles] : null,
+      fetchVerifiedBodies,
+    );
 
   useEvent("unload", async function () {
     await chrome.tabs.sendMessage(tabId, { type: "close-window" });
@@ -193,9 +344,11 @@ function useProfileSet() {
   return {
     ...dataWebsite,
     ...data,
+    profiles: dataVerifiedBodies,
     error:
       error ||
       errorWebsite ||
+      errorVerifiedBodies ||
       (dataWebsite?.website.length === 0 && data?.profiles.length === 0
         ? new Error("プロファイルが見つかりませんでした")
         : null),

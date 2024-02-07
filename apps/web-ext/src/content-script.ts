@@ -13,7 +13,7 @@ const iframe = initialize();
 
 async function handleMessageResponse(
   message: ContentScriptMessageRequest,
-): Promise<ContentScriptMessageResponse | void> {
+): Promise<ContentScriptMessageResponse> {
   switch (message.type) {
     case "fetch-website-profile-pair": {
       const data = await fetchWebsiteProfilePair(document);
@@ -50,7 +50,7 @@ async function handleMessageResponse(
 chrome.runtime.onMessage.addListener(function (
   message: ContentScriptMessageRequest,
   _,
-  sendResponse: (response: ContentScriptMessageResponse | void) => void,
+  sendResponse: (response: ContentScriptMessageResponse) => void,
 ): true /* NOTE: Chrome の場合、Promise には非対応 */ {
   handleMessageResponse(message).then(
     (response) => response && sendResponse(response),
