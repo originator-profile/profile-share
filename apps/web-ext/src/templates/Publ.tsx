@@ -221,7 +221,7 @@ function Publ(props: Props) {
   const [contentType, setContentType] = useState<
     "advertisement" | "main" | "all" | "other"
   >("all");
-  
+
   const filterFunction =
     (contentType: "advertisement" | "main" | "all" | "other") => (dp: Dp) => {
       switch (contentType) {
