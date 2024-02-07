@@ -6,7 +6,7 @@ import exampleAccount from "./account.example.json";
 import exampleWebsite from "./website.example.json";
 import exampleCategories from "./category.example.json";
 import { Dp, Jwk } from "@originator-profile/model";
-import addYears from "date-fns/addYears";
+import { addYears } from "date-fns/addYears";
 import { isJwtDpPayload, parseAccountId } from "@originator-profile/core";
 import { signBody, signDp } from "@originator-profile/sign";
 import { prisma } from "@originator-profile/registry-db";

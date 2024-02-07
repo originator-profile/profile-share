@@ -1,5 +1,6 @@
 import { RouteHandlerMethod } from "fastify";
 import { Config, Services } from "@originator-profile/registry-service";
+import "@fastify/jwt";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -24,9 +25,7 @@ declare module "@fastify/jwt" {
 }
 
 /** RouteHandlerMethod から RouteGeneric への型の変換 */
-export type FromHandler<
-  Handler,
-  Params = unknown,
-> = Handler extends RouteHandlerMethod<never, never, never, infer RouteGeneric>
-  ? Omit<RouteGeneric, "Params"> & { Params: Params }
-  : never;
+export type FromHandler<Handler, Params = unknown> =
+  Handler extends RouteHandlerMethod<never, never, never, infer RouteGeneric>
+    ? Omit<RouteGeneric, "Params"> & { Params: Params }
+    : never;

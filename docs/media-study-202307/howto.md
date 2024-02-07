@@ -269,7 +269,7 @@ CIP から受け取った認証情報が `8fe1b860-558c-5107-a9af-21c376a6a27c:e
 
 `-d` オプションでパラメータを指定しています。パラメータはリクエストのボディ部に JSON 形式で渡されます。このエンドポイントが受け付けるパラメータは `jwt` だけです。このパラメータにコンテンツに対する署名付き DP (SDP) を与えてください。以下は例です。
 
-```jsonc
+```json
 {
   "jwt": "eyJhbGciOiJFUzI1NiIsImtpZCI6IkQ1RDVQM1VyVjFWXzZVX3E5eUt2X2paX3E4U2hJdnJ4eTdFMlF5T2ZXWUUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJtZWRpYS5leGFtcGxlLmNvbSIsInN1YiI6IjAwZjQ3MGViLWVhZmQtNGEzOC04NTRjLWZiYjY5NjhhMTU5ZSIsImlhdCI6MTY4NzgyNzQ1OCwiZXhwIjoxNzE5NDQ5ODU4LCJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwczovL21lZGlhLmV4YW1wbGUuY29tL2FydGljbGVzL2hlbGxvLXdvcmxkLyIsInRpdGxlIjoi44Oh44OH44Kj44KiICjoqabpqJPnlKgpIn0seyJ0eXBlIjoidGV4dCIsInVybCI6Imh0dHBzOi8vbWVkaWEuZXhhbXBsZS5jb20vYXJ0aWNsZXMvaGVsbG8td29ybGQvIiwibG9jYXRpb24iOiIud3AtYmxvY2stcG9zdC1jb250ZW50IiwicHJvb2YiOnsiandzIjoiZXlKaGJHY2lPaUpGVXpJMU5pSXNJbXRwWkNJNklrUTFSRFZRTTFWeVZqRldYelpWWDNFNWVVdDJYMnBhWDNFNFUyaEpkbko0ZVRkRk1sRjVUMlpYV1VVaUxDSmlOalFpT21aaGJITmxMQ0pqY21sMElqcGJJbUkyTkNKZGZRLi5vc1d3SkVPLVRZNDhZQldRMEhRYVE0cGZOWm9UZEtWZ3U1YlBfbVVFbW1GNHowMGxhelZkcjFlTF93dUxBTXo3ZjItd084UVp2OGtXUElUcTVDLW80ZyJ9fV19fQ.ZXRG71IWfgt7MNoqt_sXSLOl7wkqqHsDXJL85UlUd-w0GxXOrFHziv11KXwBp5Wd8zoCZ5euGpn0t4zPxyPKSQ"
 }
@@ -385,20 +385,28 @@ CIP から受け取った認証情報が `8fe1b860-558c-5107-a9af-21c376a6a27c:e
 
 `-d` オプションでパラメータを指定しています。これらのパラメータはリクエストのボディ部に JSON 形式で渡されます。各パラメータについては下記を参照ください。
 
-```jsonc
+```json
 {
   "input": {
-    "id": "403cc6d4-53d6-4286-9f42-930e0bf7bd3f", // 記事の ID を渡してください。必ず UUID 文字列表現 (RFC 4122) でなければなりません。
-    "url": "https://media.example.com/2023/06/hello/", // 記事の URL です。
-    // bodyFormat 内は、このままの値を入力してください。
+    "//": "記事の ID を渡してください。必ず UUID 文字列表現 (RFC 4122) でなければなりません",
+    "id": "403cc6d4-53d6-4286-9f42-930e0bf7bd3f",
+
+    "//": "記事の URL です。",
+    "url": "https://media.example.com/2023/06/hello/",
+
+    "//": "bodyFormat 内は、このままの値を入力してください。",
     "bodyFormat": {
       "connect": {
         "value": "text"
       }
     },
-    "proofJws": "" // 空文字列を入力してください。
+
+    "//": "空文字列を入力してください。",
+    "proofJws": ""
   },
-  "jwt": "eyJhbGciOiJFUzI1NiIsImtp（略）" // 署名付きDPを渡してください。
+
+  "//": "署名付きDPを渡してください。",
+  "jwt": "eyJhbGciOiJFUzI1NiIsImtp（略）"
 }
 ```
 

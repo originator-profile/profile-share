@@ -8,34 +8,34 @@
     "lint": "eslint --fix ."
   },
   "devDependencies": {
-    "@auth0/auth0-react": "^2.2.3",
-    "@headlessui/react": "^1.7.17",
+    "@auth0/auth0-react": "^2.2.4",
+    "@headlessui/react": "^1.7.18",
     "@iconify/react": "^4.1.1",
     "@originator-profile/model": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
     "@originator-profile/ui": "workspace:*",
     "@originator-profile/verify": "workspace:*",
-    "@prisma/client": "^5.7.0",
-    "@types/react": "^18.2.42",
-    "@types/react-dom": "^18.2.17",
-    "clsx": "^2.0.0",
-    "eslint": "^8.55.0",
+    "@prisma/client": "^5.8.1",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "clsx": "^2.1.0",
+    "eslint": "^8.56.0",
     "eslint-config-originator-profile": "workspace:*",
     "just-extend": "^6.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-use": "^17.4.2",
+    "react-use": "^17.5.0",
     "swr": "^2.2.4",
-    "vite": "^5.0.6"
+    "vite": "^5.0.12"
   },
   "dependencies": {
-    "@generouted/react-router": "^1.16.1",
+    "@generouted/react-router": "^1.18.2",
     "@hookform/error-message": "^2.0.1",
-    "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.32",
-    "react-hook-form": "^7.48.2",
-    "react-router-dom": "^6.20.1",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.33",
+    "react-hook-form": "^7.49.3",
+    "react-router-dom": "^6.21.3",
     "tailwind-config-originator-profile": "workspace:*",
-    "tailwindcss": "^3.3.6"
+    "tailwindcss": "^3.4.1"
   }
 }

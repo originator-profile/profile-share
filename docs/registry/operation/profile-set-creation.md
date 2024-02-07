@@ -48,15 +48,26 @@ Prisma Studio からレジストリ DB を参照して Profile Set を作成し�
 
 Profile Set の profile プロパティに必要な jwt を含めていきます。詳細は [Profile Set の仕様](/spec.md#profile-set)を参照してください。
 
-```jsonc
+```json
 {
   "@context": "https://originator-profile.org/context.jsonld",
-  "main": ["https://examples.demosites.pages.dev"],
+  "main": "<Signed Document Profile sub クレーム>",
   "profile": [
-    // <- 発行した Signed Originator Profile の値 ops - jwt の値
-    "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9...",
-    // <- 発行した Signed Document Profile の値 dps - jwt の値
-    "eaXQbGciOiJFUzI1NiaXQiOlsiY6IkpXVCaX..."
+    "<発行した Signed Originator Profile の値 ops - jwt の値>",
+    "<発行した Signed Document Profile の値 dps - jwt の値>"
+  ]
+}
+```
+
+例:
+
+```json
+{
+  "@context": "https://originator-profile.org/context.jsonld",
+  "main": "f82061ef-1f83-4c4a-b01a-5e0a6a2b42bb",
+  "profile": [
+    "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InpSbWJwOUZ6dHJVNmgwUmQ3UFdGQ0ZXbUdBT3M0bUhaTzhrcUlOQ3VxXzAifQ...",
+    "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRaMXlIMXltdWpuTHdRNmxuRWl0bl9GZW9lQlpMMTdqclB2M2xTV0dRSXMifQ..."
   ]
 }
 ```
