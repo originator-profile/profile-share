@@ -1,5 +1,7 @@
 // @ts-check
 import util from "node:util";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const options = /** @type {const} */ ({
   mode: {
@@ -64,7 +66,10 @@ if (args.values.help) {
 
 const filename = `{name}-${args.values.target}-{version}.zip`;
 const artifactsDir = "web-ext-artifacts";
-const outdir = `dist-${args.values.target}`;
+const outdir = path.join(
+  path.dirname(fileURLToPath(new URL(import.meta.url))),
+  `dist-${args.values.target}`,
+);
 const env = {
   MODE: args.values.mode,
   PROFILE_ISSUER: args.values.issuer,
