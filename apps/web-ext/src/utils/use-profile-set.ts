@@ -9,7 +9,7 @@ import {
   expandProfilePairs,
   LocalKeys,
   verifyBody,
-  ProfileBodyVerifyFailed,
+  ProfileBodyExtractFailed,
 } from "@originator-profile/verify";
 import { NodeObject } from "jsonld";
 import { Profile, Dp } from "@originator-profile/ui/src/types";
@@ -25,6 +25,8 @@ import {
 import { routes } from "./routes";
 import { isDpLocator } from "./dp-locator";
 import { isAdvertisement, isDp, isOp } from "@originator-profile/core";
+import { Jwks } from "@originator-profile/model";
+import { DpLocator } from "../types/dp-locator";
 
 const key = "profiles" as const;
 const WebsiteProfilePairKey = "website-profile-pair" as const;
@@ -147,111 +149,112 @@ async function fetchVerifiedProfiles([, tabId]: [
   };
 }
 
+async function extractBodiesOfDp(
+  tabId: number,
+  dp: Dp,
+): Promise<(string | ProfileBodyExtractFailed)[]> {
+  const dpLocator = dp.item.find(isDpLocator);
+  const isAd = dp.item.some(isAdvertisement);
+  if (!dpLocator || !dp.frameIds) {
+    return [];
+  }
+  const responses = await Promise.all(
+    dp.frameIds.map((frameId) => {
+      return chrome.tabs
+        .sendMessage<extractBodyRequest, extractBodyResponse>(
+          tabId,
+          {
+            type: "extract-body",
+            dpLocator: JSON.stringify(dpLocator),
+            isAdvertisement: isAd,
+          },
+          {
+            frameId,
+          },
+        )
+        .then((response) => {
+          const data = JSON.parse(response.data);
+          if (!response.ok) {
+            return Object.assign(
+              new ProfileBodyExtractFailed(data.message),
+              data,
+            );
+          }
+          return data;
+        });
+    }),
+  );
+  return Array.from(new Set(responses));
+}
+
+async function verifyBodiesOfDp(
+  dpLocator: DpLocator,
+  bodies: string[],
+  jwks: Jwks,
+): Promise<Awaited<ReturnType<typeof verifyBody>>[]> {
+  const verifyResults = await Promise.all(
+    bodies.map((body) =>
+      verifyBody(body, dpLocator.proof.jws, LocalKeys(jwks)),
+    ),
+  );
+  return verifyResults;
+}
+
 async function fetchVerifiedBodies([, tabId, profiles]: [
   _: typeof bodiesKey,
   tabId: number,
   profiles: Profile[],
 ]): Promise<Profile[]> {
-  const extractedBodies = await Promise.all(
-    profiles.map<Promise<{ profile: Profile; bodies?: string[] }>>(
-      async (profile) => {
-        if (profile instanceof Error || !isDp(profile) || !profile.frameIds) {
-          return { profile };
-        }
-        const dp = profile;
-        const dpLocator = dp.item.find(isDpLocator);
-        const isAd = dp.item.some(isAdvertisement);
-
-        if (!dpLocator) {
-          return {
-            profile: {
-              ...dp,
-              bodyError: "dpLocator not found in dp",
-            },
-          };
-        }
-        const responses = await Promise.all(
-          profile.frameIds.map((frameId) => {
-            return chrome.tabs
-              .sendMessage<extractBodyRequest, extractBodyResponse>(
-                tabId,
-                {
-                  type: "extract-body",
-                  dpLocator: JSON.stringify(dpLocator),
-                  isAdvertisement: isAd,
-                },
-                {
-                  frameId,
-                },
-              )
-              .then((response) => {
-                const data = JSON.parse(response.data);
-                if (!response.ok) {
-                  return Object.assign(new Error(data.message), data);
-                }
-                return data;
-              });
-          }),
-        );
-        const error = responses.find((response) => response instanceof Error);
-        if (error) {
-          return {
-            profile: {
-              ...dp,
-              bodyError: error.message,
-            },
-          };
-        }
-        const bodies = Array.from(new Set(responses));
-        return { profile: dp, bodies };
-      },
-    ),
-  );
+  if (profiles.some((p) => "error" in p)) {
+    return profiles;
+  }
 
   const ops = profiles.filter(isOp);
+  const dps = profiles.filter(isDp);
 
-  const verifiedProfiles = extractedBodies.map<Promise<Profile>>(
-    async ({ profile, bodies }) => {
-      if (!isDp(profile) || !bodies) {
-        return profile;
-      }
-      const dpLocator = profile.item.find(isDpLocator);
+  const verifiedDps = await Promise.all(
+    dps.map<Promise<Dp>>(async (dp) => {
+      const dpLocator = dp.item.find(isDpLocator);
+
       if (!dpLocator) {
         return {
-          ...profile,
+          ...dp,
           bodyError: "dpLocator not found in dp",
         };
       }
-      const jwks = ops.find((op) => op.subject === profile.issuer)?.jwks;
-      const verifyBodyResults = await Promise.all(
-        bodies?.map((body) =>
-          verifyBody(
-            body,
-            dpLocator.proof.jws,
-            LocalKeys(jwks ?? { keys: [] }),
-          ),
-        ),
+      const jwks = ops.find((op) => op.subject === dp.issuer)?.jwks;
+
+      const bodies = await extractBodiesOfDp(tabId, dp);
+      const extractError = bodies.find(
+        (result) => result instanceof ProfileBodyExtractFailed,
       );
-      const errorIndex = verifyBodyResults.findIndex(
-        (result) => result instanceof Error,
-      );
-      if (errorIndex >= 0) {
-        const error = verifyBodyResults[errorIndex] as ProfileBodyVerifyFailed;
+      if (extractError && extractError instanceof ProfileBodyExtractFailed) {
         return {
-          ...profile,
-          bodyError: error.message,
-          body: error.result.body,
+          ...dp,
+          bodyError: extractError.message,
         };
       }
 
-      return {
-        ...profile,
-        body: bodies[0],
-      };
-    },
+      const verifyBodyResults = await verifyBodiesOfDp(
+        dpLocator,
+        bodies as string[],
+        jwks ?? { keys: [] },
+      );
+      const verifyError = verifyBodyResults.find(
+        (result) => result instanceof Error,
+      );
+      if (verifyError && verifyError instanceof Error) {
+        return {
+          ...dp,
+          bodyError: verifyError.message,
+          body: verifyError.result.body,
+        };
+      }
+      return { ...dp, body: (bodies as string[])[0] };
+    }),
   );
 
-  return Promise.all(verifiedProfiles);
+  return [...ops, ...verifiedDps];
 }
 
 async function fetchVerifiedWebsiteProfilePair([, tabId]: [
