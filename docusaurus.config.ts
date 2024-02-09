@@ -1,5 +1,6 @@
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
+import search from "@easyops-cn/docusaurus-search-local";
 import * as pkg from "./package.json";
 
 const url = pkg.homepage;
@@ -7,6 +8,7 @@ const title = pkg.description;
 const description = pkg.description;
 const githubUrl = pkg.repository;
 const locales = ["ja"];
+const docsRouteBasePath = "/";
 
 export default {
   url,
@@ -26,12 +28,21 @@ export default {
       "@docusaurus/preset-classic",
       {
         docs: {
-          routeBasePath: "/",
+          routeBasePath: docsRouteBasePath,
           editUrl: `${githubUrl}/blob/main`,
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
         },
       } satisfies Preset.Options,
+    ],
+  ],
+  plugins: [
+    [
+      search,
+      {
+        docsRouteBasePath,
+        language: [...locales, "en"],
+      } satisfies search.PluginOptions,
     ],
   ],
   themeConfig: {

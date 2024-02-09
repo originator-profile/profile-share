@@ -89,7 +89,7 @@ ${JSON.stringify(exampleWebpage, null, "  ")}`,
     }),
     "expired-at": expirationDate(),
     "site-profile": Flags.boolean({
-      description: "サイトプロファイルを出力する",
+      description: "署名付きサイトプロファイルを出力する",
       default: false,
     }),
     "allowed-origins": allowedOriginsFlag({ required: false }),

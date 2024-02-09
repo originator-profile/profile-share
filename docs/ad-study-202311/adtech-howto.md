@@ -48,7 +48,7 @@ sidebar_position: 3
   - Fluct社の場合、`corp.fluct.jp`
   - SMN社の場合、`www.so-netmedia.jp`
 
-### 広告プロファイルに使用する [SDP](/terminology.md#signed-document-profile-sdp) の発行
+### [署名付き広告プロファイル](/terminology/signed-advertisement-profile.md)の作成
 
 #### 使用する広告表示箇所 ID について
 
@@ -69,16 +69,18 @@ sidebar_position: 3
 
 フォーマットは次の通りです。
 
-```jsonc
+```json
 {
-  // SDP の sub クレーム (UUID v4 文字列形式)
+  "//": "SDP の sub クレーム (UUID v4 文字列形式)",
   "id": "1ad45eb7-8f56-46b3-b91e-7e178041821c",
-  // "#" + 広告表示箇所 ID
+
+  "//": "'#' + 広告表示箇所 ID",
   "location": "#ad-791377e6-e7fa-4d00-9e66-ba9c72390475",
+
   "bodyFormat": "visibleText",
   "body": "",
 
-  // 以降のプロパティは任意
+  "//": "以降のプロパティは任意",
   "title": "広告1",
   "description": "広告1の説明",
   "image": "https://op-logos.demosites.pages.dev/placeholder-120x80.png"
@@ -179,7 +181,7 @@ $ profile-registry advertiser:sign \
 
 詳しい profile-registry コマンドの使用方法は「[署名付き広告プロファイルの作成](https://github.com/originator-profile/profile-share/tree/main/apps/registry#profile-registry-advertisersign)」をご確認ください。
 
-### 広告プロファイルに使用する [SDP](/terminology.md#signed-document-profile-sdp) の提出
+### 署名付き広告プロファイルの提出
 
 発行したSDPはいずれも開発チームにご提出ください。
 

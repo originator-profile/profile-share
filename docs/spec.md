@@ -66,7 +66,7 @@ DP を第三者署名とすることや、自己署名情報に加えて第三�
 
 ## 用語
 
-Originator Profile に関する用語の定義と説明は [用語集ページ](/terminology.md) をご覧ください。
+Originator Profile に関する用語の定義と説明は「[用語集](/terminology/)」をご覧ください。
 
 ## データモデル
 

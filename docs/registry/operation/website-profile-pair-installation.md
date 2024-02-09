@@ -1,6 +1,6 @@
 # website Profile Pair の発行・設置
 
-1. OP ID とプライベート鍵を用意してください。プライベート鍵は Site Profile の署名に利用します。
+1. OP ID とプライベート鍵を用意してください。プライベート鍵は[サイトプロファイル](/terminology/site-profile.md)への署名に利用します。
 
 2. 次のような `site-profile.json` ファイルをご用意ください。id には UUID を生成して指定します。
 
@@ -19,7 +19,7 @@ image プロパティを参照した画像表示は、本実験に対応した�
 
 :::
 
-3. 次のコマンドを実行してください。ここで OP ID は example.com 、署名に使うプライベート鍵は example.priv.json とします。コマンド実行後、画面上に表示される "eyJ" から始まる文字列が Site Profile です。
+3. 次のコマンドを実行してください。ここで OP ID は example.com 、署名に使うプライベート鍵は example.priv.json とします。コマンド実行後、画面上に表示される "eyJ" から始まる文字列が署名付きサイトプロファイルです。
 
 ```
 $ profile-registry publisher:sign \
@@ -31,7 +31,7 @@ $ profile-registry publisher:sign \
 eyJ…
 ```
 
-4. レジストリから発行された SOP と Site Profile を合わせて website Profile Pair を作成します。 website Profile Pair は次のような形式の JSON です。ここで OP ID は example.com とします。
+4. レジストリから発行された SOP と署名付きサイトプロファイルを合わせて website Profile Pair を作成します。 website Profile Pair は次のような形式の JSON です。ここで OP ID は example.com とします。
 
 ```json
 {
@@ -44,7 +44,7 @@ eyJ…
     },
     "dp": {
       "sub": "<UUID>",
-      "profile": "<Site Profile>"
+      "profile": "<署名付きサイトプロファイル>"
     }
   }
 }

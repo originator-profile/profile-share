@@ -30,11 +30,15 @@ CHROME_PATH=/usr/bin/google-chrome pnpm dev
 
 あとはそれぞれのソースコードを編集することで開発を行うことができます。自由にカスタマイズしましょう。
 
+import DocCardList from "@theme/DocCardList";
+
+<DocCardList />
+
 ## 全体構成
 
 - apps/ … アプリケーションのソースコード
-  - registry … [Profile Registry](registry/README.md)
-  - web-ext … [Profile Web Extension](web-ext/README.md)
+  - registry … [Profile Registry](/registry/)
+  - web-ext … [Profile Web Extension](/web-ext/)
 - docs/ … ドキュメント
 - packages/ … アプリケーションの使用するモジュールのソースコード
   - model … システムのコアとなる静的構造のためのパッケージ
@@ -44,7 +48,7 @@ CHROME_PATH=/usr/bin/google-chrome pnpm dev
 
 ## Swagger UI
 
-開発用サーバーの起動後、<http://localhost:8080/documentation/static/index.html> にアクセスすることでAPIの詳細の閲覧とサーバーへのリクエストの試行を行えます。
+開発用サーバーの起動後、http://localhost:8080/documentation/static/index.html にアクセスすることでAPIの詳細の閲覧とサーバーへのリクエストの試行を行えます。
 
 ### 認証
 

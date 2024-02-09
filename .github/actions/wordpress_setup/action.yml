@@ -4,7 +4,7 @@ runs:
   using: composite
   steps:
     - name: Restore Composer cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: packages/wordpress/vendor
         key: composer-v2-main-{{ hashFiles('packages/wordpress/composer.lock') }}

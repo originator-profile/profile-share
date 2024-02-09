@@ -40,6 +40,9 @@ const Config = {
   required: ["ISSUER_UUID"],
 } as const;
 
-type Config = FromSchema<typeof Config>;
+type Config = FromSchema<
+  typeof Config,
+  { keepDefaultedPropertiesOptional: true }
+>;
 
 export default Config;

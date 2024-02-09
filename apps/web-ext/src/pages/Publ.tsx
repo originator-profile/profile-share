@@ -87,6 +87,7 @@ function Publ() {
               profiles: profiles ?? [],
               main,
               dpItemContent: article.content,
+              filteredDps: [],
               ...article,
             }
           : undefined

@@ -423,7 +423,7 @@ DESCRIPTION
   Display help for profile-registry.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.0.7/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.0.12/src/commands/help.ts)_
 
 ## `profile-registry key-gen`
 
@@ -593,7 +593,7 @@ FLAGS
       --id=<value>                 (required) OP ID (ドメイン名)
       --input=<filepath>           (required) 入力ファイルのパス (JSON 形式)
       --issued-at=<value>          発行日時 (ISO 8601)
-      --site-profile               サイトプロファイルを出力する
+      --site-profile               署名付きサイトプロファイルを出力する
 
 DESCRIPTION
   Signed Document Profile (SDP) の生成

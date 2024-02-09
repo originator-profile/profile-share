@@ -43,4 +43,4 @@ sidebar_position: 11
 
 # 用語集
 
-- [用語集](/terminology.md)
+- [用語集](/terminology/)

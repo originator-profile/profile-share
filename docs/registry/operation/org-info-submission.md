@@ -14,7 +14,7 @@ sidebar_position: 3
 
 `account.example.json`
 
-```jsonc
+```json
 {
   "domainName": "toyota.demosites.pages.dev",
   "roleValue": "group",
@@ -51,7 +51,7 @@ sidebar_position: 3
 
 一般社団法人デジタル広告品質認証機構の組織情報を記載する場合、以下のようになります。
 
-```jsonc
+```json
 {
   "domainName": "jicdaq.or.jp",
   "url": "https://www.jicdaq.or.jp/",

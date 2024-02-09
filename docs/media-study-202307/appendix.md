@@ -49,4 +49,4 @@ sidebar_position: 11
 
 # 用語集
 
-[用語集ページ](/terminology.md)に移動しました。
+- [用語集](/terminology/)

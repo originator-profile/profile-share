@@ -10,10 +10,19 @@ async function index(fastify: FastifyInstance): Promise<void> {
     // @ts-expect-error @fastify/vite が html() メソッドを提供
     reply.html();
   });
-  fastify.get("/app/*", (req, reply) => {
-    // @ts-expect-error @fastify/vite が html() メソッドを提供
-    reply.html();
-  });
+  fastify.get(
+    "/app/*",
+    {
+      schema: {
+        // NOTE: * が含まれるルートは widdershins でエラーになるので隠す
+        hide: true,
+      },
+    },
+    (req, reply) => {
+      // @ts-expect-error @fastify/vite が html() メソッドを提供
+      reply.html();
+    },
+  );
   fastify.get<FromHandler<typeof getFrontendProfileSet>>(
     "/ps.json",
     { ...getFrontendProfileSet },
