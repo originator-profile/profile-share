@@ -59,20 +59,34 @@ chrome.runtime.onMessage.addListener(function (
 });
 
 function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
-  if (event.origin !== window.location.origin) return;
   switch (event.data.type) {
     case "enter-overlay":
+      if (event.origin !== window.location.origin) return;
       event.source?.postMessage({
         type: "enter-overlay",
         profiles,
         activeDp,
       });
+      window.postMessage({
+        type: "start-descend-frame",
+      });
       break;
     case "leave-overlay":
+      if (event.origin !== window.location.origin) return;
       deactivate(iframe);
       break;
     case "select-overlay-dp":
+      if (event.origin !== window.location.origin) return;
       chrome.runtime.sendMessage(event.data);
+      break;
+    case "start-descend-frame":
+      if (event.origin !== window.location.origin) return;
+      window.postMessage({
+        type: "descend-frame",
+      });
+      break;
+    case "end-ascend-frame":
+      console.log(event.data.ad, event.source);
       break;
   }
 }
