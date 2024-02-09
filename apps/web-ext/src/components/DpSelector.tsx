@@ -40,25 +40,27 @@ function DpSelector({ filteredDps }: Props) {
             )}`}
           >
             <Link
-              className={clsx(
-                "flex justify-center items-center h-16 hover:bg-blue-50 relative",
-                { ["bg-blue-50"]: active },
-              )}
+              className="flex justify-center items-center h-16 relative"
               to={[
                 routes.base.build({ tabId: String(tabId) }),
                 routes.publ.build(dp),
               ].join("/")}
               onClick={handleClickDp(dp)}
             >
-              <Image
-                className="bg-gray-200 rounded-lg"
-                src={content?.image}
-                placeholderSrc={placeholderDpThumbnail}
-                alt={content?.title ?? ""}
-                width={44}
-                height={44}
-                cover
-              />
+              <div className="inline-block">
+                <Image
+                  className={clsx(
+                    "bg-gray-200 rounded-lg transition duration-300 ease-in-out hover:border-4",
+                    { ["border-4"]: active },
+                  )}
+                  src={content?.image}
+                  placeholderSrc={placeholderDpThumbnail}
+                  alt={content?.title ?? ""}
+                  width={44}
+                  height={44}
+                  cover
+                />
+              </div>
             </Link>
           </li>
         );
