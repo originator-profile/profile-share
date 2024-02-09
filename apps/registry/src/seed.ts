@@ -12,7 +12,7 @@ import exampleAd1 from "./seeds/example-ad-1";
 import exampleAd2 from "./seeds/example-ad-2";
 import exampleAd3 from "./seeds/example-ad-3";
 import { OpHolder, Jwk } from "@originator-profile/model";
-import addYears from "date-fns/addYears";
+import { addYears } from "date-fns/addYears";
 import { isJwtDpPayload, parseAccountId } from "@originator-profile/core";
 import { signDp } from "@originator-profile/sign";
 import { prisma } from "@originator-profile/registry-db";

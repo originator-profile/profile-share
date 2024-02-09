@@ -1,6 +1,6 @@
 import { OpHolder, Dp, Jwk } from "@originator-profile/model";
 import { signBody } from "@originator-profile/sign";
-import addYears from "date-fns/addYears";
+import { addYears } from "date-fns/addYears";
 
 /** サンプル Ad Profile Pair (packages/registry-ui/public/examples/ad.html で使用) */
 export default async function exampleAd1(
