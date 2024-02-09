@@ -1,15 +1,23 @@
-import { extractBody, fetchProfileSet } from "@originator-profile/verify";
+import {
+  extractBody,
+  fetchProfileSet,
+  expandProfilePairs,
+  ProfilesFetchFailed,
+} from "@originator-profile/verify";
 import {
   ContentScriptAllFramesMessageRequest,
   ContentScriptAllFramesMessageResponse,
+  AllFramesPostMessageEvent,
 } from "./types/message";
+
+let data: Awaited<ReturnType<typeof fetchProfileSet>>;
 
 async function handleMessageResponse(
   message: ContentScriptAllFramesMessageRequest,
 ): Promise<ContentScriptAllFramesMessageResponse> {
   switch (message.type) {
     case "fetch-profiles": {
-      const data = await fetchProfileSet(document);
+      data = await fetchProfileSet(document);
       return {
         type: "fetch-profiles",
         ok: !(data instanceof Error),
@@ -51,3 +59,46 @@ chrome.runtime.onMessage.addListener(function (
   );
   return true;
 });
+
+async function handlePostMessageAllFramesResponse(
+  event: AllFramesPostMessageEvent,
+) {
+  switch (event.data.type) {
+    case "descend-frame":
+      for (let i = 0; i < window.frames.length; i++) {
+        const contentWindow = window.frames[i];
+        contentWindow?.postMessage(
+          {
+            type: "descend-frame",
+          },
+          "*",
+        );
+      }
+      if (!data || data instanceof ProfilesFetchFailed) return;
+      const { ad } = await expandProfilePairs(data);
+      if (ad.length === 0) return;
+      window.parent.postMessage(
+        {
+          type: "ascend-frame",
+          ad,
+        },
+        "*",
+      );
+      break;
+    case "ascend-frame":
+      if (window.parent === window.top) {
+        window.parent.postMessage(
+          {
+            type: "end-ascend-frame",
+            ad: event.data.ad,
+          },
+          "*",
+        );
+      } else {
+        window.parent.postMessage(event.data, "*");
+      }
+      break;
+  }
+}
+
+window.addEventListener("message", handlePostMessageAllFramesResponse);

@@ -1,4 +1,5 @@
 import { Profile, Dp } from "@originator-profile/ui/src/types";
+import { AdProfilePair } from "@originator-profile/verify";
 
 export type fetchProfileSetMessageRequest = {
   type: "fetch-profiles";
@@ -85,14 +86,33 @@ export type EnterOverlayMessageResponse = {
   profiles: Profile[];
   activeDp: Dp | null;
 };
-export type LeaveOverlayMessageRequest = {
+export type LeaveOverlayMessage = {
   type: "leave-overlay";
+};
+export type StartDescendFrameMessage = {
+  type: "start-descend-frame";
+};
+export type DescendFrameMessage = {
+  type: "descend-frame";
+};
+export type AscendFrameMessage = {
+  type: "ascend-frame";
+  ad: AdProfilePair[];
+};
+export type EndAscendFrameMessage = {
+  type: "end-ascend-frame";
+  ad: AdProfilePair[];
 };
 export type ContentWindowPostMessageEvent = MessageEvent<
   | EnterOverlayMessageRequest
-  | LeaveOverlayMessageRequest
+  | LeaveOverlayMessage
   | SelectOverlayDpMessageRequest
+  | StartDescendFrameMessage
+  | EndAscendFrameMessage
+>;
+export type AllFramesPostMessageEvent = MessageEvent<
+  DescendFrameMessage | AscendFrameMessage
 >;
 export type IFramePostMessageEvent = MessageEvent<
-  EnterOverlayMessageResponse | LeaveOverlayMessageRequest
+  EnterOverlayMessageResponse | LeaveOverlayMessage
 >;
