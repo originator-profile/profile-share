@@ -4,8 +4,8 @@ import fs from "node:fs/promises";
 import { Services } from "@originator-profile/registry-service";
 import exampleAccount from "./account.example.json";
 import exampleWebsite from "./website.example.json";
+import exampleWebsite1 from "./seeds/website.1.example.json";
 import exampleWebsite2 from "./seeds/website.2.example.json";
-import exampleWebsite3 from "./seeds/website.3.example.json";
 import exampleCategories from "./category.example.json";
 import exampleAd from "./seeds/example-ad";
 import exampleAd1 from "./seeds/example-ad-1";
@@ -66,8 +66,8 @@ async function issueDp(
     : exampleCategories;
   for (const { body, ...input } of [
     exampleWebsite,
+    exampleWebsite1,
     exampleWebsite2,
-    exampleWebsite3,
   ]) {
     const proofJws = await services.website.signBody(privateKey, body);
     if (proofJws instanceof Error) throw proofJws;
