@@ -9,7 +9,7 @@ export default async function exampleAd3(
   privateKey: Jwk,
 ): Promise<Dp> {
   const proofJws = await signBody(
-    '<img src="http://localhost:8081/ad-image-3.png">',
+    '<img src="http://localhost:8081/ad-image-3.jpg" width="300" height="225">',
     privateKey,
   );
   return {
@@ -22,7 +22,7 @@ export default async function exampleAd3(
       {
         type: "advertisement",
         title: "iframe 3",
-        image: "http://localhost:8081",
+        image: "http://localhost:8081/ad-image-3.jpg",
       },
       {
         type: "html",
