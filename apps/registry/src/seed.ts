@@ -7,7 +7,6 @@ import exampleWebsite from "./website.example.json";
 import exampleWebsite1 from "./seeds/website.1.example.json";
 import exampleWebsite2 from "./seeds/website.2.example.json";
 import exampleCategories from "./category.example.json";
-import exampleAd from "./seeds/example-ad";
 import exampleAd1 from "./seeds/example-ad-1";
 import exampleAd2 from "./seeds/example-ad-2";
 import exampleAd3 from "./seeds/example-ad-3";
@@ -104,7 +103,7 @@ async function issueAd(
   privateKey: Jwk,
 ) {
   for (const dp of await Promise.all(
-    [exampleAd, exampleAd1, exampleAd2, exampleAd3].map((ad) =>
+    [exampleAd1, exampleAd2, exampleAd3].map((ad) =>
       ad(issuer, allowedOrigin, privateKey),
     ),
   )) {
