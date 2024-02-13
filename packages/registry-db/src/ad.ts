@@ -107,12 +107,17 @@ export const AdRepository = () => ({
     });
     if (!data) return new NotFoundError("Ad Profile Pair not found.");
 
+    const issuer = await prisma.accounts.findUnique({
+      where: { id: data.account.publications[0].op.certifierId },
+    });
+    if (!issuer) return new NotFoundError("Issuer not found.");
+
     const profiles = {
       "@context": contextDefinition,
       ad: {
         op: {
-          iss: data.account.domainName,
-          sub: data.account.publications[0].opId,
+          iss: issuer.domainName,
+          sub: data.account.domainName,
           profile: data.account.publications[0].op.jwt,
         },
         dp: {
