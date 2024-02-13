@@ -210,6 +210,16 @@ function Publ(props: Props) {
   const [contentType, setContentType] = useState<
     "advertisement" | "main" | "all" | "other"
   >("all");
+  const { tabId } = useParams<{ tabId: string }>();
+  const navigate = useNavigate();
+
+  const handleClickDp = (dp: Dp) => async () => {
+    await chrome.tabs.sendMessage(Number(tabId), {
+      type: "overlay-profiles",
+      profiles: props.article?.profiles ?? [],
+      activeDp: dp,
+    });
+  };
 
   const filterFunction =
     (contentType: "advertisement" | "main" | "all" | "other") => (dp: Dp) => {
@@ -233,9 +243,6 @@ function Publ(props: Props) {
       [],
     props.article?.main ?? [],
   );
-
-  const { tabId } = useParams<{ tabId: string }>();
-  const navigate = useNavigate();
 
   function onFilterUpdate(
     contentType: "advertisement" | "main" | "all" | "other",
@@ -273,7 +280,10 @@ function Publ(props: Props) {
               setContentType={onFilterUpdate}
             />
             <nav className="flex-shrink-0 w-16 overflow-y-auto bg-white sticky top-0 z-10 border-t border-gray-200">
-              <DpSelector filteredDps={filteredDps} />
+              <DpSelector
+                filteredDps={filteredDps}
+                handleClickDp={handleClickDp}
+              />
             </nav>
           </div>
           <main className="flex-1">

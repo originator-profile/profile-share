@@ -50,8 +50,8 @@ function Marker({
     >
       <button
         className={clsx(
-          "relative border-4 rounded-full shadow-xl",
-          active ? "bg-blue-500 border-blue-500" : "bg-white border-white",
+          "relative rounded",
+          active ? "bg-blue-500" : "bg-white",
         )}
         title={`${opHolder.name} ${dpTitle.title} ${
           result && (result.bodyError ? result.bodyError : result.body ?? "")
@@ -59,12 +59,12 @@ function Marker({
         onClick={onClick}
       >
         <Image
+          className="border rounded border-gray-100 bg-white m-1"
           src={logo?.url}
           placeholderSrc={placeholderLogoMainUrl}
           alt={opHolder.name ?? ""}
           width={width}
           height={height}
-          rounded
         />
         <svg
           viewBox={`0 0 ${tailWidth} ${tailHeight}`}

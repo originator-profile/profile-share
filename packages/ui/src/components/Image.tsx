@@ -7,7 +7,6 @@ type Props = {
   alt: string;
   width: number;
   height: number;
-  rounded?: boolean;
   cover?: boolean;
 };
 
@@ -18,7 +17,6 @@ function Image({
   alt,
   width,
   height,
-  rounded = false,
   cover = false,
 }: Props) {
   return (
@@ -31,7 +29,6 @@ function Image({
     >
       <img
         className={clsx("w-auto", {
-          ["rounded-full"]: rounded,
           ["object-cover"]: cover,
         })}
         style={
