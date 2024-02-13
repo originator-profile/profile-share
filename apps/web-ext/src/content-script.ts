@@ -83,10 +83,15 @@ function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
       if (event.origin !== window.location.origin) return;
       window.postMessage({
         type: "descend-frame",
+        hrefs: [],
       });
       break;
     case "end-ascend-frame":
-      console.log(event.data.ad, event.source);
+      iframe.contentWindow?.postMessage({
+        type: "enter-overlay-iframe",
+        ad: event.data.ad,
+        hrefs: event.data.hrefs,
+      });
       break;
   }
 }

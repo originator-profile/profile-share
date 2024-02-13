@@ -64,12 +64,14 @@ async function handlePostMessageAllFramesResponse(
   event: AllFramesPostMessageEvent,
 ) {
   switch (event.data.type) {
-    case "descend-frame":
+    case "descend-frame": {
+      const hrefs = [...event.data.hrefs, document.location.href];
       for (let i = 0; i < window.frames.length; i++) {
         const contentWindow = window.frames[i];
         contentWindow?.postMessage(
           {
             type: "descend-frame",
+            hrefs,
           },
           "*",
         );
@@ -81,16 +83,19 @@ async function handlePostMessageAllFramesResponse(
         {
           type: "ascend-frame",
           ad,
+          hrefs,
         },
         "*",
       );
       break;
+    }
     case "ascend-frame":
       if (window.parent === window.top) {
         window.parent.postMessage(
           {
             type: "end-ascend-frame",
             ad: event.data.ad,
+            hrefs: event.data.hrefs,
           },
           "*",
         );
