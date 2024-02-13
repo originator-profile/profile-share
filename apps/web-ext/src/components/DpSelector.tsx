@@ -50,8 +50,8 @@ function DpSelector({ filteredDps }: Props) {
               <div className="inline-block">
                 <Image
                   className={clsx(
-                    "bg-gray-200 rounded-lg transition duration-300 ease-in-out hover:border-4",
-                    { ["border-4"]: active },
+                    "bg-gray-200 rounded-lg transition duration-300 ease-in-out hover:ring-2 hover:ring-gray-500 hover:ring-offset-2",
+                    { ["ring-2 ring-gray-500 ring-offset-2"]: active },
                   )}
                   src={content?.image}
                   placeholderSrc={placeholderDpThumbnail}
