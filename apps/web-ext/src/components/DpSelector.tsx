@@ -9,22 +9,16 @@ import { Advertisement, OgWebsite } from "@originator-profile/model";
 
 type Props = {
   filteredDps: Dp[];
+  handleClickDp: (dp: Dp) => () => void;
 };
 
-function DpSelector({ filteredDps }: Props) {
+function DpSelector({ filteredDps, handleClickDp }: Props) {
   const { issuer, subject, ...params } = useParams<{
     issuer: string;
     subject: string;
     tabId: string;
   }>();
   const tabId = Number(params.tabId);
-  const handleClickDp = (dp: Dp) => async () => {
-    await chrome.tabs.sendMessage(tabId, {
-      type: "overlay-profiles",
-      profiles: filteredDps,
-      activeDp: dp,
-    });
-  };
 
   return (
     <ul>

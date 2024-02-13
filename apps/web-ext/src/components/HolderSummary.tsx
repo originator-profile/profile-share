@@ -27,7 +27,6 @@ function HolderSummary({ className, to, holder }: Props) {
           alt=""
           width={52}
           height={52}
-          rounded
         />
         <div className="flex flex-col">
           <div className="flex flex-row">

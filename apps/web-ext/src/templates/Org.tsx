@@ -57,13 +57,12 @@ function Org({ op, holder, roles, paths }: Props) {
       </BackHeader>
       <div className="bg-gray-50 p-4">
         <Image
-          className="mb-2"
+          className="mb-2 rounded"
           src={logo?.url}
           placeholderSrc={placeholderLogoMainUrl}
           alt=""
           width={120}
           height={120}
-          rounded
         />
         <h1 className="text-center text-2xl mb-4">{holder.name}</h1>
         {holder.publishingPrincipleUrl && (
