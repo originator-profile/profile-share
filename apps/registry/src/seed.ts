@@ -4,11 +4,16 @@ import fs from "node:fs/promises";
 import { Services } from "@originator-profile/registry-service";
 import exampleAccount from "./account.example.json";
 import exampleWebsite from "./website.example.json";
+import exampleWebsite1 from "./seeds/website.1.example.json";
+import exampleWebsite2 from "./seeds/website.2.example.json";
 import exampleCategories from "./category.example.json";
-import { Dp, Jwk } from "@originator-profile/model";
+import exampleAd1 from "./seeds/example-ad-1";
+import exampleAd2 from "./seeds/example-ad-2";
+import exampleAd3 from "./seeds/example-ad-3";
+import { OpHolder, Jwk } from "@originator-profile/model";
 import { addYears } from "date-fns/addYears";
 import { isJwtDpPayload, parseAccountId } from "@originator-profile/core";
-import { signBody, signDp } from "@originator-profile/sign";
+import { signDp } from "@originator-profile/sign";
 import { prisma } from "@originator-profile/registry-db";
 
 export async function waitForDb(prisma: PrismaClient): Promise<void> {
@@ -58,34 +63,11 @@ async function issueDp(
   const exampleCategory = Array.isArray(exampleCategories)
     ? exampleCategories[0]
     : exampleCategories;
-
-  const example2 = {
-    id: "41264c8a-4796-4206-a45c-7245f2315979",
-    url: "http://localhost:8080/examples/many-dps.html",
-    location: "#webpage-41264c8a-4796-4206-a45c-7245f2315979",
-    bodyFormat: "visibleText",
-    body: "署名対象のテキストです。",
-    title: "DP 例ページ",
-    image: "http://localhost:8080/credential-brand-safety-certified.png",
-    description: "このページは開発時に DP を確認する際に使うことができます。",
-    author: "山田太郎",
-    editor: "山田花子",
-    datePublished: "2023-12-20T19:14:00Z",
-    dateModified: "2023-12-20T19:14:00Z",
-  };
-  const example3 = {
-    id: "040a260d-b677-4f6f-9fb8-f1d4c990825c",
-    url: "http://localhost:8080/examples/many-dps.html",
-    location: "#webpage-040a260d-b677-4f6f-9fb8-f1d4c990825c",
-    bodyFormat: "visibleText",
-    body: "これはサブコンテンツです。",
-    title: "サブコンテンツの例",
-    author: "山田太郎",
-    editor: "山田花子",
-    datePublished: "2023-12-20T19:14:00Z",
-    dateModified: "2023-12-20T19:14:00Z",
-  };
-  for (const { body, ...input } of [exampleWebsite, example2, example3]) {
+  for (const { body, ...input } of [
+    exampleWebsite,
+    exampleWebsite1,
+    exampleWebsite2,
+  ]) {
     const proofJws = await services.website.signBody(privateKey, body);
     if (proofJws instanceof Error) throw proofJws;
     const website = await services.website.create({
@@ -111,6 +93,29 @@ async function issueDp(
       // Profile Set Debugger の SDP
       console.log(`Document Profile: ${dpJwt}`);
     }
+  }
+}
+
+async function issueAd(
+  services: Services,
+  issuer: OpHolder["domainName"],
+  allowedOrigin: URL["origin"],
+  privateKey: Jwk,
+) {
+  for (const dp of await Promise.all(
+    [exampleAd1, exampleAd2, exampleAd3].map((ad) =>
+      ad(issuer, allowedOrigin, privateKey),
+    ),
+  )) {
+    const sdp = await signDp(dp, privateKey);
+    const decoded = services.validator.decodeToken(sdp);
+    if (decoded instanceof Error || !isJwtDpPayload(decoded.payload)) {
+      throw decoded;
+    }
+    await services.adRepository.upsert({
+      jwt: decoded.jwt,
+      payload: decoded.payload,
+    });
   }
 }
 
@@ -158,39 +163,12 @@ export async function seed(): Promise<void> {
       await issueDp(services, issuerUuid, privateKey);
     }
 
-    // サンプル Ad Profile Pair の登録 (packages/registry-ui/public/examples/ad.html で使用)
-    const proofJws = await signBody("", privateKey);
-    const dp = {
-      type: "dp",
-      issuer: exampleAccount.domainName,
-      subject: "6a65e608-6b3e-4184-9fd2-0aafd1ddd38e",
-      issuedAt: new Date().toISOString(),
-      expiredAt: addYears(new Date(), 10).toISOString(),
-      item: [
-        {
-          type: "advertisement",
-          title: "Originator Profile",
-          description:
-            "Originator Profile 技術は、ウェブコンテンツの作成者や広告主などの情報を検証可能な形で付与することで、第三者認証済みの良質な記事やメディアを容易に見分けられるようにする技術です。",
-          image: "https://op-logos.demosites.pages.dev/placeholder-120x80.png",
-        },
-        {
-          type: "visibleText",
-          location: "#ad-6a65e608-6b3e-4184-9fd2-0aafd1ddd38e",
-          proof: { jws: proofJws },
-        },
-      ],
-      allowedOrigins: [new URL(appUrl).origin],
-    } satisfies Dp;
-    const sdp = await signDp(dp, privateKey);
-    const decoded = services.validator.decodeToken(sdp);
-    if (decoded instanceof Error || !isJwtDpPayload(decoded.payload)) {
-      throw decoded;
-    }
-    await services.adRepository.upsert({
-      jwt: decoded.jwt,
-      payload: decoded.payload,
-    });
+    await issueAd(
+      services,
+      exampleAccount.domainName,
+      new URL(appUrl).origin,
+      privateKey,
+    );
   }
 }
 
