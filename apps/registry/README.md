@@ -579,7 +579,7 @@ DESCRIPTION
 
 ## `profile-registry publisher:sign`
 
-Signed Document Profile (SDP) の生成
+署名付きドキュメントプロファイルの作成
 
 ```
 USAGE
@@ -593,13 +593,14 @@ FLAGS
       --id=<value>                 (required) OP ID (ドメイン名)
       --input=<filepath>           (required) 入力ファイルのパス (JSON 形式)
       --issued-at=<value>          発行日時 (ISO 8601)
-      --site-profile               署名付きサイトプロファイルを出力する
+      --site-profile               サイトプロファイル (SP) に署名します。
+                                   標準出力に署名付きサイトプロファイルを出力します。
 
 DESCRIPTION
-  Signed Document Profile (SDP) の生成
+  署名付きドキュメントプロファイルの作成
 
-  Web ページの情報 (DP) に対して署名を行います。
-  署名済み DP (SDP) を生成し、それを標準出力に出力します。
+  ドキュメントプロファイル (DP) に署名します。
+  標準出力に署名付きドキュメントプロファイル (SDP) を出力します。
 
 EXAMPLES
   $ profile-registry publisher:sign \

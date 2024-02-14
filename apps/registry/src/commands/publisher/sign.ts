@@ -56,10 +56,10 @@ const exampleWebpage: Omit<Website, "type"> = {
 };
 
 export class PublisherSign extends Command {
-  static summary = "Signed Document Profile (SDP) の生成";
+  static summary = "署名付きドキュメントプロファイルの作成";
   static description = `\
-Web ページの情報 (DP) に対して署名を行います。
-署名済み DP (SDP) を生成し、それを標準出力に出力します。`;
+ドキュメントプロファイル (DP) に署名します。
+標準出力に署名付きドキュメントプロファイル (SDP) を出力します。`;
   static flags = {
     identity: privateKey({ required: true }),
     id: Flags.string({
@@ -89,7 +89,9 @@ ${JSON.stringify(exampleWebpage, null, "  ")}`,
     }),
     "expired-at": expirationDate(),
     "site-profile": Flags.boolean({
-      description: "署名付きサイトプロファイルを出力する",
+      description: `\
+サイトプロファイル (SP) に署名します。
+標準出力に署名付きサイトプロファイルを出力します。`,
       default: false,
     }),
     "allowed-origins": allowedOriginsFlag({ required: false }),

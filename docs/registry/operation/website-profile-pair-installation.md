@@ -1,15 +1,39 @@
-# website Profile Pair の発行・設置
+# 署名付きサイトプロファイルの作成と設置
 
-1. OP ID とプライベート鍵を用意してください。プライベート鍵は[サイトプロファイル](/terminology/site-profile.md)への署名に利用します。
+[署名付きサイトプロファイル](/terminology/signed-site-profile.md)の作成方法と設置方法を説明します。
 
-2. 次のような `site-profile.json` ファイルをご用意ください。id には UUID を生成して指定します。
+## 対象読者
+
+- 企業・組織のウェブサイトの管理者
+
+## 前提条件
+
+- OP ID
+- SOP
+- プライベート鍵
+- profile-registry CLI
+
+## 署名付きサイトプロファイルの作成
+
+`site-profile.json` ファイルを用意します。
 
 ```json
 {
   "id": "<UUID>",
   "title": "<サイト名>",
-  "image": "<サイトを表すサムネイル画像のURL>",
+  "image": "<サムネイル画像URL>",
   "description": "<サイトの説明>"
+}
+```
+
+例:
+
+```json
+{
+  "id": "bd8414b0-e585-4b48-8008-2751bb12bc84",
+  "title": "サイト名",
+  "image": "https://media.example.com/image.png",
+  "description": "サイトの説明"
 }
 ```
 
@@ -19,19 +43,38 @@ image プロパティを参照した画像表示は、本実験に対応した�
 
 :::
 
-3. 次のコマンドを実行してください。ここで OP ID は example.com 、署名に使うプライベート鍵は example.priv.json とします。コマンド実行後、画面上に表示される "eyJ" から始まる文字列が署名付きサイトプロファイルです。
+以下のコマンドを実行することで署名付きサイトプロファイルを作成します。
+
+書式:
+
+```
+$ profile-registry publisher:sign \
+    --site-profile \
+    -i <プライベート鍵> \
+    --id <OP ID> \
+    --allowed-origins '*' \
+    --input site-profile.json
+```
+
+例:
 
 ```
 $ profile-registry publisher:sign \
     --site-profile \
     -i example.priv.json \
-    --id example.com \
+    --id media.example.com \
     --allowed-origins '*' \
     --input site-profile.json
-eyJ…
+eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.e30.0CmA8cCMZAVeCAslkmMLkNehAwM7tr-Y9y6LHAmAJTUZR8gNTS1d7vpphz2jFfvwyAYUcA4nOsv7Q0uOzb0Teg
 ```
 
-4. レジストリから発行された SOP と署名付きサイトプロファイルを合わせて website Profile Pair を作成します。 website Profile Pair は次のような形式の JSON です。ここで OP ID は example.com とします。
+詳しい profile-registry コマンドの使用方法は「[署名付きドキュメントプロファイルの作成](https://github.com/originator-profile/profile-share/tree/main/apps/registry#profile-registry-publishersign)」をご確認ください。
+
+## Profile Pair の作成と Well-Known URL による設置
+
+レジストリから発行された SOP と署名付きサイトプロファイルを組み合わせて Profile Pair を作成します。
+
+書式:
 
 ```json
 {
@@ -39,8 +82,8 @@ eyJ…
   "website": {
     "op": {
       "iss": "oprexpt.originator-profile.org",
-      "sub": "example.com",
-      "profile": "<SOP の JWT>"
+      "sub": "<OP ID>",
+      "profile": "<SOP>"
     },
     "dp": {
       "sub": "<UUID>",
@@ -50,4 +93,23 @@ eyJ…
 }
 ```
 
-5. 作成した JSON ファイル (website Profile Pair) を保有するサイトの /.well-known/ にファイル名 pp.json で配置してください。
+例:
+
+```json
+{
+  "@context": "https://originator-profile.org/context.jsonld",
+  "website": {
+    "op": {
+      "iss": "oprexpt.originator-profile.org",
+      "sub": "media.example.com",
+      "profile": "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.e30.vbDKsWlLpPELwSE5r_50njGLo-QDbBugSvl_Lh4sirizsLd9X8Hf8WXcHsP_VSAo50DD5ueRbRyjwQk_0hPk_w"
+    },
+    "dp": {
+      "sub": "bd8414b0-e585-4b48-8008-2751bb12bc84",
+      "profile": "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.e30.0CmA8cCMZAVeCAslkmMLkNehAwM7tr-Y9y6LHAmAJTUZR8gNTS1d7vpphz2jFfvwyAYUcA4nOsv7Q0uOzb0Teg"
+    }
+  }
+}
+```
+
+この Profile Pair を保有するサイトの Well-Known URL `/.well-known/pp.json` に HTTP GET リクエストでアクセスできるようにして署名付きサイトプロファイルを配信します。
