@@ -60,6 +60,7 @@ chrome.runtime.onMessage.addListener(function (
   return true;
 });
 
+/* eslint complexity: ["off", { max: 11 }] -- TODO: 各メッセージハンドリング関数を外部化して */
 async function handlePostMessageAllFramesResponse(
   event: AllFramesPostMessageEvent,
 ) {
@@ -91,7 +92,7 @@ async function handlePostMessageAllFramesResponse(
       });
       break;
     }
-    case "ascend-frame":
+    case "ascend-frame": {
       const [targetOrigin] = event.data.targetOrigins.slice(-2, -1);
       if (!targetOrigin) return;
       window.parent.postMessage(
@@ -104,6 +105,7 @@ async function handlePostMessageAllFramesResponse(
         targetOrigin,
       );
       break;
+    }
   }
 }
 

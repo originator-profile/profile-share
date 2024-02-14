@@ -9,7 +9,7 @@ import { initialize, activate, deactivate } from "./utils/iframe";
 
 let profiles: Profile[] = [];
 let activeDp: Dp | null = null;
-const iframe = initialize();
+const overlay = initialize();
 
 async function handleMessageResponse(
   message: ContentScriptMessageRequest,
@@ -28,10 +28,10 @@ async function handleMessageResponse(
       };
     }
     case "overlay-profiles":
-      activate(iframe);
+      activate(overlay);
       profiles = message.profiles;
       activeDp = message.activeDp;
-      iframe.contentWindow?.postMessage({
+      overlay.contentWindow?.postMessage({
         type: "enter-overlay",
         profiles,
         activeDp,
@@ -40,7 +40,7 @@ async function handleMessageResponse(
         type: "overlay-profiles",
       };
     case "close-window":
-      iframe.contentWindow?.postMessage({ type: "leave-overlay" });
+      overlay.contentWindow?.postMessage({ type: "leave-overlay" });
       return {
         type: "close-window",
       };
@@ -58,6 +58,7 @@ chrome.runtime.onMessage.addListener(function (
   return true;
 });
 
+/* eslint complexity: ["off", { max: 13 }] -- TODO: 各メッセージハンドリング関数を外部化して */
 function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
   switch (event.data.type) {
     case "enter-overlay":
@@ -73,7 +74,7 @@ function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
       break;
     case "leave-overlay":
       if (event.origin !== window.location.origin) return;
-      deactivate(iframe);
+      deactivate(overlay);
       break;
     case "select-overlay-dp":
       if (event.origin !== window.location.origin) return;
@@ -86,17 +87,19 @@ function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
         targetOrigins: [window.location.origin],
       });
       break;
-    case "end-ascend-frame":
+    case "end-ascend-frame": {
       if (event.data.targetOrigins.pop() !== window.location.origin) return;
-      const iframes = document.getElementsByTagName("iframe");
-      for (const iframe of iframes) {
-        if (iframe.contentWindow === event.source) console.log(iframe);
-      }
-      iframe.contentWindow?.postMessage({
+      const iframe = Array.from(document.getElementsByTagName("iframe")).find(
+        (iframe) => iframe.contentWindow === event.source,
+      );
+      if (!iframe) return;
+      console.log(iframe);
+      overlay.contentWindow?.postMessage({
         type: "enter-overlay-iframe",
         ad: event.data.ad,
       });
       break;
+    }
   }
 }
 
