@@ -96,32 +96,24 @@ export type StartDescendFrameMessage = {
 /** サブフレームへ降下するメッセージ  */
 export type DescendFrameMessage = {
   type: "descend-frame";
-  /** 最上位から n 階層目のサブフレームの document.location.href */
-  hrefs: URL["href"][];
 };
 /** サブフレームから上昇するメッセージ  */
 export type AscendFrameMessage = {
   type: "ascend-frame";
   /** Profile Pair */
   ad: AdProfilePair[];
-  /** 最上位から n 階層目のサブフレームの document.location.href */
-  hrefs: URL["href"][];
 };
 /** サブフレームからの上昇を終了するメッセージ  */
 export type EndAscendFrameMessage = {
   type: "end-ascend-frame";
   /** Profile Pair */
   ad: AdProfilePair[];
-  /** 最上位から n 階層目のサブフレームの document.location.href */
-  hrefs: URL["href"][];
 };
 /** iframe 要素をオーバーレイ表示に入力するメッセージ */
 export type EnterOverlayIFrameMessage = {
   type: "enter-overlay-iframe";
   /** Profile Pair */
   ad: AdProfilePair[];
-  /** 最上位から n 階層目のサブフレームの document.location.href */
-  hrefs: URL["href"][];
 };
 export type ContentWindowPostMessageEvent = MessageEvent<
   | EnterOverlayMessageRequest

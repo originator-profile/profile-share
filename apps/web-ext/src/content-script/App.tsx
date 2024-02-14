@@ -2,7 +2,6 @@ import { useState, Fragment } from "react";
 import { useMount, useEvent } from "react-use";
 import { Dialog, Transition } from "@headlessui/react";
 import { Profile, Dp } from "@originator-profile/ui/src/types";
-import { AdProfilePair } from "@originator-profile/verify";
 import { isDp } from "@originator-profile/core";
 import { IFramePostMessageEvent } from "../types/message";
 import DpMap from "../components/DpMap";
@@ -12,9 +11,6 @@ function App() {
   const [isOpen, setIsOpen] = useState(true);
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [activeDp, setActiveDp] = useState<Dp | null>(null);
-  const [frameAd, setFrameAd] = useState<Map<URL["href"], AdProfilePair[]>>(
-    new Map(),
-  );
 
   function closeModal() {
     setIsOpen(false);
@@ -31,9 +27,6 @@ function App() {
         closeModal();
         break;
       case "enter-overlay-iframe": {
-        if (!event.data.hrefs[1]) return;
-        frameAd.set(event.data.hrefs[1], event.data.ad);
-        setFrameAd(new Map(frameAd));
         break;
       }
     }

@@ -65,13 +65,11 @@ async function handlePostMessageAllFramesResponse(
 ) {
   switch (event.data.type) {
     case "descend-frame": {
-      const hrefs = [...event.data.hrefs, document.location.href];
       for (let i = 0; i < window.frames.length; i++) {
         const contentWindow = window.frames[i];
         contentWindow?.postMessage(
           {
             type: "descend-frame",
-            hrefs,
           },
           "*",
         );
@@ -83,7 +81,6 @@ async function handlePostMessageAllFramesResponse(
         {
           type: "ascend-frame",
           ad,
-          hrefs,
         },
         "*",
       );
@@ -95,7 +92,6 @@ async function handlePostMessageAllFramesResponse(
           {
             type: "end-ascend-frame",
             ad: event.data.ad,
-            hrefs: event.data.hrefs,
           },
           "*",
         );
