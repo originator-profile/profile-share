@@ -63,13 +63,20 @@ chrome.runtime.onMessage.addListener(function (
 async function handlePostMessageAllFramesResponse(
   event: AllFramesPostMessageEvent,
 ) {
+  const [origin] = (event.data.targetOrigins ?? []).slice(-1);
+  if (event.origin !== origin) return;
   switch (event.data.type) {
     case "descend-frame": {
+      const targetOrigins = [
+        ...event.data.targetOrigins,
+        window.location.origin,
+      ];
       for (let i = 0; i < window.frames.length; i++) {
         const contentWindow = window.frames[i];
         contentWindow?.postMessage(
           {
             type: "descend-frame",
+            targetOrigins,
           },
           "*",
         );
@@ -77,27 +84,25 @@ async function handlePostMessageAllFramesResponse(
       if (!data || data instanceof ProfilesFetchFailed) return;
       const { ad } = await expandProfilePairs(data);
       if (ad.length === 0) return;
-      window.postMessage(
-        {
-          type: "ascend-frame",
-          ad,
-        },
-        "*",
-      );
+      window.postMessage({
+        type: "ascend-frame",
+        ad,
+        targetOrigins,
+      });
       break;
     }
     case "ascend-frame":
-      if (window.parent === window.top) {
-        window.parent.postMessage(
-          {
-            type: "end-ascend-frame",
-            ad: event.data.ad,
-          },
-          "*",
-        );
-      } else {
-        window.parent.postMessage(event.data, "*");
-      }
+      const [targetOrigin] = event.data.targetOrigins.slice(-2, -1);
+      if (!targetOrigin) return;
+      window.parent.postMessage(
+        {
+          type:
+            window.parent === window.top ? "end-ascend-frame" : "ascend-frame",
+          ad: event.data.ad,
+          targetOrigins: event.data.targetOrigins.slice(0, -1),
+        },
+        targetOrigin,
+      );
       break;
   }
 }

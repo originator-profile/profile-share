@@ -83,9 +83,15 @@ function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
       if (event.origin !== window.location.origin) return;
       window.postMessage({
         type: "descend-frame",
+        targetOrigins: [window.location.origin],
       });
       break;
     case "end-ascend-frame":
+      if (event.data.targetOrigins.pop() !== window.location.origin) return;
+      const iframes = document.getElementsByTagName("iframe");
+      for (const iframe of iframes) {
+        if (iframe.contentWindow === event.source) console.log(iframe);
+      }
       iframe.contentWindow?.postMessage({
         type: "enter-overlay-iframe",
         ad: event.data.ad,

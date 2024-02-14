@@ -96,18 +96,24 @@ export type StartDescendFrameMessage = {
 /** サブフレームへ降下するメッセージ  */
 export type DescendFrameMessage = {
   type: "descend-frame";
+  /** 通信経路の URL オリジン */
+  targetOrigins: Array<URL["origin"]>;
 };
 /** サブフレームから上昇するメッセージ  */
 export type AscendFrameMessage = {
   type: "ascend-frame";
   /** Profile Pair */
   ad: AdProfilePair[];
+  /** 通信経路の URL オリジン */
+  targetOrigins: Array<URL["origin"]>;
 };
 /** サブフレームからの上昇を終了するメッセージ  */
 export type EndAscendFrameMessage = {
   type: "end-ascend-frame";
   /** Profile Pair */
   ad: AdProfilePair[];
+  /** 通信経路の URL オリジン */
+  targetOrigins: Array<URL["origin"]>;
 };
 /** iframe 要素をオーバーレイ表示に入力するメッセージ */
 export type EnterOverlayIFrameMessage = {
