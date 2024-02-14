@@ -77,7 +77,7 @@ async function handlePostMessageAllFramesResponse(
       if (!data || data instanceof ProfilesFetchFailed) return;
       const { ad } = await expandProfilePairs(data);
       if (ad.length === 0) return;
-      window.parent.postMessage(
+      window.postMessage(
         {
           type: "ascend-frame",
           ad,
