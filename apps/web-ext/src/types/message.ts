@@ -1,5 +1,5 @@
 import { Profile, Dp } from "@originator-profile/ui/src/types";
-import { AdProfilePair } from "@originator-profile/verify";
+import { ProfilePair } from "@originator-profile/verify";
 
 export type fetchProfileSetMessageRequest = {
   type: "fetch-profiles";
@@ -103,7 +103,7 @@ export type DescendFrameMessage = {
 export type AscendFrameMessage = {
   type: "ascend-frame";
   /** Profile Pair */
-  ad: AdProfilePair[];
+  ad: ProfilePair[];
   /** 通信経路の URL オリジン */
   targetOrigins: Array<URL["origin"]>;
 };
@@ -111,7 +111,7 @@ export type AscendFrameMessage = {
 export type EndAscendFrameMessage = {
   type: "end-ascend-frame";
   /** Profile Pair */
-  ad: AdProfilePair[];
+  ad: ProfilePair[];
   /** 通信経路の URL オリジン */
   targetOrigins: Array<URL["origin"]>;
 };
@@ -119,7 +119,7 @@ export type EndAscendFrameMessage = {
 export type EnterOverlayIFrameMessage = {
   type: "enter-overlay-iframe";
   /** Profile Pair */
-  ad: AdProfilePair[];
+  ad: ProfilePair[];
 };
 export type ContentWindowPostMessageEvent = MessageEvent<
   | EnterOverlayMessageRequest
