@@ -96,7 +96,7 @@ export type StartDescendFrameMessage = {
 /** サブフレームへ降下するメッセージ  */
 export type DescendFrameMessage = {
   type: "descend-frame";
-  /** 通信経路の URL オリジン */
+  /** 通信経路の URL オリジン（配列末尾に自身のフレームのオリジンが含まれる） */
   targetOrigins: Array<URL["origin"]>;
 };
 /** サブフレームから上昇するメッセージ  */
@@ -112,7 +112,7 @@ export type EndAscendFrameMessage = {
   type: "end-ascend-frame";
   /** Profile Pair */
   ad: ProfilePair[];
-  /** 通信経路の URL オリジン */
+  /** 通信経路の URL オリジン（配列末尾に自身のフレームのオリジンが含まれる） */
   targetOrigins: Array<URL["origin"]>;
 };
 export type UpdateOverlayMessage = {
