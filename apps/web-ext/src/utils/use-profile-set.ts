@@ -131,7 +131,12 @@ async function fetchVerifiedProfiles([, tabId]: [
           : typeof topLevelFrameId !== "undefined"
             ? [topLevelFrameId]
             : [];
-      return { frameIds, ...toProfile(result) } as Dp;
+
+      const containTopLevelFrame = frameIds.some(
+        (frameId) => frameId === topLevelFrameId,
+      );
+
+      return { frameIds, containTopLevelFrame, ...toProfile(result) } as Dp;
     })
     .filter((value) => typeof value !== "undefined");
 
