@@ -93,11 +93,10 @@ function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
         (iframe) => iframe.contentWindow === event.source,
       );
       if (!iframe) return;
-      console.log(iframe);
-      overlay.contentWindow?.postMessage({
-        type: "enter-overlay-iframe",
-        ad: event.data.ad,
-      });
+      iframe.dataset.documentProfileSubjects = event.data.ad
+        .map((ad) => ad.dp.sub)
+        .join(" ");
+      overlay.contentWindow?.postMessage({ type: "update-overlay" });
       break;
     }
   }

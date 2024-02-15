@@ -115,11 +115,8 @@ export type EndAscendFrameMessage = {
   /** 通信経路の URL オリジン */
   targetOrigins: Array<URL["origin"]>;
 };
-/** iframe 要素をオーバーレイ表示に入力するメッセージ */
-export type EnterOverlayIFrameMessage = {
-  type: "enter-overlay-iframe";
-  /** Profile Pair */
-  ad: ProfilePair[];
+export type UpdateOverlayMessage = {
+  type: "update-overlay";
 };
 export type ContentWindowPostMessageEvent = MessageEvent<
   | EnterOverlayMessageRequest
@@ -132,5 +129,5 @@ export type AllFramesPostMessageEvent = MessageEvent<
   DescendFrameMessage | AscendFrameMessage
 >;
 export type IFramePostMessageEvent = MessageEvent<
-  EnterOverlayMessageResponse | LeaveOverlayMessage | EnterOverlayIFrameMessage
+  EnterOverlayMessageResponse | LeaveOverlayMessage | UpdateOverlayMessage
 >;

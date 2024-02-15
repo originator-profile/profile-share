@@ -26,9 +26,6 @@ function App() {
       case "leave-overlay":
         closeModal();
         break;
-      case "enter-overlay-iframe": {
-        break;
-      }
     }
   }
 
