@@ -21,7 +21,7 @@ function HolderSummary({ className, to, holder }: Props) {
     >
       <div className="flex items-center gap-4 mx-4 my-3">
         <Image
-          className="flex-shrink-0 border rounded border-gray-200"
+          className="flex-shrink-0 border box-content rounded border-gray-200"
           src={logo?.url}
           placeholderSrc={placeholderLogoMainUrl}
           alt=""
