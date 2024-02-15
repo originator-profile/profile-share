@@ -59,7 +59,7 @@ function Marker({
         onClick={onClick}
       >
         <Image
-          className="border rounded border-gray-100 bg-white m-1"
+          className="border box-content rounded border-gray-100 bg-white m-1"
           src={logo?.url}
           placeholderSrc={placeholderLogoMainUrl}
           alt={opHolder.name ?? ""}
