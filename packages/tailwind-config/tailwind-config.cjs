@@ -15,7 +15,7 @@ module.exports = {
           700: "#00afb4",
           800: "#008387",
           900: "#00585a",
-          DEFAULT: "#000afb4",
+          DEFAULT: "#00afb4",
         },
         success: {
           extralight: "#f7fee7",
