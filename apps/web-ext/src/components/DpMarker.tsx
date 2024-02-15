@@ -10,7 +10,6 @@ import { Image } from "@originator-profile/ui";
 import { Op, Dp } from "@originator-profile/ui/src/types";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
 import { DpLocator } from "../types/dp-locator";
-import { isDpLocator } from "../utils/dp-locator";
 import useElements from "../utils/use-elements";
 import useRects from "../utils/use-rects";
 
