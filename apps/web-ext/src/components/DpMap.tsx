@@ -30,7 +30,7 @@ type Props = {
 };
 
 function DpMap({ profiles, activeDp, onClickDp }: Props) {
-  const dps = profiles.filter(isDp<Dp>).filter((dp) => dp.containTopLevelFrame);
+  const dps = profiles.filter(isDp);
   const ops = profiles.filter(isOp);
   return (
     <>
