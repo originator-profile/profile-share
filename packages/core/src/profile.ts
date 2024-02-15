@@ -5,7 +5,7 @@ import { Profile, Op, Dp } from "@originator-profile/model";
  * @param profile
  * @return Op 型であれば true、それ以外ならば false
  */
-export function isOp(profile: Profile): profile is Op {
+export function isOp<T extends Op>(profile: Profile): profile is T {
   return profile.type === Op.properties.type.const;
 }
 
@@ -14,6 +14,6 @@ export function isOp(profile: Profile): profile is Op {
  * @param profile
  * @return Dp 型であれば true、それ以外ならば false
  */
-export function isDp(profile: Profile): profile is Dp {
+export function isDp<T extends Dp>(profile: Profile): profile is T {
   return profile.type === Dp.properties.type.const;
 }
