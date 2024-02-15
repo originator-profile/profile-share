@@ -15,19 +15,19 @@ function useElements(dp: Dp | Dp[]) {
     .filter((dp) => !dp.containTopLevelFrame)
     .map((dp) => `iframe[data-document-profile-subjects~="${dp.subject}"]`);
   const selector = [...locations, ...iframeLocations].join(", ") || ":not(*)";
-  const [eventData, setEventData] = useState<UpdateOverlayMessage | null>(null);
+  const [update, setUpdate] = useState<UpdateOverlayMessage | null>(null);
   function handleMessage(event: IFramePostMessageEvent) {
     if (event.origin !== window.parent.location.origin) return;
     switch (event.data.type) {
       case "update-overlay":
-        setEventData(event.data);
+        setUpdate(event.data);
         break;
     }
   }
   useEvent("message", handleMessage);
   const elements = useMemo<NodeListOf<HTMLElement>>(
     () => window.parent.document.querySelectorAll(selector),
-    [location, eventData],
+    [location, update],
   );
   return { elements };
 }
