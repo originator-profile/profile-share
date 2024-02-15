@@ -104,7 +104,7 @@ export type AscendFrameMessage = {
   type: "ascend-frame";
   /** Profile Pair */
   ad: ProfilePair[];
-  /** 通信経路の URL オリジン */
+  /** 通信経路の URL オリジン（配列末尾に自身のフレームのオリジン、その -1 に親のオリジンが含まれる） */
   targetOrigins: Array<URL["origin"]>;
 };
 /** サブフレームからの上昇を終了するメッセージ  */
