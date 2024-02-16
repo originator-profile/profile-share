@@ -1,7 +1,6 @@
 import { forwardRef, useId } from "react";
 import { useWindowSize } from "react-use";
 import { Dp } from "@originator-profile/ui/src/types";
-import { isDpLocator } from "../utils/dp-locator";
 import useElements from "../utils/use-elements";
 import useRects from "../utils/use-rects";
 
@@ -15,10 +14,7 @@ export default forwardRef<SVGSVGElement, Props>(function DpArea(
   ref,
 ) {
   const { width, height } = useWindowSize();
-  const dpLocators = dps.flatMap((dp) => dp.item.filter(isDpLocator));
-  const { elements } = useElements(
-    dpLocators.map((dpLocator) => dpLocator.location),
-  );
+  const { elements } = useElements(dps);
   const { rects } = useRects(elements);
   const id = useId();
   return (

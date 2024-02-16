@@ -1,4 +1,5 @@
 import { Profile, Dp } from "@originator-profile/ui/src/types";
+import { ProfilePair } from "@originator-profile/verify";
 
 export type fetchProfileSetMessageRequest = {
   type: "fetch-profiles";
@@ -85,14 +86,43 @@ export type EnterOverlayMessageResponse = {
   profiles: Profile[];
   activeDp: Dp | null;
 };
-export type LeaveOverlayMessageRequest = {
+export type LeaveOverlayMessage = {
   type: "leave-overlay";
+};
+/** サブフレームへ降下するメッセージ  */
+export type DescendFrameMessage = {
+  type: "descend-frame";
+  /** 通信経路の URL オリジン（配列末尾に自身のフレームのオリジンが含まれる） */
+  targetOrigins: Array<URL["origin"]>;
+};
+/** サブフレームから上昇するメッセージ  */
+export type AscendFrameMessage = {
+  type: "ascend-frame";
+  /** Profile Pair */
+  ad: ProfilePair[];
+  /** 通信経路の URL オリジン（配列末尾に自身のフレームのオリジン、その -1 に親のオリジンが含まれる） */
+  targetOrigins: Array<URL["origin"]>;
+};
+/** サブフレームからの上昇を終了するメッセージ  */
+export type EndAscendFrameMessage = {
+  type: "end-ascend-frame";
+  /** Profile Pair */
+  ad: ProfilePair[];
+  /** 通信経路の URL オリジン（配列末尾に自身のフレームのオリジンが含まれる） */
+  targetOrigins: Array<URL["origin"]>;
+};
+export type UpdateOverlayMessage = {
+  type: "update-overlay";
 };
 export type ContentWindowPostMessageEvent = MessageEvent<
   | EnterOverlayMessageRequest
-  | LeaveOverlayMessageRequest
+  | LeaveOverlayMessage
   | SelectOverlayDpMessageRequest
+  | EndAscendFrameMessage
+>;
+export type AllFramesPostMessageEvent = MessageEvent<
+  DescendFrameMessage | AscendFrameMessage
 >;
 export type IFramePostMessageEvent = MessageEvent<
-  EnterOverlayMessageResponse | LeaveOverlayMessageRequest
+  EnterOverlayMessageResponse | LeaveOverlayMessage | UpdateOverlayMessage
 >;

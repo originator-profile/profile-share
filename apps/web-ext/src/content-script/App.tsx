@@ -35,18 +35,12 @@ function App() {
   useEvent("message", handleMessage);
 
   function handleLeave() {
-    window.parent.postMessage(
-      { type: "leave-overlay" },
-      window.parent.location.origin,
-    );
+    window.parent.postMessage({ type: "leave-overlay" });
   }
 
   async function handleClickDp(dp: Dp) {
     setActiveDp(dp);
-    window.parent.postMessage({
-      type: "select-overlay-dp",
-      dp,
-    });
+    window.parent.postMessage({ type: "select-overlay-dp", dp });
   }
 
   return (

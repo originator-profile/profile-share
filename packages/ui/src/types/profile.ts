@@ -19,5 +19,7 @@ export type Dp = DpModel & { error?: ProfileError } & {
   bodyError?: string;
   // body を取得した iframe の frameId の配列
   frameIds?: number[];
+  // 最上位フレームに設置されているか否か
+  containTopLevelFrame?: boolean;
 };
 export type Profile = Op | Dp;

@@ -10,7 +10,6 @@ import { Image } from "@originator-profile/ui";
 import { Op, Dp } from "@originator-profile/ui/src/types";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
 import { DpLocator } from "../types/dp-locator";
-import { isDpLocator } from "../utils/dp-locator";
 import useElements from "../utils/use-elements";
 import useRects from "../utils/use-rects";
 
@@ -88,15 +87,15 @@ function Marker({
 }
 
 function DpLocator({
-  dpLocator,
+  dp,
   children,
   active,
 }: {
-  dpLocator: DpLocator;
+  dp: Dp;
   active: boolean;
   children: ({ rect }: { rect: DOMRect }) => React.ReactNode;
 }) {
-  const { elements } = useElements(dpLocator.location);
+  const { elements } = useElements(dp);
   useEffect(() => {
     const [element] = elements;
     if (!active) return;
@@ -126,12 +125,10 @@ function DpMarker({ dp, op, active, onClickDp }: Props) {
   const dpTitle = ogWebsite || advertisement;
   if (!dpTitle) return null;
   const handleClick = () => onClickDp(dp);
-  const dpLocator = dp.item.find(isDpLocator);
-  if (!dpLocator) return null;
   const opHolder = op.item.find(isOpHolder);
   if (!opHolder) return null;
   return (
-    <DpLocator dpLocator={dpLocator} active={active}>
+    <DpLocator dp={dp} active={active}>
       {({ rect }) => (
         <Marker
           result={{ body: dp.body, bodyError: dp.bodyError }}
