@@ -68,6 +68,7 @@ async function handlePostMessageAllFramesResponse(
   if (event.origin !== origin) return;
   switch (event.data.type) {
     case "descend-frame": {
+      if (window.parent !== event.source) return;
       const targetOrigins = [
         ...event.data.targetOrigins,
         window.location.origin,
