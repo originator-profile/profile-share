@@ -1,7 +1,5 @@
-import { useState, useMemo } from "react";
-import { useEvent } from "react-use";
+import { useState, useEffect } from "react";
 import { Dp } from "@originator-profile/ui/src/types";
-import { UpdateOverlayMessage, IFramePostMessageEvent } from "../types/message";
 import { isDpLocator } from "../utils/dp-locator";
 
 /** CSS セレクターで指定した要素を返すフック関数 */
@@ -14,22 +12,26 @@ function useElements(dp: Dp | Dp[]) {
   const iframeLocations = dps
     .filter((dp) => !dp.containTopLevelFrame)
     .map((dp) => `iframe[data-document-profile-subjects~="${dp.subject}"]`);
-  const [iframeReady, setIframeReady] = useState<UpdateOverlayMessage>();
-  function handleMessage(event: IFramePostMessageEvent) {
-    if (event.origin !== window.parent.location.origin) return;
-    switch (event.data.type) {
-      case "update-overlay":
-        setIframeReady(event.data);
-        break;
+  const selector = locations.concat(iframeLocations).join(", ") || ":not(*)";
+  const [elements, setElements] = useState<NodeListOf<HTMLElement>>(
+    window.parent.document.querySelectorAll(selector),
+  );
+  useEffect(() => {
+    const handler = () => {
+      setElements(window.parent.document.querySelectorAll(selector));
+    };
+    const observer = new MutationObserver(handler);
+    const iframes = window.parent.document.getElementsByTagName("iframe");
+    for (const iframe of iframes) {
+      observer.observe(iframe, {
+        attributes: true,
+        attributeFilter: ["data-document-profile-subjects"],
+      });
     }
-  }
-  useEvent("message", handleMessage);
-  const elements = useMemo<NodeListOf<HTMLElement>>(() => {
-    const selector =
-      locations.concat(iframeReady ? iframeLocations : []).join(", ") ||
-      ":not(*)";
-    return window.parent.document.querySelectorAll(selector);
-  }, [locations, iframeLocations, iframeReady]);
+    return () => {
+      observer.disconnect();
+    };
+  }, [setElements, selector]);
   return { elements };
 }
 
