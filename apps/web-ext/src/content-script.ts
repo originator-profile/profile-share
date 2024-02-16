@@ -93,9 +93,13 @@ function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
         (iframe) => iframe.contentWindow === event.source,
       );
       if (!iframe) return;
-      iframe.dataset.documentProfileSubjects = event.data.ad
-        .map((ad) => ad.dp.sub)
-        .join(" ");
+      iframe.dataset.documentProfileSubjects = Array.from(
+        new Set(
+          (iframe.dataset.documentsProfileSubjects ?? "")
+            .split(" ")
+            .concat(event.data.ad.map(({ dp }) => dp.sub)),
+        ),
+      ).join(" ");
       overlay.contentWindow?.postMessage({ type: "update-overlay" });
       break;
     }
