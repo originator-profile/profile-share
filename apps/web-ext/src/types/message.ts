@@ -89,10 +89,6 @@ export type EnterOverlayMessageResponse = {
 export type LeaveOverlayMessage = {
   type: "leave-overlay";
 };
-/** サブフレームへの降下を開始するメッセージ  */
-export type StartDescendFrameMessage = {
-  type: "start-descend-frame";
-};
 /** サブフレームへ降下するメッセージ  */
 export type DescendFrameMessage = {
   type: "descend-frame";
@@ -122,7 +118,6 @@ export type ContentWindowPostMessageEvent = MessageEvent<
   | EnterOverlayMessageRequest
   | LeaveOverlayMessage
   | SelectOverlayDpMessageRequest
-  | StartDescendFrameMessage
   | EndAscendFrameMessage
 >;
 export type AllFramesPostMessageEvent = MessageEvent<
