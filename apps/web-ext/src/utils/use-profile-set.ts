@@ -27,6 +27,7 @@ import { isDpLocator } from "./dp-locator";
 import { isAdvertisement, isDp, isOp } from "@originator-profile/core";
 import { Jwks } from "@originator-profile/model";
 import { DpLocator } from "../types/dp-locator";
+import { makeAdTree, postEndAscendFrameMessages } from "../utils/ad-tree";
 
 const key = "profiles" as const;
 const WebsiteProfilePairKey = "website-profile-pair" as const;
@@ -47,6 +48,7 @@ async function fetchVerifiedProfiles([, tabId]: [
     data: NodeObject;
     origin: string;
     frameId: number;
+    parentFrameId: number;
   }> = await Promise.all(
     frames.map((frame) =>
       chrome.tabs
@@ -65,7 +67,12 @@ async function fetchVerifiedProfiles([, tabId]: [
         .then((response) => {
           const data = JSON.parse(response.data);
           if (!response.ok) throw data;
-          return { data, origin: response.origin, frameId: frame.frameId };
+          return {
+            data,
+            origin: response.origin,
+            frameId: frame.frameId,
+            parentFrameId: frame.parentFrameId,
+          };
         }),
     ),
   ).catch((data) => {
@@ -79,13 +86,17 @@ async function fetchVerifiedProfiles([, tabId]: [
 
   const profileSet = await expandProfileSet(topLevelResponse?.data ?? []);
   const ads = await Promise.all(
-    responses.map(({ data, frameId }) =>
+    responses.map(({ data, origin, frameId, parentFrameId }) =>
       expandProfilePairs(data).then(({ ad }) => ({
         ad,
+        origin,
         frameId,
+        parentFrameId,
       })),
     ),
   );
+  const adTree = makeAdTree(ads);
+  if (adTree) await postEndAscendFrameMessages(tabId, adTree);
 
   const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(
