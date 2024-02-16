@@ -91,7 +91,6 @@ function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
             .concat(event.data.ad.map(({ dp }) => dp.sub)),
         ),
       ).join(" ");
-      overlay.contentWindow?.postMessage({ type: "update-overlay" });
       break;
     }
   }

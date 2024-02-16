@@ -97,9 +97,6 @@ export type EndAscendFrameMessage = {
   /** 送信元URLオリジン */
   sourceOrigin: URL["origin"];
 };
-export type UpdateOverlayMessage = {
-  type: "update-overlay";
-};
 export type ContentWindowPostMessageEvent = MessageEvent<
   | EnterOverlayMessageRequest
   | LeaveOverlayMessage
@@ -107,5 +104,5 @@ export type ContentWindowPostMessageEvent = MessageEvent<
   | EndAscendFrameMessage
 >;
 export type IFramePostMessageEvent = MessageEvent<
-  EnterOverlayMessageResponse | LeaveOverlayMessage | UpdateOverlayMessage
+  EnterOverlayMessageResponse | LeaveOverlayMessage
 >;
