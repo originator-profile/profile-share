@@ -77,7 +77,7 @@ function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
       if (event.origin !== window.location.origin) return;
       chrome.runtime.sendMessage(event.data);
       break;
-    case "end-ascend-frame": {
+    case "update-ad-iframe": {
       if (event.origin !== event.data.sourceOrigin) return;
       const iframe = Array.from(document.getElementsByTagName("iframe")).find(
         (iframe) => iframe.contentWindow === event.source,

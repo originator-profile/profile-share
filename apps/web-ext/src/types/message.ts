@@ -89,9 +89,9 @@ export type EnterOverlayMessageResponse = {
 export type LeaveOverlayMessage = {
   type: "leave-overlay";
 };
-/** サブフレームからの上昇を終了するメッセージ  */
-export type EndAscendFrameMessage = {
-  type: "end-ascend-frame";
+/** Profile Pair が設置されたiframe要素を更新する */
+export type UpdateAdIframeMessage = {
+  type: "update-ad-iframe";
   /** Profile Pair */
   ad: ProfilePair[];
   /** 送信元URLオリジン */
@@ -101,7 +101,7 @@ export type ContentWindowPostMessageEvent = MessageEvent<
   | EnterOverlayMessageRequest
   | LeaveOverlayMessage
   | SelectOverlayDpMessageRequest
-  | EndAscendFrameMessage
+  | UpdateAdIframeMessage
 >;
 export type IFramePostMessageEvent = MessageEvent<
   EnterOverlayMessageResponse | LeaveOverlayMessage

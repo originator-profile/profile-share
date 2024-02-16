@@ -27,7 +27,7 @@ import { isDpLocator } from "./dp-locator";
 import { isAdvertisement, isDp, isOp } from "@originator-profile/core";
 import { Jwks } from "@originator-profile/model";
 import { DpLocator } from "../types/dp-locator";
-import { makeAdTree, postEndAscendFrameMessages } from "../utils/ad-tree";
+import { makeAdTree, updateAdIframe } from "../utils/ad-tree";
 
 const key = "profiles" as const;
 const WebsiteProfilePairKey = "website-profile-pair" as const;
@@ -96,7 +96,7 @@ async function fetchVerifiedProfiles([, tabId]: [
     ),
   );
   const adTree = makeAdTree(ads);
-  if (adTree) await postEndAscendFrameMessages(tabId, adTree);
+  if (adTree) await updateAdIframe(tabId, adTree);
 
   const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(
