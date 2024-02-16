@@ -69,7 +69,8 @@ function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
         activeDp,
       });
       window.postMessage({
-        type: "start-descend-frame",
+        type: "descend-frame",
+        targetOrigins: [window.location.origin],
       });
       break;
     case "leave-overlay":
@@ -79,13 +80,6 @@ function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
     case "select-overlay-dp":
       if (event.origin !== window.location.origin) return;
       chrome.runtime.sendMessage(event.data);
-      break;
-    case "start-descend-frame":
-      if (event.origin !== window.location.origin) return;
-      window.postMessage({
-        type: "descend-frame",
-        targetOrigins: [window.location.origin],
-      });
       break;
     case "end-ascend-frame": {
       if (event.data.targetOrigins.pop() !== window.location.origin) return;
