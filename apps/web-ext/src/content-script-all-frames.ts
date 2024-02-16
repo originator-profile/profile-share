@@ -64,7 +64,7 @@ chrome.runtime.onMessage.addListener(function (
 async function handlePostMessageAllFramesResponse(
   event: AllFramesPostMessageEvent,
 ) {
-  const [origin] = (event.data.targetOrigins ?? []).slice(-1);
+  const origin = event.data.targetOrigins.at(-1);
   if (event.origin !== origin) return;
   switch (event.data.type) {
     case "descend-frame": {
@@ -94,7 +94,7 @@ async function handlePostMessageAllFramesResponse(
       break;
     }
     case "ascend-frame": {
-      const [targetOrigin] = event.data.targetOrigins.slice(-2, -1);
+      const targetOrigin = event.data.targetOrigins.at(-2);
       if (!targetOrigin) return;
       window.parent.postMessage(
         {
