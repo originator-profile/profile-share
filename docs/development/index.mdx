@@ -19,6 +19,7 @@ cd profile
 corepack enable pnpm
 pnpm install
 pnpm --filter @originator-profile/registry exec playwright install --with-deps
+pnpm build
 # profile-registry CLIのインストール
 npm i -g ./apps/registry
 # 開発用サーバーの起動

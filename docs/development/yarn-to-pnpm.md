@@ -40,3 +40,20 @@ $ pnpm install
 ```
 $ pnpm build
 ```
+
+## Volta
+
+[Volta](https://docs.volta.sh/) がインストールされている場合は次のコマンドで pnpm をインストールできます:
+
+> ```
+> volta install pnpm
+> ```
+>
+> _https://pnpm.io/installation#using-volta より_
+
+:::note
+
+Volta の pnpm サポートは[現在実験的段階](https://docs.volta.sh/advanced/pnpm)です。
+問題が発生する場合は環境変数 `VOLTA_FEATURE_PNPM=1` を設定してみましょう。
+
+:::
