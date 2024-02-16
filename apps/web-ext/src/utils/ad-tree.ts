@@ -1,6 +1,6 @@
 import { arrayToTree } from "performant-array-to-tree";
 import { ProfilePair } from "@originator-profile/verify";
-import { EndAscendFrameMessage } from "../types/message";
+import { UpdateAdIframeMessage } from "../types/message";
 
 const childrenField = "children" as const;
 
@@ -37,11 +37,11 @@ export function collectAdFromTree(adTree: AdTree): ProfilePair[] {
 }
 
 /**
- * end-ascend-frame メッセージを送信する
+ * Profile Pair が設置されたiframe要素を更新する
  * @remarks
  * chrome.scripting API 必須
  */
-export async function postEndAscendFrameMessages(
+export async function updateAdIframe(
   tabId: number,
   adTree: AdTree,
 ): Promise<void> {
@@ -52,8 +52,8 @@ export async function postEndAscendFrameMessages(
     targetOrigin: URL["origin"],
     window: Window = globalThis.window,
   ) => {
-    const message: EndAscendFrameMessage = {
-      type: "end-ascend-frame",
+    const message: UpdateAdIframeMessage = {
+      type: "update-ad-iframe",
       ad,
       sourceOrigin,
     };
