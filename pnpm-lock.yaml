@@ -325,6 +325,9 @@ importers:
       eslint-config-originator-profile:
         specifier: workspace:*
         version: link:../../packages/eslint-config
+      happy-dom:
+        specifier: ^13.3.1
+        version: 13.3.1
       jsonld:
         specifier: ^8.3.2
         version: 8.3.2

@@ -1,36 +1,56 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="ja" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Ad (Demo)</title>
+    <title>広告のデモ</title>
   </head>
 
   <body>
-    <h1>Ad (Demo)</h1>
+    <h1>広告のデモ</h1>
 
     <ol>
       <li>
-        <a href="/ads/2cbb9f82-64fa-43bb-a6b8-acc74cf73c97">Ad Profile Pair</a>
+        <a href="/ads/2cbb9f82-64fa-43bb-a6b8-acc74cf73c97"
+          >署名付き広告プロファイル1</a
+        >
       </li>
       <li>
-        <a href="/ads/c920e93a-7f46-4d4e-a080-7aafb23be7ee">Ad Profile Pair</a>
+        <a href="/ads/c920e93a-7f46-4d4e-a080-7aafb23be7ee"
+          >署名付き広告プロファイル2</a
+        >
       </li>
       <li>
-        <a href="/ads/f2133430-5329-4b64-8a93-b3ef761a825c">Ad Profile Pair</a>
+        <a href="/ads/f2133430-5329-4b64-8a93-b3ef761a825c"
+          >署名付き広告プロファイル3</a
+        >
       </li>
     </ol>
+
+    <h2>署名付き広告プロファイル1</h2>
 
     <iframe
       src="http://localhost:8081/ad-iframe-1"
       width="300"
       height="225"
     ></iframe>
+
+    <h2>署名付き広告プロファイル2</h2>
+
+    <p>
+      拡張機能での RTB 記載情報と広告プロファイルの整合性の確認に失敗するケース
+    </p>
+
     <iframe
       src="http://localhost:8081/ad-iframe-2"
       width="300"
       height="225"
     ></iframe>
+
+    <h2>署名付き広告プロファイル3</h2>
+
+    <p>iframeが入れ子のケース</p>
+
     <iframe
       src="http://localhost:8081/ad-iframe-3-container"
       width="300"

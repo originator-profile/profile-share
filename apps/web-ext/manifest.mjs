@@ -36,7 +36,8 @@ const base = {
       resources: ["content-script/iframe.js", "main.css", "*.map"],
     },
   ],
-  permissions: ["activeTab", "webNavigation"],
+  host_permissions: ["<all_urls>"],
+  permissions: ["activeTab", "webNavigation", "scripting"],
 };
 
 const chromium = {

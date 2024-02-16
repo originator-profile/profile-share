@@ -11,11 +11,15 @@ function getEndpoints(doc: Document): string[] {
   return endpoints;
 }
 
-function getEmbeddedProfileSets(doc: Document): NodeObject[] {
+/**
+ * 文書内のapplication/ld+json NodeObjectの取得
+ * @param doc Document オブジェクト
+ */
+export function getJsonLdNodeObjects(doc: Document = document): NodeObject[] {
   const elements = [
     ...doc.querySelectorAll(`script[type="application/ld+json"]`),
   ];
-  const profileSetArray = elements
+  const nodeObj = elements
     .map((elem) => {
       const text = elem.textContent;
       if (typeof text !== "string") {
@@ -30,7 +34,7 @@ function getEmbeddedProfileSets(doc: Document): NodeObject[] {
     })
     .filter((e) => typeof e !== "undefined") as NodeObject[];
 
-  return profileSetArray;
+  return nodeObj;
 }
 
 /**
@@ -40,7 +44,7 @@ function getEmbeddedProfileSets(doc: Document): NodeObject[] {
 export async function fetchProfileSet(
   doc: Document,
 ): Promise<JsonLdDocument | ProfilesFetchFailed> {
-  let profiles = getEmbeddedProfileSets(doc);
+  let profiles = getJsonLdNodeObjects(doc);
   try {
     const profileEndpoints = getEndpoints(doc);
 

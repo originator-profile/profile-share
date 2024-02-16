@@ -20,6 +20,7 @@ import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholde
 import HolderSummary from "../components/HolderSummary";
 import DpSelector from "../components/DpSelector";
 import DpFilter from "../components/DpFilter";
+import { BidResponse } from "../components/rtb";
 import {
   useModal,
   getContentType,
@@ -129,6 +130,7 @@ function Main({
   holder,
   paths,
 }: Required<Props>["article"]) {
+  const { tabId } = useParams<{ tabId: string }>();
   const certifiers = new Map<string, OpCertifier>(
     op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
   );
@@ -200,6 +202,9 @@ function Main({
         )}
         {dpItemContent.description && (
           <Description description={dpItemContent.description} />
+        )}
+        {dpItemContent.type === "advertisement" && (
+          <BidResponse className="w-full py-1" tabId={Number(tabId)} dp={dp} />
         )}
       </div>
     </div>
