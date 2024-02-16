@@ -91,6 +91,7 @@ function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
         new Set(
           (iframe.dataset.documentsProfileSubjects ?? "")
             .split(" ")
+            .filter(Boolean)
             .concat(event.data.ad.map(({ dp }) => dp.sub)),
         ),
       ).join(" ");
