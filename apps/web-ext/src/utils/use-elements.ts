@@ -14,7 +14,7 @@ function useElements(dp: Dp | Dp[]) {
     .map((dp) => `iframe[data-document-profile-subjects~="${dp.subject}"]`);
   const selector = locations.concat(iframeLocations).join(", ") || ":not(*)";
   const [elements, setElements] = useState<NodeListOf<HTMLElement>>(
-    window.parent.document.querySelectorAll(selector),
+    window.parent.document.querySelectorAll(":not(*)"),
   );
   useEffect(() => {
     const handler = () => {
@@ -28,6 +28,7 @@ function useElements(dp: Dp | Dp[]) {
         attributeFilter: ["data-document-profile-subjects"],
       });
     }
+    setElements(window.parent.document.querySelectorAll(selector));
     return () => {
       observer.disconnect();
     };
