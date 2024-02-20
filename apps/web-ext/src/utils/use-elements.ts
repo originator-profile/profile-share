@@ -17,10 +17,10 @@ function useElements(dp: Dp | Dp[]) {
     window.parent.document.querySelectorAll(":not(*)"),
   );
   useEffect(() => {
-    const handler = () => {
+    const updateElements = () => {
       setElements(window.parent.document.querySelectorAll(selector));
     };
-    const observer = new MutationObserver(handler);
+    const observer = new MutationObserver(updateElements);
     const iframes = window.parent.document.getElementsByTagName("iframe");
     for (const iframe of iframes) {
       observer.observe(iframe, {
@@ -28,7 +28,7 @@ function useElements(dp: Dp | Dp[]) {
         attributeFilter: ["data-document-profile-subjects"],
       });
     }
-    setElements(window.parent.document.querySelectorAll(selector));
+    updateElements();
     return () => {
       observer.disconnect();
     };
