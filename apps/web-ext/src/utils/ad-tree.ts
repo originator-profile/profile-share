@@ -4,14 +4,14 @@ import { UpdateAdIframeMessage } from "../types/message";
 
 const childrenField = "children" as const;
 
-type AdNode = {
+export type AdNode = {
   ad: ProfilePair[];
   frameId: number;
   parentFrameId: number;
   origin: URL["origin"];
 };
 
-type AdTree = {
+export type AdTree = {
   [childrenField]: AdTree[];
 } & AdNode;
 
