@@ -36,9 +36,9 @@ const responseMap: Record<string, Response> = {
 };
 
 test.beforeEach(async ({ page }) => {
-  await page.route('**/.well-known/pp.json', (route) => {
+  await page.route("**/.well-known/pp.json", (route) => {
     // 補足するリクエストが特定されているので直接取得
-    const response = responseMap['/.well-known/pp.json'];
+    const response = responseMap["/.well-known/pp.json"];
 
     if (response) {
       return route.fulfill(response);
@@ -53,19 +53,26 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-web-ext.png` });
 });
 
-test("サイトプロファイル検証失敗時に閲覧禁止の確認", async ({ context, page }) => {
+test("サイトプロファイル検証失敗時に閲覧禁止の確認", async ({
+  context,
+  page,
+}) => {
   try {
     await page.goto("http://localhost:8080/examples/many-dps.html");
   } catch (err) {
-    console.error(`Error navigating to http://localhost:8080/examples/many-dps.html`);
+    console.error(
+      `Error navigating to http://localhost:8080/examples/many-dps.html`,
+    );
   }
   ext = await popup(context);
 
   await expect(ext.getByText(" アクセスにはご注意ください")).toHaveCount(1);
-  await expect(ext.getByText("このサイトの発信元が確認できません")).toHaveCount(1);
+  await expect(ext.getByText("このサイトの発信元が確認できません")).toHaveCount(
+    1,
+  );
   await expect(
     ext.getByText(
-      "本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。"
-    )
+      "本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。",
+    ),
   ).toHaveCount(1);
 });
