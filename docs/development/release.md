@@ -48,6 +48,6 @@ Step 4
 
 1. 「[release ワークフロー](https://github.com/originator-profile/profile/actions/workflows/release.yml?query=branch%3Amain)」にアクセス
 2. 対象のバージョンのワークフローを選択
-3. Artifacts > [artifact] から、Zipファイルをダウンロード
-4. ダウンロードしたZipファイルを展開
+3. Artifacts > [web-ext] と [wordpress] から、Zipファイルをそれぞれダウンロード
+4. ダウンロードしたZipファイルをそれぞれ展開
 5. web-ext-artifacts/\*.zip と wordpress-profile-plugin.zip をリリースアセットとしてアップロード

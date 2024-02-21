@@ -7,4 +7,5 @@ runs:
       shell: bash
     - uses: actions/upload-artifact@v4
       with:
+        name: web-ext
         path: apps/web-ext/web-ext-artifacts*
