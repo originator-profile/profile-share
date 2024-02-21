@@ -1,5 +1,5 @@
 import { expect, popup, test } from "./fixtures";
-import { BrowserContext, Page } from "@playwright/test";
+import { Page } from "@playwright/test";
 
 test.describe.configure({ mode: "serial" });
 
@@ -33,15 +33,10 @@ const responseMap: Record<string, Response> = {
   },
 };
 
-async function runTest(
-  ctx: BrowserContext,
-  page: Page,
-  url: string,
-) {
-  await page.route("**", (route) => {
-    const url = new URL(route.request().url());
-
-    const response = responseMap[url.pathname];
+test.beforeEach(async ({ page }) => {
+  await page.route('**/.well-known/pp.json', (route) => {
+    // 補足するリクエストが特定されているので直接取得
+    const response = responseMap['/.well-known/pp.json'];
 
     if (response) {
       return route.fulfill(response);
@@ -49,38 +44,26 @@ async function runTest(
       return route.continue();
     }
   });
-
-  try {
-    await page.goto(url);
-  } catch (err) {
-    console.error(`Error navigating to ${url}`);
-  }
-  ext = await popup(ctx);
-
-  await expect(ext.getByText(" アクセスにはご注意ください")).toHaveCount(1);
-  await expect(ext.getByText("このサイトの発信元が確認できません")).toHaveCount(
-    1,
-  );
-  await expect(
-    ext.getByText(
-      "本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。",
-    ),
-  ).toHaveCount(1);
-
-}
+});
 
 test.afterEach(async ({ page }, testInfo) => {
   await page.screenshot({ path: `screenshots/${testInfo.title}-webpage.png` });
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-web-ext.png` });
 });
 
-test("サイトプロファイル検証失敗時に閲覧禁止の確認", async ({
-  context,
-  page,
-}) => {
-  await runTest(
-    context,
-    page,
-    "http://localhost:8080/examples/many-dps.html",
-  );
+test("サイトプロファイル検証失敗時に閲覧禁止の確認", async ({ context, page }) => {
+  try {
+    await page.goto("http://localhost:8080/examples/many-dps.html");
+  } catch (err) {
+    console.error(`Error navigating to http://localhost:8080/examples/many-dps.html`);
+  }
+  ext = await popup(context);
+
+  await expect(ext.getByText(" アクセスにはご注意ください")).toHaveCount(1);
+  await expect(ext.getByText("このサイトの発信元が確認できません")).toHaveCount(1);
+  await expect(
+    ext.getByText(
+      "本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。"
+    )
+  ).toHaveCount(1);
 });
