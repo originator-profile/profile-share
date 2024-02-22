@@ -13,12 +13,12 @@ function useElements(dp: Dp | Dp[]) {
     .filter((dp) => !dp.containTopLevelFrame)
     .map((dp) => `iframe[data-document-profile-subjects~="${dp.subject}"]`);
   const selector = locations.concat(iframeLocations).join(", ") || ":not(*)";
-  const [elements, setElements] = useState<NodeListOf<HTMLElement>>(
-    window.parent.document.querySelectorAll(":not(*)"),
-  );
+  const [elements, setElements] = useState<HTMLElement[]>([]);
   useEffect(() => {
     const updateElements = () => {
-      setElements(window.parent.document.querySelectorAll(selector));
+      setElements(
+        Array.from(window.parent.document.querySelectorAll(selector)),
+      );
     };
     const observer = new MutationObserver(updateElements);
     const iframes = window.parent.document.getElementsByTagName("iframe");
