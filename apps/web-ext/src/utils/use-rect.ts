@@ -10,7 +10,7 @@ function useRect(element: HTMLElement) {
     startTransition(() => {
       setRect((isIntersecting && element.getBoundingClientRect()) || null);
     });
-  }, [isIntersecting]);
+  }, [isIntersecting, element]);
   useEvent("resize", handler, window.parent);
   useEvent("scroll", handler, window.parent);
   useEffect(handler, [handler]);
