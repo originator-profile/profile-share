@@ -18,5 +18,25 @@ const handleMessageResponse = async (message: BackgroundMessageRequest) => {
 };
 chrome.runtime.onMessage.addListener(handleMessageResponse);
 
+chrome.runtime.onInstalled.addListener(async ({ reason }) => {
+  if (reason !== "install") return;
+
+  const granted = await chrome.permissions.contains({
+    origins: ["<all_urls>"],
+  });
+
+  if (!granted) {
+    // 権限が足らない場合は初期設定の説明を開く (Firefoxのみ)
+    await chrome.tabs.create({
+      url: "https://docs.originator-profile.org/web-ext/experimental-use/#setup-in-firefox",
+    });
+
+    // NOTE: "<all_urls>" 権限求められないようなのでコメントアウト
+    // const granted = await chrome.permissions.request({
+    //   origins: ["<all_urls>"],
+    // });
+  }
+});
+
 // https://www.typescriptlang.org/tsconfig#non-module-files
 export {};
