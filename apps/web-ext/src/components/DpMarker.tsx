@@ -9,9 +9,8 @@ import {
 import { Image } from "@originator-profile/ui";
 import { Op, Dp } from "@originator-profile/ui/src/types";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
-import { DpLocator } from "../types/dp-locator";
 import useElements from "../utils/use-elements";
-import useRects from "../utils/use-rects";
+import useRect from "../utils/use-rect";
 
 type WebsiteOrAdvertisement = OgWebsite | Advertisement;
 
@@ -86,28 +85,26 @@ function Marker({
   );
 }
 
-function DpLocator({
-  dp,
+function Rect({
+  element,
   children,
+  scroll,
   active,
 }: {
-  dp: Dp;
+  element: HTMLElement;
   active: boolean;
+  scroll: boolean;
   children: ({ rect }: { rect: DOMRect }) => React.ReactNode;
 }) {
-  const { elements } = useElements(dp);
   useEffect(() => {
-    const [element] = elements;
-    if (!active) return;
-    element?.scrollIntoView({
+    if (!active || !scroll) return;
+    element.scrollIntoView({
       behavior: "smooth",
       inline: "nearest",
       block: "nearest",
     });
-  }, [active, elements]);
-  const {
-    rects: [rect],
-  } = useRects(elements);
+  }, [active, scroll, element]);
+  const { rect } = useRect(element);
   if (!rect) return null;
   return <>{children({ rect })}</>;
 }
@@ -120,6 +117,7 @@ type Props = {
 };
 
 function DpMarker({ dp, op, active, onClickDp }: Props) {
+  const { elements } = useElements(dp);
   const ogWebsite = dp.item.find(isOgWebsite);
   const advertisement = dp.item.find(isAdvertisement);
   const dpTitle = ogWebsite || advertisement;
@@ -128,18 +126,27 @@ function DpMarker({ dp, op, active, onClickDp }: Props) {
   const opHolder = op.item.find(isOpHolder);
   if (!opHolder) return null;
   return (
-    <DpLocator dp={dp} active={active}>
-      {({ rect }) => (
-        <Marker
-          result={{ body: dp.body, bodyError: dp.bodyError }}
-          rect={rect}
-          dpTitle={dpTitle}
-          opHolder={opHolder}
+    <>
+      {elements.map((element, index) => (
+        <Rect
+          key={index}
+          element={element}
           active={active}
-          onClick={handleClick}
-        />
-      )}
-    </DpLocator>
+          scroll={index === 0}
+        >
+          {({ rect }) => (
+            <Marker
+              result={{ body: dp.body, bodyError: dp.bodyError }}
+              rect={rect}
+              dpTitle={dpTitle}
+              opHolder={opHolder}
+              active={active}
+              onClick={handleClick}
+            />
+          )}
+        </Rect>
+      ))}
+    </>
   );
 }
 
