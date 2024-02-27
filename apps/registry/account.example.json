@@ -1,15 +1,19 @@
 {
+  "id": "cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc",
   "domainName": "localhost",
-  "role": { "connect": { "value": "certifier" } },
-  "name": "Originator Profile 技術研究組合",
+  "roleValue": "certifier",
+  "name": "Originator Profile 技術研究組合 (開発用)",
   "url": "https://originator-profile.org/",
-  "postalCode": "108-0073",
+  "corporateNumber": "8010005035933",
+  "postalCode": "100-8055",
   "addressCountry": "JP",
   "addressRegion": "東京都",
-  "addressLocality": "港区",
-  "streetAddress": "三田",
+  "addressLocality": "千代田区",
+  "streetAddress": "大手町1-7-1",
   "contactTitle": "お問い合わせ",
-  "contactUrl": "https://originator-profile.org/ja-JP/",
+  "contactUrl": "https://originator-profile.org/ja-JP/inquiry/",
+  "privacyPolicyTitle": "プライバシーポリシー",
+  "privacyPolicyUrl": "https://originator-profile.org/ja-JP/privacy/",
   "logos": {
     "create": [
       {

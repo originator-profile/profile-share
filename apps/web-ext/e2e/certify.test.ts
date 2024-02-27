@@ -17,9 +17,11 @@ test.afterEach(async ({ page }, testInfo) => {
 });
 
 test("拡張機能画面での認証および対象ページのマークを確認", async ({ page }) => {
+  const holderNamePattern = /Originator Profile 技術研究組合/;
+
   // 記事発行者の名前を持つ要素が存在するか確認
   expect(await ext?.getByTestId("ps-json-holder").innerText()).toMatch(
-    /Originator Profile 技術研究組合/,
+    holderNamePattern,
   );
 
   // 拡張機能ウィンドウの状態
@@ -38,9 +40,7 @@ test("拡張機能画面での認証および対象ページのマークを確�
   expect(
     await page
       .frameLocator("iframe")
-      .getByRole("button", {
-        name: "Originator Profile 技術研究組合 OP 確認くん",
-      })
+      .getByRole("button", { name: holderNamePattern })
       .count(),
     "ピンが少なくとも1つ存在する",
   ).toBeGreaterThanOrEqual(1);

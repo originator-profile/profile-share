@@ -73,27 +73,90 @@ running command...
 
 ## `profile-registry account`
 
-会員の作成・表示・更新・削除
+組織の作成・表示・更新・削除
 
 ```
 USAGE
   $ profile-registry account -i <value> -o create|read|update|delete
 
 FLAGS
-  -i, --input=<value>       (required) [default: account.example.json] JSON file
+  -i, --input=<value>       (required) [default: account.example.json] 入力ファイルのパス (JSON 形式)
   -o, --operation=<option>  (required) 操作
                             <options: create|read|update|delete>
 
 DESCRIPTION
-  会員の作成・表示・更新・削除
+  組織の作成・表示・更新・削除
 
 FLAG DESCRIPTIONS
-  -i, --input=<value>  JSON file
+  -i, --input=<value>  入力ファイルのパス (JSON 形式)
 
-    Prisma.accountsCreateInput または Prisma.accountsUpdateInput
-    詳細はTSDocを参照してください。
-    https://docs.originator-profile.org/ts/modules/_originator_profile_registry_db.default.Prisma
-    "id" フィールドの値には会員 ID またはドメイン名を指定可能です。
+    書式:
+
+    {
+    "id": "<UUID v5 for domain names 形式 OP ID>",
+    "domainName": "<OP ID>",
+    "roleValue": "<種別 - group: 組織、certifier: 認証機関>",
+    "name": "<法人名*>",
+    "url": "<ウェブサイトのURL>",
+    "corporateNumber": "<法人番号>",
+    "description": "<説明 (ウェブメディアそれを運用する法人、認定機関、業界団体等であることの記述)>",
+    "email": "<メールアドレス>",
+    "phoneNumber": "<電話番号>",
+    "postalCode": "<郵便番号*>",
+    "addressCountry": "<国*>",
+    "addressRegion": "<都道府県*>",
+    "addressLocality": "<市区町村*>",
+    "streetAddress": "<番地・ビル名*>",
+    "contactTitle": "<連絡先表示名>",
+    "contactUrl": "<連絡先URL>",
+    "privacyPolicyTitle": "<プライバシーポリシー表示名>",
+    "privacyPolicyUrl": "<プライバシーポリシーURL>",
+    "publishingPrincipleTitle": "<編集ガイドライン表示名>",
+    "publishingPrincipleUrl": "<編集ガイドラインURL>",
+    "logos": {
+    "create": [
+    {
+    "url": "<ロゴURL>",
+    "isMain": true
+    }
+    ]
+    }
+    }
+
+    入力ファイルの例:
+
+    {
+    "id": "cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc",
+    "domainName": "localhost",
+    "roleValue": "certifier",
+    "name": "Originator Profile 技術研究組合 (開発用)",
+    "url": "https://originator-profile.org/",
+    "corporateNumber": "8010005035933",
+    "postalCode": "100-8055",
+    "addressCountry": "JP",
+    "addressRegion": "東京都",
+    "addressLocality": "千代田区",
+    "streetAddress": "大手町1-7-1",
+    "contactTitle": "お問い合わせ",
+    "contactUrl": "https://originator-profile.org/ja-JP/inquiry/",
+    "privacyPolicyTitle": "プライバシーポリシー",
+    "privacyPolicyUrl": "https://originator-profile.org/ja-JP/privacy/",
+    "logos": {
+    "create": [
+    {
+    "url": "https://originator-profile.org/image/icon.svg",
+    "isMain": true
+    }
+    ]
+    }
+    }
+
+    詳細は
+    Prisma.accountsCreateInput
+    https://docs.originator-profile.org/ts/types/_originator_profile_registry_db.default.Prisma.accountsCreateInput.html
+    または Prisma.accountsUpdateInput
+    https://docs.originator-profile.org/ts/types/_originator_profile_registry_db.default.Prisma.accountsUpdateInput.html
+    をご確認ください。
 
   -o, --operation=create|read|update|delete  操作
 

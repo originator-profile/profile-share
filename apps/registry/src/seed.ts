@@ -131,7 +131,7 @@ export async function seed(): Promise<void> {
 
   const issuerExists = await services.account.read({ id: issuerUuid });
   if (issuerExists instanceof Error) {
-    await services.account.create({ id: issuerUuid, ...exampleAccount });
+    await services.account.create({ ...exampleAccount, id: issuerUuid });
     const certifier = parseAccountId(exampleAccount.domainName);
     await services.credential.create(
       issuerUuid,

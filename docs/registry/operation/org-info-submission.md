@@ -8,36 +8,33 @@ sidebar_position: 3
 
 組織情報を入力した JSON ファイルが用意できたら、Originator Profile レジストリ管理者に渡してください。Originator Profile レジストリ管理者が Originator Profile レジストリにアカウントを作成します。
 
-## トヨタ登録時の例
-
-トヨタ自動車株式会社の組織情報を記載する場合、以下のようになります。
-
-`account.example.json`
+## 形式
 
 ```json
 {
-  "domainName": "toyota.demosites.pages.dev",
-  "roleValue": "group",
-  "name": "トヨタ自動車株式会社",
-  "url": "https://global.toyota/",
-  "description": "トヨタ自動車株式会社詳細",
-  "email": null,
-  "phoneNumber": "0565-28-2121",
-  "postalCode": "471-8571",
-  "addressCountry": "JP",
-  "addressRegion": "愛知県",
-  "addressLocality": "豊田市",
-  "streetAddress": "トヨタ町1番地",
-  "contactTitle": "FAQ・お問い合わせ",
-  "contactUrl": "https://global.toyota/jp/faq",
-  "privacyPolicyTitle": "プライバシー",
-  "privacyPolicyUrl": "https://global.toyota/jp/sustainability/privacy",
-  "publishingPrincipleTitle": null,
-  "publishingPrincipleUrl": null,
+  "domainName": "<OP ID>",
+  "roleValue": "<種別 - group: 組織、certifier: 認証機関>",
+  "name": "<法人名*>",
+  "url": "<ウェブサイトのURL>",
+  "corporateNumber": "<法人番号>",
+  "description": "<説明 (ウェブメディアそれを運用する法人、認定機関、業界団体等であることの記述)>",
+  "email": "<メールアドレス>",
+  "phoneNumber": "<電話番号>",
+  "postalCode": "<郵便番号*>",
+  "addressCountry": "<国*>",
+  "addressRegion": "<都道府県*>",
+  "addressLocality": "<市区町村*>",
+  "streetAddress": "<番地・ビル名*>",
+  "contactTitle": "<連絡先表示名>",
+  "contactUrl": "<連絡先URL>",
+  "privacyPolicyTitle": "<プライバシーポリシー表示名>",
+  "privacyPolicyUrl": "<プライバシーポリシーURL>",
+  "publishingPrincipleTitle": "<編集ガイドライン表示名>",
+  "publishingPrincipleUrl": "<編集ガイドラインURL>",
   "logos": {
     "create": [
       {
-        "url": "https://toyota.demosites.pages.dev/logos/horizontal-toyota.svg",
+        "url": "<ロゴURL>",
         "isMain": true
       }
     ]
@@ -45,33 +42,33 @@ sidebar_position: 3
 }
 ```
 
-「トヨタ」は、トヨタ自動車株式会社の登録商標です。
+\* 必須項目
 
-## JICDAQ 登録時の例
-
-一般社団法人デジタル広告品質認証機構の組織情報を記載する場合、以下のようになります。
+## 「Originator Profile 技術研究組合」の例
 
 ```json
 {
-  "domainName": "jicdaq.or.jp",
-  "url": "https://www.jicdaq.or.jp/",
+  "domainName": "originator-profile.org",
   "roleValue": "certifier",
-  "name": "一般社団法人 デジタル広告品質認証機構",
-  "description": null,
-  "email": null,
-  "phoneNumber": null,
-  "postalCode": "104-0061",
+  "name": "Originator Profile 技術研究組合",
+  "url": "https://originator-profile.org/",
+  "corporateNumber": "8010005035933",
+  "postalCode": "100-8055",
   "addressCountry": "JP",
   "addressRegion": "東京都",
-  "addressLocality": "中央区",
-  "streetAddress": "銀座3-10-7 ヒューリック銀座三丁目ビル 8階",
+  "addressLocality": "千代田区",
+  "streetAddress": "大手町1-7-1",
   "contactTitle": "お問い合わせ",
-  "contactUrl": "https://www.jicdaq.or.jp/contact.html",
+  "contactUrl": "https://originator-profile.org/ja-JP/inquiry/",
   "privacyPolicyTitle": "プライバシーポリシー",
-  "privacyPolicyUrl": "https://www.jicdaq.or.jp/privacypolicy.html",
-  "publishingPrincipleTitle": null,
-  "publishingPrincipleUrl": null
+  "privacyPolicyUrl": "https://originator-profile.org/ja-JP/privacy/",
+  "logos": {
+    "create": [
+      {
+        "url": "https://originator-profile.org/image/icon.svg",
+        "isMain": true
+      }
+    ]
+  }
 }
 ```
-
-「JICDAQ」は、一般社団法人デジタル広告品質認証機構の登録商標です。
