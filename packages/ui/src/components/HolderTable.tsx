@@ -1,4 +1,5 @@
 import { OpHolder } from "@originator-profile/model";
+import { ExternalLink } from "./link";
 import Table from "./Table";
 import TableRow from "./TableRow";
 
@@ -17,24 +18,15 @@ function HolderTable({ className, holder }: Props) {
       />
       <TableRow
         header="URL"
-        data={
-          <a
-            className="anchor-link"
-            href={holder.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {holder.url}
-          </a>
-        }
+        data={<ExternalLink href={holder.url}>{holder.url}</ExternalLink>}
       />
       {"phoneNumber" in holder && (
         <TableRow
           header="電話番号"
           data={
-            <a className="anchor-link" href={`tel:${holder.phoneNumber}`}>
+            <ExternalLink href={`tel:${holder.phoneNumber}`}>
               {holder.phoneNumber}
-            </a>
+            </ExternalLink>
           }
         />
       )}
@@ -42,9 +34,21 @@ function HolderTable({ className, holder }: Props) {
         <TableRow
           header="メールアドレス"
           data={
-            <a className="anchor-link" href={`mailto:${holder.email}`}>
+            <ExternalLink href={`mailto:${holder.email}`}>
               {holder.email}
-            </a>
+            </ExternalLink>
+          }
+        />
+      )}
+      {"corporateNumber" in holder && (
+        <TableRow
+          header="法人番号"
+          data={
+            <ExternalLink
+              href={`https://info.gbiz.go.jp/hojin/ichiran?hojinBango=${holder.corporateNumber}`}
+            >
+              {holder.corporateNumber}
+            </ExternalLink>
           }
         />
       )}
@@ -52,14 +56,9 @@ function HolderTable({ className, holder }: Props) {
         <TableRow
           header="問い合わせ"
           data={
-            <a
-              className="anchor-link"
-              href={holder.contactUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <ExternalLink href={holder.contactUrl}>
               {holder.contactTitle ?? holder.contactUrl}
-            </a>
+            </ExternalLink>
           }
         />
       )}
@@ -67,14 +66,9 @@ function HolderTable({ className, holder }: Props) {
         <TableRow
           header="プライバシーポリシー"
           data={
-            <a
-              className="anchor-link"
-              href={holder.privacyPolicyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <ExternalLink href={holder.privacyPolicyUrl}>
               {holder.privacyPolicyTitle ?? holder.privacyPolicyUrl}
-            </a>
+            </ExternalLink>
           }
         />
       )}
@@ -82,14 +76,9 @@ function HolderTable({ className, holder }: Props) {
         <TableRow
           header="編集ガイドライン"
           data={
-            <a
-              className="anchor-link"
-              href={holder.publishingPrincipleUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <ExternalLink href={holder.publishingPrincipleUrl}>
               {holder.publishingPrincipleTitle ?? holder.publishingPrincipleUrl}
-            </a>
+            </ExternalLink>
           }
         />
       )}

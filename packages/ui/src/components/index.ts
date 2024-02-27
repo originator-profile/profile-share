@@ -1,3 +1,4 @@
+export * from "./link/index";
 export { default as CredentialDetail } from "./CredentialDetail";
 export { default as CredentialSummary } from "./CredentialSummary";
 export { default as Description } from "./Description";
@@ -11,7 +12,7 @@ export { default as Roles } from "./Roles";
 export { default as Spinner } from "./Spinner";
 export { default as Table } from "./Table";
 export { default as TableRow } from "./TableRow";
+export { default as TechInfo } from "./TechInfo";
 export { default as TechTable } from "./TechTable";
 export { default as WebsiteMainTable } from "./WebsiteMainTable";
 export { default as WebsiteSubTable } from "./WebsiteSubTable";
-export { default as TechInfo } from "./TechInfo";

@@ -1,4 +1,5 @@
 import { OgWebsite } from "@originator-profile/model";
+import { ExternalLink } from "./link";
 import Table from "./Table";
 import TableRow from "./TableRow";
 
@@ -13,16 +14,7 @@ function WebsiteSubTable({ className, website }: Props) {
       {"url" in website && (
         <TableRow
           header="URL"
-          data={
-            <a
-              className="anchor-link"
-              href={website.url}
-              target="_blank"
-              rel="nodpener noreferrer"
-            >
-              {website.url}
-            </a>
-          }
+          data={<ExternalLink href={website.url}>{website.url}</ExternalLink>}
         />
       )}
       {(website.category?.length ?? 0) > 0 && (
