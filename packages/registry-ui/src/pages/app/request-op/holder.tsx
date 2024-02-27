@@ -389,17 +389,14 @@ export default function Holder() {
                 errors.corporateNumber,
             })}
             {...register("corporateNumber", {
-              minLength: {
-                value: 13,
-                message: "不正な法人番号です。",
-              },
-              maxLength: {
-                value: 13,
+              pattern: {
+                value: /^\d{13}$/,
                 message: "不正な法人番号です。",
               },
               onBlur: saveDraft,
             })}
-            type="number"
+            type="text"
+            inputMode="numeric"
             placeholder="1234567890123"
           />
           <ErrorMessage
