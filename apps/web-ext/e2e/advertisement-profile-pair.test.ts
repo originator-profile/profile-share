@@ -32,12 +32,12 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
   ).toEqual(1);
 
   //オーバーレイ表示の確認
-  //3つめのボタンが画面内に収まるようにスクロール 
+  //3つめのボタンが画面内に収まるようにスクロール
   await page.evaluate(() => {
     window.scrollBy(0, window.innerHeight);
   });
   //対象のWebページにオーバーレイ表示が読み込まれるまで待機(iframeが複数あるのでsrcdoc指定)
-  await page.waitForSelector('iframe[srcdoc]');
+  await page.waitForSelector("iframe[srcdoc]");
 
   expect(await page.title()).toMatch(/広告のデモ/);
 
