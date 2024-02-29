@@ -16,29 +16,6 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-拡張機能.png` });
 });
 
-// test("title属性がnullのボタン要素のHTMLを特定", async ({ page }) => {
-//   const iframeElement = await page.waitForSelector('iframe[srcdoc]');
-//   const iframe = await iframeElement.contentFrame();
-
-//   if (iframe) {
-//       const buttons = await iframe.$$('button');
-//       console.log(`iframe内のボタンの数: ${buttons.length}`);
-
-//       for (const button of buttons) {
-//           const title = await button.getAttribute('title');
-//           if (title === null) {
-//               // title属性がnullの場合、ボタンのHTMLを取得
-//               const buttonHTML = await button.evaluate(node => node.outerHTML);
-//               console.log(`title属性がnullのボタンのHTML: ${buttonHTML}`);
-//           } else {
-//               console.log(`ボタンのタイトル: ${title}`);
-//           }
-//       }
-//   } else {
-//       console.log('指定されたiframeが見つかりません。');
-//   }
-// });
-
 test("広告プロファイルにおける表示の確認", async ({ page }) => {
   expect(
     await ext
