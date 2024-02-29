@@ -16,7 +16,30 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-拡張機能.png` });
 });
 
-test("広告プロファイルにおける表示の確認", async () => {
+// test("title属性がnullのボタン要素のHTMLを特定", async ({ page }) => {
+//   const iframeElement = await page.waitForSelector('iframe[srcdoc]');
+//   const iframe = await iframeElement.contentFrame();
+
+//   if (iframe) {
+//       const buttons = await iframe.$$('button');
+//       console.log(`iframe内のボタンの数: ${buttons.length}`);
+
+//       for (const button of buttons) {
+//           const title = await button.getAttribute('title');
+//           if (title === null) {
+//               // title属性がnullの場合、ボタンのHTMLを取得
+//               const buttonHTML = await button.evaluate(node => node.outerHTML);
+//               console.log(`title属性がnullのボタンのHTML: ${buttonHTML}`);
+//           } else {
+//               console.log(`ボタンのタイトル: ${title}`);
+//           }
+//       }
+//   } else {
+//       console.log('指定されたiframeが見つかりません。');
+//   }
+// });
+
+test("広告プロファイルにおける表示の確認", async ({ page }) => {
   expect(
     await ext
       ?.locator(':text("この広告の発行者には信頼性情報があります")')
@@ -29,5 +52,45 @@ test("広告プロファイルにおける表示の確認", async () => {
     await ext
       ?.locator(':text("このサイトの運営者には信頼性情報があります")')
       .count(),
+  ).toEqual(1);
+
+  //オーバーレイ表示の確認
+  //3つめのボタンが画面内に収まるようにスクロール 
+  await page.evaluate(() => {
+    window.scrollBy(0, window.innerHeight);
+  });
+  //対象のWebページにオーバーレイ表示が読み込まれるまで待機(iframeが複数あるのでsrcdoc指定)
+  await page.waitForSelector('iframe[srcdoc]');
+
+  expect(await page.title()).toMatch(/広告のデモ/);
+
+  expect(
+    await page
+      .frameLocator("iframe[srcdoc]")
+      .getByRole("button", {
+        name: "Originator Profile 技術研究組合 iframe 1",
+      })
+      .count(),
+    "ピンが少なくとも1つ存在する",
+  ).toEqual(1);
+
+  expect(
+    await page
+      .frameLocator("iframe[srcdoc]")
+      .getByRole("button", {
+        name: "Originator Profile 技術研究組合 iframe 2",
+      })
+      .count(),
+    "ピンが少なくとも1つ存在する",
+  ).toEqual(1);
+
+  expect(
+    await page
+      .frameLocator("iframe[srcdoc]")
+      .getByRole("button", {
+        name: "Originator Profile 技術研究組合 iframe 3",
+      })
+      .count(),
+    "ピンが少なくとも1つ存在する",
   ).toEqual(1);
 });
