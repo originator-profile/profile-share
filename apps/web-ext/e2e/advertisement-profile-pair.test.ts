@@ -48,7 +48,7 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
         name: "Originator Profile 技術研究組合 iframe 1",
       })
       .count(),
-    "ピンが少なくとも1つ存在する",
+    "ピンが1つ存在する",
   ).toEqual(1);
 
   expect(
@@ -58,7 +58,7 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
         name: "Originator Profile 技術研究組合 iframe 2",
       })
       .count(),
-    "ピンが少なくとも1つ存在する",
+    "ピンが1つ存在する",
   ).toEqual(1);
 
   expect(
@@ -68,6 +68,6 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
         name: "Originator Profile 技術研究組合 iframe 3",
       })
       .count(),
-    "ピンが少なくとも1つ存在する",
+    "ピンが1つ存在する",
   ).toEqual(1);
 });
