@@ -38,7 +38,7 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
   });
   //対象のWebページにオーバーレイ表示が読み込まれるまで待機(iframeが複数あるのでsrcdoc指定)
   await page.waitForSelector("iframe[srcdoc]");
-  const overlayFrame = page.frameLocator("iframe[srcdoc]"); 
+  const overlayFrame = page.frameLocator("iframe[srcdoc]");
 
   expect(await page.title()).toMatch(/広告のデモ/);
 
@@ -50,7 +50,7 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
       .count(),
     "ピンが1つ存在する",
   ).toEqual(1);
-  
+
   expect(
     await overlayFrame
       .getByRole("button", {
@@ -59,7 +59,7 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
       .count(),
     "ピンが1つ存在する",
   ).toEqual(1);
-  
+
   expect(
     await overlayFrame
       .getByRole("button", {
@@ -68,5 +68,4 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
       .count(),
     "ピンが1つ存在する",
   ).toEqual(1);
-  
 });
