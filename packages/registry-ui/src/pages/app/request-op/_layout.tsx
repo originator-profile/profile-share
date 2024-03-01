@@ -1,15 +1,14 @@
 import { Icon } from "@iconify/react";
 import { Outlet, Link } from "react-router-dom";
-import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import useTabs from "../../../utils/use-tabs";
-import { useUser } from "../../../utils/user";
+import { useSession } from "../../../utils/session";
 import { useAccount, useAccountLogo } from "../../../utils/account";
 
 function AccountHeader() {
-  const { user: token } = useAuth0();
-  const { data: user } = useUser(token?.sub ?? null);
-  const { data: account } = useAccount(user?.accountId ?? null);
-  const { data: logo } = useAccountLogo(user?.accountId ?? null);
+  const accountIdOrNull = useSession().data?.user?.accountId ?? null;
+  const { data: account } = useAccount(accountIdOrNull);
+  const { data: logo } = useAccountLogo(accountIdOrNull);
 
   return (
     <header className="bg-gray-50">

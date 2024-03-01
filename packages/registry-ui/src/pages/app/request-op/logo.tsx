@@ -5,16 +5,15 @@ import {
   useState,
   useEffect,
 } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useUser } from "../../../utils/user";
+import { useSession } from "../../../utils/session";
 import { useAccount, useAccountLogo } from "../../../utils/account";
 import clsx from "clsx";
 
 export default function Logo() {
-  const { user: token, getAccessTokenSilently } = useAuth0();
-  const { data: user } = useUser(token?.sub ?? null);
-  const { data: account } = useAccount(user?.accountId ?? null);
-  const { data: logo } = useAccountLogo(user?.accountId ?? null);
+  const session = useSession();
+  const accountIdOrNull = session.data?.user?.accountId ?? null;
+  const { data: account } = useAccount(accountIdOrNull);
+  const { data: logo } = useAccountLogo(accountIdOrNull);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const imagePreviewRef = useRef<HTMLImageElement>(null);
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
@@ -70,7 +69,7 @@ export default function Logo() {
         if (!e.target || !e.target.result) {
           return;
         }
-        const token = await getAccessTokenSilently();
+        const token = await session.getAccessToken();
 
         const endpoint = `/internal/accounts/${account.id}/logos/`;
         const response = await fetch(endpoint, {

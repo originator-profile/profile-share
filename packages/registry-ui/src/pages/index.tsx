@@ -11,7 +11,7 @@ export default function Index() {
       return;
     }
     if (isAuthenticated) {
-      navigate("/app");
+      navigate("/app/");
     } else {
       loginWithRedirect();
     }

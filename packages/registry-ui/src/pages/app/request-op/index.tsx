@@ -1,7 +1,6 @@
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useUser } from "../../../utils/user";
+import { useSession } from "../../../utils/session";
 import { useLatestRequest } from "../../../utils/request";
 import RequestStatus from "../../../components/RequestStatus";
 import logomarkTransparentUrl from "@originator-profile/ui/src/assets/logomark-transparent.png";
@@ -40,9 +39,8 @@ function FirstRequest() {
 }
 
 function Index() {
-  const { user: token } = useAuth0();
-  const { data: user } = useUser(token?.sub ?? null);
-  const { data: request, error } = useLatestRequest(user?.accountId ?? null);
+  const accountIdOrNull = useSession().data?.user?.accountId ?? null;
+  const { data: request, error } = useLatestRequest(accountIdOrNull);
   if (error?.cause?.status === 404) return <FirstRequest />;
   return <article>{request && <RequestStatus request={request} />}</article>;
 }

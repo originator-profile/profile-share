@@ -1,7 +1,8 @@
 resourceServers:
   - name: レジストリ API (Created by CLI)
     identifier: "##REGISTRY_API_URL##"
-    allow_offline_access: false
+    # allow_offline_access: false の場合、useRefreshTokensを使用すると失敗する
+    allow_offline_access: true
     enforce_policies: true
     scopes:
       - value: write:requests

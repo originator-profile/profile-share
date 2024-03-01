@@ -1,17 +1,13 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import useSWR from "swr";
-import { useAsync } from "react-use";
+import type { OpHolder } from "@originator-profile/model";
 import fetcher from "./fetcher";
-import { type OpHolder } from "@originator-profile/model";
+import { useSession } from "./session";
 
 /**
  * アカウントを取得するカスタムフック
  */
 export function useAccount(accountId: string | null) {
-  const { getAccessTokenSilently } = useAuth0();
-  const { value: token = null } = useAsync(async () => {
-    return getAccessTokenSilently();
-  });
+  const token = useSession().data?.accessToken ?? null;
 
   return useSWR(
     token && accountId && { url: `/internal/accounts/${accountId}/`, token },
@@ -44,10 +40,7 @@ export async function updateAccount(
  * 組織のロゴを取得するカスタムフック
  */
 export function useAccountLogo(accountId: string | null) {
-  const { getAccessTokenSilently } = useAuth0();
-  const { value: token = null } = useAsync(async () => {
-    return getAccessTokenSilently();
-  });
+  const token = useSession().data?.accessToken ?? null;
 
   return useSWR(
     token &&

@@ -1,17 +1,16 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import logoDark from "@originator-profile/ui/src/assets/logoDark.svg";
 import { Image } from "@originator-profile/ui";
 import { Menu } from "@headlessui/react";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
-import { useUser } from "../utils/user";
+import { useSession } from "../utils/session";
 import { useAccount } from "../utils/account";
 
 function UserProfile() {
-  const { loginWithRedirect, logout, isLoading, isAuthenticated, user } =
-    useAuth0();
-  if (isLoading) {
+  const session = useSession();
+
+  if (session.isLoading) {
     return (
       <div className="jumpu-spinner">
         <svg viewBox="25 25 50 50">
@@ -20,12 +19,17 @@ function UserProfile() {
       </div>
     );
   }
-  if (isAuthenticated && user) {
+
+  if (session.data?.isAuthenticated) {
     return (
       <Menu as="div" className="relative">
         <Menu.Button className="jumpu-text-button flex items-center gap-2 text-white rounded-none hover:bg-gray-700">
-          <img className="jumpu-avatar w-8 h-8" src={user.picture} alt="" />
-          <span>{user.name}</span>
+          <img
+            className="jumpu-avatar w-8 h-8"
+            src={session.data.user.picture}
+            alt=""
+          />
+          <span>{session.data.user.name}</span>
           <Icon icon="fa6-solid:caret-down" />
         </Menu.Button>
         <Menu.Items className="absolute right-0 mt-1 w-full jumpu-card">
@@ -33,13 +37,7 @@ function UserProfile() {
             <button
               className="jumpu-text-button w-full"
               type="button"
-              onClick={() =>
-                logout({
-                  logoutParams: {
-                    returnTo: new URL(window.location.origin).href,
-                  },
-                })
-              }
+              onClick={() => session.logout()}
             >
               ログアウト
             </button>
@@ -48,11 +46,12 @@ function UserProfile() {
       </Menu>
     );
   }
+
   return (
     <button
       className="jumpu-text-button text-white rounded-none hover:bg-gray-700"
       type="button"
-      onClick={() => loginWithRedirect()}
+      onClick={() => session.login()}
     >
       ログイン
     </button>
@@ -64,9 +63,8 @@ type Props = {
 };
 
 export default function AppBar({ className }: Props) {
-  const { user: token } = useAuth0();
-  const { data: user } = useUser(token?.sub ?? null);
-  const { data: account } = useAccount(user?.accountId ?? null);
+  const accountIdOrNull = useSession().data?.user?.accountId ?? null;
+  const { data: account } = useAccount(accountIdOrNull);
 
   const link: { [key: string]: string } = {
     group: "/app/request-op/",

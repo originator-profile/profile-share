@@ -1,5 +1,5 @@
 import { FastifySchema, FastifyRequest } from "fastify";
-import { BadRequestError } from "http-errors-enhanced";
+import { BadRequestError, createError } from "http-errors-enhanced";
 import { ErrorResponse } from "../../../error";
 import { User } from "@originator-profile/model";
 
@@ -25,7 +25,17 @@ async function upsert(req: FastifyRequest) {
     { headers: { Authorization: `Bearer ${accessToken}` } },
   );
 
-  const userinfo = (await userinfoResponse.json()) as unknown as {
+  const userinfoResponseBody: unknown = await userinfoResponse.json();
+
+  if (!userinfoResponse.ok) {
+    throw createError(
+      userinfoResponse.status,
+      userinfoResponse.statusText,
+      userinfoResponseBody as object,
+    );
+  }
+
+  const userinfo = userinfoResponseBody as {
     sub: string;
     name: string;
     email: string;

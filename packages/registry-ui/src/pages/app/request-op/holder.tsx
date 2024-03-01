@@ -3,8 +3,7 @@ import clsx from "clsx";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import FormRow from "../../../components/FormRow";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useUser } from "../../../utils/user";
+import { useSession } from "../../../utils/session";
 import { updateAccount, useAccount } from "../../../utils/account";
 import UrlAndTitleInput from "../../../components/UrlAndTitleInput";
 import { useAccountDraft } from "../../../utils/draft";
@@ -37,8 +36,8 @@ interface IFormInput {
 }
 
 export default function Holder() {
-  const { user: token, getAccessTokenSilently } = useAuth0();
-  const { data: user, mutate: mutateUser } = useUser(token?.sub ?? null);
+  const session = useSession();
+  const user = session.data?.user;
   const { data: account, mutate: mutateAccount } = useAccount(
     user?.accountId ?? null,
   );
@@ -84,14 +83,14 @@ export default function Holder() {
     if (!account) {
       return;
     }
-    const token = await getAccessTokenSilently();
+    const token = await session.getAccessToken();
     const response = await updateAccount(data, account.id, token);
     if (!response.ok) {
       // TODO: エラーを表示して
       throw new Error();
     } else {
       // 成功の場合、SWR のキャッシュの revalidate を行う。
-      mutateUser();
+      session.mutate();
       mutateAccount();
       clearDraft();
     }

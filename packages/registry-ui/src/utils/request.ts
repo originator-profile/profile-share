@@ -1,8 +1,6 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import useSWR, { SWRResponse } from "swr";
-import { useAsync } from "react-use";
 import fetcher from "./fetcher";
-import { useUser } from "../utils/user";
+import { useSession } from "./session";
 import { Request } from "@originator-profile/model";
 import { Prisma } from "@prisma/client";
 
@@ -38,10 +36,7 @@ function convert(body: OpRequestSWRResponse["data"]): Request | undefined {
  * 最新の申請情報の取得
  */
 export function useLatestRequest(accountId: AccountId) {
-  const { getAccessTokenSilently } = useAuth0();
-  const { value: token = null } = useAsync(async () => {
-    return getAccessTokenSilently();
-  });
+  const token = useSession().data?.accessToken ?? null;
 
   const swr: OpRequestSWRResponse = useSWR(
     token &&
@@ -79,12 +74,11 @@ async function createRequest(req: {
  * 申請を作成するハンドラー
  */
 export function useCreateRequestHandler() {
-  const { user: token, getAccessTokenSilently } = useAuth0();
-  const { data: user } = useUser(token?.sub ?? null);
-  const accountId = user?.accountId ?? null;
+  const session = useSession();
+  const accountId = session.data?.user?.accountId ?? null;
   const { mutate } = useLatestRequest(accountId);
   const handler = async () => {
-    const token = await getAccessTokenSilently();
+    const token = await session.getAccessToken();
     // TODO: 失敗時の通知を実装して
     // TODO: 申請概要を入力するダイアログを実装して
     return createRequest({ token, accountId, requestSummary: "test" }).finally(
@@ -112,12 +106,12 @@ async function deleteRequest(req: {
  * 申請を取り下げるハンドラー
  */
 export function useDeleteRequestHandler() {
-  const { user: token, getAccessTokenSilently } = useAuth0();
-  const { data: user } = useUser(token?.sub ?? null);
-  const accountId = user?.accountId ?? null;
+  const session = useSession();
+  const accountId = session.data?.user?.accountId ?? null;
   const { mutate } = useLatestRequest(accountId);
   const handler = async () => {
-    const token = await getAccessTokenSilently();
+    const token = await session.getAccessToken();
+
     // TODO: 失敗時の通知を実装して
     return deleteRequest({ token, accountId }).finally(() => mutate());
   };
