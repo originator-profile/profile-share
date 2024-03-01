@@ -38,36 +38,35 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
   });
   //対象のWebページにオーバーレイ表示が読み込まれるまで待機(iframeが複数あるのでsrcdoc指定)
   await page.waitForSelector("iframe[srcdoc]");
+  const overlayFrame = page.frameLocator("iframe[srcdoc]"); 
 
   expect(await page.title()).toMatch(/広告のデモ/);
 
   expect(
-    await page
-      .frameLocator("iframe[srcdoc]")
+    await overlayFrame
       .getByRole("button", {
         name: "Originator Profile 技術研究組合 iframe 1",
       })
       .count(),
     "ピンが1つ存在する",
   ).toEqual(1);
-
+  
   expect(
-    await page
-      .frameLocator("iframe[srcdoc]")
+    await overlayFrame
       .getByRole("button", {
         name: "Originator Profile 技術研究組合 iframe 2",
       })
       .count(),
     "ピンが1つ存在する",
   ).toEqual(1);
-
+  
   expect(
-    await page
-      .frameLocator("iframe[srcdoc]")
+    await overlayFrame
       .getByRole("button", {
         name: "Originator Profile 技術研究組合 iframe 3",
       })
       .count(),
     "ピンが1つ存在する",
   ).toEqual(1);
+  
 });
