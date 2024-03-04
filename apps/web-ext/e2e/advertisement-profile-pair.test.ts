@@ -17,7 +17,6 @@ test.afterEach(async ({ page }, testInfo) => {
 });
 
 test("広告プロファイルにおける表示の確認", async ({ page }) => {
-  
   //対象のWebページにオーバーレイ表示が読み込まれるまで待機(iframeが複数あるのでsrcdoc指定)
   await page.waitForSelector("iframe[srcdoc]");
 
