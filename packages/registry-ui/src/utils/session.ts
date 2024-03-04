@@ -28,37 +28,32 @@ type Session = AuthenticatedSession | UnauthenticatedSession;
 
 const url = "/internal/user-accounts/";
 
+const unauthenticatedSession: UnauthenticatedSession = {
+  isAuthenticated: false,
+};
+
 async function fetchSession(auth: Auth0ContextInterface): Promise<Session> {
-  if (auth.error) {
-    throw auth.error;
-  }
+  if (auth.error) throw auth.error;
+  if (!auth.isAuthenticated) return unauthenticatedSession;
 
   let accessToken: string;
 
   try {
-    accessToken = await auth.getAccessTokenSilently({
-      // https://github.com/originator-profile/profile/issues/1243
-      cacheMode: "cache-only",
-    });
+    accessToken = await auth.getAccessTokenSilently();
   } catch (e) {
     if (
       ["missing_refresh_token", "invalid_grant"].includes(
         (e as GenericError).error,
       )
     ) {
-      // キャッシュしているアクセストークンの権限が不足している場合はログインを試みる
+      // アクセストークンの権限が不足している場合はログインを試みる
       await auth.loginWithRedirect();
     }
 
     throw e;
   }
 
-  const unauthenticatedSession: UnauthenticatedSession = {
-    isAuthenticated: false,
-  };
-
   if (!accessToken) return unauthenticatedSession;
-  if (!auth.isAuthenticated) return unauthenticatedSession;
 
   const user = await fetcher<UserWithOpAccountId>({
     method: "PUT",
