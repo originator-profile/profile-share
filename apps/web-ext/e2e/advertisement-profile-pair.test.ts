@@ -17,6 +17,9 @@ test.afterEach(async ({ page }, testInfo) => {
 });
 
 test("広告プロファイルにおける表示の確認", async ({ page }) => {
+  //対象のWebページにオーバーレイ表示が読み込まれるまで待機(iframeが複数あるのでsrcdoc指定)
+  await page.waitForSelector("iframe[srcdoc]");
+
   expect(
     await ext
       ?.locator(':text("この広告の発行者には信頼性情報があります")')
@@ -36,8 +39,7 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
   await page.evaluate(() => {
     window.scrollBy(0, window.innerHeight);
   });
-  //対象のWebページにオーバーレイ表示が読み込まれるまで待機(iframeが複数あるのでsrcdoc指定)
-  await page.waitForSelector("iframe[srcdoc]");
+
   const overlayFrame = page.frameLocator("iframe[srcdoc]");
 
   expect(await page.title()).toMatch(/広告のデモ/);
