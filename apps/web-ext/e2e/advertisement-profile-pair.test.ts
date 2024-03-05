@@ -20,7 +20,6 @@ test.afterEach(async ({ page }, testInfo) => {
 });
 
 test("広告プロファイルにおける表示の確認", async ({ page }) => {
-  console.log(page.viewportSize());
   //対象のWebページにオーバーレイ表示が読み込まれるまで待機(iframeが複数あるのでsrcdoc指定)
   await page.waitForSelector("iframe[srcdoc]");
 
@@ -43,21 +42,21 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
 
   expect(await page.title()).toMatch(/広告のデモ/);
 
-  //確認前に要素読み込みまで待機
-  // await overlayFrame
-  //   .locator('button[title*="Originator Profile 技術研究組合 iframe 1"]')
-  //   .waitFor();
-  // await overlayFrame
-  //   .locator('button[title*="Originator Profile 技術研究組合 iframe 2"]')
-  //   .waitFor();
-  // await overlayFrame
-  //   .locator('button[title*="Originator Profile 技術研究組合 iframe 3"]')
-  //   .waitFor();
+  // 確認前に要素読み込みまで待機
+  await overlayFrame
+    .locator('button[title*="Originator Profile 技術研究組合 (開発用) iframe 1"]')
+    .waitFor();
+  await overlayFrame
+    .locator('button[title*="Originator Profile 技術研究組合 (開発用) iframe 2"]')
+    .waitFor();
+  await overlayFrame
+    .locator('button[title*="Originator Profile 技術研究組合 (開発用) iframe 3"]')
+    .waitFor();
 
   expect(
     await overlayFrame
       .getByRole("button", {
-        name: "Originator Profile 技術研究組合 iframe 1",
+        name: "Originator Profile 技術研究組合 (開発用) iframe 1",
       })
       .count(),
     "ピンが1つ存在する",
@@ -66,7 +65,7 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
   expect(
     await overlayFrame
       .getByRole("button", {
-        name: "Originator Profile 技術研究組合 iframe 2",
+        name: "Originator Profile 技術研究組合 (開発用) iframe 2",
       })
       .count(),
     "ピンが1つ存在する",
@@ -75,7 +74,7 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
   expect(
     await overlayFrame
       .getByRole("button", {
-        name: "Originator Profile 技術研究組合 iframe 3",
+        name: "Originator Profile 技術研究組合 (開発用) iframe 3",
       })
       .count(),
     "ピンが1つ存在する",
