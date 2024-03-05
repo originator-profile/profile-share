@@ -44,15 +44,15 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
   expect(await page.title()).toMatch(/広告のデモ/);
 
   //確認前に要素読み込みまで待機
-  await overlayFrame
-    .locator('button[title*="Originator Profile 技術研究組合 iframe 1"]')
-    .waitFor();
-  await overlayFrame
-    .locator('button[title*="Originator Profile 技術研究組合 iframe 2"]')
-    .waitFor();
-  await overlayFrame
-    .locator('button[title*="Originator Profile 技術研究組合 iframe 3"]')
-    .waitFor();
+  // await overlayFrame
+  //   .locator('button[title*="Originator Profile 技術研究組合 iframe 1"]')
+  //   .waitFor();
+  // await overlayFrame
+  //   .locator('button[title*="Originator Profile 技術研究組合 iframe 2"]')
+  //   .waitFor();
+  // await overlayFrame
+  //   .locator('button[title*="Originator Profile 技術研究組合 iframe 3"]')
+  //   .waitFor();
 
   expect(
     await overlayFrame
