@@ -44,13 +44,19 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
 
   // 確認前に要素読み込みまで待機
   await overlayFrame
-    .locator('button[title*="Originator Profile 技術研究組合 (開発用) iframe 1"]')
+    .locator(
+      'button[title*="Originator Profile 技術研究組合 (開発用) iframe 1"]',
+    )
     .waitFor();
   await overlayFrame
-    .locator('button[title*="Originator Profile 技術研究組合 (開発用) iframe 2"]')
+    .locator(
+      'button[title*="Originator Profile 技術研究組合 (開発用) iframe 2"]',
+    )
     .waitFor();
   await overlayFrame
-    .locator('button[title*="Originator Profile 技術研究組合 (開発用) iframe 3"]')
+    .locator(
+      'button[title*="Originator Profile 技術研究組合 (開発用) iframe 3"]',
+    )
     .waitFor();
 
   expect(
