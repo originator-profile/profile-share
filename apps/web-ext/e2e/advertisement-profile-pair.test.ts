@@ -9,6 +9,9 @@ test.beforeEach(async ({ context, page }) => {
   await page.goto("http://localhost:8080/examples/ad.html");
 
   ext = await popup(context);
+
+  // 3つ目のピンがウィンドウ外に表示されてしまうのでウィンドウのサイズ変更
+  await page.setViewportSize({ width: 1920, height: 1080 });
 });
 
 test.afterEach(async ({ page }, testInfo) => {
@@ -17,6 +20,7 @@ test.afterEach(async ({ page }, testInfo) => {
 });
 
 test("広告プロファイルにおける表示の確認", async ({ page }) => {
+  console.log(page.viewportSize());
   //対象のWebページにオーバーレイ表示が読み込まれるまで待機(iframeが複数あるのでsrcdoc指定)
   await page.waitForSelector("iframe[srcdoc]");
 
@@ -35,11 +39,6 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
   ).toEqual(1);
 
   //オーバーレイ表示の確認
-  //3つめのボタンが画面内に収まるようにスクロール
-  await page.evaluate(() => {
-    window.scrollBy(0, window.innerHeight);
-  });
-
   const overlayFrame = page.frameLocator("iframe[srcdoc]");
 
   expect(await page.title()).toMatch(/広告のデモ/);
