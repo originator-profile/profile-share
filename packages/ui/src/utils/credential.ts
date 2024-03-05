@@ -4,4 +4,4 @@ import { OpCredential, OpHolder } from "@originator-profile/model";
 export const getVerificationType = (
   credential: OpCredential,
   holder: OpHolder,
-) => (credential.verifier === holder.domainName ? "自己検証" : "第三者検証");
+) => (credential.verifier === holder.domainName ? "自己宣言" : "第三者検証");
