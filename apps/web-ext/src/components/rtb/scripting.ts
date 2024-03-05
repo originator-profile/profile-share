@@ -22,7 +22,7 @@ async function findNodeObjects(frames: FrameList): Promise<NodeObject[]> {
     func: getJsonLdNodeObjects,
   });
 
-  return res.flatMap((res) => res?.result) ?? [];
+  return res.flatMap((res) => res?.result ?? []);
 }
 
 /**
