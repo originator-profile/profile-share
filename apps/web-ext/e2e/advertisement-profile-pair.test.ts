@@ -33,12 +33,8 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
   await page.waitForSelector("iframe[srcdoc]");
   const overlayFrame = page.frameLocator("iframe[srcdoc]");
 
-  if (dpLinksCount === undefined) {
-    // アイテムが0個の場合なにもしない
-  } else {
-    // 可視性の確認
-    await expect(overlayFrame.getByRole("button").first()).toBeVisible();
-    // 個数確認(ユーザーから見える状態かは確認しない)
-    await expect(overlayFrame.getByRole("button")).toHaveCount(dpLinksCount);
-  }
+  // 可視性の確認
+  await expect(overlayFrame.getByRole("button").first()).toBeVisible();
+  // 個数確認(ユーザーから見える状態かは確認しない)
+  await expect(overlayFrame.getByRole("button")).toHaveCount(dpLinksCount);
 });
