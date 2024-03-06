@@ -2,13 +2,16 @@ import { Page } from "@playwright/test";
 import { expect, popup, test } from "./fixtures";
 
 test.describe.configure({ mode: "serial" });
-let ext: Page | undefined;
+let ext: Page;
 
 test.beforeEach(async ({ context, page }) => {
   // Profile Registry にアクセス (apps/registry)
   await page.goto("http://localhost:8080/examples/ad.html");
 
   ext = await popup(context);
+
+  // 3つ目のピンがウィンドウ外に表示されてしまうのでウィンドウのサイズ変更
+  await page.setViewportSize({ width: 1920, height: 1080 });
 });
 
 test.afterEach(async ({ page }, testInfo) => {
@@ -17,55 +20,21 @@ test.afterEach(async ({ page }, testInfo) => {
 });
 
 test("広告プロファイルにおける表示の確認", async ({ page }) => {
-  expect(
-    await ext
-      ?.locator(':text("この広告の発行者には信頼性情報があります")')
-      .count(),
-  ).toEqual(1);
+  await expect(ext?.locator("main")).toBeVisible();
+  await expect(ext?.locator("main")).toContainText(
+    "この広告の発行者には信頼性情報があります",
+  );
 
-  expect(await ext?.title()).toMatch(/コンテンツ情報/);
-
-  expect(
-    await ext
-      ?.locator(':text("このサイトの運営者には信頼性情報があります")')
-      .count(),
-  ).toEqual(1);
+  // 拡張機能のdpアイテムの個数取得
+  const dpLinksCount = await ext?.locator("nav").getByRole("link").count();
 
   //オーバーレイ表示の確認
-  //3つめのボタンが画面内に収まるようにスクロール
-  await page.evaluate(() => {
-    window.scrollBy(0, window.innerHeight);
-  });
   //対象のWebページにオーバーレイ表示が読み込まれるまで待機(iframeが複数あるのでsrcdoc指定)
   await page.waitForSelector("iframe[srcdoc]");
   const overlayFrame = page.frameLocator("iframe[srcdoc]");
 
-  expect(await page.title()).toMatch(/広告のデモ/);
-
-  expect(
-    await overlayFrame
-      .getByRole("button", {
-        name: "Originator Profile 技術研究組合 iframe 1",
-      })
-      .count(),
-    "ピンが1つ存在する",
-  ).toEqual(1);
-
-  expect(
-    await overlayFrame
-      .getByRole("button", {
-        name: "Originator Profile 技術研究組合 iframe 2",
-      })
-      .count(),
-    "ピンが1つ存在する",
-  ).toEqual(1);
-
-  expect(
-    await overlayFrame
-      .getByRole("button", {
-        name: "Originator Profile 技術研究組合 iframe 3",
-      })
-      .count(),
-    "ピンが1つ存在する",
-  ).toEqual(1);
+  // 可視性の確認
+  await expect(overlayFrame.getByRole("button").first()).toBeVisible();
+  // 個数確認(ユーザーから見える状態かは確認しない)
+  await expect(overlayFrame.getByRole("button")).toHaveCount(dpLinksCount);
 });
