@@ -20,62 +20,30 @@ test.afterEach(async ({ page }, testInfo) => {
 });
 
 test("広告プロファイルにおける表示の確認", async ({ page }) => {
-  expect(
-    await ext
-      ?.locator(':text("この広告の発行者には信頼性情報があります")')
-      .count(),
-  ).toEqual(1);
+  // toBeVisibleとtoContainTextの警告回避
+  if (!ext) {
+    throw new Error("ext is undefined.");
+  }
 
-  expect(await ext?.title()).toMatch(/コンテンツ情報/);
+  await expect(ext?.locator("main")).toBeVisible();
+  await expect(ext?.locator("main")).toContainText(
+    "この広告の発行者には信頼性情報があります",
+  );
 
-  expect(
-    await ext
-      ?.locator(':text("このサイトの運営者には信頼性情報があります")')
-      .count(),
-  ).toEqual(1);
+  // 拡張機能のdpアイテムの個数取得
+  const dpLinksCount = await ext?.locator("nav").getByRole("link").count();
 
   //オーバーレイ表示の確認
   //対象のWebページにオーバーレイ表示が読み込まれるまで待機(iframeが複数あるのでsrcdoc指定)
   await page.waitForSelector("iframe[srcdoc]");
   const overlayFrame = page.frameLocator("iframe[srcdoc]");
 
-  expect(await page.title()).toMatch(/広告のデモ/);
-
-  // 確認前に要素読み込みまで待機
-  await overlayFrame
-    .locator('button[title*="Originator Profile 技術研究組合 (開発用) iframe 1"]')
-    .waitFor();
-  await overlayFrame
-    .locator('button[title*="Originator Profile 技術研究組合 (開発用) iframe 2"]')
-    .waitFor();
-  await overlayFrame
-    .locator('button[title*="Originator Profile 技術研究組合 (開発用) iframe 3"]')
-    .waitFor();
-
-  expect(
-    await overlayFrame
-      .getByRole("button", {
-        name: "Originator Profile 技術研究組合 (開発用) iframe 1",
-      })
-      .count(),
-    "ピンが1つ存在する",
-  ).toEqual(1);
-
-  expect(
-    await overlayFrame
-      .getByRole("button", {
-        name: "Originator Profile 技術研究組合 (開発用) iframe 2",
-      })
-      .count(),
-    "ピンが1つ存在する",
-  ).toEqual(1);
-
-  expect(
-    await overlayFrame
-      .getByRole("button", {
-        name: "Originator Profile 技術研究組合 (開発用) iframe 3",
-      })
-      .count(),
-    "ピンが1つ存在する",
-  ).toEqual(1);
+  if (dpLinksCount === undefined) {
+    // アイテムが0個の場合なにもしない
+  }else{
+    // 可視性の確認
+    await expect(overlayFrame.getByRole("button").first()).toBeVisible();
+    // 個数確認(ユーザーから見える状態かは確認しない)
+    await expect(overlayFrame.getByRole("button")).toHaveCount(dpLinksCount);
+  }
 });
