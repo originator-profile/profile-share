@@ -40,7 +40,7 @@ test("広告プロファイルにおける表示の確認", async ({ page }) => 
 
   if (dpLinksCount === undefined) {
     // アイテムが0個の場合なにもしない
-  }else{
+  } else {
     // 可視性の確認
     await expect(overlayFrame.getByRole("button").first()).toBeVisible();
     // 個数確認(ユーザーから見える状態かは確認しない)
