@@ -2,7 +2,7 @@ import { Page } from "@playwright/test";
 import { expect, popup, test } from "./fixtures";
 
 test.describe.configure({ mode: "serial" });
-let ext: Page | undefined;
+let ext: Page;
 
 test.beforeEach(async ({ context, page }) => {
   // Profile Registry にアクセス (apps/registry)
@@ -20,11 +20,6 @@ test.afterEach(async ({ page }, testInfo) => {
 });
 
 test("広告プロファイルにおける表示の確認", async ({ page }) => {
-  // toBeVisibleとtoContainTextの警告回避
-  if (!ext) {
-    throw new Error("ext is undefined.");
-  }
-
   await expect(ext?.locator("main")).toBeVisible();
   await expect(ext?.locator("main")).toContainText(
     "この広告の発行者には信頼性情報があります",
