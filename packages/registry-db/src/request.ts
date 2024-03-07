@@ -209,6 +209,35 @@ export const RequestRepository = () => ({
       };
     });
   },
+
+  /**
+   * 審査結果である申請情報のリストの取得
+   * @param accountId 会員 ID
+   * @return 審査結果である申請情報のリストまたはエラー
+   */
+  async readResults(accountId: AccountId): Promise<RequestLog[] | Error> {
+    const prisma = getClient();
+    const data = await prisma.requestLogs
+      .findMany({
+        where: { groupId: accountId, status: { NOT: { value: "pending" } } },
+        include: { reviewComments: { include: { reviewComment: true } } },
+      })
+      .catch((e: Error) => e);
+    if (data instanceof Error) return data;
+    return data.map((requestLog) => {
+      const { reviewComments, ...rest } = requestLog;
+      return {
+        ...rest,
+        reviewComments: reviewComments.map((rc) => {
+          return {
+            id: rc.reviewComment.id,
+            requestFieldName: rc.reviewComment.requestFieldName,
+            comment: rc.reviewComment.comment,
+          };
+        }),
+      };
+    });
+  },
 });
 
 export type RequestRepository = ReturnType<typeof RequestRepository>;

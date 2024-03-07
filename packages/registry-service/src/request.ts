@@ -1,6 +1,7 @@
 import {
   type Request,
   type RequestList,
+  type RequestLog,
   type RequestRepository,
 } from "@originator-profile/registry-db";
 
@@ -50,6 +51,14 @@ export const RequestService = ({ requestRepository }: Options) => ({
     pending?: boolean;
   }): Promise<RequestList | Error> {
     return requestRepository.readList({ pending });
+  },
+  /**
+   * 審査結果である申請情報のリストの取得
+   * @param accountId 会員 ID
+   * @return 審査結果である申請情報のリストまたはエラー
+   */
+  async readResults(accountId: string): Promise<RequestLog[] | Error> {
+    return requestRepository.readResults(accountId);
   },
 });
 
