@@ -1,4 +1,5 @@
 composer.lock
-packages/auth0/deploy-cli/*.yaml
-pnpm-lock.yaml
 lerna.json
+pnpm-lock.yaml
+packages/auth0/deploy-cli/*.yaml
+packages/registry-ui/src/router.ts

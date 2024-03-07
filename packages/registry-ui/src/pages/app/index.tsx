@@ -1,4 +1,5 @@
 import { Navigate } from "react-router-dom";
+import { Spinner } from "@originator-profile/ui";
 import { useSession } from "../../utils/session";
 import { useAccount } from "../../utils/account";
 
@@ -10,11 +11,7 @@ export default function Index() {
   if (session.isLoading || account.isLoading) {
     return (
       <article className="min-h-[75vh] flex flex-col gap-8 justify-center items-center">
-        <div className="jumpu-spinner">
-          <svg viewBox="25 25 50 50">
-            <circle cx="50" cy="50" r="20" />
-          </svg>
-        </div>
+        <Spinner />
         <p>ログインしています…</p>
       </article>
     );

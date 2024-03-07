@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "../../router";
 import { useSession } from "../../utils/session";
 
 export default function LoginFailed() {

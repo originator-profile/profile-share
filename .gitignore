@@ -18,4 +18,3 @@ vendor
 !/docs/registry/assets/.keep
 /pages
 /static/ts
-/packages/registry-ui/src/router.ts

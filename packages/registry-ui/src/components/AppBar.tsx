@@ -1,5 +1,5 @@
 import logoDark from "@originator-profile/ui/src/assets/logoDark.svg";
-import { Image } from "@originator-profile/ui";
+import { Image, Spinner } from "@originator-profile/ui";
 import { Menu } from "@headlessui/react";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
@@ -10,15 +10,7 @@ import { useAccount } from "../utils/account";
 function UserProfile() {
   const session = useSession();
 
-  if (session.isLoading) {
-    return (
-      <div className="jumpu-spinner">
-        <svg viewBox="25 25 50 50">
-          <circle cx="50" cy="50" r="20" />
-        </svg>
-      </div>
-    );
-  }
+  if (session.isLoading) return <Spinner />;
 
   if (session.data?.isAuthenticated) {
     return (

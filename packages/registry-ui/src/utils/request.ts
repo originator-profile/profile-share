@@ -1,4 +1,5 @@
-import useSWR, { SWRResponse } from "swr";
+import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 import fetcher from "./fetcher";
 import { useSession } from "./session";
 import { Request } from "@originator-profile/model";
@@ -14,16 +15,11 @@ type OpRequestBody = Omit<
   updatedAt: string;
 };
 
-type OpRequestSWRResponse = SWRResponse<OpRequestBody>;
-
-type AccountId = string | null;
-
 /*
  * DBモデルからデータモデルへの変換
  * TODO: @originator-profile/registry-db に移して
  */
-function convert(body: OpRequestSWRResponse["data"]): Request | undefined {
-  if (!body) return body;
+function convert(body: OpRequestBody): Request {
   return {
     ...body,
     requestSummary: body.requestSummary ?? undefined,
@@ -32,88 +28,85 @@ function convert(body: OpRequestSWRResponse["data"]): Request | undefined {
   };
 }
 
-/**
- * 最新の申請情報の取得
- */
-export function useLatestRequest(accountId: AccountId) {
-  const token = useSession().data?.accessToken ?? null;
+type FetchLatestRequestKey = {
+  requestId: "latest";
+  url: `/internal/accounts/${string}/requests/`;
+  token: string;
+};
 
-  const swr: OpRequestSWRResponse = useSWR(
-    token &&
-      accountId && {
-        url: `/internal/accounts/${accountId}/requests/latest/`,
-        token,
-      },
-    fetcher<OpRequestBody>,
-  );
+type CreateRequestProps = {
+  requestSummary: string;
+};
 
-  return {
-    ...swr,
-    data: convert(swr.data),
-  };
+async function fetchLatestRequest(
+  req: FetchLatestRequestKey,
+): Promise<Request | undefined> {
+  const url: `/internal/accounts/${string}/latest/` = `${req.url}${req.requestId}/`;
+
+  try {
+    const res = await fetcher<OpRequestBody>({ ...req, url });
+    return convert(res);
+  } catch (e) {
+    const res = (e as Error).cause as Response | undefined;
+    if (res?.status === 404) return;
+    // TODO: https://github.com/originator-profile/profile/issues/1028
+    if (res?.status === 400) return;
+  }
 }
 
 /**
  * 申請の作成
  */
-async function createRequest(req: {
-  token: string;
-  accountId: AccountId;
-  requestSummary: string;
-}): Promise<OpRequestBody | Error> {
-  return await fetcher<OpRequestBody>({
+async function createRequest(
+  req: FetchLatestRequestKey & CreateRequestProps,
+): Promise<Request> {
+  const res = await fetcher<OpRequestBody>({
     method: "POST",
+    url: req.url,
+    token: req.token,
     body: JSON.stringify({ requestSummary: req.requestSummary }),
     headers: { "Content-Type": "application/json" },
-    url: `/internal/accounts/${req.accountId}/requests/`,
-    token: req.token,
-  }).catch((e) => e);
-}
+  });
 
-/**
- * 申請を作成するハンドラー
- */
-export function useCreateRequestHandler() {
-  const session = useSession();
-  const accountId = session.data?.user?.accountId ?? null;
-  const { mutate } = useLatestRequest(accountId);
-  const handler = async () => {
-    const token = await session.getAccessToken();
-    // TODO: 失敗時の通知を実装して
-    // TODO: 申請概要を入力するダイアログを実装して
-    return createRequest({ token, accountId, requestSummary: "test" }).finally(
-      () => mutate(),
-    );
-  };
-  return handler;
+  return convert(res);
 }
 
 /**
  * 申請の取り下げ
  */
-async function deleteRequest(req: {
-  token: string;
-  accountId: AccountId;
-}): Promise<void> {
-  return await fetcher<OpRequestBody>({
-    method: "DELETE",
-    url: `/internal/accounts/${req.accountId}/requests/latest/`,
-    token: req.token,
-  }).catch((e) => e);
+async function cancelRequest(req: FetchLatestRequestKey): Promise<void> {
+  const url: `/internal/accounts/${string}/latest/` = `${req.url}${req.requestId}/`;
+  await fetcher({ ...req, method: "DELETE", url });
 }
 
 /**
- * 申請を取り下げるハンドラー
+ * 申請情報へのアクセス
  */
-export function useDeleteRequestHandler() {
+export function useLatestRequest() {
   const session = useSession();
-  const accountId = session.data?.user?.accountId ?? null;
-  const { mutate } = useLatestRequest(accountId);
-  const handler = async () => {
-    const token = await session.getAccessToken();
+  const accessTokenOrNull = session.data?.accessToken ?? null;
 
-    // TODO: 失敗時の通知を実装して
-    return deleteRequest({ token, accountId }).finally(() => mutate());
-  };
-  return handler;
+  const key: FetchLatestRequestKey | null = accessTokenOrNull
+    ? {
+        requestId: "latest",
+        url: `/internal/accounts/${session.data?.user?.accountId}/requests/`,
+        token: accessTokenOrNull,
+      }
+    : null;
+
+  const latestRequest = useSWR(key, fetchLatestRequest);
+
+  const createRequestMutation = useSWRMutation(
+    key,
+    async (key, { arg }: { arg: CreateRequestProps }) => {
+      return await createRequest({ ...key, ...arg });
+    },
+  );
+
+  const cancelRequestMutation = useSWRMutation(key, cancelRequest);
+
+  return Object.assign(latestRequest, {
+    create: createRequestMutation.trigger,
+    cancel: cancelRequestMutation.trigger,
+  });
 }

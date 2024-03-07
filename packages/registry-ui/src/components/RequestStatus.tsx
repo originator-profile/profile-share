@@ -1,16 +1,27 @@
 import clsx from "clsx";
 import { Request } from "@originator-profile/model";
-import {
-  useCreateRequestHandler,
-  useDeleteRequestHandler,
-} from "../utils/request";
+import { AlertDialog, PromptDialog, useDialog } from "./dialog";
+import { useLatestRequest } from "../utils/request";
 
-type Props = {
+type CardProps = {
+  className?: string;
+  children: React.ReactNode;
+};
+
+type HeadingProps = {
+  className?: string;
+  children: React.ReactNode;
+};
+
+type LatestRequestProps = {
   className?: string;
   request: Request;
 };
 
-function Card(props: { className?: string; children: React.ReactNode }) {
+type RequestRequiredProps = Partial<LatestRequestProps>;
+
+type RequestStatusProps = RequestRequiredProps | LatestRequestProps;
+function Card(props: CardProps) {
   return (
     <section className={clsx("jumpu-card px-6 py-5", props.className)}>
       {props.children}
@@ -18,7 +29,7 @@ function Card(props: { className?: string; children: React.ReactNode }) {
   );
 }
 
-function Heading(props: { className?: string; children: React.ReactNode }) {
+function Heading(props: HeadingProps) {
   return (
     <h3 className={clsx("text-lg font-bold", props.className)}>
       {props.children}
@@ -26,8 +37,10 @@ function Heading(props: { className?: string; children: React.ReactNode }) {
   );
 }
 
-function Pending(props: Props) {
-  const handleClick = useDeleteRequestHandler();
+function Pending(props: LatestRequestProps) {
+  const latestRequest = useLatestRequest();
+  const dialog = useDialog();
+
   return (
     <Card className={clsx("bg-yellow-50", props.className)}>
       <Heading className="text-yellow-700 mb-2">
@@ -39,22 +52,32 @@ function Pending(props: Props) {
         ご登録いただいた内容で審査を行っています。メールにてご連絡を行いますので今しばらくお待ちください。
         <time
           className="block mt-1 text-xs text-gray-500"
-          dateTime={props.request.createdAt}
+          dateTime={props.request.updatedAt}
         >
-          最終申請日 {new Date(props.request.createdAt).toLocaleDateString()}
+          最終申請日 {new Date(props.request.updatedAt).toLocaleDateString()}
         </time>
       </p>
+
       <button
         className="jumpu-button font-bold bg-danger"
-        onClick={handleClick}
+        onClick={() => dialog.open()}
       >
-        OP発行申請を取り消す
+        OP発行申請を取り下げる
       </button>
+
+      <AlertDialog
+        dialogRef={dialog.ref}
+        title="申請を取り下げます。よろしいですか？"
+        description="申請を取り下げると審査は実施されません。あらためて申請する必要があります。"
+        confirmationText="はい、申請を取り下げます"
+        cancellationText="いいえ、申請をつづけます"
+        onConfirm={() => latestRequest.cancel()}
+      />
     </Card>
   );
 }
 
-function Approved(props: Props) {
+function Approved(props: LatestRequestProps) {
   return (
     <Card className={clsx("bg-primary-50", props.className)}>
       <Heading className="text-success mb-2">OPが発行されました。</Heading>
@@ -65,7 +88,7 @@ function Approved(props: Props) {
   );
 }
 
-function Rejected(props: Props) {
+function Rejected(props: LatestRequestProps) {
   return (
     <Card className={clsx("bg-yellow-50", props.className)}>
       <Heading className="text-yellow-700 mb-2">
@@ -74,41 +97,71 @@ function Rejected(props: Props) {
       <p className="text-xs mb-3">
         審査の結果、修正が必要な箇所がありました。お知らせで修正事項を確認いただき、修正をお願いいたします。修正完了後、改めてOP発行申請をお願いします。
       </p>
-      {/* TODO: お知らせ画面を実装して */}
+      {/* TODO: https://github.com/originator-profile/profile/issues/805 */}
       <button className="jumpu-button font-bold">お知らせを確認する</button>
     </Card>
   );
 }
 
-function RequestReady(props: Props) {
-  const handleClick = useCreateRequestHandler();
+function RequestRequired(props: RequestRequiredProps) {
+  const latestRequest = useLatestRequest();
+  const dialog = useDialog();
+
   return (
     <Card className={clsx("bg-yellow-50", props.className)}>
       <Heading className="text-yellow-700 mb-2">
         未申請の変更があります。
       </Heading>
-      <p className="text-xs mb-3">
+      <p className="text-xs">
         OPに含まれていない内容があります。OPに含めるにはOP発行申請が必要です。
-        <time
-          className="block mt-1 text-xs text-gray-500"
-          dateTime={props.request.createdAt}
-        >
-          最終申請日 {new Date(props.request.createdAt).toLocaleDateString()}
-        </time>
+        {props.request && (
+          <time
+            className="block mt-1 text-xs text-gray-500"
+            dateTime={props.request.updatedAt}
+          >
+            最終申請日 {new Date(props.request.updatedAt).toLocaleDateString()}
+          </time>
+        )}
       </p>
-      <button className="jumpu-button font-bold" onClick={handleClick}>
+
+      <button
+        className="jumpu-button font-bold mt-3"
+        onClick={() => dialog.open()}
+      >
         OP発行申請する
       </button>
+
+      <PromptDialog
+        dialogRef={dialog.ref}
+        title="申請をはじめます。よろしいですか？"
+        description="事務局にて登録した内容で審査を行ないます。申請後の結果は登録したメールにご連絡を行いますので今しばらくお待ちください。"
+        textareaProps={{
+          placeholder: "メッセージ (任意)",
+        }}
+        confirmationText="申請をはじめる"
+        cancellationText="キャンセル"
+        onConfirm={(message: string) => {
+          latestRequest.create({
+            requestSummary: message,
+          });
+        }}
+      />
     </Card>
   );
 }
 
-function RequestStatus(props: Props) {
-  if (props.request.status === "pending") return <Pending {...props} />;
-  if (props.request.status === "rejected") return <Rejected {...props} />;
-  if (props.request.status === "cancelled") return <RequestReady {...props} />;
-  // TODO: OPの発行日時より後に登録内容を更新したらRequestReadyを表示して
-  return <Approved {...props} />;
+function RequestStatus(props: RequestStatusProps) {
+  switch (props.request?.status) {
+    case "pending":
+      return <Pending {...props} request={props.request} />;
+    case "approved":
+      return <Approved {...props} request={props.request} />;
+    case "rejected":
+      return <Rejected {...props} request={props.request} />;
+    case "cancelled":
+    default:
+      return <RequestRequired {...props} />;
+  }
 }
 
 export default RequestStatus;
