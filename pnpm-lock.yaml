@@ -64,7 +64,7 @@ importers:
         version: 6.0.3
       '@generouted/react-router':
         specifier: ^1.18.2
-        version: 1.18.2(react-router-dom@6.22.0)(react@18.2.0)(vite@5.0.12)
+        version: 1.18.2(react-router-dom@6.22.2)(react@18.2.0)(vite@5.0.12)
       '@oclif/core':
         specifier: ^3.18.1
         version: 3.18.1
@@ -387,6 +387,9 @@ importers:
       '@types/uuid':
         specifier: ^9.0.7
         version: 9.0.7
+      date-fns:
+        specifier: ^3.3.1
+        version: 3.3.1
       eslint:
         specifier: ^8.56.0
         version: 8.56.0
@@ -665,6 +668,9 @@ importers:
       '@iconify/react':
         specifier: ^4.1.1
         version: 4.1.1(react@18.2.0)
+      '@originator-profile/core':
+        specifier: workspace:*
+        version: link:../core
       '@originator-profile/model':
         specifier: workspace:*
         version: link:../model
@@ -4579,6 +4585,24 @@ packages:
       reusify: 1.0.4
     dev: false
 
+  /@fastify/react@0.3.0(@fastify/vite@5.0.6)(@types/react@18.2.48):
+    resolution: {integrity: sha512-OL3kHL+FFOEly7xtU3BcQw4zKuoQTjes1uRPGvGMowQqVpNX85SuQnfqWkgO8E/FvTm95Coj2NyofU/5tY6lRg==}
+    peerDependencies:
+      '@fastify/vite': ^5.0.5
+    dependencies:
+      '@fastify/vite': 5.0.6(@fastify/react@0.3.0)(@fastify/vue@0.3.0)
+      devalue: 4.3.2
+      history: 5.3.0
+      minipass: 7.0.4
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-router-dom: 6.22.2(react-dom@18.2.0)(react@18.2.0)
+      unihead: 0.0.6
+      valtio: 1.13.2(@types/react@18.2.48)(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+    dev: false
+
   /@fastify/send@2.1.0:
     resolution: {integrity: sha512-yNYiY6sDkexoJR0D8IDy3aRP3+L4wdqCpvx5WP+VtEU58sn7USmKynBzDQex5X42Zzvw2gNzzYgP90UfWShLFA==}
     dependencies:
@@ -4676,7 +4700,7 @@ packages:
       vite: 5.0.12
     dev: false
 
-  /@generouted/react-router@1.18.2(react-router-dom@6.22.0)(react@18.2.0)(vite@5.0.12):
+  /@generouted/react-router@1.18.2(react-router-dom@6.22.2)(react@18.2.0)(vite@5.0.12):
     resolution: {integrity: sha512-HyYgyfsEhUrAS52mtWiUPlW+QV8FVzpQhgvn51aj7htVV6mzr+Y87qOxQJs+mgI2SUTwF3OBrbAmW1irR6LaXA==}
     peerDependencies:
       react: '>=18'
@@ -4686,7 +4710,7 @@ packages:
       fast-glob: 3.3.2
       generouted: 1.18.2(vite@5.0.12)
       react: 18.2.0
-      react-router-dom: 6.22.0(react-dom@18.2.0)(react@18.2.0)
+      react-router-dom: 6.22.2(react-dom@18.2.0)(react@18.2.0)
       vite: 5.0.12
     dev: false
 
@@ -5998,8 +6022,8 @@ packages:
     resolution: {integrity: sha512-ACXpdMM9hmKZww21yEqWwiLws/UPLhNKvimN8RrYSqPSvB3ov7sLvAcfvaxePeLvccTQKGdkDIhLYApZVDFuKg==}
     engines: {node: '>=14.0.0'}
 
-  /@remix-run/router@1.15.0:
-    resolution: {integrity: sha512-HOil5aFtme37dVQTB6M34G95kPM3MMuqSmIRVCC52eKV+Y/tGSqw9P3rWhlAx6A+mz+MoX+XxsGsNJbaI5qCgQ==}
+  /@remix-run/router@1.15.2:
+    resolution: {integrity: sha512-+Rnav+CaoTE5QJc4Jcwh5toUpnVLKYbpU6Ys0zqbakqbaLQHeglLVHPfxOiQqdNmUy5C2lXz5dwC6tQNX2JW2Q==}
     engines: {node: '>=14.0.0'}
     dev: false
 
@@ -10701,6 +10725,14 @@ packages:
   /dequal@2.0.3:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
     engines: {node: '>=6'}
+
+  /derive-valtio@0.1.0(valtio@1.13.2):
+    resolution: {integrity: sha512-OCg2UsLbXK7GmmpzMXhYkdO64vhJ1ROUUGaTFyHjVwEdMEcTTRj7W1TxLbSBxdY8QLBPCcp66MTyaSy0RpO17A==}
+    peerDependencies:
+      valtio: '*'
+    dependencies:
+      valtio: 1.13.2(@types/react@18.2.48)(react@18.2.0)
+    dev: false
 
   /destroy@1.2.0:
     resolution: {integrity: sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==}
@@ -19391,17 +19423,17 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
       react-router: 6.21.3(react@18.2.0)
 
-  /react-router-dom@6.22.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-z2w+M4tH5wlcLmH3BMMOMdrtrJ9T3oJJNsAlBJbwk+8Syxd5WFJ7J5dxMEW0/GEXD1BBis4uXRrNIz3mORr0ag==}
+  /react-router-dom@6.22.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-WgqxD2qySEIBPZ3w0sHH+PUAiamDeszls9tzqMPBDA1YYVucTBXLU7+gtRfcSnhe92A3glPnvSxK2dhNoAVOIQ==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
     dependencies:
-      '@remix-run/router': 1.15.0
+      '@remix-run/router': 1.15.2
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      react-router: 6.22.0(react@18.2.0)
+      react-router: 6.22.2(react@18.2.0)
     dev: false
 
   /react-router@5.3.4(react@18.2.0):
@@ -19430,13 +19462,13 @@ packages:
       '@remix-run/router': 1.14.2
       react: 18.2.0
 
-  /react-router@6.22.0(react@18.2.0):
-    resolution: {integrity: sha512-q2yemJeg6gw/YixRlRnVx6IRJWZD6fonnfZhN1JIOhV2iJCPeRNSH3V1ISwHf+JWcESzLC3BOLD1T07tmO5dmg==}
+  /react-router@6.22.2(react@18.2.0):
+    resolution: {integrity: sha512-YD3Dzprzpcq+tBMHBS822tCjnWD3iIZbTeSXMY9LPSG541EfoBGyZ3bS25KEnaZjLcmQpw2AVLkFyfgXY8uvcw==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       react: '>=16.8'
     dependencies:
-      '@remix-run/router': 1.15.0
+      '@remix-run/router': 1.15.2
       react: 18.2.0
     dev: false
 
@@ -22460,6 +22492,25 @@ packages:
     dependencies:
       builtins: 5.0.1
     dev: true
+
+  /valtio@1.13.2(@types/react@18.2.48)(react@18.2.0):
+    resolution: {integrity: sha512-Qik0o+DSy741TmkqmRfjq+0xpZBXi/Y6+fXZLn0xNF1z/waFMbE3rkivv5Zcf9RrMUp6zswf2J7sbh2KBlba5A==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=16.8'
+      react: '>=16.8'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      '@types/react': 18.2.48
+      derive-valtio: 0.1.0(valtio@1.13.2)
+      proxy-compare: 2.6.0
+      react: 18.2.0
+      use-sync-external-store: 1.2.0(react@18.2.0)
+    dev: false
 
   /value-equal@1.0.1:
     resolution: {integrity: sha512-NOJ6JZCAWr0zlxZt+xqCHNTEKOsrks2HQd4MqhP1qy4z1SkbEP467eNx6TgDKXMvUOb+OENfJCZwM+16n7fRfw==}

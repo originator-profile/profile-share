@@ -3,6 +3,22 @@ import type { OpHolder } from "@originator-profile/model";
 import fetcher from "./fetcher";
 import { useSession } from "./session";
 
+export type Account = Omit<OpHolder, "type" | "logos"> & {
+  id: string;
+  roleValue: string;
+  credentials: {
+    id: string;
+    url?: string;
+    image?: string;
+    name: string;
+    accountId: string;
+    certifierId: string;
+    verifierId: string;
+    issuedAt: string;
+    expiredAt: string;
+  }[];
+};
+
 /**
  * アカウントを取得するカスタムフック
  */
@@ -11,9 +27,7 @@ export function useAccount(accountId: string | null) {
 
   return useSWR(
     token && accountId && { url: `/internal/accounts/${accountId}/`, token },
-    fetcher<
-      Omit<OpHolder, "type" | "logos"> & { id: string; roleValue: string }
-    >,
+    fetcher<Account>,
   );
 }
 

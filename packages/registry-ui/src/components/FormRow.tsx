@@ -6,6 +6,7 @@ type Props = {
   className?: string;
   label: string;
   required?: boolean;
+  wide?: boolean;
   helpText?: string;
   children: React.ReactNode;
 };
@@ -15,6 +16,7 @@ function FormRow({
   className,
   label,
   required = false,
+  wide = true,
   helpText,
   children,
 }: Props) {
@@ -25,7 +27,12 @@ function FormRow({
         className,
       )}
     >
-      <div className="text-sm md:w-40 w-full flex-shrink-0">
+      <div
+        className={clsx(
+          "text-sm w-full flex-shrink-0",
+          wide ? "md:w-40" : "md:w-24",
+        )}
+      >
         <label htmlFor={htmlFor}>
           <span>{label}</span>
           {required && <span className="text-xs text-danger ml-1">必須</span>}

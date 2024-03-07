@@ -11,6 +11,7 @@
     "@auth0/auth0-react": "^2.2.4",
     "@headlessui/react": "^1.7.18",
     "@iconify/react": "^4.1.1",
+    "@originator-profile/core": "workspace:*",
     "@originator-profile/model": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
     "@originator-profile/ui": "workspace:*",

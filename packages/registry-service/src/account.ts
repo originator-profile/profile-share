@@ -39,7 +39,10 @@ export const AccountService = ({ validator }: Options) => ({
   }): Promise<(accounts & { businessCategory?: string[] }) | Error> {
     const prisma = getClient();
     const data = await prisma.accounts
-      .findUnique({ where: { id }, include: { businessCategories: true } })
+      .findUnique({
+        where: { id },
+        include: { businessCategories: true, credentials: true },
+      })
       .catch((e: Error) => e);
     if (data && "businessCategories" in data) {
       const businessCategories = data.businessCategories.map(
