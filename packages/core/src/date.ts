@@ -1,4 +1,5 @@
 import { Temporal } from "@js-temporal/polyfill";
+import { isBefore } from "date-fns/fp";
 
 /**
  * 有効期限の文字列表現のパース
@@ -42,6 +43,52 @@ export function parseExpirationDate(input: string): Date {
 export function expirationDateTimeLocaleFrom(
   expiredAt: Date | string,
   locale?: Intl.LocalesArgument,
+  options?: Intl.DateTimeFormatOptions,
 ): string {
-  return new Date(new Date(expiredAt).getTime() - 1).toLocaleString(locale);
+  return new Date(new Date(expiredAt).getTime() - 1).toLocaleString(
+    locale,
+    options,
+  );
+}
+
+/**
+ * 現在時刻において期限切れかどうかを判定する
+ * @param expiredAt 期限切れ日時
+ * @example
+ * isExpired("2023-07-31T24:00:00.000+09:00") // 現在時刻が 2023-07-31T24:00:00.000+09:00 の場合 true, それより後の場合も true, それより前の場合は false
+ * @return 期限切れの場合 true, そうでない場合 false
+ */
+export function isExpired(expiredAt: Date | string) {
+  const expirationDate =
+    typeof expiredAt === "string" ? parseExpirationDate(expiredAt) : expiredAt;
+  return !isBefore(expirationDate, new Date());
+}
+
+/**
+ * 発行日時の文字列表現のパース
+ * @param input 入力
+ * @example ISO 8601 形式の日付の場合、その日の開始を発行日時とみなします
+ * parseIssuanceDate("2023-07-31") // 2023-07-30T15:00:00.000Z (タイムゾーンが省略された場合、実行環境のタイムゾーンに従い解釈されます)
+ * @example 時刻が含まれる場合、発行日時とみなします
+ * parseIssuanceDate("2023-07-31T24:00:00.000+09:00") // 2023-07-31T15:00:00.000Z
+ * @return 発行日時
+ */
+export function parseIssuanceDate(input: string): Date {
+  try {
+    return new Date(Temporal.Instant.from(input).epochMilliseconds);
+  } catch {
+    // nop
+  }
+
+  try {
+    return new Date(
+      Temporal.PlainDate.from(input).toZonedDateTime(
+        Temporal.Now.timeZoneId(),
+      ).epochMilliseconds,
+    );
+  } catch {
+    // nop
+  }
+
+  return new Date(input);
 }
