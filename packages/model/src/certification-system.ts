@@ -15,12 +15,42 @@ const CertificationSystem = {
       type: "string",
     },
     url: {
-      title: "認証制度に関するウェブサイトURL",
+      title: "認証制度の詳細URL",
       type: "string",
     },
     urlTitle: {
-      title: "認証制度に関するウェブサイト表示名",
+      title: "認証制度の詳細タイトル",
       type: "string",
+    },
+    certifier: {
+      title: "認証機関",
+      type: "object",
+      properties: {
+        id: {
+          title: "認証機関UUID",
+          type: "string",
+        },
+        name: {
+          title: "認証機関名称",
+          type: "string",
+        },
+      },
+      required: ["id", "name"],
+    },
+    verifier: {
+      title: "検証機関",
+      type: "object",
+      properties: {
+        id: {
+          title: "検証機関UUID",
+          type: "string",
+        },
+        name: {
+          title: "検証機関名称",
+          type: "string",
+        },
+      },
+      required: ["id", "name"],
     },
   },
   required: ["type", "name", "description", "url", "urlTitle"],

@@ -55,80 +55,84 @@ model dps {
 /// 会員
 model accounts {
   /// 会員 ID (UUID v5 for domain names)
-  id                       String                      @id @default(dbgenerated()) @db.Uuid
+  id                             String                      @id @default(dbgenerated()) @db.Uuid
   /// ドメイン名
-  domainName               String                      @unique
+  domainName                     String                      @unique
   /// ウェブサイトのURL
-  url                      String?
+  url                            String?
   /// 会員種別
-  role                     roles                       @relation(fields: [roleValue], references: [value])
-  roleValue                String                      @default("group")
+  role                           roles                       @relation(fields: [roleValue], references: [value])
+  roleValue                      String                      @default("group")
   /// 法人名*
-  name                     String
+  name                           String
   /// 法人番号
-  corporateNumber          String?
+  corporateNumber                String?
   /// 説明 (ウェブメディアそれを運用する法人、認定機関、業界団体等であることの記述)
-  description              String?
+  description                    String?
   /// 事業種目
-  businessCategories       accountBusinessCategories[]
+  businessCategories             accountBusinessCategories[]
   /// メールアドレス
-  email                    String?
+  email                          String?
   /// 電話番号
-  phoneNumber              String?
+  phoneNumber                    String?
   /// 郵便番号*
-  postalCode               String
+  postalCode                     String
   /// 国*
-  addressCountry           String
+  addressCountry                 String
   /// 都道府県*
-  addressRegion            String
+  addressRegion                  String
   /// 市区町村*
-  addressLocality          String
+  addressLocality                String
   /// 番地・ビル名*
-  streetAddress            String
+  streetAddress                  String
   /// 連絡先表示名
-  contactTitle             String?
+  contactTitle                   String?
   /// 連絡先URL
-  contactUrl               String?
+  contactUrl                     String?
   /// プライバシーポリシー表示名
-  privacyPolicyTitle       String?
+  privacyPolicyTitle             String?
   /// プライバシーポリシーURL
-  privacyPolicyUrl         String?
+  privacyPolicyUrl               String?
   /// 編集ガイドライン表示名
-  publishingPrincipleTitle String?
+  publishingPrincipleTitle       String?
   /// 編集ガイドラインURL
-  publishingPrincipleUrl   String?
+  publishingPrincipleUrl         String?
   /// ロゴ画像
-  logos                    logos[]
+  logos                          logos[]
   /// Signed Originator Profile 発行履歴
-  issuedOps                ops[]
+  issuedOps                      ops[]
   /// Signed Document Profile 発行履歴
-  issuedDps                dps[]
+  issuedDps                      dps[]
   /// Signed Originator Profile 公開履歴
-  publications             publications[]
+  publications                   publications[]
   /// 公開鍵
-  keys                     keys[]
+  keys                           keys[]
   /// ウェブページ
-  websites                 websites[]
+  websites                       websites[]
   /// 広告
-  ads                      ads[]
+  ads                            ads[]
   /// 管理者権限
-  admins                   admins?
+  admins                         admins?
   /// 資格情報
-  credentials              credentials[]
+  credentials                    credentials[]
   /// 資格情報の発行履歴
-  issuedCredentials        credentials[]               @relation("issuedCredentials")
+  issuedCredentials              credentials[]               @relation("issuedCredentials")
   /// 資格情報の検証履歴
-  verifiedCredentials      credentials[]               @relation("verifiedCredentials")
+  verifiedCredentials            credentials[]               @relation("verifiedCredentials")
   /// ユーザーアカウント
-  userAccounts             userAccounts?
+  userAccounts                   userAccounts?
   /// 申請
-  requests                 requests[]
+  requests                       requests[]
   /// 申請履歴
-  requestLogs              requestLogs[]
+  requestLogs                    requestLogs[]
   /// 申請の審査履歴
-  reviewedRequests         requests[]                  @relation("certifierReviewedRequests")
+  reviewedRequests               requests[]                  @relation("certifierReviewedRequests")
   /// ログ内にある申請の審査履歴
-  reviewedRequestLogs      requestLogs[]               @relation("certifierReviewedRequestLogs")
+  reviewedRequestLogs            requestLogs[]               @relation("certifierReviewedRequestLogs")
+  /// 発行可能な認証制度
+  issuableCertificationSystems   certificationSystems[]      @relation("issuableCertificationSystems")
+  /// 検証可能な認証制度
+  verifiableCertificationSystems certificationSystems[]      @relation("verifiableCertificationSystems")
 }
 
 /// 会員種別
@@ -320,6 +324,27 @@ model credentials {
   issuedAt    DateTime
   /// 期限切れ日時
   expiredAt   DateTime
+}
+
+/// 認証制度
+model certificationSystems {
+  id            String   @id @db.Uuid
+  /// 認証制度名
+  name          String
+  /// 説明
+  description   String   @default("")
+  /// 認証制度の詳細URL
+  url           String
+  /// 認証制度の詳細タイトル
+  urlTitle      String
+  /// 画像URL
+  image         String?
+  /// 認証機関
+  certifier     accounts @relation("issuableCertificationSystems", fields: [certifierUuid], references: [id])
+  certifierUuid String   @db.Uuid
+  /// 検証機関
+  verifier      accounts @relation("verifiableCertificationSystems", fields: [verifierUuid], references: [id])
+  verifierUuid  String   @db.Uuid
 }
 
 /// ユーザーアカウント

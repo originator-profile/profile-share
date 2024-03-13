@@ -23,6 +23,7 @@
     "eslint": "^8.56.0",
     "eslint-config-originator-profile": "workspace:*",
     "just-extend": "^6.2.0",
+    "just-omit": "^2.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-use": "^17.5.0",

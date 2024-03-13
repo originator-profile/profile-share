@@ -4,7 +4,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import FormRow from "../../../components/FormRow";
 import { useSession } from "../../../utils/session";
-import { updateAccount, useAccount } from "../../../utils/account";
+import {
+  OpAccountWithCredentials,
+  updateAccount,
+  useAccount,
+} from "../../../utils/account";
 import UrlAndTitleInput from "../../../components/UrlAndTitleInput";
 import { useAccountDraft } from "../../../utils/draft";
 import {
@@ -84,7 +88,11 @@ export default function Holder() {
       return;
     }
     const token = await session.getAccessToken();
-    const response = await updateAccount(data, account.id, token);
+    const response = await updateAccount(
+      data as OpAccountWithCredentials,
+      account.id,
+      token,
+    );
     if (!response.ok) {
       // TODO: エラーを表示して
       throw new Error();

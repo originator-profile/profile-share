@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { ComponentProps, ReactNode, useState } from "react";
+import { CertificationSystem } from "@originator-profile/model";
 import { Table, TableRow } from "@originator-profile/ui";
 import {
   expirationDateTimeLocaleFrom,
@@ -15,7 +16,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { Icon } from "@iconify/react";
 import { Menu } from "@headlessui/react";
 import FormRow from "../../../components/FormRow";
-import { Account, useAccount } from "../../../utils/account";
+import { type OpCredential, useAccount } from "../../../utils/account";
 import { useSession } from "../../../utils/session";
 import {
   createCredential,
@@ -23,23 +24,42 @@ import {
   updateCredential,
   FormData,
 } from "../../../utils/credential";
-
-type Credential = Account["credentials"][0];
+import { useCertificationSystems } from "../../../utils/certification-systems";
 
 type FormFieldProps = {
   name: keyof FormData;
   label: string;
   placeholder?: string;
   type?: string;
-  inputClassName?: string;
+  /** 入力欄 */
+  inputProps?: ComponentProps<"input">;
+  /** HTMLDataListElement values */
+  options?: string[];
 };
+
+type FormSelectFieldProps = {
+  name: keyof FormData;
+  label: string;
+  children: ReactNode;
+};
+
+type CertifierOptions = Array<{
+  id: string;
+  name: string;
+}>;
+
+type VerifierOptions = Array<{
+  id: string;
+  name: string;
+}>;
 
 function FormField({
   name,
   label,
   placeholder,
   type = "text",
-  inputClassName,
+  inputProps,
+  options = [],
 }: FormFieldProps) {
   const {
     register,
@@ -48,20 +68,56 @@ function FormField({
   return (
     <FormRow htmlFor={`${name}Input`} label={label} wide={false}>
       <input
+        {...inputProps}
         id={`${name}Input`}
+        list={`${name}List`}
         type={type}
         className={clsx(
           "jumpu-input h-12",
           {
             "border-orange-700 !border-2 !text-orange-700": errors[name],
           },
-          inputClassName,
+          inputProps?.className,
         )}
         placeholder={placeholder}
         {...register(name, {
           required: "このフィールドを入力してください。",
         })}
       />
+      <datalist id={`${name}List`}>
+        {options.map((value, i) => (
+          <option key={i} value={value}></option>
+        ))}
+      </datalist>
+      <ErrorMessage
+        errors={errors}
+        name={name}
+        render={({ message }) => (
+          <p className="text-sm text-orange-700">{message}</p>
+        )}
+      />
+    </FormRow>
+  );
+}
+
+function FormSelectField({ name, label, children }: FormSelectFieldProps) {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<FormData>();
+  return (
+    <FormRow htmlFor={`${name}Select`} label={label} wide={false}>
+      <select
+        id={`${name}Select`}
+        className={clsx("jumpu-input h-12", {
+          "border-orange-700 !border-2 !text-orange-700": errors[name],
+        })}
+        {...register(name, {
+          required: "このフィールドを入力してください。",
+        })}
+      >
+        {children}
+      </select>
       <ErrorMessage
         errors={errors}
         name={name}
@@ -75,9 +131,9 @@ function FormField({
 
 function CredentialForm({
   data,
-  onSubmit,
+  ...props
 }: {
-  data?: Credential;
+  data?: OpCredential;
   onSubmit: SubmitHandler<FormData>;
 }) {
   const localeOptions = {
@@ -89,8 +145,8 @@ function CredentialForm({
     mode: "onBlur",
     defaultValues: {
       ...data,
-      certifier: data?.certifierId,
-      verifier: data?.verifierId,
+      certifier: data?.certifier.id,
+      verifier: data?.verifier.id,
       expiredAt:
         data?.expiredAt &&
         expirationDateTimeLocaleFrom(data?.expiredAt, "ja-JP", localeOptions)
@@ -104,28 +160,98 @@ function CredentialForm({
     },
   });
 
-  const { handleSubmit } = methods;
+  const certificationSystems = useCertificationSystems();
+  const { watch, handleSubmit, setValue } = methods;
+
+  const [certifierOptions, setCertifierOptions] = useState<CertifierOptions>(
+    data?.certifier ? [data.certifier] : [],
+  );
+
+  const [verifierOptions, setVerifierOptions] = useState<VerifierOptions>(
+    data?.verifier ? [data.verifier] : [],
+  );
+
+  watch((values, { name, type }) => {
+    if (type !== "change") return;
+
+    switch (name) {
+      case "name": {
+        const i = certificationSystems.nameOptions.findIndex(
+          (nameOption) => nameOption === values.name,
+        );
+
+        const cs: CertificationSystem | undefined =
+          certificationSystems.data?.[i];
+
+        if (cs?.certifier) {
+          setValue("certifier", cs.certifier.id);
+          setCertifierOptions([cs.certifier]);
+        }
+
+        if (cs?.verifier) {
+          setValue("verifier", cs.verifier.id);
+          setVerifierOptions([cs.verifier]);
+        }
+      }
+    }
+  });
+
+  const onSubmit = handleSubmit((values) => {
+    props.onSubmit({
+      ...values,
+      name: values.name.replace(/ (第三者検証|自己宣言)$/, ""),
+    });
+  });
 
   return (
     <FormProvider {...methods}>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={onSubmit}
         className="flex flex-col gap-5 rounded-lg bg-gray-50 px-8 py-6"
       >
-        <FormField name="name" label="認定内容" />
-        <FormField name="certifier" label="認証機関" />
-        <FormField name="verifier" label="検証機関" />
+        <FormField
+          name="name"
+          label="認定内容"
+          options={certificationSystems.nameOptions}
+          inputProps={{
+            autoComplete: "off",
+          }}
+        />
+        <FormSelectField name="certifier" label="認証機関">
+          <option disabled value="">
+            未選択
+          </option>
+          {certifierOptions.map((co) => (
+            <option key={co.id} value={co.id}>
+              {co.name}
+            </option>
+          ))}
+        </FormSelectField>
+        <FormSelectField name="verifier" label="検証機関">
+          <option disabled value="">
+            未選択
+          </option>
+          {verifierOptions.map((vo) => (
+            <option key={vo.id} value={vo.id}>
+              {vo.name}
+            </option>
+          ))}
+        </FormSelectField>
         <FormField
           name="issuedAt"
           label="認定書発行日"
           type="date"
-          inputClassName="w-80"
+          inputProps={{
+            className: "w-80",
+          }}
         />
         <FormField
           name="expiredAt"
           label="有効期限"
           type="date"
-          inputClassName="w-80"
+          inputProps={{
+            className: "w-80",
+          }}
         />
         <button
           type="submit"
@@ -191,7 +317,7 @@ function CredentialTable({
   handleDelete,
   handleEdit,
 }: {
-  data: Credential;
+  data: OpCredential;
   handleDelete: (id: string) => void;
   handleEdit: (id: string, formData: FormData) => void;
 }) {
@@ -222,8 +348,8 @@ function CredentialTable({
       </div>
       <Table>
         <CredentialTableRow header="認定内容" data={data.name} />
-        <CredentialTableRow header="認証機関" data={data.certifierId} />
-        <CredentialTableRow header="検証機関" data={data.verifierId} />
+        <CredentialTableRow header="認証機関" data={data.certifier.name} />
+        <CredentialTableRow header="検証機関" data={data.verifier.name} />
         <CredentialTableRow
           className="text-gray-700"
           header="認定書発行日"

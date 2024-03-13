@@ -41,7 +41,15 @@ export const AccountService = ({ validator }: Options) => ({
     const data = await prisma.accounts
       .findUnique({
         where: { id },
-        include: { businessCategories: true, credentials: true },
+        include: {
+          businessCategories: true,
+          credentials: {
+            include: {
+              certifier: { select: { id: true, domainName: true, name: true } },
+              verifier: { select: { id: true, domainName: true, name: true } },
+            },
+          },
+        },
       })
       .catch((e: Error) => e);
     if (data && "businessCategories" in data) {

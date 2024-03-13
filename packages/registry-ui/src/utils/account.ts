@@ -1,22 +1,30 @@
 import useSWR from "swr";
 import type { OpHolder } from "@originator-profile/model";
+import omit from "just-omit";
 import fetcher from "./fetcher";
 import { useSession } from "./session";
 
-export type Account = Omit<OpHolder, "type" | "logos"> & {
+export type OpCredential = {
+  id: string;
+  url?: string;
+  image?: string;
+  name: string;
+  certifier: {
+    id: string;
+    name: string;
+  };
+  verifier: {
+    id: string;
+    name: string;
+  };
+  issuedAt: string;
+  expiredAt: string;
+};
+
+export type OpAccountWithCredentials = Omit<OpHolder, "type" | "logos"> & {
   id: string;
   roleValue: string;
-  credentials: {
-    id: string;
-    url?: string;
-    image?: string;
-    name: string;
-    accountId: string;
-    certifierId: string;
-    verifierId: string;
-    issuedAt: string;
-    expiredAt: string;
-  }[];
+  credentials: Array<OpCredential>;
 };
 
 /**
@@ -27,7 +35,7 @@ export function useAccount(accountId: string | null) {
 
   return useSWR(
     token && accountId && { url: `/internal/accounts/${accountId}/`, token },
-    fetcher<Account>,
+    fetcher<OpAccountWithCredentials>,
   );
 }
 
@@ -35,7 +43,7 @@ export function useAccount(accountId: string | null) {
  * アカウントを更新する API を呼び出す（OP ID の変更も可能）
  */
 export async function updateAccount(
-  data: unknown,
+  data: OpAccountWithCredentials,
   accountId: string,
   token: string,
 ) {
@@ -46,7 +54,7 @@ export async function updateAccount(
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(omit(data, "credentials")),
   });
 }
 
