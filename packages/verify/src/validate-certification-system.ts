@@ -15,12 +15,7 @@ export function CertificationSystemValidator() {
       return new CertificationSystemValidationFailed("should be an object", {
         payload,
       });
-    if (
-      !compare(
-        Object.keys(payload),
-        Object.keys(CertificationSystem.properties),
-      )
-    )
+    if (!compare(Object.keys(payload), CertificationSystem.required))
       return new CertificationSystemValidationFailed(
         "should be contain required properties or no contain the other properties",
         { payload },
