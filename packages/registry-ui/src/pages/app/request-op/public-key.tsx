@@ -32,7 +32,7 @@ export default function PublicKey() {
             公開鍵の登録に失敗しました。いずれかの原因が考えられます。
           </p>
           <ul className="pl-6 list-disc">
-            <li>ネットワークエラー</li>
+            <li>ネットワークリクエストが正常に完了しなかった</li>
             <li>公開鍵の形式が無効</li>
             <li>公開鍵が既に登録済み</li>
           </ul>
