@@ -31,5 +31,5 @@ export default async function fetcher<Data>(req: {
   if (res.headers.get("Content-Type")?.includes("application/json")) {
     return await res.json();
   }
-  return JSON.parse(JSON.stringify(await res.text()));
+  return (await res.text()) as Data;
 }
