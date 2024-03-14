@@ -83,7 +83,7 @@ export function usePublicKeys() {
 
   return {
     ...publicKeys,
-    register: registerKeyMutation.trigger,
-    destroy: destroyKeyMutation.trigger,
+    register: registerKeyMutation,
+    destroy: destroyKeyMutation,
   };
 }

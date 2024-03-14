@@ -23,9 +23,9 @@ export default function PublicKey() {
         </p>,
       );
     }
-    const result =
-      (await publicKeys.register({ jwk }).catch((error) => ({ error }))) ?? {};
-    if ("error" in result) {
+    await publicKeys.register.trigger({ jwk });
+
+    if (publicKeys.register.error) {
       return setErrorMessage(
         <>
           <p className="mb-2">
@@ -43,7 +43,7 @@ export default function PublicKey() {
     target.key.value = "";
   };
   const handleClickJwk = (jwk: Jwk) => () =>
-    publicKeys.destroy({ kid: jwk.kid });
+    publicKeys.destroy.trigger({ kid: jwk.kid });
 
   return (
     <section className="max-w-screen-sm">
