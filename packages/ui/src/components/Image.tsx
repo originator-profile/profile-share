@@ -21,7 +21,7 @@ function Image({
   cover = false,
   objectFit,
 }: Props) {
-  const effectiveObjectFit = cover ? 'cover' : objectFit || 'contain';
+  const effectiveObjectFit = cover ? "cover" : objectFit || "contain";
 
   return (
     <figure
