@@ -19,8 +19,10 @@ function Image({
   width,
   height,
   cover = false,
-  objectFit = 'cover',
+  objectFit,
 }: Props) {
+  const effectiveObjectFit = cover ? 'cover' : objectFit || 'contain';
+
   return (
     <figure
       className={clsx(
@@ -33,7 +35,7 @@ function Image({
         className="w-full h-auto"
         src={src ?? placeholderSrc}
         alt={alt}
-        style={{ objectFit: objectFit }}
+        style={{ objectFit: effectiveObjectFit }}
         crossOrigin="anonymous"
       />
     </figure>
