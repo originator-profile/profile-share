@@ -5,9 +5,10 @@ type Props = {
   src?: string;
   placeholderSrc: string;
   alt: string;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   cover?: boolean;
+  objectFit?: 'contain' | 'cover' | 'fill' | 'none' | 'scale-down'; 
 };
 
 function Image({
@@ -18,6 +19,7 @@ function Image({
   width,
   height,
   cover = false,
+  objectFit = 'cover',
 }: Props) {
   return (
     <figure
@@ -25,19 +27,13 @@ function Image({
         "flex justify-center items-center overflow-hidden",
         className,
       )}
-      style={{ height, minWidth: width }}
+      style={{ width: width ? `${width}px` : '100%', height: height ? `${height}px` : 'auto' }}
     >
       <img
-        className={clsx("w-auto", {
-          ["object-cover"]: cover,
-        })}
-        style={
-          cover ? { width, height } : { maxWidth: width, maxHeight: height }
-        }
+        className="w-full h-auto"
         src={src ?? placeholderSrc}
         alt={alt}
-        width={width}
-        height={height}
+        style={{ objectFit: objectFit }}
         crossOrigin="anonymous"
       />
     </figure>
