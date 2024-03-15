@@ -8,7 +8,7 @@ type Props = {
   width?: number;
   height?: number;
   cover?: boolean;
-  objectFit?: 'contain' | 'cover' | 'fill' | 'none' | 'scale-down'; 
+  objectFit?: "contain" | "cover" | "fill" | "none" | "scale-down";
 };
 
 function Image({
@@ -29,7 +29,10 @@ function Image({
         "flex justify-center items-center overflow-hidden",
         className,
       )}
-      style={{ width: width ? `${width}px` : '100%', height: height ? `${height}px` : 'auto' }}
+      style={{
+        width: width ? `${width}px` : "100%",
+        height: height ? `${height}px` : "auto",
+      }}
     >
       <img
         className="w-full h-auto"
