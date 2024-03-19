@@ -30,7 +30,7 @@ function Image({
         className,
       )}
       style={{
-        width: width ? `${width}px` : "100%",
+        width: width ? `${width}px` : "auto",
         height: height ? `${height}px` : "auto",
       }}
     >
@@ -38,7 +38,7 @@ function Image({
         className="w-full h-auto"
         src={src ?? placeholderSrc}
         alt={alt}
-        style={{ objectFit: effectiveObjectFit }}
+        style={{ objectFit: effectiveObjectFit, maxWidth: '240px',maxHeight:'44px' }}
         crossOrigin="anonymous"
       />
     </figure>
