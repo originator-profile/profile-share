@@ -77,13 +77,42 @@ function Pending(props: LatestRequestProps) {
   );
 }
 
+function ResubmitButton() {
+  const latestRequest = useLatestRequest();
+  const dialog = useDialog();
+  return (
+    <>
+      <button className="jumpu-button font-bold" onClick={() => dialog.open()}>
+        再申請する
+      </button>
+
+      <PromptDialog
+        dialogRef={dialog.ref}
+        title="再申請をはじめます。よろしいですか？"
+        description="事務局にて登録した内容で審査を行ないます。申請後の結果は登録したメールにご連絡を行いますので今しばらくお待ちください。"
+        textareaProps={{
+          placeholder: "メッセージ (任意)",
+        }}
+        confirmationText="再申請をはじめる"
+        cancellationText="キャンセル"
+        onConfirm={(message: string) => {
+          latestRequest.create({
+            requestSummary: message,
+          });
+        }}
+      />
+    </>
+  );
+}
+
 function Approved(props: LatestRequestProps) {
   return (
     <Card className={clsx("bg-primary-50", props.className)}>
       <Heading className="text-success mb-2">OPが発行されました。</Heading>
-      <p className="text-xs">
+      <p className="text-xs mb-3">
         ご登録ありがとうございます。ご登録いただいた内容でOPが発行済みです。OPを活用して担当者さまの組織の身元を検証可能な形式で表明することができます。
       </p>
+      <ResubmitButton />
     </Card>
   );
 }
@@ -98,7 +127,10 @@ function Rejected(props: LatestRequestProps) {
         審査の結果、修正が必要な箇所がありました。お知らせで修正事項を確認いただき、修正をお願いいたします。修正完了後、改めてOP発行申請をお願いします。
       </p>
       {/* TODO: https://github.com/originator-profile/profile/issues/805 */}
-      <button className="jumpu-button font-bold">お知らせを確認する</button>
+      <div className="flex flex-row gap-3">
+        <button className="jumpu-button font-bold">お知らせを確認する</button>
+        <ResubmitButton />
+      </div>
     </Card>
   );
 }
