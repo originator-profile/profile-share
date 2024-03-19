@@ -7,6 +7,7 @@ type Props = {
   alt: string;
   width?: number;
   height?: number;
+  cover?: boolean;
 };
 
 function Image({
