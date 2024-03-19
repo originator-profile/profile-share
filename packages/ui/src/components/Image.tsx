@@ -10,14 +10,7 @@ type Props = {
   cover?: boolean;
 };
 
-function Image({
-  className,
-  src,
-  placeholderSrc,
-  alt,
-  width,
-  height,
-}: Props) {
+function Image({ className, src, placeholderSrc, alt, width, height }: Props) {
   return (
     <figure
       className={clsx(
@@ -33,7 +26,7 @@ function Image({
         className="w-full h-auto object-contain"
         src={src ?? placeholderSrc}
         alt={alt}
-        style={{ maxWidth: '240px',maxHeight:'44px' }}
+        style={{ maxWidth: "240px", maxHeight: "44px" }}
         crossOrigin="anonymous"
       />
     </figure>
