@@ -7,8 +7,6 @@ type Props = {
   alt: string;
   width?: number;
   height?: number;
-  cover?: boolean;
-  objectFit?: "contain" | "cover" | "fill" | "none" | "scale-down";
 };
 
 function Image({
@@ -18,11 +16,7 @@ function Image({
   alt,
   width,
   height,
-  cover = false,
-  objectFit,
 }: Props) {
-  const effectiveObjectFit = cover ? "cover" : objectFit || "contain";
-
   return (
     <figure
       className={clsx(
@@ -35,10 +29,10 @@ function Image({
       }}
     >
       <img
-        className="w-full h-auto"
+        className="w-full h-auto object-contain"
         src={src ?? placeholderSrc}
         alt={alt}
-        style={{ objectFit: effectiveObjectFit, maxWidth: '240px',maxHeight:'44px' }}
+        style={{ maxWidth: '240px',maxHeight:'44px' }}
         crossOrigin="anonymous"
       />
     </figure>
