@@ -38,7 +38,11 @@ function Image({
         className="w-full h-auto"
         src={src ?? placeholderSrc}
         alt={alt}
-        style={{ objectFit: effectiveObjectFit, maxWidth: '240px',maxHeight:'44px' }}
+        style={{
+          objectFit: effectiveObjectFit,
+          maxWidth: "240px",
+          maxHeight: "44px",
+        }}
         crossOrigin="anonymous"
       />
     </figure>
