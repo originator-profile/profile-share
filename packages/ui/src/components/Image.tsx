@@ -8,22 +8,31 @@ type Props = {
   width?: number;
   height?: number;
   cover?: boolean;
+  objectFit?: 'contain' | 'cover';
 };
 
-function Image({ className, src, placeholderSrc, alt, width, height }: Props) {
+function Image({ 
+  className, 
+  src, 
+  placeholderSrc, 
+  alt, 
+  width, 
+  height,
+  cover = false,
+}: Props) {
+
   return (
     <figure
       className={clsx(
         "flex justify-center items-center overflow-hidden",
         className,
       )}
-      style={{
-        width: width ? `${width}px` : "auto",
-        height: height ? `${height}px` : "auto",
-      }}
+      style={{ height, minWidth: width }}
     >
       <img
-        className="w-full h-auto object-contain"
+        className={clsx("w-full h-auto", 
+        { 'object-cover': cover, 'object-contain': !cover }
+        )}
         src={src ?? placeholderSrc}
         alt={alt}
         style={{ maxWidth: "240px", maxHeight: "44px" }}
@@ -32,5 +41,6 @@ function Image({ className, src, placeholderSrc, alt, width, height }: Props) {
     </figure>
   );
 }
+
 
 export default Image;
