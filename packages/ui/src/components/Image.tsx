@@ -8,19 +8,18 @@ type Props = {
   width?: number;
   height?: number;
   cover?: boolean;
-  objectFit?: 'contain' | 'cover';
+  objectFit?: "contain" | "cover";
 };
 
-function Image({ 
-  className, 
-  src, 
-  placeholderSrc, 
-  alt, 
-  width, 
+function Image({
+  className,
+  src,
+  placeholderSrc,
+  alt,
+  width,
   height,
   cover = false,
 }: Props) {
-
   return (
     <figure
       className={clsx(
@@ -30,9 +29,10 @@ function Image({
       style={{ height, minWidth: width }}
     >
       <img
-        className={clsx("w-full h-auto", 
-        { 'object-cover': cover, 'object-contain': !cover }
-        )}
+        className={clsx("w-full h-auto", {
+          "object-cover": cover,
+          "object-contain": !cover,
+        })}
         src={src ?? placeholderSrc}
         alt={alt}
         style={{ maxWidth: "240px", maxHeight: "44px" }}
@@ -41,6 +41,5 @@ function Image({
     </figure>
   );
 }
-
 
 export default Image;
