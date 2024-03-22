@@ -8,7 +8,6 @@ type Props = {
   width?: number;
   height?: number;
   cover?: boolean;
-  objectFit?: 'contain' | 'cover';
 };
 
 function Image({ 
