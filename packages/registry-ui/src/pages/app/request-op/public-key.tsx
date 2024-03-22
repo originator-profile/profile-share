@@ -5,7 +5,7 @@ import { Menu } from "@headlessui/react";
 import { Icon } from "@iconify/react";
 
 export default function PublicKey() {
-  const [errorMessage, setErrorMessage] = useState<React.ReactNode>(null);
+  const [fileError, setFileError] = useState<unknown | null>(null);
   const publicKeys = usePublicKeys();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -19,30 +19,11 @@ export default function PublicKey() {
       .then(JSON.parse)
       .catch((error) => ({ error }));
     if ("error" in jwk) {
-      return setErrorMessage(
-        <p>
-          無効な形式の公開鍵です。JSON Web
-          Key形式のJSONファイルを指定してください。
-        </p>,
-      );
+      setFileError(jwk.error);
+      return;
     }
     await publicKeys.register.trigger({ jwk });
-
-    if (publicKeys.register.error) {
-      return setErrorMessage(
-        <>
-          <p className="mb-2">
-            公開鍵の登録に失敗しました。いずれかの原因が考えられます。
-          </p>
-          <ul className="pl-6 list-disc">
-            <li>ネットワークリクエストが正常に完了しなかった</li>
-            <li>公開鍵の形式が無効</li>
-            <li>公開鍵が既に登録済み</li>
-          </ul>
-        </>,
-      );
-    }
-    setErrorMessage(null);
+    setFileError(null);
     target.key.value = "";
   };
   const handleClickJwk = (jwk: Jwk) => () =>
@@ -100,11 +81,31 @@ export default function PublicKey() {
           accept="application/json"
           className="block mb-2"
         />
-        {errorMessage && (
-          <div className="jumpu-card bg-danger-light px-4 py-3">
-            {errorMessage}
-          </div>
-        )}
+        <div className="space-y-2 mb-4">
+          {publicKeys.register.error && (
+            <div className="jumpu-card bg-danger-light px-4 py-3">
+              <p className="mb-2">
+                公開鍵の登録に失敗しました。いずれかの原因が考えられます。
+              </p>
+              <ul className="pl-6 list-disc">
+                <li>ネットワークリクエストが正常に完了しなかった</li>
+                <li>公開鍵の形式が無効</li>
+                <li>公開鍵が既に登録済み</li>
+              </ul>
+            </div>
+          )}
+          {publicKeys.register.error && (
+            <p className="jumpu-card bg-danger-light px-4 py-3">
+              公開鍵の削除に失敗しました。ネットワークリクエストが正常に完了しなかった可能性があります。再度お試しください。
+            </p>
+          )}
+          {fileError && (
+            <p className="jumpu-card bg-danger-light px-4 py-3">
+              無効な形式の公開鍵です。JSON Web
+              Key形式のJSONファイルを指定してください。
+            </p>
+          )}
+        </div>
         <input
           className="jumpu-button font-bold cursor-pointer mt-8"
           type="submit"
