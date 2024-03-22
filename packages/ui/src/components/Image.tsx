@@ -10,12 +10,12 @@
 //   cover?: boolean;
 // };
 
-// function Image({ 
-//   className, 
-//   src, 
-//   placeholderSrc, 
-//   alt, 
-//   width, 
+// function Image({
+//   className,
+//   src,
+//   placeholderSrc,
+//   alt,
+//   width,
 //   height,
 //   cover = false,
 // }: Props) {
@@ -29,7 +29,7 @@
 //       style={{ height, minWidth: width }}
 //     >
 //       <img
-//         className={clsx("w-full h-auto", 
+//         className={clsx("w-full h-auto",
 //         { 'object-cover': cover, 'object-contain': !cover }
 //         )}
 //         src={src ?? placeholderSrc}
@@ -40,7 +40,6 @@
 //     </figure>
 //   );
 // }
-
 
 // export default Image;
 
@@ -75,10 +74,13 @@ function Image({
     >
       <img
         className={clsx("w-auto", {
-           'object-cover': cover, 'object-contain': !cover 
+          "object-cover": cover,
+          "object-contain": !cover,
         })}
         style={
-          cover ? { width, height } : { maxWidth: width ?? '240px', maxHeight: height ?? '44px' }
+          cover
+            ? { width, height }
+            : { maxWidth: width ?? "240px", maxHeight: height ?? "44px" }
         }
         src={src ?? placeholderSrc}
         alt={alt}
