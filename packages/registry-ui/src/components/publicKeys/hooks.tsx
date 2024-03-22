@@ -68,6 +68,7 @@ export function usePublicKeys() {
         ...arg,
       });
     },
+    { throwOnError: false },
   );
   const destroyKeyMutation = useSWRMutation(
     key,
@@ -79,6 +80,7 @@ export function usePublicKeys() {
         ...arg,
       });
     },
+    { throwOnError: false },
   );
 
   return {
