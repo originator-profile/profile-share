@@ -18,7 +18,7 @@ import {
   validateUrlString,
 } from "../../../utils/account-form";
 
-interface IFormInput {
+export interface IFormInput {
   domainName: string;
   name: string;
   postalCode: string;
@@ -45,9 +45,8 @@ export default function Holder() {
   const { data: account, mutate: mutateAccount } = useAccount(
     user?.accountId ?? null,
   );
-  const [hasDraft, getDraft, clearDraft, saveDraftToStorage] = useAccountDraft<
-    Partial<IFormInput>
-  >(user?.id);
+  const [draft, setDraft, clearDraft] = useAccountDraft(user?.id);
+  const hasDraft = !!draft;
 
   const {
     register,
@@ -68,13 +67,13 @@ export default function Holder() {
    */
   const resetFormState = useCallback(() => {
     reset(
-      getDraft() || {
+      draft || {
         ...account,
         businessCategory:
           account?.businessCategory && account.businessCategory[0],
       },
     );
-  }, [getDraft, account, reset]);
+  }, [draft, account, reset]);
 
   useEffect(() => {
     // account に新しいデータが入ったときにフォームを（再）初期化する。
@@ -105,7 +104,7 @@ export default function Holder() {
   };
 
   const saveDraft = () => {
-    saveDraftToStorage(getValues());
+    setDraft(getValues());
   };
 
   // TODO: タブのデザインを修正して（選択されていないタブにも枠を表示する。下線の長さを横いっぱいに伸ばす）
