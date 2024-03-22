@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { usePublicKeys, Jwk } from "../../../components/publicKeys";
+import { Table, TableRow } from "@originator-profile/ui";
+import { Menu } from "@headlessui/react";
+import { Icon } from "@iconify/react";
 
 export default function PublicKey() {
   const [errorMessage, setErrorMessage] = useState<React.ReactNode>(null);
@@ -51,17 +54,41 @@ export default function PublicKey() {
       <p className="text-sm mb-8">
         御社で生成したデータの署名/検証に用いる鍵ペアを生成し、公開鍵(検証鍵)をご提出ください。
       </p>
+      <h3 className="text-xl font-bold flex items-center gap-4 mb-2">
+        <span>登録済み</span>
+        {publicKeys.data && (
+          <span className="jumpu-badge text-xs bg-gray-50 border border-gray-300">
+            {publicKeys.data.keys.length}
+          </span>
+        )}
+      </h3>
       {/* TODO: 公開鍵の作成方法を案内して */}
-      <ul className="mb-2 list-disc pl-6">
+      <ul className="space-y-2 mb-4">
         {publicKeys.data?.keys.map((jwk) => (
-          <li key={jwk.kid}>
-            {jwk.kid}
-            <button
-              className="jumpu-outlined-button text-xs text-danger border-danger ml-2"
-              onClick={handleClickJwk(jwk)}
-            >
-              削除
-            </button>
+          <li
+            key={jwk.kid}
+            className="jumpu-card py-3 px-5 relative overflow-visible"
+          >
+            <Table>
+              {Object.entries(jwk).map(([key, value]) => (
+                <TableRow key={key} header={key} data={String(value)} />
+              ))}
+            </Table>
+            <Menu>
+              <Menu.Button className="jumpu-icon-button absolute top-3 right-4">
+                <Icon icon="mdi:dots-horizontal" className="w-4 h-4" />
+                <span role="tooltip">操作</span>
+              </Menu.Button>
+              <Menu.Items className="absolute top-9 right-4 flex flex-col w-32 *:w-full *:px-3 *:py-2 *:text-center shadow-lg divide-y divide-gray-200">
+                <Menu.Item
+                  as="button"
+                  className="text-sm text-danger hover:bg-danger-extralight"
+                  onClick={handleClickJwk(jwk)}
+                >
+                  削除
+                </Menu.Item>
+              </Menu.Items>
+            </Menu>
           </li>
         ))}
       </ul>
