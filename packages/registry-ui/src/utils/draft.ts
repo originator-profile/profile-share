@@ -1,17 +1,28 @@
-import { useCallback, useMemo } from "react";
 import { atom } from "jotai";
-import { RESET, atomWithStorage, createJSONStorage } from "jotai/utils";
-import { useAtom } from "jotai/react";
+import { atomWithStorage, createJSONStorage, useResetAtom } from "jotai/utils";
+import { useAtom, useSetAtom } from "jotai/react";
 import { IFormInput } from "../pages/app/request-op/holder";
 
 const DRAFT_KEY = "account-form-draft";
 
-const storage = createJSONStorage<
-  Record<string, Partial<IFormInput> | undefined>
->(() => localStorage);
-const accountDraftAtom = atomWithStorage(DRAFT_KEY, {}, storage, {
+type OpAccountDraft = Partial<IFormInput> | undefined;
+type UserId = string;
+type OpAccountDraftMap = Record<UserId, OpAccountDraft>;
+
+const storage = createJSONStorage<OpAccountDraftMap>(() => localStorage);
+const userIdAtom = atom<UserId>("");
+const opAccountDraftMapAtom = atomWithStorage(DRAFT_KEY, {}, storage, {
   getOnInit: true,
 });
+
+const opAccountDraftAtom = atom(
+  (get) => get(opAccountDraftMapAtom)[get(userIdAtom)],
+  (get, set, draft: OpAccountDraft) =>
+    set(opAccountDraftMapAtom, {
+      ...get(opAccountDraftMapAtom),
+      [get(userIdAtom)]: draft,
+    }),
+);
 
 /*
  * 組織情報更新フォームの下書き保存に関するカスタムフック
@@ -19,35 +30,15 @@ const accountDraftAtom = atomWithStorage(DRAFT_KEY, {}, storage, {
  * @returns [draft, setDraft, clearDraft]
  */
 export function useAccountDraft(
-  userId?: string,
+  userId?: UserId,
 ): [
-  draft: Partial<IFormInput> | undefined,
-  setDraft: (draft: Partial<IFormInput> | typeof RESET) => void,
+  draft: OpAccountDraft,
+  setDraft: (draft: OpAccountDraft) => void,
   clearDraft: () => void,
 ] {
-  const [draft, setDraft] = useAtom(
-    useMemo(
-      () =>
-        atom<
-          Partial<IFormInput> | undefined,
-          [Partial<IFormInput> | typeof RESET],
-          void
-        >(
-          (get) => {
-            const draft = get(accountDraftAtom);
-            return typeof userId !== "undefined" ? draft?.[userId] : undefined;
-          },
-          (get, set, update) => {
-            if (typeof userId === "undefined") return;
-            set(accountDraftAtom, {
-              ...get(accountDraftAtom),
-              [userId]: update === RESET ? undefined : update,
-            });
-          },
-        ),
-      [userId],
-    ),
-  );
-  const clearDraft = useCallback(() => setDraft(RESET), [setDraft]);
+  useSetAtom(userIdAtom)(userId ?? "");
+  const [draft, setDraft] = useAtom(opAccountDraftAtom);
+  const clearDraft = useResetAtom(opAccountDraftMapAtom);
+
   return [draft, setDraft, clearDraft];
 }
