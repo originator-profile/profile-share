@@ -1,79 +1,53 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useMemo } from "react";
+import { atom } from "jotai";
+import { RESET, atomWithStorage, createJSONStorage } from "jotai/utils";
+import { useAtom } from "jotai/react";
+import { IFormInput } from "../pages/app/request-op/holder";
 
 const DRAFT_KEY = "account-form-draft";
 
-/*
- * localStorage から値を取得して JSON としてパースする
- * @typeParam T 保存されている値をパースした結果の型
- * @param key localStorage に保存されているキー
- * @returns localStorage に保存されている値
- */
-const getData = <T>(key: string): T | null => {
-  const saved = localStorage.getItem(key);
-  if (!saved) {
-    return null;
-  }
-  const initialValue = JSON.parse(saved);
-  return initialValue;
-};
+const storage = createJSONStorage<
+  Record<string, Partial<IFormInput> | undefined>
+>(() => localStorage);
+const accountDraftAtom = atomWithStorage(DRAFT_KEY, {}, storage, {
+  getOnInit: true,
+});
 
 /*
- * 組織情報の下書きを localStorage に保存するためのキーを生成する
+ * 組織情報更新フォームの下書き保存に関するカスタムフック
  * @param userId ログインしているユーザーのID
+ * @returns [draft, setDraft, clearDraft]
  */
-const getKey = (userId: string) => {
-  return `${DRAFT_KEY}-${userId}`;
-};
-
-/*
- * 組織情報更新フォームの入力内容の下書きに関するカスタムフック
- * @typeParam T 組織情報更新フォームの入力内容の型
- * @param userId ログインしているユーザーのID
- * @returns [draft, hasDraft, clearDraft, saveDraft]
- */
-export function useAccountDraft<T>(
+export function useAccountDraft(
   userId?: string,
 ): [
-  hasDraft: boolean,
-  getDraft: () => T | null,
+  draft: Partial<IFormInput> | undefined,
+  setDraft: (draft: Partial<IFormInput> | typeof RESET) => void,
   clearDraft: () => void,
-  saveDraft: (value: T) => void,
 ] {
-  const [hasDraft, setHasDraft] = useState<boolean>(false);
-
-  useEffect(() => {
-    const draft =
-      typeof userId !== "undefined" ? getData<T>(getKey(userId)) : null;
-    if (draft) {
-      setHasDraft(true);
-    }
-  }, [userId]);
-
-  const saveDraft = useCallback(
-    (value: T) => {
-      if (typeof userId !== "string") {
-        console.error("Cannot save draft with non-string key", userId);
-        return;
-      }
-      setHasDraft(true);
-      localStorage.setItem(getKey(userId), JSON.stringify(value));
-    },
-    [userId],
+  const [draft, setDraft] = useAtom(
+    useMemo(
+      () =>
+        atom<
+          Partial<IFormInput> | undefined,
+          [Partial<IFormInput> | typeof RESET],
+          void
+        >(
+          (get) => {
+            const draft = get(accountDraftAtom);
+            return typeof userId !== "undefined" ? draft?.[userId] : undefined;
+          },
+          (get, set, update) => {
+            if (typeof userId === "undefined") return;
+            set(accountDraftAtom, {
+              ...get(accountDraftAtom),
+              [userId]: update === RESET ? undefined : update,
+            });
+          },
+        ),
+      [userId],
+    ),
   );
-
-  const clearDraft = useCallback(() => {
-    if (typeof userId !== "string") {
-      console.error("Cannot clear draft with non-string key", userId);
-      return;
-    }
-    localStorage.removeItem(getKey(userId));
-    setHasDraft(false);
-  }, [userId]);
-
-  const getDraft = useCallback<() => T | null>(
-    () => (typeof userId !== "undefined" ? getData(getKey(userId)) : null),
-    [userId],
-  );
-
-  return [hasDraft, getDraft, clearDraft, saveDraft];
+  const clearDraft = useCallback(() => setDraft(RESET), [setDraft]);
+  return [draft, setDraft, clearDraft];
 }

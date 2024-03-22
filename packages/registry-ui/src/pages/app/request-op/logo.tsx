@@ -13,7 +13,7 @@ export default function Logo() {
   const session = useSession();
   const accountIdOrNull = session.data?.user?.accountId ?? null;
   const { data: account } = useAccount(accountIdOrNull);
-  const { data: logo } = useAccountLogo(accountIdOrNull);
+  const { data: logo, mutate: mutateLogo } = useAccountLogo(accountIdOrNull);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const imagePreviewRef = useRef<HTMLImageElement>(null);
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
@@ -108,6 +108,9 @@ export default function Logo() {
           setShowErrors(true);
           throw new Error();
         }
+        response.json().then((res) => {
+          mutateLogo({ url: res.url });
+        });
       };
       reader.readAsDataURL(file);
     }

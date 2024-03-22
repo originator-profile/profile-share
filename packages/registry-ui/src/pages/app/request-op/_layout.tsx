@@ -4,6 +4,7 @@ import { withAuthenticationRequired } from "@auth0/auth0-react";
 import useTabs from "../../../utils/use-tabs";
 import { useSession } from "../../../utils/session";
 import { useAccount, useAccountLogo } from "../../../utils/account";
+import RegisterTabs from "../../../components/RegisterTabs";
 
 function AccountHeader() {
   const accountIdOrNull = useSession().data?.user?.accountId ?? null;
@@ -77,31 +78,6 @@ function Tabs() {
         </nav>
       </div>
     </header>
-  );
-}
-
-function RegisterTabs() {
-  const { registerTabs, registerTabsSelected, isTabSelected } = useTabs();
-
-  if (!registerTabsSelected) return null;
-
-  return (
-    <div className="jumpu-boxed-tabs mb-6">
-      <h1 className="text-4xl font-bold border-b min-w-[12rem]">登録</h1>
-      <nav role="tablist" className="!justify-end">
-        {registerTabs.map((registerTab) => (
-          <Link
-            key={registerTab.route}
-            role="tab"
-            aria-selected={isTabSelected(registerTab.route)}
-            className="min-w-[10rem]"
-            to={`./${registerTab.route}/`}
-          >
-            {registerTab.name}
-          </Link>
-        ))}
-      </nav>
-    </div>
   );
 }
 

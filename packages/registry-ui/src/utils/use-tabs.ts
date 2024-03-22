@@ -4,22 +4,18 @@ const registerTabs = [
   {
     route: "holder",
     name: "組織情報",
-    status: null,
   },
   {
     route: "public-key",
     name: "公開鍵",
-    status: null,
   },
   {
     route: "logo",
     name: "ロゴマーク",
-    status: null,
   },
   {
     route: "credential",
     name: "資格情報",
-    status: null,
   },
 ] as const;
 
