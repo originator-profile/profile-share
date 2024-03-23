@@ -53,7 +53,6 @@ export default function PublicKey() {
           </span>
         )}
       </h3>
-      {/* TODO: 公開鍵の作成方法を案内して */}
       <ul className="space-y-2 mb-4">
         {publicKeys.data?.keys.map((jwk) => (
           <li
