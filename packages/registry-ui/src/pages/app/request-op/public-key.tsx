@@ -33,7 +33,17 @@ export default function PublicKey() {
     <section className="max-w-screen-sm">
       <h2 className="text-3xl font-bold mb-8">公開鍵</h2>
       <p className="text-sm mb-8">
-        御社で生成したデータの署名/検証に用いる鍵ペアを生成し、公開鍵(検証鍵)をご提出ください。
+        御社で生成したデータの署名/検証に用いる
+        <a
+          className="text-blue-600 underline"
+          target="_blank"
+          rel="noreferrer"
+          href="https://docs.originator-profile.org/registry/operation/key-pair-generation/"
+        >
+          鍵ペアを生成
+          <Icon className="inline" icon="mdi:external-link" />
+        </a>
+        し、公開鍵（検証鍵）をご提出ください。
       </p>
       <h3 className="text-xl font-bold flex items-center gap-4 mb-2">
         <span>登録済み</span>
