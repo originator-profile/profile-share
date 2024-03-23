@@ -100,6 +100,7 @@ export default function PublicKey() {
                 <li>ネットワークリクエストが正常に完了しなかった</li>
                 <li>公開鍵の形式が無効</li>
                 <li>公開鍵が既に登録済み</li>
+                <li>プライベート鍵を登録しようとしている</li>
               </ul>
             </div>
           )}
