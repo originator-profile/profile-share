@@ -104,7 +104,7 @@ export default function PublicKey() {
               </ul>
             </div>
           )}
-          {publicKeys.register.error && (
+          {publicKeys.destroy.error && (
             <p className="jumpu-card bg-danger-light px-4 py-3">
               公開鍵の削除に失敗しました。ネットワークリクエストが正常に完了しなかった可能性があります。再度お試しください。
             </p>
