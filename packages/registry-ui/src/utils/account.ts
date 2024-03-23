@@ -70,15 +70,3 @@ export function useAccountLogo(accountId: string | null) {
     fetcher<{ url: string }>,
   );
 }
-
-/**
- * 組織の公開鍵を取得するカスタムフック
- */
-export function useKeys(accountId: string | null) {
-  const token = useSession().data?.accessToken ?? null;
-
-  return useSWR(
-    token && accountId && { url: `/account/${accountId}/keys`, token },
-    fetcher<{ keys: unknown[] }>,
-  );
-}
