@@ -16,7 +16,6 @@ import {
   updateAccount,
   useAccount,
 } from "../../../utils/account";
-import UrlAndTitleInput from "../../../components/UrlAndTitleInput";
 import { useAccountDraft } from "../../../utils/draft";
 import {
   prefectures,
@@ -451,147 +450,32 @@ export default function Holder() {
               onBlur={saveDraft}
               inputProps={{ type: "url" }}
             />
-
-            {/* TODO: helpText が必要な項目に付け足して */}
-            <UrlAndTitleInput
+            <PageFieldSet
+              name="contact"
               label="お問い合わせ情報"
               titleLabel="お問い合わせページの名称"
               urlLabel="リンク"
-              titleInput={
-                <>
-                  <input
-                    className={clsx("jumpu-input h-12 w-full", {
-                      "border-orange-700 !border-2 !text-orange-700":
-                        errors.contactTitle,
-                    })}
-                    {...register("contactTitle", { onBlur: saveDraft })}
-                    placeholder="○△へのお問い合わせ"
-                  />
-                  <ErrorMessage
-                    errors={errors}
-                    name="contactTitle"
-                    render={({ message }) => (
-                      <p className="text-sm text-orange-700">{message}</p>
-                    )}
-                  />
-                </>
-              }
-              urlInput={
-                <>
-                  <input
-                    className={clsx("jumpu-input h-12 w-full", {
-                      "border-orange-700 !border-2 !text-orange-700":
-                        errors.contactUrl,
-                    })}
-                    {...register("contactUrl", {
-                      onBlur: saveDraft,
-                    })}
-                    type="url"
-                    placeholder="https://www.example.com/contact/"
-                  />
-                  <ErrorMessage
-                    errors={errors}
-                    name="contactUrl"
-                    render={({ message }) => (
-                      <p className="text-sm text-orange-700">{message}</p>
-                    )}
-                  />
-                </>
-              }
+              titlePlaceholder="○△へのお問い合わせ"
+              urlPlaceholder="https://www.example.com/contact/"
+              onBlur={saveDraft}
             />
-            <UrlAndTitleInput
+            <PageFieldSet
+              name="publishingPrinciple"
               label="編集ガイドライン"
               titleLabel="ページの名称"
               urlLabel="リンク"
-              titleInput={
-                <>
-                  <input
-                    className={clsx("jumpu-input h-12 w-full", {
-                      "border-orange-700 !border-2 !text-orange-700":
-                        errors.publishingPrincipleTitle,
-                    })}
-                    {...register("publishingPrincipleTitle", {
-                      onBlur: saveDraft,
-                    })}
-                    placeholder="○△ガイドライン"
-                  />
-                  <ErrorMessage
-                    errors={errors}
-                    name="publishingPrincipleTitle"
-                    render={({ message }) => (
-                      <p className="text-sm text-orange-700">{message}</p>
-                    )}
-                  />
-                </>
-              }
-              urlInput={
-                <>
-                  <input
-                    className={clsx("jumpu-input h-12 w-full", {
-                      "border-orange-700 !border-2 !text-orange-700":
-                        errors.publishingPrincipleUrl,
-                    })}
-                    {...register("publishingPrincipleUrl", {
-                      onBlur: saveDraft,
-                    })}
-                    type="url"
-                    placeholder="https://www.example.com/guidelines/"
-                  />
-                  <ErrorMessage
-                    errors={errors}
-                    name="publishingPrincipleUrl"
-                    render={({ message }) => (
-                      <p className="text-sm text-orange-700">{message}</p>
-                    )}
-                  />
-                </>
-              }
+              titlePlaceholder="○△ガイドライン"
+              urlPlaceholder="https://www.example.com/guidelines/"
+              onBlur={saveDraft}
             />
-            <UrlAndTitleInput
+            <PageFieldSet
+              name="privacyPolicy"
               label="プライバシーボリシー"
               titleLabel="ページの名称"
               urlLabel="リンク"
-              titleInput={
-                <>
-                  <input
-                    className={clsx("jumpu-input h-12 w-full", {
-                      "border-orange-700 !border-2 !text-orange-700":
-                        errors.privacyPolicyTitle,
-                    })}
-                    {...register("privacyPolicyTitle", { onBlur: saveDraft })}
-                    placeholder="○△プライバシーセンター"
-                  />
-                  <ErrorMessage
-                    errors={errors}
-                    name="privacyPolicyTitle"
-                    render={({ message }) => (
-                      <p className="text-sm text-orange-700">{message}</p>
-                    )}
-                  />
-                </>
-              }
-              urlInput={
-                <>
-                  <input
-                    className={clsx("jumpu-input h-12 w-full", {
-                      "border-orange-700 !border-2 !text-orange-700":
-                        errors.privacyPolicyUrl,
-                    })}
-                    {...register("privacyPolicyUrl", {
-                      onBlur: saveDraft,
-                    })}
-                    type="url"
-                    placeholder="https://www.example.com/privacy/"
-                  />
-                  <ErrorMessage
-                    errors={errors}
-                    name="privacyPolicyUrl"
-                    render={({ message }) => (
-                      <p className="text-sm text-orange-700">{message}</p>
-                    )}
-                  />
-                </>
-              }
+              titlePlaceholder="○△プライバシーセンター"
+              urlPlaceholder="https://www.example.com/privacy/"
+              onBlur={saveDraft}
             />
 
             <FormRow label="説明" htmlFor="descriptionTextarea">
