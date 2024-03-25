@@ -177,40 +177,42 @@ export default function Holder() {
     account && (
       <FormProvider {...methods}>
         <form
-          className="max-w-2xl mb-8"
+          className="flex flex-col gap-6 max-w-2xl"
           noValidate
           onSubmit={handleSubmit(onSubmit)}
         >
-          {/* Enter キーで下書き保存する。*/}
-          <button
-            className="hidden"
-            onClick={(e) => {
-              e.preventDefault();
-              saveDraft();
-            }}
-          />
-          <div className="flex mb-6 flex-row md:items-center">
+          <div className="flex flex-row md:items-center">
             <h2 className="text-3xl font-bold">組織情報</h2>
-            <button
-              className="jumpu-text-button text-danger mr-1 ml-auto"
-              onClick={(e) => {
-                e.preventDefault();
-                clearDraft();
-                resetFormState();
-              }}
-              disabled={!hasDraft}
-            >
-              下書きをリセット
-            </button>
-            <button
-              className="jumpu-outlined-button px-8 text-base text-[#00AFB4] font-bold border-[#00AFB4]"
-              type="submit"
-              disabled={!hasDraft || !isValid}
-            >
-              保存する
-            </button>
+            <fieldset className="inline-flex gap-1 ml-auto">
+              {/* Enter キーで下書き保存する。*/}
+              <button
+                className="hidden"
+                onClick={(e) => {
+                  e.preventDefault();
+                  saveDraft();
+                }}
+              />
+              <button
+                className="jumpu-text-button text-danger"
+                onClick={(e) => {
+                  e.preventDefault();
+                  clearDraft();
+                  resetFormState();
+                }}
+                disabled={!hasDraft}
+              >
+                下書きをリセット
+              </button>
+              <button
+                className="jumpu-outlined-button px-8 text-base text-[#00AFB4] font-bold border-[#00AFB4]"
+                type="submit"
+                disabled={!hasDraft || !isValid}
+              >
+                保存する
+              </button>
+            </fieldset>
           </div>
-          <p className="text-sm mb-6">
+          <p className="text-sm">
             Originator Profile 情報を登録頂くフォームです。
             <br />
             サイト運営者・コンテンツ提供者などの組織情報を法人毎に登録してください。注:
