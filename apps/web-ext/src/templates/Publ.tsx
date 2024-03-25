@@ -91,7 +91,7 @@ function Site({ op, dp, website, holder, paths }: Required<Props>["website"]) {
         </div>
         <div className="flex flex-col items-center gap-4">
           <Image
-            className="flex-shrink-0 w-fit bg-white"
+            className="flex-shrink-0 w-fit"
             src={website.image}
             placeholderSrc={placeholderLogoMainUrl}
             alt=""
