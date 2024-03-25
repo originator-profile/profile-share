@@ -4,28 +4,42 @@ import { Table, TableRow } from "@originator-profile/ui";
 import { Menu } from "@headlessui/react";
 import { Icon } from "@iconify/react";
 
+/** 入力ファイルを JSON ファイルとしてパース */
+async function parseInputFile(
+  input: HTMLInputElement,
+): Promise<unknown | Error> {
+  const file = input.files?.[0];
+  if (!file) return new Error("File not found");
+  const parsed = await file
+    .text()
+    .then(JSON.parse)
+    .catch((e) => e);
+  return parsed;
+}
+
 export default function PublicKey() {
-  const [fileError, setFileError] = useState<unknown | null>(null);
+  const [fileError, setFileError] = useState<Error | null>(null);
   const publicKeys = usePublicKeys();
+  const reset = () => {
+    setFileError(null);
+    publicKeys.register.reset();
+    publicKeys.destroy.reset();
+  };
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    reset();
     const keyField: HTMLInputElement = event.currentTarget.key;
-    const file = keyField.files?.[0];
-    if (!file) return;
-    const jwk = await file
-      .text()
-      .then(JSON.parse)
-      .catch((error) => ({ error }));
-    if ("error" in jwk) {
-      setFileError(jwk.error);
-      return;
-    }
-    await publicKeys.register.trigger({ jwk });
-    setFileError(null);
+    const jwk = await parseInputFile(keyField);
+    if (jwk instanceof Error) return setFileError(jwk);
+    await publicKeys.register.trigger({ jwk: jwk as Jwk });
+    if (publicKeys.register.error) return;
+
     keyField.value = "";
   };
-  const handleClickJwk = (jwk: Jwk) => () =>
+  const handleClickJwk = (jwk: Jwk) => () => {
+    reset();
     publicKeys.destroy.trigger({ kid: jwk.kid });
+  };
 
   return (
     <section className="max-w-screen-sm">
