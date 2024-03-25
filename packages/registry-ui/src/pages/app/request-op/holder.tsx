@@ -202,12 +202,13 @@ export default function Holder() {
             >
               下書きをリセット
             </button>
-            <input
+            <button
               className="jumpu-outlined-button px-8 text-base text-[#00AFB4] font-bold border-[#00AFB4]"
               type="submit"
-              value="保存する"
               disabled={!hasDraft || !isValid}
-            />
+            >
+              保存する
+            </button>
           </div>
           <p className="text-sm mb-6">
             Originator Profile 情報を登録頂くフォームです。
