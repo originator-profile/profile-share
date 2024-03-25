@@ -9,10 +9,8 @@ export default function PublicKey() {
   const publicKeys = usePublicKeys();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const target = event.target as typeof event.target & {
-      key: { value: ""; files: Exclude<HTMLInputElement["files"], null> };
-    };
-    const [file] = Array.from(target.key.files);
+    const keyField: HTMLInputElement = event.currentTarget.key;
+    const file = keyField.files?.[0];
     if (!file) return;
     const jwk = await file
       .text()
@@ -24,7 +22,7 @@ export default function PublicKey() {
     }
     await publicKeys.register.trigger({ jwk });
     setFileError(null);
-    target.key.value = "";
+    keyField.value = "";
   };
   const handleClickJwk = (jwk: Jwk) => () =>
     publicKeys.destroy.trigger({ kid: jwk.kid });
