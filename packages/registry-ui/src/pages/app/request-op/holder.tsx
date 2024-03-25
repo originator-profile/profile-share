@@ -72,7 +72,6 @@ function FormField({
   } = useFormContext();
   return (
     <FormRow
-      className="mb-7"
       label={label}
       required={required}
       htmlFor={`${name}Input`}
@@ -105,7 +104,7 @@ export default function Holder() {
   const session = useSession();
   const user = session.data?.user;
   const { data: account, mutate: mutateAccount } = useAccount(
-    user?.accountId ?? null,
+    user?.accountId ?? null
   );
   const [draft, setDraft, clearDraft] = useAccountDraft(user?.id);
   const hasDraft = !!draft;
@@ -135,7 +134,7 @@ export default function Holder() {
         ...account,
         businessCategory:
           account?.businessCategory && account.businessCategory[0],
-      },
+      }
     );
   }, [draft, account, reset]);
 
@@ -145,7 +144,7 @@ export default function Holder() {
   }, [resetFormState]);
 
   const onSubmit: SubmitHandler<Partial<IFormInput>> = async (
-    data: Partial<IFormInput>,
+    data: Partial<IFormInput>
   ) => {
     if (!account) {
       return;
@@ -154,7 +153,7 @@ export default function Holder() {
     const response = await updateAccount(
       data as OpAccountWithCredentials,
       account.id,
-      token,
+      token
     );
     if (!response.ok) {
       // TODO: エラーを表示して
@@ -218,324 +217,321 @@ export default function Holder() {
             <br />
             グループ会社一括やサイト・サービス単位ではありません。
           </p>
-          <FormField
-            name="domainName"
-            label="組織代表ドメイン名"
-            required
-            placeHolder="media.example.com"
-            registerOptions={{
-              onBlur: saveDraft,
-            }}
-          />
-          <FormField
-            name="name"
-            label="所有者 / 法人・組織名"
-            required
-            placeHolder="○△新聞社"
-            helpText="法人・組織の正式名称(省略無し)を記載してください"
-            registerOptions={{
-              onBlur: saveDraft,
-            }}
-          />
-          <FormField
-            name="postalCode"
-            label="郵便番号"
-            inputClassName="w-40"
-            required
-            placeHolder="100-0001"
-            registerOptions={{
-              pattern: {
-                value: /^[ー\p{Dash}\p{Nl}\d]{7,8}$/u,
-                message: "不正な郵便番号です。",
-              },
-              onBlur: (e: SyntheticEvent) => {
-                const element = e.target as HTMLInputElement;
-                const value = normalizeJapanPostalCode(element.value);
-                setValue("postalCode", value);
-                saveDraft();
-              },
-            }}
-          />
-
-          <FormRow
-            className="mb-7"
-            label="都道府県"
-            required
-            htmlFor="addressRegionSelect"
-          >
-            <select
-              id="addressRegionSelect"
-              className={clsx("jumpu-select w-48 h-12", {
-                "border-orange-700 !border-2 !text-orange-700":
-                  errors.addressRegion,
-              })}
-              {...register("addressRegion", {
-                required: "このフィールドを入力してください。",
+          <div className="flex flex-col gap-7">
+            <FormField
+              name="domainName"
+              label="組織代表ドメイン名"
+              required
+              placeHolder="media.example.com"
+              registerOptions={{
                 onBlur: saveDraft,
-              })}
-            >
-              <option disabled value="">
-                未選択
-              </option>
-              {prefectures.map((prefecture) => (
-                <option key={prefecture} value={prefecture}>
-                  {prefecture}
+              }}
+            />
+            <FormField
+              name="name"
+              label="所有者 / 法人・組織名"
+              required
+              placeHolder="○△新聞社"
+              helpText="法人・組織の正式名称(省略無し)を記載してください"
+              registerOptions={{
+                onBlur: saveDraft,
+              }}
+            />
+            <FormField
+              name="postalCode"
+              label="郵便番号"
+              inputClassName="w-40"
+              required
+              placeHolder="100-0001"
+              registerOptions={{
+                pattern: {
+                  value: /^[ー\p{Dash}\p{Nl}\d]{7,8}$/u,
+                  message: "不正な郵便番号です。",
+                },
+                onBlur: (e: SyntheticEvent) => {
+                  const element = e.target as HTMLInputElement;
+                  const value = normalizeJapanPostalCode(element.value);
+                  setValue("postalCode", value);
+                  saveDraft();
+                },
+              }}
+            />
+
+            <FormRow label="都道府県" required htmlFor="addressRegionSelect">
+              <select
+                id="addressRegionSelect"
+                className={clsx("jumpu-select w-48 h-12", {
+                  "border-orange-700 !border-2 !text-orange-700":
+                    errors.addressRegion,
+                })}
+                {...register("addressRegion", {
+                  required: "このフィールドを入力してください。",
+                  onBlur: saveDraft,
+                })}
+              >
+                <option disabled value="">
+                  未選択
                 </option>
-              ))}
-            </select>
-            <ErrorMessage
-              errors={errors}
-              name="addressRegion"
-              render={({ message }) => (
-                <p className="text-sm text-orange-700">{message}</p>
-              )}
+                {prefectures.map((prefecture) => (
+                  <option key={prefecture} value={prefecture}>
+                    {prefecture}
+                  </option>
+                ))}
+              </select>
+              <ErrorMessage
+                errors={errors}
+                name="addressRegion"
+                render={({ message }) => (
+                  <p className="text-sm text-orange-700">{message}</p>
+                )}
+              />
+            </FormRow>
+            <FormField
+              name="addressLocality"
+              label="市区町村"
+              required
+              placeHolder="千代田区"
+              registerOptions={{
+                onBlur: saveDraft,
+              }}
             />
-          </FormRow>
-          <FormField
-            name="addressLocality"
-            label="市区町村"
-            required
-            placeHolder="千代田区"
-            registerOptions={{
-              onBlur: saveDraft,
-            }}
-          />
-          <FormField
-            name="streetAddress"
-            label="町名・番地・ビル名・部屋番号など"
-            required
-            placeHolder="大手町3丁目1-1 ○△ビル 1F"
-            registerOptions={{
-              onBlur: saveDraft,
-            }}
-          />
-
-          <FormField
-            name="phoneNumber"
-            inputClassName="w-48"
-            label="電話番号"
-            placeHolder="03-1111-1111"
-            registerOptions={{
-              pattern: {
-                value: /^[ー\p{Dash}\p{Nl}\d]+$/u,
-                message: "電話番号を入力してください。",
-              },
-              onBlur: (e) => {
-                const value = normalizePhoneNumber(e.target.value);
-                setValue("phoneNumber", value);
-                saveDraft();
-              },
-            }}
-            inputProps={{ type: "tel" }}
-          />
-
-          <FormField
-            name="email"
-            inputClassName="w-5/6"
-            label="メールアドレス"
-            placeHolder="contact@example.com"
-            registerOptions={{ onBlur: saveDraft }}
-            inputProps={{ type: "email" }}
-          />
-
-          <FormField
-            name="corporateNumber"
-            label="法人番号"
-            placeHolder="1234567890123"
-            registerOptions={{
-              pattern: {
-                value: /^\d{13}$/,
-                message: "不正な法人番号です。",
-              },
-              onBlur: saveDraft,
-            }}
-            inputProps={{ type: "text", inputMode: "numeric" }}
-          />
-
-          <FormField
-            name="businessCategory"
-            label="事業種目"
-            placeHolder="新聞業"
-            registerOptions={{
-              onBlur: saveDraft,
-            }}
-          />
-
-          <FormField
-            name="url"
-            label="WebサイトURL"
-            placeHolder="https://www.example.com/"
-            required
-            registerOptions={{
-              validate: validateUrlString,
-              onBlur: saveDraft,
-            }}
-            inputProps={{ type: "url" }}
-          />
-
-          {/* TODO: helpText が必要な項目に付け足して */}
-          <UrlAndTitleInput
-            label="お問い合わせ情報"
-            titleLabel="お問い合わせページの名称"
-            urlLabel="リンク"
-            titleInput={
-              <>
-                <input
-                  className={clsx("jumpu-input h-12 w-full", {
-                    "border-orange-700 !border-2 !text-orange-700":
-                      errors.contactTitle,
-                  })}
-                  {...register("contactTitle", { onBlur: saveDraft })}
-                  placeholder="○△へのお問い合わせ"
-                />
-                <ErrorMessage
-                  errors={errors}
-                  name="contactTitle"
-                  render={({ message }) => (
-                    <p className="text-sm text-orange-700">{message}</p>
-                  )}
-                />
-              </>
-            }
-            urlInput={
-              <>
-                <input
-                  className={clsx("jumpu-input h-12 w-full", {
-                    "border-orange-700 !border-2 !text-orange-700":
-                      errors.contactUrl,
-                  })}
-                  {...register("contactUrl", {
-                    onBlur: saveDraft,
-                    validate: validateUrlString,
-                  })}
-                  type="url"
-                  placeholder="https://www.example.com/contact/"
-                />
-                <ErrorMessage
-                  errors={errors}
-                  name="contactUrl"
-                  render={({ message }) => (
-                    <p className="text-sm text-orange-700">{message}</p>
-                  )}
-                />
-              </>
-            }
-          />
-          <UrlAndTitleInput
-            label="編集ガイドライン"
-            titleLabel="ページの名称"
-            urlLabel="リンク"
-            titleInput={
-              <>
-                <input
-                  className={clsx("jumpu-input h-12 w-full", {
-                    "border-orange-700 !border-2 !text-orange-700":
-                      errors.publishingPrincipleTitle,
-                  })}
-                  {...register("publishingPrincipleTitle", {
-                    onBlur: saveDraft,
-                  })}
-                  placeholder="○△ガイドライン"
-                />
-                <ErrorMessage
-                  errors={errors}
-                  name="publishingPrincipleTitle"
-                  render={({ message }) => (
-                    <p className="text-sm text-orange-700">{message}</p>
-                  )}
-                />
-              </>
-            }
-            urlInput={
-              <>
-                <input
-                  className={clsx("jumpu-input h-12 w-full", {
-                    "border-orange-700 !border-2 !text-orange-700":
-                      errors.publishingPrincipleUrl,
-                  })}
-                  {...register("publishingPrincipleUrl", {
-                    onBlur: saveDraft,
-                    validate: validateUrlString,
-                  })}
-                  type="url"
-                  placeholder="https://www.example.com/guidelines/"
-                />
-                <ErrorMessage
-                  errors={errors}
-                  name="publishingPrincipleUrl"
-                  render={({ message }) => (
-                    <p className="text-sm text-orange-700">{message}</p>
-                  )}
-                />
-              </>
-            }
-          />
-          <UrlAndTitleInput
-            label="プライバシーボリシー"
-            titleLabel="ページの名称"
-            urlLabel="リンク"
-            titleInput={
-              <>
-                <input
-                  className={clsx("jumpu-input h-12 w-full", {
-                    "border-orange-700 !border-2 !text-orange-700":
-                      errors.privacyPolicyTitle,
-                  })}
-                  {...register("privacyPolicyTitle", { onBlur: saveDraft })}
-                  placeholder="○△プライバシーセンター"
-                />
-                <ErrorMessage
-                  errors={errors}
-                  name="privacyPolicyTitle"
-                  render={({ message }) => (
-                    <p className="text-sm text-orange-700">{message}</p>
-                  )}
-                />
-              </>
-            }
-            urlInput={
-              <>
-                <input
-                  className={clsx("jumpu-input h-12 w-full", {
-                    "border-orange-700 !border-2 !text-orange-700":
-                      errors.privacyPolicyUrl,
-                  })}
-                  {...register("privacyPolicyUrl", {
-                    onBlur: saveDraft,
-                    validate: validateUrlString,
-                  })}
-                  type="url"
-                  placeholder="https://www.example.com/privacy/"
-                />
-                <ErrorMessage
-                  errors={errors}
-                  name="privacyPolicyUrl"
-                  render={({ message }) => (
-                    <p className="text-sm text-orange-700">{message}</p>
-                  )}
-                />
-              </>
-            }
-          />
-
-          <FormRow className="mb-7" label="説明" htmlFor="descriptionTextarea">
-            <textarea
-              id="descriptionTextarea"
-              className={clsx("jumpu-textarea flex-1", {
-                "border-orange-700 !border-2 !text-orange-700":
-                  errors.description,
-              })}
-              {...register("description", { onBlur: saveDraft })}
-              placeholder="追加の説明情報（任意）"
+            <FormField
+              name="streetAddress"
+              label="町名・番地・ビル名・部屋番号など"
+              required
+              placeHolder="大手町3丁目1-1 ○△ビル 1F"
+              registerOptions={{
+                onBlur: saveDraft,
+              }}
             />
-            <ErrorMessage
-              errors={errors}
-              name="description"
-              render={({ message }) => (
-                <p className="text-sm text-orange-700">{message}</p>
-              )}
+
+            <FormField
+              name="phoneNumber"
+              inputClassName="w-48"
+              label="電話番号"
+              placeHolder="03-1111-1111"
+              registerOptions={{
+                pattern: {
+                  value: /^[ー\p{Dash}\p{Nl}\d]+$/u,
+                  message: "電話番号を入力してください。",
+                },
+                onBlur: (e) => {
+                  const value = normalizePhoneNumber(e.target.value);
+                  setValue("phoneNumber", value);
+                  saveDraft();
+                },
+              }}
+              inputProps={{ type: "tel" }}
             />
-          </FormRow>
+
+            <FormField
+              name="email"
+              inputClassName="w-5/6"
+              label="メールアドレス"
+              placeHolder="contact@example.com"
+              registerOptions={{ onBlur: saveDraft }}
+              inputProps={{ type: "email" }}
+            />
+
+            <FormField
+              name="corporateNumber"
+              label="法人番号"
+              placeHolder="1234567890123"
+              registerOptions={{
+                pattern: {
+                  value: /^\d{13}$/,
+                  message: "不正な法人番号です。",
+                },
+                onBlur: saveDraft,
+              }}
+              inputProps={{ type: "text", inputMode: "numeric" }}
+            />
+
+            <FormField
+              name="businessCategory"
+              label="事業種目"
+              placeHolder="新聞業"
+              registerOptions={{
+                onBlur: saveDraft,
+              }}
+            />
+
+            <FormField
+              name="url"
+              label="WebサイトURL"
+              placeHolder="https://www.example.com/"
+              required
+              registerOptions={{
+                validate: validateUrlString,
+                onBlur: saveDraft,
+              }}
+              inputProps={{ type: "url" }}
+            />
+
+            {/* TODO: helpText が必要な項目に付け足して */}
+            <UrlAndTitleInput
+              label="お問い合わせ情報"
+              titleLabel="お問い合わせページの名称"
+              urlLabel="リンク"
+              titleInput={
+                <>
+                  <input
+                    className={clsx("jumpu-input h-12 w-full", {
+                      "border-orange-700 !border-2 !text-orange-700":
+                        errors.contactTitle,
+                    })}
+                    {...register("contactTitle", { onBlur: saveDraft })}
+                    placeholder="○△へのお問い合わせ"
+                  />
+                  <ErrorMessage
+                    errors={errors}
+                    name="contactTitle"
+                    render={({ message }) => (
+                      <p className="text-sm text-orange-700">{message}</p>
+                    )}
+                  />
+                </>
+              }
+              urlInput={
+                <>
+                  <input
+                    className={clsx("jumpu-input h-12 w-full", {
+                      "border-orange-700 !border-2 !text-orange-700":
+                        errors.contactUrl,
+                    })}
+                    {...register("contactUrl", {
+                      onBlur: saveDraft,
+                      validate: validateUrlString,
+                    })}
+                    type="url"
+                    placeholder="https://www.example.com/contact/"
+                  />
+                  <ErrorMessage
+                    errors={errors}
+                    name="contactUrl"
+                    render={({ message }) => (
+                      <p className="text-sm text-orange-700">{message}</p>
+                    )}
+                  />
+                </>
+              }
+            />
+            <UrlAndTitleInput
+              label="編集ガイドライン"
+              titleLabel="ページの名称"
+              urlLabel="リンク"
+              titleInput={
+                <>
+                  <input
+                    className={clsx("jumpu-input h-12 w-full", {
+                      "border-orange-700 !border-2 !text-orange-700":
+                        errors.publishingPrincipleTitle,
+                    })}
+                    {...register("publishingPrincipleTitle", {
+                      onBlur: saveDraft,
+                    })}
+                    placeholder="○△ガイドライン"
+                  />
+                  <ErrorMessage
+                    errors={errors}
+                    name="publishingPrincipleTitle"
+                    render={({ message }) => (
+                      <p className="text-sm text-orange-700">{message}</p>
+                    )}
+                  />
+                </>
+              }
+              urlInput={
+                <>
+                  <input
+                    className={clsx("jumpu-input h-12 w-full", {
+                      "border-orange-700 !border-2 !text-orange-700":
+                        errors.publishingPrincipleUrl,
+                    })}
+                    {...register("publishingPrincipleUrl", {
+                      onBlur: saveDraft,
+                      validate: validateUrlString,
+                    })}
+                    type="url"
+                    placeholder="https://www.example.com/guidelines/"
+                  />
+                  <ErrorMessage
+                    errors={errors}
+                    name="publishingPrincipleUrl"
+                    render={({ message }) => (
+                      <p className="text-sm text-orange-700">{message}</p>
+                    )}
+                  />
+                </>
+              }
+            />
+            <UrlAndTitleInput
+              label="プライバシーボリシー"
+              titleLabel="ページの名称"
+              urlLabel="リンク"
+              titleInput={
+                <>
+                  <input
+                    className={clsx("jumpu-input h-12 w-full", {
+                      "border-orange-700 !border-2 !text-orange-700":
+                        errors.privacyPolicyTitle,
+                    })}
+                    {...register("privacyPolicyTitle", { onBlur: saveDraft })}
+                    placeholder="○△プライバシーセンター"
+                  />
+                  <ErrorMessage
+                    errors={errors}
+                    name="privacyPolicyTitle"
+                    render={({ message }) => (
+                      <p className="text-sm text-orange-700">{message}</p>
+                    )}
+                  />
+                </>
+              }
+              urlInput={
+                <>
+                  <input
+                    className={clsx("jumpu-input h-12 w-full", {
+                      "border-orange-700 !border-2 !text-orange-700":
+                        errors.privacyPolicyUrl,
+                    })}
+                    {...register("privacyPolicyUrl", {
+                      onBlur: saveDraft,
+                      validate: validateUrlString,
+                    })}
+                    type="url"
+                    placeholder="https://www.example.com/privacy/"
+                  />
+                  <ErrorMessage
+                    errors={errors}
+                    name="privacyPolicyUrl"
+                    render={({ message }) => (
+                      <p className="text-sm text-orange-700">{message}</p>
+                    )}
+                  />
+                </>
+              }
+            />
+
+            <FormRow label="説明" htmlFor="descriptionTextarea">
+              <textarea
+                id="descriptionTextarea"
+                className={clsx("jumpu-textarea flex-1", {
+                  "border-orange-700 !border-2 !text-orange-700":
+                    errors.description,
+                })}
+                {...register("description", { onBlur: saveDraft })}
+                placeholder="追加の説明情報（任意）"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="description"
+                render={({ message }) => (
+                  <p className="text-sm text-orange-700">{message}</p>
+                )}
+              />
+            </FormRow>
+          </div>
         </form>
       </FormProvider>
     )

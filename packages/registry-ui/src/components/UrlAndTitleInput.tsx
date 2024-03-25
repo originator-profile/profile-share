@@ -18,7 +18,7 @@ export default function UrlAndTitleInput({
   urlError,
 }: Props) {
   return (
-    <div className="mb-7 flex flex-col md:flex-row gap-2 md:gap-4 md:items-center">
+    <div className="flex flex-col md:flex-row gap-2 md:gap-4 md:items-center">
       <span className="text-sm leading-normal flex-shrink-0 w-40 self-start">
         {label}
       </span>
