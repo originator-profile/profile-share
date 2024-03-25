@@ -104,7 +104,7 @@ export default function Holder() {
   const session = useSession();
   const user = session.data?.user;
   const { data: account, mutate: mutateAccount } = useAccount(
-    user?.accountId ?? null
+    user?.accountId ?? null,
   );
   const [draft, setDraft, clearDraft] = useAccountDraft(user?.id);
   const hasDraft = !!draft;
@@ -134,7 +134,7 @@ export default function Holder() {
         ...account,
         businessCategory:
           account?.businessCategory && account.businessCategory[0],
-      }
+      },
     );
   }, [draft, account, reset]);
 
@@ -144,7 +144,7 @@ export default function Holder() {
   }, [resetFormState]);
 
   const onSubmit: SubmitHandler<Partial<IFormInput>> = async (
-    data: Partial<IFormInput>
+    data: Partial<IFormInput>,
   ) => {
     if (!account) {
       return;
@@ -153,7 +153,7 @@ export default function Holder() {
     const response = await updateAccount(
       data as OpAccountWithCredentials,
       account.id,
-      token
+      token,
     );
     if (!response.ok) {
       // TODO: エラーを表示して
@@ -204,7 +204,7 @@ export default function Holder() {
                 下書きをリセット
               </button>
               <button
-                className="jumpu-outlined-button px-8 text-base text-[#00AFB4] font-bold border-[#00AFB4]"
+                className="jumpu-outlined-button font-bold px-8"
                 type="submit"
                 disabled={!hasDraft || !isValid}
               >
