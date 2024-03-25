@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { Icon } from "@iconify/react";
+import { Modal, useModal } from "./dialog";
 
 type Props = {
   htmlFor?: string;
@@ -20,6 +21,7 @@ function FormRow({
   helpText,
   children,
 }: Props) {
+  const modal = useModal();
   return (
     <div
       className={clsx(
@@ -39,16 +41,22 @@ function FormRow({
         </label>
 
         {helpText && (
-          <Icon
-            className="text-lg text-gray-400"
-            // TODO: デザインのアイコンと微妙に違うかも。必要なら差し替えて
-            icon="material-symbols:help"
-            // TODO: 表示方法をデザインに合わせて
-            onClick={() => alert(helpText)}
-          />
+          <button
+            className="leading-none align-middle mx-1"
+            onClick={modal.open}
+          >
+            <Icon
+              className="text-lg text-gray-400"
+              icon="material-symbols:help"
+              onClick={modal.open}
+            />
+          </button>
         )}
       </div>
       <div className="w-full flex flex-col gap-2">{children}</div>
+      {helpText && (
+        <Modal title={label} description={helpText} dialogRef={modal.ref} />
+      )}
     </div>
   );
 }

@@ -76,8 +76,7 @@ function FormField({
       label={label}
       required={required}
       htmlFor={`${name}Input`}
-      // TODO helpText を本物に差し替えて
-      // helpText={helpText}
+      helpText={helpText}
     >
       <input
         id={`${name}Input`}

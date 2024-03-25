@@ -21,3 +21,9 @@ export type ConfirmDialogProps<Variant extends ConfirmDialogVariant> = {
 
 export type AlertDialogProps = Omit<ConfirmDialogProps<"alert">, "variant">;
 export type PromptDialogProps = Omit<ConfirmDialogProps<"prompt">, "variant">;
+
+export type ModalProps = {
+  dialogRef: RefObject<HTMLDialogElement>;
+  title: string;
+  description: string;
+};
