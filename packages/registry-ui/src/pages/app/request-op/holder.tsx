@@ -519,8 +519,9 @@ export default function Holder() {
             }
           />
 
-          <FormRow className="mb-7" label="説明">
+          <FormRow className="mb-7" label="説明" htmlFor="descriptionTextarea">
             <textarea
+              id="descriptionTextarea"
               className={clsx("jumpu-textarea flex-1", {
                 "border-orange-700 !border-2 !text-orange-700":
                   errors.description,
