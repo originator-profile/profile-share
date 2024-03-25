@@ -104,28 +104,37 @@ export default function PublicKey() {
         />
         <div className="space-y-2 mb-4">
           {publicKeys.register.error && (
-            <div className="jumpu-card bg-danger-light px-4 py-3">
-              <p className="mb-2">
-                公開鍵の登録に失敗しました。いずれかの原因が考えられます。
-              </p>
+            <div className="jumpu-card bg-danger-light px-4 space-y-2 py-3">
+              <p>公開鍵の登録に失敗しました。いずれかの原因が考えられます。</p>
               <ul className="pl-6 list-disc">
                 <li>ネットワーク通信の問題</li>
                 <li>公開鍵の形式が無効</li>
                 <li>公開鍵が既に登録済み</li>
                 <li>プライベート鍵を登録しようとしている</li>
               </ul>
+              {publicKeys.register.error instanceof Error && (
+                <details>{publicKeys.register.error.message}</details>
+              )}
             </div>
           )}
           {publicKeys.destroy.error && (
-            <p className="jumpu-card bg-danger-light px-4 py-3">
-              公開鍵の削除に失敗しました。ネットワーク通信に問題がある可能性があります。再度お試しください。
-            </p>
+            <div className="jumpu-card bg-danger-light space-y-2 px-4 py-3">
+              <p>
+                公開鍵の削除に失敗しました。ネットワーク通信に問題がある可能性があります。再度お試しください。
+              </p>
+              {publicKeys.destroy.error instanceof Error && (
+                <details>{publicKeys.destroy.error.message}</details>
+              )}
+            </div>
           )}
           {fileError && (
-            <p className="jumpu-card bg-danger-light px-4 py-3">
-              無効な形式の公開鍵です。JSON Web
-              Key形式のJSONファイルを指定してください。
-            </p>
+            <div className="jumpu-card bg-danger-light space-y-2 px-4 py-3">
+              <p>
+                無効な形式の公開鍵です。JSON Web
+                Key形式のJSONファイルを指定してください。
+              </p>
+              <details>{fileError.message}</details>
+            </div>
           )}
         </div>
         <input
