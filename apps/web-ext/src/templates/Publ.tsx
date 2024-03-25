@@ -95,6 +95,8 @@ function Site({ op, dp, website, holder, paths }: Required<Props>["website"]) {
             src={website.image}
             placeholderSrc={placeholderLogoMainUrl}
             alt=""
+            width={240}
+            height={44}
           />
           <h1 className="w-fit text-base text-gray-700 mb-2">
             {website.title}

@@ -32,7 +32,7 @@ function Image({
            'object-cover': cover, 'object-contain': !cover 
         })}
         style={
-          cover ? { width, height } : { maxWidth: width ?? '240px', maxHeight: height ?? '44px' }
+          cover ? { width, height } : { maxWidth: width, maxHeight: height }
         }
         src={src ?? placeholderSrc}
         alt={alt}
