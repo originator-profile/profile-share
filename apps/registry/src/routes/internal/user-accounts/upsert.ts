@@ -1,6 +1,5 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 import { BadRequestError, createError } from "http-errors-enhanced";
-import { ErrorResponse } from "../../../error";
 import { User } from "@originator-profile/model";
 
 const schema: FastifySchema = {
@@ -12,7 +11,6 @@ const schema: FastifySchema = {
       type: "object",
       additionalProperties: true,
     },
-    400: ErrorResponse,
   },
 };
 

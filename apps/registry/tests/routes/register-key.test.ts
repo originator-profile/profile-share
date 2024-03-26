@@ -31,7 +31,6 @@ test("account.registerKeyはプライベート鍵の登録を許可しない", a
   expect(res.statusCode).toBe(400);
   expect(res.statusMessage).toBe("Bad Request");
   expect(res.json()).toEqual({
-    code: "HTTP_ERROR_BAD_REQUEST",
     statusCode: 400,
     error: "Bad Request",
     message: "Private key not allowed.",

@@ -6,9 +6,21 @@ import getIssuerKeys from "./get-issuer-keys";
 import getIssuerProfileSet from "./get-issuer-profile-set";
 
 async function index(fastify: FastifyInstance): Promise<void> {
-  fastify.get("/", (req, reply) => {
-    reply.html();
-  });
+  fastify.get(
+    "/",
+    {
+      schema: {
+        operationId: "frontend",
+        produces: ["text/html"],
+        response: {
+          200: {
+            type: "string",
+          },
+        },
+      },
+    },
+    (_, reply) => reply.html(),
+  );
   fastify.get(
     "/app/*",
     {
@@ -17,9 +29,7 @@ async function index(fastify: FastifyInstance): Promise<void> {
         hide: true,
       },
     },
-    (req, reply) => {
-      reply.html();
-    },
+    (_, reply) => reply.html(),
   );
   fastify.get<FromHandler<typeof getFrontendProfileSet>>(
     "/ps.json",

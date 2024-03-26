@@ -1,7 +1,6 @@
 import { FastifySchema, FastifyRequest, FastifyReply } from "fastify";
 import { FromSchema } from "json-schema-to-ts";
 import { BadRequestError } from "http-errors-enhanced";
-import { ErrorResponse } from "../../../error";
 import { OpHolder } from "@originator-profile/model";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -25,7 +24,6 @@ const schema: FastifySchema = {
       type: "object",
       additionalProperties: true,
     },
-    400: ErrorResponse,
   },
 };
 

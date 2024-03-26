@@ -1,7 +1,6 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 import { HttpError, BadRequestError } from "http-errors-enhanced";
 import { Jwks } from "@originator-profile/model";
-import { ErrorResponse } from "../../../error";
 import Params from "./params";
 
 const schema: FastifySchema = {
@@ -9,8 +8,6 @@ const schema: FastifySchema = {
   params: Params,
   response: {
     200: Jwks,
-    400: ErrorResponse,
-    404: ErrorResponse,
   },
 };
 

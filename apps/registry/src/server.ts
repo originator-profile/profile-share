@@ -50,6 +50,12 @@ export async function create(options: Options): Promise<Server> {
     logger: !options.quiet,
   });
 
+  await app.register(httpErrorsEnhanced, {
+    allowUndeclaredResponses: true,
+    convertResponsesValidationErrors: false,
+    hideUnhandledErrors: !options.isDev,
+  });
+
   await app.register(env, { schema: Config });
 
   if (options.isDev && options.dangerouslyDisabledAuth === true) {
@@ -83,7 +89,7 @@ export async function create(options: Options): Promise<Server> {
           .join(";"),
     });
   }
-  app.register(autoload, {
+  await app.register(autoload, {
     dir: options.routes ?? resolve(__dirname, "routes"),
     routeParams: true,
     autoHooks: true,
@@ -119,7 +125,6 @@ export async function create(options: Options): Promise<Server> {
         : "same-origin",
     },
   });
-  app.register(httpErrorsEnhanced);
 
   const REGISTRY_ROOT = resolve(require.main?.path ?? "", "..");
 

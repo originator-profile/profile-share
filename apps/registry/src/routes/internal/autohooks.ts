@@ -1,13 +1,7 @@
-import {
-  FastifyError,
-  FastifyInstance,
-  FastifyRequest,
-  onRouteHookHandler,
-} from "fastify";
+import { FastifyInstance, FastifyRequest, onRouteHookHandler } from "fastify";
 import helmet from "@fastify/helmet";
 import auth0Verify from "fastify-auth0-verify";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { BadRequestError, ForbiddenError } from "http-errors-enhanced";
+import { ForbiddenError } from "http-errors-enhanced";
 import { ErrorResponse } from "../../error";
 
 async function requiredPermissions(request: FastifyRequest) {
@@ -15,14 +9,6 @@ async function requiredPermissions(request: FastifyRequest) {
   if (!user.permissions.includes("write:requests")) {
     throw new ForbiddenError("Insufficient permissions");
   }
-}
-
-function onPrismaClientKnownRequestError(error: FastifyError) {
-  if (error instanceof PrismaClientKnownRequestError) {
-    return new BadRequestError(error.message);
-  }
-
-  return error;
 }
 
 const addErrorResponseSchema: onRouteHookHandler = async (opt) => {
@@ -35,7 +21,6 @@ const addErrorResponseSchema: onRouteHookHandler = async (opt) => {
   }
 
   Object.assign(opt.schema.response, {
-    400: ErrorResponse,
     401: ErrorResponse,
     403: ErrorResponse,
   });
@@ -57,7 +42,6 @@ async function autohooks(fastify: FastifyInstance): Promise<void> {
     hsts: { preload: true },
   });
   fastify.addHook("onRoute", addErrorResponseSchema);
-  fastify.setErrorHandler(onPrismaClientKnownRequestError);
 }
 
 export default autohooks;
