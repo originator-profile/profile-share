@@ -1,4 +1,4 @@
-import { ComponentProps, SyntheticEvent, useEffect } from "react";
+import { ComponentProps, SyntheticEvent, useEffect, useMemo } from "react";
 import clsx from "clsx";
 import {
   useForm,
@@ -23,6 +23,9 @@ import {
   convertToHalfWidth,
 } from "../../../utils/account-form";
 
+// API から得られるデータでは任意の項目は null を取りうるため、
+// フォームのデフォルト値も null を許容する。
+// これに合わせて Yup のスキーマ定義でも任意の項目に nullable() を適用する必要がある。
 export interface IFormInput {
   domainName: string;
   name: string;
@@ -30,18 +33,18 @@ export interface IFormInput {
   addressRegion: string;
   addressLocality: string;
   streetAddress: string;
-  phoneNumber?: string;
-  email?: string;
-  corporateNumber?: string;
-  businessCategory?: string;
+  phoneNumber?: string | null;
+  email?: string | null;
+  corporateNumber?: string | null;
+  businessCategory?: string | null;
   url: string;
-  contactTitle?: string;
-  contactUrl?: string;
-  publishingPrincipleTitle?: string;
-  publishingPrincipleUrl?: string;
-  privacyPolicyTitle?: string;
-  privacyPolicyUrl?: string;
-  description?: string;
+  contactTitle?: string | null;
+  contactUrl?: string | null;
+  publishingPrincipleTitle?: string | null;
+  publishingPrincipleUrl?: string | null;
+  privacyPolicyTitle?: string | null;
+  privacyPolicyUrl?: string | null;
+  description?: string | null;
 }
 
 type FormFieldProps = {
@@ -203,34 +206,38 @@ const formValidationSchema: Yup.ObjectSchema<IFormInput> = Yup.object({
     .matches(/^[-\d]+$/u, {
       message: "不正な電話番号です。",
       excludeEmptyString: true,
-    }),
-  email: Yup.string().email("不正なメールアドレスです。"),
+    })
+    .nullable(),
+  email: Yup.string().email("不正なメールアドレスです。").nullable(),
   // 13桁の数字または空文字列（未記入）
   corporateNumber: Yup.string()
     .transform(convertToHalfWidth)
     .matches(/^\d{13}$/, {
       message: "不正な法人番号です。",
       excludeEmptyString: true,
-    }),
-  businessCategory: Yup.string(),
+    })
+    .nullable(),
+  businessCategory: Yup.string().nullable(),
   url: Yup.string()
     .url("不正な URL です。")
     .required("このフィールドを入力してください。"),
-  contactTitle: Yup.string(),
-  contactUrl: Yup.string().url("不正な URL です。"),
-  publishingPrincipleTitle: Yup.string(),
-  publishingPrincipleUrl: Yup.string().url("不正な URL です。"),
-  privacyPolicyTitle: Yup.string(),
-  privacyPolicyUrl: Yup.string().url("不正な URL です。"),
-  description: Yup.string(),
+  contactTitle: Yup.string().nullable(),
+  contactUrl: Yup.string().url("不正な URL です。").nullable(),
+  publishingPrincipleTitle: Yup.string().nullable(),
+  publishingPrincipleUrl: Yup.string().url("不正な URL です。").nullable(),
+  privacyPolicyTitle: Yup.string().nullable(),
+  privacyPolicyUrl: Yup.string().url("不正な URL です。").nullable(),
+  description: Yup.string().nullable(),
 });
 
 function HolderForm({
+  accountId,
   account,
   userId,
   mutateAccount,
 }: {
-  account: OpAccountWithCredentials;
+  accountId: string;
+  account: IFormInput;
   userId: string;
   mutateAccount: () => void;
 }) {
@@ -240,7 +247,7 @@ function HolderForm({
 
   const methods = useForm<IFormInput>({
     mode: "onBlur",
-    defaultValues: draft || (account as IFormInput),
+    defaultValues: draft || account,
     resolver: yupResolver<IFormInput>(formValidationSchema),
   });
 
@@ -270,7 +277,7 @@ function HolderForm({
     const token = await session.getAccessToken();
     const response = await updateAccount(
       data as OpAccountWithCredentials,
-      account.id,
+      accountId,
       token,
     );
     if (!response.ok) {
@@ -312,7 +319,7 @@ function HolderForm({
               onClick={(e) => {
                 e.preventDefault();
                 clearDraft();
-                reset(account as IFormInput);
+                reset(account);
               }}
               disabled={!hasDraft}
             >
@@ -503,12 +510,25 @@ export default function Holder() {
     user?.accountId ?? null,
   );
 
-  if (!account || !user) {
+  const convert = (account: OpAccountWithCredentials): IFormInput => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, roleValue, credentials, businessCategory, ...rest } = account;
+    return { ...rest, businessCategory: businessCategory?.[0] };
+  };
+
+  const accountData = useMemo(
+    () => (account ? convert(account) : null),
+    [account],
+  );
+
+  if (!account || !accountData || !user) {
     return <p>Loading...</p>;
   }
+
   return (
     <HolderForm
-      account={account}
+      accountId={account.id}
+      account={accountData}
       userId={user.id}
       mutateAccount={mutateAccount}
     />
