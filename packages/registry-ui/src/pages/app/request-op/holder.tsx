@@ -1,4 +1,10 @@
-import { ComponentProps, SyntheticEvent, useEffect, useMemo } from "react";
+import {
+  ComponentProps,
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+} from "react";
 import clsx from "clsx";
 import {
   useForm,
@@ -239,7 +245,7 @@ function HolderForm({
   accountId: string;
   account: IFormInput;
   userId: string;
-  mutateAccount: () => void;
+  mutateAccount: () => Promise<IFormInput | null>;
 }) {
   const session = useSession();
   const [draft, setDraft, clearDraft] = useAccountDraft(userId);
@@ -247,7 +253,7 @@ function HolderForm({
 
   const methods = useForm<IFormInput>({
     mode: "onBlur",
-    defaultValues: draft || account,
+    defaultValues: hasDraft ? draft : account,
     resolver: yupResolver<IFormInput>(formValidationSchema),
   });
 
@@ -286,7 +292,8 @@ function HolderForm({
     } else {
       // 成功の場合、SWR のキャッシュの revalidate を行う。
       session.mutate();
-      mutateAccount();
+      const data = await mutateAccount();
+      reset(data ?? draft);
       clearDraft();
     }
   };
@@ -506,19 +513,25 @@ function HolderForm({
 export default function Holder() {
   const session = useSession();
   const user = session.data?.user;
-  const { data: account, mutate: mutateAccount } = useAccount(
-    user?.accountId ?? null,
+  const { data: account, mutate } = useAccount(user?.accountId ?? null);
+
+  const convert = useCallback(
+    (account: OpAccountWithCredentials): IFormInput => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id, roleValue, credentials, businessCategory, ...rest } = account;
+      return { ...rest, businessCategory: businessCategory?.[0] };
+    },
+    [],
   );
 
-  const convert = (account: OpAccountWithCredentials): IFormInput => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { id, roleValue, credentials, businessCategory, ...rest } = account;
-    return { ...rest, businessCategory: businessCategory?.[0] };
-  };
+  const mutateAccount = useCallback(async () => {
+    const data = await mutate<OpAccountWithCredentials>();
+    return data ? convert(data) : null;
+  }, [mutate, convert]);
 
   const accountData = useMemo(
     () => (account ? convert(account) : null),
-    [account],
+    [account, convert],
   );
 
   if (!account || !accountData || !user) {
