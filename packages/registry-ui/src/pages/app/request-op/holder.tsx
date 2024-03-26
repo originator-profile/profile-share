@@ -189,12 +189,12 @@ const formValidationSchema: Yup.ObjectSchema<IFormInput> = Yup.object({
   name: Yup.string().required("このフィールドを入力してください。"),
   postalCode: Yup.string()
     .transform(convertToHalfWidth)
+    .transform(normalizeJapanPostalCode)
     // 日本の郵便番号の形式のみ受け付ける
     .matches(/^\d{3}-?\d{4}$/u, {
       message: "不正な郵便番号です。",
       excludeEmptyString: true,
     })
-    .transform(normalizeJapanPostalCode)
     .required("このフィールドを入力してください。"),
   addressRegion: Yup.string()
     .oneOf(prefectures, "都道府県を選択してください。")
