@@ -247,10 +247,21 @@ function HolderForm({
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isDirty },
     getValues,
     reset,
+    trigger,
   } = methods;
+
+  // 前回訪問時の下書きがある場合は、その下書きのエラーを表示する。
+  // ユーザーがフォームを触っておらず (isDirty === false) 、
+  // なおかつ下書きがある (hasDraft === true) の場合、
+  // 下書きが前回訪問時のものだと判定する。
+  useEffect(() => {
+    if (!isDirty && hasDraft) {
+      trigger();
+    }
+  }, [hasDraft, isDirty, trigger]);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
     if (!account) {
@@ -260,7 +271,7 @@ function HolderForm({
     const response = await updateAccount(
       data as OpAccountWithCredentials,
       account.id,
-      token
+      token,
     );
     if (!response.ok) {
       // TODO: エラーを表示して
@@ -489,7 +500,7 @@ export default function Holder() {
   const session = useSession();
   const user = session.data?.user;
   const { data: account, mutate: mutateAccount } = useAccount(
-    user?.accountId ?? null
+    user?.accountId ?? null,
   );
 
   if (!account || !user) {
