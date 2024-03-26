@@ -876,9 +876,9 @@ importers:
       jsonld:
         specifier: ^8.3.2
         version: 8.3.2
-      just-compare:
-        specifier: ^2.3.0
-        version: 2.3.0
+      just-typeof:
+        specifier: ^3.2.0
+        version: 3.2.0
       playwright:
         specifier: ^1.41.1
         version: 1.41.1
@@ -14610,10 +14610,6 @@ packages:
       setimmediate: 1.0.5
     dev: true
 
-  /just-compare@2.3.0:
-    resolution: {integrity: sha512-6shoR7HDT+fzfL3gBahx1jZG3hWLrhPAf+l7nCwahDdT9XDtosB9kIF0ZrzUp5QY8dJWfQVr5rnsPqsbvflDzg==}
-    dev: true
-
   /just-diff-apply@5.5.0:
     resolution: {integrity: sha512-OYTthRfSh55WOItVqwpefPtNt2VdKsq5AnAK6apdtR6yCH8pr0CmSr710J0Mf+WdQy7K/OzMy7K2MgAfdQURDw==}
     dev: true
@@ -14640,6 +14636,10 @@ packages:
 
   /just-range@4.2.0:
     resolution: {integrity: sha512-z2Ip8H2j7a9Vr8rKFi0IZf4IXn2Yuq2lGZFS41GjfPwksoHWTaTx1xIjU6C0HyQ1jBXEoz/FzjS5eyVXeW19tg==}
+    dev: true
+
+  /just-typeof@3.2.0:
+    resolution: {integrity: sha512-nOKazfzrQDEGNwXPfWEB64QD+ATZUnpOTJn0xMnCk41p297P9Emt3BlsRyWbu+CErMjopnFTGcYHJnvFX97ZIQ==}
     dev: true
 
   /jwa@1.4.1:

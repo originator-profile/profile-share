@@ -1,4 +1,4 @@
-import compare from "just-compare";
+import typeOf from "just-typeof";
 import { CertificationSystemValidationFailed } from "./errors";
 import { CertificationSystem } from "@originator-profile/model";
 
@@ -7,25 +7,34 @@ export function CertificationSystemValidator() {
   return function validate(
     payload: unknown,
   ): true | CertificationSystemValidationFailed {
-    if (typeof payload !== "object")
+    if (typeOf(payload) !== "object") {
       return new CertificationSystemValidationFailed("should be an object", {
         payload,
       });
-    if (payload === null)
-      return new CertificationSystemValidationFailed("should be an object", {
-        payload,
-      });
-    if (!compare(Object.keys(payload), CertificationSystem.required))
+    }
+
+    const keys = Object.keys(payload as object);
+    const entries = Object.entries(payload as object);
+
+    if (!CertificationSystem.required.every((k) => keys.includes(k))) {
       return new CertificationSystemValidationFailed(
-        "should be contain required properties or no contain the other properties",
+        "should be contain required properties",
         { payload },
       );
-    const entries = Object.entries(payload) as Array<
-      [keyof CertificationSystem, unknown]
-    >;
+    }
+
     for (const entry of entries) {
       const [key, value] = entry;
-      const propertySchema = CertificationSystem.properties[key];
+      const propertySchema = CertificationSystem.properties[
+        key as keyof typeof CertificationSystem.properties
+      ] as unknown as object;
+      if (typeOf(propertySchema) !== "object") {
+        return new CertificationSystemValidationFailed(
+          "should not contain additional properties",
+          { payload },
+        );
+      }
+
       if ("const" in propertySchema && value !== propertySchema.const)
         return new CertificationSystemValidationFailed(
           `should be contain value of '${value}' in '${key}' property`,
