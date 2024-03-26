@@ -229,7 +229,7 @@ export default function Holder() {
   const session = useSession();
   const user = session.data?.user;
   const { data: account, mutate: mutateAccount } = useAccount(
-    user?.accountId ?? null
+    user?.accountId ?? null,
   );
   const [draft, setDraft, clearDraft] = useAccountDraft(user?.id);
   const hasDraft = !!draft;
@@ -259,7 +259,7 @@ export default function Holder() {
         ...account,
         businessCategory:
           account?.businessCategory && account.businessCategory[0],
-      }
+      },
     );
   }, [draft, account, reset]);
 
@@ -276,7 +276,7 @@ export default function Holder() {
     const response = await updateAccount(
       data as OpAccountWithCredentials,
       account.id,
-      token
+      token,
     );
     if (!response.ok) {
       // TODO: エラーを表示して
