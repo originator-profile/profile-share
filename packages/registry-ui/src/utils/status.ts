@@ -1,6 +1,7 @@
 import { useSession } from "./session";
 import { useAccountDraft } from "./draft";
-import { useAccount, useAccountLogo, useKeys } from "./account";
+import { useAccount, useAccountLogo } from "./account";
+import { usePublicKeys } from "../components/publicKeys";
 import { isExpired } from "@originator-profile/core";
 
 export function useStatus() {
@@ -10,7 +11,7 @@ export function useStatus() {
   const { data: account } = useAccount(accountIdOrNull);
   const [draft] = useAccountDraft(user?.id);
   const hasDraft = !!draft;
-  const { data: keys } = useKeys(accountIdOrNull);
+  const { data: keys } = usePublicKeys();
   const { data: logo } = useAccountLogo(accountIdOrNull);
   const validCredentials = account?.credentials?.filter(
     (credential) => !isExpired(credential.expiredAt),
