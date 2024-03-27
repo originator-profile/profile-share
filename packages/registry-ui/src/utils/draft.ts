@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 import { atomWithStorage, createJSONStorage, useResetAtom } from "jotai/utils";
 import { useAtom, useSetAtom } from "jotai/react";
-import { IFormInput } from "../pages/app/request-op/holder";
+import { IFormInput } from "./account-form";
 
 const DRAFT_KEY = "account-form-draft";
 

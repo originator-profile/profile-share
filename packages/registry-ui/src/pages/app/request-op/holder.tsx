@@ -1,21 +1,8 @@
-import {
-  ComponentProps,
-  SyntheticEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-} from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import clsx from "clsx";
-import {
-  useForm,
-  SubmitHandler,
-  FormProvider,
-  useFormContext,
-} from "react-hook-form";
+import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
-import FormRow from "../../../components/FormRow";
 import { useSession } from "../../../utils/session";
 import {
   OpAccountWithCredentials,
@@ -25,228 +12,26 @@ import {
 import { useAccountDraft } from "../../../utils/draft";
 import {
   prefectures,
-  normalizeJapanPostalCode,
-  convertToHalfWidth,
+  IFormInput,
+  formValidationSchema,
 } from "../../../utils/account-form";
+import FormRow from "../../../components/FormRow";
+import PageFieldSet from "../../../components/PageFieldSet";
+import AccountFormField from "../../../components/AccountFormField";
 
-// API から得られるデータでは任意の項目は null を取りうるため、
-// フォームのデフォルト値も null を許容する。
-// これに合わせて Yup のスキーマ定義でも任意の項目に nullable() を適用する必要がある。
-export interface IFormInput {
-  domainName: string;
-  name: string;
-  postalCode: string;
-  addressRegion: string;
-  addressLocality: string;
-  streetAddress: string;
-  phoneNumber?: string | null;
-  email?: string | null;
-  corporateNumber?: string | null;
-  businessCategory?: string | null;
-  url: string;
-  contactTitle?: string | null;
-  contactUrl?: string | null;
-  publishingPrincipleTitle?: string | null;
-  publishingPrincipleUrl?: string | null;
-  privacyPolicyTitle?: string | null;
-  privacyPolicyUrl?: string | null;
-  description?: string | null;
-}
-
-type FormFieldProps = {
-  name: keyof IFormInput;
-  label: string;
-  inputClassName?: string;
-  required?: boolean;
-  helpText?: string;
-  placeHolder?: string;
-  onBlur: (e: SyntheticEvent) => void;
-  inputProps?: ComponentProps<"input">;
+type HolderFormProps = {
+  accountId: string;
+  account: IFormInput;
+  userId: string;
+  mutateAccount: () => Promise<IFormInput | null>;
 };
-
-function FormField({
-  name,
-  inputClassName,
-  label,
-  required,
-  helpText,
-  placeHolder,
-  onBlur,
-  inputProps,
-}: FormFieldProps) {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
-  return (
-    <FormRow
-      label={label}
-      required={required}
-      htmlFor={`${name}Input`}
-      helpText={helpText}
-    >
-      <input
-        id={`${name}Input`}
-        className={clsx("jumpu-input h-12", inputClassName, {
-          "border-orange-700 !border-2 !text-orange-700": errors[name],
-        })}
-        placeholder={placeHolder}
-        {...register(name, {
-          onBlur: onBlur,
-        })}
-        {...inputProps}
-      />
-      <ErrorMessage
-        errors={errors}
-        name={name}
-        render={({ message }) => (
-          <p className="text-sm text-orange-700">{message}</p>
-        )}
-      />
-    </FormRow>
-  );
-}
-
-type PageFieldSetProps = {
-  name: string;
-  label: string;
-  titleLabel: string;
-  urlLabel: string;
-  titlePlaceholder: string;
-  urlPlaceholder: string;
-  onBlur: (e: SyntheticEvent) => void;
-};
-
-function PageFieldSet({
-  name,
-  label,
-  titleLabel,
-  urlLabel,
-  titlePlaceholder,
-  urlPlaceholder,
-  onBlur,
-}: PageFieldSetProps) {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
-
-  const urlName = `${name}Url`;
-  const titleName = `${name}Title`;
-  const urlInputId = `${name}UrlInput`;
-  const titleInputId = `${name}TitleInput`;
-
-  return (
-    <fieldset className="flex flex-col md:flex-row gap-2 md:gap-4 md:items-center">
-      <div className="text-sm leading-normal flex-shrink-0 w-40 self-start">
-        {label}
-      </div>
-      <div className="bg-gray-100 p-4 flex flex-col w-full rounded-lg gap-4">
-        <div className="flex flex-col gap-2">
-          <label htmlFor={titleInputId}>
-            <span className="text-sm leading-normal">{titleLabel}</span>
-          </label>
-          <input
-            id={titleInputId}
-            className={clsx("jumpu-input h-12 w-full", {
-              "border-orange-700 !border-2 !text-orange-700": errors[titleName],
-            })}
-            {...register(titleName, { onBlur: onBlur })}
-            placeholder={titlePlaceholder}
-          />
-          <ErrorMessage
-            errors={errors}
-            name={titleName}
-            render={({ message }) => (
-              <p className="text-sm text-orange-700">{message}</p>
-            )}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor={urlInputId}>
-            <span className="text-sm leading-normal">{urlLabel}</span>
-          </label>
-          <input
-            id={urlInputId}
-            type="url"
-            className={clsx("jumpu-input h-12 w-full", {
-              "border-orange-700 !border-2 !text-orange-700": errors[urlName],
-            })}
-            {...register(urlName, {
-              onBlur: onBlur,
-            })}
-            placeholder={urlPlaceholder}
-          />
-          <ErrorMessage
-            errors={errors}
-            name={urlName}
-            render={({ message }) => (
-              <p className="text-sm text-orange-700">{message}</p>
-            )}
-          />
-        </div>
-      </div>
-    </fieldset>
-  );
-}
-
-const formValidationSchema: Yup.ObjectSchema<IFormInput> = Yup.object({
-  domainName: Yup.string().required("このフィールドを入力してください。"),
-  name: Yup.string().required("このフィールドを入力してください。"),
-  postalCode: Yup.string()
-    .transform(convertToHalfWidth)
-    .transform(normalizeJapanPostalCode)
-    // 日本の郵便番号の形式のみ受け付ける
-    .matches(/^\d{3}-?\d{4}$/u, {
-      message: "不正な郵便番号です。",
-      excludeEmptyString: true,
-    })
-    .required("このフィールドを入力してください。"),
-  addressRegion: Yup.string()
-    .oneOf(prefectures, "都道府県を選択してください。")
-    .required("このフィールドを入力してください。"),
-  addressLocality: Yup.string().required("このフィールドを入力してください。"),
-  streetAddress: Yup.string().required("このフィールドを入力してください。"),
-  phoneNumber: Yup.string()
-    .transform(convertToHalfWidth)
-    .matches(/^[-\d]+$/u, {
-      message: "不正な電話番号です。",
-      excludeEmptyString: true,
-    })
-    .nullable(),
-  email: Yup.string().email("不正なメールアドレスです。").nullable(),
-  // 13桁の数字または空文字列（未記入）
-  corporateNumber: Yup.string()
-    .transform(convertToHalfWidth)
-    .matches(/^\d{13}$/, {
-      message: "不正な法人番号です。",
-      excludeEmptyString: true,
-    })
-    .nullable(),
-  businessCategory: Yup.string().nullable(),
-  url: Yup.string()
-    .url("不正な URL です。")
-    .required("このフィールドを入力してください。"),
-  contactTitle: Yup.string().nullable(),
-  contactUrl: Yup.string().url("不正な URL です。").nullable(),
-  publishingPrincipleTitle: Yup.string().nullable(),
-  publishingPrincipleUrl: Yup.string().url("不正な URL です。").nullable(),
-  privacyPolicyTitle: Yup.string().nullable(),
-  privacyPolicyUrl: Yup.string().url("不正な URL です。").nullable(),
-  description: Yup.string().nullable(),
-});
 
 function HolderForm({
   accountId,
   account,
   userId,
   mutateAccount,
-}: {
-  accountId: string;
-  account: IFormInput;
-  userId: string;
-  mutateAccount: () => Promise<IFormInput | null>;
-}) {
+}: HolderFormProps) {
   const session = useSession();
   const [draft, setDraft, clearDraft] = useAccountDraft(userId);
   const hasDraft = !!draft;
@@ -350,14 +135,14 @@ function HolderForm({
           グループ会社一括やサイト・サービス単位ではありません。
         </p>
         <div className="flex flex-col gap-7">
-          <FormField
+          <AccountFormField
             name="domainName"
             label="組織代表ドメイン名"
             required
             placeHolder="media.example.com"
             onBlur={saveDraft}
           />
-          <FormField
+          <AccountFormField
             name="name"
             label="所有者 / 法人・組織名"
             required
@@ -365,7 +150,7 @@ function HolderForm({
             helpText="法人・組織の正式名称(省略無し)を記載してください"
             onBlur={saveDraft}
           />
-          <FormField
+          <AccountFormField
             name="postalCode"
             label="郵便番号"
             inputClassName="w-40"
@@ -402,14 +187,14 @@ function HolderForm({
               )}
             />
           </FormRow>
-          <FormField
+          <AccountFormField
             name="addressLocality"
             label="市区町村"
             required
             placeHolder="千代田区"
             onBlur={saveDraft}
           />
-          <FormField
+          <AccountFormField
             name="streetAddress"
             label="町名・番地・ビル名・部屋番号など"
             required
@@ -417,7 +202,7 @@ function HolderForm({
             onBlur={saveDraft}
           />
 
-          <FormField
+          <AccountFormField
             name="phoneNumber"
             inputClassName="w-48"
             label="電話番号"
@@ -426,7 +211,7 @@ function HolderForm({
             inputProps={{ type: "tel" }}
           />
 
-          <FormField
+          <AccountFormField
             name="email"
             inputClassName="w-5/6"
             label="メールアドレス"
@@ -435,7 +220,7 @@ function HolderForm({
             inputProps={{ type: "email" }}
           />
 
-          <FormField
+          <AccountFormField
             name="corporateNumber"
             label="法人番号"
             placeHolder="1234567890123"
@@ -443,14 +228,14 @@ function HolderForm({
             inputProps={{ type: "text", inputMode: "numeric" }}
           />
 
-          <FormField
+          <AccountFormField
             name="businessCategory"
             label="事業種目"
             placeHolder="新聞業"
             onBlur={saveDraft}
           />
 
-          <FormField
+          <AccountFormField
             name="url"
             label="WebサイトURL"
             placeHolder="https://www.example.com/"
