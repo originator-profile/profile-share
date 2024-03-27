@@ -12,7 +12,7 @@
     "@headlessui/react": "^1.7.18",
     "@hookform/resolvers": "^3.3.4",
     "@iconify/react": "^4.1.1",
-    "@originator-profile/core": "workspace:^",
+    "@originator-profile/core": "workspace:*",
     "@originator-profile/model": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
     "@originator-profile/ui": "workspace:*",
