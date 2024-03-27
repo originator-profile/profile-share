@@ -672,7 +672,7 @@ importers:
         specifier: ^4.1.1
         version: 4.1.1(react@18.2.0)
       '@originator-profile/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../core
       '@originator-profile/model':
         specifier: workspace:*
