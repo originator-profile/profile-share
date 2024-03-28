@@ -91,9 +91,12 @@ const normalizeJapanPostalCode = (value?: string) =>
   value?.replace(/^(\d{3})(\d{4})$/, "$1-$2");
 
 export const formValidationSchema: Yup.ObjectSchema<IFormInput> = Yup.object({
-  domainName: Yup.string().required("このフィールドを入力してください。"),
-  name: Yup.string().required("このフィールドを入力してください。"),
+  domainName: Yup.string()
+    .trim()
+    .required("このフィールドを入力してください。"),
+  name: Yup.string().trim().required("このフィールドを入力してください。"),
   postalCode: Yup.string()
+    .trim()
     .transform(convertToHalfWidth)
     .transform(normalizeJapanPostalCode)
     // 日本の郵便番号の形式のみ受け付ける
@@ -105,33 +108,43 @@ export const formValidationSchema: Yup.ObjectSchema<IFormInput> = Yup.object({
   addressRegion: Yup.string()
     .oneOf(prefectures, "都道府県を選択してください。")
     .required("このフィールドを入力してください。"),
-  addressLocality: Yup.string().required("このフィールドを入力してください。"),
-  streetAddress: Yup.string().required("このフィールドを入力してください。"),
+  addressLocality: Yup.string()
+    .trim()
+    .required("このフィールドを入力してください。"),
+  streetAddress: Yup.string()
+    .trim()
+    .required("このフィールドを入力してください。"),
   phoneNumber: Yup.string()
+    .trim()
     .transform(convertToHalfWidth)
     .matches(/^[-\d]+$/u, {
       message: "不正な電話番号です。",
       excludeEmptyString: true,
     })
     .optional(),
-  email: Yup.string().email("不正なメールアドレスです。").optional(),
+  email: Yup.string().trim().email("不正なメールアドレスです。").optional(),
   // 13桁の数字または空文字列（未記入）
   corporateNumber: Yup.string()
+    .trim()
     .transform(convertToHalfWidth)
     .matches(/^\d{13}$/, {
       message: "不正な法人番号です。",
       excludeEmptyString: true,
     })
     .optional(),
-  businessCategory: Yup.string().optional(),
+  businessCategory: Yup.string().trim().optional(),
   url: Yup.string()
+    .trim()
     .url("不正な URL です。")
     .required("このフィールドを入力してください。"),
   contactTitle: Yup.string().optional(),
-  contactUrl: Yup.string().url("不正な URL です。").optional(),
+  contactUrl: Yup.string().trim().url("不正な URL です。").optional(),
   publishingPrincipleTitle: Yup.string().optional(),
-  publishingPrincipleUrl: Yup.string().url("不正な URL です。").optional(),
+  publishingPrincipleUrl: Yup.string()
+    .trim()
+    .url("不正な URL です。")
+    .optional(),
   privacyPolicyTitle: Yup.string().optional(),
-  privacyPolicyUrl: Yup.string().url("不正な URL です。").optional(),
+  privacyPolicyUrl: Yup.string().trim().url("不正な URL です。").optional(),
   description: Yup.string().optional(),
 });
