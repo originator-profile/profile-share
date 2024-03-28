@@ -22,7 +22,8 @@ export const CredentialService = ({
    * @param expiredAt 期限切れ日時
    * @param url 説明情報の URL
    * @param imageUrl 資格画像の URL
-   * @return
+   * @throws {BadRequestError} certifierが認証機関ではない
+   * @return 資格情報
    */
   async create(
     accountId: string,
@@ -33,12 +34,12 @@ export const CredentialService = ({
     expiredAt: Date,
     url?: string,
     imageUrl?: string,
-  ): Promise<credentials | Error> {
+  ): Promise<credentials> {
     const isCertifier = await certificate.isCertifier(certifierId);
     if (isCertifier instanceof Error || !isCertifier) {
       throw new BadRequestError("invalid certifier");
     }
-    return credentialRepository.create(
+    return await credentialRepository.create(
       accountId,
       certifierId,
       verifierId,
@@ -53,7 +54,8 @@ export const CredentialService = ({
    * 資格情報の更新
    * @param credentialId 資格情報 ID
    * @param data 更新内容
-   * @return 更新後の資格情報またはエラー
+   * @throws {BadRequestError} certifierが認証機関ではない
+   * @return 更新後の資格情報
    */
   async update(
     credentialId: number,
@@ -67,25 +69,18 @@ export const CredentialService = ({
       url?: string;
       imageUrl?: string;
     },
-  ): Promise<credentials | Error> {
+  ): Promise<credentials> {
     if (data.certifierId) {
       const isCertifier = await certificate.isCertifier(data.certifierId);
       if (isCertifier instanceof Error || !isCertifier) {
         throw new BadRequestError("invalid certifier");
       }
     }
-    return credentialRepository.update(credentialId, accountId, data);
+    return await credentialRepository.update(credentialId, accountId, data);
   },
-  /**
-   * 資格情報の削除
-   * @param credentialId 資格情報 ID
-   * @return 削除した資格情報またはエラー
-   */
-  async delete(
-    credentialId: number,
-    accountId: string,
-  ): Promise<credentials | Error> {
-    return credentialRepository.delete(credentialId, accountId);
+  /** {@link CredentialRepository.delete} */
+  async delete(credentialId: number, accountId: string): Promise<credentials> {
+    return await credentialRepository.delete(credentialId, accountId);
   },
 });
 

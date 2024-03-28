@@ -3,3 +3,8 @@ overrides:
   - files: [prisma-client.ts]
     rules:
       "filenames/match-exported": "off"
+  - files: src/request.ts
+    rules:
+      "@typescript-eslint/no-unused-vars":
+        - error
+        - varsIgnorePattern: ^_

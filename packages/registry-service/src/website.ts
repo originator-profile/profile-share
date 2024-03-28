@@ -17,12 +17,8 @@ type Options = {
 export type { Website };
 
 export const WebsiteService = ({ websiteRepository }: Options) => ({
-  /**
-   * ウェブページの作成
-   * @param website ウェブページ (website.id を省略した場合: UUID v4 生成)
-   * @return 作成したウェブページ
-   */
-  async create(website: WebsiteCreate): Promise<websites | Error> {
+  /** {@link WebsiteRepository.create} */
+  async create(website: WebsiteCreate): Promise<websites> {
     return await websiteRepository.create(website);
   },
 
@@ -33,37 +29,25 @@ export const WebsiteService = ({ websiteRepository }: Options) => ({
    *
    * @deprecated 代わりに {@link create} を利用してください。
    */
-  async createForOldAPI(
-    input: Prisma.websitesCreateInput,
-  ): Promise<websites | Error> {
+  async createForOldAPI(input: Prisma.websitesCreateInput): Promise<websites> {
     const prisma = getClient();
     const { url, ...rest } = input;
-    return await prisma.websites
-      .create({
-        data: {
-          url: websiteRepository.serializeUrl(url),
-          ...rest,
-        },
-        include: { categories: true },
-      })
-      .catch((e: Error) => e);
+    return await prisma.websites.create({
+      data: {
+        url: websiteRepository.serializeUrl(url),
+        ...rest,
+      },
+      include: { categories: true },
+    });
   },
 
-  /**
-   * ウェブページの表示
-   * @param input.id ウェブページ ID
-   * @return ウェブページ
-   */
-  async read({ id }: { id: string }): Promise<websites | Error> {
+  /** {@link WebsiteRepository.read} */
+  async read({ id }: { id: string }): Promise<websites> {
     return await websiteRepository.read({ id });
   },
 
-  /**
-   * ウェブページの更新
-   * @param website ウェブページ (website.id 必須)
-   * @return ウェブページ
-   */
-  async update(website: WebsiteUpdate): Promise<websites | Error> {
+  /** {@link WebsiteRepository.update} */
+  async update(website: WebsiteUpdate): Promise<websites> {
     return await websiteRepository.update(website);
   },
 
@@ -76,7 +60,7 @@ export const WebsiteService = ({ websiteRepository }: Options) => ({
    */
   async updateForOldAPI(
     input: Prisma.websitesUpdateInput & { id: string },
-  ): Promise<websites | Error> {
+  ): Promise<websites> {
     const prisma = getClient();
     const { id, url, ...rest } = input;
     let serialized;
@@ -96,12 +80,8 @@ export const WebsiteService = ({ websiteRepository }: Options) => ({
     });
   },
 
-  /**
-   * ウェブページの削除
-   * @param input.id ウェブページ ID
-   * @return ウェブページ
-   */
-  async delete({ id }: { id: string }): Promise<websites | Error> {
+  /** {@link WebsiteRepository.delete} */
+  async delete({ id }: { id: string }): Promise<websites> {
     return await websiteRepository.delete({ id });
   },
 
@@ -114,32 +94,24 @@ export const WebsiteService = ({ websiteRepository }: Options) => ({
     return await signBody(body, privateKey).catch((e: Error) => e);
   },
 
-  /**
-   * Profile Set の取得
-   * @param url ウェブページのURL
-   * @param contextDefinition https://www.w3.org/TR/json-ld11/#context-definitions
-   */
+  /** {@link WebsiteRepository.getProfileSet} */
   async getProfileSet(
     url: string,
     contextDefinition:
       | ContextDefinition
       | string = "https://originator-profile.org/context.jsonld",
     main?: string,
-  ): Promise<JsonLdDocument | Error> {
-    return websiteRepository.getProfileSet(url, contextDefinition, main);
+  ): Promise<JsonLdDocument> {
+    return await websiteRepository.getProfileSet(url, contextDefinition, main);
   },
 
-  /**
-   * 特定のウェブページ ID の Profile Set の取得
-   * @param id ウェブページ ID または URL (非推奨)
-   * @param contextDefinition https://www.w3.org/TR/json-ld11/#context-definitions
-   */
+  /** {@link WebsiteRepository.getDocumentProfileSet} */
   async getDocumentProfileSet(
     id: string,
     contextDefinition:
       | ContextDefinition
       | string = "https://originator-profile.org/context.jsonld",
-  ): Promise<JsonLdDocument | Error> {
+  ): Promise<JsonLdDocument> {
     return await websiteRepository.getDocumentProfileSet(id, contextDefinition);
   },
 });

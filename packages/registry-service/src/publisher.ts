@@ -159,15 +159,10 @@ export const PublisherService = ({
       accountId,
     };
 
-    return await beginTransaction<ReturnType<typeof dpRepository.create>>(
-      async () => {
-        const website = await websiteRepository.upsert(websiteInput);
-        if (website instanceof Error) throw website;
-        const sdp = await dpRepository.create({ jwt, payload });
-        if (sdp instanceof Error) throw sdp;
-        return sdp;
-      },
-    );
+    return await beginTransaction<string>(async () => {
+      await websiteRepository.upsert(websiteInput);
+      return await dpRepository.create({ jwt, payload });
+    });
   },
 });
 

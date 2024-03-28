@@ -1,8 +1,8 @@
-import {
-  type Request,
-  type RequestList,
-  type RequestLog,
-  type RequestRepository,
+import type {
+  Request,
+  RequestList,
+  RequestLog,
+  RequestRepository,
 } from "@originator-profile/registry-db";
 
 type Options = {
@@ -10,55 +10,29 @@ type Options = {
 };
 
 export const RequestService = ({ requestRepository }: Options) => ({
-  /**
-   * 申請情報の作成
-   * @param accountId 会員 ID
-   * @param authorId 申請者 ID
-   * @param requestSummary 申請概要
-   * @return
-   */
+  /** {@link RequestRepository.create} */
   async create(
     accountId: string,
     authorId: string,
     requestSummary: string,
-  ): Promise<Request | Error> {
+  ): Promise<Request> {
     return await requestRepository.create(accountId, authorId, requestSummary);
   },
-  /**
-   * 最新の申請情報の取得
-   * @param accountId 会員 ID
-   * @return 最新の申請情報またはエラー
-   */
-  async read(accountId: string): Promise<Request | Error> {
-    return requestRepository.read(accountId);
+  /** {@link RequestRepository.read} */
+  async read(accountId: string): Promise<Request> {
+    return await requestRepository.read(accountId);
   },
-  /**
-   * 最新の申請情報の取り下げ
-   * @param accountId 会員 ID
-   * @return 取り下げ後の申請情報またはエラー
-   */
-  async cancel(accountId: string): Promise<Request | Error> {
-    return requestRepository.cancel(accountId);
+  /** {@link RequestRepository.cancel} */
+  async cancel(accountId: string): Promise<Request> {
+    return await requestRepository.cancel(accountId);
   },
-  /**
-   * 最新の申請情報リストの取得
-   * @param pending 審査待ちかどうか
-   * @return 最新の申請情報リストまたはエラー
-   */
-  async readList({
-    pending,
-  }: {
-    pending?: boolean;
-  }): Promise<RequestList | Error> {
-    return requestRepository.readList({ pending });
+  /** {@link RequestRepository.readList} */
+  async readList({ pending }: { pending?: boolean }): Promise<RequestList> {
+    return await requestRepository.readList({ pending });
   },
-  /**
-   * 審査結果である申請情報のリストの取得
-   * @param accountId 会員 ID
-   * @return 審査結果である申請情報のリストまたはエラー
-   */
-  async readResults(accountId: string): Promise<RequestLog[] | Error> {
-    return requestRepository.readResults(accountId);
+  /** {@link RequestRepository.readResults} */
+  async readResults(accountId: string): Promise<RequestLog[]> {
+    return await requestRepository.readResults(accountId);
   },
 });
 
