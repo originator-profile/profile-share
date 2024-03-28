@@ -686,9 +686,6 @@ importers:
       '@originator-profile/verify':
         specifier: workspace:*
         version: link:../verify
-      '@prisma/client':
-        specifier: ^5.8.1
-        version: 5.8.1
       '@types/react':
         specifier: ^18.2.48
         version: 18.2.48
@@ -5931,17 +5928,6 @@ packages:
 
   /@polka/url@1.0.0-next.24:
     resolution: {integrity: sha512-2LuNTFBIO0m7kKIQvvPHN6UE63VjpmL9rnEEaOOaiSPbZK+zUOYIzBAWcED+3XYzhYsd/0mD57VdxAEqqV52CQ==}
-    dev: true
-
-  /@prisma/client@5.8.1:
-    resolution: {integrity: sha512-xQtMPfbIwLlbm0VVIVQY2yqQVOxPwRQhvIp7Z3m2900g1bu/zRHKhYZJQWELqmjl6d8YwBy0K2NvMqh47v1ubw==}
-    engines: {node: '>=16.13'}
-    requiresBuild: true
-    peerDependencies:
-      prisma: '*'
-    peerDependenciesMeta:
-      prisma:
-        optional: true
     dev: true
 
   /@prisma/client@5.8.1(prisma@5.8.1):
