@@ -53,38 +53,13 @@ export const prefectures = [
  * @param value - 文字列
  * @returns 変換後の文字列
  */
-const convertToHalfWidth = (value: string) =>
-  value.normalize("NFKC").replaceAll(/[ー\p{Dash}]/gu, "-");
+export const convertToHalfWidth = (value?: string) =>
+  value?.normalize("NFKC").replaceAll(/[ー\p{Dash}]/gu, "-");
 
 /*
- * 数字7桁の郵便番号をハイフン付きの半角数字郵便番号に変換する。日本の郵便番号のみサポート。
- * @param value - 文字列（数字7桁）
- * @returns ハイフン付きの半角数字郵便番号
+ * 半角数字数字7桁の郵便番号をハイフン付きの半角数字郵便番号に変換する。日本の郵便番号のみサポート。
+ * @param value - 文字列（半角数字7桁）
+ * @returns ハイフン付きの郵便番号
  */
-export const normalizeJapanPostalCode = (value: string) =>
-  convertToHalfWidth(value).replace(/^(\d{3})(\d{4})$/, "$1-$2");
-
-/*
- * 電話番号を半角に変換する。
- * @param value - 文字列（電話番号）
- * @returns 半角の電話番号
- */
-export const normalizePhoneNumber = (value: string) =>
-  convertToHalfWidth(value);
-
-/*
- * 文字列が URL として有効かどうかを検証する。react-hook-form のバリデーションルールとして使用することを想定。
- * @param value - バリデーション対象の値
- * @returns エラーメッセージ。バリデーションを通過した場合は true を返す。
- */
-export const validateUrlString = (value: string | undefined) => {
-  if (!value) {
-    return true;
-  }
-  try {
-    new URL(value);
-    return true;
-  } catch (_) {
-    return "URL を入力してください。";
-  }
-};
+export const normalizeJapanPostalCode = (value?: string) =>
+  value?.replace(/^(\d{3})(\d{4})$/, "$1-$2");
