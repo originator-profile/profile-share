@@ -14,6 +14,7 @@ import {
   prefectures,
   IFormInput,
   formValidationSchema,
+  stripEmpty,
 } from "../../../utils/account-form";
 import FormRow from "../../../components/FormRow";
 import PageFieldSet from "../../../components/PageFieldSet";
@@ -65,9 +66,12 @@ function HolderForm({
     if (!account) {
       return;
     }
+
+    const cleanData = stripEmpty(data);
+
     const token = await session.getAccessToken();
     const response = await updateAccount(
-      data as OpAccountWithCredentials,
+      cleanData as OpAccountWithCredentials,
       accountId,
       token,
     );
@@ -304,7 +308,10 @@ export default function Holder() {
     (account: OpAccountWithCredentials): IFormInput => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { id, roleValue, credentials, businessCategory, ...rest } = account;
-      return { ...rest, businessCategory: businessCategory?.[0] };
+      return stripEmpty({
+        ...rest,
+        businessCategory: businessCategory?.[0],
+      }) as IFormInput;
     },
     [],
   );

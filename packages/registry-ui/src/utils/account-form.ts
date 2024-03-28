@@ -1,3 +1,4 @@
+import justFilterObject from "just-filter-object";
 import * as Yup from "yup";
 
 export interface IFormInput {
@@ -7,18 +8,18 @@ export interface IFormInput {
   addressRegion: string;
   addressLocality: string;
   streetAddress: string;
-  phoneNumber?: string | null;
-  email?: string | null;
-  corporateNumber?: string | null;
-  businessCategory?: string | null;
+  phoneNumber?: string;
+  email?: string;
+  corporateNumber?: string;
+  businessCategory?: string;
   url: string;
-  contactTitle?: string | null;
-  contactUrl?: string | null;
-  publishingPrincipleTitle?: string | null;
-  publishingPrincipleUrl?: string | null;
-  privacyPolicyTitle?: string | null;
-  privacyPolicyUrl?: string | null;
-  description?: string | null;
+  contactTitle?: string;
+  contactUrl?: string;
+  publishingPrincipleTitle?: string;
+  publishingPrincipleUrl?: string;
+  privacyPolicyTitle?: string;
+  privacyPolicyUrl?: string;
+  description?: string;
 }
 
 export const prefectures = [
@@ -79,6 +80,8 @@ export const prefectures = [
 const convertToHalfWidth = (value?: string) =>
   value?.normalize("NFKC").replaceAll(/[ー\p{Dash}]/gu, "-");
 
+export const stripEmpty = (data: IFormInput) =>
+  justFilterObject(data, (_, value) => value);
 /*
  * 半角数字数字7桁の郵便番号をハイフン付きの半角数字郵便番号に変換する。日本の郵便番号のみサポート。
  * @param value - 文字列（半角数字7桁）
@@ -109,24 +112,26 @@ export const formValidationSchema: Yup.ObjectSchema<IFormInput> = Yup.object({
     .matches(/^[-\d]+$/u, {
       message: "不正な電話番号です。",
       excludeEmptyString: true,
-    }),
-  email: Yup.string().email("不正なメールアドレスです。"),
+    })
+    .optional(),
+  email: Yup.string().email("不正なメールアドレスです。").optional(),
   // 13桁の数字または空文字列（未記入）
   corporateNumber: Yup.string()
     .transform(convertToHalfWidth)
     .matches(/^\d{13}$/, {
       message: "不正な法人番号です。",
       excludeEmptyString: true,
-    }),
-  businessCategory: Yup.string(),
+    })
+    .optional(),
+  businessCategory: Yup.string().optional(),
   url: Yup.string()
     .url("不正な URL です。")
     .required("このフィールドを入力してください。"),
-  contactTitle: Yup.string(),
-  contactUrl: Yup.string().url("不正な URL です。"),
-  publishingPrincipleTitle: Yup.string(),
-  publishingPrincipleUrl: Yup.string().url("不正な URL です。"),
-  privacyPolicyTitle: Yup.string(),
-  privacyPolicyUrl: Yup.string().url("不正な URL です。"),
-  description: Yup.string(),
+  contactTitle: Yup.string().optional(),
+  contactUrl: Yup.string().url("不正な URL です。").optional(),
+  publishingPrincipleTitle: Yup.string().optional(),
+  publishingPrincipleUrl: Yup.string().url("不正な URL です。").optional(),
+  privacyPolicyTitle: Yup.string().optional(),
+  privacyPolicyUrl: Yup.string().url("不正な URL です。").optional(),
+  description: Yup.string().optional(),
 });

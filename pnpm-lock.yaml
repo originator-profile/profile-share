@@ -688,7 +688,7 @@ importers:
         version: link:../verify
       '@prisma/client':
         specifier: ^5.8.1
-        version: 5.8.1(prisma@5.8.1)
+        version: 5.8.1
       '@types/react':
         specifier: ^18.2.48
         version: 18.2.48
@@ -710,6 +710,9 @@ importers:
       just-extend:
         specifier: ^6.2.0
         version: 6.2.0
+      just-filter-object:
+        specifier: ^3.2.0
+        version: 3.2.0
       just-omit:
         specifier: ^2.2.0
         version: 2.2.0
@@ -4474,7 +4477,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       espree: 9.6.1
       globals: 13.24.0
       ignore: 5.3.0
@@ -4768,7 +4771,7 @@ packages:
     engines: {node: '>=10.10.0'}
     dependencies:
       '@humanwhocodes/object-schema': 2.0.2
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -5928,6 +5931,17 @@ packages:
 
   /@polka/url@1.0.0-next.24:
     resolution: {integrity: sha512-2LuNTFBIO0m7kKIQvvPHN6UE63VjpmL9rnEEaOOaiSPbZK+zUOYIzBAWcED+3XYzhYsd/0mD57VdxAEqqV52CQ==}
+    dev: true
+
+  /@prisma/client@5.8.1:
+    resolution: {integrity: sha512-xQtMPfbIwLlbm0VVIVQY2yqQVOxPwRQhvIp7Z3m2900g1bu/zRHKhYZJQWELqmjl6d8YwBy0K2NvMqh47v1ubw==}
+    engines: {node: '>=16.13'}
+    requiresBuild: true
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
     dev: true
 
   /@prisma/client@5.8.1(prisma@5.8.1):
@@ -10546,6 +10560,17 @@ packages:
       ms: 2.0.0
     dev: true
 
+  /debug@4.3.4:
+    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.1.2
+
   /debug@4.3.4(supports-color@8.1.1):
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
     engines: {node: '>=6.0'}
@@ -11464,7 +11489,7 @@ packages:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.2.2
@@ -14638,6 +14663,10 @@ packages:
 
   /just-extend@6.2.0:
     resolution: {integrity: sha512-cYofQu2Xpom82S6qD778jBDpwvvy39s1l/hrYij2u9AMdQcGRpaBu6kY4mVhuno5kJVi1DAz4aiphA2WI1/OAw==}
+    dev: true
+
+  /just-filter-object@3.2.0:
+    resolution: {integrity: sha512-OeorYJxmp2zhy/0LxjS1UjbJ7XMY8M4gVa1RRKxnIVheCYmng2E2hE0lEbDGv4aRh/HI7FgNUXtOMnmNxpoXRQ==}
     dev: true
 
   /just-flush@2.3.0:
