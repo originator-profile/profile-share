@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
+import { useMount } from "react-use";
 import clsx from "clsx";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
@@ -46,21 +47,18 @@ function HolderForm({
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isDirty },
+    formState: { errors, isValid },
     getValues,
     reset,
     trigger,
   } = methods;
 
   // 前回訪問時の下書きがある場合は、その下書きのエラーを表示する。
-  // ユーザーがフォームを触っておらず (isDirty === false) 、
-  // なおかつ下書きがある (hasDraft === true) の場合、
-  // 下書きが前回訪問時のものだと判定する。
-  useEffect(() => {
-    if (!isDirty && hasDraft) {
+  useMount(() => {
+    if (hasDraft) {
       trigger(Object.keys(draft) as Array<keyof IFormInput>);
     }
-  }, [hasDraft, isDirty, trigger]);
+  });
 
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
     if (!account) {
