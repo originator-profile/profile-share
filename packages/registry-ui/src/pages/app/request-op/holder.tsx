@@ -58,7 +58,7 @@ function HolderForm({
   // 下書きが前回訪問時のものだと判定する。
   useEffect(() => {
     if (!isDirty && hasDraft) {
-      trigger();
+      trigger(Object.keys(draft) as Array<keyof IFormInput>);
     }
   }, [hasDraft, isDirty, trigger]);
 
