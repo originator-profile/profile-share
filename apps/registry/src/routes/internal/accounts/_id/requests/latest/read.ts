@@ -1,6 +1,7 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 import Params from "../../params";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
+import { convertPrismaRequestToOpRequest } from "@originator-profile/registry-db";
 
 const schema: FastifySchema = {
   params: Params,
@@ -31,7 +32,7 @@ async function read({
     throw new BadRequestError("Invalid request");
   }
 
-  return data;
+  return convertPrismaRequestToOpRequest(data);
 }
 
 export { read, schema };

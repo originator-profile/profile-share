@@ -10,13 +10,13 @@
   "devDependencies": {
     "@auth0/auth0-react": "^2.2.4",
     "@headlessui/react": "^1.7.18",
+    "@hookform/resolvers": "^3.3.4",
     "@iconify/react": "^4.1.1",
     "@originator-profile/core": "workspace:*",
     "@originator-profile/model": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
     "@originator-profile/ui": "workspace:*",
     "@originator-profile/verify": "workspace:*",
-    "@prisma/client": "^5.8.1",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "clsx": "^2.1.0",
@@ -24,12 +24,14 @@
     "eslint-config-originator-profile": "workspace:*",
     "jotai": "^2.7.1",
     "just-extend": "^6.2.0",
+    "just-filter-object": "^3.2.0",
     "just-omit": "^2.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-use": "^17.5.0",
     "swr": "^2.2.4",
-    "vite": "^5.0.12"
+    "vite": "^5.0.12",
+    "yup": "^1.4.0"
   },
   "dependencies": {
     "@generouted/react-router": "^1.18.2",

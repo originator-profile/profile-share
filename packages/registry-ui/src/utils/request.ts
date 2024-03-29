@@ -3,30 +3,6 @@ import useSWRMutation from "swr/mutation";
 import fetcher from "./fetcher";
 import { useSession } from "./session";
 import { Request } from "@originator-profile/model";
-import { Prisma } from "@prisma/client";
-
-type OpRequestBody = Omit<
-  Prisma.requestsGetPayload<
-    Prisma.requestsDefaultArgs & { include: { reviewComments: true } }
-  >,
-  "createdAt" | "updatedAt"
-> & {
-  createdAt: string;
-  updatedAt: string;
-};
-
-/*
- * DBモデルからデータモデルへの変換
- * TODO: @originator-profile/registry-db に移して
- */
-function convert(body: OpRequestBody): Request {
-  return {
-    ...body,
-    requestSummary: body.requestSummary ?? undefined,
-    reviewSummary: body.reviewSummary ?? undefined,
-    status: body.statusValue as unknown as Request["status"],
-  };
-}
 
 type FetchLatestRequestKey = {
   requestId: "latest";
@@ -44,8 +20,8 @@ async function fetchLatestRequest(
   const url: `/internal/accounts/${string}/latest/` = `${req.url}${req.requestId}/`;
 
   try {
-    const res = await fetcher<OpRequestBody>({ ...req, url });
-    return convert(res);
+    const res = await fetcher<Request>({ ...req, url });
+    return res;
   } catch (e) {
     const res = (e as Error).cause as Response | undefined;
     if (res?.status === 404) return;
@@ -60,7 +36,7 @@ async function fetchLatestRequest(
 async function createRequest(
   req: FetchLatestRequestKey & CreateRequestProps,
 ): Promise<Request> {
-  const res = await fetcher<OpRequestBody>({
+  const res = await fetcher<Request>({
     method: "POST",
     url: req.url,
     token: req.token,
@@ -68,7 +44,7 @@ async function createRequest(
     headers: { "Content-Type": "application/json" },
   });
 
-  return convert(res);
+  return res;
 }
 
 /**

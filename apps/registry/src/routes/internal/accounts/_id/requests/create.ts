@@ -3,6 +3,7 @@ import { FromSchema } from "json-schema-to-ts";
 import { BadRequestError } from "http-errors-enhanced";
 import Params from "../params";
 import { Request } from "@originator-profile/model";
+import { convertPrismaRequestToOpRequest } from "@originator-profile/registry-db";
 
 const Body = {
   type: "object",
@@ -44,8 +45,8 @@ async function create(
     requestSummary,
   );
 
-  if (result instanceof Error) new BadRequestError("Invalid request");
-  return result;
+  if (result instanceof Error) return new BadRequestError("Invalid request");
+  return convertPrismaRequestToOpRequest(result);
 }
 
 export { create, schema };

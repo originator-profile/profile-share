@@ -2,16 +2,12 @@ import { Prisma, requestLogs, requests } from "@prisma/client";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
 import { beginTransaction } from "./lib/transaction";
 import { getClient } from "./lib/prisma-client";
+import { Request as OpModelRequest } from "@originator-profile/model";
 
 type AccountId = requests["groupId"];
-
-export type Request = requests & {
-  reviewComments: Array<{
-    id: number;
-    requestFieldName: string;
-    comment: string;
-  }>;
-};
+export type Request = Prisma.requestsGetPayload<{
+  include: { reviewComments: true };
+}>;
 
 export type RequestLog = requestLogs & {
   reviewComments?: Array<{
@@ -24,6 +20,20 @@ export type RequestLog = requestLogs & {
 export type RequestLogCreate = Omit<RequestLog, "id">;
 
 export type RequestList = (requests & { accountName: string })[];
+
+type OpRequest = Omit<OpModelRequest, "createdAt" | "updatedAt"> & {
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export function convertPrismaRequestToOpRequest(body: Request): OpRequest {
+  return {
+    ...body,
+    requestSummary: body.requestSummary ?? undefined,
+    reviewSummary: body.reviewSummary ?? undefined,
+    status: body.statusValue as unknown as OpRequest["status"],
+  };
+}
 
 /**
  * 審査コメントの配列を受け取って、 prisma の update() や create() に渡せる形式にします。
