@@ -1,7 +1,8 @@
+import { useEffect } from "react";
 import { atom } from "jotai";
 import { atomWithStorage, createJSONStorage, useResetAtom } from "jotai/utils";
 import { useAtom, useSetAtom } from "jotai/react";
-import { IFormInput } from "../pages/app/request-op/holder";
+import { IFormInput, stripEmpty } from "./account-form";
 
 const DRAFT_KEY = "account-form-draft";
 
@@ -33,12 +34,19 @@ export function useAccountDraft(
   userId?: UserId,
 ): [
   draft: OpAccountDraft,
-  setDraft: (draft: OpAccountDraft) => void,
+  setDraft: (draft: IFormInput) => void,
   clearDraft: () => void,
 ] {
-  useSetAtom(userIdAtom)(userId ?? "");
-  const [draft, setDraft] = useAtom(opAccountDraftAtom);
+  const setUserId = useSetAtom(userIdAtom);
+  const [draft, setDraftAtom] = useAtom(opAccountDraftAtom);
   const clearDraft = useResetAtom(opAccountDraftMapAtom);
+  const setDraft = (draft: IFormInput) => {
+    setDraftAtom(stripEmpty(draft));
+  };
+
+  useEffect(() => {
+    setUserId(userId ?? "");
+  }, [userId, setUserId]);
 
   return [draft, setDraft, clearDraft];
 }
