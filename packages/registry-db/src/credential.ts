@@ -11,7 +11,7 @@ export const CredentialRepository = () => ({
    * @param issuedAt 資格発行日
    * @param expiredAt 期限切れ日時
    * @param imageUrl 資格画像の URL
-   * @return
+   * @return 資格情報
    */
   async create(
     accountId: string,
@@ -22,7 +22,7 @@ export const CredentialRepository = () => ({
     expiredAt: Date,
     url?: string,
     imageUrl?: string,
-  ): Promise<credentials | Error> {
+  ): Promise<credentials> {
     const input: Prisma.credentialsCreateInput = {
       account: {
         connect: { id: accountId },
@@ -41,14 +41,16 @@ export const CredentialRepository = () => ({
     };
 
     const prisma = getClient();
-    return prisma.credentials.create({ data: input }).catch((e: Error) => e);
+    return await prisma.credentials.create({
+      data: input,
+    });
   },
 
   /**
    * 資格情報の更新
    * @param credentialId 資格情報 ID
    * @param data 更新内容
-   * @return 更新結果またはエラー
+   * @return 資格情報
    */
   async update(
     credentialId: number,
@@ -62,25 +64,23 @@ export const CredentialRepository = () => ({
       url?: string;
       imageUrl?: string;
     },
-  ): Promise<credentials | Error> {
+  ): Promise<credentials> {
     const prisma = getClient();
-    return prisma.credentials
-      .update({ where: { id: credentialId, accountId }, data: data })
-      .catch((e: Error) => e);
+    return await prisma.credentials.update({
+      where: { id: credentialId, accountId },
+      data: data,
+    });
   },
   /**
    * 資格情報の削除
    * @param credentialId 資格情報 ID
-   * @return 削除した資格情報またはエラー
+   * @return 削除した資格情報
    */
-  async delete(
-    credentialId: number,
-    accountId: string,
-  ): Promise<credentials | Error> {
+  async delete(credentialId: number, accountId: string): Promise<credentials> {
     const prisma = getClient();
-    return prisma.credentials
-      .delete({ where: { id: credentialId, accountId } })
-      .catch((e: Error) => e);
+    return await prisma.credentials.delete({
+      where: { id: credentialId, accountId },
+    });
   },
 });
 

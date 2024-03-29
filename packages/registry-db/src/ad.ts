@@ -13,18 +13,19 @@ export const AdRepository = () => ({
   /**
    * 広告の更新・作成
    * @param decoded Signed Document Profile とデコード結果 (広告)
-   * @returns 成功した場合: SDP, それ以外: Error
+   * @throws {BadRequestError} DpVisibleText, DpHtml, DpText いずれも見つからない
+   * @returns SDP
    */
   async upsert(decoded: {
     jwt: string;
     payload: JwtDpPayload;
-  }): Promise<string | Error> {
+  }): Promise<string> {
     const prisma = getClient();
     const adId = decoded.payload.sub;
     const accountId = parseAccountId(decoded.payload.iss);
     const locator = findFirstItemWithProof(decoded.payload);
     if (!locator) {
-      return new BadRequestError(
+      throw new BadRequestError(
         "Document Profile doesn't contain item with proof",
       );
     }
@@ -43,43 +44,40 @@ export const AdRepository = () => ({
         decoded.payload["https://originator-profile.org/dp"].allowedOrigins,
     } as const satisfies Prisma.adsCreateInput;
 
-    const data = await prisma.ads
-      .upsert({
-        where: { id: adId, accountId },
-        update: createInput,
-        create: createInput,
-      })
-      .catch((e: Error) => e);
-    if (data instanceof Error) return data;
+    await prisma.ads.upsert({
+      where: { id: adId, accountId },
+      update: createInput,
+      create: createInput,
+    });
 
     const issuedAt: Date = fromUnixTime(decoded.payload.iat);
     const expiredAt: Date = fromUnixTime(decoded.payload.exp);
-    const sdp = await prisma.dps
-      .create({
-        data: {
-          adId,
-          issuerId: accountId,
-          jwt: decoded.jwt,
-          issuedAt,
-          expiredAt,
-        },
-      })
-      .catch((e: Error) => e);
+    const sdp = await prisma.dps.create({
+      data: {
+        adId,
+        issuerId: accountId,
+        jwt: decoded.jwt,
+        issuedAt,
+        expiredAt,
+      },
+    });
 
-    return sdp instanceof Error ? sdp : sdp.jwt;
+    return sdp.jwt;
   },
 
   /**
    * Ad Profile Pair の取得
    * @param id DP ID
    * @param contextDefinition https://www.w3.org/TR/json-ld11/#context-definitions
+   * @throws {NotFoundError} Ad Profile Pair やその発行者が見つからない
+   * @return Ad Profile Pair
    */
   async getProfilePair(
     id: string,
     contextDefinition:
       | ContextDefinition
       | string = "https://originator-profile.org/context.jsonld",
-  ): Promise<JsonLdDocument | Error> {
+  ): Promise<JsonLdDocument> {
     const prisma = getClient();
     const data = await prisma.ads.findUnique({
       where: { id },
@@ -105,12 +103,12 @@ export const AdRepository = () => ({
         },
       },
     });
-    if (!data) return new NotFoundError("Ad Profile Pair not found.");
+    if (!data) throw new NotFoundError("Ad Profile Pair not found.");
 
     const issuer = await prisma.accounts.findUnique({
       where: { id: data.account.publications[0].op.certifierId },
     });
-    if (!issuer) return new NotFoundError("Issuer not found.");
+    if (!issuer) throw new NotFoundError("Issuer not found.");
 
     const profiles = {
       "@context": contextDefinition,

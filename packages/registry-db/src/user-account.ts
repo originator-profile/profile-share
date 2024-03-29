@@ -1,8 +1,13 @@
-import { Prisma, userAccounts } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { NotFoundError } from "http-errors-enhanced";
 import { getClient } from "./lib/prisma-client";
+import { User } from "@originator-profile/model";
 
-type UserAccountId = userAccounts["id"];
+type UserAccountId = User["id"];
+
+type UserWithOpAccountId = User & {
+  accountId: string;
+};
 
 export const UserAccountRepository = () => ({
   /**
@@ -12,23 +17,22 @@ export const UserAccountRepository = () => ({
    */
   async create(
     input: Prisma.userAccountsCreateInput,
-  ): Promise<userAccounts | Error> {
+  ): Promise<UserWithOpAccountId> {
     const prisma = getClient();
-    return await prisma.userAccounts
-      .create({ data: input })
-      .catch((e: Error) => e);
+    return await prisma.userAccounts.create({ data: input });
   },
   /**
    * ユーザーアカウントの表示
    * @param input.id ユーザーアカウント ID
+   * @throws {NotFoundError} ユーザーが見つからない
    * @return ユーザーアカウント
    */
-  async read({ id }: { id: UserAccountId }): Promise<userAccounts | Error> {
+  async read({ id }: { id: UserAccountId }): Promise<UserWithOpAccountId> {
     const prisma = getClient();
-    const data = await prisma.userAccounts
-      .findUnique({ where: { id } })
-      .catch((e: Error) => e);
-    return data ?? new NotFoundError("User not found.");
+    const data = await prisma.userAccounts.findUnique({ where: { id } });
+    if (!data) throw new NotFoundError("User not found.");
+
+    return data;
   },
   /**
    * ユーザーアカウントの更新
@@ -38,9 +42,9 @@ export const UserAccountRepository = () => ({
   async update({
     id,
     ...input
-  }: Prisma.userAccountsUpdateInput & { id: UserAccountId }): Promise<
-    userAccounts | Error
-  > {
+  }: Prisma.userAccountsUpdateInput & {
+    id: UserAccountId;
+  }): Promise<UserWithOpAccountId> {
     const prisma = getClient();
     return await prisma.userAccounts.update({
       where: { id },
@@ -52,7 +56,7 @@ export const UserAccountRepository = () => ({
    * @param input.id ユーザーアカウント ID
    * @return ユーザーアカウント
    */
-  async delete({ id }: { id: UserAccountId }): Promise<userAccounts | Error> {
+  async delete({ id }: { id: UserAccountId }): Promise<UserWithOpAccountId> {
     const prisma = getClient();
     return await prisma.userAccounts.delete({
       where: { id },

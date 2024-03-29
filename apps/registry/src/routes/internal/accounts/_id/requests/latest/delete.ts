@@ -1,6 +1,5 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 import { BadRequestError } from "http-errors-enhanced";
-import { ErrorResponse } from "../../../../../../error";
 import Params from "../../params";
 import { convertPrismaRequestToOpRequest } from "@originator-profile/registry-db";
 
@@ -14,7 +13,6 @@ const schema: FastifySchema = {
       type: "object",
       additionalProperties: true,
     },
-    400: ErrorResponse,
   },
 };
 

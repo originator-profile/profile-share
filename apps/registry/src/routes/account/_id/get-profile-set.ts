@@ -2,7 +2,6 @@ import { FastifySchema, FastifyRequest, FastifyReply } from "fastify";
 import { HttpError, BadRequestError } from "http-errors-enhanced";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 import context from "@originator-profile/model/context.json" assert { type: "json" };
-import { ErrorResponse } from "../../../error";
 import Params from "./params";
 
 const schema: FastifySchema = {
@@ -15,8 +14,6 @@ const schema: FastifySchema = {
       type: "object",
       additionalProperties: true,
     },
-    400: ErrorResponse,
-    404: ErrorResponse,
   },
 };
 

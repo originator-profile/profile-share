@@ -60,7 +60,7 @@ export const WebsiteRepository = () => ({
    * @param url
    * @returns serialize された URL
    */
-  serializeUrl(url: string) {
+  serializeUrl(url: string): string {
     return new URL(url).href;
   },
 
@@ -69,7 +69,7 @@ export const WebsiteRepository = () => ({
    * @param website ウェブページ (website.id を省略した場合: UUID v4 生成)
    * @return 作成したウェブページ
    */
-  async create(website: WebsiteCreate): Promise<websites | Error> {
+  async create(website: WebsiteCreate): Promise<websites> {
     const prisma = getClient();
     const {
       categories,
@@ -100,50 +100,42 @@ export const WebsiteRepository = () => ({
       categories: convertCategoriesToPrismaConnectOrCreate(categories, id),
       ...createInput,
     } as const satisfies Prisma.websitesCreateInput;
-    return await prisma.websites
-      .create({
-        data: input,
-        include: { categories: true },
-      })
-      .catch((e: Error) => e);
+    return await prisma.websites.create({
+      data: input,
+      include: { categories: true },
+    });
   },
 
   /**
    * ウェブページの表示
    * @param input.id ウェブページ ID
+   * @throws {NotFoundError} ウェブページが見つからない
    * @return ウェブページ
    */
-  async read({ id }: { id: string }): Promise<websites | Error> {
+  async read({ id }: { id: string }): Promise<websites> {
     const prisma = getClient();
-    const data = await prisma.websites
-      .findUnique({
-        where: { id },
-        include: { categories: true },
-      })
-      .catch((e: Error) => e);
-    return data ?? new NotFoundError();
+    const data = await prisma.websites.findUnique({
+      where: { id },
+      include: { categories: true },
+    });
+    if (!data) throw new NotFoundError("Webpage not found.");
+
+    return data;
   },
 
   /**
    * ウェブページの更新
    * @param website ウェブページ (website.id 必須)
+   * @throws {NotFoundError} ウェブページが見つからない
    * @return ウェブページ
    */
-  async update(website: WebsiteUpdate): Promise<websites | Error> {
+  async update(website: WebsiteUpdate): Promise<websites> {
     const prisma = getClient();
     const { categories, bodyFormat, accountId, id, url, ...rest } = website;
-
-    if (!id) {
-      return new Error("website.id is required.");
-    }
-
-    // 該当する website がないか、紐づいている account が違う場合はエラーを返す。
     const recordToUpdate = await prisma.websites.findFirst({
       where: { id, accountId },
     });
-    if (!recordToUpdate) {
-      return new NotFoundError("Not Found");
-    }
+    if (!recordToUpdate) throw new NotFoundError("Webpage not found.");
 
     const connectBodyFormat = !bodyFormat
       ? undefined
@@ -158,13 +150,11 @@ export const WebsiteRepository = () => ({
       ...rest,
     } satisfies Prisma.websitesUpdateInput;
 
-    return await prisma.websites
-      .update({
-        where: { id: id },
-        data: input,
-        include: { categories: true },
-      })
-      .catch((e: Error) => e);
+    return await prisma.websites.update({
+      where: { id: id },
+      data: input,
+      include: { categories: true },
+    });
   },
 
   /**
@@ -172,14 +162,15 @@ export const WebsiteRepository = () => ({
    * @param website ウェブページ (website.id 必須)
    * @returns ウェブページ
    */
-  async upsert(
-    website: WebsiteUpdate & WebsiteCreate,
-  ): Promise<websites | Error> {
-    const found = await this.read(website);
-    if (found instanceof NotFoundError) {
-      return await this.create(website);
-    } else {
+  async upsert(website: WebsiteUpdate & WebsiteCreate): Promise<websites> {
+    const prisma = getClient();
+    const found = await prisma.websites.findUnique({
+      where: { id: website.id },
+    });
+    if (found) {
       return await this.update(website);
+    } else {
+      return await this.create(website);
     }
   },
 
@@ -188,7 +179,7 @@ export const WebsiteRepository = () => ({
    * @param input.id ウェブページ ID
    * @return ウェブページ
    */
-  async delete({ id }: { id: string }): Promise<websites | Error> {
+  async delete({ id }: { id: string }): Promise<websites> {
     const prisma = getClient();
     return await prisma.websites.delete({ where: { id } });
   },
@@ -197,6 +188,7 @@ export const WebsiteRepository = () => ({
    * Profile Set の取得
    * @param url ウェブページのURL
    * @param contextDefinition https://www.w3.org/TR/json-ld11/#context-definitions
+   * @throws {NotFoundError} ウェブページが見つからない
    */
   async getProfileSet(
     url: string,
@@ -204,36 +196,34 @@ export const WebsiteRepository = () => ({
       | ContextDefinition
       | string = "https://originator-profile.org/context.jsonld",
     main?: string,
-  ): Promise<JsonLdDocument | Error> {
+  ): Promise<JsonLdDocument> {
     const prisma = getClient();
-    const data = await prisma.websites
-      .findMany({
-        where: { url: this.serializeUrl(url) },
-        include: {
-          account: {
-            include: {
-              publications: {
-                include: {
-                  op: true,
-                },
-                orderBy: {
-                  publishedAt: "desc",
-                },
-                take: 1,
+    const data = await prisma.websites.findMany({
+      where: { url: this.serializeUrl(url) },
+      include: {
+        account: {
+          include: {
+            publications: {
+              include: {
+                op: true,
               },
+              orderBy: {
+                publishedAt: "desc",
+              },
+              take: 1,
             },
-          },
-          dps: {
-            orderBy: {
-              issuedAt: "desc",
-            },
-            take: 1,
           },
         },
-      })
-      .catch((e: Error) => e);
-    if (data instanceof Error) return data;
-    if (data.length === 0) return new NotFoundError();
+        dps: {
+          orderBy: {
+            issuedAt: "desc",
+          },
+          take: 1,
+        },
+      },
+    });
+
+    if (data.length === 0) throw new NotFoundError("Webpage not found.");
 
     const sops = [
       ...new Set(
@@ -255,44 +245,50 @@ export const WebsiteRepository = () => ({
    * 特定のウェブページ ID の Profile Set の取得
    * @param id ウェブページ ID または URL (非推奨)
    * @param contextDefinition https://www.w3.org/TR/json-ld11/#context-definitions
+   * @throws {NotFoundError} Profile Set が見つからない
+   * @return Profile Set
    */
   async getDocumentProfileSet(
     id: string,
     contextDefinition:
       | ContextDefinition
       | string = "https://originator-profile.org/context.jsonld",
-  ): Promise<JsonLdDocument | Error> {
+  ): Promise<JsonLdDocument> {
     const prisma = getClient();
-    const data = await prisma.websites
-      .findFirstOrThrow({
-        where: validate(id) ? { id } : { url: this.serializeUrl(id) },
-        include: {
-          account: {
-            include: {
-              publications: {
-                include: {
-                  op: true,
-                },
-                orderBy: {
-                  publishedAt: "desc",
-                },
-                take: 1,
+    const data = await prisma.websites.findFirst({
+      where: validate(id) ? { id } : { url: this.serializeUrl(id) },
+      include: {
+        account: {
+          include: {
+            publications: {
+              include: {
+                op: true,
               },
+              orderBy: {
+                publishedAt: "desc",
+              },
+              take: 1,
             },
-          },
-          dps: {
-            orderBy: {
-              issuedAt: "desc",
-            },
-            take: 1,
           },
         },
-      })
-      .catch((e: Error) => e);
-    if (!data) return new NotFoundError();
-    if (data instanceof Error) return data;
-    if (data.dps.length === 0) return new NotFoundError();
-    if (data.account.publications.length === 0) return new NotFoundError();
+        dps: {
+          orderBy: {
+            issuedAt: "desc",
+          },
+          take: 1,
+        },
+      },
+    });
+
+    if (!data) {
+      throw new NotFoundError("Webpage not found.");
+    }
+    if (data.dps.length === 0) {
+      throw new NotFoundError("Signed Document Profile not found.");
+    }
+    if (data.account.publications.length === 0) {
+      throw new NotFoundError("Signed Originator Profile not found.");
+    }
 
     const ops = data.account.publications.map((publication) => publication.op);
     const profiles: JsonLdDocument = {

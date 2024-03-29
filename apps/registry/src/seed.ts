@@ -1,6 +1,7 @@
 import util from "node:util";
-import { PrismaClient } from "@prisma/client";
 import fs from "node:fs/promises";
+import { isHttpError } from "http-errors-enhanced";
+import { PrismaClient } from "@prisma/client";
 import { Services } from "@originator-profile/registry-service";
 import exampleAccount from "./account.example.json";
 import exampleWebsite from "./website.example.json";
@@ -158,8 +159,10 @@ export async function seed(): Promise<void> {
     const privateKey: Jwk = JSON.parse(privateKeyText);
     await issueOp(services, issuerUuid, jwk, privateKey);
 
-    const websiteExists = await services.website.read(exampleWebsite);
-    if (websiteExists instanceof Error) {
+    const websiteExists = await services.website
+      .read(exampleWebsite)
+      .catch((e) => e);
+    if (isHttpError(websiteExists) && websiteExists.status === 404) {
       await issueDp(services, issuerUuid, privateKey);
     }
 

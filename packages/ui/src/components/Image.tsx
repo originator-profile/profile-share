@@ -29,7 +29,8 @@ function Image({
     >
       <img
         className={clsx("w-auto", {
-          ["object-cover"]: cover,
+          "object-cover": cover,
+          "object-contain": !cover,
         })}
         style={
           cover ? { width, height } : { maxWidth: width, maxHeight: height }

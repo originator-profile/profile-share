@@ -8,10 +8,7 @@ export const CertificationSystemRepository = () => ({
     const prisma = getClient();
     const data = await prisma.certificationSystems.findUnique({
       where: { id: uuid },
-      include: {
-        certifier: true,
-        verifier: true,
-      },
+      // NOTE: @originator-profile/verify@v0.0.8 後方互換性のためここは certifier, verifier を含めず
     });
 
     if (!data) throw new NotFoundError("Certification system not found.");

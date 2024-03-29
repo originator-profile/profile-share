@@ -9,6 +9,14 @@ const certificationSystem: CertificationSystem = {
   description: "Certification System Description",
   url: "https://example.com/",
   urlTitle: "Example Website",
+  certifier: {
+    id: "d011896c-2d44-4f8b-8d8c-30ce516ed68b",
+    name: "Certifier (Example)",
+  },
+  verifier: {
+    id: "d5ff9af0-2cfa-42e5-a430-1971486bfe12",
+    name: "Verifier (Example)",
+  },
 };
 
 test("有効な形式の認証制度のとき検証に成功", async () => {

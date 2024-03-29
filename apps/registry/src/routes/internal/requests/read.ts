@@ -1,7 +1,6 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 import { FromSchema } from "json-schema-to-ts";
 import { BadRequestError } from "http-errors-enhanced";
-import { ErrorResponse } from "../../../error";
 
 const Querystring = {
   type: "object",
@@ -26,7 +25,6 @@ const schema: FastifySchema = {
         additionalProperties: true,
       },
     },
-    400: ErrorResponse,
   },
 };
 

@@ -37,7 +37,9 @@ export const UserAccountService = ({ userAccountRepository }: Options) => ({
       "account"
     >,
   ): Promise<userAccounts | Error> {
-    const found = await userAccountRepository.read(input);
+    const found = await userAccountRepository
+      .read(input)
+      .catch((e: NotFoundError) => e);
     if (found instanceof NotFoundError) {
       return await userAccountRepository.create({
         ...input,

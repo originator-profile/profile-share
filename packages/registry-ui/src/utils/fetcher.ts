@@ -12,14 +12,15 @@ export default async function fetcher<Data>(req: {
   body?: RequestInit["body"];
   headers?: HeadersInit;
   url: string;
-  token: string;
+  token?: string;
 }): Promise<Data> {
+  const headers = new Headers(req.headers);
+  if (req.token) {
+    headers.append("authorization", `Bearer ${req.token}`);
+  }
   const res = await fetch(req.url, {
     method: req.method,
-    headers: {
-      authorization: `Bearer ${req.token}`,
-      ...req.headers,
-    },
+    headers,
     body: req.body,
   });
 
@@ -27,5 +28,8 @@ export default async function fetcher<Data>(req: {
     throw new Error(`${res.status} ${res.statusText}`, { cause: res });
   }
 
-  return await res.json();
+  if (res.headers.get("Content-Type")?.includes("application/json")) {
+    return await res.json();
+  }
+  return (await res.text()) as Data;
 }

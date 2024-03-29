@@ -1,7 +1,6 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 import { FromSchema } from "json-schema-to-ts";
 import { BadRequestError } from "http-errors-enhanced";
-import { ErrorResponse } from "../../../../../error";
 import Params from "./params";
 
 const Body = {
@@ -34,7 +33,6 @@ const schema: FastifySchema = {
       type: "object",
       additionalProperties: true,
     },
-    400: ErrorResponse,
   },
 };
 

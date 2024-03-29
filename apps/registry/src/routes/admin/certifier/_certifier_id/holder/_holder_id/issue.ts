@@ -1,7 +1,6 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 import { FromSchema } from "json-schema-to-ts";
 import { BadRequestError } from "http-errors-enhanced";
-import { ErrorResponse } from "../../../../../../error";
 import Params from "./params";
 
 const Body = {
@@ -24,7 +23,6 @@ const schema: FastifySchema = {
   security: [{ basicAuth: [] }],
   response: {
     200: { description: "ok", type: "string" },
-    400: ErrorResponse,
   },
 };
 
