@@ -17,14 +17,14 @@ export type RequestLog = requestLogs & {
   }>;
 };
 
-export type OpRequest = Omit<OpModelRequest, "createdAt" | "updatedAt"> & {
-  createdAt: Date;
-  updatedAt: Date;
-};
-
 export type RequestLogCreate = Omit<RequestLog, "id">;
 
 export type RequestList = (requests & { accountName: string })[];
+
+type OpRequest = Omit<OpModelRequest, "createdAt" | "updatedAt"> & {
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 export function convertPrismaRequestToOpRequest(body: Request): OpRequest {
   return {
