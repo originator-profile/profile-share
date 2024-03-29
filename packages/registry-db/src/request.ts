@@ -26,7 +26,7 @@ export type RequestLogCreate = Omit<RequestLog, "id">;
 
 export type RequestList = (requests & { accountName: string })[];
 
-export function convertToModel(body: Request): OpRequest {
+export function convertPrismaRequestToOpRequest(body: Request): OpRequest {
   return {
     ...body,
     requestSummary: body.requestSummary ?? undefined,

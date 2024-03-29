@@ -4,7 +4,7 @@ import { BadRequestError } from "http-errors-enhanced";
 import { ErrorResponse } from "../../../../../error";
 import Params from "../params";
 import { Request } from "@originator-profile/model";
-import { convertToModel } from "@originator-profile/registry-db";
+import { convertPrismaRequestToOpRequest } from "@originator-profile/registry-db";
 
 const Body = {
   type: "object",
@@ -48,7 +48,7 @@ async function create(
   );
 
   if (result instanceof Error) return new BadRequestError("Invalid request");
-  return convertToModel(result);
+  return convertPrismaRequestToOpRequest(result);
 }
 
 export { create, schema };
