@@ -19,7 +19,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonld": "^1.5.13",
     "ajv": "^8.12.0",
-    "ajv-formats": "^2.1.1",
+    "ajv-formats": "^3.0.0",
     "bcryptjs": "^2.4.3",
     "date-fns": "^3.3.1",
     "eslint": "^8.56.0",
