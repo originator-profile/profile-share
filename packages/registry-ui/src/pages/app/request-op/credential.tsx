@@ -75,7 +75,7 @@ function FormField({
         className={clsx(
           "jumpu-input h-12",
           {
-            "border-orange-700 !border-2 !text-orange-700": errors[name],
+            "border-danger !border-2 !text-danger": errors[name],
           },
           inputProps?.className,
         )}
@@ -93,7 +93,7 @@ function FormField({
         errors={errors}
         name={name}
         render={({ message }) => (
-          <p className="text-sm text-orange-700">{message}</p>
+          <p className="text-sm text-danger">{message}</p>
         )}
       />
     </FormRow>
@@ -110,7 +110,7 @@ function FormSelectField({ name, label, children }: FormSelectFieldProps) {
       <select
         id={`${name}Select`}
         className={clsx("jumpu-input h-12", {
-          "border-orange-700 !border-2 !text-orange-700": errors[name],
+          "border-danger !border-2 !text-danger": errors[name],
         })}
         {...register(name, {
           required: "このフィールドを入力してください。",
@@ -122,7 +122,7 @@ function FormSelectField({ name, label, children }: FormSelectFieldProps) {
         errors={errors}
         name={name}
         render={({ message }) => (
-          <p className="text-sm text-orange-700">{message}</p>
+          <p className="text-sm text-danger">{message}</p>
         )}
       />
     </FormRow>

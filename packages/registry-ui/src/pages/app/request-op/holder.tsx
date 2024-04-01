@@ -165,8 +165,7 @@ function HolderForm({
             <select
               id="addressRegionSelect"
               className={clsx("jumpu-select w-48 h-12", {
-                "border-orange-700 !border-2 !text-orange-700":
-                  errors.addressRegion,
+                "border-danger !border-2 !text-danger": errors.addressRegion,
               })}
               {...register("addressRegion", {
                 onBlur: saveDraft,
@@ -185,7 +184,7 @@ function HolderForm({
               errors={errors}
               name="addressRegion"
               render={({ message }) => (
-                <p className="text-sm text-orange-700">{message}</p>
+                <p className="text-sm text-danger">{message}</p>
               )}
             />
           </FormRow>
@@ -277,8 +276,7 @@ function HolderForm({
             <textarea
               id="descriptionTextarea"
               className={clsx("jumpu-textarea flex-1", {
-                "border-orange-700 !border-2 !text-orange-700":
-                  errors.description,
+                "border-danger !border-2 !text-danger": errors.description,
               })}
               {...register("description", { onBlur: saveDraft })}
               placeholder="追加の説明情報（任意）"
@@ -287,7 +285,7 @@ function HolderForm({
               errors={errors}
               name="description"
               render={({ message }) => (
-                <p className="text-sm text-orange-700">{message}</p>
+                <p className="text-sm text-danger">{message}</p>
               )}
             />
           </FormRow>
