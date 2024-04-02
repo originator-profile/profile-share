@@ -8,7 +8,7 @@ test("context.json is valid", async () => {
     path.resolve(__dirname, "../context.json"),
   );
   const context: JsonLdDocument = JSON.parse(contextJson.toString());
-  await jsonld.expand(context);
+  await expect(jsonld.expand(context)).resolves.not.toThrowError();
 });
 
 test("sample Profile Set", async () => {

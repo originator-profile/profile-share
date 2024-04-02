@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`fetch-profiles > <link> 要素が2つ以上存在するとき > 有効な Profile Set が得られる 1`] = `
+exports[`<link> 要素が2つ以上存在するとき > 有効な Profile Set が得られる 1`] = `
 [
   {
     "@context": "https://originator-profile.org/context.jsonld",
@@ -13,7 +13,7 @@ exports[`fetch-profiles > <link> 要素が2つ以上存在するとき > 有効�
 ]
 `;
 
-exports[`fetch-profiles > <script>要素から Profile Set を取得する > <script> から profile set を取得できる 1`] = `
+exports[`<script>要素から Profile Set を取得する > <script> から profile set を取得できる 1`] = `
 [
   {
     "@context": "https://originator-profile.org/context.jsonld",
@@ -27,7 +27,7 @@ exports[`fetch-profiles > <script>要素から Profile Set を取得する > <sc
 ]
 `;
 
-exports[`fetch-profiles > <script>要素から Profile Set を取得する > <script> が2つ以上存在する 1`] = `
+exports[`<script>要素から Profile Set を取得する > <script> が2つ以上存在する 1`] = `
 [
   {
     "@context": "https://originator-profile.org/context.jsonld",
@@ -50,7 +50,7 @@ exports[`fetch-profiles > <script>要素から Profile Set を取得する > <sc
 ]
 `;
 
-exports[`fetch-profiles > <script>要素から Profile Set を取得する > <script> と <link> から profile set を取得できる 1`] = `
+exports[`<script>要素から Profile Set を取得する > <script> と <link> から profile set を取得できる 1`] = `
 [
   {
     "@context": "https://originator-profile.org/context.jsonld",
@@ -74,7 +74,7 @@ exports[`fetch-profiles > <script>要素から Profile Set を取得する > <sc
 ]
 `;
 
-exports[`fetch-profiles > ad Profile Pair が存在するとき > 有効な ad Profile Pair と Profile Set が得られる 1`] = `
+exports[`ad Profile Pair が存在するとき > 有効な ad Profile Pair と Profile Set が得られる 1`] = `
 [
   {
     "@context": "https://originator-profile.org/context.jsonld",
@@ -82,29 +82,6 @@ exports[`fetch-profiles > ad Profile Pair が存在するとき > 有効な ad P
       "dp": {
         "profile": "sdp1...",
         "sub": "9a96268b-a937-4468-8b4e-5dc488a7865f",
-      },
-      "op": {
-        "iss": "originator-profile.org",
-        "profile": "sop1...",
-        "sub": "example.com",
-      },
-    },
-  },
-  {
-    "@context": "https://originator-profile.org/context.jsonld",
-    "profiles": "{Signed Document Profile または Signed Originator Profile}",
-  },
-]
-`;
-
-exports[`fetch-profiles > website Profile Pair が存在するとき > 有効な website Profile Pair と Profile Set が得られる 1`] = `
-[
-  {
-    "@context": "https://originator-profile.org/context.jsonld",
-    "website": {
-      "dp": {
-        "profile": "sdp1...",
-        "sub": "ca729848-9265-48bf-8e33-887a43ba34b9",
       },
       "op": {
         "iss": "originator-profile.org",

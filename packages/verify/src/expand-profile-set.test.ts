@@ -5,7 +5,7 @@ import { JsonLdDocument } from "jsonld";
 import context from "@originator-profile/model/context.json";
 import { expandProfileSet, expandProfilePairs } from "./expand-profile-set";
 
-describe("expand-profiles", async () => {
+describe("expand-profiles", () => {
   beforeEach(() => {
     mockGet("https://originator-profile.org/context.jsonld").willResolve(
       context,
@@ -68,7 +68,7 @@ describe("expand-profiles", async () => {
   });
 });
 
-describe("expand-profile-pairs", async () => {
+describe("expand-profile-pairs", () => {
   beforeEach(() => {
     mockGet("https://originator-profile.org/context.jsonld").willResolve(
       context,

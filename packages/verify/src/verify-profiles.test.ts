@@ -1,4 +1,4 @@
-import { describe, test, expect } from "vitest";
+import { beforeEach, describe, test, expect } from "vitest";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { Op, Dp } from "@originator-profile/model";
 import { signOp, signDp, generateKey } from "@originator-profile/sign";
@@ -12,35 +12,54 @@ import { LocalKeys } from "./keys";
 import { SignedProfileValidator } from "./decode";
 import { ProfilesVerifier } from "./verify-profiles";
 
-describe("verify-profiles", async () => {
-  const certKeys = await generateKey();
-  const subKeys = await generateKey();
+interface VerifyProfileTestContext {
+  certKeys: Awaited<ReturnType<typeof generateKey>>;
+  subKeys: Awaited<ReturnType<typeof generateKey>>;
+  op: Op;
+  dp: Dp;
+  opToken: string;
+  dpToken: string;
+  registryKeys: ReturnType<typeof LocalKeys>;
+}
+
+describe("verify-profiles", () => {
   const iat = getUnixTime(new Date());
   const exp = getUnixTime(addYears(new Date(), 10));
-  const op: Op = {
-    type: "op",
-    issuedAt: fromUnixTime(iat).toISOString(),
-    expiredAt: fromUnixTime(exp).toISOString(),
-    issuer: "example.org",
-    subject: "example.com",
-    item: [],
-    jwks: { keys: [subKeys.publicKey] },
-  };
-  const dp: Dp = {
-    type: "dp",
-    issuedAt: fromUnixTime(iat).toISOString(),
-    expiredAt: fromUnixTime(exp).toISOString(),
-    issuer: "example.com",
-    subject: "https://example.com/article/42",
-    item: [],
-    allowedOrigins: ["https://example.com"],
-  };
-  const opToken = await signOp(op, certKeys.privateKey);
-  const dpToken = await signDp(dp, subKeys.privateKey);
-  const registryKeys = LocalKeys({ keys: [certKeys.publicKey] });
   const origin = "https://example.com";
 
-  test("Verify Profiles", async () => {
+  beforeEach<VerifyProfileTestContext>(async (context) => {
+    const certKeys = (context.certKeys = await generateKey());
+    const subKeys = (context.subKeys = await generateKey());
+    const op = (context.op = {
+      type: "op",
+      issuedAt: fromUnixTime(iat).toISOString(),
+      expiredAt: fromUnixTime(exp).toISOString(),
+      issuer: "example.org",
+      subject: "example.com",
+      item: [],
+      jwks: { keys: [subKeys.publicKey] },
+    });
+    const dp = (context.dp = {
+      type: "dp",
+      issuedAt: fromUnixTime(iat).toISOString(),
+      expiredAt: fromUnixTime(exp).toISOString(),
+      issuer: "example.com",
+      subject: "https://example.com/article/42",
+      item: [],
+      allowedOrigins: ["https://example.com"],
+    });
+    context.opToken = await signOp(op, certKeys.privateKey);
+    context.dpToken = await signDp(dp, subKeys.privateKey);
+    context.registryKeys = LocalKeys({ keys: [certKeys.publicKey] });
+  });
+
+  test<VerifyProfileTestContext>("Verify Profiles", async ({
+    op,
+    dp,
+    opToken,
+    dpToken,
+    registryKeys,
+  }) => {
     const verifier = ProfilesVerifier(
       { profile: [opToken, dpToken] },
       registryKeys,
@@ -53,7 +72,11 @@ describe("verify-profiles", async () => {
     expect(verified[1]).toMatchObject({ dp });
   });
 
-  test("OPの検証に失敗すると子も検証に失敗", async () => {
+  test<VerifyProfileTestContext>("OPの検証に失敗すると子も検証に失敗", async ({
+    op,
+    dpToken,
+    registryKeys,
+  }) => {
     const evilKeys = await generateKey();
     const evilOpToken = await signOp(op, evilKeys.privateKey);
     const verifier = ProfilesVerifier(
@@ -70,7 +93,12 @@ describe("verify-profiles", async () => {
     expect(results[1]).not.haveOwnProperty("dp");
   });
 
-  test("不正なitemが含まれるときClaims Setの確認に失敗 (要 SignedProfileValidator)", async () => {
+  test<VerifyProfileTestContext>("不正なitemが含まれるときClaims Setの確認に失敗 (要 SignedProfileValidator)", async ({
+    certKeys,
+    subKeys,
+    op,
+    registryKeys,
+  }) => {
     const signedProfileValidator = SignedProfileValidator();
     const invalidOp = {
       issuedAt: fromUnixTime(iat).toISOString(),
@@ -93,7 +121,12 @@ describe("verify-profiles", async () => {
     expect(results[0]).instanceOf(ProfileClaimsValidationFailed);
   });
 
-  test("不正な公開鍵のときJWTの検証に失敗", async () => {
+  test<VerifyProfileTestContext>("不正な公開鍵のときJWTの検証に失敗", async ({
+    certKeys,
+    op,
+    dpToken,
+    registryKeys,
+  }) => {
     const evilKeys = await generateKey();
     const evilOp: Op = {
       type: "op",
@@ -116,7 +149,13 @@ describe("verify-profiles", async () => {
     expect(results[1]).instanceOf(ProfileTokenVerifyFailed);
   });
 
-  test("重複するJWTは取り除く", async () => {
+  test<VerifyProfileTestContext>("重複するJWTは取り除く", async ({
+    op,
+    dp,
+    opToken,
+    dpToken,
+    registryKeys,
+  }) => {
     const verifier = ProfilesVerifier(
       { profile: [opToken, opToken, dpToken] },
       registryKeys,
@@ -131,7 +170,11 @@ describe("verify-profiles", async () => {
     expect(results[0]).not.toEqual(results[1]);
   });
 
-  test("DPの持たないOPが存在するときProfile Setの検証に失敗", async () => {
+  test<VerifyProfileTestContext>("DPの持たないOPが存在するときProfile Setの検証に失敗", async ({
+    op,
+    opToken,
+    registryKeys,
+  }) => {
     const verifier = ProfilesVerifier(
       { profile: [opToken] },
       registryKeys,
@@ -143,7 +186,12 @@ describe("verify-profiles", async () => {
     expect(results[0]).instanceOf(ProfilesVerifyFailed);
   });
 
-  test("DPの検証に失敗するとその親のOPも検証に失敗", async () => {
+  test<VerifyProfileTestContext>("DPの検証に失敗するとその親のOPも検証に失敗", async ({
+    op,
+    dp,
+    opToken,
+    registryKeys,
+  }) => {
     const evilKeys = await generateKey();
     const evilDpToken = await signDp(dp, evilKeys.privateKey);
     const verifier = ProfilesVerifier(
@@ -158,7 +206,13 @@ describe("verify-profiles", async () => {
     expect(results[1]).instanceOf(ProfileTokenVerifyFailed);
   });
 
-  test("Ad Profile Pair", async () => {
+  test<VerifyProfileTestContext>("Ad Profile Pair", async ({
+    op,
+    dp,
+    opToken,
+    dpToken,
+    registryKeys,
+  }) => {
     const verifier = ProfilesVerifier(
       {
         profile: [],
