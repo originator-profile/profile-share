@@ -1,4 +1,5 @@
 import { expect, test } from "vitest";
+import crypto from "node:crypto";
 import { ProfilePair } from "@originator-profile/verify";
 import { AdNode, AdTree, collectAdFromTree, makeAdTree } from "./ad-tree";
 

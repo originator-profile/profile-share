@@ -3,7 +3,7 @@ import { test, expect, describe, beforeAll, afterAll } from "vitest";
 const accountId = "cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc";
 const dummyPassword = "bdf70f3d38c1311fa06a211a2205623a";
 
-describe("Request with unpriviledged accounts", async () => {
+describe("Request with unpriviledged accounts", () => {
   const nonAdminAccountId = "3826ffad-a92b-57cc-b3d6-151e415fce7f";
 
   beforeAll(async () => {
@@ -65,7 +65,7 @@ describe("Request with unpriviledged accounts", async () => {
   });
 });
 
-describe("Request with administrative privileges", async () => {
+describe("Request with administrative privileges", () => {
   test("/admin/account/{id} response is a valid JSON", async () => {
     const endpoint = `http://localhost:8080/admin/account/${accountId}`;
     const res = await fetch(endpoint, {

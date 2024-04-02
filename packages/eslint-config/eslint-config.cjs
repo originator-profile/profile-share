@@ -6,9 +6,10 @@ module.exports = {
     "plugin:jsx-a11y/recommended",
     "plugin:react-hooks/recommended",
     "plugin:react/recommended",
+    "plugin:vitest/recommended",
     "prettier",
   ],
-  plugins: ["tsc", "filenames"],
+  plugins: ["tsc", "filenames", "vitest"],
   settings: {
     react: { version: "detect" },
   },

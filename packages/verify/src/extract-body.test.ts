@@ -16,44 +16,6 @@ const html =
   '<p>Hello, World!</p><p style="display:none">None</p><p>Goodbye, World!</p>';
 const pageUrl = "https://example.com/";
 
-const extractText = async function (
-  locator: (location: string) => Promise<HTMLElement[]>,
-) {
-  const item: DpText = {
-    ...base,
-    type: "text",
-  };
-  const result = await extractBody(pageUrl, locator, item);
-  expect(result).not.instanceOf(Error);
-  expect(result).toBe("Hello, World!NoneGoodbye, World!");
-};
-
-const extractHtml = async function (
-  locator: (location: string) => Promise<HTMLElement[]>,
-) {
-  const item: DpHtml = {
-    ...base,
-    type: "html",
-  };
-  const result = await extractBody(pageUrl, locator, item);
-  expect(result).not.instanceOf(Error);
-  expect(result).toBe(
-    '<body><p>Hello, World!</p><p style="display:none">None</p><p>Goodbye, World!</p></body>',
-  );
-};
-
-const extractEvil = async function (
-  locator: (location: string) => Promise<HTMLElement[]>,
-) {
-  const item: DpText = {
-    ...base,
-    url: "https://evil.com",
-    type: "text",
-  };
-  const result = await extractBody(pageUrl, locator, item);
-  expect(result).instanceOf(Error);
-};
-
 describe("extract body on happy-dom", () => {
   let locator: (location: string) => Promise<HTMLElement[]>;
 
@@ -67,14 +29,34 @@ describe("extract body on happy-dom", () => {
   });
 
   test("as text type", async () => {
-    await extractText(locator);
+    const item: DpText = {
+      ...base,
+      type: "text",
+    };
+    const result = await extractBody(pageUrl, locator, item);
+    expect(result).not.instanceOf(Error);
+    expect(result).toBe("Hello, World!NoneGoodbye, World!");
   });
 
   test("as html type", async () => {
-    await extractHtml(locator);
+    const item: DpHtml = {
+      ...base,
+      type: "html",
+    };
+    const result = await extractBody(pageUrl, locator, item);
+    expect(result).not.instanceOf(Error);
+    expect(result).toBe(
+      '<body><p>Hello, World!</p><p style="display:none">None</p><p>Goodbye, World!</p></body>',
+    );
   });
 
   test("failure when url mismatch", async () => {
-    await extractEvil(locator);
+    const item: DpText = {
+      ...base,
+      url: "https://evil.com",
+      type: "text",
+    };
+    const result = await extractBody(pageUrl, locator, item);
+    expect(result).instanceOf(Error);
   });
 });

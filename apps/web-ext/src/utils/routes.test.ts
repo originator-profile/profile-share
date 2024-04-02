@@ -3,7 +3,7 @@ import { route } from "./routes";
 
 const exampleRoute = route("/a/:b/c/d/:e");
 
-describe("routes", async () => {
+describe("routes", () => {
   test("routes() returns route path", async () => {
     expect(exampleRoute.path).toBe("/a/:b/c/d/:e");
   });

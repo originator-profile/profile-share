@@ -9,27 +9,30 @@ import { Op } from "@originator-profile/model";
 import { fetchProfileSet } from "./fetch-profile-set";
 import { ProfilesFetchFailed } from "./errors";
 
-describe("fetch-profiles", async () => {
-  const iat = getUnixTime(new Date());
-  const exp = getUnixTime(addYears(new Date(), 10));
-  const op: Op = {
-    type: "op",
-    issuedAt: fromUnixTime(iat).toISOString(),
-    expiredAt: fromUnixTime(exp).toISOString(),
-    issuer: "example.org",
-    subject: "example.com",
-    item: [],
-  };
-  const { privateKey } = await generateKey();
-  const jwt = await signOp(op, privateKey);
-  const profiles: JsonLdDocument = {
-    "@context": "https://originator-profile.org/context.jsonld",
-    main: ["example.com"],
-    profile: [jwt],
-  };
-  const profileEndpoint = "https://example.com/ps.json";
+interface FetchProfileSetTestContext {
+  profiles: JsonLdDocument;
+}
 
-  beforeEach(() => {
+describe("単純なlinkから取得", () => {
+  const profileEndpoint = "https://example.com/ps.json";
+  beforeEach<FetchProfileSetTestContext>(async (context) => {
+    const iat = getUnixTime(new Date());
+    const exp = getUnixTime(addYears(new Date(), 10));
+    const op: Op = {
+      type: "op",
+      issuedAt: fromUnixTime(iat).toISOString(),
+      expiredAt: fromUnixTime(exp).toISOString(),
+      issuer: "example.org",
+      subject: "example.com",
+      item: [],
+    };
+    const { privateKey } = await generateKey();
+    const jwt = await signOp(op, privateKey);
+    const profiles = (context.profiles = {
+      "@context": "https://originator-profile.org/context.jsonld",
+      main: ["example.com"],
+      profile: [jwt],
+    });
     mockGet(profileEndpoint).willResolve(profiles);
   });
 
@@ -37,7 +40,9 @@ describe("fetch-profiles", async () => {
     mockFetch.clearAll();
   });
 
-  test("有効なエンドポイント指定時 Profile Set が得られる", async () => {
+  test<FetchProfileSetTestContext>("有効なエンドポイント指定時 Profile Set が得られる", async ({
+    profiles,
+  }) => {
     const window = new Window();
     window.document.body.innerHTML = `
 <link
@@ -87,161 +92,159 @@ describe("fetch-profiles", async () => {
       `プロファイルを取得できませんでした:\nHTTP ステータスコード 404`,
     );
   });
+});
 
-  describe("<link> 要素が2つ以上存在するとき", async () => {
-    beforeEach(() => {
-      mockGet("https://example.com/1/ps.json").willResolve({
-        "@context": "https://originator-profile.org/context.jsonld",
-        profiles: "{Signed Document Profile または Signed Originator Profile}",
-      });
-      mockGet("https://example.com/2/ps.json").willResolve({
-        "@context": "https://originator-profile.org/context.jsonld",
-        profiles:
-          "{別の Signed Document Profile または Signed Originator Profile}",
-      });
+describe("<link> 要素が2つ以上存在するとき", () => {
+  beforeEach(() => {
+    mockGet("https://example.com/1/ps.json").willResolve({
+      "@context": "https://originator-profile.org/context.jsonld",
+      profiles: "{Signed Document Profile または Signed Originator Profile}",
     });
+    mockGet("https://example.com/2/ps.json").willResolve({
+      "@context": "https://originator-profile.org/context.jsonld",
+      profiles:
+        "{別の Signed Document Profile または Signed Originator Profile}",
+    });
+  });
 
-    test("有効な Profile Set が得られる", async () => {
-      const window = new Window();
-      const profileEndpoints = [
-        "https://example.com/1/ps.json",
-        "https://example.com/2/ps.json",
-      ];
-      window.document.body.innerHTML = profileEndpoints
-        .map(
-          (endpoint) => `
+  test("有効な Profile Set が得られる", async () => {
+    const window = new Window();
+    const profileEndpoints = [
+      "https://example.com/1/ps.json",
+      "https://example.com/2/ps.json",
+    ];
+    window.document.body.innerHTML = profileEndpoints
+      .map(
+        (endpoint) => `
 <link
   href="${endpoint}"
   rel="alternate"
   type="application/ld+json"
 />
   `,
-        )
-        .join("");
-      const result = await fetchProfileSet(
-        window.document as unknown as Document,
-      );
-      expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
-      expect(result).toMatchSnapshot();
-    });
-  });
-
-  test("エンドポイントを指定しない時 空の配列が得られる", async () => {
-    const window = new Window();
+      )
+      .join("");
     const result = await fetchProfileSet(
       window.document as unknown as Document,
     );
-    expect(result).toBeInstanceOf(Array);
-    expect(result).toHaveLength(0);
+    expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
+    expect(result).toMatchSnapshot();
+  });
+});
+
+test("エンドポイントを指定しない時 空の配列が得られる", async () => {
+  const window = new Window();
+  const result = await fetchProfileSet(window.document as unknown as Document);
+  expect(result).toBeInstanceOf(Array);
+  expect(result).toHaveLength(0);
+});
+
+describe("<script>要素から Profile Set を取得する", () => {
+  const profileSet = {
+    "@context": "https://originator-profile.org/context.jsonld",
+    main: ["https://example.org"],
+    profile: ["{Signed Document Profile または Signed Originator Profile}"],
+  };
+
+  beforeEach(() => {
+    mockGet("https://example.com/1/ps.json").willResolve({
+      "@context": "https://originator-profile.org/context.jsonld",
+      main: ["https://example.com"],
+      profile: [
+        "{Signed Document Profile または Signed Originator Profile}",
+        "{Signed Document Profile または Signed Originator Profile}",
+      ],
+    });
   });
 
-  describe("<script>要素から Profile Set を取得する", async () => {
-    const profileSet = {
-      "@context": "https://originator-profile.org/context.jsonld",
-      main: ["https://example.org"],
-      profile: ["{Signed Document Profile または Signed Originator Profile}"],
-    };
-
-    beforeEach(() => {
-      mockGet("https://example.com/1/ps.json").willResolve({
-        "@context": "https://originator-profile.org/context.jsonld",
-        main: ["https://example.com"],
-        profile: [
-          "{Signed Document Profile または Signed Originator Profile}",
-          "{Signed Document Profile または Signed Originator Profile}",
-        ],
-      });
-    });
-
-    test("<script> から profile set を取得できる", async () => {
-      const window = new Window();
-      window.document.body.innerHTML = `
+  test("<script> から profile set を取得できる", async () => {
+    const window = new Window();
+    window.document.body.innerHTML = `
 <script type="application/ld+json">${JSON.stringify(profileSet)}</script>
 `;
 
-      const result = await fetchProfileSet(
-        window.document as unknown as Document,
-      );
-      expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
-      expect(result).toMatchSnapshot();
-    });
+    const result = await fetchProfileSet(
+      window.document as unknown as Document,
+    );
+    expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
+    expect(result).toMatchSnapshot();
+  });
 
-    test("<script> が2つ以上存在する", async () => {
-      const window = new Window();
-      window.document.body.innerHTML = `
+  test("<script> が2つ以上存在する", async () => {
+    const window = new Window();
+    window.document.body.innerHTML = `
 <script type="application/ld+json">${JSON.stringify(profileSet)}</script>
 <script type="application/ld+json">${JSON.stringify(profileSet)}</script>
 `;
 
-      const result = await fetchProfileSet(
-        window.document as unknown as Document,
-      );
-      expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
-      expect(result).toMatchSnapshot();
-    });
+    const result = await fetchProfileSet(
+      window.document as unknown as Document,
+    );
+    expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
+    expect(result).toMatchSnapshot();
+  });
 
-    test("<script> と <link> から profile set を取得できる", async () => {
-      const window = new Window();
-      const profileEndpoint = "https://example.com/1/ps.json";
-      window.document.body.innerHTML = `
+  test("<script> と <link> から profile set を取得できる", async () => {
+    const window = new Window();
+    const profileEndpoint = "https://example.com/1/ps.json";
+    window.document.body.innerHTML = `
 <script type="application/ld+json">${JSON.stringify(profileSet)}</script>
 <link href="${profileEndpoint}" rel="alternate" type="application/ld+json" />
 `;
 
-      const result = await fetchProfileSet(
-        window.document as unknown as Document,
-      );
-      expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
-      expect(result).toMatchSnapshot();
+    const result = await fetchProfileSet(
+      window.document as unknown as Document,
+    );
+    expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
+    expect(result).toMatchSnapshot();
+  });
+});
+
+describe("ad Profile Pair が存在するとき", () => {
+  beforeEach(() => {
+    mockGet(
+      "https://ad.example.com/pps/9a96268b-a937-4468-8b4e-5dc488a7865f/pp.json",
+    ).willResolve({
+      "@context": "https://originator-profile.org/context.jsonld",
+      ad: {
+        op: {
+          iss: "originator-profile.org",
+          sub: "example.com",
+          profile: "sop1...",
+        },
+        dp: {
+          sub: "9a96268b-a937-4468-8b4e-5dc488a7865f",
+          profile: "sdp1...",
+        },
+      },
+    });
+    mockGet("https://example.com/1/ps.json").willResolve({
+      "@context": "https://originator-profile.org/context.jsonld",
+      profiles: "{Signed Document Profile または Signed Originator Profile}",
     });
   });
 
-  describe("ad Profile Pair が存在するとき", async () => {
-    beforeEach(() => {
-      mockGet(
-        "https://ad.example.com/pps/9a96268b-a937-4468-8b4e-5dc488a7865f/pp.json",
-      ).willResolve({
-        "@context": "https://originator-profile.org/context.jsonld",
-        ad: {
-          op: {
-            iss: "originator-profile.org",
-            sub: "example.com",
-            profile: "sop1...",
-          },
-          dp: {
-            sub: "9a96268b-a937-4468-8b4e-5dc488a7865f",
-            profile: "sdp1...",
-          },
-        },
-      });
-      mockGet("https://example.com/1/ps.json").willResolve({
-        "@context": "https://originator-profile.org/context.jsonld",
-        profiles: "{Signed Document Profile または Signed Originator Profile}",
-      });
-    });
-
-    test("有効な ad Profile Pair と Profile Set が得られる", async () => {
-      const window = new Window({ url: "https:/example.com" });
-      const profileEndpoints = [
-        "https://ad.example.com/pps/9a96268b-a937-4468-8b4e-5dc488a7865f/pp.json",
-        "https://example.com/1/ps.json",
-      ];
-      window.document.body.innerHTML = profileEndpoints
-        .map(
-          (endpoint) => `
+  test("有効な ad Profile Pair と Profile Set が得られる", async () => {
+    const window = new Window({ url: "https:/example.com" });
+    const profileEndpoints = [
+      "https://ad.example.com/pps/9a96268b-a937-4468-8b4e-5dc488a7865f/pp.json",
+      "https://example.com/1/ps.json",
+    ];
+    window.document.body.innerHTML = profileEndpoints
+      .map(
+        (endpoint) => `
 <link
   href="${endpoint}"
-  rel="alternate"
+  rel="alternate"Â
   type="application/ld+json"
 />
   `,
-        )
-        .join("");
-      const result = await fetchProfileSet(
-        window.document as unknown as Document,
-      );
-      expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
-      expect(result).toMatchSnapshot();
-    });
+      )
+      .join("");
+    const result = await fetchProfileSet(
+      window.document as unknown as Document,
+    );
+    expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
+    expect(result).toMatchSnapshot();
   });
 });

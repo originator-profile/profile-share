@@ -8,12 +8,12 @@ const accountId = "cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc";
 const websiteId = "efd400c1-4f6d-44bd-8fa0-8ecc85c6b1b4";
 const keyPath = path.join(__dirname, "..", "account-key.example.priv.json");
 
-describe("Publisher workflows", async () => {
+describe("Publisher workflows", () => {
   let tmpdir: string;
   let extractJsonPath: string;
   let websiteJsonPath: string;
 
-  describe("extract.jsonによる操作を行う場合", async () => {
+  describe("extract.jsonによる操作を行う場合", () => {
     beforeAll(async () => {
       tmpdir = await fs.mkdtemp(`${path.join(__dirname, "tmp")}${path.sep}`);
       extractJsonPath = path.join(tmpdir, "extract.json");
@@ -51,16 +51,18 @@ describe("Publisher workflows", async () => {
     });
 
     test("Should succeed in creating from website.json", async () => {
-      await PublisherWebsite.run([
-        `--identity=${keyPath}`,
-        `--id=${accountId}`,
-        "--operation=create",
-        `--glob-input=${websiteJsonPath}`,
-      ]);
+      await expect(
+        PublisherWebsite.run([
+          `--identity=${keyPath}`,
+          `--id=${accountId}`,
+          "--operation=create",
+          `--glob-input=${websiteJsonPath}`,
+        ]),
+      ).resolves.not.toThrowError();
     });
   });
 
-  describe("globパターンに一致しない場合", async () => {
+  describe("globパターンに一致しない場合", () => {
     beforeAll(async () => {
       tmpdir = await fs.mkdtemp(`${path.join(__dirname, "tmp")}${path.sep}`);
     });

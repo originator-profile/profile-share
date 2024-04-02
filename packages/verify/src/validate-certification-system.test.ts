@@ -24,7 +24,7 @@ test("有効な形式の認証制度のとき検証に成功", async () => {
   expect(result).toMatchObject(certificationSystem);
 });
 
-describe("無効な形式の認証制度のとき検証に失敗", async () => {
+describe("無効な形式の認証制度のとき検証に失敗", () => {
   test("オブジェクトでない", async () => {
     const invalidCertificationSystem = "invalid";
     const result = validateCertificationSystem(invalidCertificationSystem);
