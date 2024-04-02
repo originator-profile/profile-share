@@ -45,7 +45,7 @@ export default function PageFieldSet({
           <input
             id={titleInputId}
             className={clsx("jumpu-input h-12 w-full", {
-              "border-orange-700 !border-2 !text-orange-700": errors[titleName],
+              "border-danger !border-2 !text-danger": errors[titleName],
             })}
             {...register(titleName, { onBlur: onBlur })}
             placeholder={titlePlaceholder}
@@ -54,7 +54,7 @@ export default function PageFieldSet({
             errors={errors}
             name={titleName}
             render={({ message }) => (
-              <p className="text-sm text-orange-700">{message}</p>
+              <p className="text-sm text-danger">{message}</p>
             )}
           />
         </div>
@@ -66,7 +66,7 @@ export default function PageFieldSet({
             id={urlInputId}
             type="url"
             className={clsx("jumpu-input h-12 w-full", {
-              "border-orange-700 !border-2 !text-orange-700": errors[urlName],
+              "border-danger !border-2 !text-danger": errors[urlName],
             })}
             {...register(urlName, {
               onBlur: onBlur,
@@ -77,7 +77,7 @@ export default function PageFieldSet({
             errors={errors}
             name={urlName}
             render={({ message }) => (
-              <p className="text-sm text-orange-700">{message}</p>
+              <p className="text-sm text-danger">{message}</p>
             )}
           />
         </div>

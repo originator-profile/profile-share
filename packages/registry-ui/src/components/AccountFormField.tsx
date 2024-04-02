@@ -40,7 +40,7 @@ export default function AccountFormField({
       <input
         id={`${name}Input`}
         className={clsx("jumpu-input h-12", inputClassName, {
-          "border-orange-700 !border-2 !text-orange-700": errors[name],
+          "border-danger !border-2 !text-danger": errors[name],
         })}
         placeholder={placeHolder}
         {...register(name, {
@@ -52,7 +52,7 @@ export default function AccountFormField({
         errors={errors}
         name={name}
         render={({ message }) => (
-          <p className="text-sm text-orange-700">{message}</p>
+          <p className="text-sm text-danger">{message}</p>
         )}
       />
     </FormRow>
