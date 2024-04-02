@@ -1,3 +1,5 @@
+import { orange } from "tailwindcss/colors";
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{html,tsx}"],
@@ -32,6 +34,7 @@ module.exports = {
           light: "#f87171",
           DEFAULT: "#b80000",
         },
+        review: orange[700],
       },
     },
   },
