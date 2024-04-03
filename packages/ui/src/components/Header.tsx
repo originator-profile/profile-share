@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   className?: string;
@@ -8,7 +8,7 @@ type Props = {
 function Header({ className, children }: Props) {
   return (
     <header
-      className={clsx(
+      className={twMerge(
         "px-3 py-2 bg-white border-b border-gray-300 flex items-center gap-1",
         className,
       )}

@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 import {
   OpCredential,
   OpHolder,
@@ -35,7 +35,7 @@ function CredentialDetail({
   const description = useSanitizedHtml(data?.description);
 
   return (
-    <div className={clsx("jumpu-card p-5 rounded-2xl", className)}>
+    <div className={twMerge("jumpu-card p-5 rounded-2xl", className)}>
       <header className="flex items-center gap-4 mb-4">
         <Image
           src={credential.image}
@@ -63,9 +63,10 @@ function CredentialDetail({
           {range(0, 5).map((i) => (
             <div
               key={i}
-              className={clsx("bg-slate-200 rounded h-3", {
-                ["w-4/5"]: i === 4,
-              })}
+              className={twMerge(
+                "bg-slate-200 rounded h-3",
+                i === 4 && "w-4/5",
+              )}
             />
           ))}
         </div>
