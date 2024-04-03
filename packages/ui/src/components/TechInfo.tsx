@@ -1,6 +1,6 @@
+import { twMerge } from "tailwind-merge";
 import { Profile } from "../types/profile";
 import TechTable from "./TechTable";
-import clsx from "clsx";
 
 type Props = {
   className?: string;
@@ -12,7 +12,7 @@ type Props = {
 
 function TechInfo({ className, op, dp, holder, certifier }: Props) {
   return (
-    <div className={clsx("jumpu-card p-5 rounded-2xl text-sm", className)}>
+    <div className={twMerge("jumpu-card p-5 rounded-2xl text-sm", className)}>
       <p className="text-base font-bold mb-3">技術情報</p>
       <div className="mb-3">
         <p className="text-base font-bold mb-1">OP</p>

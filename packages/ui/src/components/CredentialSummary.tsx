@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 import { OpCredential, OpHolder, OpCertifier } from "@originator-profile/model";
 import Image from "../components/Image";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
@@ -22,7 +22,7 @@ function CredentialSummary({
   const handleClick = () => onClick(credential);
   return (
     <button
-      className={clsx(
+      className={twMerge(
         "jumpu-card flex items-center gap-4 hover:bg-blue-50 px-4 py-3 rounded-lg",
         className,
       )}

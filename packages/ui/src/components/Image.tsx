@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   className?: string;
@@ -21,17 +21,14 @@ function Image({
 }: Props) {
   return (
     <figure
-      className={clsx(
+      className={twMerge(
         "flex justify-center items-center overflow-hidden",
         className,
       )}
       style={{ height, minWidth: width }}
     >
       <img
-        className={clsx("w-auto", {
-          "object-cover": cover,
-          "object-contain": !cover,
-        })}
+        className={twMerge("w-auto", cover ? "object-cover" : "object-contain")}
         style={
           cover ? { width, height } : { maxWidth: width, maxHeight: height }
         }
