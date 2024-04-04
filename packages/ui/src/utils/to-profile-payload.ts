@@ -1,4 +1,4 @@
-import { Profile } from "../types/profile";
+import { ProfilePayload } from "../types/profile";
 import { VerifyResult, ProfileGenericError } from "@originator-profile/verify";
 import { JwtDpPayload } from "@originator-profile/model";
 import {
@@ -12,7 +12,9 @@ import {
  * @param verifyResult 検証結果
  * @returns Profile
  */
-export default function toProfile(verifyResult: VerifyResult): Profile {
+export default function toProfilePayload(
+  verifyResult: VerifyResult,
+): ProfilePayload {
   if (verifyResult instanceof ProfileGenericError) {
     const payload = verifyResult.result.payload ?? {};
     const profile = isJwtOpPayload(payload)

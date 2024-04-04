@@ -1,11 +1,11 @@
-import { Profile } from "../types/profile";
+import { OriginatorProfile, DocumentProfile } from "../utils";
 import TechTable from "./TechTable";
 import clsx from "clsx";
 
 type Props = {
   className?: string;
-  op: Profile;
-  dp: Profile;
+  op: OriginatorProfile;
+  dp: DocumentProfile;
   holder?: string;
   certifier?: string;
 };

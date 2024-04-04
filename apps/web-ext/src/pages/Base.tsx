@@ -1,9 +1,7 @@
 import { useTitle, useMount } from "react-use";
 import { Navigate, useSearchParams } from "react-router-dom";
-import { isDp } from "@originator-profile/core";
-import { Dp, Profile } from "@originator-profile/ui/src/types";
-import { sortDps } from "@originator-profile/ui/src/utils";
-import { routes } from "../utils/routes";
+import { DocumentProfile, ProfileSet } from "@originator-profile/ui";
+import { buildPublUrl } from "../utils/routes";
 import useProfileSet from "../utils/use-profile-set";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
@@ -14,46 +12,31 @@ function Redirect({
   tabId,
   profiles,
 }: {
-  dp?: Dp;
+  dp?: DocumentProfile;
   tabId: number;
-  profiles?: Profile[];
+  profiles?: ProfileSet;
 }) {
   useMount(() => {
     if (profiles) {
       chrome.tabs.sendMessage(tabId, {
         type: "overlay-profiles",
-        profiles,
-        activeDp: dp,
+        ...profiles.serialize(),
+        activeDp: dp?.serialize(),
       });
     }
   });
 
-  return (
-    <Navigate
-      to={[
-        routes.base.build({ tabId: String(tabId) }),
-        dp ? routes.publ.build(dp) : routes.site.build({}),
-      ].join("/")}
-    />
-  );
+  return <Navigate to={buildPublUrl(tabId, dp)} />;
 }
 
 function Base() {
   const [queryParams] = useSearchParams();
-  const {
-    tabId,
-    main = [],
-    profiles,
-    website,
-    error,
-    origin,
-  } = useProfileSet();
+  const { tabId, profileSet, error, origin } = useProfileSet();
 
   useTitle(["コンテンツ情報", origin].filter(Boolean).join(" ― "));
 
   const element = useVerifyFailureFeedback({
-    profiles: profiles,
-    websiteProfiles: website,
+    profiles: profileSet,
     tabId,
     queryParams,
   });
@@ -64,13 +47,12 @@ function Base() {
     return element;
   }
 
-  const [dp] = sortDps((profiles ?? []).filter(isDp), main);
-  const [websiteDp] = sortDps((website ?? []).filter(isDp), []);
-  if (!dp && !websiteDp) {
+  const dp = profileSet?.dps[0];
+  if (profileSet.isEmpty()) {
     return <NotFound variant="dp" />;
   }
 
-  return <Redirect dp={dp} tabId={tabId} profiles={profiles} />;
+  return <Redirect dp={dp} tabId={tabId} profiles={profileSet} />;
 }
 
 export default Base;

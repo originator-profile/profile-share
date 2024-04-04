@@ -1,51 +1,37 @@
 import { useParams, useSearchParams } from "react-router-dom";
-import {
-  isOp,
-  isOpHolder,
-  isDp,
-  isOgWebsite,
-  isAdvertisement,
-} from "@originator-profile/core";
-import { OgWebsite, Profile } from "@originator-profile/model";
+import { OgWebsite } from "@originator-profile/model";
 import useProfileSet from "../utils/use-profile-set";
 import { routes } from "../utils/routes";
 import NotFound from "../components/NotFound";
 import Template from "../templates/Publ";
+import {
+  DocumentProfile,
+  OriginatorProfile,
+  ProfileSet,
+} from "@originator-profile/ui";
+import Loading from "../components/Loading";
 
-function extractFromProfiles(
-  profiles: Profile[],
+function extractFromOpDp(
+  op: OriginatorProfile | undefined,
+  dp: DocumentProfile | undefined,
   queryParams: URLSearchParams,
-  issuer?: string,
-  subject?: string,
-  findFirstOpDp?: boolean,
 ) {
-  const dp = findFirstOpDp
-    ? profiles.find(isDp)
-    : profiles
-        .filter(isDp)
-        .find((dp) => dp.issuer === issuer && dp.subject === subject);
-  const op = findFirstOpDp
-    ? profiles.find(isOp)
-    : profiles.filter(isOp).find((op) => op.subject === issuer);
   if (!(dp && op)) {
     return <NotFound variant="profile" />;
   }
-  const website = dp.item.find(isOgWebsite);
-  const advertisement = dp.item.find(isAdvertisement);
+  const website = dp.findOgWebsiteItem();
+  const advertisement = dp.findAdvertisementItem();
   const content = website || advertisement;
   if (!content) {
     return <NotFound variant="website" />;
   }
-  const holder = op.item.find(isOpHolder);
+  const holder = op.findHolderItem();
   if (!holder) {
     return <NotFound variant="holder" />;
   }
   const paths = {
     org: {
-      pathname: routes.org.build({
-        orgIssuer: op.issuer,
-        orgSubject: op.subject,
-      }),
+      pathname: routes.org.build(routes.org.getParams(op)),
       search: queryParams.toString(),
     },
   } as const;
@@ -59,24 +45,45 @@ function extractFromProfiles(
   };
 }
 
+function extractFromProfiles(
+  profiles: ProfileSet,
+  queryParams: URLSearchParams,
+  issuer?: string,
+  subject?: string,
+) {
+  if (!issuer || !subject) {
+    return <NotFound variant="profile" />;
+  }
+  const dp = profiles.getDp(subject, issuer);
+  const op = profiles.getOp(issuer);
+  return extractFromOpDp(op, dp, queryParams);
+}
+
 function Publ() {
   const [queryParams] = useSearchParams();
-  const { issuer, subject } = useParams<{ issuer: string; subject: string }>();
-  const { profiles, main = [], website: websiteProfiles } = useProfileSet();
+  const { issuer, subject, tabId } = useParams<{
+    issuer: string;
+    subject: string;
+    tabId: string;
+  }>();
 
-  const article = extractFromProfiles(
-    profiles ?? [],
-    queryParams,
-    issuer,
-    subject,
-  );
-  const website = extractFromProfiles(
-    websiteProfiles ?? [],
-    queryParams,
-    undefined,
-    undefined,
-    true,
-  );
+  const { profileSet } = useProfileSet();
+
+  if (profileSet.isLoading) {
+    return <Loading />;
+  }
+
+  const article = extractFromProfiles(profileSet, queryParams, issuer, subject);
+  const { op, dp } = profileSet.getWebsiteProfilePair();
+  const website = extractFromOpDp(op, dp, queryParams);
+
+  const handleClickDp = (dp: DocumentProfile) => async () => {
+    await chrome.tabs.sendMessage(Number(tabId), {
+      type: "overlay-profiles",
+      ...profileSet.serialize(),
+      activeDp: dp.serialize(),
+    });
+  };
 
   return (
     <Template
@@ -84,10 +91,8 @@ function Publ() {
       article={
         "dp" in article
           ? {
-              profiles: profiles ?? [],
-              main,
+              profiles: profileSet,
               dpItemContent: article.content,
-              filteredDps: [],
               ...article,
             }
           : undefined
@@ -98,6 +103,7 @@ function Publ() {
           ? { website: website.content as OgWebsite, ...website }
           : undefined
       }
+      handleClickDp={handleClickDp}
     />
   );
 }
