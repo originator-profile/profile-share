@@ -1,11 +1,14 @@
-import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
+import {
+  ProjectTitle,
+  ProjectSummary,
+  DocumentProfile,
+} from "@originator-profile/ui";
 import { Icon } from "@iconify/react";
-import { Dp } from "@originator-profile/ui/src/types";
 import { Link } from "react-router-dom";
-import { routes } from "../utils/routes";
+import { buildPublUrl } from "../utils/routes";
 
 type ProhibitionProps = {
-  dp: Dp;
+  dp: DocumentProfile;
   tabId: number;
 };
 
@@ -36,11 +39,7 @@ function WarningDetails({ dp, tabId }: ProhibitionProps) {
       </p>
       <Link
         className="block text-gray-500 pb-3 pt-3"
-        to={[
-          routes.base.build({ tabId: String(tabId) }),
-          routes.publ.build(dp),
-          "?unsafe",
-        ].join("/")}
+        to={buildPublUrl(tabId, dp)}
       >
         上記を理解して組織情報や出版物の内容を閲覧する
       </Link>

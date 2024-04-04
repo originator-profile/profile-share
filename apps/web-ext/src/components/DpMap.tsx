@@ -1,47 +1,40 @@
-import { isDp, isOp } from "@originator-profile/core";
-import { Profile, Dp, Op } from "@originator-profile/ui/src/types";
 import DpMarker from "../components/DpMarker";
+import { ProfileSet, DocumentProfile } from "@originator-profile/ui";
 
 function DpMapFragment({
   dp,
   activeDp,
-  ops,
+  profileSet,
   onClickDp,
 }: {
-  dp: Dp;
-  activeDp: Dp | null;
-  ops: Op[];
-  onClickDp: (dp: Dp) => void;
+  dp: DocumentProfile;
+  activeDp: DocumentProfile | null;
+  profileSet: ProfileSet;
+  onClickDp: (dp: DocumentProfile) => void;
 }) {
-  const op = ops.find((op) => op.subject === dp.issuer);
+  const op = profileSet.getOp(dp.issuer);
   if (!op) return null;
-  const active = Boolean(
-    activeDp &&
-      activeDp.issuer === dp.issuer &&
-      activeDp.subject === dp.subject,
-  );
+
+  const active = Boolean(activeDp && dp.is(activeDp));
   return <DpMarker dp={dp} op={op} active={active} onClickDp={onClickDp} />;
 }
 
 type Props = {
-  profiles: Profile[];
-  activeDp: Dp | null;
-  onClickDp: (dp: Dp) => void;
+  profiles: ProfileSet;
+  activeDp: DocumentProfile | null;
+  onClickDp: (dp: DocumentProfile) => void;
 };
 
 function DpMap({ profiles, activeDp, onClickDp }: Props) {
-  const dps = profiles.filter(isDp);
-  const ops = profiles.filter(isOp);
+  const dps = profiles.dps;
   return (
     <>
       {dps.map((dp) => (
         <DpMapFragment
-          key={`${encodeURIComponent(dp.issuer)}/${encodeURIComponent(
-            dp.subject,
-          )}`}
+          key={dp.getReactKey()}
           dp={dp}
           activeDp={activeDp}
-          ops={ops}
+          profileSet={profiles}
           onClickDp={onClickDp}
         />
       ))}

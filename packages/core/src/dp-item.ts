@@ -9,6 +9,9 @@ import {
 } from "@originator-profile/model";
 import { dpNamespace } from "./jwt-payload";
 
+export type DpLocator = DpText | DpVisibleText | DpHtml;
+export type DpItemContent = OgWebsite | Advertisement;
+
 /**
  * DpText 型であるか否か
  * @param dpItem
@@ -56,7 +59,7 @@ export const isAdvertisement = (dpItem: DpItem): dpItem is Advertisement =>
  */
 export const findFirstItemWithProof = (
   dpPayload: JwtDpPayload,
-): DpVisibleText | DpText | DpHtml | undefined => {
+): DpLocator | undefined => {
   const types = [
     DpVisibleText.properties.type.const,
     DpText.properties.type.const,
@@ -65,5 +68,13 @@ export const findFirstItemWithProof = (
 
   return dpPayload[dpNamespace]?.item.find(({ type }: { type: string }) =>
     types.includes(type as (typeof types)[number]),
-  ) as DpVisibleText | DpText | DpHtml | undefined;
+  ) as DpLocator | undefined;
 };
+
+/**
+ * DpItem が DpVisibleText, DpHtml, DpText 型のいずれかであるか否か
+ * @param dpItem
+ * @return DpVisibleText, DpHtml, DpText 型のいずれかであれば true、それ以外ならば false
+ */
+export const isDpLocator = (dpItem: DpItem): dpItem is DpLocator =>
+  isDpVisibleText(dpItem) || isDpText(dpItem) || isDpHtml(dpItem);

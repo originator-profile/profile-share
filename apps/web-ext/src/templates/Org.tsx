@@ -1,15 +1,5 @@
 import { Icon } from "@iconify/react";
-import {
-  OpCredential,
-  OpHolder,
-  OpCertifier,
-  OpVerifier,
-} from "@originator-profile/model";
-import {
-  isOpCredential,
-  isOpCertifier,
-  isOpVerifier,
-} from "@originator-profile/core";
+import { OpCredential, OpHolder } from "@originator-profile/model";
 import {
   Image,
   Roles,
@@ -21,15 +11,16 @@ import {
   CredentialSummary,
   CredentialDetail,
   Modal,
+  OriginatorProfile,
+  Role,
 } from "@originator-profile/ui";
 import { useModal } from "@originator-profile/ui/src/utils";
-import { Op, Role } from "@originator-profile/ui/src/types";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
 import logomarkUrl from "@originator-profile/ui/src/assets/logomark.svg";
 import BackHeader from "../components/BackHeader";
 
 type Props = {
-  op: Op;
+  op: OriginatorProfile;
   holder: OpHolder;
   roles: Role[];
   paths: {
@@ -41,14 +32,8 @@ type Props = {
 };
 
 function Org({ op, holder, roles, paths }: Props) {
-  const certifiers = new Map<string, OpCertifier>(
-    op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
-  );
-  const verifiers = new Map<string, OpVerifier>(
-    op.item.filter(isOpVerifier).map((c) => [c.domainName, c]),
-  );
-  const logo = holder.logos?.find(({ isMain }) => isMain);
-  const credentials = op.item.filter(isOpCredential);
+  const logo = op.getMainLogo();
+  const credentials = op.listCredentialItems();
   const credentialModal = useModal<OpCredential>();
   return (
     <>
@@ -85,10 +70,7 @@ function Org({ op, holder, roles, paths }: Props) {
           </a>
         )}
         <Table className="mb-3">
-          <TableRow
-            header="組織情報の発行日"
-            data={new Date(op.issuedAt).toLocaleString()}
-          />
+          <TableRow header="組織情報の発行日" data={op.printIssuedAt()} />
         </Table>
         {roles.length > 0 && <Roles className="mb-3" roles={roles} />}
         <div className="inline-flex items-center gap-2 bg-blue-50 px-2 py-1 mb-3 rounded-sm">
@@ -104,7 +86,7 @@ function Org({ op, holder, roles, paths }: Props) {
                 className="w-full"
                 credential={credential}
                 holder={holder}
-                certifier={certifiers.get(credential.certifier)}
+                certifier={op.findCertifier(credential.certifier)}
                 onClick={credentialModal.onOpen}
               />
             </li>
@@ -116,8 +98,8 @@ function Org({ op, holder, roles, paths }: Props) {
               className="rounded-b-none"
               credential={credentialModal.value}
               holder={holder}
-              certifier={certifiers.get(credentialModal.value.certifier)}
-              verifier={verifiers.get(credentialModal.value.verifier)}
+              certifier={op.findCertifier(credentialModal.value.certifier)}
+              verifier={op.findVerifier(credentialModal.value.verifier)}
             />
           )}
         </Modal>
@@ -133,7 +115,7 @@ function Org({ op, holder, roles, paths }: Props) {
           <TechTable
             className="p-4"
             profile={op}
-            issuer={certifiers.get(op.issuer)?.name}
+            issuer={op.findCertifier(op.issuer)?.name}
           />
         </div>
       </div>
