@@ -149,7 +149,6 @@ function HolderForm({
             label="所有者 / 法人・組織名"
             required
             placeHolder="○△新聞社"
-            helpText="法人・組織の正式名称(省略無し)を記載してください"
             onBlur={saveDraft}
           />
           <AccountFormField

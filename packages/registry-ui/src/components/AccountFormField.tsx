@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { useFormContext } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import FormRow from "../components/FormRow";
-import { IFormInput } from "../utils/account-form";
+import { HELP_TEXT, IFormInput } from "../utils/account-form";
 
 type AccountFormFieldProps = {
   name: keyof IFormInput;
@@ -21,7 +21,6 @@ export default function AccountFormField({
   inputClassName,
   label,
   required,
-  helpText,
   placeHolder,
   onBlur,
   inputProps,
@@ -35,7 +34,7 @@ export default function AccountFormField({
       label={label}
       required={required}
       htmlFor={`${name}Input`}
-      helpText={helpText}
+      helpText={HELP_TEXT[name]}
     >
       <input
         id={`${name}Input`}
