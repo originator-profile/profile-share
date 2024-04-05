@@ -1,40 +1,32 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
-import {
-  Advertisement,
-  OgWebsite,
-  OpCertifier,
-  OpHolder,
-} from "@originator-profile/model";
-import { isAdvertisement, isDp, isOpCertifier } from "@originator-profile/core";
+import { OgWebsite, OpHolder } from "@originator-profile/model";
+import { DpItemContent } from "@originator-profile/core";
 import {
   Image,
   TechInfo,
   WebsiteMainTable,
   Modal,
   Description,
+  ProfileSet,
+  OriginatorProfile,
+  DocumentProfile,
+  useModal,
 } from "@originator-profile/ui";
-import { Profile, Op, Dp } from "@originator-profile/ui/src/types";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
 import HolderSummary from "../components/HolderSummary";
 import DpSelector from "../components/DpSelector";
 import DpFilter from "../components/DpFilter";
 import { BidResponse } from "../components/rtb";
-import {
-  useModal,
-  getContentType,
-  sortDps,
-} from "@originator-profile/ui/src/utils";
-import { routes } from "../utils/routes";
+import { buildPublUrl } from "../utils/routes";
 
 type Props = {
   article?: {
-    profiles: Profile[];
-    main: string[];
-    op: Op;
-    dp: Dp;
-    dpItemContent: OgWebsite | Advertisement;
+    profiles: ProfileSet;
+    op: OriginatorProfile;
+    dp: DocumentProfile;
+    dpItemContent: DpItemContent;
     holder: OpHolder;
     paths: {
       org: {
@@ -42,11 +34,10 @@ type Props = {
         search: string;
       };
     };
-    filteredDps: Dp[];
   };
   website?: {
-    op: Op;
-    dp: Dp;
+    op: OriginatorProfile;
+    dp: DocumentProfile;
     website: OgWebsite;
     holder: OpHolder;
     paths: {
@@ -56,13 +47,14 @@ type Props = {
       };
     };
   };
+  handleClickDp: (dp: DocumentProfile) => () => void;
 };
 
 function Site({ op, dp, website, holder, paths }: Required<Props>["website"]) {
-  const certifiers = new Map<string, OpCertifier>(
-    op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
-  );
-  const techTableModal = useModal<{ op: Op; dp: Dp }>();
+  const techTableModal = useModal<{
+    op: OriginatorProfile;
+    dp: DocumentProfile;
+  }>();
   const handleClick = () => techTableModal.onOpen({ op, dp });
   return (
     <div className="bg-gray-50 p-4">
@@ -75,7 +67,7 @@ function Site({ op, dp, website, holder, paths }: Required<Props>["website"]) {
                 op={techTableModal.value.op}
                 dp={techTableModal.value.dp}
                 holder={holder.name}
-                certifier={certifiers.get(op.issuer)?.name}
+                certifier={op.findCertifier(op.issuer)?.name}
               />
             )}
           </Modal>
@@ -125,18 +117,17 @@ function Site({ op, dp, website, holder, paths }: Required<Props>["website"]) {
 function Main({
   op,
   dp,
-  main,
   dpItemContent,
   holder,
   paths,
 }: Required<Props>["article"]) {
   const { tabId } = useParams<{ tabId: string }>();
-  const certifiers = new Map<string, OpCertifier>(
-    op.item.filter(isOpCertifier).map((c) => [c.domainName, c]),
-  );
 
-  const techTableModal = useModal<{ op: Op; dp: Dp }>();
-  const contentType = getContentType(dp, dpItemContent, main);
+  const techTableModal = useModal<{
+    op: OriginatorProfile;
+    dp: DocumentProfile;
+  }>();
+  const contentType = dp.getContentType();
   const handleClick = () => techTableModal.onOpen({ op, dp });
   return (
     <div className="bg-gray-100 min-h-screen p-4">
@@ -148,7 +139,7 @@ function Main({
               op={techTableModal.value.op}
               dp={techTableModal.value.dp}
               holder={holder.name}
-              certifier={certifiers.get(op.issuer)?.name}
+              certifier={op.findCertifier(op.issuer)?.name}
             />
           )}
         </Modal>
@@ -218,55 +209,17 @@ function Publ(props: Props) {
   const { tabId } = useParams<{ tabId: string }>();
   const navigate = useNavigate();
 
-  const handleClickDp = (dp: Dp) => async () => {
-    await chrome.tabs.sendMessage(Number(tabId), {
-      type: "overlay-profiles",
-      profiles: props.article?.profiles ?? [],
-      activeDp: dp,
-    });
-  };
-
-  const filterFunction =
-    (contentType: "advertisement" | "main" | "all" | "other") => (dp: Dp) => {
-      switch (contentType) {
-        case "all":
-          return true;
-        case "main":
-          return props.article?.main.includes(dp.subject);
-        case "other":
-          return (
-            !props.article?.main.includes(dp.subject) &&
-            !dp.item.some(isAdvertisement)
-          );
-        case "advertisement":
-          return dp.item.some(isAdvertisement);
-      }
-    };
-
-  const filteredDps = sortDps(
-    props.article?.profiles.filter(isDp).filter(filterFunction(contentType)) ??
-      [],
-    props.article?.main ?? [],
-  );
+  const filteredDps = props.article?.profiles?.listDpsByType(contentType) ?? [];
 
   function onFilterUpdate(
     contentType: "advertisement" | "main" | "all" | "other",
   ) {
     setContentType(contentType);
-    const filteredDps = sortDps(
-      props.article?.profiles
-        .filter(isDp)
-        .filter(filterFunction(contentType)) ?? [],
-      props.article?.main ?? [],
-    );
-    const dp = filteredDps[0];
+    const NewlyFilteredDps =
+      props.article?.profiles.listDpsByType(contentType) ?? [];
+    const dp = NewlyFilteredDps[0];
     if (dp) {
-      navigate(
-        [
-          routes.base.build({ tabId: String(tabId) }),
-          routes.publ.build(dp),
-        ].join("/"),
-      );
+      navigate(buildPublUrl(tabId, dp));
     }
   }
 
@@ -287,7 +240,7 @@ function Publ(props: Props) {
             <nav className="flex-shrink-0 w-16 overflow-y-auto bg-white sticky top-0 z-10 border-t border-gray-200">
               <DpSelector
                 filteredDps={filteredDps}
-                handleClickDp={handleClickDp}
+                handleClickDp={props.handleClickDp}
               />
             </nav>
           </div>

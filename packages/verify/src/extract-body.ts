@@ -1,8 +1,7 @@
-import { DpVisibleText, DpText, DpHtml } from "@originator-profile/model";
+import { DpLocator } from "@originator-profile/core";
 import { ProfileBodyExtractFailed } from "./errors";
 import { Locator } from "playwright";
 
-type DpItem = DpVisibleText | DpText | DpHtml;
 type Locale = HTMLElement | Locator;
 
 /**
@@ -31,8 +30,8 @@ function extractor(
  */
 export async function extractBody<T extends Locale>(
   pageUrl: string,
-  locator: (location: Extract<DpItem["location"], string>) => Promise<T[]>,
-  item: Omit<DpItem, "proof">,
+  locator: (location: Extract<DpLocator["location"], string>) => Promise<T[]>,
+  item: Omit<DpLocator, "proof">,
   urlRequired = true,
 ) {
   if (urlRequired && !item.url) {

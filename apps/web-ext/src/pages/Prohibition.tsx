@@ -1,26 +1,20 @@
 import useProfileSet from "../utils/use-profile-set";
-import { isDp } from "@originator-profile/core";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Template from "../templates/Prohibition";
-import { sortDps } from "@originator-profile/ui/src/utils";
 import Unsupported from "../components/Unsupported";
 
 function Prohibition() {
-  const { tabId, main = [], error, profiles, website } = useProfileSet();
-
+  const { tabId, error, profileSet } = useProfileSet();
   if (error) {
     return <Unsupported error={error} />;
   }
 
-  if (!profiles || !website) {
+  if (profileSet.isLoading) {
     return <Loading />;
   }
 
-  const [dp] = sortDps(
-    [...(profiles ?? []), ...(website ?? [])].filter(isDp),
-    main,
-  );
+  const dp = profileSet.dps[0];
   if (!dp) {
     return <NotFound variant="dp" />;
   }

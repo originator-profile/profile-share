@@ -1,11 +1,11 @@
 import { twMerge } from "tailwind-merge";
-import { Profile } from "../types/profile";
+import { OriginatorProfile, DocumentProfile } from "../utils";
 import TechTable from "./TechTable";
 
 type Props = {
   className?: string;
-  op: Profile;
-  dp: Profile;
+  op: OriginatorProfile;
+  dp: DocumentProfile;
   holder?: string;
   certifier?: string;
 };

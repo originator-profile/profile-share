@@ -1,15 +1,13 @@
 import clsx from "clsx";
 import { useParams, Link } from "react-router-dom";
-import { isAdvertisement, isOgWebsite } from "@originator-profile/core";
-import { Image } from "@originator-profile/ui";
-import { Dp } from "@originator-profile/ui/src/types";
+import { DpItemContent } from "@originator-profile/core";
+import { DocumentProfile, Image } from "@originator-profile/ui";
 import placeholderDpThumbnail from "@originator-profile/ui/src/assets/placeholder-dp-thumbnail.png";
-import { routes } from "../utils/routes";
-import { Advertisement, OgWebsite } from "@originator-profile/model";
+import { buildPublUrl } from "../utils/routes";
 
 type Props = {
-  filteredDps: Dp[];
-  handleClickDp: (dp: Dp) => () => void;
+  filteredDps: DocumentProfile[];
+  handleClickDp: (dp: DocumentProfile) => () => void;
 };
 
 function DpSelector({ filteredDps, handleClickDp }: Props) {
@@ -23,22 +21,14 @@ function DpSelector({ filteredDps, handleClickDp }: Props) {
   return (
     <ul>
       {filteredDps.map((dp) => {
-        const active = dp.issuer === issuer && dp.subject === subject;
-        const content = dp.item.find(
-          (i) => isAdvertisement(i) || isOgWebsite(i),
-        ) as OgWebsite | Advertisement | undefined;
+        const active = dp.is({ issuer, subject });
+        const content = (dp.findOgWebsiteItem() ??
+          dp.findAdvertisementItem()) as DpItemContent | undefined;
         return (
-          <li
-            key={`${encodeURIComponent(dp.issuer)}/${encodeURIComponent(
-              dp.subject,
-            )}`}
-          >
+          <li key={dp.getReactKey()}>
             <Link
               className="flex justify-center items-center h-16 relative"
-              to={[
-                routes.base.build({ tabId: String(tabId) }),
-                routes.publ.build(dp),
-              ].join("/")}
+              to={buildPublUrl(tabId, dp)}
               onClick={handleClickDp(dp)}
             >
               <div className="inline-block">

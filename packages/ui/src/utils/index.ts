@@ -1,9 +1,9 @@
 export * from "./credential";
-export { default as findProfileErrors } from "./find-profile-errors";
 export * from "./role";
-export { default as sortDps } from "./sort-dps";
-export { default as toProfile } from "./to-profile";
+export { default as toProfilePayload } from "./to-profile-payload";
 export { default as useModal } from "./use-modal";
 export { default as useSanitizedHtml } from "./use-sanitized-html";
 export { default as useCertificationSystem } from "./use-certification-system";
 export { default as getContentType } from "./get-content-type";
+export * from "./profile";
+export * from "./profile-set";
