@@ -1,5 +1,4 @@
 import { FastifySchema, FastifyRequest } from "fastify";
-import { BadRequestError } from "http-errors-enhanced";
 import Params from "./params";
 
 const schema: FastifySchema = {
@@ -23,10 +22,7 @@ async function deleteOne({
   Params: Params;
 }>) {
   const { id, credentialId } = params;
-  const result = await server.services.credential.delete(credentialId, id);
-
-  if (result instanceof Error) throw new BadRequestError("Invalid request");
-  return result;
+  return await server.services.credential.delete(credentialId, id);
 }
 
 export { deleteOne, schema };

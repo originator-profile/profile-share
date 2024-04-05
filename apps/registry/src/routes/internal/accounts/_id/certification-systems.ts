@@ -24,8 +24,6 @@ export async function handler(
 ): Promise<Array<CertificationSystem>> {
   const data = await req.server.services.account.read(req.params);
 
-  if (data instanceof Error) throw data;
-
   return await req.server.services.certificationSystemRepository.all({
     selfDeclaration: {
       names: [

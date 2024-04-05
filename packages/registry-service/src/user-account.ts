@@ -1,7 +1,15 @@
-import { Prisma, userAccounts } from "@prisma/client";
-import { NotFoundError } from "http-errors-enhanced";
-import { UserAccountRepository } from "@originator-profile/registry-db";
+import { Prisma } from "@prisma/client";
+import {
+  ForbiddenError,
+  NotFoundError,
+  isHttpError,
+} from "http-errors-enhanced";
+import {
+  UserAccountRepository,
+  UserWithOpAccountId,
+} from "@originator-profile/registry-db";
 import crypto from "node:crypto";
+import { User } from "@originator-profile/model";
 
 type Options = {
   userAccountRepository: UserAccountRepository;
@@ -10,16 +18,29 @@ type Options = {
 export const UserAccountService = ({ userAccountRepository }: Options) => ({
   /**
    * ユーザーアカウントの取得
-   * @param input.id ユーザーアカウントID
+   * @param requestUser ログインしているユーザー
+   * @param targetUser 対象のユーザー
+   * @throws {NotFoundError} ユーザーが見つからない (グローマー拒否)
+   * @throws {ForbiddenError} 対象のユーザーがまだ登録されていない
    * @return ユーザーアカウント
    */
   async read(
-    input: Pick<userAccounts, "id">,
-  ): Promise<
-    Pick<userAccounts, "id" | "name" | "picture" | "accountId"> | Error
-  > {
-    const data = await userAccountRepository.read(input);
-    if (data instanceof Error) return data;
+    requestUser: Pick<User, "id">,
+    targetUser: Pick<User, "id">,
+  ): Promise<UserWithOpAccountId> {
+    if (requestUser.id !== targetUser.id) {
+      await this.reviewerMembershipOrThrow({
+        id: requestUser.id,
+        reviewerId: targetUser.id,
+      });
+    }
+
+    const data = await userAccountRepository.read(targetUser);
+
+    if (!data) {
+      throw new ForbiddenError("User activation is required.");
+    }
+
     const { id, name, picture, accountId } = data;
     return { id, name, picture, accountId };
   },
@@ -36,11 +57,11 @@ export const UserAccountService = ({ userAccountRepository }: Options) => ({
       Prisma.userAccountsUpdateInput & Prisma.userAccountsCreateInput,
       "account"
     >,
-  ): Promise<userAccounts | Error> {
+  ): Promise<UserWithOpAccountId> {
     const found = await userAccountRepository
       .read(input)
       .catch((e: NotFoundError) => e);
-    if (found instanceof NotFoundError) {
+    if (isHttpError(found) && found.status === 404) {
       return await userAccountRepository.create({
         ...input,
         account: {
@@ -69,7 +90,32 @@ export const UserAccountService = ({ userAccountRepository }: Options) => ({
     id: string;
     /** 審査担当者ID */
     reviewerId: string;
-  }) {
-    return await userAccountRepository.reviewerMembershipOrThrow(input);
+  }): Promise<void> {
+    await userAccountRepository.reviewerMembershipOrThrow(input);
+  },
+  /**
+   * ログインしているユーザーが登録されているかどうか
+   * @param requestUser ログインしているユーザー
+   * @throws {ForbiddenError} まだ登録されていない
+   */
+  async signedUpOrThrow(requestUser: Pick<User, "id">): Promise<void> {
+    await this.read(requestUser, requestUser);
+  },
+  /**
+   * ユーザーの所属組織かどうか
+   * @param requestUser ログインしているユーザー
+   * @param targetGroup 対象の組織
+   * @throws {NotFoundError} ユーザーが見つからない (グローマー拒否)
+   * @throws {ForbiddenError} まだ登録されていない
+   */
+  async isMemberOfOrThrow(
+    requestUser: Pick<User, "id">,
+    targetGroup: { id: string },
+  ): Promise<void> {
+    const user = await this.read(requestUser, requestUser);
+
+    if (user.accountId !== targetGroup.id) {
+      throw new NotFoundError("Group not found.");
+    }
   },
 });

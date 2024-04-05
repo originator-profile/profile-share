@@ -8,6 +8,7 @@ import fs from "node:fs/promises";
 import { globby } from "globby";
 import { accountId, expirationDate, operation, privateKey } from "../../flags";
 import { Jwk } from "@originator-profile/model";
+import { signBody } from "@originator-profile/sign";
 
 type Website = Omit<WebsiteType, "accountId" | "proofJws">;
 
@@ -114,10 +115,7 @@ imageプロパティの画像リソースは拡張機能Webページから参照
     };
 
     const privateKey = flags.identity as Jwk;
-
-    // body に署名して proofJws パラメータを生成
-    const proofJws = await services.website.signBody(privateKey, body);
-    if (proofJws instanceof Error) throw proofJws;
+    const proofJws = await signBody(body, privateKey);
 
     // website サービスを呼び出す
     const operation = flags.operation as
@@ -132,7 +130,6 @@ imageプロパティの画像リソースは拡張機能Webページから参照
       proofJws,
     });
 
-    if (data instanceof Error) this.error(data);
     this.log(JSON.stringify(data, null, 2));
     if (!["create", "update"].includes(operation)) return;
 
@@ -151,11 +148,9 @@ imageプロパティの画像リソースは拡張機能Webページから参照
         expiredAt,
       },
     );
-    if (jwt instanceof Error) this.error(jwt);
 
     // SDP をレジストリに登録
-    const sdp = await services.publisher.registerDp(flags.id, jwt);
-    if (sdp instanceof Error) this.error(sdp);
+    await services.publisher.registerDp(flags.id, jwt);
   }
 
   async run(): Promise<void> {

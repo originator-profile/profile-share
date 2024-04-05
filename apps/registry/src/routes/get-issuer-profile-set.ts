@@ -8,7 +8,7 @@ const schema: FastifySchema = {
 };
 
 async function getIssuerProfileSet(req: FastifyRequest, res: FastifyReply) {
-  const data: JsonLdDocument | Error = await getProfileSet(
+  const data: JsonLdDocument = await getProfileSet(
     Object.assign(req, {
       params: {
         id: req.server.config.ISSUER_UUID,

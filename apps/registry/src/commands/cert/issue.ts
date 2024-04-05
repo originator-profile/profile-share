@@ -31,15 +31,12 @@ export class CertIssue extends Command {
     const { flags } = await this.parse(CertIssue);
     const services = Services({ config });
     const isCertifier = await services.certificate.isCertifier(flags.certifier);
-    if (isCertifier instanceof Error) this.error(isCertifier);
     if (!isCertifier) this.error("Invalid certifier.");
-
     const jwk = flags.identity;
     const issuedAt = flags["issued-at"]
       ? new Date(flags["issued-at"])
       : new Date();
     const expiredAt = flags["expired-at"] ?? addYears(new Date(), 1);
-
     const validAt = flags["valid-at"] ? new Date(flags["valid-at"]) : issuedAt;
 
     const jwt = await services.certificate.signOp(
@@ -48,13 +45,11 @@ export class CertIssue extends Command {
       jwk,
       { issuedAt, expiredAt, validAt },
     );
-    if (jwt instanceof Error) this.error(jwt);
 
     const opId = await services.certificate.issue(flags.certifier, jwt);
-    if (opId instanceof Error) this.error(opId);
 
-    const data = await services.account.publishProfile(flags.holder, opId);
-    if (data instanceof Error) this.error(data);
+    await services.account.publishProfile(flags.holder, opId);
+
     this.log("Published.");
   }
 }

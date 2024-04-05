@@ -3,7 +3,6 @@ import { FromSchema } from "json-schema-to-ts";
 import { BadRequestError } from "http-errors-enhanced";
 import Params from "./params";
 import { OpHolder } from "@originator-profile/model";
-import { beginTransaction } from "@originator-profile/registry-db";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { type, logos, ...properties } = OpHolder.properties;
@@ -43,14 +42,8 @@ async function update({
   }
 
   const input = { id, ...body };
-  const result = await beginTransaction(async () => {
-    const data = await server.services.account.updateAccount(input);
-    if (data instanceof Error) throw data;
-    return data;
-  });
 
-  if (result instanceof Error) throw new BadRequestError("Invalid request");
-  return result;
+  return await server.services.account.updateAccount(input);
 }
 
 export { update, schema };

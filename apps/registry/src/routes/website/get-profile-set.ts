@@ -1,6 +1,5 @@
 import { FastifySchema, FastifyRequest, FastifyReply } from "fastify";
 import { FromSchema } from "json-schema-to-ts";
-import { HttpError, BadRequestError } from "http-errors-enhanced";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 import context from "@originator-profile/model/context.json" assert { type: "json" };
 
@@ -44,16 +43,11 @@ async function getProfileSet(
 ) {
   const contextDefinition: ContextDefinition | undefined =
     server.config.NODE_ENV === "development" ? context["@context"] : undefined;
-  const data: JsonLdDocument | Error =
-    await server.services.website.getProfileSet(
-      query.url,
-      contextDefinition,
-      query.main,
-    );
-  if (data instanceof HttpError) return data;
-  if (data instanceof Error) {
-    return new BadRequestError("invalid query.url", data);
-  }
+  const data: JsonLdDocument = await server.services.website.getProfileSet(
+    query.url,
+    contextDefinition,
+    query.main,
+  );
 
   reply.type("application/ld+json");
   return data;

@@ -1,6 +1,5 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 import Params from "./params";
-import { BadRequestError, NotFoundError } from "http-errors-enhanced";
 
 const schema: FastifySchema = {
   params: Params,
@@ -16,22 +15,13 @@ const schema: FastifySchema = {
 };
 
 async function get({
+  user,
   server,
   params,
 }: FastifyRequest<{
   Params: Params;
 }>) {
-  const { id } = params;
-
-  const data = await server.services.userAccount.read({ id });
-
-  if (data instanceof NotFoundError) {
-    throw data;
-  } else if (data instanceof Error) {
-    throw new BadRequestError("Invalid request");
-  }
-
-  return data;
+  return await server.services.userAccount.read({ id: user.sub }, params);
 }
 
 export { get, schema };

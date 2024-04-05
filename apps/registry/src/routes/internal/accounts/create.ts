@@ -1,6 +1,5 @@
 import { FastifySchema, FastifyRequest, FastifyReply } from "fastify";
 import { FromSchema } from "json-schema-to-ts";
-import { BadRequestError } from "http-errors-enhanced";
 import { OpHolder } from "@originator-profile/model";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -48,7 +47,6 @@ async function create(
     ...body,
   };
   const data = await server.services.account.create(input);
-  if (data instanceof Error) throw new BadRequestError("Invalid request");
   reply.code(201);
   return data;
 }

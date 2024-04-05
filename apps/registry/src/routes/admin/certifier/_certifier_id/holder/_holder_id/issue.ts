@@ -1,6 +1,5 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 import { FromSchema } from "json-schema-to-ts";
-import { BadRequestError } from "http-errors-enhanced";
 import Params from "./params";
 
 const Body = {
@@ -38,16 +37,9 @@ async function issue({
     params.certifier_id,
     body.jwt,
   );
-  if (opId instanceof Error) {
-    throw new BadRequestError("Invalid issue request");
-  }
-  const data = await server.services.account.publishProfile(
-    params.holder_id,
-    opId,
-  );
-  if (data instanceof Error) {
-    throw new BadRequestError("Invalid publish request");
-  }
+
+  await server.services.account.publishProfile(params.holder_id, opId);
+
   return "ok";
 }
 

@@ -1,6 +1,5 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 import { FromSchema } from "json-schema-to-ts";
-import { BadRequestError } from "http-errors-enhanced";
 
 const Querystring = {
   type: "object",
@@ -34,13 +33,7 @@ async function read({
 }: FastifyRequest<{
   Querystring: Querystring;
 }>) {
-  const data = await server.services.request.readList(query);
-
-  if (data instanceof Error) {
-    throw new BadRequestError("Invalid request");
-  }
-
-  return data;
+  return await server.services.request.readList(query);
 }
 
 export { read, schema };

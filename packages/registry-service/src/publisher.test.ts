@@ -47,7 +47,6 @@ describe("PublisherService", () => {
     });
     const { privateKey } = await generateKey();
     const jwt = await publisher.signDp(accountId, webpageId, privateKey);
-    // @ts-expect-error assert
     const valid: JwtDpPayload = decodeJwt(jwt);
     expect(valid).toMatchObject({
       iss: domainName,

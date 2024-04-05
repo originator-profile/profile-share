@@ -14,7 +14,6 @@ export class AdminDelete extends Command {
     const { flags } = await this.parse(AdminDelete);
     const services = Services({ config: { ISSUER_UUID: "" } });
     const data = await services.admin.delete(flags.id);
-    if (data instanceof Error) this.error(data);
     this.log(`UUID: ${data.adminId}`);
   }
 }

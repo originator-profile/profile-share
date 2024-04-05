@@ -63,9 +63,8 @@ async function account({
   ) as (Prisma.accountsCreateInput & Prisma.accountsUpdateInput) & {
     id: string;
   };
-  const data = await server.services.account[operation](input);
-  if (data instanceof Error) throw new BadRequestError("Invalid request");
-  return data;
+
+  return await server.services.account[operation](input);
 }
 
 export default Object.assign(account, { schema });

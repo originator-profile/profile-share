@@ -69,16 +69,11 @@ async function website({
     ...input,
     account: { connect: { id: params.id } },
   });
-  if (res instanceof Error) throw new BadRequestError("invalid request");
 
   if (!body?.jwt) return res;
   if (!["create", "update"].includes(operation)) return res;
 
-  const sdp = await server.services.publisher.registerDp(params.id, body.jwt);
-  if (sdp instanceof Error) {
-    const details = sdp.message;
-    throw new BadRequestError(`Invalid issue request: ${details}`);
-  }
+  await server.services.publisher.registerDp(params.id, body.jwt);
 
   return res;
 }

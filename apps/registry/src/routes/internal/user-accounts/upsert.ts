@@ -1,5 +1,5 @@
 import { FastifySchema, FastifyRequest } from "fastify";
-import { BadRequestError, createError } from "http-errors-enhanced";
+import { createError } from "http-errors-enhanced";
 import { User } from "@originator-profile/model";
 
 const schema: FastifySchema = {
@@ -40,19 +40,14 @@ async function upsert(req: FastifyRequest) {
     picture: string;
   };
 
-  const user: User = {
+  const user = {
     id: userinfo.sub,
     name: userinfo.name,
     email: userinfo.email,
     picture: userinfo.picture,
-  };
+  } satisfies User;
 
-  const data = await req.server.services.userAccount.upsert(user);
-  if (data instanceof Error) {
-    req.server.log.info(data.message);
-    throw new BadRequestError("Invalid request");
-  }
-  return data;
+  return await req.server.services.userAccount.upsert(user);
 }
 
 export { upsert, schema };

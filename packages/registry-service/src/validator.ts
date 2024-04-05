@@ -19,7 +19,7 @@ export function ValidatorService() {
    */
   function createValidator<Value>(
     schema: Schema,
-  ): (input: unknown) => Value | Error {
+  ): (input: unknown) => Value | BadRequestError {
     const validate = ajv.compile(schema);
 
     /**
@@ -27,7 +27,7 @@ export function ValidatorService() {
      * @param input 対象のオブジェクト
      * @return 妥当値
      */
-    function validator(input: unknown): Value | Error {
+    function validator(input: unknown): Value | BadRequestError {
       const output = structuredClone(input);
       if (validate(output)) {
         return output as Value;

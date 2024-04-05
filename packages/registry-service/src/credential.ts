@@ -36,9 +36,8 @@ export const CredentialService = ({
     imageUrl?: string,
   ): Promise<credentials> {
     const isCertifier = await certificate.isCertifier(certifierId);
-    if (isCertifier instanceof Error || !isCertifier) {
-      throw new BadRequestError("invalid certifier");
-    }
+    if (!isCertifier) throw new BadRequestError("Not a certifier.");
+
     return await credentialRepository.create(
       accountId,
       certifierId,
@@ -72,9 +71,7 @@ export const CredentialService = ({
   ): Promise<credentials> {
     if (data.certifierId) {
       const isCertifier = await certificate.isCertifier(data.certifierId);
-      if (isCertifier instanceof Error || !isCertifier) {
-        throw new BadRequestError("invalid certifier");
-      }
+      if (!isCertifier) throw new BadRequestError("Not a certifier.");
     }
     return await credentialRepository.update(credentialId, accountId, data);
   },
