@@ -1,5 +1,4 @@
 import { FastifySchema, FastifyRequest } from "fastify";
-import { BadRequestError } from "http-errors-enhanced";
 import Params from "../../params";
 import { convertPrismaRequestToOpRequest } from "@originator-profile/registry-db";
 
@@ -21,12 +20,8 @@ async function deleteLatest(
     Params: Params;
   }>,
 ) {
-  const { id } = req.params;
-
-  const result = await req.server.services.request.cancel(id);
-
-  if (result instanceof Error) return new BadRequestError("Invalid request");
-  return convertPrismaRequestToOpRequest(result);
+  const data = await req.server.services.request.cancel(req.params.id);
+  return convertPrismaRequestToOpRequest(data);
 }
 
 export { deleteLatest, schema };

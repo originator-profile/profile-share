@@ -57,14 +57,7 @@ async function update({
     url,
   };
 
-  const result = await server.services.credential.update(
-    credentialId,
-    id,
-    data,
-  );
-
-  if (result instanceof Error) throw new BadRequestError("Invalid request");
-  return result;
+  return await server.services.credential.update(credentialId, id, data);
 }
 
 export { update, schema };

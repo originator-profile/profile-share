@@ -1,16 +1,15 @@
 import { useState, Fragment } from "react";
 import { useMount, useEvent } from "react-use";
 import { Dialog, Transition } from "@headlessui/react";
-import { Profile, Dp } from "@originator-profile/ui/src/types";
-import { isDp } from "@originator-profile/core";
 import { IFramePostMessageEvent } from "../types/message";
 import DpMap from "../components/DpMap";
 import DpArea from "../components/DpArea";
+import { ProfileSet, DocumentProfile } from "@originator-profile/ui";
 
 function App() {
   const [isOpen, setIsOpen] = useState(true);
-  const [profiles, setProfiles] = useState<Profile[]>([]);
-  const [activeDp, setActiveDp] = useState<Dp | null>(null);
+  const [profiles, setProfiles] = useState<ProfileSet>(new ProfileSet([]));
+  const [activeDp, setActiveDp] = useState<DocumentProfile | null>(null);
 
   function closeModal() {
     setIsOpen(false);
@@ -18,10 +17,22 @@ function App() {
 
   function handleMessage(event: IFramePostMessageEvent) {
     if (event.origin !== window.parent.location.origin) return;
+    let profileSet, dp, websiteProfiles;
     switch (event.data.type) {
       case "enter-overlay":
-        setProfiles(event.data.profiles);
-        setActiveDp(event.data.activeDp);
+        profileSet = ProfileSet.deserialize(
+          event.data.profiles,
+          websiteProfiles,
+        );
+
+        dp =
+          event.data.activeDp &&
+          DocumentProfile.deserialize(
+            event.data.activeDp.profile,
+            event.data.activeDp.metadata,
+          );
+        setProfiles(profileSet);
+        setActiveDp(dp);
         break;
       case "leave-overlay":
         closeModal();
@@ -38,9 +49,12 @@ function App() {
     window.parent.postMessage({ type: "leave-overlay" });
   }
 
-  async function handleClickDp(dp: Dp) {
+  async function handleClickDp(dp: DocumentProfile) {
     setActiveDp(dp);
-    window.parent.postMessage({ type: "select-overlay-dp", dp });
+    window.parent.postMessage({
+      type: "select-overlay-dp",
+      dp: dp.serialize(),
+    });
   }
 
   return (
@@ -57,7 +71,7 @@ function App() {
           leaveTo="opacity-0"
           afterLeave={handleLeave}
         >
-          <DpArea dps={profiles.filter(isDp)} />
+          <DpArea dps={profiles.dps} />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">

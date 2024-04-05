@@ -5,7 +5,7 @@ import { User } from "@originator-profile/model";
 
 type UserAccountId = User["id"];
 
-type UserWithOpAccountId = User & {
+export type UserWithOpAccountId = User & {
   accountId: string;
 };
 

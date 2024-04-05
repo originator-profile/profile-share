@@ -1,13 +1,13 @@
 import useSWR from "swr";
-import { Dp } from "@originator-profile/ui/src/types";
 import { messages } from "./messages";
 import { findAdvertiser } from "./scripting";
 import clsx from "clsx";
+import { DocumentProfile } from "@originator-profile/ui";
 
 type BidResponseProps = {
   className?: string;
   tabId: number;
-  dp: Dp;
+  dp: DocumentProfile;
 };
 
 /** 広告取引記載情報検証結果 */

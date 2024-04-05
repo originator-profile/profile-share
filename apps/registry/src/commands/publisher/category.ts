@@ -40,7 +40,6 @@ https://docs.originator-profile.org/ts/modules/_originator_profile_registry_db.d
     ) as Prisma.Enumerable<Prisma.categoriesCreateManyInput>;
     const operation = flags.operation as "createMany";
     const data = await services.category[operation](input);
-    if (data instanceof Error) this.error(data);
     this.log(JSON.stringify(data, null, 2));
   }
 

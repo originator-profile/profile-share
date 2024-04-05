@@ -1,9 +1,8 @@
 import { useParams, useSearchParams } from "react-router-dom";
-import { isOp, isOpHolder } from "@originator-profile/core";
-import { toRoles } from "@originator-profile/ui/src/utils";
 import useProfileSet from "../utils/use-profile-set";
 import NotFound from "../components/NotFound";
 import Template from "../templates/Org";
+import Loading from "../components/Loading";
 
 type Props = { back: string };
 
@@ -13,27 +12,23 @@ function Org(props: Props) {
     orgIssuer: string;
     orgSubject: string;
   }>();
-  const {
-    advertisers = [],
-    publishers = [],
-    profiles,
-    website,
-  } = useProfileSet();
+  const { profileSet } = useProfileSet();
 
-  const op = [...(profiles ?? []), ...(website ?? [])]
-    .filter(isOp)
-    .find(
-      (profile) =>
-        profile.issuer === orgIssuer && profile.subject === orgSubject,
-    );
+  if (profileSet.isLoading) {
+    return <Loading />;
+  }
+
+  const op =
+    orgSubject && orgIssuer ? profileSet.getOp(orgSubject, orgIssuer) : null;
+
   if (!op) {
     return <NotFound variant="op" />;
   }
-  const holder = op.item.find(isOpHolder);
+  const holder = op.findHolderItem();
   if (!holder) {
     return <NotFound variant="holder" />;
   }
-  const roles = toRoles(op.subject, advertisers, publishers);
+  const roles = op.roles;
   const paths = {
     back: {
       pathname: props.back,

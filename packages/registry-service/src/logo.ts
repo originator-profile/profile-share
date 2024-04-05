@@ -6,6 +6,7 @@ import Config from "./config";
 import sizeof from "image-size";
 import crypto from "node:crypto";
 import path from "node:path";
+
 type Options = {
   config: Config;
 };
@@ -16,14 +17,20 @@ export const LogoService = ({ config }: Options) => ({
   /**
    * ロゴの取得
    * @param input.id 会員 ID
+   * @throws {NotFoundError} ロゴが見つからない
    * @return ロゴの情報
    */
-  async readMainLogo({ id }: { id: AccountId }): Promise<logos | Error> {
+  async readMainLogo({ id }: { id: AccountId }): Promise<logos> {
     const prisma = getClient();
-    const data = await prisma.logos
-      .findFirst({ where: { accountId: id, isMain: true } })
-      .catch((e: Error) => e);
-    return data ?? new NotFoundError();
+    const data = await prisma.logos.findFirst({
+      where: { accountId: id, isMain: true },
+    });
+
+    if (!data) {
+      throw new NotFoundError("Logo not found.");
+    }
+
+    return data;
   },
 
   /**
@@ -41,7 +48,7 @@ export const LogoService = ({ config }: Options) => ({
     id: string;
     fileName: string;
     image: Buffer;
-  }) {
+  }): Promise<logos> {
     this.raiseIfTooSmallImage(image);
 
     const s3 = new S3Client({
@@ -70,7 +77,6 @@ export const LogoService = ({ config }: Options) => ({
     const url = this.makeUrl(id, newFileName);
 
     const newLogo = await this.upsertMainLogo(id, { url });
-    if (newLogo instanceof Error) throw new BadRequestError("Invalid request");
 
     return newLogo;
   },
@@ -81,25 +87,21 @@ export const LogoService = ({ config }: Options) => ({
    * @param data ロゴのメタデータ
    * @return 更新後のメタデータ
    */
-  async upsertMainLogo(id: AccountId, data: { url: string }) {
+  async upsertMainLogo(id: AccountId, data: { url: string }): Promise<logos> {
     const prisma = getClient();
     const oldLogo = await prisma.logos.findFirst({
       where: { accountId: id, isMain: true },
     });
 
     if (oldLogo) {
-      return await prisma.logos
-        .update({
-          where: { accountId: id, url: oldLogo.url },
-          data: { url: data.url },
-        })
-        .catch((e: Error) => e);
+      return await prisma.logos.update({
+        where: { accountId: id, url: oldLogo.url },
+        data: { url: data.url },
+      });
     } else {
-      return await prisma.logos
-        .create({
-          data: { accountId: id, url: data.url, isMain: true },
-        })
-        .catch((e: Error) => e);
+      return await prisma.logos.create({
+        data: { accountId: id, url: data.url, isMain: true },
+      });
     }
   },
   /**
@@ -108,14 +110,15 @@ export const LogoService = ({ config }: Options) => ({
    * @param fileName ファイル名
    * @return URL
    */
-  makeUrl(id: AccountId, fileName: string) {
+  makeUrl(id: AccountId, fileName: string): string {
     return `${config.S3_ACCOUNT_LOGO_PUBLIC_ENDPOINT}/${id}/${fileName}`;
   },
   /**
    * 画像のサイズを検証して、小さすぎる場合は例外を投げる
+   * @throws {BadRequestError} 画像サイズの検出失敗/画像サイズが規定より小さい
    * @param image 画像（対応画像形式は image-size ライブラリと同じ）
    */
-  raiseIfTooSmallImage(image: Buffer) {
+  raiseIfTooSmallImage(image: Buffer): void {
     const { width, height } = sizeof(image);
     if (!width || !height) {
       throw new BadRequestError("Cannot detect image size");

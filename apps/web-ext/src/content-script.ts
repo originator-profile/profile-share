@@ -1,5 +1,8 @@
 import { fetchWebsiteProfilePair } from "@originator-profile/verify";
-import { Profile, Dp } from "@originator-profile/ui/src/types";
+import {
+  ProfilePayloadWithMetadata,
+  DpPayloadWithMetadata,
+} from "@originator-profile/ui";
 import {
   ContentScriptMessageRequest,
   ContentScriptMessageResponse,
@@ -7,8 +10,9 @@ import {
 } from "./types/message";
 import { initialize, activate, deactivate } from "./utils/iframe";
 
-let profiles: Profile[] = [];
-let activeDp: Dp | null = null;
+let profiles: ProfilePayloadWithMetadata[] = [];
+let websiteProfiles: ProfilePayloadWithMetadata[] = [];
+let activeDp: DpPayloadWithMetadata | null = null;
 const overlay = initialize();
 
 async function handleMessageResponse(
@@ -30,6 +34,7 @@ async function handleMessageResponse(
     case "overlay-profiles":
       activate(overlay);
       profiles = message.profiles;
+      websiteProfiles = message.websiteProfiles ?? [];
       activeDp = message.activeDp;
       overlay.contentWindow?.postMessage({
         type: "enter-overlay",
@@ -66,6 +71,7 @@ function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
       event.source?.postMessage({
         type: "enter-overlay",
         profiles,
+        websiteProfiles,
         activeDp,
       });
       break;

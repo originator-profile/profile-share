@@ -23,8 +23,7 @@ export class AccountRegisterKey extends Command {
     });
     const keyFile = await fs.readFile(flags.key);
     const jwk = JSON.parse(keyFile.toString());
-    const jwks = await services.account.registerKey(flags.id, jwk);
-    if (jwks instanceof Error) this.error(jwks);
+    await services.account.registerKey(flags.id, jwk);
     this.log("Done.");
   }
 }

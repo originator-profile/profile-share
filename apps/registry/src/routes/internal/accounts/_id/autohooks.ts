@@ -1,5 +1,4 @@
 import { FastifyInstance, FastifyRequest, RouteOptions } from "fastify";
-import { ForbiddenError, NotFoundError } from "http-errors-enhanced";
 import Params from "./params";
 import { ErrorResponse } from "../../../../error";
 
@@ -10,13 +9,7 @@ async function requiredGroupMembership({
 }: FastifyRequest<{
   Params: Params;
 }>) {
-  const userAccount = await server.services.userAccount.read({ id: user.sub });
-  if (userAccount instanceof Error) {
-    throw new ForbiddenError("User activation is required.");
-  }
-  if (userAccount.accountId !== params.id) {
-    throw new NotFoundError("Group not found.");
-  }
+  await server.services.userAccount.isMemberOfOrThrow({ id: user.sub }, params);
 }
 
 async function addErrorResponseSchema(opt: RouteOptions) {
@@ -27,8 +20,8 @@ async function addErrorResponseSchema(opt: RouteOptions) {
   }
 
   Object.assign(opt.schema.response, {
-    403: ErrorResponse,
-    404: ErrorResponse,
+    403: ErrorResponse, // from requiredGroupMembership
+    404: ErrorResponse, // from requiredGroupMembership
   });
 }
 

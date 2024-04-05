@@ -1,8 +1,8 @@
 import { forwardRef, useId } from "react";
 import { useWindowSize } from "react-use";
-import { Dp } from "@originator-profile/ui/src/types";
 import useElements from "../utils/use-elements";
 import useRect from "../utils/use-rect";
+import { DocumentProfile } from "@originator-profile/ui";
 
 function Rect({
   element,
@@ -28,7 +28,7 @@ function Rect({
 
 type Props = {
   className?: string;
-  dps: Dp[];
+  dps: DocumentProfile[];
 };
 
 export default forwardRef<SVGSVGElement, Props>(function DpArea(

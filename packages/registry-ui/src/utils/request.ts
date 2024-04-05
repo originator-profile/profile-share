@@ -25,8 +25,6 @@ async function fetchLatestRequest(
   } catch (e) {
     const res = (e as Error).cause as Response | undefined;
     if (res?.status === 404) return;
-    // TODO: https://github.com/originator-profile/profile/issues/1028
-    if (res?.status === 400) return;
   }
 }
 

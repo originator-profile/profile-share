@@ -96,7 +96,6 @@ describe("CertificateService", () => {
       { id: publicKey.kid, accountId, jwk: publicKey as Prisma.JsonValue },
     ]);
     const jwt = await certificate.signOp(id, accountId, privateKey);
-    // @ts-expect-error assert
     const valid: JwtOpPayload = decodeJwt(jwt);
     expect(valid).toMatchObject({
       iss: "example.org",

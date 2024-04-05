@@ -27,10 +27,9 @@ export class PublisherProfileSet extends Command {
         ? process.stdout
         : fs.createWriteStream(flags.output);
     const services = Services({ config });
-    const data: JsonLdDocument | Error = await services.website.getProfileSet(
+    const data: JsonLdDocument = await services.website.getProfileSet(
       flags.url,
     );
-    if (data instanceof Error) this.error(data);
     const json = JSON.stringify(data, null, "  ");
     await stream.promises.finished(
       stream.Readable.from([json, `\n`]).pipe(output),

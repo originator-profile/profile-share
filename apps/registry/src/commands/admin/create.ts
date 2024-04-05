@@ -1,7 +1,7 @@
 import { Command, Flags } from "@oclif/core";
 import { Services } from "@originator-profile/registry-service";
 import crypto from "node:crypto";
-import { NotFoundError } from "http-errors-enhanced";
+import { HttpError, isHttpError } from "http-errors-enhanced";
 import { parseAccountId } from "@originator-profile/core";
 
 export class AdminCreate extends Command {
@@ -22,11 +22,13 @@ UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定し
   async run(): Promise<void> {
     const { flags } = await this.parse(AdminCreate);
     const services = Services({ config: { ISSUER_UUID: "" } });
-    const account = await services.account.read({
-      id: parseAccountId(flags.id),
-    });
+    const account = await services.account
+      .read({
+        id: parseAccountId(flags.id),
+      })
+      .catch((e: HttpError) => e);
     let id: string;
-    if (account instanceof NotFoundError) {
+    if (isHttpError(account) && account.status === 404) {
       const data = await services.account.create({
         domainName: flags.id,
         name: "REDACTED FOR PRIVACY",
@@ -36,17 +38,14 @@ UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定し
         addressLocality: "REDACTED FOR PRIVACY",
         streetAddress: "REDACTED FOR PRIVACY",
       });
-      if (data instanceof Error) this.error(data);
       id = data.id;
-    } else if (!(account instanceof Error)) {
-      id = account.id;
     } else {
-      this.error(account);
+      id = account.id;
     }
+
     const password =
       flags.password ?? crypto.randomBytes(32).toString("base64url");
     const data = await services.admin.create(id, password);
-    if (data instanceof Error) this.error(data);
     this.log(`Secret: ${data.adminId}:${password}`);
   }
 }

@@ -22,27 +22,24 @@ export const AdminService = () => ({
    * 管理者の作成
    * @param id 会員 ID
    * @param password パスフレーズ
-   */ async create(id: AccountId, password: string): Promise<admins | Error> {
+   */
+  async create(id: AccountId, password: string): Promise<admins> {
     const prisma = getClient();
     const hashedPassword = await bcrypt.hash(password, 12);
-    return await prisma.admins
-      .create({
-        data: {
-          adminId: id,
-          password: hashedPassword,
-        },
-      })
-      .catch((e: Error) => e);
+    return await prisma.admins.create({
+      data: {
+        adminId: id,
+        password: hashedPassword,
+      },
+    });
   },
   /**
    * 管理者権限の削除
    * @param id 管理者 ID
    */
-  async delete(id: AccountId): Promise<admins | Error> {
+  async delete(id: AccountId): Promise<admins> {
     const prisma = getClient();
-    return await prisma.admins
-      .delete({ where: { adminId: id } })
-      .catch((e: Error) => e);
+    return await prisma.admins.delete({ where: { adminId: id } });
   },
 });
 

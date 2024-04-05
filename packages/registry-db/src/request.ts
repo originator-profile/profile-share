@@ -5,6 +5,7 @@ import { getClient } from "./lib/prisma-client";
 import { Request as OpModelRequest } from "@originator-profile/model";
 
 type AccountId = requests["groupId"];
+
 export type Request = Prisma.requestsGetPayload<{
   include: { reviewComments: true };
 }>;

@@ -1,6 +1,5 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 import { FromSchema } from "json-schema-to-ts";
-import { BadRequestError } from "http-errors-enhanced";
 import Params from "../params";
 import { OpCredential } from "@originator-profile/model";
 import { parseExpirationDate } from "@originator-profile/core";
@@ -42,7 +41,7 @@ async function create({
 
   const { certifier, verifier, issuedAt, expiredAt, name, url } = body;
 
-  const result = await server.services.credential.create(
+  return await server.services.credential.create(
     id,
     certifier,
     verifier,
@@ -51,9 +50,6 @@ async function create({
     parseExpirationDate(expiredAt),
     url,
   );
-
-  if (result instanceof Error) throw new BadRequestError("Invalid request");
-  return result;
 }
 
 export { create, schema };

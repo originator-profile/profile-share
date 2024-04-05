@@ -34,6 +34,7 @@ export const PublisherService = ({
    * @param id ウェブページ ID
    * @param privateKey プライベート鍵
    * @param options 署名オプション
+   * @throws {NotFoundError} 組織情報が見つからない/ウェブページが見つからない
    * @return JWT でエンコードされた DP
    */
   async signDp(
@@ -44,7 +45,7 @@ export const PublisherService = ({
       issuedAt: new Date(),
       expiredAt: addYears(new Date(), 10),
     },
-  ): Promise<string | Error> {
+  ): Promise<string> {
     const prisma = getClient();
     const websitesInclude = {
       categories: {
@@ -59,17 +60,14 @@ export const PublisherService = ({
         },
       },
     };
-    const publisher = await prisma.accounts
-      .findUnique({
-        where: { id: accountId },
-        include: { websites: { where: { id }, include: websitesInclude } },
-      })
-      .catch((e: Error) => e);
-    if (publisher instanceof Error) return publisher;
-    if (!publisher) return new NotFoundError();
+    const publisher = await prisma.accounts.findUnique({
+      where: { id: accountId },
+      include: { websites: { where: { id }, include: websitesInclude } },
+    });
+    if (!publisher) throw new NotFoundError("OP Account not found.");
 
     const [website] = publisher.websites;
-    if (!website) return new NotFoundError();
+    if (!website) throw new NotFoundError("Webpage not found.");
 
     const input: Dp = {
       type: "dp",
@@ -109,7 +107,6 @@ export const PublisherService = ({
     };
 
     const valid = validator.dpValidate(input);
-    if (valid instanceof Error) return valid;
     const jwt: string = await signDp(valid, privateKey);
     return jwt;
   },
@@ -117,38 +114,41 @@ export const PublisherService = ({
    * Signed Document Profile の更新・登録
    * @param accountId 会員 ID
    * @param jwt Signed Document Profile
+   * @throws {NotFoundError} 組織情報が見つからない
+   * @throws {BadRequestError} バリデーション失敗/Document Profileではない/ドメイン名が一致しない/proofが含まれない/urlが含まれない
    * @return Signed Document Profile
    */
-  async registerDp(accountId: AccountId, jwt: string): Promise<string | Error> {
+  async registerDp(accountId: AccountId, jwt: string): Promise<string> {
     const prisma = getClient();
     const account = await prisma.accounts.findUnique({
       where: { id: accountId },
     });
-    if (!account) return new BadRequestError();
-    if (account instanceof Error) return account;
+    if (!account) {
+      throw new NotFoundError("OP Account not found.");
+    }
     const decoded = validator.decodeToken(jwt);
-    if (decoded instanceof Error) return decoded;
     const payload = decoded.payload;
     if (!isJwtDpPayload(payload)) {
-      return new BadRequestError("It is not Document Profile.");
+      throw new BadRequestError("It is not Document Profile.");
     }
     if (payload.iss !== account.domainName) {
-      return new BadRequestError(
+      throw new BadRequestError(
         "It is not Signed Document Profile for the account.",
       );
     }
     const locator = findFirstItemWithProof(payload);
     if (!locator) {
-      return new BadRequestError(
+      throw new BadRequestError(
         "Document Profile doesn't contain item with proof",
       );
     }
 
     if (typeof locator.url !== "string") {
-      return new BadRequestError(
+      throw new BadRequestError(
         "Document Profile doesn't contain item with url",
       );
     }
+
     const websiteId = payload.sub;
     const websiteInput = {
       id: websiteId,

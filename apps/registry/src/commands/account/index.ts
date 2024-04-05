@@ -82,7 +82,6 @@ Prisma.accountsUpdateInput https://docs.originator-profile.org/ts/types/_origina
       input.id = parseAccountId(input.id);
     }
     const data = await services.account[operation](input);
-    if (data instanceof Error) this.error(data);
     this.log(JSON.stringify(data, null, 2));
   }
 }

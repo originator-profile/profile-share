@@ -7,6 +7,7 @@ import {
 } from "react";
 import { useSession } from "../../../utils/session";
 import { useAccount, useAccountLogo } from "../../../utils/account";
+import getBase64URL from "../../../utils/get-base-64-url";
 import clsx from "clsx";
 
 export default function Logo() {
@@ -63,57 +64,53 @@ export default function Logo() {
       return;
     }
     const file = imageInputRef.current.files && imageInputRef.current.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        if (!e.target || !e.target.result) {
-          return;
-        }
-        const token = await session.getAccessToken();
-
-        const endpoint = `/internal/accounts/${account.id}/logos/`;
-        const response = await fetch(endpoint, {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            fileName: file.name,
-            // DataURLの先頭の"data:\w+/\w+;base64,"を削除するとbase64文字列を取得できるので、そこからbase64urlに変換する
-            image: e.target.result
-              .toString()
-              .replace(/data:\w+\/\w+;base64,/, "")
-              .replace(/[+/=]/g, (c) => {
-                return (
-                  {
-                    "+": "-",
-                    "/": "_",
-                    "=": "",
-                  }[c] ?? ""
-                );
-              }),
-          }),
-        });
-        setSubmitButtonDisabled(true);
-        if (!response.ok) {
-          const text = await response.text();
-          let error =
-            "使用できない画像です。画像の形式やサイズを確認して再アップロードしてください。";
-          if (/too small image/.test(text)) {
-            error =
-              "サイズ要件を満たさない画像です。縦横396pxまたはそれ以上の画像をアップロードしてください。";
-          }
-          setErrorMessage(error);
-          setShowErrors(true);
-          throw new Error();
-        }
-        response.json().then((res) => {
-          mutateLogo({ url: res.url });
-        });
-      };
-      reader.readAsDataURL(file);
+    if (!file) {
+      return;
     }
+
+    const fileToBase64URL = async function (file: File) {
+      return await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (!e.target || !e.target.result) {
+            reject(new Error());
+            return;
+          }
+          resolve(getBase64URL(e.target.result.toString()));
+        };
+        reader.readAsDataURL(file);
+      });
+    };
+    const data = await fileToBase64URL(file);
+    const token = await session.getAccessToken();
+    const endpoint = `/internal/accounts/${account.id}/logos/`;
+    const response = await fetch(endpoint, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fileName: file.name,
+        image: data,
+      }),
+    });
+    setSubmitButtonDisabled(true);
+    if (!response.ok) {
+      const text = await response.text();
+      let error =
+        "使用できない画像です。画像の形式やサイズを確認して再アップロードしてください。";
+      if (/too small image/.test(text)) {
+        error =
+          "サイズ要件を満たさない画像です。縦横396pxまたはそれ以上の画像をアップロードしてください。";
+      }
+      setErrorMessage(error);
+      setShowErrors(true);
+      throw new Error();
+    }
+    response.json().then((res) => {
+      mutateLogo({ url: res.url });
+    });
   }
 
   return (

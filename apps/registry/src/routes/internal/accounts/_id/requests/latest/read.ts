@@ -1,6 +1,5 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 import Params from "../../params";
-import { BadRequestError, NotFoundError } from "http-errors-enhanced";
 import { convertPrismaRequestToOpRequest } from "@originator-profile/registry-db";
 
 const schema: FastifySchema = {
@@ -22,16 +21,7 @@ async function read({
 }: FastifyRequest<{
   Params: Params;
 }>) {
-  const { id } = params;
-
-  const data = await server.services.request.read(id);
-
-  if (data instanceof NotFoundError) {
-    throw data;
-  } else if (data instanceof Error) {
-    throw new BadRequestError("Invalid request");
-  }
-
+  const data = await server.services.request.read(params.id);
   return convertPrismaRequestToOpRequest(data);
 }
 

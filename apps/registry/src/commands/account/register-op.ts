@@ -24,8 +24,7 @@ JWT の含まれないファイルは無効です。また JWT の Subject ク�
     const services = Services({ config: { ISSUER_UUID: "" } });
     const opFile = await fs.readFile(flags.op);
     const jwt = opFile.toString().trim();
-    const op = await services.account.registerOp(flags.id, jwt);
-    if (op instanceof Error) this.error(op);
+    await services.account.registerOp(flags.id, jwt);
     this.log("Done.");
   }
 }

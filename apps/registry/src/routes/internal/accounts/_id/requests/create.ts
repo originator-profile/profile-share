@@ -1,6 +1,5 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 import { FromSchema } from "json-schema-to-ts";
-import { BadRequestError } from "http-errors-enhanced";
 import Params from "../params";
 import { Request } from "@originator-profile/model";
 import { convertPrismaRequestToOpRequest } from "@originator-profile/registry-db";
@@ -39,14 +38,13 @@ async function create(
   const authorId = req.user.sub;
   const { requestSummary } = req.body;
 
-  const result = await req.server.services.request.create(
+  const data = await req.server.services.request.create(
     id,
     authorId,
     requestSummary,
   );
 
-  if (result instanceof Error) return new BadRequestError("Invalid request");
-  return convertPrismaRequestToOpRequest(result);
+  return convertPrismaRequestToOpRequest(data);
 }
 
 export { create, schema };

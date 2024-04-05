@@ -14,7 +14,7 @@ import exampleAd3 from "./seeds/example-ad-3";
 import { OpHolder, Jwk } from "@originator-profile/model";
 import { addYears } from "date-fns/addYears";
 import { isJwtDpPayload, parseAccountId } from "@originator-profile/core";
-import { signDp } from "@originator-profile/sign";
+import { signBody, signDp } from "@originator-profile/sign";
 import { prisma } from "@originator-profile/registry-db";
 
 export async function waitForDb(prisma: PrismaClient): Promise<void> {
@@ -37,17 +37,18 @@ async function issueOp(
   publicKey: Jwk,
   privateKey: Jwk,
 ) {
-  const data = await services.account.registerKey(issuerUuid, publicKey);
-  if (data instanceof Error) throw data;
+  await services.account.registerKey(issuerUuid, publicKey);
+
   const jwt = await services.certificate.signOp(
     issuerUuid,
     issuerUuid,
     privateKey,
   );
-  if (jwt instanceof Error) throw jwt;
+
   const opId = await services.certificate.issue(issuerUuid, jwt);
-  if (opId instanceof Error) throw opId;
+
   await services.account.publishProfile(issuerUuid, opId);
+
   console.log(`Profile: ${jwt}
 Public Key: ${JSON.stringify(publicKey)}
 
@@ -59,8 +60,8 @@ async function issueDp(
   issuerUuid: string,
   privateKey: Jwk,
 ) {
-  const count = await services.category.createMany(exampleCategories);
-  if (count instanceof Error) throw count;
+  await services.category.createMany(exampleCategories);
+
   const exampleCategory = Array.isArray(exampleCategories)
     ? exampleCategories[0]
     : exampleCategories;
@@ -69,9 +70,9 @@ async function issueDp(
     exampleWebsite1,
     exampleWebsite2,
   ]) {
-    const proofJws = await services.website.signBody(privateKey, body);
-    if (proofJws instanceof Error) throw proofJws;
-    const website = await services.website.create({
+    const proofJws = await signBody(body, privateKey);
+
+    await services.website.create({
       ...input,
       accountId: issuerUuid,
       categories: [
@@ -82,13 +83,12 @@ async function issueDp(
       ],
       proofJws,
     });
-    if (website instanceof Error) throw website;
+
     const dpJwt = await services.publisher.signDp(
       issuerUuid,
       input.id,
       privateKey,
     );
-    if (dpJwt instanceof Error) throw dpJwt;
     await services.publisher.registerDp(issuerUuid, dpJwt);
     if (input.id === exampleWebsite.id) {
       // Profile Set Debugger の SDP
@@ -110,8 +110,8 @@ async function issueAd(
   )) {
     const sdp = await signDp(dp, privateKey);
     const decoded = services.validator.decodeToken(sdp);
-    if (decoded instanceof Error || !isJwtDpPayload(decoded.payload)) {
-      throw decoded;
+    if (!isJwtDpPayload(decoded.payload)) {
+      throw new Error("It is not Document Profile.");
     }
     await services.adRepository.upsert({
       jwt: decoded.jwt,
@@ -130,8 +130,10 @@ export async function seed(): Promise<void> {
 
   await waitForDb(prisma);
 
-  const issuerExists = await services.account.read({ id: issuerUuid });
-  if (issuerExists instanceof Error) {
+  const issuerExists = await services.account
+    .read({ id: issuerUuid })
+    .catch((e) => e);
+  if (isHttpError(issuerExists) && issuerExists.status === 404) {
     await services.account.create({ ...exampleAccount, id: issuerUuid });
     const certifier = parseAccountId(exampleAccount.domainName);
     await services.credential.create(
@@ -149,7 +151,7 @@ export async function seed(): Promise<void> {
   console.log(`UUID: ${issuerUuid}`);
 
   const accountKeys = await services.account.getKeys(issuerUuid);
-  if ("keys" in accountKeys && accountKeys.keys.length === 0) {
+  if (accountKeys.keys.length === 0) {
     const jwk = await fs
       .readFile("./account-key.example.pub.json")
       .then((buffer) => JSON.parse(buffer.toString()));

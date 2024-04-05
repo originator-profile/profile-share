@@ -1,18 +1,15 @@
 import { useEffect } from "react";
 import clsx from "clsx";
-import { Advertisement, OgWebsite, OpHolder } from "@originator-profile/model";
+import { OpHolder } from "@originator-profile/model";
+import { DpItemContent } from "@originator-profile/core";
 import {
-  isAdvertisement,
-  isOgWebsite,
-  isOpHolder,
-} from "@originator-profile/core";
-import { Image } from "@originator-profile/ui";
-import { Op, Dp } from "@originator-profile/ui/src/types";
+  Image,
+  DocumentProfile,
+  OriginatorProfile,
+} from "@originator-profile/ui";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
 import useElements from "../utils/use-elements";
 import useRect from "../utils/use-rect";
-
-type WebsiteOrAdvertisement = OgWebsite | Advertisement;
 
 function Marker({
   result,
@@ -24,7 +21,7 @@ function Marker({
 }: {
   result: { body?: string; bodyError?: string };
   rect: ResizeObserverEntry["contentRect"];
-  dpTitle: WebsiteOrAdvertisement;
+  dpTitle: DpItemContent;
   opHolder: OpHolder;
   active: boolean;
   onClick: () => void;
@@ -110,20 +107,20 @@ function Rect({
 }
 
 type Props = {
-  dp: Dp;
-  op: Op;
+  dp: DocumentProfile;
+  op: OriginatorProfile;
   active: boolean;
-  onClickDp: (dp: Dp) => void;
+  onClickDp: (dp: DocumentProfile) => void;
 };
 
 function DpMarker({ dp, op, active, onClickDp }: Props) {
   const { elements } = useElements(dp);
-  const ogWebsite = dp.item.find(isOgWebsite);
-  const advertisement = dp.item.find(isAdvertisement);
+  const ogWebsite = dp.findOgWebsiteItem();
+  const advertisement = dp.findAdvertisementItem();
   const dpTitle = ogWebsite || advertisement;
   if (!dpTitle) return null;
   const handleClick = () => onClickDp(dp);
-  const opHolder = op.item.find(isOpHolder);
+  const opHolder = op.findHolderItem();
   if (!opHolder) return null;
   return (
     <>
@@ -136,7 +133,7 @@ function DpMarker({ dp, op, active, onClickDp }: Props) {
         >
           {({ rect }) => (
             <Marker
-              result={{ body: dp.body, bodyError: dp.bodyError }}
+              result={{ body: dp.getBody(), bodyError: dp.getBodyError() }}
               rect={rect}
               dpTitle={dpTitle}
               opHolder={opHolder}

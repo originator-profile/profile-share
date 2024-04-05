@@ -8,13 +8,9 @@ export const CategoryService = () => ({
    * @param input カテゴリー
    * @return カテゴリー
    */
-  async create(
-    input: Prisma.categoriesCreateInput,
-  ): Promise<categories | Error> {
+  async create(input: Prisma.categoriesCreateInput): Promise<categories> {
     const prisma = getClient();
-    return await prisma.categories
-      .create({ data: input })
-      .catch((e: Error) => e);
+    return await prisma.categories.create({ data: input });
   },
   /**
    * 複数のカテゴリーの作成
@@ -23,19 +19,18 @@ export const CategoryService = () => ({
    */
   async createMany(
     input: Prisma.Enumerable<Prisma.categoriesCreateManyInput>,
-  ): Promise<Prisma.BatchPayload | Error> {
+  ): Promise<Prisma.BatchPayload> {
     const prisma = getClient();
-    return await prisma.categories
-      .createMany({
-        data: input,
-        skipDuplicates: true,
-      })
-      .catch((e: Error) => e);
+    return await prisma.categories.createMany({
+      data: input,
+      skipDuplicates: true,
+    });
   },
   /**
    * カテゴリーの表示
    * @param cat カテゴリーコードまたはID
    * @param cattax 使用タクソノミー https://github.com/InteractiveAdvertisingBureau/AdCOM/blob/master/AdCOM%20v1.0%20FINAL.md#list_categorytaxonomies
+   * @throws {NotFoundError} カテゴリーが見つからない
    * @return カテゴリー
    */
   async read({
@@ -44,12 +39,17 @@ export const CategoryService = () => ({
   }: {
     cat: string;
     cattax: number;
-  }): Promise<categories | Error> {
+  }): Promise<categories> {
     const prisma = getClient();
-    const data = await prisma.categories
-      .findUnique({ where: { cat_cattax: { cat, cattax } } })
-      .catch((e: Error) => e);
-    return data ?? new NotFoundError();
+    const data = await prisma.categories.findUnique({
+      where: { cat_cattax: { cat, cattax } },
+    });
+
+    if (!data) {
+      throw new NotFoundError("Category not found.");
+    }
+
+    return data;
   },
   /**
    * カテゴリーの更新
@@ -58,7 +58,7 @@ export const CategoryService = () => ({
    */
   async update(
     input: Prisma.categoriesUpdateInput & { cat: string; cattax: number },
-  ): Promise<categories | Error> {
+  ): Promise<categories> {
     const prisma = getClient();
     return await prisma.categories.update({
       where: { cat_cattax: { cat: input.cat, cattax: input.cattax } },
@@ -77,7 +77,7 @@ export const CategoryService = () => ({
   }: {
     cat: string;
     cattax: number;
-  }): Promise<categories | Error> {
+  }): Promise<categories> {
     const prisma = getClient();
     return await prisma.categories.delete({
       where: { cat_cattax: { cat, cattax } },

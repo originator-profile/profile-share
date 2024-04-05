@@ -90,8 +90,10 @@ export const WebsiteService = ({ websiteRepository }: Options) => ({
    * @param privateKey プライベート鍵
    * @param body 対象のテキスト
    * @return Detached Compact JWS
-   */ async signBody(privateKey: Jwk, body: string): Promise<string | Error> {
-    return await signBody(body, privateKey).catch((e: Error) => e);
+   * @deprecated See {@link signBody}
+   */
+  async signBody(privateKey: Jwk, body: string): Promise<string> {
+    return await signBody(body, privateKey);
   },
 
   /** {@link WebsiteRepository.getProfileSet} */

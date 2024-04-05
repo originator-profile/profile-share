@@ -1,29 +1,25 @@
 import React from "react";
-import { findProfileErrors } from "@originator-profile/ui/src/utils";
+import { ProfileSet } from "@originator-profile/ui";
 import { routes } from "./routes";
-import { Profile } from "@originator-profile/ui/src/types";
 import { Navigate } from "react-router-dom";
 import Loading from "../components/Loading";
 import Unsupported from "../components/Unsupported";
 
 interface useVerifyFailureFeedbackProps {
-  profiles?: Profile[];
-  websiteProfiles?: Profile[];
+  profiles: ProfileSet;
   tabId: number;
   queryParams: URLSearchParams;
 }
 
 function useVerifyFailureFeedback({
   profiles,
-  websiteProfiles,
   tabId,
   queryParams,
 }: useVerifyFailureFeedbackProps): React.ReactNode {
-  if (!profiles || !websiteProfiles) return React.createElement(Loading);
-  const allProfiles = [...(profiles ?? []), ...(websiteProfiles ?? [])];
+  if (profiles.isLoading) return React.createElement(Loading);
 
   const hasUnsafeParam = queryParams.has("unsafe");
-  const errors = findProfileErrors(allProfiles);
+  const errors = profiles.listProfileErrors();
   const hasProfileTokenVerifyFailed = errors.some(
     (result) => result.code === "ERR_PROFILE_TOKEN_VERIFY_FAILED",
   );

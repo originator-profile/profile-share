@@ -1,5 +1,4 @@
 import { FastifySchema, FastifyRequest, FastifyReply } from "fastify";
-import { HttpError, BadRequestError } from "http-errors-enhanced";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 import context from "@originator-profile/model/context.json" assert { type: "json" };
 import Params from "./params";
@@ -29,15 +28,11 @@ async function getDocumentProfileSet(
 ) {
   const contextDefinition: ContextDefinition | undefined =
     server.config.NODE_ENV === "development" ? context["@context"] : undefined;
-  const data: JsonLdDocument | Error =
+  const data: JsonLdDocument =
     await server.services.website.getDocumentProfileSet(
       params.id,
       contextDefinition,
     );
-  if (data instanceof HttpError) return data;
-  if (data instanceof Error) {
-    return new BadRequestError("invalid params.id", data);
-  }
 
   reply.type("application/ld+json");
   return data;

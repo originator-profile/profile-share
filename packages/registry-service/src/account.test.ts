@@ -1,6 +1,7 @@
 import { test, expect, describe, vi } from "vitest";
 import crypto from "node:crypto";
 import Ajv from "ajv";
+import { BadRequestError } from "http-errors-enhanced";
 import { Jwks } from "@originator-profile/model";
 import { generateKey } from "@originator-profile/sign";
 import { AccountService } from "./account";
@@ -24,7 +25,6 @@ describe("AccountService", () => {
     const account: AccountService = AccountService({
       validator,
     });
-    // @ts-expect-error assert
     const data: Jwks = await account.getKeys(crypto.randomUUID());
     const valid = ajv.validate(Jwks, data);
     expect(valid).toBe(true);
@@ -32,11 +32,12 @@ describe("AccountService", () => {
 
   test("registerKey()はプライベート鍵を許可しない", async () => {
     const { privateKey } = await generateKey();
-    const data = await AccountService({ validator }).registerKey(
+    const promise = AccountService({ validator }).registerKey(
       accountId,
       privateKey,
     );
-    expect(data).toBeInstanceOf(Error);
-    expect(data.message).toBe("Private key not allowed.");
+    await expect(promise).rejects.toEqual(
+      new BadRequestError("Private key not allowed."),
+    );
   });
 });

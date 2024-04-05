@@ -1,4 +1,7 @@
-import { Profile, Dp } from "@originator-profile/ui/src/types";
+import {
+  ProfilePayloadWithMetadata,
+  DpPayloadWithMetadata,
+} from "@originator-profile/ui";
 import { ProfilePair } from "@originator-profile/verify";
 
 export type fetchProfileSetMessageRequest = {
@@ -46,8 +49,9 @@ export type extractBodyResponse = {
 
 export type OverlayProfilesMessageRequest = {
   type: "overlay-profiles";
-  profiles: Profile[];
-  activeDp: Dp | null;
+  profiles: ProfilePayloadWithMetadata[];
+  websiteProfiles?: ProfilePayloadWithMetadata[];
+  activeDp: DpPayloadWithMetadata | null;
 };
 export type OverlayProfilesMessageResponse = {
   type: "overlay-profiles";
@@ -60,7 +64,7 @@ export type CloseWindowMessageResponse = {
 };
 export type SelectOverlayDpMessageRequest = {
   type: "select-overlay-dp";
-  dp: Dp;
+  dp: DpPayloadWithMetadata;
 };
 export type ContentScriptMessageRequest =
   | fetchWebsiteProfilePairMessageRequest
@@ -83,8 +87,9 @@ export type EnterOverlayMessageRequest = {
 };
 export type EnterOverlayMessageResponse = {
   type: "enter-overlay";
-  profiles: Profile[];
-  activeDp: Dp | null;
+  profiles: ProfilePayloadWithMetadata[];
+  websiteProfiles?: ProfilePayloadWithMetadata[];
+  activeDp: DpPayloadWithMetadata | null;
 };
 export type LeaveOverlayMessage = {
   type: "leave-overlay";

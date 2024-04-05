@@ -22,7 +22,7 @@ const User = {
       type: "string",
     },
   },
-  required: ["id", "email", "name", "picture"],
+  required: ["id", "name", "picture"],
   additionalProperties: false,
 } as const;
 

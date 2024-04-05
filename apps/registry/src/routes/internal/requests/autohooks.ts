@@ -1,12 +1,8 @@
 import { FastifyInstance, FastifyRequest, RouteOptions } from "fastify";
-import { ForbiddenError } from "http-errors-enhanced";
 import { ErrorResponse } from "../../../error";
 
 async function requiredSignUp({ user, server }: FastifyRequest) {
-  const userAccount = await server.services.userAccount.read({ id: user.sub });
-  if (userAccount instanceof Error) {
-    throw new ForbiddenError("User activation is required.");
-  }
+  await server.services.userAccount.signedUpOrThrow({ id: user.sub });
 }
 
 async function addErrorResponseSchema(opt: RouteOptions) {
@@ -17,7 +13,7 @@ async function addErrorResponseSchema(opt: RouteOptions) {
   }
 
   Object.assign(opt.schema.response, {
-    403: ErrorResponse,
+    403: ErrorResponse, // from requiredSignUp
   });
 }
 
