@@ -107,7 +107,6 @@ export const PublisherService = ({
     };
 
     const valid = validator.dpValidate(input);
-    if (valid instanceof Error) throw valid;
     const jwt: string = await signDp(valid, privateKey);
     return jwt;
   },
@@ -128,9 +127,6 @@ export const PublisherService = ({
       throw new NotFoundError("OP Account not found.");
     }
     const decoded = validator.decodeToken(jwt);
-    if (decoded instanceof Error) {
-      throw new BadRequestError("Invalid issue request.");
-    }
     const payload = decoded.payload;
     if (!isJwtDpPayload(payload)) {
       throw new BadRequestError("It is not Document Profile.");

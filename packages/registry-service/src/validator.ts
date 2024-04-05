@@ -3,6 +3,7 @@ import addFormats from "ajv-formats";
 import { BadRequestError } from "http-errors-enhanced";
 import { Op, Dp, Jwk } from "@originator-profile/model";
 import {
+  ProfileClaimsValidationFailed,
   SignedProfileValidator,
   TokenDecoder,
 } from "@originator-profile/verify";
@@ -17,26 +18,25 @@ export function ValidatorService() {
    * @param schema スキーマ
    * @return バリデーター
    */
-  function createValidator<Value>(
-    schema: Schema,
-  ): (input: unknown) => Value | BadRequestError {
+  function createValidator<Value>(schema: Schema): (input: unknown) => Value {
     const validate = ajv.compile(schema);
 
     /**
      * バリデーター
      * @param input 対象のオブジェクト
+     * @throws {BadRequestError} バリデーション失敗
      * @return 妥当値
      */
-    function validator(input: unknown): Value | BadRequestError {
+    function validator(input: unknown): Value {
       const output = structuredClone(input);
-      if (validate(output)) {
-        return output as Value;
-      } else {
-        return Object.assign(
+      if (!validate(output)) {
+        throw Object.assign(
           new BadRequestError(ajv.errorsText(validate.errors)),
           { errors: validate.errors },
         );
       }
+
+      return output as Value;
     }
 
     return validator;
@@ -46,6 +46,7 @@ export function ValidatorService() {
     /**
      * OP の確認 (注: 署名の検証は別で行ってください)
      * @param input 対象のオブジェクト
+     * @throws {BadRequestError} バリデーション失敗
      * @return 妥当な OP
      */
     opValidate: createValidator<Op>(Op),
@@ -53,6 +54,7 @@ export function ValidatorService() {
     /**
      * JWK の確認 (注: 署名の検証は別で行ってください)
      * @param input 対象のオブジェクト
+     * @throws {BadRequestError} バリデーション失敗
      * @return 妥当な JWK
      */
     jwkValidate: createValidator<Jwk>(Jwk),
@@ -60,6 +62,7 @@ export function ValidatorService() {
     /**
      * DP の確認 (注: 署名の検証は別で行ってください)
      * @param input 対象のオブジェクト
+     * @throws {BadRequestError} バリデーション失敗
      * @return 妥当な DP
      */
     dpValidate: createValidator<Dp>(Dp),
@@ -67,9 +70,20 @@ export function ValidatorService() {
     /**
      * Profile の Token の復号
      * @param jwt JWT
+     * @throws {BadRequestError} バリデーション失敗
      * @return 復号結果
      */
-    decodeToken,
+    decodeToken(jwt: string) {
+      const decoded = decodeToken(jwt);
+
+      if (decoded instanceof ProfileClaimsValidationFailed) {
+        throw new BadRequestError(
+          `ProfileClaimsValidationFailed: ${decoded.message}`,
+        );
+      }
+
+      return decoded;
+    },
   };
 }
 

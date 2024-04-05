@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import flush from "just-flush";
 import { addYears, fromUnixTime } from "date-fns";
-import { BadRequestError, NotFoundError } from "http-errors-enhanced";
+import { NotFoundError } from "http-errors-enhanced";
 import {
   Op,
   OpHolder,
@@ -150,7 +150,6 @@ export const CertificateService = ({ account, validator }: Options) => ({
     const holderKeys = await account.getKeys(accountId);
     if (holderKeys.keys.length > 0) Object.assign(input, { jwks: holderKeys });
     const valid = validator.opValidate(input);
-    if (valid instanceof Error) throw valid;
     const jwt: string = await signOp(valid, privateKey);
     return jwt;
   },
@@ -164,9 +163,6 @@ export const CertificateService = ({ account, validator }: Options) => ({
   async issue(id: CertifierId, jwt: string): Promise<OpId> {
     const prisma = getClient();
     const decoded = validator.decodeToken(jwt);
-    if (decoded instanceof Error) {
-      throw new BadRequestError("Invalid issue request.");
-    }
     const issuedAt: Date = fromUnixTime(decoded.payload.iat);
     const expiredAt: Date = fromUnixTime(decoded.payload.exp);
     const data = await prisma.ops.create({

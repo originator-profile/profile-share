@@ -169,7 +169,6 @@ export const AccountService = ({ validator }: Options) => ({
     const prisma = getClient();
     const jwk = validator.jwkValidate(input);
 
-    if (jwk instanceof Error) throw jwk;
     if (jwk.d) throw new BadRequestError("Private key not allowed.");
 
     const data = await prisma.keys.create({
@@ -204,7 +203,6 @@ export const AccountService = ({ validator }: Options) => ({
     const account = await this.read({ id });
     const uuid = account.id;
     const decoded = validator.decodeToken(jwt);
-    if (decoded instanceof Error) throw decoded;
     if (!isJwtOpPayload(decoded.payload)) {
       throw new BadRequestError("It is not Originator Profile.");
     }

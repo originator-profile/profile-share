@@ -110,8 +110,8 @@ async function issueAd(
   )) {
     const sdp = await signDp(dp, privateKey);
     const decoded = services.validator.decodeToken(sdp);
-    if (decoded instanceof Error || !isJwtDpPayload(decoded.payload)) {
-      throw decoded;
+    if (!isJwtDpPayload(decoded.payload)) {
+      throw new Error("It is not Document Profile.");
     }
     await services.adRepository.upsert({
       jwt: decoded.jwt,

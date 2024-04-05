@@ -46,9 +46,6 @@ export async function postDp({
   await server.services.publisher.registerDp(accountId, jwt);
 
   const decoded: DecodeResult = server.services.validator.decodeToken(jwt);
-  if (decoded instanceof Error) {
-    return decoded;
-  }
 
   return await server.services.website.read({
     id: decoded.payload.sub,
