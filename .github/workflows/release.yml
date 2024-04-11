@@ -14,6 +14,7 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: write
+      packages: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -29,6 +30,11 @@ jobs:
         uses: "./.github/actions/build"
       - name: Build for WordPress plugin
         uses: "./.github/actions/wordpress_build"
+      - name: Publish Registry CLI
+        working-directory: apps/registry
+        run: pnpm publish --access restricted
+        env:
+          NODE_AUTH_TOKEN: ${{ GITHUB_TOKEN }}
       - if: github.event.inputs.version != 'prerelease'
         name: Prerelease
         run: |
