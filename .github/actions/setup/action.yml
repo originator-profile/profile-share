@@ -8,6 +8,8 @@ runs:
       with:
         node-version-file: .node-version
         cache: pnpm
+        registry-url: "https://npm.pkg.github.com"
+        scope: "@originator-profile"
     - name: Restore Playwright cache
       uses: actions/cache@v4
       with:
