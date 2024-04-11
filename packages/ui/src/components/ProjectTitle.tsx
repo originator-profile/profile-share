@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 import logoUrl from "../assets/logo.svg";
 
 type Props = {
@@ -8,7 +8,9 @@ type Props = {
 
 function ProjectTitle({ as: As = "section", className }: Props) {
   return (
-    <As className={clsx("flex items-center flex-col gap-4 mb-12", className)}>
+    <As
+      className={twMerge("flex items-center flex-col gap-4 mb-12", className)}
+    >
       <p className="text-gray-700 text-xs">
         良質な記事やメディアを容易に見分けられるようにする技術
       </p>

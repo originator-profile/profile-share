@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   header: React.ReactNode;
@@ -9,13 +9,13 @@ type Props = {
 function TableRow({ header, data, border = false }: Props) {
   return (
     <tr
-      className={clsx(
+      className={twMerge(
         "text-xs w-full",
         border ? "border-b last:border-0 h-7" : "h-6",
       )}
     >
       <th
-        className={clsx(
+        className={twMerge(
           "whitespace-nowrap text-left pr-5 py-1 text-gray-600 font-normal",
           border ? "w-20" : "w-24",
         )}
