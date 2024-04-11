@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 import useSanitizedHtml from "../utils/use-sanitized-html";
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 function Description({ className, description }: Props) {
   const html = useSanitizedHtml(description);
   return (
-    <section className={clsx("py-1", className)}>
+    <section className={twMerge("py-1", className)}>
       <h2 className="mb-1 text-gray-500 font-normal">説明</h2>
       <div
         className="prose prose-xs text-xs break-words"

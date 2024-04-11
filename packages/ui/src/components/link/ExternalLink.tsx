@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 import { ReactNode } from "react";
 
 export type ExternalLinkProps = {
@@ -11,7 +11,7 @@ export function ExternalLink(props: ExternalLinkProps) {
   return (
     <a
       {...props}
-      className={clsx("text-blue-600 hover:underline", props.className)}
+      className={twMerge("text-blue-600 hover:underline", props.className)}
       target="_blank"
       rel="noreferrer"
     >

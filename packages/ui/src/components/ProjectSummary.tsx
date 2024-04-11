@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 import logoUrl from "../assets/logo.svg";
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 function ProjectSummary({ as: As = "section", className }: Props) {
   return (
     <As
-      className={clsx(
+      className={twMerge(
         "flex flex-col items-center gap-6 bg-gray-100 rounded-md p-8",
         className,
       )}
