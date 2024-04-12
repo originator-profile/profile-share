@@ -13,6 +13,7 @@ function FormHelpText({ className, label, helpText }: Props) {
   return (
     <>
       <button
+        type="button"
         className={clsx("leading-none align-middle", className)}
         onClick={modal.open}
       >
