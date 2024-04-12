@@ -152,7 +152,7 @@ export const formValidationSchema: Yup.ObjectSchema<IFormInput> = Yup.object({
 export const HELP_TEXT = {
   domainName:
     "OP ID になります。法人組織の ID であり、コンテンツを配信するサイト・サービスや CMS のドメインとは独立です。",
-  name: "法人・組織の正式名称（省略無し）を記入してください。",
+  name: "法人・組織の正式名称 (省略無し) を記入してください。",
   postalCode:
     "法人・組織の所在地の郵便番号を記入してください。半角数字7桁またはハイフン付きの半角数字郵便番号を入力してください。",
   addressRegion: undefined,
