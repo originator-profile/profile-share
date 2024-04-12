@@ -2,9 +2,11 @@ import { SyntheticEvent } from "react";
 import clsx from "clsx";
 import { useFormContext } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
+import { HELP_TEXT_PAGE_FIELD_SETS } from "../utils/account-form";
+import FormHelpText from "./FormHelpText";
 
 type PageFieldSetProps = {
-  name: string;
+  name: keyof typeof HELP_TEXT_PAGE_FIELD_SETS;
   label: string;
   titleLabel: string;
   urlLabel: string;
@@ -26,6 +28,7 @@ export default function PageFieldSet({
     register,
     formState: { errors },
   } = useFormContext();
+  const helpText = HELP_TEXT_PAGE_FIELD_SETS[name];
 
   const urlName = `${name}Url`;
   const titleName = `${name}Title`;
@@ -36,6 +39,9 @@ export default function PageFieldSet({
     <fieldset className="flex flex-col md:flex-row gap-2 md:gap-4 md:items-center">
       <div className="text-sm leading-normal flex-shrink-0 w-40 self-start">
         {label}
+        {helpText && (
+          <FormHelpText className="mx-1" label={label} helpText={helpText} />
+        )}
       </div>
       <div className="bg-gray-100 p-4 flex flex-col w-full rounded-lg gap-4">
         <div className="flex flex-col gap-2">
