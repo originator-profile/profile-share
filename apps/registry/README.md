@@ -264,10 +264,11 @@ FLAG DESCRIPTIONS
 
 ```
 USAGE
-  $ profile-registry account:show-credential --id <value>
+  $ profile-registry account:show-credential --id <value> [--valid-at <value>]
 
 FLAGS
-  --id=<value>  (required) アカウントの ID またはドメイン名
+  --id=<value>        (required) アカウントの ID またはドメイン名
+  --valid-at=<value>  この日時に既に失効している資格情報を含めない。デフォルトはすべての資格情報を表示する。
 
 DESCRIPTION
   資格情報を表示します

@@ -17,8 +17,19 @@ export const CredentialService = ({
    * @param accountId 会員 ID
    * @return 資格情報
    */
+<<<<<<< HEAD
   async show(accountId: string): Promise<credentials> {
     return await credentialRepository.show(accountId);
+=======
+  async show(
+    accountId: string,
+    validAt: Date,
+  ): Promise<credentials> {
+    return await credentialRepository.show(
+      accountId,
+      validAt,
+    );
+>>>>>>> 281e28c7 (feat: 資格情報を表示するコマンドに--valid-atオプションを追加)
   },
   /**
    * 資格情報の作成
