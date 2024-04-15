@@ -3,6 +3,19 @@ import { getClient } from "./lib/prisma-client";
 
 export const CredentialRepository = () => ({
   /**
+   * 資格情報の表示
+   * @param accountId 会員 ID
+   */
+  async show(
+    accountId: string,
+  ): Promise<credentials> {
+    const prisma = getClient();
+    return await prisma.credentials.findMany({
+	where: { accountId: accountId },
+    });
+  },
+
+  /**
    * 資格情報の作成
    * @param accountId 会員 ID
    * @param certifierId 認証機関 ID
