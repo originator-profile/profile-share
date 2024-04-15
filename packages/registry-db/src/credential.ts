@@ -15,7 +15,7 @@ export const CredentialRepository = () => ({
   async show(
     accountId: string,
     validAt: Date,
-  ): Promise<credentials> {
+  ): Promise<Array<credentials>> {
     const prisma = getClient();
     return await prisma.credentials.findMany({
 	where: { accountId, expiredAt: { gt: validAt } },

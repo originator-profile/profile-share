@@ -1,7 +1,6 @@
 import { Command, Flags } from "@oclif/core";
-import { addYears } from "date-fns";
 import { Services } from "@originator-profile/registry-service";
-import { accountId, expirationDate } from "../../flags";
+import { accountId } from "../../flags";
 
 const config = { ISSUER_UUID: process.env.ISSUER_UUID ?? "" };
 

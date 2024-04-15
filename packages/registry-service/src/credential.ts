@@ -24,7 +24,7 @@ export const CredentialService = ({
   async show(
     accountId: string,
     validAt: Date,
-  ): Promise<credentials> {
+  ): Promise<Array<credentials>> {
     return await credentialRepository.show(
       accountId,
       validAt,
