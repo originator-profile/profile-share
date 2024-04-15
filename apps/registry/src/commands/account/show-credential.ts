@@ -18,9 +18,7 @@ export class ShowCredential extends Command {
     const { flags } = await this.parse(ShowCredential);
     const services = Services({ config });
 
-    const result = await services.credential.show(
-      flags.id,
-    );
+    const result = await services.credential.show(flags.id);
     if (result instanceof Error) this.error(result);
     this.log(JSON.stringify(result, null, 2));
   }

@@ -17,12 +17,8 @@ export const CredentialService = ({
    * @param accountId 会員 ID
    * @return 資格情報
    */
-  async show(
-    accountId: string,
-  ): Promise<credentials> {
-    return await credentialRepository.show(
-      accountId,
-    );
+  async show(accountId: string): Promise<credentials> {
+    return await credentialRepository.show(accountId);
   },
   /**
    * 資格情報の作成
