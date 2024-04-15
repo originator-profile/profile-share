@@ -21,12 +21,11 @@ export class ShowCredential extends Command {
     const { flags } = await this.parse(ShowCredential);
     const services = Services({ config });
 
-    const validAt = flags["valid-at"] ? new Date(flags["valid-at"]) : new Date(0);
+    const validAt = flags["valid-at"]
+      ? new Date(flags["valid-at"])
+      : new Date(0);
 
-    const result = await services.credential.show(
-      flags.id,
-      validAt,
-    );
+    const result = await services.credential.show(flags.id, validAt);
     if (result instanceof Error) this.error(result);
     this.log(JSON.stringify(result, null, 2));
   }

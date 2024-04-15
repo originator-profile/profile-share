@@ -6,13 +6,10 @@ export const CredentialRepository = () => ({
    * 資格情報の表示
    * @param accountId 会員 ID
    */
-  async show(
-    accountId: string,
-    validAt: Date,
-  ): Promise<Array<credentials>> {
+  async show(accountId: string, validAt: Date): Promise<Array<credentials>> {
     const prisma = getClient();
     return await prisma.credentials.findMany({
-	where: { accountId, expiredAt: { gt: validAt } },
+      where: { accountId, expiredAt: { gt: validAt } },
     });
   },
 
