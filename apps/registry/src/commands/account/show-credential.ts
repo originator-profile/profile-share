@@ -21,16 +21,12 @@ export class ShowCredential extends Command {
     const { flags } = await this.parse(ShowCredential);
     const services = Services({ config });
 
-<<<<<<< HEAD
-    const result = await services.credential.show(flags.id);
-=======
     const validAt = flags["valid-at"] ? new Date(flags["valid-at"]) : new Date(0);
 
     const result = await services.credential.show(
       flags.id,
       validAt,
     );
->>>>>>> 281e28c7 (feat: 資格情報を表示するコマンドに--valid-atオプションを追加)
     if (result instanceof Error) this.error(result);
     this.log(JSON.stringify(result, null, 2));
   }
