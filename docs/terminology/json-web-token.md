@@ -5,4 +5,4 @@
 > JSON Web Token (JWT) is a compact, URL-safe means of representing
 > claims to be transferred between two parties.
 
-[SOP](./signed-originator-profile.md) や [SDP](./signed-document-profile.md) は現在この JWT 形式でシリアライズした [Verifiable Credential](./verifiable-credential.md) をベースとしている。
+[SOP](./signed-originator-profile.md) や [SDP](./signed-document-profile.md)、[Signed SP](./signed-site-profile.md) は現在この JWT 形式でシリアライズした [Verifiable Credential](./verifiable-credential.md) をベースとしている。

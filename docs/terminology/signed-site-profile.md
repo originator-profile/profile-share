@@ -1,4 +1,3 @@
-# 署名付きサイトプロファイル / Signed Site Profile
+# 署名付きサイトプロファイル / Signed Site Profile (Signed SP)
 
-[SDP](./signed-document-profile.md) の一種。
-ウェブサイトを表明し検証するためのデータ表現。
+ウェブサイトを表明し検証するためのデータ表現。[サイトプロファイル](./site-profile.md) に署名をしたもの。
