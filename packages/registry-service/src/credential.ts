@@ -17,7 +17,7 @@ export const CredentialService = ({
    * @param accountId 会員 ID
    * @return 資格情報
    */
-  async read(accountId: string, validAt: Date): Promise<Array<credentials>> {
+  async read(accountId: string, validAt?: Date): Promise<Array<credentials>> {
     return await credentialRepository.read(accountId, validAt);
   },
   /**
