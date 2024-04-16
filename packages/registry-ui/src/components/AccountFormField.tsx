@@ -8,23 +8,40 @@ import { HELP_TEXT, IFormInput } from "../utils/account-form";
 type AccountFormFieldProps = {
   name: keyof IFormInput;
   label: string;
-  inputClassName?: string;
   required?: boolean;
   helpText?: string;
   placeHolder?: string;
   onBlur: (e: SyntheticEvent) => void;
-  inputProps?: ComponentProps<"input">;
-};
+} & (
+  | {
+      inputClassName?: never;
+      inputProps?: never;
+      textareaClassName?: string;
+      textareaProps?: ComponentProps<"textarea">;
+      textarea: true;
+    }
+  | {
+      inputClassName?: string;
+      inputProps?: ComponentProps<"input">;
+      textareaClassName?: never;
+      textareaProps?: never;
+      textarea?: false;
+    }
+);
 
 export default function AccountFormField({
   name,
   inputClassName,
+  textareaClassName,
   label,
   required,
   placeHolder,
   onBlur,
   inputProps,
+  textareaProps,
+  textarea = false,
 }: AccountFormFieldProps) {
+  const htmlFor = textarea ? `${name}Textarea` : `${name}Input`;
   const {
     register,
     formState: { errors },
@@ -33,20 +50,34 @@ export default function AccountFormField({
     <FormRow
       label={label}
       required={required}
-      htmlFor={`${name}Input`}
+      htmlFor={htmlFor}
       helpText={HELP_TEXT[name]}
     >
-      <input
-        id={`${name}Input`}
-        className={clsx("jumpu-input h-12", inputClassName, {
-          "border-danger !border-2 !text-danger": errors[name],
-        })}
-        placeholder={placeHolder}
-        {...register(name, {
-          onBlur: onBlur,
-        })}
-        {...inputProps}
-      />
+      {textarea ? (
+        <textarea
+          id={htmlFor}
+          className={clsx("jumpu-textarea flex-1", textareaClassName, {
+            "border-danger !border-2 !text-danger": errors[name],
+          })}
+          placeholder={placeHolder}
+          {...register(name, {
+            onBlur: onBlur,
+          })}
+          {...textareaProps}
+        />
+      ) : (
+        <input
+          id={htmlFor}
+          className={clsx("jumpu-input h-12", inputClassName, {
+            "border-danger !border-2 !text-danger": errors[name],
+          })}
+          placeholder={placeHolder}
+          {...register(name, {
+            onBlur: onBlur,
+          })}
+          {...inputProps}
+        />
+      )}
       <ErrorMessage
         errors={errors}
         name={name}
