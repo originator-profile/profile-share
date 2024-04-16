@@ -160,6 +160,36 @@ export const AccountService = ({ validator }: Options) => ({
     return jwks;
   },
   /**
+   * Signed Originator Profile の取得
+   * @param id 会員 ID
+   * @throws {NotFoundError} 組織情報が見つからない/SOP が見つからない
+   * @return Signed Originator Profile
+   */
+  async getSop(id: AccountId): Promise<string> {
+    const prisma = getClient();
+    const data = await prisma.accounts.findUnique({
+      where: { id },
+      include: {
+        publications: {
+          include: {
+            op: true,
+          },
+          orderBy: {
+            publishedAt: "desc",
+          },
+          take: 1,
+        },
+      },
+    });
+    if (!data) {
+      throw new NotFoundError("OP Account not found.");
+    }
+    if (data.publications.length === 0) {
+      throw new NotFoundError("Signed Originator Profile not found.");
+    }
+    return data.publications[0].op.jwt;
+  },
+  /**
    * 公開鍵の登録
    * @param id 会員 ID
    * @param input 公開鍵 (JWK)
