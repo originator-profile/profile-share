@@ -13,6 +13,14 @@ export const CredentialService = ({
   certificate,
 }: Options) => ({
   /**
+   * 資格情報の表示
+   * @param accountId 会員 ID
+   * @return 資格情報
+   */
+  async read(accountId: string, validAt?: Date): Promise<Array<credentials>> {
+    return await credentialRepository.read(accountId, validAt);
+  },
+  /**
    * 資格情報の作成
    * @param accountId 会員 ID
    * @param certifierId 認証機関 ID

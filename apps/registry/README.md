@@ -53,6 +53,7 @@ running command...
 * [`profile-registry account:register-credential`](#profile-registry-accountregister-credential)
 * [`profile-registry account:register-key`](#profile-registry-accountregister-key)
 * [`profile-registry account:register-op`](#profile-registry-accountregister-op)
+* [`profile-registry account:show-credential`](#profile-registry-accountshow-credential)
 * [`profile-registry admin:create`](#profile-registry-admincreate)
 * [`profile-registry admin:delete`](#profile-registry-admindelete)
 * [`profile-registry advertiser:sign`](#profile-registry-advertisersign)
@@ -255,6 +256,27 @@ FLAG DESCRIPTIONS
 
     Originator Profile レジストリから受け取った Signed Originator Profile ファイルを指定します。
     JWT の含まれないファイルは無効です。また JWT の Subject クレームは会員自身のドメイン名と一致しなければなりません。
+```
+
+## `profile-registry account:show-credential`
+
+資格情報を表示します
+
+```
+USAGE
+  $ profile-registry account:show-credential --id <value> [--valid-at <value>]
+
+FLAGS
+  --id=<value>        (required) アカウントの ID またはドメイン名
+  --valid-at=<value>  この日時に既に失効している資格情報を含めない。デフォルトはすべての資格情報を表示する。
+
+DESCRIPTION
+  資格情報を表示します
+
+FLAG DESCRIPTIONS
+  --id=<value>  アカウントの ID またはドメイン名
+
+    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
 ```
 
 ## `profile-registry admin:create`
