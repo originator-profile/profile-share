@@ -14,7 +14,7 @@ CLI のインストールを含む開発環境の構築方法については、[
 | ------------ | ---------------------------------------------- |
 | DATABASE_URL | [PostgreSQL 接続 URL][postgres_connection_url] |
 
-Heroku Postgres を使用している場合は、PostgreSQL 接続 URL を [Heroku Data][heroku_data_url] の Settings -> Administration -> Database Credentials -> URI から参照します。
+Heroku Postgres を使用している場合は、PostgreSQL 接続 URL を [Heroku Data][heroku_data_url] の Settings -> Database Credentials -> URI から参照します。
 
 [postgres_connection_url]: https://www.prisma.io/docs/reference/database-connectors/connection-urls/
 [heroku_data_url]: https://data.heroku.com/

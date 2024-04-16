@@ -26,7 +26,7 @@ Machine to Machine Application を作成します。作成した Application の
 
 1. profile レポジトリの `./packages/auth0/deploy-cli/` ディレクトリに移動してください。
 
-2. `config.json` に必要な設定を追加します。`tenant.yaml`, `actions.yaml` の中で一部変数を使っています。変数の値を`config.json` の `AUTH0_KEYWORD_REPLACE_MAPPINGS` の中に記載することで、デプロイする環境に適した設定でデプロイします。
+2. [config.json](https://auth0.com/docs/deploy-monitor/deploy-cli-tool/configure-the-deploy-cli#configuration-file) に必要な設定を追加します。`tenant.yaml`, `actions.yaml` の中で一部変数を使っています。変数の値を`config.json` の [AUTH0_KEYWORD_REPLACE_MAPPINGS](https://auth0.com/docs/deploy-monitor/deploy-cli-tool/keyword-replacement) の中に記載することで、デプロイする環境に適した設定でデプロイします。
 
 |              変数名               |                                        説明                                        |
 | :-------------------------------: | :--------------------------------------------------------------------------------: |
