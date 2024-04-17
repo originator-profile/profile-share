@@ -148,3 +148,40 @@ export const formValidationSchema: Yup.ObjectSchema<IFormInput> = Yup.object({
   privacyPolicyUrl: Yup.string().trim().url("不正な URL です。").optional(),
   description: Yup.string().optional(),
 });
+
+export const HELP_TEXT = {
+  domainName:
+    "OP ID になります。法人組織の ID であり、コンテンツを配信するサイト・サービスや CMS のドメインとは独立です。",
+  name: "法人・組織の正式名称 (省略無し) を記入してください。",
+  postalCode:
+    "法人・組織の所在地の郵便番号を記入してください。半角数字7桁またはハイフン付きの半角数字郵便番号を入力してください。",
+  addressRegion: undefined,
+  addressLocality: undefined,
+  streetAddress: undefined,
+  phoneNumber:
+    "代表電話番号を記入してください。公開できない場合は省略可能です。",
+  email:
+    "代表メールアドレスを記入してください。公開できない場合は省略可能です。",
+  corporateNumber:
+    "国税庁により指定された13桁の法人番号を記入してください。法人番号を明記することで、国の管理・確認を受けた法人として信頼性向上につながる可能性があります。",
+  businessCategory:
+    "日本標準産業分類のうち、御社の主たる業務として該当するものを記入してください。組織情報への掲載を希望しない場合は省略可能です。",
+  url: "法人・組織のメインサイト URL を記入してください。OP 情報表示画面からリンクされます。実証実験を行うサイトやサービスの URL ではなく、法人・組織としてのメインサイトを記載してください。",
+  description:
+    "法人・組織の情報として上記の他に掲載すべき (読者から見て信頼性の判断に有用な) 追加の説明情報やリンク先があれば、HTML 形式で記載してください。",
+  contactTitle: undefined,
+  contactUrl: undefined,
+  publishingPrincipleTitle: undefined,
+  publishingPrincipleUrl: undefined,
+  privacyPolicyTitle: undefined,
+  privacyPolicyUrl: undefined,
+};
+
+export const HELP_TEXT_PAGE_FIELD_SETS = {
+  contact:
+    "法人・組織の (サイトやサービス毎ではない) 代表お問い合わせ先をリンク付きで表示します。「お問い合わせ」「ご意見・お問い合わせ」「CONTACT US」など、該当ページのタイトルや名称を記載してください。省略も可能ですが原則として記載してください。",
+  publishingPrinciple:
+    "編集ガイドラインまたはそれを含む情報の掲載先をリンク付きで表示します。「編集ガイドライン」など、該当ページのタイトルや名称を記載してください。",
+  privacyPolicy:
+    "プライバシーポリシーまたはそれを含むポリシー情報の掲載先をリンク付きで表示します。「プライバシーポリシー」「プライバシーセンター」「個人情報保護方針」など、該当ページのタイトルや名称を記載してください。省略も可能ですが原則として記載してください。",
+};

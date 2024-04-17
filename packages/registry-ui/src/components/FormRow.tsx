@@ -1,6 +1,5 @@
 import clsx from "clsx";
-import { Icon } from "@iconify/react";
-import { Modal, useModal } from "./dialog";
+import FormHelpText from "./FormHelpText";
 
 type Props = {
   htmlFor?: string;
@@ -21,7 +20,6 @@ function FormRow({
   helpText,
   children,
 }: Props) {
-  const modal = useModal();
   return (
     <div
       className={clsx(
@@ -41,22 +39,10 @@ function FormRow({
         </label>
 
         {helpText && (
-          <button
-            className="leading-none align-middle mx-1"
-            onClick={modal.open}
-          >
-            <Icon
-              className="text-lg text-gray-400"
-              icon="material-symbols:help"
-              onClick={modal.open}
-            />
-          </button>
+          <FormHelpText className="mx-1" label={label} helpText={helpText} />
         )}
       </div>
       <div className="w-full flex flex-col gap-2">{children}</div>
-      {helpText && (
-        <Modal title={label} description={helpText} dialogRef={modal.ref} />
-      )}
     </div>
   );
 }

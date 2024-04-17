@@ -149,7 +149,6 @@ function HolderForm({
             label="所有者 / 法人・組織名"
             required
             placeHolder="○△新聞社"
-            helpText="法人・組織の正式名称(省略無し)を記載してください"
             onBlur={saveDraft}
           />
           <AccountFormField
@@ -272,23 +271,13 @@ function HolderForm({
             onBlur={saveDraft}
           />
 
-          <FormRow label="説明" htmlFor="descriptionTextarea">
-            <textarea
-              id="descriptionTextarea"
-              className={clsx("jumpu-textarea flex-1", {
-                "border-danger !border-2 !text-danger": errors.description,
-              })}
-              {...register("description", { onBlur: saveDraft })}
-              placeholder="追加の説明情報（任意）"
-            />
-            <ErrorMessage
-              errors={errors}
-              name="description"
-              render={({ message }) => (
-                <p className="text-sm text-danger">{message}</p>
-              )}
-            />
-          </FormRow>
+          <AccountFormField
+            name="description"
+            label="説明"
+            placeHolder="追加の説明情報（任意）"
+            onBlur={saveDraft}
+            textarea
+          />
         </div>
       </form>
     </FormProvider>

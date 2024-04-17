@@ -53,6 +53,15 @@ type VerifierOptions = Array<{
   name: string;
 }>;
 
+const HELP_TEXT = {
+  name: "第三者認証機関による認定を受けている場合や、社会的信頼性が認められる組織への所属などを記入します。現時点では JICDAQ による認証や日本新聞協会への加盟の有無について登録可能です。",
+  certifier: undefined,
+  verifier: undefined,
+  issuedAt:
+    "認定を受けた日付や、社会的信頼性が認められる組織への所属となった日付を記入します。",
+  expiredAt: "失効となる日付を記入します。",
+};
+
 function FormField({
   name,
   label,
@@ -66,7 +75,12 @@ function FormField({
     formState: { errors },
   } = useFormContext<FormData>();
   return (
-    <FormRow htmlFor={`${name}Input`} label={label} wide={false}>
+    <FormRow
+      htmlFor={`${name}Input`}
+      label={label}
+      helpText={HELP_TEXT[name]}
+      wide={false}
+    >
       <input
         {...inputProps}
         id={`${name}Input`}
@@ -106,7 +120,12 @@ function FormSelectField({ name, label, children }: FormSelectFieldProps) {
     formState: { errors },
   } = useFormContext<FormData>();
   return (
-    <FormRow htmlFor={`${name}Select`} label={label} wide={false}>
+    <FormRow
+      htmlFor={`${name}Select`}
+      label={label}
+      helpText={HELP_TEXT[name]}
+      wide={false}
+    >
       <select
         id={`${name}Select`}
         className={clsx("jumpu-input h-12", {
