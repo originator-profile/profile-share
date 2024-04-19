@@ -36,7 +36,7 @@ Machine to Machine Application を作成します。作成した Application の
 |      `DEFAULT_FROM_ADDRESS`       |                      メールの From アドレスを指定してください                      |
 | `AUTH0_MANAGEMENT_API_IDENTIFIER` | Application -> APIs -> Auth0 Management API -> Identifier の値を貼り付けてください |
 
-3. auth0-deploy-cli を実行します（1回目）。実行時に前節で作成した CLI 用の Application の認証情報を、環境変数 `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, `AUTH0_CLIENT_SECRET` に指定してください。
+3. auth0-deploy-cli を実行します（1回目）。実行時に前節で作成した CLI 用の Application の認証情報を、環境変数 `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, `AUTH0_CLIENT_SECRET` に指定してください。実行すると Auth0 アプリケーション "Post Login Actions Management API Client" が作成されます。
 
 ```console
 AUTH0_DOMAIN=xxxx AUTH0_CLIENT_ID=xxxx AUTH0_CLIENT_SECRET=xxxx a0deploy import -c config.json -i tenant.yaml
