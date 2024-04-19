@@ -1,6 +1,6 @@
 {
   "name": "@originator-profile/core",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "private": true,
   "main": "src/index.ts",
   "scripts": {
