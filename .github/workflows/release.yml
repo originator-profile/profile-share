@@ -34,7 +34,7 @@ jobs:
         working-directory: apps/registry
         run: pnpm publish --access restricted
         env:
-          NODE_AUTH_TOKEN: ${{ GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - if: github.event.inputs.version != 'prerelease'
         name: Prerelease
         run: |
