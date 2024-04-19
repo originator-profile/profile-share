@@ -2,7 +2,7 @@
   "name": "@originator-profile/registry",
   "description": "Profile Registry API",
   "version": "0.0.9",
-  "private": true,
+  "private": false,
   "bin": {
     "profile-registry": "bin/run"
   },
