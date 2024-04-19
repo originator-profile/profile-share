@@ -44,7 +44,7 @@ clients:
     token_endpoint_auth_method: client_secret_post
   - name: OP登録サイト UI (Created by CLI)
     allowed_clients: []
-    allowed_logout_urls: ["##SPA_HOME_URL##"]
+    allowed_logout_urls: ["##SPA_LOGOUT_URL##"]
     allowed_origins: []
     app_type: spa
     callbacks: ["##SPA_HOME_URL##"]

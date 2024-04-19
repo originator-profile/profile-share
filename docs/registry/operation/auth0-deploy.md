@@ -32,6 +32,7 @@ Machine to Machine Application を作成します。作成した Application の
 | :-------------------------------: | :--------------------------------------------------------------------------------: |
 |        `REGISTRY_API_URL`         | レジストリの URL を指定してください。例: `https://oprdev.originator-profile.org/`  |
 |          `SPA_HOME_URL`           |                 OP登録サイトのトップページのURLを指定してください                  |
+|         `SPA_LOGOUT_URL`          |          OP登録サイトのログアウト後リダイレクトするURLを指定してください           |
 |        `SENDGRID_API_KEY`         |          Email Provider として使う Sendgrid の API キーを指定してください          |
 |      `DEFAULT_FROM_ADDRESS`       |                      メールの From アドレスを指定してください                      |
 | `AUTH0_MANAGEMENT_API_IDENTIFIER` | Application -> APIs -> Auth0 Management API -> Identifier の値を貼り付けてください |
