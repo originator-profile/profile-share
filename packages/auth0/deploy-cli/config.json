@@ -5,7 +5,7 @@
   "AUTH0_KEYWORD_REPLACE_MAPPINGS": {
     "REGISTRY_API_URL": "https://api.example.org/",
     "SPA_HOME_URL": "http://localhost:8080/app/",
-    "DEFAULT_FROM_ADDRESS": "\"OP Registry (dev)\" <noreply@example.org>",
+    "DEFAULT_FROM_ADDRESS": "\\\"OP Registry (dev)\\\" <noreply@example.org>",
     "SENDGRID_API_KEY": "xxxxx",
     "AUTH0_MANAGEMENT_API_IDENTIFIER": "https://oprdev.jp.auth0.com/api/v2/",
     "GROUP_ROLE_ID": "<group_role_id>",
