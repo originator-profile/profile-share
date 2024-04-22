@@ -28,14 +28,13 @@ Machine to Machine Application を作成します。作成した Application の
 
 2. [config.json](https://auth0.com/docs/deploy-monitor/deploy-cli-tool/configure-the-deploy-cli#configuration-file) に必要な設定を追加します。`tenant.yaml`, `actions.yaml` の中で一部変数を使っています。変数の値を`config.json` の [AUTH0_KEYWORD_REPLACE_MAPPINGS](https://auth0.com/docs/deploy-monitor/deploy-cli-tool/keyword-replacement) の中に記載することで、デプロイする環境に適した設定でデプロイします。
 
-|              変数名               |                                        説明                                        |
-| :-------------------------------: | :--------------------------------------------------------------------------------: |
-|        `REGISTRY_API_URL`         | レジストリの URL を指定してください。例: `https://oprdev.originator-profile.org/`  |
-|          `SPA_HOME_URL`           |                 OP登録サイトのトップページのURLを指定してください                  |
-|         `SPA_LOGOUT_URL`          |          OP登録サイトのログアウト後リダイレクトするURLを指定してください           |
-|        `SENDGRID_API_KEY`         |          Email Provider として使う Sendgrid の API キーを指定してください          |
-|      `DEFAULT_FROM_ADDRESS`       |                      メールの From アドレスを指定してください                      |
-| `AUTH0_MANAGEMENT_API_IDENTIFIER` | Application -> APIs -> Auth0 Management API -> Identifier の値を貼り付けてください |
+|                 変数名                 |                                            説明                                            |
+| :------------------------------------: | :----------------------------------------------------------------------------------------: |
+|             `REGISTRY_URL`             |     レジストリの URL を指定してください。例: `https://oprdev.originator-profile.org/`      |
+| `AUTHENTICATION_REQUIRED_REGISTRY_URL` | ユーザーの認証が要求されるレジストリの URL（OP登録サイトのトップページ）を指定してください |
+|           `SENDGRID_API_KEY`           |              Email Provider として使う Sendgrid の API キーを指定してください              |
+|         `DEFAULT_FROM_ADDRESS`         |                          メールの From アドレスを指定してください                          |
+|   `AUTH0_MANAGEMENT_API_IDENTIFIER`    |     Application -> APIs -> Auth0 Management API -> Identifier の値を貼り付けてください     |
 
 3. auth0-deploy-cli を実行します（1回目）。実行時に前節で作成した CLI 用の Application の認証情報を、環境変数 `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, `AUTH0_CLIENT_SECRET` に指定してください。
 
