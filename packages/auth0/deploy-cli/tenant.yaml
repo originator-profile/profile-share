@@ -102,6 +102,18 @@ roles:
     permissions:
       - permission_name: write:requests
         resource_server_identifier: "##REGISTRY_URL##"
+branding:
+  colors:
+    page_background: '#000000'
+    primary: '#008488'
+  logo_url: https://originator-profile.org/image/logo.svg
+  templates: []
+prompts:
+  customText:
+    ja:
+      login:
+        login:
+          description: ${clientName} は開発中です。ご利用可能となりましたらお知らせいたします。
 tenant:
   enabled_locales:
     - ja
