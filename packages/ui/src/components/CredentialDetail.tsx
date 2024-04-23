@@ -1,10 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import {
-  OpCredential,
-  OpHolder,
-  OpCertifier,
-  OpVerifier,
-} from "@originator-profile/model";
+import { OpCredential, OpHolder } from "@originator-profile/model";
 import { Icon } from "@iconify/react";
 import { expirationDateTimeLocaleFrom } from "@originator-profile/core";
 import { getVerificationType } from "../utils/credential";
