@@ -20,17 +20,9 @@ type Props = {
   className?: string;
   credential: OpCredential;
   holder: OpHolder;
-  certifier?: OpCertifier;
-  verifier?: OpVerifier;
 };
 
-function CredentialDetail({
-  className,
-  credential,
-  holder,
-  certifier,
-  verifier,
-}: Props) {
+function CredentialDetail({ className, credential, holder }: Props) {
   const { data } = useCertificationSystem(credential.url);
   const description = useSanitizedHtml(data?.description);
 
@@ -48,8 +40,8 @@ function CredentialDetail({
           <h2 className="text-xs font-bold mb-1.5">
             {credential.name} {getVerificationType(credential, holder)}
           </h2>
-          {certifier && (
-            <p className="text-xs text-gray-600">{certifier.name} 発行</p>
+          {data?.certifier && (
+            <p className="text-xs text-gray-600">{data.certifier.name} 発行</p>
           )}
         </div>
       </header>
@@ -73,14 +65,12 @@ function CredentialDetail({
       )}
       <Table className="mb-2">
         <TableRow header="資格名" data={credential.name} />
-        <TableRow
-          header="認証機関"
-          data={certifier?.name ?? credential.certifier}
-        />
-        <TableRow
-          header="検証機関"
-          data={verifier?.name ?? credential.verifier}
-        />
+        {data?.certifier && (
+          <TableRow header="認証機関" data={data.certifier.name} />
+        )}
+        {data?.verifier && (
+          <TableRow header="検証機関" data={data.verifier.name} />
+        )}
         <TableRow
           header="発行日"
           data={new Date(credential.issuedAt).toLocaleString()}
