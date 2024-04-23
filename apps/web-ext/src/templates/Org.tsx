@@ -85,7 +85,6 @@ function Org({ op, holder, roles, paths }: Props) {
               <CredentialSummary
                 className="w-full"
                 credential={credential}
-                holder={holder}
                 certifier={op.findCertifier(credential.certifier)}
                 onClick={credentialModal.onOpen}
               />
@@ -97,7 +96,6 @@ function Org({ op, holder, roles, paths }: Props) {
             <CredentialDetail
               className="rounded-b-none"
               credential={credentialModal.value}
-              holder={holder}
               certifier={op.findCertifier(credentialModal.value.certifier)}
               verifier={op.findVerifier(credentialModal.value.verifier)}
             />
