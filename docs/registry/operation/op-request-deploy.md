@@ -14,13 +14,13 @@ oprexpt.originator-profile.org で公開する OP 登録サイトのデプロイ
 
 2. 作成したテナントで[Auth0 テナント構成の適用](./auth0-deploy.md)の手順を実施します。[config.json](https://auth0.com/docs/deploy-monitor/deploy-cli-tool/configure-the-deploy-cli#configuration-file)の [AUTH0_KEYWORD_REPLACE_MAPPINGS](https://auth0.com/docs/deploy-monitor/deploy-cli-tool/keyword-replacement) には次のように設定してください。
 
-|              変数名               |                                        説明                                        |
-| :-------------------------------: | :--------------------------------------------------------------------------------: |
-|        `REGISTRY_API_URL`         |                     `https://oprexpt.originator-profile.org/`                      |
-|          `SPA_HOME_URL`           |                   `https://oprexpt.originator-profile.org/app/`                    |
-|        `SENDGRID_API_KEY`         |          Email Provider として使う Sendgrid の API キーを指定してください          |
-|      `DEFAULT_FROM_ADDRESS`       |                      メールの From アドレスを指定してください                      |
-| `AUTH0_MANAGEMENT_API_IDENTIFIER` | Application -> APIs -> Auth0 Management API -> Identifier の値を貼り付けてください |
+|                 変数名                 |                                        説明                                        |
+| :------------------------------------: | :--------------------------------------------------------------------------------: |
+|             `REGISTRY_URL`             |                     `https://oprexpt.originator-profile.org/`                      |
+| `AUTHENTICATION_REQUIRED_REGISTRY_URL` |                   `https://oprexpt.originator-profile.org/app/`                    |
+|           `SENDGRID_API_KEY`           |          Email Provider として使う Sendgrid の API キーを指定してください          |
+|         `DEFAULT_FROM_ADDRESS`         |                      メールの From アドレスを指定してください                      |
+|   `AUTH0_MANAGEMENT_API_IDENTIFIER`    | Application -> APIs -> Auth0 Management API -> Identifier の値を貼り付けてください |
 
 3. Cloudflare の管理画面で oprexpt 用のバケットを作成します。[R2 の設定](./r2-configuration.md) に従ってください。
 

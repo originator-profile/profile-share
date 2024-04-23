@@ -1,6 +1,6 @@
 resourceServers:
   - name: レジストリ API (Created by CLI)
-    identifier: "##REGISTRY_API_URL##"
+    identifier: "##REGISTRY_URL##"
     # allow_offline_access: false の場合、useRefreshTokensを使用すると失敗する
     allow_offline_access: true
     enforce_policies: true
@@ -44,10 +44,10 @@ clients:
     token_endpoint_auth_method: client_secret_post
   - name: OP登録サイト UI (Created by CLI)
     allowed_clients: []
-    allowed_logout_urls: ["##SPA_HOME_URL##"]
+    allowed_logout_urls: ["##REGISTRY_URL##"]
     allowed_origins: []
     app_type: spa
-    callbacks: ["##SPA_HOME_URL##"]
+    callbacks: ["##AUTHENTICATION_REQUIRED_REGISTRY_URL##"]
     client_aliases: []
     cross_origin_auth: false
     custom_login_page_on: true
@@ -89,19 +89,19 @@ roles:
     description: 管理者
     permissions:
       - permission_name: write:users
-        resource_server_identifier: "##REGISTRY_API_URL##"
+        resource_server_identifier: "##REGISTRY_URL##"
   - name: certifier
     description: 認証機関
     permissions:
       - permission_name: issue:ops
-        resource_server_identifier: "##REGISTRY_API_URL##"
+        resource_server_identifier: "##REGISTRY_URL##"
       - permission_name: write:reviews
-        resource_server_identifier: "##REGISTRY_API_URL##"
+        resource_server_identifier: "##REGISTRY_URL##"
   - name: group
     description: 組織
     permissions:
       - permission_name: write:requests
-        resource_server_identifier: "##REGISTRY_API_URL##"
+        resource_server_identifier: "##REGISTRY_URL##"
 tenant:
   enabled_locales:
     - ja
