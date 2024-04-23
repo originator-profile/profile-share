@@ -46,17 +46,14 @@ export const CertificationSystemRepository = () => ({
         ...c,
       }));
 
-    return certificationSystems.flatMap((c) => {
-      if (!opts.selfDeclaration.names.includes(c.name)) return [c];
+    return certificationSystems.map((c) => {
+      if (!opts.selfDeclaration.names.some((n) => c.name.includes(n))) return c;
 
-      return [
-        c,
-        // 自己宣言
-        {
-          ...c,
-          verifier: opts.selfDeclaration.verifier,
-        },
-      ];
+      /* 自己宣言用に改変 */
+      return {
+        ...c,
+        verifier: opts.selfDeclaration.verifier,
+      };
     });
   },
 });

@@ -1,13 +1,11 @@
 import { twMerge } from "tailwind-merge";
 import {
   OpCredential,
-  OpHolder,
   OpCertifier,
   OpVerifier,
 } from "@originator-profile/model";
 import { Icon } from "@iconify/react";
 import { expirationDateTimeLocaleFrom } from "@originator-profile/core";
-import { getVerificationType } from "../utils/credential";
 import Image from "./Image";
 import Table from "./Table";
 import TableRow from "./TableRow";
@@ -19,7 +17,6 @@ import useSanitizedHtml from "../utils/use-sanitized-html";
 type Props = {
   className?: string;
   credential: OpCredential;
-  holder: OpHolder;
   certifier?: OpCertifier;
   verifier?: OpVerifier;
 };
@@ -27,11 +24,11 @@ type Props = {
 function CredentialDetail({
   className,
   credential,
-  holder,
   certifier,
   verifier,
 }: Props) {
   const { data } = useCertificationSystem(credential.url);
+  const name = data?.name;
   const description = useSanitizedHtml(data?.description);
 
   return (
@@ -46,7 +43,7 @@ function CredentialDetail({
         />
         <div>
           <h2 className="text-xs font-bold mb-1.5">
-            {credential.name} {getVerificationType(credential, holder)}
+            {name ?? credential.name}
           </h2>
           {certifier && (
             <p className="text-xs text-gray-600">{certifier.name} 発行</p>

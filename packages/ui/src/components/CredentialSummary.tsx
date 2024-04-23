@@ -1,13 +1,11 @@
 import { twMerge } from "tailwind-merge";
-import { OpCredential, OpHolder, OpCertifier } from "@originator-profile/model";
+import { OpCredential, OpCertifier } from "@originator-profile/model";
 import Image from "../components/Image";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
-import { getVerificationType } from "../utils/credential";
 
 type Props = {
   className?: string;
   credential: OpCredential;
-  holder: OpHolder;
   certifier?: OpCertifier;
   onClick(credential: OpCredential): void;
 };
@@ -15,7 +13,6 @@ type Props = {
 function CredentialSummary({
   className,
   credential,
-  holder,
   certifier,
   onClick,
 }: Props) {
@@ -36,9 +33,7 @@ function CredentialSummary({
         height={40}
       />
       <span className="flex flex-col gap-2 items-start">
-        <span className="text-sm">
-          {credential.name} {getVerificationType(credential, holder)}
-        </span>
+        <span className="text-sm">{credential.name}</span>
         {certifier && (
           <span className="text-xs text-gray-600">{certifier.name} 発行</span>
         )}

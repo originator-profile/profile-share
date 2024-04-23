@@ -26,10 +26,8 @@ export async function handler(
 
   return await req.server.services.certificationSystemRepository.all({
     selfDeclaration: {
-      names: [
-        "JICDAQ ブランドセーフティ認証",
-        "JICDAQ 無効トラフィック対策認証",
-      ],
+      /* 名称に"自己宣言"を含むものが自己宣言 */
+      names: ["自己宣言"],
       verifier: data,
     },
   });
