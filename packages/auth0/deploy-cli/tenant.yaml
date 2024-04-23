@@ -115,16 +115,6 @@ emailProvider:
     api_key: "##SENDGRID_API_KEY##"
   default_from_address: "##DEFAULT_FROM_ADDRESS##"
   enabled: true
-connections:
-  - name: google-oauth2
-    strategy: google-oauth2
-    is_domain_connection: false
-    options:
-      email: true
-      scope:
-        - email
-        - profile
-      profile: true
 databases:
   - name: Username-Password-Authentication
     strategy: auth0
@@ -149,5 +139,7 @@ databases:
       password_complexity_options:
         min_length: 8
       enabledDatabaseCustomization: false
+      # 新規登録を無効化 (true)、管理者からユーザー招待して登録する運用を想定
+      disable_signup: true
     realms:
       - Username-Password-Authentication
