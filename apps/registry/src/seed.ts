@@ -140,7 +140,7 @@ export async function seed(): Promise<void> {
       issuerUuid,
       certifier,
       certifier,
-      "ブランドセーフティ認証",
+      "JICDAQ ブランドセーフティ認証 自己宣言",
       new Date(),
       addYears(new Date(), 1),
       new URL(
