@@ -1,0 +1,16 @@
+DELETE FROM "certificationSystems" WHERE id IN ('73a17adf-6625-479e-bf01-178937fe22e6', 'a5873ff3-1971-4dd7-a2b7-5e72f773e7b0', '111fb8d0-e1ce-42d4-955c-1c65c3a54e60', '772c0a05-62d4-4f5e-8095-42ec4e954e4e');
+
+-- 「JICDAQ」は、一般社団法人デジタル広告品質認証機構の登録商標です。 https://www.j-platpat.inpit.go.jp/c1801/TR/JP-2021-097662/40/ja
+-- 「日本新聞協会」は、一般社団法人日本新聞協会の登録商標です。 https://www.j-platpat.inpit.go.jp/c1801/TR/JP-1980-057333/40/ja
+INSERT INTO "certificationSystems"
+  ("id"                                   , "certifierUuid"                       , "verifierUuid"                        , "name"                            , "url"                                             , "urlTitle"                                                        , "image")
+VALUES
+  ('68e40705-0452-4939-805f-64ca2b9946a9' , '39ad8549-13e6-51f3-b47d-4098fd51e07f', '39ad8549-13e6-51f3-b47d-4098fd51e07f', 'JICDAQ ブランドセーフティ認証 海外認証'   , 'https://www.jicdaq.or.jp/certification_system/'  , 'JICDAQ認証制度について | 一般社団法人 デジタル広告品質認証機構'  , 'https://op-logos.demosites.pages.dev/placeholder-120x80.png'),
+  ('2a12a385-fd1c-48e6-acd8-176c0c5e95ea' , '39ad8549-13e6-51f3-b47d-4098fd51e07f', '39ad8549-13e6-51f3-b47d-4098fd51e07f', 'JICDAQ ブランドセーフティ認証 第三者検証'   , 'https://www.jicdaq.or.jp/certification_system/'  , 'JICDAQ認証制度について | 一般社団法人 デジタル広告品質認証機構'  , 'https://op-logos.demosites.pages.dev/placeholder-120x80.png'),
+  ('95dceb6c-f6aa-4b70-aa5a-0ba9c31490ff' , '39ad8549-13e6-51f3-b47d-4098fd51e07f', '39ad8549-13e6-51f3-b47d-4098fd51e07f', 'JICDAQ ブランドセーフティ認証 自己宣言'   , 'https://www.jicdaq.or.jp/certification_system/'  , 'JICDAQ認証制度について | 一般社団法人 デジタル広告品質認証機構'  , 'https://op-logos.demosites.pages.dev/placeholder-120x80.png'),
+  ('fd906e66-b4d9-4430-a3ff-7ca51f646bc5' , '39ad8549-13e6-51f3-b47d-4098fd51e07f', '39ad8549-13e6-51f3-b47d-4098fd51e07f', 'JICDAQ 無効トラフィック対策認証 海外認証' , 'https://www.jicdaq.or.jp/certification_system/'  , 'JICDAQ認証制度について | 一般社団法人 デジタル広告品質認証機構'  , 'https://op-logos.demosites.pages.dev/placeholder-120x80.png'),
+  ('c3e819b7-b7b9-434b-b250-94eea2f430c8' , '39ad8549-13e6-51f3-b47d-4098fd51e07f', '39ad8549-13e6-51f3-b47d-4098fd51e07f', 'JICDAQ 無効トラフィック対策認証 第三者検証' , 'https://www.jicdaq.or.jp/certification_system/'  , 'JICDAQ認証制度について | 一般社団法人 デジタル広告品質認証機構'  , 'https://op-logos.demosites.pages.dev/placeholder-120x80.png'),
+  ('229dc69f-8bbd-405c-8270-d518c1a30c78' , '39ad8549-13e6-51f3-b47d-4098fd51e07f', '39ad8549-13e6-51f3-b47d-4098fd51e07f', 'JICDAQ 無効トラフィック対策認証 自己宣言' , 'https://www.jicdaq.or.jp/certification_system/'  , 'JICDAQ認証制度について | 一般社団法人 デジタル広告品質認証機構'  , 'https://op-logos.demosites.pages.dev/placeholder-120x80.png'),
+  ('7ceabaad-2550-45b1-8059-c3d5ac34f081' , '39ad8549-13e6-51f3-b47d-4098fd51e07f', '39ad8549-13e6-51f3-b47d-4098fd51e07f', 'JICDAQ 登録アドバタイザー'       , 'https://www.jicdaq.or.jp/certification_system/'  , 'JICDAQ認証制度について | 一般社団法人 デジタル広告品質認証機構'  , 'https://op-logos.demosites.pages.dev/placeholder-120x80.png'),
+  ('14270f8f-9f1c-4f89-9fa4-8c93767a8404' , '3fdf2745-fc47-54e3-b322-758777b6bafc', '3fdf2745-fc47-54e3-b322-758777b6bafc', '日本新聞協会 加盟社'             , 'https://www.pressnet.or.jp/outline/'             , '倫理綱領｜日本新聞協会'                                          , 'https://op-logos.demosites.pages.dev/placeholder-120x80.png')
+ON CONFLICT DO NOTHING;

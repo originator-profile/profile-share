@@ -1,4 +1,3 @@
-export * from "./credential";
 export * from "./role";
 export { default as toProfilePayload } from "./to-profile-payload";
 export { default as useModal } from "./use-modal";

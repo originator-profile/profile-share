@@ -195,12 +195,8 @@ function CredentialForm({
 
     switch (name) {
       case "name": {
-        const i = certificationSystems.nameOptions.findIndex(
-          (nameOption) => nameOption === values.name,
-        );
-
         const cs: CertificationSystem | undefined =
-          certificationSystems.data?.[i];
+          certificationSystems.data?.find((cs) => cs.name === values.name);
 
         if (cs?.certifier) {
           setValue("certifier", cs.certifier.id);
@@ -215,23 +211,16 @@ function CredentialForm({
     }
   });
 
-  const onSubmit = handleSubmit((values) => {
-    props.onSubmit({
-      ...values,
-      name: values.name.replace(/ (第三者検証|自己宣言)$/, ""),
-    });
-  });
-
   return (
     <FormProvider {...methods}>
       <form
-        onSubmit={onSubmit}
         className="flex flex-col gap-5 rounded-lg bg-gray-50 px-8 py-6"
+        onSubmit={handleSubmit((values) => props.onSubmit(values))}
       >
         <FormField
           name="name"
           label="認定内容"
-          options={certificationSystems.nameOptions}
+          options={certificationSystems.data?.map((cs) => cs.name)}
           inputProps={{
             autoComplete: "off",
           }}
