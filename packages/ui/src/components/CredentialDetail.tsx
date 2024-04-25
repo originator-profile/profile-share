@@ -39,7 +39,7 @@ function CredentialDetail({ className, credential }: Props) {
           )}
         </div>
       </header>
-      {description ? (
+      {typeof description === "string" ? (
         <div
           className="text-sm text-gray-600 mb-2"
           dangerouslySetInnerHTML={{ __html: description }}
