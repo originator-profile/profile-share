@@ -140,10 +140,13 @@ export async function seed(): Promise<void> {
       issuerUuid,
       certifier,
       certifier,
-      "ブランドセーフティ認証",
+      "JICDAQ ブランドセーフティ認証 自己宣言",
       new Date(),
       addYears(new Date(), 1),
-      new URL("/certification-system.example.json", process.env.APP_URL).href,
+      new URL(
+        "/certification-systems/95dceb6c-f6aa-4b70-aa5a-0ba9c31490ff",
+        process.env.APP_URL,
+      ).href,
       new URL("/credential-brand-safety-certified.png", process.env.APP_URL)
         .href,
     );

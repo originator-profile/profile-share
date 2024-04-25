@@ -1,9 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import {
-  OpCredential,
-  OpCertifier,
-  OpVerifier,
-} from "@originator-profile/model";
+import { OpCredential } from "@originator-profile/model";
 import { Icon } from "@iconify/react";
 import { expirationDateTimeLocaleFrom } from "@originator-profile/core";
 import Image from "./Image";
@@ -17,16 +13,9 @@ import useSanitizedHtml from "../utils/use-sanitized-html";
 type Props = {
   className?: string;
   credential: OpCredential;
-  certifier?: OpCertifier;
-  verifier?: OpVerifier;
 };
 
-function CredentialDetail({
-  className,
-  credential,
-  certifier,
-  verifier,
-}: Props) {
+function CredentialDetail({ className, credential }: Props) {
   const { data } = useCertificationSystem(credential.url);
   const name = data?.name;
   const description = useSanitizedHtml(data?.description);
@@ -45,12 +34,12 @@ function CredentialDetail({
           <h2 className="text-xs font-bold mb-1.5">
             {name ?? credential.name}
           </h2>
-          {certifier && (
-            <p className="text-xs text-gray-600">{certifier.name} 発行</p>
+          {data && (
+            <p className="text-xs text-gray-600">{data.certifier.name} 発行</p>
           )}
         </div>
       </header>
-      {description ? (
+      {typeof description === "string" ? (
         <div
           className="text-sm text-gray-600 mb-2"
           dangerouslySetInnerHTML={{ __html: description }}
@@ -70,14 +59,10 @@ function CredentialDetail({
       )}
       <Table className="mb-2">
         <TableRow header="資格名" data={credential.name} />
-        <TableRow
-          header="認証機関"
-          data={certifier?.name ?? credential.certifier}
-        />
-        <TableRow
-          header="検証機関"
-          data={verifier?.name ?? credential.verifier}
-        />
+        {data && <TableRow header="認証機関" data={data.certifier.name} />}
+        {data?.verifier && (
+          <TableRow header="検証機関" data={data.verifier.name} />
+        )}
         <TableRow
           header="発行日"
           data={new Date(credential.issuedAt).toLocaleString()}

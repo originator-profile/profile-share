@@ -96,8 +96,6 @@ function Org({ op, holder, roles, paths }: Props) {
             <CredentialDetail
               className="rounded-b-none"
               credential={credentialModal.value}
-              certifier={op.findCertifier(credentialModal.value.certifier)}
-              verifier={op.findVerifier(credentialModal.value.verifier)}
             />
           )}
         </Modal>

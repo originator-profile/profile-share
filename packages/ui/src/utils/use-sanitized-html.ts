@@ -4,7 +4,7 @@ import DOMPurify from "dompurify";
 export default function useSanitizedHtml(
   dangerousHtml?: string,
 ): string | undefined {
-  if (!dangerousHtml) return;
+  if (dangerousHtml === undefined) return;
   const parser = new DOMParser();
   const descriptionDocument = parser.parseFromString(
     dangerousHtml,

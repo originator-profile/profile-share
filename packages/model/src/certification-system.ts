@@ -53,7 +53,7 @@ const CertificationSystem = {
       required: ["id", "name"],
     },
   },
-  required: ["type", "name", "description", "url", "urlTitle"],
+  required: ["type", "name", "description", "url", "urlTitle", "certifier"],
   additionalProperties: false,
 } as const satisfies JSONSchema;
 
