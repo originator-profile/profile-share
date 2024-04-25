@@ -34,7 +34,7 @@ function CredentialDetail({ className, credential }: Props) {
           <h2 className="text-xs font-bold mb-1.5">
             {name ?? credential.name}
           </h2>
-          {data?.certifier && (
+          {data && (
             <p className="text-xs text-gray-600">{data.certifier.name} 発行</p>
           )}
         </div>
@@ -59,9 +59,7 @@ function CredentialDetail({ className, credential }: Props) {
       )}
       <Table className="mb-2">
         <TableRow header="資格名" data={credential.name} />
-        {data?.certifier && (
-          <TableRow header="認証機関" data={data.certifier.name} />
-        )}
+        {data && <TableRow header="認証機関" data={data.certifier.name} />}
         {data?.verifier && (
           <TableRow header="検証機関" data={data.verifier.name} />
         )}
