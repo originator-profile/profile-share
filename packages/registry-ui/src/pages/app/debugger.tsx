@@ -45,6 +45,21 @@ function EndpointInputField() {
   );
 }
 
+/** URL としてパースできないケースや URL path が "" や "/" のケースでの変換処理 */
+function transformEndpoint(endpoint: string): string {
+  // NOTE: URL パースできないケース … 特別に "https://" + endpoint と解釈 (#1240)
+  if (!URL.canParse(endpoint)) {
+    endpoint = `https://${endpoint}`;
+  }
+
+  // NOTE: URL path が "" や "/" のケース … 特別に "/.well-known/pp.json" と解釈 (#1240)
+  if (new URL(endpoint).origin === endpoint.replace(/[/]$/, "")) {
+    endpoint = new URL("/.well-known/pp.json", endpoint).href;
+  }
+
+  return endpoint;
+}
+
 export default function Debugger() {
   const [values, setValues] = useState<Record<string, unknown>>({});
   const [presentation, setPresentation] = useState(
@@ -58,17 +73,8 @@ export default function Debugger() {
 
     const formData = new FormData(e.currentTarget);
     const registry = String(formData.get("registry"));
+    const endpoint = transformEndpoint(String(formData.get("endpoint")));
     const jsonld = String(formData.get("jsonld"));
-
-    let endpoint = String(formData.get("endpoint"));
-
-    // NOTE: URL パースできないケース … 特別に "https://" + endpoint と解釈 (#1240)
-    endpoint = URL.canParse(endpoint) ? endpoint : `https://${endpoint}`;
-
-    // NOTE: URL path が "" や "/" のケース … 特別に "/.well-known/pp.json" と解釈 (#1240)
-    if (new URL(endpoint).origin === endpoint.replace(/[/]$/, "")) {
-      endpoint = new URL("/.well-known/pp.json", endpoint).href;
-    }
 
     let profileSet;
 
