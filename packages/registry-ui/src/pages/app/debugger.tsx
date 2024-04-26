@@ -1,11 +1,12 @@
-import { type ChangeEvent, type FormEvent, Fragment, useState } from "react";
-import clsx from "clsx";
+import { ProjectSummary } from "@originator-profile/ui";
 import {
-  RemoteKeys,
   ProfilesVerifier,
+  RemoteKeys,
+  expandProfilePairs,
   expandProfileSet,
 } from "@originator-profile/verify";
-import { ProjectSummary } from "@originator-profile/ui";
+import clsx from "clsx";
+import { Fragment, useState, type ChangeEvent, type FormEvent } from "react";
 import FormRow from "../../components/FormRow";
 
 type InitialValues = {
@@ -31,6 +32,19 @@ function loadInitialValues() {
 
 const initialValues = loadInitialValues();
 
+function EndpointInputField() {
+  return (
+    <FormRow label="Endpoint" htmlFor="endpoint">
+      <input
+        id="endpoint"
+        className="jumpu-input flex-1"
+        name="endpoint"
+        defaultValue={initialValues.endpoint}
+      />
+    </FormRow>
+  );
+}
+
 export default function Debugger() {
   const [values, setValues] = useState<Record<string, unknown>>({});
   const [presentation, setPresentation] = useState(
@@ -44,42 +58,65 @@ export default function Debugger() {
 
     const formData = new FormData(e.currentTarget);
     const registry = String(formData.get("registry"));
-    const endpoint = String(formData.get("endpoint"));
     const jsonld = String(formData.get("jsonld"));
+
+    let endpoint = String(formData.get("endpoint"));
+
+    // NOTE: URL パースできないケース … 特別に "https://" + endpoint と解釈 (#1240)
+    endpoint = URL.canParse(endpoint) ? endpoint : `https://${endpoint}`;
+
+    // NOTE: URL path が "" や "/" のケース … 特別に "/.well-known/pp.json" と解釈 (#1240)
+    if (new URL(endpoint).origin === endpoint.replace(/[/]$/, "")) {
+      endpoint = new URL("/.well-known/pp.json", endpoint).href;
+    }
 
     let profileSet;
 
     switch (presentation) {
-      case "direct":
+      case "direct": {
         try {
           profileSet = JSON.parse(jsonld);
         } catch {
           profileSet = jsonld;
         }
-        setValues({ registry, profileSet });
+        setValues({ registry, endpoint });
         saveInitialValues({ registry, endpoint, profileSet });
         break;
-      case "url":
-        {
-          setValues({ registry, endpoint });
-          saveInitialValues({ registry, endpoint });
+      }
+      case "url": {
+        setValues({ registry, endpoint });
+        saveInitialValues({ registry, endpoint });
 
-          const response = await fetch(endpoint)
-            .then((res) =>
-              res.ok
-                ? res.json()
-                : new Error(`${res.status} ${res.statusText}`),
-            )
-            .catch((e: Error) => e);
-          setValues((values) => ({ ...values, response }));
-          if (response instanceof Error) return;
+        const response = await fetch(endpoint)
+          .then((res) =>
+            res.ok ? res.json() : new Error(`${res.status} ${res.statusText}`),
+          )
+          .catch((e: Error) => e);
+        setValues((values) => ({ ...values, response }));
+        if (response instanceof Error) return;
 
-          profileSet = response;
-        }
+        profileSet = response;
         break;
+      }
     }
 
-    const expanded = await expandProfileSet(profileSet).catch((e) => e);
+    const pp = await expandProfilePairs(profileSet).catch((e) => e);
+    const isAdPp = pp.ad?.length > 0;
+    const isSitePp = pp.website?.length > 0;
+    const expanded = await expandProfileSet(
+      isAdPp
+        ? {
+            ...profileSet,
+            profile: [pp.ad[0].op.profile, pp.ad[0].dp.profile],
+          }
+        : isSitePp
+          ? {
+              ...profileSet,
+              profile: [pp.website[0].op.profile, pp.website[0].dp.profile],
+            }
+          : profileSet,
+    ).catch((e) => e);
+
     setValues((values) => ({ ...values, expanded }));
     if (expanded instanceof Error) return;
 
@@ -101,8 +138,8 @@ export default function Debugger() {
     <article className="max-w-3xl px-4 pt-12 pb-8 mx-auto">
       <h1 className="text-4xl font-bold mb-8">Profile Set Debugger</h1>
       <link href="/ps.json" rel="alternate" type="application/ld+json" />
-      <form className="mb-8" onSubmit={onSubmit}>
-        <FormRow className="mb-4" label="Registry" htmlFor="registry">
+      <form className="mb-8 flex flex-col gap-4" onSubmit={onSubmit}>
+        <FormRow label="Registry" htmlFor="registry">
           <input
             id="registry"
             className="jumpu-input flex-1"
@@ -112,7 +149,7 @@ export default function Debugger() {
           />
         </FormRow>
 
-        <FormRow className="mb-4" label="Profile Set Presentation">
+        <FormRow label="Profile Set Presentation">
           <div className="flex gap-1 items-center">
             <label className="flex items-center py-1">
               <input
@@ -139,23 +176,10 @@ export default function Debugger() {
           </div>
         </FormRow>
 
-        <FormRow
-          className={clsx("mb-4", { hidden: presentation !== "url" })}
-          label="Endpoint"
-          htmlFor="endpoint"
-        >
-          <input
-            id="endpoint"
-            className="jumpu-input flex-1"
-            name="endpoint"
-            type="url"
-            defaultValue={initialValues.endpoint}
-            hidden={presentation !== "url"}
-          />
-        </FormRow>
+        {presentation === "url" && <EndpointInputField />}
 
         <FormRow
-          className={clsx("mb-4", { hidden: presentation !== "direct" })}
+          className={clsx({ hidden: presentation !== "direct" })}
           label="Profile Set"
           htmlFor="jsonld"
         >
@@ -178,7 +202,7 @@ export default function Debugger() {
         <input className="jumpu-button" type="submit" value="Verify" />
       </form>
       {Object.entries(values).length > 0 && (
-        <h2 className="text-2xl font-bold mb-4">Result</h2>
+        <h2 className="text-2xl font-bold">Result</h2>
       )}
       <dl>
         {[...Object.entries(values)].map(([key, value]: [string, unknown]) => (
