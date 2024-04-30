@@ -32,14 +32,36 @@ function loadInitialValues() {
 
 const initialValues = loadInitialValues();
 
-function EndpointInputField() {
+function EndpointInputField({ hidden }: { hidden: boolean }) {
   return (
-    <FormRow label="Endpoint" htmlFor="endpoint">
+    <FormRow className={clsx({ hidden })} label="Endpoint" htmlFor="endpoint">
       <input
         id="endpoint"
         className="jumpu-input flex-1"
         name="endpoint"
         defaultValue={initialValues.endpoint}
+        hidden={hidden}
+      />
+    </FormRow>
+  );
+}
+
+function DirectInputField({ hidden }: { hidden: boolean }) {
+  return (
+    <FormRow className={clsx({ hidden })} label="Profile Set" htmlFor="jsonld">
+      <textarea
+        id="jsonld"
+        className="jumpu-textarea resize flex-1"
+        name="jsonld"
+        cols={12}
+        rows={18}
+        style={{ fontFamily: "monospace" }}
+        defaultValue={
+          initialValues.profileSet
+            ? JSON.stringify(initialValues.profileSet)
+            : ""
+        }
+        hidden={hidden}
       />
     </FormRow>
   );
@@ -182,28 +204,9 @@ export default function Debugger() {
           </div>
         </FormRow>
 
-        {presentation === "url" && <EndpointInputField />}
+        <EndpointInputField hidden={presentation !== "url"} />
 
-        <FormRow
-          className={clsx({ hidden: presentation !== "direct" })}
-          label="Profile Set"
-          htmlFor="jsonld"
-        >
-          <textarea
-            id="jsonld"
-            className="jumpu-textarea resize flex-1"
-            name="jsonld"
-            cols={12}
-            rows={18}
-            style={{ fontFamily: "monospace" }}
-            defaultValue={
-              initialValues.profileSet
-                ? JSON.stringify(initialValues.profileSet)
-                : ""
-            }
-            hidden={presentation !== "direct"}
-          />
-        </FormRow>
+        <DirectInputField hidden={presentation !== "direct"} />
 
         <input className="jumpu-button" type="submit" value="Verify" />
       </form>
