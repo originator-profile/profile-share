@@ -188,6 +188,37 @@ export class ProfileSet {
   }
 
   /**
+   * Website Profile のうち指定された OP を返す。なければ undefined
+   * @param opId OP の ID
+   * @param issuer OP の発行者。指定されなかった場合は OP ID だけで検索する。
+   * @returns OP または undefined
+   */
+  getWebsiteOp(opId: string, issuer?: string): OriginatorProfile | undefined {
+    return this.websiteProfiles.find(
+      (profile) =>
+        profile instanceof OriginatorProfile &&
+        profile.subject === opId &&
+        (!issuer || profile.issuer === issuer),
+    ) as OriginatorProfile;
+  }
+
+  /**
+   * Website Profile のうち指定された DP を返す。なければ undefined
+   * (TODO: Website用はSPに変更したいが、他の部分はDPのままなのでここもDPとしておく)
+   * @param subject DP の ID
+   * @param issuer DP の発行者の OP ID
+   * @returns DP または undefined
+   */
+  getWebsiteDp(subject: string, issuer: string): DocumentProfile | undefined {
+    return this.websiteProfiles.find(
+      (profile) =>
+        profile instanceof DocumentProfile &&
+        profile.subject === subject &&
+        profile.issuer === issuer,
+    ) as DocumentProfile;
+  }
+
+  /**
    * 全てのプロファイルを JSON オブジェクトに変換する。 sendMessage() などで送信する際に使用する。
    * @returns JSON オブジェクトに変換された全てのプロファイルと website Profile
    */

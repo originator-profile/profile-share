@@ -8,7 +8,8 @@ type Props = { back: string };
 
 function Org(props: Props) {
   const [queryParams] = useSearchParams();
-  const { orgIssuer, orgSubject } = useParams<{
+  const { contentType, orgIssuer, orgSubject } = useParams<{
+    contentType: string;
     orgIssuer: string;
     orgSubject: string;
   }>();
@@ -19,7 +20,10 @@ function Org(props: Props) {
   }
 
   const op =
-    orgSubject && orgIssuer ? profileSet.getOp(orgSubject, orgIssuer) : null;
+    orgSubject && orgIssuer
+      ? profileSet.getOp(orgSubject, orgIssuer) ||
+        profileSet.getWebsiteOp(orgSubject, orgIssuer)
+      : null;
 
   if (!op) {
     return <NotFound variant="op" />;
@@ -35,7 +39,15 @@ function Org(props: Props) {
       search: queryParams.toString(),
     },
   };
-  return <Template paths={paths} op={op} holder={holder} roles={roles} />;
+  return (
+    <Template
+      paths={paths}
+      contentType={contentType ?? "ドキュメント"}
+      op={op}
+      holder={holder}
+      roles={roles}
+    />
+  );
 }
 
 export default Org;

@@ -14,7 +14,6 @@ import Loading from "../components/Loading";
 function extractFromOpDp(
   op: OriginatorProfile | undefined,
   dp: DocumentProfile | undefined,
-  queryParams: URLSearchParams,
 ) {
   if (!(dp && op)) {
     return <NotFound variant="profile" />;
@@ -29,19 +28,12 @@ function extractFromOpDp(
   if (!holder) {
     return <NotFound variant="holder" />;
   }
-  const paths = {
-    org: {
-      pathname: routes.org.build(routes.org.getParams(op)),
-      search: queryParams.toString(),
-    },
-  } as const;
 
   return {
     op,
     dp,
     content,
     holder,
-    paths,
   };
 }
 
@@ -56,7 +48,46 @@ function extractFromProfiles(
   }
   const dp = profiles.getDp(subject, issuer);
   const op = profiles.getOp(issuer);
-  return extractFromOpDp(op, dp, queryParams);
+  if (!(dp && op)) {
+    return <NotFound variant="profile" />;
+  }
+  const article = extractFromOpDp(op, dp);
+  if (!("dp" in article)) {
+    return article;
+  }
+  return {
+    ...article,
+    paths: {
+      org: {
+        pathname: routes.org.build(
+          routes.org.getParams({ contentType: dp.getContentType(), op }),
+        ),
+        search: queryParams.toString(),
+      },
+    },
+  };
+}
+
+function extractFromProfilePair(
+  profiles: ProfileSet,
+  queryParams: URLSearchParams,
+) {
+  const { op, dp } = profiles.getWebsiteProfilePair();
+  const website = extractFromOpDp(op, dp);
+  if (!("dp" in website)) {
+    return website;
+  }
+  return {
+    ...website,
+    paths: {
+      org: {
+        pathname: routes.org.build(
+          routes.org.getParams({ contentType: "サイト", op }),
+        ),
+        search: queryParams.toString(),
+      },
+    },
+  };
 }
 
 function Publ() {
@@ -74,8 +105,7 @@ function Publ() {
   }
 
   const article = extractFromProfiles(profileSet, queryParams, issuer, subject);
-  const { op, dp } = profileSet.getWebsiteProfilePair();
-  const website = extractFromOpDp(op, dp, queryParams);
+  const website = extractFromProfilePair(profileSet, queryParams);
 
   const handleClickDp = (dp: DocumentProfile) => async () => {
     await chrome.tabs.sendMessage(Number(tabId), {

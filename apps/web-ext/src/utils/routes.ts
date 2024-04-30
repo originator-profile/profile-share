@@ -32,8 +32,14 @@ function urlParamsRoute<Path extends string, T>(
   };
 }
 
-function getOrgParams(op: OriginatorProfile) {
-  return { orgIssuer: op.issuer, orgSubject: op.subject };
+function getOrgParams({
+  contentType,
+  op,
+}: {
+  contentType: string;
+  op: OriginatorProfile;
+}) {
+  return { contentType, orgIssuer: op.issuer, orgSubject: op.subject };
 }
 
 function getPublParams(dp: DocumentProfile) {
@@ -42,7 +48,7 @@ function getPublParams(dp: DocumentProfile) {
 
 export const routes = {
   base: route("/tab/:tabId"),
-  org: urlParamsRoute("org/:orgIssuer/:orgSubject", getOrgParams),
+  org: urlParamsRoute("org/:contentType/:orgIssuer/:orgSubject", getOrgParams),
   publ: urlParamsRoute("publ/:issuer/:subject", getPublParams),
   site: route("site"),
   prohibition: route("prohibition"),
