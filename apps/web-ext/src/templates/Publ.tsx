@@ -15,7 +15,7 @@ import {
   useModal,
 } from "@originator-profile/ui";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
-import HolderSummary from "../components/HolderSummary";
+import HolderSummaryCard from "../components/HolderSummaryCard";
 import DpSelector from "../components/DpSelector";
 import DpFilter from "../components/DpFilter";
 import { BidResponse } from "../components/rtb";
@@ -107,7 +107,7 @@ function Site({ op, dp, website, holder, paths }: Required<Props>["website"]) {
           </div>
         </div>
         <div className="mb-3" data-testid="pp-json-holder">
-          <HolderSummary to={paths.org} holder={holder} />
+          <HolderSummaryCard to={paths.org} holder={holder} />
         </div>
       </div>
     </div>
@@ -170,7 +170,7 @@ function Main({
           </p>
         </div>
         <div className="mb-3" data-testid="ps-json-holder">
-          <HolderSummary to={paths.org} holder={holder} />
+          <HolderSummaryCard to={paths.org} holder={holder} />
         </div>
         <hr className="mb-3" />
         <div className="flex flex-row gap-3 mb-2">
