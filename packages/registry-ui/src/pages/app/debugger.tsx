@@ -163,10 +163,10 @@ export default function Debugger() {
     setValues((values) => ({ ...values, results }));
   }
   return (
-    <article className="max-w-3xl px-4 pt-12 pb-8 mx-auto">
-      <h1 className="text-4xl font-bold mb-8">Profile Set Debugger</h1>
+    <article className="max-w-3xl px-4 pt-12 pb-8 space-y-8 mx-auto">
+      <h1 className="text-4xl font-bold">Profile Set Debugger</h1>
       <link href="/ps.json" rel="alternate" type="application/ld+json" />
-      <form className="mb-8 flex flex-col gap-4" onSubmit={onSubmit}>
+      <form className="flex flex-col gap-4" onSubmit={onSubmit}>
         <FormRow label="Registry" htmlFor="registry">
           <input
             id="registry"
@@ -211,22 +211,26 @@ export default function Debugger() {
         <input className="jumpu-button" type="submit" value="Verify" />
       </form>
       {Object.entries(values).length > 0 && (
-        <h2 className="text-2xl font-bold">Result</h2>
+        <section className="[&>:first-child]:mb-4">
+          <h2 className="text-2xl font-bold">Result</h2>
+          <dl>
+            {[...Object.entries(values)].map(
+              ([key, value]: [string, unknown]) => (
+                <Fragment key={key}>
+                  <dt className="text-sm font-bold mb-2">{key}</dt>
+                  <dd className="ml-4 mb-6">
+                    <pre className="jumpu-card block text-sm font-mono bg-gray-50 px-3 py-2 overflow-auto">
+                      {typeof value === "string" || value instanceof Error
+                        ? String(value)
+                        : JSON.stringify(value, null, "  ")}
+                    </pre>
+                  </dd>
+                </Fragment>
+              ),
+            )}
+          </dl>
+        </section>
       )}
-      <dl>
-        {[...Object.entries(values)].map(([key, value]: [string, unknown]) => (
-          <Fragment key={key}>
-            <dt className="text-sm font-bold mb-2">{key}</dt>
-            <dd className="ml-4 mb-6">
-              <pre className="jumpu-card block text-sm font-mono bg-gray-50 px-3 py-2 overflow-auto">
-                {typeof value === "string" || value instanceof Error
-                  ? String(value)
-                  : JSON.stringify(value, null, "  ")}
-              </pre>
-            </dd>
-          </Fragment>
-        ))}
-      </dl>
       <ProjectSummary />
     </article>
   );
