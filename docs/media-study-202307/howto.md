@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 # 実装の確認と CMS の対応
@@ -614,6 +614,8 @@ Document Profile レジストリ-->>利用者: Profile Set
 利用者->>利用者: コンテンツ情報の閲覧と検証
 ```
 
+<!-- docs/registry/wordpress-integration.md より -->
+
 Wordpress 連携プラグインは、 [hook](https://developer.wordpress.org/plugins/hooks/) によって、 Wordpress 本体からトリガーされ、そのフックに対応した処理を実行します。
 
 1. `activate_plugin` hook が、プラグインを最初に有効化した際にトリガーされ、公開鍵ペアを生成して、プライベート鍵を Wordpress のサーバー内に保存します。
@@ -623,8 +625,6 @@ Wordpress 連携プラグインは、 [hook](https://developer.wordpress.org/plu
 5. ユーザーが、OP拡張機能をクリックすると、拡張機能はこの <link\> 要素から、記事に対応する Profile Set を取得・検証し、記事の信頼性や情報を表示します。
 
 以降の説明では、 (2), (3), (4) を実装する際のガイドを提供します。それぞれ、 SDP の生成、 SDP の登録、 Profile Set の配信に対応します。
-
-<!-- docs/registry/wordpress-integration.md より -->
 
 #### SDP の生成
 
@@ -713,9 +713,9 @@ SDP ペイロード部:
 ```
 
 この `jws` は記事コンテンツに対する署名であり、記事担当者が保持するプライベート鍵を使って生成する必要があります。記事コンテンツ中のどの部分に署名するかは、署名をする際に選ぶことができます。これは CSS セレクターで指定する必要があります。 `location` プロパティがその値です。
-選択したコンテンツは、記事ページ上で拡張機能を起動した際に、SDP の検証が通ればハイライトされます。
+選択したコンテンツは、記事ページ上で拡張機能を起動した際に、ハイライトされ、署名の検証が通った場合には、ツールチップに署名対象文字列が表示されます。下の画像の場合、署名対象文字列は「これはサブコンテンツです。」になります。
 
-![拡張機能による検証コンテンツのハイライト](assets/web-ext-text-highlighting.png)
+![拡張機能による検証コンテンツのハイライト](./assets/jws-verification-success-tooltip.png)
 
 署名対象の記事コンテンツによって3種類のデータ構造が定義されています。これは上記の JSON の中の `type` プロパティで指定します。自身のニーズに合わせて選んでください。
 
@@ -741,7 +741,7 @@ JWS ヘッダー部:
 }
 ```
 
-CIP 実装の Wordpress プラグインでは、このように実装されています。
+CIP 実装の Wordpress プラグインでは、このように[実装されています](https://github.com/originator-profile/profile-share/blob/v0.0.9/packages/wordpress/includes/issue.php#L201-L229)。
 
 ```php
 /**
@@ -760,7 +760,7 @@ function sign_body( string $body, string $pkcs8 ): string|false {
 		return false;
 	}
 
-  // JWS のヘッダーを生成しています。
+	// JWS のヘッダーを生成しています。
 	$header = array(
 		'alg'  => $jwk['alg'],
 		'kid'  => $jwk['kid'],
@@ -774,7 +774,7 @@ function sign_body( string $body, string $pkcs8 ): string|false {
 
 		 eyJ...fQ.あいうえお
 
-	　　この文字列に対する署名が $signature です。
+	   この文字列に対する署名が $signature です。
 	*/
 	$data      = "{$protected}.{$body}";
 	$signature = ( new Sha256() )->sign( $data, InMemory::plainText( $pkcs8 ) );
@@ -798,7 +798,7 @@ function sign_body( string $body, string $pkcs8 ): string|false {
 
 最後に DP に署名をして SDP を作ってください。一般的な JWT の仕様である [RFC 7519](https://www.rfc-editor.org/rfc/rfc7519) に従ってください。署名に使うプライベート鍵としてはレジストリに登録した公開鍵に対応するものを使ってください。
 
-CIP の Wordpress 連携では次のように実装されています。
+CIP の Wordpress 連携では [lcobucci/jwt](https://github.com/lcobucci/jwt) を使用し、次のように[実装されています](https://github.com/originator-profile/profile-share/blob/v0.0.9/packages/wordpress/includes/class-dp.php#L96-L115)。
 
 ```php
 		$builder = (

@@ -4,6 +4,7 @@ sidebar_position: 0
 
 # ドキュメント
 
+- [OP 技術について](tech.md)
 - [仕様](spec.md)
 - [開発ガイド](development/)
 - [Profile Registry](registry/)
