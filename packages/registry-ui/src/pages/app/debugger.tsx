@@ -107,7 +107,7 @@ export default function Debugger() {
         } catch {
           profileSet = jsonld;
         }
-        setValues({ registry, endpoint });
+        setValues({ registry, profileSet });
         saveInitialValues({ registry, endpoint, profileSet });
         break;
       }
