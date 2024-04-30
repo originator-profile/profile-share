@@ -33,8 +33,14 @@ function loadInitialValues() {
 const initialValues = loadInitialValues();
 
 function EndpointInputField({ hidden }: { hidden: boolean }) {
+  const helpText = `Profile Set を取得するエンドポイントです。URL ではない場合、ドメイン名とみなして https スキームと連結します。URL パスを含まない場合、サイトプロファイル Well-known URL パスと連結します。`;
   return (
-    <FormRow className={clsx({ hidden })} label="Endpoint" htmlFor="endpoint">
+    <FormRow
+      className={clsx({ hidden })}
+      label="Endpoint"
+      htmlFor="endpoint"
+      helpText={helpText}
+    >
       <input
         id="endpoint"
         className="jumpu-input flex-1"
