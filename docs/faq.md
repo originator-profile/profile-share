@@ -62,6 +62,36 @@ DP は記事の公開と同時に発行され、記事閲覧ユーザーから�
 
 OP CIP 提供の DP Store (dprexpt.originator-profile.org) では、保存されている DP が更新された際に、古い DP も DB に残してあります。しかし、 DP のデータには、 DP の更新履歴やバージョンについての情報はありません。ユーザーには最新の DP の情報だけが提示されます。
 
+## 類似技術との比較
+
+### Trusted Web との関係を教えてください
+
+[Trusted Web](https://trustedweb.go.jp/) では Verifiable ID に紐付く Verifiable Data を相互に検証しつつ送り合う Verifiable Message としてやり取りし、事後検証 (Trace) 可能な Verifiable Transaction として記録する Verifiable Messaging を推進しています。
+
+OP では、 OP ID に紐付く署名付きデータ SOP, SDP, SAP などをサーバから Profile Set として送りブラウザで検証しますが、コンテンツ作成・送信履歴などを記録・検証可能化する Verifiable Transaction 機能は要求していません。広告取引においても、 OP ID に紐付く RTB 取引内のデータ(の一部)に署名付与し Bid Request/Responce を相互検証するか、性能要件上 RTB 処理中の検証などが難しい部分は事後検証可能な Verifiable Transaction 機能を果たすログにより検証可能化する検討をしています。
+
+### C2PA, CAI, Project Origin との関係を教えてください
+
+[Coalition for Content Provenance and Authenticity (C2PA)](https://c2pa.org/), [Content Authenticity Initiative (CAI)](https://contentauthenticity.org/), [Project Origin](https://www.originproject.info/) はどれも画像や動画などのメディアファイルに詳細な来歴情報を署名付きで記載可能にするプロジェクトですが、来歴情報に含まれる各組織や個人の ID の信頼性を判断するための仕組みがまだないため、ドメイン保有者の信頼性判断ができないのとほぼ同じ問題がそのまま残る可能性があります。
+
+また、OP とは実装スコープの重なりが少なく、相補的な技術として組み合わせられる可能性があります。例えば、 C2PA ID と OP ID の参照関係を作れば、C2PA ID の信頼性を OP レジストリで確認可能になったり、OP でのメディアファイル署名技術の選択肢として C2PA が採用可能になるなど、 OP, C2PA 双方のメリットを享受できます。
+
+### JTI Standards (CWA 17493) との関係を教えてください
+
+[Journalism Trust Initiative](https://www.journalismtrustinitiative.org/) の [JTI Standards CWA 17493](https://www.jti-app.com/footer/cwa) は、メディアの透明性を高めるための組織情報として何を公開すべきかを定めた標準に従いメディアの情報を登記する仕組みを作るものです。OP のように組織情報を Web コンテンツに対して紐付けしたり改竄不能な署名を施す技術ではありません。一方で、OP で確認する組織情報より広い情報を含めるものでメディア組織の透明性を高める効果があるため、OP レジストリ登録時の確認作業を JTI で実施済みとして簡略化や委任したり、資格情報の一つとして JTI Apps 登録を扱うなどの協力関係が想定できます。
+
+<!-- ### Open Badges との関係を教えてください -->
+
+### VC との関係を教えてください
+
+Verifiable Credentials (VC), Verifiable Presentations (VP) 関連の一連の仕様は、 Credential を暗号論的安全でプライバシーを保ち機械的検証可能な形で表現し、送信・受信したり、選択的開示 (Selective Disclosure) を実現するための標準です。
+
+OP では SOP, SDP のデータフォーマットとして Verifiable Credentials (VCs) を採用しています。一方で Verifiable Presentation は利用していません。 OP では、 SOP, SDP を受け渡す際には、 OP の用途に最適な Profile Set, Profile Pair など独自のフォーマットを定義しています。また、 OP の機能のうち Web コンテンツへの紐付けや ID (OP ID) の信頼性を判断する仕組みなどは、 VC/VP のスコープ外です。
+
+### DID との関係を教えてください
+
+OP は Decentralized Identifiers (DIDs) を採用していません。
+
 (お問い合わせに応じて随時追記します)
 
 ## 編集履歴
