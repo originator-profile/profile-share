@@ -102,12 +102,12 @@ function Org({ contentType, op, holder, paths }: Props) {
       <BackHeader className="sticky top-0" to={paths.back}>
         <h1 className="text-sm">{holder.name}</h1>
       </BackHeader>
-      <div className="bg-white p-4 pb-2">
-        <div className="gap-0.5">
+      <div className="bg-white px-4 border-b border-gray-200">
+        <div className="text-center pt-4">
           <p className="text-base font-bold text-primary-800">
             {`この${contentType}の${contentType === "サイト" ? "運営者" : "発行者"}には信頼性情報があります`}
           </p>
-          <p className="text-xss text-primary-700 py-2 gap-1">
+          <p className="text-xs text-primary-700 py-2 inline-flex items-center gap-1">
             <Icon
               className="inline w-3 h-3 mr-1"
               icon="material-symbols:help"
@@ -115,10 +115,10 @@ function Org({ contentType, op, holder, paths }: Props) {
             信頼性情報について
           </p>
         </div>
-        <div className="mb-3" data-testid="ps-json-holder">
+        <div data-testid="ps-json-holder" className="flex justify-center pb-4">
           <HolderSummary holder={holder} />
         </div>
-        <div role="tablist">
+        <div role="tablist" className="grid grid-cols-2 py-3">
           <Tab
             id="reliability-tab"
             role="tab"
