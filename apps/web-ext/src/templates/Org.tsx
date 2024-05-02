@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { OpCredential, OpHolder } from "@originator-profile/model";
+import { OpCredential, OpHolder, OgWebsite } from "@originator-profile/model";
 import {
   HolderTable,
   Description,
@@ -16,6 +16,7 @@ import BackHeader from "../components/BackHeader";
 
 type Props = {
   contentType: string;
+  site?: OgWebsite;
   op: OriginatorProfile;
   holder: OpHolder;
   roles: Role[];
@@ -27,13 +28,13 @@ type Props = {
   };
 };
 
-function Org({ contentType, op, holder, paths }: Props) {
+function Org({ contentType, site, op, holder, paths }: Props) {
   const credentials = op.listCredentialItems();
   const credentialModal = useModal<OpCredential>();
   return (
     <>
       <BackHeader className="sticky top-0" to={paths.back}>
-        <h1 className="text-sm">{holder.name}</h1>
+        <h1 className="text-sm">{site?.title}</h1>
       </BackHeader>
       <div className="bg-white p-4 pb-2">
         <div className="gap-0.5">
