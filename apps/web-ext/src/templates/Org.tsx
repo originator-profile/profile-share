@@ -14,6 +14,57 @@ import { useModal } from "@originator-profile/ui/src/utils";
 import HolderSummary from "../components/HolderSummary";
 import BackHeader from "../components/BackHeader";
 
+function ReliabilityInfo(props: { op: OriginatorProfile }) {
+  const credentials = props.op.listCredentialItems();
+  const credentialModal = useModal<OpCredential>();
+  return (
+    <>
+      <ul className="mb-4">
+        {credentials.map((credential, index) => (
+          <li className="mb-2" key={index}>
+            <CredentialSummary
+              className="w-full"
+              credential={credential}
+              certifier={props.op.findCertifier(credential.certifier)}
+              onClick={credentialModal.onOpen}
+            />
+          </li>
+        ))}
+      </ul>
+      <Modal open={credentialModal.open} onClose={credentialModal.onClose}>
+        {credentialModal.value && (
+          <CredentialDetail
+            className="rounded-b-none"
+            credential={credentialModal.value}
+          />
+        )}
+      </Modal>
+    </>
+  );
+}
+
+function OrgInfo(props: { op: OriginatorProfile; holder: OpHolder }) {
+  return (
+    <>
+      <h2 className="text-sm text-gray-600 font-bold mb-3">所有者情報</h2>
+      <div className="jumpu-card p-4 mb-4">
+        <HolderTable holder={props.holder} />
+        {props.holder.description && (
+          <Description description={props.holder.description} />
+        )}
+      </div>
+      <h2 className="text-sm text-gray-600 font-bold mb-3">技術情報</h2>
+      <div className="jumpu-card p-4">
+        <TechTable
+          className="p-4"
+          profile={props.op}
+          issuer={props.op.findCertifier(props.op.issuer)?.name}
+        />
+      </div>
+    </>
+  );
+}
+
 type Props = {
   contentType: string;
   op: OriginatorProfile;
@@ -28,8 +79,6 @@ type Props = {
 };
 
 function Org({ contentType, op, holder, paths }: Props) {
-  const credentials = op.listCredentialItems();
-  const credentialModal = useModal<OpCredential>();
   return (
     <>
       <BackHeader className="sticky top-0" to={paths.back}>
@@ -52,39 +101,8 @@ function Org({ contentType, op, holder, paths }: Props) {
           <HolderSummary holder={holder} />
         </div>
       </div>
-      <ul className="mb-4">
-        {credentials.map((credential, index) => (
-          <li className="mb-2" key={index}>
-            <CredentialSummary
-              className="w-full"
-              credential={credential}
-              certifier={op.findCertifier(credential.certifier)}
-              onClick={credentialModal.onOpen}
-            />
-          </li>
-        ))}
-      </ul>
-      <Modal open={credentialModal.open} onClose={credentialModal.onClose}>
-        {credentialModal.value && (
-          <CredentialDetail
-            className="rounded-b-none"
-            credential={credentialModal.value}
-          />
-        )}
-      </Modal>
-      <h2 className="text-sm text-gray-600 font-bold mb-3">所有者情報</h2>
-      <div className="jumpu-card p-4 mb-4">
-        <HolderTable holder={holder} />
-        {holder.description && <Description description={holder.description} />}
-      </div>
-      <h2 className="text-sm text-gray-600 font-bold mb-3">技術情報</h2>
-      <div className="jumpu-card p-4">
-        <TechTable
-          className="p-4"
-          profile={op}
-          issuer={op.findCertifier(op.issuer)?.name}
-        />
-      </div>
+      <ReliabilityInfo op={op} />
+      <OrgInfo op={op} holder={holder} />
     </>
   );
 }
