@@ -61,23 +61,27 @@ function ReliabilityInfo(props: { op: OriginatorProfile }) {
 
 function OrgInfo(props: { op: OriginatorProfile; holder: OpHolder }) {
   return (
-    <>
-      <h2 className="text-sm text-gray-600 font-bold mb-3">所有者情報</h2>
-      <div className="jumpu-card p-4 mb-4">
-        <HolderTable holder={props.holder} />
-        {props.holder.description && (
-          <Description description={props.holder.description} />
-        )}
-      </div>
-      <h2 className="text-sm text-gray-600 font-bold mb-3">技術情報</h2>
-      <div className="jumpu-card p-4">
-        <TechTable
-          className="p-4"
-          profile={props.op}
-          issuer={props.op.findCertifier(props.op.issuer)?.name}
-        />
-      </div>
-    </>
+    <div className="space-y-4">
+      {props.holder.description && (
+        <Description description={props.holder.description} onlyBody />
+      )}
+      <section>
+        <h2 className="text-xs text-gray-600 font-bold mb-3">組織情報</h2>
+        <div className="jumpu-card p-4">
+          <HolderTable holder={props.holder} />
+        </div>
+      </section>
+      <section>
+        <h2 className="text-xs text-gray-600 font-bold mb-3">技術情報</h2>
+        <div className="jumpu-card p-4">
+          <TechTable
+            className="p-4"
+            profile={props.op}
+            issuer={props.op.findCertifier(props.op.issuer)?.name}
+          />
+        </div>
+      </section>
+    </div>
   );
 }
 
