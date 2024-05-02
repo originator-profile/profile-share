@@ -16,6 +16,26 @@ import { useModal } from "@originator-profile/ui/src/utils";
 import HolderSummary from "../components/HolderSummary";
 import BackHeader from "../components/BackHeader";
 
+function ExternalLink(props: React.ComponentProps<"a">) {
+  return (
+    <a
+      className={clsx(
+        "jumpu-card flex items-center gap-2.5 px-3 py-5 text-sm hover:bg-blue-50",
+        props.className,
+      )}
+      target="_blank"
+      rel="noreferrer"
+      {...props}
+    >
+      <span>{props.children}</span>
+      <Icon
+        className="text-gray-500"
+        icon="fa6-solid:arrow-up-right-from-square"
+      />
+    </a>
+  );
+}
+
 function Tab(props: React.ComponentProps<"button">) {
   return (
     <button
@@ -30,23 +50,43 @@ function Tab(props: React.ComponentProps<"button">) {
   );
 }
 
-function ReliabilityInfo(props: { op: OriginatorProfile }) {
+function ReliabilityInfo(props: { op: OriginatorProfile; holder: OpHolder }) {
   const credentials = props.op.listCredentialItems();
   const credentialModal = useModal<OpCredential>();
   return (
-    <>
-      <ul className="mb-4">
-        {credentials.map((credential, index) => (
-          <li className="mb-2" key={index}>
-            <CredentialSummary
-              className="w-full"
-              credential={credential}
-              certifier={props.op.findCertifier(credential.certifier)}
-              onClick={credentialModal.onOpen}
-            />
-          </li>
-        ))}
-      </ul>
+    <div className="space-y-4">
+      {props.holder.publishingPrincipleUrl && (
+        <section>
+          <h2 className="text-xs text-gray-600 mb-3">編集ガイドライン</h2>
+          <ExternalLink href={props.holder.publishingPrincipleUrl}>
+            {props.holder.publishingPrincipleTitle ??
+              props.holder.publishingPrincipleUrl}
+          </ExternalLink>
+        </section>
+      )}
+      {props.holder.privacyPolicyUrl && (
+        <section>
+          <h2 className="text-xs text-gray-600 mb-3">プライバシーポリシー</h2>
+          <ExternalLink href={props.holder.privacyPolicyUrl}>
+            {props.holder.privacyPolicyTitle ?? props.holder.privacyPolicyUrl}
+          </ExternalLink>
+        </section>
+      )}
+      <section>
+        <h2 className="text-xs text-gray-600 mb-3">資格情報</h2>
+        <ul className="space-y-2">
+          {credentials.map((credential, index) => (
+            <li key={index}>
+              <CredentialSummary
+                className="w-full"
+                credential={credential}
+                certifier={props.op.findCertifier(credential.certifier)}
+                onClick={credentialModal.onOpen}
+              />
+            </li>
+          ))}
+        </ul>
+      </section>
       <Modal open={credentialModal.open} onClose={credentialModal.onClose}>
         {credentialModal.value && (
           <CredentialDetail
@@ -55,7 +95,7 @@ function ReliabilityInfo(props: { op: OriginatorProfile }) {
           />
         )}
       </Modal>
-    </>
+    </div>
   );
 }
 
@@ -66,13 +106,13 @@ function OrgInfo(props: { op: OriginatorProfile; holder: OpHolder }) {
         <Description description={props.holder.description} onlyBody />
       )}
       <section>
-        <h2 className="text-xs text-gray-600 font-bold mb-3">組織情報</h2>
+        <h2 className="text-xs text-gray-600 mb-3">組織情報</h2>
         <div className="jumpu-card p-4">
           <HolderTable holder={props.holder} />
         </div>
       </section>
       <section>
-        <h2 className="text-xs text-gray-600 font-bold mb-3">技術情報</h2>
+        <h2 className="text-xs text-gray-600 mb-3">技術情報</h2>
         <div className="jumpu-card p-4">
           <TechTable
             className="p-4"
@@ -139,7 +179,7 @@ function Org({ contentType, op, holder, paths }: Props) {
             aria-controls="org-panel"
             onClick={handleClick("org")}
           >
-            組織
+            組織情報
           </Tab>
         </div>
       </div>
@@ -150,7 +190,7 @@ function Org({ contentType, op, holder, paths }: Props) {
         hidden={tab !== "reliability"}
         className="p-4"
       >
-        <ReliabilityInfo op={op} />
+        <ReliabilityInfo op={op} holder={holder} />
       </div>
       <div
         id="org-panel"
