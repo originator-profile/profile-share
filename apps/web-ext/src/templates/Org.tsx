@@ -1,3 +1,5 @@
+import { useState } from "react";
+import clsx from "clsx";
 import { Icon } from "@iconify/react";
 import { OpCredential, OpHolder } from "@originator-profile/model";
 import {
@@ -13,6 +15,20 @@ import {
 import { useModal } from "@originator-profile/ui/src/utils";
 import HolderSummary from "../components/HolderSummary";
 import BackHeader from "../components/BackHeader";
+
+function Tab(props: React.ComponentProps<"button">) {
+  return (
+    <button
+      className={clsx(
+        "text-sm rounded jumpu-button",
+        props["aria-selected"] || "bg-white text-gray-600",
+        props.className,
+      )}
+      type="button"
+      {...props}
+    />
+  );
+}
 
 function ReliabilityInfo(props: { op: OriginatorProfile }) {
   const credentials = props.op.listCredentialItems();
@@ -79,6 +95,8 @@ type Props = {
 };
 
 function Org({ contentType, op, holder, paths }: Props) {
+  const [tab, setTab] = useState<"reliability" | "org">("reliability");
+  const handleClick = (value: typeof tab) => () => setTab(value);
   return (
     <>
       <BackHeader className="sticky top-0" to={paths.back}>
@@ -100,9 +118,43 @@ function Org({ contentType, op, holder, paths }: Props) {
         <div className="mb-3" data-testid="ps-json-holder">
           <HolderSummary holder={holder} />
         </div>
+        <div role="tablist">
+          <Tab
+            id="reliability-tab"
+            role="tab"
+            aria-selected={tab === "reliability"}
+            aria-controls="reliability-panel"
+            onClick={handleClick("reliability")}
+          >
+            信頼性情報
+          </Tab>
+          <Tab
+            id="org-tab"
+            role="tab"
+            aria-selected={tab === "org"}
+            aria-controls="org-panel"
+            onClick={handleClick("org")}
+          >
+            組織
+          </Tab>
+        </div>
       </div>
-      <ReliabilityInfo op={op} />
-      <OrgInfo op={op} holder={holder} />
+      <div
+        id="reliability-panel"
+        role="tabpanel"
+        aria-labelledby="reliability-tab"
+        hidden={tab !== "reliability"}
+      >
+        <ReliabilityInfo op={op} />
+      </div>
+      <div
+        id="org-panel"
+        role="tabpanel"
+        aria-labelledby="org-tab"
+        hidden={tab !== "org"}
+      >
+        <OrgInfo op={op} holder={holder} />
+      </div>
     </>
   );
 }
