@@ -147,7 +147,7 @@ function Org({ contentType, op, holder, paths }: Props) {
         <h1 className="text-sm">{holder.name}</h1>
       </BackHeader>
       <div className="bg-white px-4 border-b border-gray-200">
-        <div className="text-center pt-4">
+        <div className="text-center pt-4 space-y-1 pb-2">
           <p className="text-base font-bold text-primary-800">
             {`この${contentType}の${contentType === "サイト" ? "運営者" : "発行者"}には信頼性情報があります`}
           </p>
