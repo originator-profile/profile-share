@@ -98,7 +98,7 @@ function Org({ contentType, op, holder, paths }: Props) {
   const [tab, setTab] = useState<"reliability" | "org">("reliability");
   const handleClick = (value: typeof tab) => () => setTab(value);
   return (
-    <>
+    <article className="bg-gray-50 flex flex-col min-h-dvh">
       <BackHeader className="sticky top-0" to={paths.back}>
         <h1 className="text-sm">{holder.name}</h1>
       </BackHeader>
@@ -144,6 +144,7 @@ function Org({ contentType, op, holder, paths }: Props) {
         role="tabpanel"
         aria-labelledby="reliability-tab"
         hidden={tab !== "reliability"}
+        className="p-4"
       >
         <ReliabilityInfo op={op} />
       </div>
@@ -152,10 +153,11 @@ function Org({ contentType, op, holder, paths }: Props) {
         role="tabpanel"
         aria-labelledby="org-tab"
         hidden={tab !== "org"}
+        className="p-4"
       >
         <OrgInfo op={op} holder={holder} />
       </div>
-    </>
+    </article>
   );
 }
 
