@@ -10,9 +10,10 @@ export default function useSanitizedHtml(
     dangerousHtml,
     "text/html",
   );
-  for (const anchor of descriptionDocument.getElementsByTagName("a")) {
-    anchor.target = "_blank";
-    anchor.rel = "noopener noreferrer";
-  }
+  DOMPurify.addHook("afterSanitizeAttributes", (node) => {
+    if (node.tagName !== "A") return;
+    node.setAttribute("target", "_blank");
+    node.setAttribute("rel", "noopener noreferer");
+  });
   return DOMPurify.sanitize(descriptionDocument.body.innerHTML);
 }
