@@ -8,7 +8,9 @@ sidebar_position: 3
 
 DP Store は、 SDP と SOP を保存・管理し、 Profile Set を配信するためのサービスです。このサービスを使うことで、 CMS を OP 対応する際に必要な機能を簡単に実装することができます。
 
-{/* DP Store 自体に関する図が必要 */}
+import dpStoreJpeg from "./assets/dp-store.jpeg";
+
+<img src={dpStoreJpeg} width={550} />
 
 DP Store を使って CMP を OP 対応にする場合、次のようなシステム構成で実装してください。
 
@@ -67,46 +69,95 @@ OP CIP が開発した DP Store はこれらの機能を REST API として提�
 
 SDP を DP Store に登録します。これには DP Store (`dprexpt.originator-profile.org`) の [SDP登録用のエンドポイント](/media-study-202307/howto.md#パラメータadminpublisherアカウントiddp-エンドポイント) を利用します。
 
-このエンドポイントは、記事新規作成時だけでなく、記事更新時に SDP を修正したいときにも使用することができます。
-登録する SDP と id の等しい SDP がすでに DP Store に存在する場合には、既存の SDP を上書き更新します。そのため、 SDP 修正時もこのエンドポイントを利用して SDP の更新ができます。
-1つの URL に対して ID の異なる SDP を複数登録した場合、Profile Set に複数の SDP が入ります。
+登録の場合には DP Store の API を呼び出してください。次のようなリクエストを送ることで登録できます。
+
+```shell
+curl -X POST https://dprexpt.originator-profile.org/admin/publisher/8fe1b860-558c-5107-a9af-21c376a6a27c/dp/ \
+    -u 8fe1b860-558c-5107-a9af-21c376a6a27c:eqjyPR--HaS0mMj0wiDP1HA7yT1WGgYpHcUjDia3py8 \
+    -H 'Content-Type: application/json' \
+    -d '{"jwt":"eyJhbGciOiJFUzI1NiIsImtpZCI6IkQ1RDVQM1VyVjFWXzZVX3E5eUt2X2paX3E4U2hJdnJ4eTdFMlF5T2ZXWUUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJtZWRpYS5leGFtcGxlLmNvbSIsInN1YiI6IjAwZjQ3MGViLWVhZmQtNGEzOC04NTRjLWZiYjY5NjhhMTU5ZSIsImlhdCI6MTY4NzgyNzQ1OCwiZXhwIjoxNzE5NDQ5ODU4LCJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvZHAiOnsiaXRlbSI6W3sidHlwZSI6IndlYnNpdGUiLCJ1cmwiOiJodHRwczovL21lZGlhLmV4YW1wbGUuY29tL2FydGljbGVzL2hlbGxvLXdvcmxkLyIsInRpdGxlIjoi44Oh44OH44Kj44KiICjoqabpqJPnlKgpIn0seyJ0eXBlIjoidGV4dCIsInVybCI6Imh0dHBzOi8vbWVkaWEuZXhhbXBsZS5jb20vYXJ0aWNsZXMvaGVsbG8td29ybGQvIiwibG9jYXRpb24iOiIud3AtYmxvY2stcG9zdC1jb250ZW50IiwicHJvb2YiOnsiandzIjoiZXlKaGJHY2lPaUpGVXpJMU5pSXNJbXRwWkNJNklrUTFSRFZRTTFWeVZqRldYelpWWDNFNWVVdDJYMnBhWDNFNFUyaEpkbko0ZVRkRk1sRjVUMlpYV1VVaUxDSmlOalFpT21aaGJITmxMQ0pqY21sMElqcGJJbUkyTkNKZGZRLi5vc1d3SkVPLVRZNDhZQldRMEhRYVE0cGZOWm9UZEtWZ3U1YlBfbVVFbW1GNHowMGxhelZkcjFlTF93dUxBTXo3ZjItd084UVp2OGtXUElUcTVDLW80ZyJ9fV19fQ.ZXRG71IWfgt7MNoqt_sXSLOl7wkqqHsDXJL85UlUd-w0GxXOrFHziv11KXwBp5Wd8zoCZ5euGpn0t4zPxyPKSQ"}'
+```
+
+上記の例は、 curl コマンドで DP Store (`dprexpt.originator-profile.org`) の DP 登録エンドポイントへ POST リクエストを送っています。CIP から受け取った認証情報が `8fe1b860-558c-5107-a9af-21c376a6a27c:eqjyPR--HaS0mMj0wiDP1HA7yT1WGgYpHcUjDia3py8` だとしています。
+
+エンドポイントの URL は、アカウント ID を入れて `https://dprexpt.originator-profile.org/admin/publisher/8fe1b860-558c-5107-a9af-21c376a6a27c/dp/` とし、 `-u` オプションで上記アカウント ID とパスワードを `:` で連結した値を Basic 認証の認証情報として利用するようにしています。
+
+`-d` オプションでパラメータを指定しています。パラメータはリクエストのボディ部に JSON 形式で渡されます。このエンドポイントが受け付けるパラメータは `jwt` だけです。このパラメータにコンテンツに対する署名付き DP (SDP) を与えてください。
+
+記事公開後に記事を更新した場合、 SDP に記載した情報が古くなる場合があります。その場合は、新しい情報に更新した SDP を生成し、 DP Store に登録してください。
+
+上記のエンドポイントは記事新規作成時だけでなく記事更新時に SDP を修正したいときにも使用することができます。 API の呼び出し方は登録のときと変わりません。登録する SDP と DP ID の等しい SDP がすでに DP Store に存在する場合には、既存の SDP を上書き更新します。そのため、 SDP 修正時もこのエンドポイントを利用して SDP の更新ができます。
+
+:::note
+
+SDP を更新したいときには **DP ID を変更しないでください**。 DP ID を変更した場合は新規作成として扱われ、[/website/profiles エンドポイント](/media-study-202307/howto.md#websiteprofiles-エンドポイント詳細)使用時に古い SDP が Profile Set に残ります。
+
+:::
 
 記事を非公開にするなどで、登録した SDP を DP Store から削除したい場合には[記事を削除・非公開にした場合](/media-study-202307/sdp-case-study.md#記事を削除非公開にした場合)を参照してください。
 
+その他 SDP 発行に関する疑問点は [記事管理に関するケース毎の対応方法](sdp-case-study.md)を参照してください。
+
 ## 3. Profile Set の配信
 
-DP Store には保存された SDP と SOP から記事ページでの配信のためのフォーマットである Profile Set を配信する API があります。記事の URL で SDP を指定する [/website/profiles エンドポイント](/media-study-202307/howto.md#websiteprofiles-エンドポイント詳細)と、 DP ID（ SDP の sub クレーム）で指定する[/website/\{id\}/profiles エンドポイント](/registry/assets/api/#getdocumentprofileset)があります。どちらも GET リクエストに対して Profile Set をレスポンスとして返すため、 link 要素の href 属性にこれらのエンドポイントの URL をクエリパラメータを付けて設定することで、記事に Profile Set を紐づけることができます。
+公開した記事に SDP を紐づけるには、記事の HTML に Profile Set へのリンクを埋め込んでください。元の記事ページの HTML が左だとすると、右のように Profile Set へのリンクを追加します。記事を閲覧するユーザーはこのページで OP 拡張機能を開き、 OP 拡張機能が link 要素から Profile Set を取得し検証し、ユーザーに検証結果を表示します。
 
-例えば [/website/profiles エンドポイント](/media-study-202307/howto.md#websiteprofiles-エンドポイント詳細)を使う場合は、次のように link 要素を記事ページの HTML の head 要素配下に挿入します。
+<div style={{display: "flex", "align-items": "center", "justify-content": "space-evenly"}}>
+```
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta ... />
+    ...
+  </head>
+  <body>
+    ...
+  </body>
+</html>
+```
 
-```html
-<link
-  href="https://dprexpt.originator-profile.org/website/profiles?url=<記事のURL (RFC 3986 でエンコード) >"
-  rel="alternate"
-  type="application/ld+json"
-/>
+<span style={{ "font-size": "60px" }}>➡️</span>
+
+```
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta ... />
+    ...
+    <link
+      href="<Profile Set の URL>"
+      rel="alternate"
+      type="application/ld+json"
+    />
+    ...
+  </head>
+  <body>
+    ...
+  </body>
+</html>
+```
+
+</div>
+
+Profile Set の URL として、 DP Store が提供する API の URL を指定することができます。OP CIP 提供 DP Store の Profile Set 配信 API は、認証なしの GET リクエストに Profile Set を返却するため、 link 要素の href 属性にそのまま指定することができます。
+
+SDP の指定方法に応じて2つの API が利用できます。記事の URL で SDP を指定する [/website/profiles エンドポイント](/media-study-202307/howto.md#websiteprofiles-エンドポイント詳細)と、 DP ID（ SDP の sub クレーム）で指定する[/website/\{id\}/profiles エンドポイント](/registry/assets/api/#getdocumentprofileset)です。どちらも GET リクエストに対して Profile Set を返します。
+
+例えば [/website/profiles エンドポイント](/media-study-202307/howto.md#websiteprofiles-エンドポイント詳細)を使う場合は、 href 属性に指定する値は次のようになります。
+
+```
+https://dprexpt.originator-profile.org/website/profiles?url=<記事のURL (RFC 3986 でエンコード) >
+```
+
+[/website/\{id\}/profiles エンドポイント](/registry/assets/api/#getdocumentprofileset)を使う場合は次のようになります。 DP ID は SDP の sub クレームの値です。
+
+```
+https://dprexpt.originator-profile.org/website/<SDP の DP ID>/profiles
 ```
 
 CMS の実装としては、SDP を発行した記事に対して、このような link 要素の挿入を CMS が自動で行うようにしてください。
 
-:::note
-
-[/website/profiles エンドポイント](/media-study-202307/howto.md#websiteprofiles-エンドポイント詳細)は、指定した url にマッチするIDの異なる SDP が複数存在する場合、 **それら全てが Profile Set に含まれます。** 同じ ID の SDP が Profile Set に複数含まれることはありません。
-詳細は[同じ url の SDP を複数登録した場合](/media-study-202307/sdp-case-study.md#同じ-url-の-sdp-を複数登録した場合) を参照してください。
-
-:::
-
-[/website/\{id\}/profiles エンドポイント](/registry/assets/api/#getdocumentprofileset)を使う場合も同様で、次のような link 要素を CMS が自動で挿入するようにしてください。
-
-```html
-<link
-  href="https://dprexpt.originator-profile.org/website/<SDP の DP ID>/profiles"
-  rel="alternate"
-  type="application/ld+json"
-/>
-```
-
-どちらのエンドポイントを利用した場合でも、 SDP/SOP が存在する場合には 200 レスポンスで次のような Profile Set が返されます。存在しない場合は 404 レスポンスが返されます。
+どちらのエンドポイントを利用した場合でも、 SDP/SOP が存在する場合には次のような Profile Set が返されます。存在しない場合はステータスコード 404 でエラーメッセージを含む JSON が返されます。
 
 ```json
 {

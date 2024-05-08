@@ -103,7 +103,7 @@ import Image from "./assets/jws-verification-success-tooltip.png";
 
 ## 記事コンテンツに署名をする
 
-次に選んだコンテンツに署名をします。署名に使うプライベート鍵としてはレジストリに登録した公開鍵に対応するものを使ってください。
+次に選んだコンテンツに署名をします。署名に使うプライベート鍵としては OP レジストリに登録した公開鍵に対応するものを使ってください。
 
 この署名は [RFC 7797](https://www.rfc-editor.org/rfc/rfc7797) の Unencoded Payload Option を付与した JWS になっており、 JWS ヘッダー部の中の `b64` がそのオプションです。`crit` パラメータも必要となります。
 署名したいデータを base64 エンコードせずにそのまま使えるという特徴があります。また、上記 RFC の [Section 5.1](https://www.rfc-editor.org/rfc/rfc7797#section-5.1) にのっとり、ペイロード部は JWS から省略してください (Detached Payload) 。
@@ -130,7 +130,7 @@ CIP 実装の Wordpress プラグインでは、このように[実装されて�
  * @return string|false 成功した場合はDetached Compact JWS、失敗した場合はfalse
  */
 function sign_body( string $body, string $pkcs8 ): string|false {
-	// $pkey はレジストリに登録した公開鍵に対応するプライベート鍵です
+	// $pkey は OP レジストリに登録した公開鍵に対応するプライベート鍵です
 	$pkey = \openssl_pkey_get_private( $pkcs8 );
 	$jwk  = get_jwk( $pkey );
 
@@ -174,7 +174,7 @@ function sign_body( string $body, string $pkcs8 ): string|false {
 
 ## DP に署名をして SDP を作る
 
-最後に DP に署名をして SDP を作ってください。一般的な JWT の仕様である [RFC 7519](https://www.rfc-editor.org/rfc/rfc7519) に従ってください。署名に使うプライベート鍵としてはレジストリに登録した公開鍵に対応するものを使ってください。
+最後に DP に署名をして SDP を作ってください。一般的な JWT の仕様である [RFC 7519](https://www.rfc-editor.org/rfc/rfc7519) に従ってください。署名に使うプライベート鍵としては OP レジストリに登録した公開鍵に対応するものを使ってください。
 
 CIP の Wordpress 連携では [lcobucci/jwt](https://github.com/lcobucci/jwt) を使用し、次のように[実装されています](https://github.com/originator-profile/profile-share/blob/v0.0.9/packages/wordpress/includes/class-dp.php#L96-L115)。
 

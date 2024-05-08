@@ -8,17 +8,17 @@ sidebar_position: 2
 
 ![OP の仕組み](./assets/op-ihv.jpeg)
 
-情報発信者がレジストリに登録/確認を受けて証明書 (SOP) を受け取り、作成したコンテンツとその情報に署名した証明書 (SDP) と一緒にブラウザに送信する仕組みです。ブラウザは SOP, SDP を検証して受け取った情報の信頼性を確認・表示します。
+情報発信者がレジストリに登録/確認を受けて証明書 ([SOP](/terminology/signed-originator-profile.md)) を受け取り、作成したコンテンツとその情報に署名した証明書 ([SDP](/terminology/signed-document-profile.md)) と一緒にブラウザに送信する仕組みです。ブラウザは SOP, SDP を検証して受け取った情報の信頼性を確認・表示します。
 
 将来的には検索エンジンなどのボット・クローラーや、ファクトチェックや広告品質に関する機関が、標準化された OP の仕組みを利用することを想定しています。
 
-## プロファイル
+## データモデル
 
-さまざまなプロファイルがあります。その関係と違いは次の図に要約されます。
+OP ではいくつかのデータ形式を定義しています。その関係性や主な特徴は次の図の通りです。
 
-![プロファイルの関係](./assets/profiles.png)
+![OP で利用する VC の関係](./assets/profiles.png)
 
-OP, DP はデータフォーマットとして Verifiable Credential (VC) を採用しています。 VC の仕様に基づき署名がされているため、記載情報の改ざんができません。また、 VC の IHV モデルの利点から OP, DP を利用者が検証する際にレジストリ等にアクセスがなくプライバシーの懸念がないことも特徴です。 OP, DP は署名付き (Signed) であることから、それぞれ **SOP**, **SDP** と呼ぶことがあります。
+OP, DP はデータフォーマットとして Verifiable Credential (VC) を採用しています。 VC の仕様に基づき署名がされているため、記載情報の改ざんができません。また、 VC の IHV モデルの利点から OP, DP を利用者が検証する際にレジストリ等にアクセスがなくプライバシーの懸念がないことも特徴です。 OP, DP は署名付き (Signed) であることから、それぞれ **[SOP](/terminology/signed-originator-profile.md)**, **[SDP](/terminology/signed-document-profile.md)** と呼ぶことがあります。
 
 **SOP** は情報の発信者の身元を表明するためのデータです。内容には基本的な組織情報だけでなく、組織の情報発信者ポリシーや、信頼性を示す第三者認証など資格情報も含みます。 OP の情報を見ることでユーザーは正しさの保証された情報から組織の信頼性を判断することができます。
 
@@ -34,7 +34,7 @@ SDP はコンテンツ発信者が自己署名をします。 SOP のように�
 
 ## Web サイトでの利用
 
-SOP, SDP を Web サイト上で利用するためには、 Web ページの HTML に Profile Set, Profile Pair へのリンクを埋め込みます。ユーザーは OP 拡張機能を開くことで、コンテンツに紐づく SOP, SDP を確認することができます。
+SOP, SDP を Web サイト上で利用するためには、 Web ページの HTML に [Profile Set](/terminology/profile-set.md), [Profile Pair](/terminology/profile-pair.md) へのリンクを埋め込みます。ユーザーは OP 拡張機能を開くことで、コンテンツに紐づく SOP, SDP を確認することができます。
 
 import PopUpDp from "./assets/popup-dp.png";
 import popUpOp from "./assets/popup-op.png";
@@ -47,3 +47,9 @@ import popUpOp from "./assets/popup-op.png";
 ページ内の各コンテンツの位置も特定されます。
 
 ![ページ内に表示されるマーカー](./assets/markers.png)
+
+SOP, SDP の検証に失敗した場合、 OP 拡張機能に検証失敗の画面が表示されます。ユーザーに危険なサイトを閲覧している可能性があることを警告します。
+
+import verificationFailed from "./assets/verification-failed.png";
+
+<img src={verificationFailed} width={550} />
