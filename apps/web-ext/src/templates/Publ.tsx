@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
-import { OgWebsite, OpHolder } from "@originator-profile/model";
+import { OpHolder, OgWebsite } from "@originator-profile/model";
 import { DpItemContent } from "@originator-profile/core";
 import {
   Image,
@@ -22,8 +22,8 @@ import { BidResponse } from "../components/rtb";
 import { buildPublUrl } from "../utils/routes";
 
 type Props = {
+  profiles: ProfileSet;
   article?: {
-    profiles: ProfileSet;
     op: OriginatorProfile;
     dp: DocumentProfile;
     dpItemContent: DpItemContent;
@@ -38,7 +38,7 @@ type Props = {
   website?: {
     op: OriginatorProfile;
     dp: DocumentProfile;
-    website: OgWebsite;
+    dpItemContent: OgWebsite;
     holder: OpHolder;
     paths: {
       org: {
@@ -50,7 +50,13 @@ type Props = {
   handleClickDp: (dp: DocumentProfile) => () => void;
 };
 
-function Site({ op, dp, website, holder, paths }: Required<Props>["website"]) {
+function Site({
+  op,
+  dp,
+  dpItemContent,
+  holder,
+  paths,
+}: Required<Props>["website"]) {
   const techTableModal = useModal<{
     op: OriginatorProfile;
     dp: DocumentProfile;
@@ -84,14 +90,14 @@ function Site({ op, dp, website, holder, paths }: Required<Props>["website"]) {
         <div className="flex flex-col items-center gap-4">
           <Image
             className="flex-shrink-0 w-fit"
-            src={website.image}
+            src={dpItemContent.image}
             placeholderSrc={placeholderLogoMainUrl}
             alt=""
             width={240}
             height={44}
           />
           <h1 className="w-fit text-base text-gray-700 mb-2">
-            {website.title}
+            {dpItemContent.title}
           </h1>
           <div className="flex flex-col items-center mb-3">
             <p className="text-base font-bold text-primary-800">
@@ -209,14 +215,13 @@ function Publ(props: Props) {
   const { tabId } = useParams<{ tabId: string }>();
   const navigate = useNavigate();
 
-  const filteredDps = props.article?.profiles?.listDpsByType(contentType) ?? [];
+  const filteredDps = props.profiles.listDpsByType(contentType);
 
   function onFilterUpdate(
     contentType: "advertisement" | "main" | "all" | "other",
   ) {
     setContentType(contentType);
-    const NewlyFilteredDps =
-      props.article?.profiles.listDpsByType(contentType) ?? [];
+    const NewlyFilteredDps = props.profiles.listDpsByType(contentType);
     const dp = NewlyFilteredDps[0];
     if (dp) {
       navigate(buildPublUrl(tabId, dp));
