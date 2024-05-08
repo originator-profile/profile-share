@@ -33,7 +33,7 @@ function Org(props: Props) {
     return <NotFound variant="holder" />;
   }
   const roles = op.roles;
-  const site = profileSet.getWebsiteProfilePair().dp.findOgWebsiteItem();
+  const site = profileSet.getWebsiteProfilePair()?.dp.findOgWebsiteItem();
   const paths = {
     back: {
       pathname: props.back,
