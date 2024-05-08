@@ -36,20 +36,6 @@ function ExternalLink(props: React.ComponentProps<"a">) {
   );
 }
 
-function Tab(props: React.ComponentProps<"button">) {
-  return (
-    <button
-      className={clsx(
-        "text-sm rounded jumpu-button",
-        props["aria-selected"] || "bg-white text-gray-600",
-        props.className,
-      )}
-      type="button"
-      {...props}
-    />
-  );
-}
-
 function ReliabilityInfo(props: { op: OriginatorProfile; holder: OpHolder }) {
   const credentials = props.op.listCredentialItems();
   const credentialModal = useModal<OpCredential>();
@@ -125,6 +111,53 @@ function OrgInfo(props: { op: OriginatorProfile; holder: OpHolder }) {
   );
 }
 
+type Tabs = {
+  id: string;
+  name: string;
+  panel: React.ReactNode;
+}[];
+
+function useTabs(tabs: Tabs) {
+  const [activeTab, setActiveTab] = useState<
+    (typeof tabs)[number]["id"] | null
+  >(tabs[0]?.id ?? null);
+  const handleClick = (value: typeof activeTab) => () => setActiveTab(value);
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    const index = tabs.findIndex(({ id }) => id === activeTab);
+    let nextTab: (typeof tabs)[number] | undefined;
+    switch (event.key) {
+      case "ArrowRight":
+        event.preventDefault();
+        nextTab = tabs.at(index + 1) ?? tabs.at(0);
+        break;
+      case "ArrowLeft":
+        event.preventDefault();
+        nextTab = tabs.at(index - 1);
+        break;
+      case "Home":
+        event.preventDefault();
+        nextTab = tabs.at(0);
+        break;
+      case "End":
+        event.preventDefault();
+        nextTab = tabs.at(-1);
+        break;
+    }
+    if (!nextTab) return;
+    setActiveTab(nextTab.id);
+  };
+  const handleRef: React.RefCallback<HTMLButtonElement> = (node) => {
+    if (node?.ariaSelected === "true") node.focus();
+  };
+
+  return {
+    activeTab,
+    handleClick,
+    handleKeyDown,
+    handleRef,
+  };
+}
+
 type Props = {
   contentType: string;
   site?: OgWebsite;
@@ -140,8 +173,19 @@ type Props = {
 };
 
 function Org({ contentType, site, op, holder, paths }: Props) {
-  const [tab, setTab] = useState<"reliability" | "org">("reliability");
-  const handleClick = (value: typeof tab) => () => setTab(value);
+  const tabs = [
+    {
+      id: "reliability",
+      name: "信頼性情報",
+      panel: <ReliabilityInfo op={op} holder={holder} />,
+    },
+    {
+      id: "org",
+      name: "組織情報",
+      panel: <OrgInfo op={op} holder={holder} />,
+    },
+  ] as const satisfies Tabs;
+  const { activeTab, ...handlers } = useTabs(tabs);
   return (
     <article className="bg-gray-50 flex flex-col min-h-dvh">
       <BackHeader className="sticky top-0" to={paths.back}>
@@ -163,45 +207,41 @@ function Org({ contentType, site, op, holder, paths }: Props) {
         <div data-testid="ps-json-holder" className="flex justify-center pb-4">
           <HolderSummary holder={holder} />
         </div>
-        <div role="tablist" className="grid grid-cols-2 py-3">
-          <Tab
-            id="reliability-tab"
-            role="tab"
-            aria-selected={tab === "reliability"}
-            aria-controls="reliability-panel"
-            onClick={handleClick("reliability")}
-          >
-            信頼性情報
-          </Tab>
-          <Tab
-            id="org-tab"
-            role="tab"
-            aria-selected={tab === "org"}
-            aria-controls="org-panel"
-            onClick={handleClick("org")}
-          >
-            組織情報
-          </Tab>
+        <div role="tablist" className="grid grid-cols-2 gap-0.5 py-3">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              id={`${tab.id}-tab`}
+              className={clsx(
+                "text-sm rounded jumpu-button",
+                activeTab !== tab.id && "bg-white text-gray-600",
+              )}
+              role="tab"
+              aria-selected={activeTab === tab.id}
+              aria-controls={`${tab.id}-panel`}
+              tabIndex={activeTab === tab.id ? 0 : -1}
+              onClick={handlers.handleClick(tab.id)}
+              onKeyDown={handlers.handleKeyDown}
+              type="button"
+              ref={handlers.handleRef}
+            >
+              {tab.name}
+            </button>
+          ))}
         </div>
       </div>
-      <div
-        id="reliability-panel"
-        role="tabpanel"
-        aria-labelledby="reliability-tab"
-        hidden={tab !== "reliability"}
-        className="p-4"
-      >
-        <ReliabilityInfo op={op} holder={holder} />
-      </div>
-      <div
-        id="org-panel"
-        role="tabpanel"
-        aria-labelledby="org-tab"
-        hidden={tab !== "org"}
-        className="p-4"
-      >
-        <OrgInfo op={op} holder={holder} />
-      </div>
+      {tabs.map((tab) => (
+        <div
+          key={tab.id}
+          id={`${tab.id}-panel`}
+          role="tabpanel"
+          aria-labelledby={`${tab.id}-tab`}
+          hidden={activeTab !== tab.id}
+          className="p-4"
+        >
+          {tab.panel}
+        </div>
+      ))}
     </article>
   );
 }
