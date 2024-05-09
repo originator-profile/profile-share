@@ -1,7 +1,7 @@
 import { useState } from "react";
 import clsx from "clsx";
 import { Icon } from "@iconify/react";
-import { OpCredential, OpHolder } from "@originator-profile/model";
+import { OpCredential, OpHolder, OgWebsite } from "@originator-profile/model";
 import {
   HolderTable,
   Description,
@@ -127,6 +127,7 @@ function OrgInfo(props: { op: OriginatorProfile; holder: OpHolder }) {
 
 type Props = {
   contentType: string;
+  site?: OgWebsite;
   op: OriginatorProfile;
   holder: OpHolder;
   roles: Role[];
@@ -138,13 +139,13 @@ type Props = {
   };
 };
 
-function Org({ contentType, op, holder, paths }: Props) {
+function Org({ contentType, site, op, holder, paths }: Props) {
   const [tab, setTab] = useState<"reliability" | "org">("reliability");
   const handleClick = (value: typeof tab) => () => setTab(value);
   return (
     <article className="bg-gray-50 flex flex-col min-h-dvh">
       <BackHeader className="sticky top-0" to={paths.back}>
-        <h1 className="text-sm">{holder.name}</h1>
+        <h1 className="text-sm">{site?.title}</h1>
       </BackHeader>
       <div className="bg-white px-4 border-b border-gray-200">
         <div className="text-center pt-4 space-y-1 pb-2">

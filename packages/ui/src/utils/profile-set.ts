@@ -101,14 +101,24 @@ export class ProfileSet {
    *
    * @returns website Profile の OP, DP を返す。
    */
-  getWebsiteProfilePair() {
+  getWebsiteProfilePair():
+    | {
+        op: OriginatorProfile;
+        dp: DocumentProfile;
+      }
+    | undefined {
+    const op = this.websiteProfiles.find(
+      (profile): profile is OriginatorProfile =>
+        profile instanceof OriginatorProfile,
+    );
+    const dp = this.websiteProfiles.find(
+      (profile): profile is DocumentProfile =>
+        profile instanceof DocumentProfile,
+    );
+    if (!(op && dp)) return;
     return {
-      op: this.websiteProfiles.find(
-        (profile) => profile instanceof OriginatorProfile,
-      ) as OriginatorProfile,
-      dp: this.websiteProfiles.find(
-        (profile) => profile instanceof DocumentProfile,
-      ) as DocumentProfile,
+      op,
+      dp,
     };
   }
 

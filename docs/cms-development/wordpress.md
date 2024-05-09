@@ -17,7 +17,7 @@ actor 利用者
 actor WordPress 管理者
 participant WordPress
 participant WordPress Plugin
-participant Document Profile レジストリ
+participant DP Store
 participant Originator Profile レジストリ
 
 WordPress 管理者->>WordPress: WordPress Plugin のインストール
@@ -26,19 +26,19 @@ WordPress Plugin-->>WordPress 管理者: 公開鍵
 
 WordPress 管理者->>Originator Profile レジストリ: Originator Profile の発行依頼
 Originator Profile レジストリ-->>WordPress 管理者: Signed Originator Profile
-WordPress 管理者->>Document Profile レジストリ: Signed Originator Profile の登録
+WordPress 管理者->>DP Store: Signed Originator Profile の登録
 
 WordPress 管理者->>WordPress: 記事の公開
 WordPress->>WordPress Plugin: transition_post_status hook
 WordPress Plugin->>WordPress Plugin: Signed Document Profile の発行
-WordPress Plugin->>Document Profile レジストリ: Signed Document Profile の登録
+WordPress Plugin->>DP Store: Signed Document Profile の登録
 
 利用者->>WordPress: 投稿の閲覧
 WordPress->>WordPress Plugin: wp_head hook
 WordPress Plugin-->>利用者: HTML <link> 要素
 
-利用者->>Document Profile レジストリ: 拡張機能をクリック
-Document Profile レジストリ-->>利用者: Profile Set
+利用者->>DP Store: 拡張機能をクリック
+DP Store-->>利用者: Profile Set
 
 利用者->>利用者: コンテンツ情報の閲覧と検証
 ```
@@ -57,19 +57,115 @@ Wordpress 連携プラグインは、 [hook](https://developer.wordpress.org/plu
 
 ## SDP の生成
 
-記事に対応する署名付き Document Profile (SDP) を生成します。手順については[SDP生成・署名](./sdp-issuance.mdx)を参照してください。
+記事に対応する署名付き Document Profile (SDP) を生成します。手順については[SDP生成・署名](./sdp-issuance.mdx)を参照してください。 CIP による実装では主に [class-dp.php](https://github.com/originator-profile/profile/blob/v0.0.9/packages/wordpress/includes/class-dp.php) で実装しています。
 
 SDP を生成したら、次は SDP を DP Store に登録してください。
 
 ## SDP の登録
 
-生成した SDP を DP Store に登録します。これには　DP Store (`dprexpt.originator-profile.org`) の [SDP登録用のエンドポイント](/media-study-202307/howto.md#adminpublisherアカウントiddp-エンドポイント) を利用します。詳細については [DP Store を使った実装ガイド](./dp-store.mdx#2-sdp-の保存管理)を参照してください。
+生成した SDP を DP Store に登録します。これには　DP Store (`dprexpt.originator-profile.org`) の [SDP登録用のエンドポイント](/media-study-202307/howto.md#adminpublisherアカウントiddp-エンドポイント) を利用します。
+
+CIP による[実装](https://github.com/originator-profile/profile/blob/v0.0.9/packages/wordpress/includes/issue.php#L231-L270)では次のようになっています。
+
+```php
+/**
+ * Signed Document Profileの発行
+ *
+ * @param Dp     $dp Dp
+ * @param string $endpoint レジストリサーバー DP 更新・登録エンドポイント
+ * @param string $admin_secret レジストリサーバー認証情報
+ * @param string $pkcs8 PEM base64 でエンコードされた PKCS #8 プライベート鍵またはそのファイルパス
+ * @return string|false 成功した場合はSigned Document Profile、失敗した場合はfalse
+ */
+function issue_dp( Dp $dp, string $endpoint, string $admin_secret, string $pkcs8 ): string|false {
+    $jwt = $dp->sign( pkcs8: $pkcs8 );
+
+
+    if ( ! $jwt ) {
+        return false;
+    }
+
+
+    $args = array(
+        'method'  => 'POST',
+        'headers' => array(
+            'authorization' => 'Basic ' . \sodium_bin2base64( $admin_secret, SODIUM_BASE64_VARIANT_ORIGINAL ),
+            'content-type'  => 'application/json',
+        ),
+        'body'    => \wp_json_encode(
+            array(
+                'jwt' => $jwt,
+            )
+        ),
+    );
+
+
+    $res = \wp_remote_request( $endpoint, $args );
+    if ( \is_wp_error( $res ) ) {
+        return false;
+    }
+
+
+    if ( \is_wp_error( $res ) || 200 !== $res['response']['code'] ) {
+        return false;
+    }
+
+
+    return $jwt;
+```
+
+詳細については [DP Store を使った実装ガイド](./dp-store.mdx#2-sdp-の保存管理)を参照してください。
 
 ## 記事に対応する Profile Set の配信
 
-SDP をレジストリに登録したら、最後に、記事から SDP を含む Profile Set を取得します。プラグインの実装では DP Store の API を利用しています。詳細については [DP Store を使った実装ガイド](./dp-store.mdx#3-profile-set-の配信)を参照してください。
+SDP を DP Store に登録したら、最後に、記事から SDP を含む Profile Set を配信します。プラグインの実装では DP Store の API を利用しています。CIP による[実装](https://github.com/originator-profile/profile/blob/v0.0.9/packages/wordpress/includes/post.php#L19-L51)では次のようになっています。
 
-次のような <link\> 要素が記事の HTML の <head\> 要素内に追記されれば、完了となります。
+```php
+/** Link要素 */
+function profile_link() {
+    if ( ! \is_single() ) {
+        return;
+    }
+
+
+    $hostname = \get_option( 'profile_registry_server_hostname', PROFILE_DEFAULT_PROFILE_REGISTRY_SERVER_HOSTNAME );
+
+
+    if ( empty( $hostname ) ) {
+        return;
+    }
+
+
+    if ( ! is_string( $hostname ) ) {
+        return;
+    }
+
+
+    $uri  = \get_the_guid();
+    $page = \max( 1, \get_query_var( 'page' ) );
+
+
+    if ( $page > 1 ) {
+        $uri = add_page_query( $uri, $page );
+    }
+
+
+    $uuid     = Uuid::uuid5( Uuid::NAMESPACE_URL, $uri );
+    $endpoint = "https://{$hostname}/website/{$uuid}/profiles";
+
+
+    if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $hostname ) {
+        $endpoint = "http://localhost:8080/website/{$uuid}/profiles";
+    }
+
+
+    echo '<link href="' . \esc_html( $endpoint ) . '" rel="alternate" type="application/ld+json">' . PHP_EOL;
+}
+```
+
+詳細については [DP Store を使った実装ガイド](./dp-store.mdx#3-profile-set-の配信)を参照してください。
+
+次のような <link\> 要素が記事の HTML の <head\> 要素内に追加されれば完了となります。
 
 ```html
 <link href="<Profile Set の URL>" rel="alternate" type="application/ld+json" />
