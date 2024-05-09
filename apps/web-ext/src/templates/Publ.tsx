@@ -81,10 +81,18 @@ function Site({
             サイト
           </p>
           <button
-            className="jumpu-icon-button text-xs rounded-full bg-gray-100 border-gray-200 w-6 h-6 ml-1"
+            className="jumpu-icon-button text-xs rounded-full bg-gray-100 border-gray-200 w-6 h-6 ml-1 group"
+            aria-describedby="tooltip-1"
             onClick={handleClick}
           >
             <Icon className="inline" icon={"fa6-solid:wrench"} />
+            <span
+              id="tooltip-1"
+              role="tooltip"
+              className="![transform:translate(-50%,_150%)_scale(0)] group-hover:![transform:translate(-50%,_150%)_scale(1)]"
+            >
+              技術情報
+            </span>
           </button>
         </div>
         <div className="flex flex-col items-center gap-4">
@@ -158,9 +166,13 @@ function Main({
           </p>
           <button
             className="jumpu-icon-button text-xs rounded-full bg-gray-100 border-gray-200 w-6 h-6 ml-1"
+            aria-describedby="tooltip-2"
             onClick={handleClick}
           >
             <Icon className="inline" icon={"fa6-solid:wrench"} />
+            <span id="tooltip-2" role="tooltip">
+              技術情報
+            </span>
           </button>
         </div>
         <div className="mb-3">
