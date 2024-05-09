@@ -33,6 +33,7 @@ function Org(props: Props) {
     return <NotFound variant="holder" />;
   }
   const roles = op.roles;
+  const site = profileSet.getWebsiteProfilePair()?.dp.findOgWebsiteItem();
   const paths = {
     back: {
       pathname: props.back,
@@ -43,6 +44,7 @@ function Org(props: Props) {
     <Template
       paths={paths}
       contentType={contentType ?? "ドキュメント"}
+      site={site}
       op={op}
       holder={holder}
       roles={roles}
