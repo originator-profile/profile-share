@@ -15,6 +15,7 @@ import {
 import { useModal } from "@originator-profile/ui/src/utils";
 import HolderSummary from "../components/HolderSummary";
 import BackHeader from "../components/BackHeader";
+import ReliabilityGuide from "../components/ReliabilityGuide";
 
 function ExternalLink(props: React.ComponentProps<"a">) {
   return (
@@ -192,18 +193,7 @@ function Org({ contentType, site, op, holder, paths }: Props) {
         <h1 className="text-sm">{site?.title}</h1>
       </BackHeader>
       <div className="bg-white px-4 border-b border-gray-200">
-        <div className="text-center pt-4 space-y-1 pb-2">
-          <p className="text-base font-bold text-primary-800">
-            {`この${contentType}の${contentType === "サイト" ? "運営者" : "発行者"}には信頼性情報があります`}
-          </p>
-          <p className="text-xs text-primary-700 py-2 inline-flex items-center gap-1">
-            <Icon
-              className="inline w-3 h-3 mr-1"
-              icon="material-symbols:help"
-            />
-            信頼性情報について
-          </p>
-        </div>
+        <ReliabilityGuide className="pt-4 pb-2" contentType={contentType} />
         <div data-testid="ps-json-holder" className="flex justify-center pb-4">
           <HolderSummary holder={holder} />
         </div>
