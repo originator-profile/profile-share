@@ -18,6 +18,7 @@ import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholde
 import HolderSummaryCard from "../components/HolderSummaryCard";
 import DpSelector from "../components/DpSelector";
 import DpFilter from "../components/DpFilter";
+import ReliablilityGuide from "../components/ReliabilityGuide";
 import { BidResponse } from "../components/rtb";
 import { buildPublUrl } from "../utils/routes";
 
@@ -109,18 +110,7 @@ function Site({
           <h1 className="w-fit text-base text-gray-700 mb-2">
             {dpItemContent.title}
           </h1>
-          <div className="flex flex-col items-center mb-3">
-            <p className="text-base font-bold text-primary-800">
-              このサイトの運営者には信頼性情報があります
-            </p>
-            <p className="text-primary-700 py-1">
-              <Icon
-                className="inline w-3 h-3 mr-1"
-                icon={"material-symbols:help"}
-              />
-              信頼性情報について
-            </p>
-          </div>
+          <ReliablilityGuide className="mb-3" contentType="サイト" />
         </div>
         <div className="mb-3" data-testid="pp-json-holder">
           <HolderSummaryCard to={paths.org} holder={holder} />
@@ -177,18 +167,7 @@ function Main({
             </span>
           </button>
         </div>
-        <div className="flex flex-col items-center mb-3">
-          <p className="text-base font-bold text-primary-800">
-            {`この${contentType}の発行者には信頼性情報があります`}
-          </p>
-          <p className="text-primary-700 py-1">
-            <Icon
-              className="inline w-3 h-3 mr-1"
-              icon={"material-symbols:help"}
-            />
-            信頼性情報について
-          </p>
-        </div>
+        <ReliablilityGuide className="mb-3" contentType={contentType} />
         <div className="mb-3" data-testid="ps-json-holder">
           <HolderSummaryCard to={paths.org} holder={holder} />
         </div>
