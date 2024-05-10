@@ -96,14 +96,16 @@ function Site({
           </button>
         </div>
         <div className="flex flex-col items-center gap-4">
-          <Image
-            className="flex-shrink-0 w-fit"
-            src={dpItemContent.image}
-            placeholderSrc={placeholderLogoMainUrl}
-            alt=""
-            width={240}
-            height={44}
-          />
+          {dpItemContent.image && (
+            <Image
+              className="flex-shrink-0 w-fit"
+              src={dpItemContent.image}
+              placeholderSrc={placeholderLogoMainUrl}
+              alt=""
+              width={240}
+              height={44}
+            />
+          )}
           <h1 className="w-fit text-base text-gray-700 mb-2">
             {dpItemContent.title}
           </h1>
