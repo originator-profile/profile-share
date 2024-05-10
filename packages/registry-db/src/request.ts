@@ -1,183 +1,166 @@
-import { Prisma, requestLogs, requests } from "@prisma/client";
+import { OpHolder, Request as OpModelRequest } from "@originator-profile/model";
+import { Prisma, requests } from "@prisma/client";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
-import { beginTransaction } from "./lib/transaction";
 import { getClient } from "./lib/prisma-client";
-import { Request as OpModelRequest } from "@originator-profile/model";
+import { beginTransaction } from "./lib/transaction";
 
-type AccountId = requests["groupId"];
+type GroupId = requests["groupId"];
 
-export type Request = Prisma.requestsGetPayload<{
-  include: { reviewComments: true };
-}>;
+const requestLogsExtArgs = {
+  include: {
+    request: {
+      include: {
+        group: true,
+      },
+    },
+    reviewComments: true,
+  },
+} as const;
 
-export type RequestLog = requestLogs & {
-  reviewComments?: Array<{
-    id: number;
-    requestFieldName: string;
-    comment: string;
-  }>;
+type RequestLogs = Prisma.requestLogsGetPayload<typeof requestLogsExtArgs>;
+
+type OpRequestWithoutDate = Omit<OpModelRequest, "createdAt" | "updatedAt"> & {
+  requestId: number;
+  authorId: string;
+  group: Pick<OpHolder, "name">;
 };
 
-export type RequestLogCreate = Omit<RequestLog, "id">;
-
-export type RequestList = (requests & { accountName: string })[];
-
-type OpRequest = Omit<OpModelRequest, "createdAt" | "updatedAt"> & {
+export type OpRequest = OpRequestWithoutDate & {
   createdAt: Date;
   updatedAt: Date;
 };
 
-export function convertPrismaRequestToOpRequest(body: Request): OpRequest {
+export type OpRequestList = Array<OpRequestWithoutDate> | Array<OpRequest>;
+
+function convertPrismaRequestToOpRequest(
+  body: RequestLogs,
+): OpRequestWithoutDate {
   return {
     ...body,
+    group: body.request.group,
     requestSummary: body.requestSummary ?? undefined,
     reviewSummary: body.reviewSummary ?? undefined,
     status: body.statusValue as unknown as OpRequest["status"],
   };
 }
 
-/**
- * 審査コメントの配列を受け取って、 prisma の update() や create() に渡せる形式にします。
- * @param reviewComments 審査コメントの配列
- * @return connectOrCreate プロパティに渡せる値
- */
-const convertReviewCommentsToPrismaCreateMany = (
-  reviewComments: RequestLog["reviewComments"],
-):
-  | Prisma.requestLogReviewCommentsCreateNestedManyWithoutRequestLogInput
-  | undefined => {
-  if (!reviewComments) {
-    return undefined;
-  }
-
-  const reviewCommentsCreateMany = reviewComments?.map((rc) => {
-    return {
-      reviewCommentId: rc.id,
-    };
-  });
-  return { createMany: { data: reviewCommentsCreateMany } };
-};
-
 export const RequestRepository = () => ({
   /**
    * 申請情報の作成
-   * @param accountId 会員 ID
+   * @param groupId 会員 ID
    * @param authorId 申請者 ID
    * @param requestSummary 申請の概要
    * @return 作成した申請情報
    */
   async create(
-    accountId: AccountId,
+    groupId: GroupId,
     authorId: string,
     requestSummary: string,
-  ): Promise<Request> {
-    return await beginTransaction<Request>(async () => {
-      const prisma = getClient();
-      const request = await prisma.requests.upsert({
-        where: { groupId: accountId },
-        create: {
-          group: { connect: { id: accountId } },
-          author: { connect: { id: authorId } },
+  ): Promise<OpRequest> {
+    const prisma = getClient();
+
+    return await beginTransaction<OpRequest>(async () => {
+      const old = await this.read(groupId).catch((e: NotFoundError) => e);
+
+      const requestId: number =
+        typeof old.requestId === "number"
+          ? old.requestId
+          : await prisma.requests
+              .create({
+                data: {
+                  groupId,
+                },
+              })
+              .then((r) => r.id);
+
+      const data = await prisma.requestLogs.create({
+        ...requestLogsExtArgs,
+        data: {
+          requestId,
+          authorId,
           requestSummary,
-        },
-        update: {
-          group: { connect: { id: accountId } },
-          author: { connect: { id: authorId } },
-          status: { connect: { value: "pending" } },
-          /* 新規の申請に際して同組織の既存申請に対する以下の情報は無効である */
-          requestSummary,
-          reviewSummary: null,
-          reviewComments: {
-            set: [],
-          },
-          reviewer: { disconnect: true },
-          certifier: { disconnect: true },
-          op: { disconnect: true },
         },
       });
 
-      const { id: _, ...logData } = request;
-      await this.log(logData);
-
-      return { reviewComments: [], ...request };
+      return {
+        ...convertPrismaRequestToOpRequest(data),
+        createdAt: data.insertedAt,
+        updatedAt: data.insertedAt,
+      };
     });
   },
 
   /**
    * 最新の申請情報の取得
-   * @param accountId 会員 ID
+   * @param groupId 会員 ID
    * @throws {NotFoundError} 最新の申請情報が見つからない
    * @return 申請情報
    */
-  async read(accountId: AccountId): Promise<Request> {
+  async read(groupId: GroupId): Promise<OpRequest> {
     const prisma = getClient();
-    const data = await prisma.requests.findUnique({
-      where: { groupId: accountId },
-      include: { reviewComments: true },
+    const data = await prisma.requestLogs.findFirst({
+      ...requestLogsExtArgs,
+      where: {
+        request: {
+          groupId,
+        },
+      },
+      orderBy: {
+        insertedAt: "desc",
+      },
     });
+
     if (!data) throw new NotFoundError("OP Request not found.");
 
-    return data;
+    const {
+      _min: { insertedAt: createdAt },
+      _max: { insertedAt: updatedAt },
+    } = await prisma.requestLogs.aggregate({
+      where: {
+        requestId: data.requestId,
+      },
+      _min: { insertedAt: true },
+      _max: { insertedAt: true },
+    });
+
+    return {
+      ...convertPrismaRequestToOpRequest(data),
+      createdAt: createdAt as Date,
+      updatedAt: updatedAt as Date,
+    };
   },
 
   /**
    * 申請情報の取り下げ
-   * @param accountId 会員 ID
+   * @param groupId 会員 ID
    * @throws {BadRequestError} 既に取り下げている
    * @throws {NotFoundError} 申請情報が見つからない/組織情報が見つからない
    * @return 取り下げ後の申請情報
    */
-  async cancel(accountId: AccountId): Promise<Request> {
-    return await beginTransaction<Request>(async () => {
-      const prisma = getClient();
-      const old = await prisma.requests.findUnique({
-        where: { groupId: accountId },
-      });
-      if (!old) throw new NotFoundError("OP Request not found.");
-      if (old.statusValue === "cancelled")
+  async cancel(groupId: GroupId): Promise<OpRequest> {
+    const prisma = getClient();
+
+    return await beginTransaction<OpRequest>(async () => {
+      const old = await this.read(groupId);
+
+      if (old.status === "cancelled") {
         throw new BadRequestError("Request already cancelled.");
-      const updated = await prisma.requests
-        .update({
-          where: { groupId: accountId },
-          data: { status: { connect: { value: "cancelled" } } },
-        })
-        .catch((e: Error) => e);
-      if (
-        updated instanceof Prisma.PrismaClientKnownRequestError &&
-        updated.code === "P2025"
-      ) {
-        throw new NotFoundError("OP Request not found.");
       }
 
-      if (updated instanceof Error) throw updated;
+      const data = await prisma.requestLogs.create({
+        ...requestLogsExtArgs,
+        data: {
+          statusValue: "cancelled",
+          requestId: old.requestId,
+          authorId: old.authorId,
+        },
+      });
 
-      const newest = await this.read(accountId);
-      if (!newest) throw new NotFoundError("OP Account not found.");
-
-      const { id: _, ...logData } = newest;
-      await this.log(logData);
-
-      return newest;
-    });
-  },
-
-  /**
-   * 申請情報ログの追加
-   * @param requestLog 申請ログ
-   * @return 作成したログ
-   */
-  async log(requestLog: RequestLogCreate): Promise<requestLogs> {
-    const prisma = getClient();
-    const { reviewComments, ...createInput } = requestLog;
-
-    const input = {
-      reviewComments: convertReviewCommentsToPrismaCreateMany(reviewComments),
-      ...createInput,
-    } as const satisfies Prisma.requestLogsCreateInput;
-
-    return await prisma.requestLogs.create({
-      data: input,
-      include: { reviewComments: true },
+      return {
+        ...convertPrismaRequestToOpRequest(data),
+        createdAt: data.insertedAt,
+        updatedAt: data.insertedAt,
+      };
     });
   },
 
@@ -191,60 +174,54 @@ export const RequestRepository = () => ({
   }: {
     /** 審査待ちかどうか (undefined: すべての申請情報, true: pending, false: pending以外) */
     pending?: boolean;
-  }): Promise<RequestList> {
+  }): Promise<OpRequestList> {
     const prisma = getClient();
-    const data = await prisma.requests.findMany({
-      where:
-        pending === undefined
-          ? undefined
-          : {
-              status: {
-                [pending ? "is" : "isNot"]: {
-                  value: "pending",
-                },
+
+    const data = await prisma.requestLogs.findMany({
+      ...requestLogsExtArgs,
+      where: {
+        statusValue:
+          pending === undefined
+            ? undefined
+            : {
+                [pending ? "is" : "isNot"]: "pending",
               },
-            },
-      include: {
-        group: {
-          select: {
-            name: true,
-          },
-        },
+      },
+      orderBy: {
+        insertedAt: "asc",
       },
     });
-    return data.map((request) => {
-      const { group, ...rest } = request;
-      return {
-        ...rest,
-        accountName: group.name,
-      };
-    });
+
+    return data.map(convertPrismaRequestToOpRequest);
   },
 
   /**
    * 審査結果である申請情報のリストの取得
-   * @param accountId 会員 ID
+   * @param groupId 会員 ID
    * @return 審査結果である申請情報のリスト
    */
-  async readResults(accountId: AccountId): Promise<RequestLog[]> {
+  async readResults(groupId: GroupId): Promise<OpRequestList> {
     const prisma = getClient();
+    const { requestId, createdAt, updatedAt } = await this.read(groupId);
+
     const data = await prisma.requestLogs.findMany({
-      where: { groupId: accountId, status: { NOT: { value: "pending" } } },
-      include: { reviewComments: { include: { reviewComment: true } } },
+      ...requestLogsExtArgs,
+      where: {
+        statusValue: {
+          not: "pending",
+        },
+        requestId,
+      },
+      orderBy: {
+        insertedAt: "asc",
+      },
     });
-    return data.map((requestLog) => {
-      const { reviewComments, ...rest } = requestLog;
-      return {
-        ...rest,
-        reviewComments: reviewComments.map((rc) => {
-          return {
-            id: rc.reviewComment.id,
-            requestFieldName: rc.reviewComment.requestFieldName,
-            comment: rc.reviewComment.comment,
-          };
-        }),
-      };
-    });
+
+    return data.map(convertPrismaRequestToOpRequest).map((r) => ({
+      ...r,
+      createdAt,
+      updatedAt,
+    }));
   },
 });
 

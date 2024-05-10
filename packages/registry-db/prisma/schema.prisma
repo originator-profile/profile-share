@@ -27,9 +27,8 @@ model ops {
   /// 公開
   publication publications?
   /// 申請
-  request     requests?
-  /// 申請ログ
-  requestLog  requestLogs?
+  request     requests?     @relation(fields: [requestId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  requestId   Int?          @unique
 }
 
 /// Signed Document Profile
@@ -122,12 +121,8 @@ model accounts {
   /// ユーザーアカウント
   userAccounts                   userAccounts?
   /// 申請
-  requests                       requests[]
-  /// 申請履歴
-  requestLogs                    requestLogs[]
+  request                        requests?
   /// 申請の審査履歴
-  reviewedRequests               requests[]                  @relation("certifierReviewedRequests")
-  /// ログ内にある申請の審査履歴
   reviewedRequestLogs            requestLogs[]               @relation("certifierReviewedRequestLogs")
   /// 発行可能な認証制度
   issuableCertificationSystems   certificationSystems[]      @relation("issuableCertificationSystems")
@@ -360,30 +355,38 @@ model userAccounts {
   /// 会員
   account             accounts      @relation(fields: [accountId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   accountId           String        @unique @db.Uuid
-  /// 申請
-  requests            requests[]
-  /// 申請ログ
-  requestLogs         requestLogs[]
-  /// 申請の審査履歴
-  reviewedRequests    requests[]    @relation("reviewedRequests")
-  /// ログ内にある申請の審査履歴
+  /// 審査履歴
   reviewedRequestLogs requestLogs[] @relation("reviewedRequestLogs")
+  /// 申請履歴
+  requestLogs         requestLogs[]
 }
 
 /// 申請
 model requests {
+  id          Int           @id @default(autoincrement())
+  /// 申請履歴
+  requestLogs requestLogs[]
+  /// Signed Originator Profile
+  op          ops?
+  /// 組織
+  group       accounts      @relation(fields: [groupId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  groupId     String        @unique @db.Uuid
+}
+
+/// 申請履歴
+model requestLogs {
   id             Int                @id @default(autoincrement())
+  /// 申請
+  request        requests           @relation(fields: [requestId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  requestId      Int
   /// 申請担当者
   author         userAccounts       @relation(fields: [authorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   authorId       String
-  /// 組織
-  group          accounts           @relation(fields: [groupId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  groupId        String             @unique @db.Uuid
   /// 審査担当者
-  reviewer       userAccounts?      @relation("reviewedRequests", fields: [reviewerId], references: [id])
+  reviewer       userAccounts?      @relation("reviewedRequestLogs", fields: [reviewerId], references: [id], onUpdate: Cascade, onDelete: SetNull)
   reviewerId     String?
   /// 認証機関
-  certifier      accounts?          @relation("certifierReviewedRequests", fields: [certifierId], references: [id])
+  certifier      accounts?          @relation("certifierReviewedRequestLogs", fields: [certifierId], references: [id], onUpdate: Cascade, onDelete: SetNull)
   certifierId    String?            @db.Uuid
   /// ステータス
   status         approvalFlowStatus @relation(fields: [statusValue], references: [value])
@@ -394,80 +397,26 @@ model requests {
   reviewSummary  String?
   /// 審査コメント
   reviewComments reviewComments[]
-  /// Signed Originator Profile
-  op             ops?               @relation(fields: [opId], references: [id])
-  opId           String?            @unique @db.Uuid
-  /// 作成日
-  createdAt      DateTime           @default(now())
-  /// 更新日
-  updatedAt      DateTime           @updatedAt
-}
-
-/// 申請ログ
-model requestLogs {
-  id             Int                        @id @default(autoincrement())
-  /// 申請担当者
-  author         userAccounts?              @relation(fields: [authorId], references: [id])
-  authorId       String?
-  /// 組織
-  group          accounts?                  @relation(fields: [groupId], references: [id])
-  groupId        String?                    @db.Uuid
-  /// 審査担当者
-  reviewer       userAccounts?              @relation("reviewedRequestLogs", fields: [reviewerId], references: [id])
-  reviewerId     String?
-  /// 認証機関
-  certifier      accounts?                  @relation("certifierReviewedRequestLogs", fields: [certifierId], references: [id])
-  certifierId    String?                    @db.Uuid
-  /// ステータス
-  status         approvalFlowStatus         @relation(fields: [statusValue], references: [value])
-  statusValue    String                     @default("pending")
-  /// 申請概要
-  requestSummary String?
-  /// 審査概要
-  reviewSummary  String?
-  /// 審査コメント
-  reviewComments requestLogReviewComments[]
-  /// Signed Originator Profile
-  op             ops?                       @relation(fields: [opId], references: [id])
-  opId           String?                    @unique @db.Uuid
-  /// 元の申請の作成日
-  createdAt      DateTime
-  /// 元の申請の更新日
-  updatedAt      DateTime
+  /// 履歴作成日
+  insertedAt     DateTime           @default(now())
 }
 
 /// 承認フローステータス
 model approvalFlowStatus {
   /// "pending": 審査中、"approved": 承認、"rejected": 却下、"cancelled": キャンセル
   value       String        @id
-  /// 申請
-  requests    requests[]
-  /// 申請ログ
+  /// 申請履歴
   requestLogs requestLogs[]
 }
 
-/// 申請ログ・審査コメントリレーション
-model requestLogReviewComments {
-  /// 申請ログ
-  requestLog      requestLogs    @relation(fields: [requestLogId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  requestLogId    Int
-  /// 審査コメント
-  reviewComment   reviewComments @relation(fields: [reviewCommentId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  reviewCommentId Int
-
-  @@id([requestLogId, reviewCommentId])
-}
-
-/// 審査コメント
+/// 審査履歴コメント
 model reviewComments {
-  id               Int                        @id @default(autoincrement())
+  id               Int         @id @default(autoincrement())
   /// 申請項目名 (HTML 要素における name 属性)
   requestFieldName String
   /// コメント
   comment          String
-  /// 申請
-  request          requests?                  @relation(fields: [requestId], references: [id])
-  requestId        Int?
-  /// 申請ログ
-  requestLogs      requestLogReviewComments[]
+  /// 申請履歴
+  requestLog       requestLogs @relation(fields: [requestLogId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  requestLogId     Int
 }

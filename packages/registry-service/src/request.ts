@@ -1,7 +1,6 @@
 import type {
-  Request,
-  RequestList,
-  RequestLog,
+  OpRequest,
+  OpRequestList,
   RequestRepository,
 } from "@originator-profile/registry-db";
 
@@ -15,23 +14,23 @@ export const RequestService = ({ requestRepository }: Options) => ({
     accountId: string,
     authorId: string,
     requestSummary: string,
-  ): Promise<Request> {
+  ): Promise<OpRequest> {
     return await requestRepository.create(accountId, authorId, requestSummary);
   },
   /** {@link RequestRepository.read} */
-  async read(accountId: string): Promise<Request> {
+  async read(accountId: string): Promise<OpRequest> {
     return await requestRepository.read(accountId);
   },
   /** {@link RequestRepository.cancel} */
-  async cancel(accountId: string): Promise<Request> {
+  async cancel(accountId: string): Promise<OpRequest> {
     return await requestRepository.cancel(accountId);
   },
   /** {@link RequestRepository.readList} */
-  async readList({ pending }: { pending?: boolean }): Promise<RequestList> {
+  async readList({ pending }: { pending?: boolean }): Promise<OpRequestList> {
     return await requestRepository.readList({ pending });
   },
   /** {@link RequestRepository.readResults} */
-  async readResults(accountId: string): Promise<RequestLog[]> {
+  async readResults(accountId: string): Promise<OpRequestList> {
     return await requestRepository.readResults(accountId);
   },
 });

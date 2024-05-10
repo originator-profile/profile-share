@@ -1,8 +1,7 @@
-import { FastifySchema, FastifyRequest } from "fastify";
+import { Request } from "@originator-profile/model";
+import { FastifyRequest, FastifySchema } from "fastify";
 import { FromSchema } from "json-schema-to-ts";
 import Params from "../params";
-import { Request } from "@originator-profile/model";
-import { convertPrismaRequestToOpRequest } from "@originator-profile/registry-db";
 
 const Body = {
   type: "object",
@@ -38,13 +37,7 @@ async function create(
   const authorId = req.user.sub;
   const { requestSummary } = req.body;
 
-  const data = await req.server.services.request.create(
-    id,
-    authorId,
-    requestSummary,
-  );
-
-  return convertPrismaRequestToOpRequest(data);
+  return await req.server.services.request.create(id, authorId, requestSummary);
 }
 
 export { create, schema };

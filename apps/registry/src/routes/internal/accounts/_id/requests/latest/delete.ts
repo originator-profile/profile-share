@@ -1,6 +1,5 @@
-import { FastifySchema, FastifyRequest } from "fastify";
+import { FastifyRequest, FastifySchema } from "fastify";
 import Params from "../../params";
-import { convertPrismaRequestToOpRequest } from "@originator-profile/registry-db";
 
 const schema: FastifySchema = {
   params: Params,
@@ -20,8 +19,7 @@ async function deleteLatest(
     Params: Params;
   }>,
 ) {
-  const data = await req.server.services.request.cancel(req.params.id);
-  return convertPrismaRequestToOpRequest(data);
+  return await req.server.services.request.cancel(req.params.id);
 }
 
 export { deleteLatest, schema };

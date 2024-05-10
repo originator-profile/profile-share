@@ -74,10 +74,7 @@ export const UserAccountRepository = () => ({
     const user = await prisma.userAccounts.count({
       where: {
         id: input.id,
-        OR: [
-          { requests: { some: { reviewerId: input.reviewerId } } },
-          { requestLogs: { some: { reviewerId: input.reviewerId } } },
-        ],
+        requestLogs: { some: { reviewerId: input.reviewerId } },
       },
     });
     if (user === 0) throw new NotFoundError("User not found.");

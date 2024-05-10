@@ -1,6 +1,5 @@
-import { FastifySchema, FastifyRequest } from "fastify";
+import { FastifyRequest, FastifySchema } from "fastify";
 import Params from "../../params";
-import { convertPrismaRequestToOpRequest } from "@originator-profile/registry-db";
 
 const schema: FastifySchema = {
   params: Params,
@@ -21,8 +20,7 @@ async function read({
 }: FastifyRequest<{
   Params: Params;
 }>) {
-  const data = await server.services.request.read(params.id);
-  return convertPrismaRequestToOpRequest(data);
+  return await server.services.request.read(params.id);
 }
 
 export { read, schema };
