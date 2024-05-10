@@ -157,7 +157,7 @@ function Main({
             />
           )}
         </Modal>
-        <div className="flex items-center gap-1 mb-3">
+        <div className="flex items-center justify-center gap-1 mb-3">
           <p className="jumpu-badge inline-flex items-center gap-1 bg-gray-600 text-xs text-white font-normal border border-gray-300">
             {contentType === "メインコンテンツ" && (
               <Icon className="text-base" icon="fluent:window-text-20-filled" />
@@ -175,7 +175,7 @@ function Main({
             </span>
           </button>
         </div>
-        <div className="mb-3">
+        <div className="flex flex-col items-center mb-3">
           <p className="text-base font-bold text-primary-800">
             {`この${contentType}の発行者には信頼性情報があります`}
           </p>
