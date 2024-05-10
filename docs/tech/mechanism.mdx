@@ -2,9 +2,9 @@
 sidebar_position: 2
 ---
 
-# OP の仕組み
+# Originator Profile の仕組み
 
-次の図は OP の仕組みの概略です。
+次の図は Originator Profile (OP) の仕組みの概略です。
 
 ![OP の仕組み](./assets/op-ihv.jpeg)
 
@@ -18,7 +18,7 @@ OP ではいくつかのデータ形式を定義しています。その関係�
 
 ![OP で利用する VC の関係](./assets/profiles.png)
 
-OP, DP はデータフォーマットとして Verifiable Credential (VC) を採用しています。 VC の仕様に基づき署名がされているため、記載情報の改ざんができません。また、 VC の IHV モデルの利点から OP, DP を利用者が検証する際にレジストリ等にアクセスがなくプライバシーの懸念がないことも特徴です。 OP, DP は署名付き (Signed) であることから、それぞれ **[SOP](/terminology/signed-originator-profile.md)**, **[SDP](/terminology/signed-document-profile.md)** と呼ぶことがあります。
+OP, DP はデータモデルとして Verifiable Credential (VC) を採用しています。 VC の仕様に基づき署名がされているため、記載情報の改ざんができません。また、 VC の IHV モデルの利点から OP, DP を利用者が検証する際にレジストリ等にアクセスがなくプライバシーの懸念がないことも特徴です。 OP, DP は署名付き (Signed) であることから、それぞれ **[SOP](/terminology/signed-originator-profile.md)**, **[SDP](/terminology/signed-document-profile.md)** と呼ぶことがあります。
 
 **SOP** は情報の発信者の身元を表明するためのデータです。内容には基本的な組織情報だけでなく、組織の情報発信者ポリシーや、信頼性を示す第三者認証など資格情報も含みます。 OP の情報を見ることでユーザーは正しさの保証された情報から組織の信頼性を判断することができます。
 
