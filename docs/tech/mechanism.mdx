@@ -14,23 +14,108 @@ sidebar_position: 2
 
 ## データモデル
 
-OP ではいくつかのデータ形式を定義しています。その関係性や主な特徴は次の図の通りです。
+OP では次のようなデータを定義しています。
 
-![OP で利用する VC の関係](./assets/profiles.png)
+import SopSvg from "./assets/sop.svg";
+import SdpSvg from "./assets/sdp.svg";
+import SapSvg from "./assets/sap.svg";
+import SignedSpSvg from "./assets/signed-sp.svg";
 
-OP, DP はデータモデルとして Verifiable Credential (VC) を採用しています。 VC の仕様に基づき署名がされているため、記載情報の改ざんができません。また、 VC の IHV モデルの利点から OP, DP を利用者が検証する際にレジストリ等にアクセスがなくプライバシーの懸念がないことも特徴です。 OP, DP は署名付き (Signed) であることから、それぞれ **[SOP](/terminology/signed-originator-profile.md)**, **[SDP](/terminology/signed-document-profile.md)** と呼ぶことがあります。
+<table>
+  <thead>
+    <tr style={{ backgroundColor: "white" }}>
+      <th></th>
+      <th>
+        <SopSvg />
+      </th>
+      <th>
+        <SdpSvg />
+      </th>
+      <th>
+        <SapSvg />
+      </th>
+      <th>
+        <SignedSpSvg />
+      </th>
+    </tr>
+  </thead>
+  <tr>
+    <td>名称</td>
+    {/* prettier-ignore */}
+    <td>[Signed Originator Profile](/terminology/signed-originator-profile.md)</td>
+    {/* prettier-ignore */}
+    <td>[Signed Document Profile](/terminology/signed-document-profile.md)</td>
+    {/* prettier-ignore */}
+    <td>[Signed Advertisement Profile](/terminology/advertisement-profile.md)</td>
+    {/* prettier-ignore */}
+    <td>[Signed Site Profile](/terminology/signed-site-profile.md)</td>
+  </tr>
+  <tr>
+    <td>主な用途</td>
+    <td>組織の信頼性を提示する</td>
+    <td>ニュース記事などに信頼性情報を付与する</td>
+    <td>広告に信頼性情報を付与する</td>
+    <td>Web サイトの保有者を表明する</td>
+  </tr>
+  <tr>
+    <td>記載情報</td>
+    {/* prettier-ignore */}
+    <td>
+  - OP ID
+  - 組織情報
+  - 情報発信者ポリシー URL
+  - 資格情報
+  </td>
+    {/* prettier-ignore */}
+    <td>
+  - DP ID
+  - コンテンツ付帯情報
+  - コンテンツ範囲
+  - コンテンツ改ざん防止署名
+  </td>
+    {/* prettier-ignore */}
+    <td>
+  - AP ID
+  - 広告付帯情報
+  - 広告範囲
+  - 広告改ざん防止署名
+  </td>
+    {/* prettier-ignore */}
+    <td>
+  - サイトオリジン
+  - サイト付帯情報
+  </td>
+  </tr>
+  <tr>
+    <td>署名</td>
+    <td>レジストリによる第三者署名</td>
+    <td>コンテンツ発信者による自己署名</td>
+    <td>広告主・広告代理店による自己署名</td>
+    <td>Web サイト保有者の自己署名</td>
+  </tr>
+</table>
 
-**SOP** は情報の発信者の身元を表明するためのデータです。内容には基本的な組織情報だけでなく、組織の情報発信者ポリシーや、信頼性を示す第三者認証など資格情報も含みます。 OP の情報を見ることでユーザーは正しさの保証された情報から組織の信頼性を判断することができます。
+上の表のデータは全てデータモデルとして Verifiable Credential (VC) を採用しています。VC の仕様に基づき署名がされているため、記載情報の改ざんができません。また、 VC の IHV モデルの利点からこれらのデータを利用者が検証する際にレジストリ等にアクセスがなくプライバシーの懸念がないことも特徴です。Signed を省略してそれぞれ **[OP](/terminology/originator-profile.md)**, **[DP](/terminology/document-profile.md)**, **[AP](/terminology/advertisement-profile.md)**, [SP](/terminology/site-profile.md) と呼ぶことがあります。また、簡便のために SDP と SAP の区別をせず SDP と呼ぶことがあります。
 
-**SDP** はコンテンツの付帯情報を表明するためのデータです。上の図のように、いくつかの種類に分けられます。広告向けの Ad Profile, ニュース記事向けの Document Profile, サイトの付帯情報を示す Site Profile があります。記載情報には真正性があり、 `iss` クレームにある OP ID から SOP と紐づけて発信者の信頼性を確認することができます。また、コンテンツの一部を指定して改竄を防止することもできます。
+**[SOP](/terminology/signed-originator-profile.md)** は情報の発信者の身元を表明するためのデータです。内容には基本的な組織情報だけでなく、組織の情報発信者ポリシーや、信頼性を示す第三者認証など資格情報も含みます。 SOP の情報を見ることでユーザーは正しさの保証された情報から組織の信頼性を判断することができます。
+
+**[SDP](/terminology/signed-document-profile.md)**, **[SAP](/terminology/signed-advertisement-profile.md)** はコンテンツの付帯情報を表明するためのデータです。記載情報には真正性があり、 `iss` クレームにある OP ID から SOP と紐づけて発信者の信頼性を確認することができます。また、ページ上のコンテンツの範囲を CSS セレクターで特定し、ユーザーに表示することができます。その範囲のコンテンツには署名がつけられ、改ざん防止に役立ちます。
+
+Web サイトのドメインを特定の OP ID の組織が保有していることを表明する [Signed SP](/terminology/signed-site-profile.md) もあります。保有を表明したいドメインの `/.well-known/pp.json` パス に [Profile Pair](/terminology/profile-pair.md) として SOP と配置します。
+
+:::note
+
+[Signed SP](/terminology/signed-site-profile.md) は広告の Supply Side Platform (SSP) と略称が重複するため、 SSP でなく Signed SP と略記しています。
+
+:::
 
 SOP は SOP を発行するレジストリによって署名がされています。レジストリは記載情報を確認してから署名・発行するため、 SOP 記載情報は第三者による確認がなされています。
 
-SDP はコンテンツ発信者が自己署名をします。 SOP のように記載情報が第三者による確認を受けているわけではありません。虚偽・不正確な情報を記載する発信者が出てこないよう、 OP 全体のガバナンス設計によって SDP に正しい記載をすることを促す必要があります。
+SDP, SAP, Signed SP はコンテンツ発信者・サイト保有者が自己署名をします。 SOP のように記載情報が第三者による確認を受けているわけではありません。虚偽・不正確な情報を記載する発信者が出てこないよう、 OP 全体のガバナンス設計によって正しい記載をすることを促す必要があります。
 
-自己署名・第三者署名に関わらず、署名のおかげで SOP, SDP を自社サイト以外に流通させることができます。さまざまなサイトに表示される広告や、別メディアに再配信されるニュースなどのユースケースで活用できます。
+自己署名・第三者署名に関わらず、署名のおかげで SOP, SDP, SAP を自社サイト以外に流通させることができます。複雑な RTB ネットワークを通して Web ページに掲載される広告や、別メディアに再配信されるニュースなどのユースケースで活用できます。
 
-コンテンツに SDP を紐づける場合、 SDP 署名者の SOP と合わせて Profile Set や Profile Pair などのデータ構造にまとめて配信してください。 SDP に対応する SOP がない場合 SDP の検証ができません。
+コンテンツに SDP, SAP を紐づける場合、署名者の SOP と合わせて [Profile Set](/terminology/profile-set.md) や [Profile Pair](/terminology/profile-pair.md) などのデータ構造にまとめて配信してください。 SDP に対応する SOP がない場合 SDP の検証ができません。
 
 ## Web サイトでの利用
 
