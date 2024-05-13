@@ -4,6 +4,7 @@
   "ignoreDeps": [
     "@headlessui/react",
     "@wordpress/e2e-test-utils-playwright",
-    "eslint"
+    "eslint",
+    "eslint-plugin-vitest"
   ]
 }
