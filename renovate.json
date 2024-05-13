@@ -1,5 +1,9 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended", "config:semverAllMonthly"],
-  "ignoreDeps": ["@headlessui/react", "@wordpress/e2e-test-utils-playwright"]
+  "ignoreDeps": [
+    "@headlessui/react",
+    "@wordpress/e2e-test-utils-playwright",
+    "eslint"
+  ]
 }
