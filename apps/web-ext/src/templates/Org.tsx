@@ -189,7 +189,7 @@ function Org({ contentType, site, op, holder, paths }: Props) {
   const { activeTab, ...handlers } = useTabs(tabs);
   return (
     <article className="bg-gray-50 flex flex-col min-h-dvh">
-      <BackHeader className="sticky top-0" to={paths.back}>
+      <BackHeader className="sticky top-0 z-10" to={paths.back}>
         <h1 className="text-sm">{site?.title}</h1>
       </BackHeader>
       <div className="bg-white px-4 border-b border-gray-200">
