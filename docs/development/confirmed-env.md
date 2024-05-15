@@ -41,7 +41,7 @@
     Perl: 5.34.0 - /usr/bin/perl
     Python: 3.10.12 - /usr/bin/python
     Python3: 3.10.12 - /usr/bin/python3
-    Rust: 1.77.1 - /home/nebel/.cargo/bin/rustc
+    Rust: 1.77.1 - ~/.cargo/bin/rustc
   Databases:
     SQLite: 3.37.2 - /usr/bin/sqlite3
   Browsers:
@@ -225,8 +225,8 @@ Fedora Linux は Playwright での Webkit エンジン利用に非対応 https:/
     Java: 1.8.0_292 - /usr/bin/javac
     Perl: 5.34.1 - /usr/bin/perl
     Protoc: 26.1 - /opt/homebrew/bin/protoc
-    Python: 3.12.3 - /Users/somay/.asdf/shims/python
-    Python3: 3.12.3 - /Users/somay/.asdf/shims/python3
+    Python: 3.12.3 - ~/.asdf/shims/python
+    Python3: 3.12.3 - ~/.asdf/shims/python3
     Ruby: 2.6.10 - /usr/bin/ruby
     Rust: 1.78.0 - /opt/homebrew/bin/rustc
   Databases:
@@ -256,7 +256,7 @@ Fedora Linux は Playwright での Webkit エンジン利用に非対応 https:/
     Homebrew: 4.2.19 - /usr/local/bin/brew
     pip2: 19.2.3 - ~/.pyenv/shims/pip2
     pip3: 19.2.3 - ~/.pyenv/shims/pip3
-    RubyGems: 3.1.2 - /Users/dynamis/.rbenv/shims/gem
+    RubyGems: 3.1.2 - ~/.rbenv/shims/gem
   Utilities:
     CMake: 3.28.3 - /usr/local/bin/cmake
     Make: 3.81 - /usr/bin/make
@@ -290,10 +290,10 @@ Fedora Linux は Playwright での Webkit エンジン利用に非対応 https:/
     Java: 1.8.0_131 - /Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/bin/javac
     Perl: 5.30.3 - /usr/bin/perl
     Protoc: 3.21.9 - /usr/local/bin/protoc
-    Python: 3.8.1 - /Users/dynamis/.pyenv/shims/python
-    Python3: 3.8.1 - /Users/dynamis/.pyenv/shims/python3
-    Ruby: 2.7.0 - /Users/dynamis/.rbenv/shims/ruby
-    Rust: 1.51.0 - /Users/dynamis/.cargo/bin/rustc
+    Python: 3.8.1 - ~/.pyenv/shims/python
+    Python3: 3.8.1 - ~/.pyenv/shims/python3
+    Ruby: 2.7.0 - ~/.rbenv/shims/ruby
+    Rust: 1.51.0 - ~/.cargo/bin/rustc
   Databases:
     MySQL: 14.2 - /usr/local/bin/mysql
     SQLite: 3.39.5 - /usr/bin/sqlite3
