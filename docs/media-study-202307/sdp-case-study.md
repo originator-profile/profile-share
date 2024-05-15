@@ -32,7 +32,7 @@ curl -X DELETE https://dprexpt.originator-profile.org/admin/publisher/8fe1b860-5
 
 上記の例は、 curl コマンドで DP レジストリ (`dprexpt.originator-profile.org`) の DP 削除エンドポイントへ DELETE リクエストを送っています。
 
-CIP から受け取った認証情報が `8fe1b860-558c-5107-a9af-21c376a6a27c:eqjyPR--HaS0mMj0wiDP1HA7yT1WGgYpHcUjDia3py8` だとしています。
+[Originator Profile 技術研究組合 (OP CIP)](https://originator-profile.org/) から受け取った認証情報が `8fe1b860-558c-5107-a9af-21c376a6a27c:eqjyPR--HaS0mMj0wiDP1HA7yT1WGgYpHcUjDia3py8` だとしています。
 
 エンドポイントの URL は、アカウント ID を入れて `https://dprexpt.originator-profile.org/admin/publisher/8fe1b860-558c-5107-a9af-21c376a6a27c/website` とし、 `-u` オプションで上記アカウント ID とパスワードを `:` で連結した値を Basic 認証の認証情報として利用するようにしています。
 

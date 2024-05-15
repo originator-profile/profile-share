@@ -65,7 +65,7 @@ Firefox の場合:
 
 ## Web ページにアクセス
 
-例えば、[本組合の公式サイト](https://originator-profile.org/ja-JP/)など、対応しているWebページにアクセスします。
+例えば、[Originator Profile 技術研究組合 (OP CIP) 公式サイト](https://originator-profile.org/)など、対応しているWebページにアクセスします。
 
 インストール後、拡張機能のアイコンをクリックすることで、Web ページに関する情報を確認します。
 

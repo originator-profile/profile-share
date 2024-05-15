@@ -2,9 +2,9 @@
 sidebar_position: 2
 ---
 
-# CIP 実装 Wordpress 連携プラグイン
+# Originator Profile 技術研究組合 (OP CIP) 実装 Wordpress 連携プラグイン
 
-このページでは、CMS連携プラグインの一例として、 CIP が開発した Wordpress 連携プラグインの実装について解説します。
+このページでは、CMS連携プラグインの一例として、 [OP CIP](https://originator-profile.org/) が開発した Wordpress 連携プラグインの実装について解説します。
 このプラグインは CIP 提供の DP Store を利用して、サイト管理者が記事を追加・更新した際に SDP を発行、 DP Store に登録します。
 
 ## WordPress 連携プラグイン

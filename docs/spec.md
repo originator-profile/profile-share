@@ -36,7 +36,7 @@ Originator Profile では、Web コンテンツの「1. 対象範囲を特定」
 
 :::note
 
-本仕様は技術としての Originator Profile について説明するものであり、Originator Profile CIP での取り組み内容、ガバナンスの検討、解決する社会課題、社会実装などについては記載しません。
+本仕様は技術としての Originator Profile について説明するものであり、[Originator Profile 技術研究組合 (OP CIP)](https://originator-profile.org/) での取り組み内容、ガバナンスの検討、解決する社会課題、社会実装などについては記載しません。
 
 :::
 

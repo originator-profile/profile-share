@@ -30,9 +30,9 @@ sidebar_position: 100
 
 [鍵ペアの作成](./registry/operation/key-pair-generation.md)を参照してください。
 
-### 実験で OP CIP 提供の OP/DP レジストリの API を使ったところ、 400 Bad Request のエラーが返ってきました。どのような原因が考えられますか
+### 実験で Originator Profile 技術研究組合 (OP CIP) 提供の OP/DP レジストリの API を使ったところ、 400 Bad Request のエラーが返ってきました。どのような原因が考えられますか
 
-[CIP 提供 DP レジストリについて](./media-study-202307/howto.md#cip-提供-dp-レジストリについて)をご確認ください。それでも解決しない場合はお問い合わせください。
+[OP CIP](https://originator-profile.org/) 提供のレジストリの使い方については、[CIP 提供 DP レジストリについて](./media-study-202307/howto.md#cip-提供-dp-レジストリについて)をご確認ください。それでも解決しない場合はお問い合わせください。
 
 ## OP/DP の使い方・運用について
 

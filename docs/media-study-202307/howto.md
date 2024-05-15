@@ -35,7 +35,7 @@ Step 2
 Step 3
 : Web ページにアクセス
 
-例えば、[本組合の公式サイト](https://originator-profile.org/ja-JP/)など、OP 対応済みの Web ページにアクセスします。
+例えば、[Originator Profile 技術研究組合 (OP CIP) の公式サイト](https://originator-profile.org/)など、OP 対応済みの Web ページにアクセスします。
 
 Step 4
 : コンテンツ情報の閲覧と検証
@@ -92,7 +92,7 @@ Step 4
 
 ### GitHub アカウント
 
-本実験で利用頂く参照実装コードやレジストリ・拡張機能などのコードを収めた [オリジネータープロファイル リポジトリ](https://github.com/originator-profile/profile-share/tree/main) は private リポジトリであり、Read 権限を付与する CIP 加盟企業の github アカウントが必要です。
+本実験で利用頂く参照実装コードやレジストリ・拡張機能などのコードを収めた [オリジネータープロファイル リポジトリ](https://github.com/originator-profile/profile-share/tree/main) は private リポジトリであり、Read 権限を付与する [OP CIP](https://originator-profile.org/) 加盟企業の github アカウントが必要です。
 
 **github アカウント作成後、担当者名とアカウント名を事務局までメールでご連絡ください。**ご連絡いただいた github アカウントに関連リポジトリのアクセス権を付与する invite をお送りさせて頂きます。
 
