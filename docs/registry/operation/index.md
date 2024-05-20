@@ -31,7 +31,7 @@ Originator Profile レジストリの会員となり、Originator Profile によ
 
 ## 企業・組織のウェブサイトの管理者
 
-[Signed Document Profile（SDP）](/spec.md#signed-document-profile)を発行して自身の組織のウェブサイトを表明します。また、自身の組織の SOP と SDP を利用して website Profile Pair を作成します。次の作業を実施します。
+[Signed Document Profile（SDP）](/spec.md#signed-document-profile)を発行して自身の組織のウェブサイトを表明します。また、自身の組織の SOP と SDP を利用して [Website Profile Pair](/terminology/website-profile-pair.md) を作成します。次の作業を実施します。
 
 - [署名付きサイトプロファイルの作成と設置](./website-profile-pair-installation.md)
 

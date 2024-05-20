@@ -130,7 +130,7 @@ eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.e30.84MsC1qvUkYy8YPLH02iBZG54QR8KkYfmg_Y9bR
 
 :::note
 
-現在の実装では、iframe 要素からの SOP、SDP の取得は Profile Pair 形式の ad オブジェクトにのみ対応しています。Profile Set 形式、Profile Pair 形式の website オブジェクトによる取得は受け付けません。
+現在の実装では、iframe 要素からの SOP、SDP の取得は [Ad Profile Pair](/terminology/ad-profile-pair.md) にのみ対応しています。Profile Set 形式、[Website Profile Pair](/terminology/website-profile-pair.md) による取得は受け付けません。
 
 :::
 

@@ -45,7 +45,7 @@ Figma での検討段階の UI デザイン案 (11 月末段階) は次の通り
 
 OP 情報表示 UI の上部に表示する、サイトの情報を記載した[署名付きサイトプロファイル](/terminology/signed-site-profile.md)の作成と設置が必要です。
 
-具体的には署名付きサイトプロファイルとその運営者の組織情報を記載した OP のペア (Website Profile Pair) を記載した JSON ファイルであり、次のような形式のものです:
+具体的には署名付きサイトプロファイルとその運営者の組織情報を記載した OP のペア ([Website Profile Pair](/terminology/website-profile-pair.md)) を記載した JSON ファイルであり、次のような形式のものです:
 
 ```json
 {
