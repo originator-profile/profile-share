@@ -3,6 +3,7 @@ import getKeys from "./account/_id/get-keys";
 
 const schema: FastifySchema = {
   operationId: "getIssuerKeys",
+  tags: ["registry"],
   response: getKeys.schema.response,
 };
 

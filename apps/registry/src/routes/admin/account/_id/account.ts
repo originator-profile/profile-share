@@ -25,11 +25,13 @@ type Body = FromSchema<typeof Body>;
 const schema: FastifySchema = {
   params: Params,
   body: Body,
+  tags: ["accounts"],
   description: "会員の作成・表示・更新・削除",
   security: [{ basicAuth: [] }],
   response: {
     200: {
       title: "会員",
+      description: "会員",
       type: "object",
       additionalProperties: true,
     },

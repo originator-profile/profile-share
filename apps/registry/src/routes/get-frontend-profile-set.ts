@@ -4,6 +4,7 @@ import getProfileSet from "./website/get-profile-set";
 
 const schema: FastifySchema = {
   operationId: "getFrontendProfileSet",
+  tags: ["registry"],
   response: getProfileSet.schema.response,
 };
 

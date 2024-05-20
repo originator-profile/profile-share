@@ -10,6 +10,7 @@ const schema: FastifySchema = {
   response: {
     200: {
       title: "Profile Set",
+      description: "Profile Set",
       type: "object",
       additionalProperties: true,
     },

@@ -4,10 +4,12 @@ import { User } from "@originator-profile/model";
 
 const schema: FastifySchema = {
   description: "ユーザーアカウントの更新・作成",
+  tags: ["user-accounts"],
   security: [{ bearerAuth: [] }],
   response: {
     200: {
       title: "ユーザーアカウント",
+      description: "作成・更新されたユーザーアカウント",
       type: "object",
       additionalProperties: true,
     },

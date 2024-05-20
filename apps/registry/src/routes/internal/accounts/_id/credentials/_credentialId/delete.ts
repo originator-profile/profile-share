@@ -3,11 +3,12 @@ import Params from "./params";
 
 const schema: FastifySchema = {
   params: Params,
+  tags: ["credentials"],
   description: "資格情報の削除",
   security: [{ bearerAuth: ["write:requests"] }],
   response: {
     200: {
-      title: "会員",
+      description: "削除した資格情報",
       type: "object",
       additionalProperties: true,
     },

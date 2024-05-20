@@ -11,10 +11,10 @@ sidebar_position: 7
 SDP 発行済み記事を更新した際に、更新後の記事内容と、 SDP に記載した情報との間に齟齬がある場合には、 SDP を更新、あるいは再発行する必要があります。
 記事更新の例としては、記事タイトルの更新、記事執筆者の変更、[署名対象として選択した文章](./sdp-issuance.mdx#署名をする記事コンテンツを選択する)の変更などがあります。
 
-この場合、登録のケースと同じように、 [SDP 登録用エンドポイント](../media-study-202307/howto.md#adminpublisherアカウントiddp-エンドポイント)を使用してください。
+この場合、登録のケースと同じように、 [SDP 登録用エンドポイント](pathname:///api/index.html#operation/registerSignedDocumentProfile)を使用してください。
 このエンドポイントは、登録する SDP と ID の等しい SDP がすでに DP Store に存在する場合には、既存の SDP を上書き更新します。
 
-SDP 更新後は [Profile Set 取得エンドポイント](../media-study-202307/howto.md#websiteprofiles-エンドポイント)からは新しい SDP を含む Profile Set が返ってきます。
+SDP 更新後は [Profile Set 取得エンドポイント](pathname:///api/index.html#operation/website.getProfileSet)からは新しい SDP を含む Profile Set が返ってきます。
 
 ## 記事を削除・非公開にした場合
 
@@ -44,7 +44,7 @@ curl -X DELETE https://dprexpt.originator-profile.org/admin/publisher/8fe1b860-5
 
 :::
 
-SDP を完全に削除すると、 [Profile Set 取得エンドポイント](../media-study-202307/howto.md#websiteprofiles-エンドポイント)からは、 404 Not Found のエラーが返ってくるようになります。
+SDP を削除すると、 [Profile Set 取得エンドポイント](pathname:///api/index.html#operation/website.getProfileSet)からは、 404 Not Found のエラーが返ってくるようになります。
 
 ## SDP を間違って登録した場合
 
@@ -53,7 +53,7 @@ SDP を完全に削除すると、 [Profile Set 取得エンドポイント](../
 ## 有料記事/無料記事/モバイル向けなど記事内容が変わる場合
 
 現時点では全て個別独立した記事として DP 登録してください。例えば、1つの記事に対してデスクトップ版とモバイル版があり、記事内容に違いがある場合には、デスクトップ版の SDP とモバイル版の SDP の2つを発行してください。
-[Profile Set 取得エンドポイント](../media-study-202307/howto.md#websiteprofiles-エンドポイント) を呼ぶときに、それぞれのバージョンに対応する URL をパラメータとして付与して呼ぶことで、バージョン毎の SDP を得ることができます。
+[Profile Set 取得エンドポイント](pathname:///api/index.html#operation/website.getProfileSet) を呼ぶときに、それぞれのバージョンに対応する URL をパラメータとして付与して呼ぶことで、バージョン毎の SDP を得ることができます。
 
 :::note
 
@@ -64,7 +64,7 @@ SDP を完全に削除すると、 [Profile Set 取得エンドポイント](../
 ## 記事が複数ページに分かれている場合
 
 現時点ではページ毎に個別独立した記事として DP 登録してください。つまり、記事が5ページに分かれている場合には、5つの SDP の発行が必要になります。 SDP を発行する際には、それぞれの SDP の中の url プロパティが、該当するページの URL になっていることを確認してください。
-[Profile Set 取得エンドポイント](../media-study-202307/howto.md#websiteprofiles-エンドポイント) を呼ぶときに、それぞれのバージョンに対応する URL をパラメータとして付与して呼ぶことで、バージョン毎の SDP を得ることができます。
+[Profile Set 取得エンドポイント](pathname:///api/index.html#operation/website.getProfileSet) を呼ぶときに、それぞれのバージョンに対応する URL をパラメータとして付与して呼ぶことで、バージョン毎の SDP を得ることができます。
 
 :::note
 
@@ -75,6 +75,6 @@ SDP を完全に削除すると、 [Profile Set 取得エンドポイント](../
 ## 同じ URL の SDP を複数登録した場合
 
 DP Store は、登録する SDP と ID の等しい SDP がすでに DP Store に存在する場合には、 SDP の新規登録でなく既存の SDP の更新をします。
-[Profile Set 取得エンドポイント](../media-study-202307/howto.md#websiteprofiles-エンドポイント) は、クエリパラメータ `url` にマッチする SDP を Profile Set にして返します。 DP ID が異なる SDP が複数あった場合は、全てが Profile Set に含まれます。
+[Profile Set 取得エンドポイント](pathname:///api/index.html#operation/website.getProfileSet) は、クエリパラメータ `url` にマッチする SDP を Profile Set にして返します。 DP ID が異なる SDP が複数あった場合は、全てが Profile Set に含まれます。
 
 記事の SDP を更新する際には、 DP ID が更新前後で変わらないように注意してください。

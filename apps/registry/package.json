@@ -31,7 +31,7 @@
     "ui:clean": "pnpm --filter @originator-profile/registry-ui clean",
     "docs": "run-p docs:*",
     "docs:cli": "oclif readme",
-    "docs:api": "widdershins dist/openapi.json --omitHeader --language_tabs shell:Shell --outfile ../../docs/registry/assets/api.md",
+    "docs:api": "redocly build-docs dist/openapi.json -o ../../static/api/index.html",
     "docs:assets": "shx cp dist/openapi.json ../../docs/registry/assets/openapi.json",
     "e2e": "dotenv -e .env.development -- vitest --mode e2e run",
     "test": "vitest run",
@@ -78,6 +78,7 @@
     "@originator-profile/tsconfig": "workspace:*",
     "@originator-profile/ui": "workspace:*",
     "@originator-profile/verify": "workspace:*",
+    "@redocly/cli": "^1.12.0",
     "@types/jsonld": "^1.5.13",
     "@types/uuid": "^9.0.7",
     "ajv": "^8.12.0",
@@ -93,6 +94,7 @@
     "jose": "^5.2.0",
     "json-schema-to-ts": "^3.0.0",
     "just-flush": "^2.3.0",
+    "just-merge": "^3.2.0",
     "just-omit": "^2.2.0",
     "msw": "^2.1.4",
     "npm-run-all2": "^6.0.0",
@@ -104,8 +106,7 @@
     "tsup": "^8.0.1",
     "typescript": "^5.3.3",
     "uuid": "^9.0.1",
-    "vitest": "^1.2.1",
-    "widdershins": "^4.0.1"
+    "vitest": "^1.2.1"
   },
   "oclif": {
     "bin": "profile-registry",
@@ -113,5 +114,10 @@
     "plugins": [
       "@oclif/plugin-help"
     ]
+  },
+  "tsup": {
+    "loader": {
+      ".md": "text"
+    }
   }
 }

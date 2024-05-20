@@ -59,6 +59,11 @@ export default {
           position: "right",
         },
         {
+          href: "pathname:///api/",
+          label: "API",
+          position: "right",
+        },
+        {
           href: githubUrl,
           label: "GitHub",
           position: "right",

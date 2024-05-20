@@ -32,7 +32,7 @@ sidebar_position: 11
 - [ウェブサイト　連携](/registry/website-integration.md)
   - ウェブサイトと Document Profile レジストリとの連携方法
   - 前提として Document Profile レジストリの構築が完了していること
-- [API](/registry/assets/api/)
+- [API](pathname:///api/index.html)
   - Profile Registry で使用されている API 一覧
 - [ER 図](/registry/assets/erd/)
   - データベーススキーマの ER 図

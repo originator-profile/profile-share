@@ -5,7 +5,8 @@ import {
   onRouteHookHandler,
 } from "fastify";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { BadRequestError } from "http-errors-enhanced";
+import { BadRequestError, NotFoundError } from "http-errors-enhanced";
+import merge from "just-merge";
 import { ErrorResponse } from "../error";
 
 function onPrismaClientKnownRequestError(
@@ -15,6 +16,9 @@ function onPrismaClientKnownRequestError(
   if (error instanceof PrismaClientKnownRequestError) {
     req.log.info(error.message);
 
+    if (error.code === "P2025") {
+      return new NotFoundError("resource not found.");
+    }
     return new BadRequestError(`PrismaClientKnownRequestError: ${error.code}`);
   }
 
@@ -30,10 +34,30 @@ const addErrorResponseSchema: onRouteHookHandler = async (opt) => {
     );
   }
 
-  Object.assign(opt.schema.response, {
-    400: ErrorResponse, // from http-errors-enhanced, PrismaClientKnownRequestError
-    404: ErrorResponse, // from http-errors-enhanced
-  });
+  opt.schema.response = merge(
+    {
+      "400": {
+        ...ErrorResponse,
+        description: "不正なリクエスト",
+      }, // from http-errors-enhanced, PrismaClientKnownRequestError
+      "404": {
+        ...ErrorResponse,
+        description: "リソースが見つかりません",
+        "x-examples": {
+          notFound: {
+            summary: "Not Found",
+            description: "リソースが見つかりません",
+            value: {
+              statusCode: 404,
+              error: "Not Found",
+              message: "resource not found.",
+            },
+          },
+        },
+      }, // from http-errors-enhanced, PrismaClientKnownRequestError
+    },
+    opt.schema.response,
+  );
 };
 
 async function autohooks(fastify: FastifyInstance): Promise<void> {

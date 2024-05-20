@@ -885,6 +885,8 @@ DP レジストリが提供する API のうち、次の 2 つのエンドポイ
 
 ### `/admin/publisher/{アカウントID}/dp/` エンドポイント詳細
 
+このエンドポイントについては[API ドキュメント](pathname:///api/index.html#operation/registerSignedDocumentProfile)も参照してください。
+
 #### パラメータ　（`/admin/publisher/{アカウントID}/dp/` エンドポイント）
 
 パラメータの一覧は以下になります。これらを POST リクエストのボディーに JSON 形式で与えてください。全て必須パラメータになります。
@@ -978,6 +980,8 @@ DP の登録に失敗した場合、以下のようなレスポンスが返っ�
 失敗レスポンスが返ってきた場合、 DP の登録ができていません。成功レスポンスが返ってくるように、リクエストを修正してください。
 
 ### `/website/profiles` エンドポイント詳細
+
+このエンドポイントについては[API ドキュメント](pathname:///api/index.html#operation/website.getProfileSet)も参照してください。
 
 #### パラメータ（`/website/profiles` エンドポイント）
 

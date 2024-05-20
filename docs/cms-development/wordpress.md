@@ -63,7 +63,7 @@ SDP を生成したら、次は SDP を DP Store に登録してください。
 
 ## SDP の登録
 
-生成した SDP を DP Store に登録します。これには　DP Store (`dprexpt.originator-profile.org`) の [SDP登録用のエンドポイント](/media-study-202307/howto.md#adminpublisherアカウントiddp-エンドポイント) を利用します。
+生成した SDP を DP Store に登録します。これには　DP Store (`dprexpt.originator-profile.org`) の [SDP登録用のエンドポイント](pathname:///api/index.html#operation/registerSignedDocumentProfile) を利用します。
 
 CIP による[実装](https://github.com/originator-profile/profile/blob/v0.0.9/packages/wordpress/includes/issue.php#L231-L270)では次のようになっています。
 

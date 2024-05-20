@@ -11,6 +11,7 @@ async function index(fastify: FastifyInstance): Promise<void> {
     {
       schema: {
         operationId: "frontend",
+        hide: true,
         produces: ["text/html"],
         response: {
           200: {
@@ -25,7 +26,6 @@ async function index(fastify: FastifyInstance): Promise<void> {
     "/app/*",
     {
       schema: {
-        // NOTE: * が含まれるルートは widdershins でエラーになるので隠す
         hide: true,
       },
     },
@@ -41,10 +41,12 @@ async function index(fastify: FastifyInstance): Promise<void> {
     {
       schema: {
         operationId: "getContext",
+        tags: ["registry"],
         produces: ["application/ld+json"],
         response: {
           200: {
             title: "JSON-LD context",
+            description: "JSON-LD context",
             example: context,
             type: "object",
             additionalProperties: true,

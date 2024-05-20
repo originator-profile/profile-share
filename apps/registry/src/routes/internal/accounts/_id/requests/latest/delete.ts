@@ -4,10 +4,12 @@ import Params from "../../params";
 const schema: FastifySchema = {
   params: Params,
   description: "申請の取り下げ",
+  tags: ["requests"],
   security: [{ bearerAuth: ["write:requests"] }],
   response: {
     200: {
       title: "申請",
+      description: "取り下げられた申請",
       type: "object",
       additionalProperties: true,
     },

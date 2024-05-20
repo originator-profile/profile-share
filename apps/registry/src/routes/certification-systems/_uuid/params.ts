@@ -4,10 +4,13 @@ const Params = {
   type: "object",
   properties: {
     uuid: {
-      title: "Certification System ID",
       type: "string",
+      format: "uuid",
+      title: "Certification System ID",
+      description: "認証制度の ID を指定してください。",
     },
   },
+  additionalProperties: false,
   required: ["uuid"],
 } as const;
 

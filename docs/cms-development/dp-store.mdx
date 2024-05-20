@@ -59,15 +59,15 @@ CMS に実装する必要のある機能は次の3つであり、このうち、
 
 [Originator Profile 技術研究組合 (OP CIP)](https://originator-profile.org/) が開発した DP Store はこれらの機能を REST API として提供しています。詳細は[CIP 提供 DP レジストリについて](/media-study-202307/howto.md#cip-提供-dp-レジストリについて)を参照してください。
 
-2\. に対応する API は[/admin/publisher/\{アカウントID\}/dp/](/media-study-202307/howto.md#パラメータadminpublisherアカウントiddp-エンドポイント)エンドポイントです。このエンドポイントは更新にも対応しています。登録する SDP と id の等しい SDP がすでに DP Store に存在する場合には、既存の SDP を上書き更新します。
+2\. に対応する API は[/admin/publisher/\{アカウントID\}/dp/](pathname:///api/index.html#operation/registerSignedDocumentProfile)エンドポイントです。このエンドポイントは更新にも対応しています。登録する SDP と id の等しい SDP がすでに DP Store に存在する場合には、既存の SDP を上書き更新します。
 
-3\. では、 DP Store の [Profile Set 取得 API](/media-study-202307/howto.md#パラメータwebsiteprofiles-エンドポイント) を利用してください。このエンドポイントはクエリパラメータとして記事の URL を受け取り、その URL に対応する SDP を SOP と一緒に Profile Set 形式で返します。記事ページの HTML にこのエンドポイントの URL をクエリパラメータも含めて link 要素として配置することで、記事に SDP を紐づけることが可能になります。記事ページ上で OP 拡張機能を開くとこの link 要素から Profile Set を取得し、検証、表示します。
+3\. では、 DP Store の [Profile Set 取得 API](pathname:///api/index.html#operation/website.getProfileSet) を利用してください。このエンドポイントはクエリパラメータとして記事の URL を受け取り、その URL に対応する SDP を SOP と一緒に Profile Set 形式で返します。記事ページの HTML にこのエンドポイントの URL をクエリパラメータも含めて link 要素として配置することで、記事に SDP を紐づけることが可能になります。記事ページ上で OP 拡張機能を開くとこの link 要素から Profile Set を取得し、検証、表示します。
 
 1\. の実装では、 DP Store の機能を使うことはできません。署名用のライブラリなどを利用して独自に実装していただく必要があります。
 
 ## 2. SDP の保存・管理
 
-SDP を DP Store に登録します。これには DP Store (`dprexpt.originator-profile.org`) の [SDP登録用のエンドポイント](/media-study-202307/howto.md#パラメータadminpublisherアカウントiddp-エンドポイント) を利用します。
+SDP を DP Store に登録します。これには DP Store (`dprexpt.originator-profile.org`) の [SDP登録用のエンドポイント](pathname:///api/index.html#operation/registerSignedDocumentProfile) を利用します。
 
 登録の場合には DP Store の API を呼び出してください。次のようなリクエストを送ることで登録できます。
 
@@ -90,11 +90,11 @@ curl -X POST https://dprexpt.originator-profile.org/admin/publisher/8fe1b860-558
 
 :::note
 
-SDP を更新したいときには **DP ID を変更しないでください**。 DP ID を変更した場合は新規作成として扱われ、[/website/profiles エンドポイント](/media-study-202307/howto.md#websiteprofiles-エンドポイント詳細)使用時に古い SDP が Profile Set に残ります。
+SDP を更新したいときには **DP ID を変更しないでください**。 DP ID を変更した場合は新規作成として扱われ、[/website/profiles エンドポイント](pathname:///api/index.html#operation/website.getProfileSet)使用時に古い SDP が Profile Set に残ります。
 
 :::
 
-記事を非公開にするなどで、登録した SDP を DP Store から削除したい場合には[記事を削除・非公開にした場合](/media-study-202307/sdp-case-study.md#記事を削除非公開にした場合)を参照してください。
+記事を非公開にするなどで、登録した SDP を DP Store から削除したい場合には[記事を削除・非公開にした場合](sdp-case-study.md#記事を削除非公開にした場合)を参照してください。
 
 その他 SDP 発行に関する疑問点は [記事管理に関するケース毎の対応方法](sdp-case-study.md)を参照してください。
 
@@ -141,15 +141,15 @@ SDP を更新したいときには **DP ID を変更しないでください**�
 
 Profile Set の URL として、 DP Store が提供する API の URL を指定することができます。OP CIP 提供 DP Store の Profile Set 配信 API は、認証なしの GET リクエストに Profile Set を返却するため、 link 要素の href 属性にそのまま指定することができます。
 
-SDP の指定方法に応じて2つの API が利用できます。記事の URL で SDP を指定する [/website/profiles エンドポイント](/media-study-202307/howto.md#websiteprofiles-エンドポイント詳細)と、 DP ID（ SDP の sub クレーム）で指定する[/website/\{id\}/profiles エンドポイント](/registry/assets/api/#getdocumentprofileset)です。どちらも GET リクエストに対して Profile Set を返します。
+SDP の指定方法に応じて2つの API が利用できます。記事の URL で SDP を指定する [/website/profiles エンドポイント](pathname:///api/index.html#operation/website.getProfileSet)と、 DP ID（ SDP の sub クレーム）で指定する[/website/\{id\}/profiles エンドポイント](pathname:///api/index.html#operation/getDocumentProfileSet)です。どちらも GET リクエストに対して Profile Set を返します。
 
-例えば [/website/profiles エンドポイント](/media-study-202307/howto.md#websiteprofiles-エンドポイント詳細)を使う場合は、 href 属性に指定する値は次のようになります。
+例えば [/website/profiles エンドポイント](pathname:///api/index.html#operation/website.getProfileSet)を使う場合は、 href 属性に指定する値は次のようになります。
 
 ```
 https://dprexpt.originator-profile.org/website/profiles?url=<記事のURL (RFC 3986 でエンコード) >
 ```
 
-[/website/\{id\}/profiles エンドポイント](/registry/assets/api/#getdocumentprofileset)を使う場合は次のようになります。 DP ID は SDP の sub クレームの値です。
+[/website/\{id\}/profiles エンドポイント](pathname:///api/index.html#operation/getDocumentProfileSet)を使う場合は次のようになります。 DP ID は SDP の sub クレームの値です。
 
 ```
 https://dprexpt.originator-profile.org/website/<SDP の DP ID>/profiles

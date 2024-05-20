@@ -19,9 +19,23 @@ const addErrorResponseSchema: onRouteHookHandler = async (opt) => {
       `The property schema.response is missing on ${method} ${opt.path}`,
     );
   }
+  opt.schema.tags = ["internal", ...(opt.schema.tags ?? [])];
 
   Object.assign(opt.schema.response, {
-    401: ErrorResponse,
+    401: {
+      ...ErrorResponse,
+      "x-examples": {
+        invalidPassword: {
+          summary: "access token missing",
+          description: "アクセストークンがない",
+          value: {
+            statusCode: 401,
+            error: "Unauthorized",
+            message: "Missing Authorization HTTP header",
+          },
+        },
+      },
+    },
     403: ErrorResponse,
   });
 };

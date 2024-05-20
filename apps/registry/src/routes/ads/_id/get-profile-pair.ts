@@ -8,12 +8,14 @@ export const url = "";
 
 export const schema = {
   operationId: "ads.getProfilePair",
+  tags: ["profiles"],
   description: "Ad Profile Pair の取得",
   params: Params,
   produces: ["application/ld+json"],
   response: {
     200: {
-      title: "Profile Pair",
+      title: "Ad Profile Pair",
+      description: "Ad Profile Pair",
       type: "object",
       additionalProperties: true,
     },

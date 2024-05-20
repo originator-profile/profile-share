@@ -4,6 +4,8 @@ import getProfileSet from "./account/_id/get-profile-set";
 
 const schema: FastifySchema = {
   operationId: "getIssuerProfileSet",
+  tags: ["registry"],
+  produces: ["application/ld+json"],
   response: getProfileSet.schema.response,
 };
 

@@ -3,6 +3,7 @@ import { FromSchema } from "json-schema-to-ts";
 import { BadRequestError } from "http-errors-enhanced";
 import { Prisma } from "@prisma/client";
 import Params from "./params";
+import document from "./website.doc.md?raw";
 
 const Body = {
   type: "object",
@@ -27,9 +28,12 @@ const Body = {
 type Body = FromSchema<typeof Body>;
 
 const schema: FastifySchema = {
+  tags: ["websites"],
+  summary: "ウェブページの作成・表示・更新・削除",
+  deprecated: true,
   params: Params,
   body: Body,
-  description: "ウェブページの作成・表示・更新・削除",
+  description: document,
   security: [{ basicAuth: [] }],
   response: {
     200: {

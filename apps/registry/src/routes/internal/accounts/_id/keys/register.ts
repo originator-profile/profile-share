@@ -8,6 +8,7 @@ export const url = "/";
 
 const Body = {
   type: "object",
+  description: "登録する公開鍵を JWK 形式で与えてください。",
   properties: {
     key: Jwk,
   },
@@ -18,6 +19,7 @@ type Body = FromSchema<typeof Body>;
 
 export const schema = {
   operationId: "account.registerKey",
+  tags: ["keys"],
   body: Body,
   params: Params,
   description: "JWKの登録",

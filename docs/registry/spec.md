@@ -7,7 +7,7 @@ sidebar_label: 仕様
 
 ## API ドキュメント
 
-API に関する詳細は、[API ドキュメント](assets/api.md)を参照してください。
+API に関する詳細は、[API ドキュメント](pathname:///api/index.html)を参照してください。
 
 ## 署名
 

@@ -7,12 +7,14 @@ export const url = "/certification-systems";
 
 export const schema = {
   operationId: "account.getCertificationSystems",
+  tags: ["certification-systems"],
   params: Params,
   description: "利用可能な認証制度の一覧の取得",
   security: [{ bearerAuth: ["write:requests"] }],
   response: {
     200: {
       title: "認証制度の一覧",
+      description: "認証制度の一覧",
       type: "array",
       items: CertificationSystem,
     },

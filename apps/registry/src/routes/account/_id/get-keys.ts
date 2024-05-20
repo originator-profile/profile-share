@@ -4,6 +4,7 @@ import Params from "./params";
 
 const schema: FastifySchema = {
   operationId: "getKeys",
+  tags: ["keys"],
   params: Params,
   response: {
     200: Jwks,

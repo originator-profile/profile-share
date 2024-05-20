@@ -1,13 +1,15 @@
 import { FastifySchema, FastifyRequest } from "fastify";
-import Params from "./params";
+import Params from "../params";
 
 const schema: FastifySchema = {
   params: Params,
-  description: "ロゴURLの取得",
+  tags: ["logos"],
+  description: "メインロゴの取得",
   security: [{ bearerAuth: ["write:requests"] }],
   response: {
     200: {
-      title: "ロゴURL",
+      title: "メインロゴの情報",
+      description: "メインロゴの情報",
       type: "object",
       additionalProperties: true,
     },

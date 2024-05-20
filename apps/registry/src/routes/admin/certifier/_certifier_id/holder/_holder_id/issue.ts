@@ -6,7 +6,8 @@ const Body = {
   type: "object",
   properties: {
     jwt: {
-      description: "OP (JWT)",
+      title: "Signed Originator Profile",
+      description: "Signed Originator Profile (SOP) を与えてください。",
       type: "string",
     },
   },
@@ -18,6 +19,7 @@ type Body = FromSchema<typeof Body>;
 const schema: FastifySchema = {
   params: Params,
   body: Body,
+  tags: ["SOP"],
   description: "OP の登録",
   security: [{ basicAuth: [] }],
   response: {

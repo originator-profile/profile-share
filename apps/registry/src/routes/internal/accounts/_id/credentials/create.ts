@@ -18,11 +18,13 @@ type Body = FromSchema<typeof Body>;
 const schema: FastifySchema = {
   body: Body,
   params: Params,
+  tags: ["credentials"],
   description: "資格情報の登録",
   security: [{ bearerAuth: ["write:requests"] }],
   response: {
     200: {
-      title: "会員",
+      title: "資格情報",
+      description: "登録された資格情報",
       type: "object",
       additionalProperties: true,
     },

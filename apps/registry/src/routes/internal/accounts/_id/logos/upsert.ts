@@ -1,7 +1,7 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 import { FromSchema } from "json-schema-to-ts";
 import { BadRequestError } from "http-errors-enhanced";
-import Params from "./params";
+import Params from "../params";
 
 const Body = {
   type: "object",
@@ -25,11 +25,13 @@ type Body = FromSchema<typeof Body>;
 const schema: FastifySchema = {
   body: Body,
   params: Params,
+  tags: ["logos"],
   description: "ロゴの登録・更新",
   security: [{ bearerAuth: ["write:requests"] }],
   response: {
     200: {
       title: "ロゴ",
+      description: "登録・更新されたロゴ情報",
       type: "object",
       additionalProperties: true,
     },

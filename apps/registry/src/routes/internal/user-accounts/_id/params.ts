@@ -3,7 +3,11 @@ import { FromSchema } from "json-schema-to-ts";
 const Params = {
   type: "object",
   properties: {
-    id: { type: "string", title: "ユーザーアカウントID" },
+    id: {
+      type: "string",
+      title: "ユーザーアカウントID",
+      description: "操作対象のユーザーアカウントの ID を与えてください。",
+    },
   },
   additionalProperties: false,
   required: ["id"],

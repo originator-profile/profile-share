@@ -17,13 +17,42 @@ type Options = {
   quiet?: boolean;
   /** テスト用の認証の無効化オプション (**本番環境では厳禁**) */
   dangerouslyDisabledAuth?: boolean;
+  hideInternalDocs?: boolean;
 };
 
 export type Server = FastifyInstance;
 
 function OpenApi(
   config: Pick<Config, "AUTH0_DOMAIN">,
+  hideInternalDocs: boolean = false,
 ): FastifyDynamicSwaggerOptions["openapi"] {
+  const tagsInternalOnly = [
+    {
+      name: "user-accounts",
+      description: "ユーザーアカウント",
+      "x-displayName": "ユーザーアカウント",
+    },
+    {
+      name: "credentials",
+      description: "資格情報",
+      "x-displayName": "資格情報",
+    },
+    {
+      name: "requests",
+      description: "申請",
+      "x-displayName": "申請",
+    },
+    {
+      name: "logos",
+      description: "組織ロゴ",
+      "x-displayName": "組織ロゴ",
+    },
+    {
+      name: "internal",
+      description: "内部用 API",
+      "x-displayName": "内部用 API",
+    },
+  ];
   return {
     info: {
       title: pkg.description,
@@ -42,6 +71,50 @@ function OpenApi(
         },
       },
     },
+    tags: [
+      {
+        name: "accounts",
+        description: "アカウント",
+        "x-displayName": "アカウント",
+      },
+
+      {
+        name: "SDP",
+        description: "Signed Document Profile",
+        "x-displayName": "Signed Document Profile",
+      },
+      {
+        name: "profiles",
+        description: "Profile Sets/Pairs",
+        "x-displayName": "Profile Sets/Pairs",
+      },
+      {
+        name: "registry",
+        description: "レジストリ",
+        "x-displayName": "レジストリ",
+      },
+      {
+        name: "keys",
+        description: "公開鍵",
+        "x-displayName": "公開鍵",
+      },
+      {
+        name: "certification-systems",
+        description: "認証制度",
+        "x-displayName": "認証制度",
+      },
+      {
+        name: "SOP",
+        description: "Signed Originator Profile",
+        "x-displayName": "Signed Originator Profile",
+      },
+      {
+        name: "websites",
+        description: "ウェブページ",
+        "x-displayName": "ウェブページ",
+      },
+      ...(hideInternalDocs ? [] : tagsInternalOnly),
+    ],
   };
 }
 
@@ -64,7 +137,8 @@ export async function create(options: Options): Promise<Server> {
 
   if (options.isDev) {
     await app.register(swagger, {
-      openapi: OpenApi(app.config),
+      openapi: OpenApi(app.config, options.hideInternalDocs),
+      hiddenTag: options.hideInternalDocs ? "internal" : undefined,
     });
     await app.register(swaggerUi, {
       initOAuth: {

@@ -17,10 +17,12 @@ const schema: FastifySchema = {
   body: Body,
   params: Params,
   description: "申請情報の登録",
+  tags: ["requests"],
   security: [{ bearerAuth: ["write:requests"] }],
   response: {
     200: {
       title: "申請",
+      description: "登録された申請",
       type: "object",
       additionalProperties: true,
     },

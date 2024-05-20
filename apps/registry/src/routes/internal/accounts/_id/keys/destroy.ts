@@ -12,6 +12,7 @@ const Params = {
     kid: {
       title: "Key ID",
       type: "string",
+      description: "削除対象の JWK の kid を与えてください。",
     },
   },
   required: ["id", "kid"],
@@ -22,12 +23,14 @@ type Params = FromSchema<typeof Params>;
 
 export const schema = {
   operationId: "account.destroyKey",
+  tags: ["keys"],
   params: Params,
   description: "JWKの削除",
   security: [{ bearerAuth: ["write:requests"] }],
   response: {
     200: {
       title: "Key ID",
+      description: "削除された JWK の kid",
       type: "string",
     },
   },

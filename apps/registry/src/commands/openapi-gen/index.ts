@@ -19,6 +19,7 @@ export default class OpenapiGen extends Command {
       isDev: true,
       routes: path.resolve(__dirname, "../../routes"),
       quiet: true,
+      hideInternalDocs: true,
     });
     await server.ready();
     const res = await server.inject("/documentation/json");

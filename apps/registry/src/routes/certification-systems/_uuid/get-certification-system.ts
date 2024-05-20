@@ -7,6 +7,7 @@ export const url = "";
 
 export const schema = {
   operationId: "certificationSystems.getCertificationSystem",
+  tags: ["certification-systems"],
   description: "認証制度の取得",
   params: Params,
   response: {
