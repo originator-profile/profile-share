@@ -6,9 +6,14 @@ async function requiredGroupMembership({
   user,
   server,
   params,
+  method,
 }: FastifyRequest<{
   Params: Params;
 }>) {
+  // 審査担当者は会員のリソースを取得できる
+  if (user.permissions.includes("write:reviews") && method === "GET") {
+    return;
+  }
   await server.services.userAccount.isMemberOfOrThrow({ id: user.sub }, params);
 }
 

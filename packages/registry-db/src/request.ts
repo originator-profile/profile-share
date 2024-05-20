@@ -177,15 +177,15 @@ export const RequestRepository = () => ({
   }): Promise<OpRequestList> {
     const prisma = getClient();
 
+    const statusValue: Prisma.requestLogsWhereInput["statusValue"] = {
+      undefined: undefined,
+      true: { equals: "pending" },
+      false: { not: "pending" },
+    }[String(pending)];
     const data = await prisma.requestLogs.findMany({
       ...requestLogsExtArgs,
       where: {
-        statusValue:
-          pending === undefined
-            ? undefined
-            : {
-                [pending ? "is" : "isNot"]: "pending",
-              },
+        statusValue,
       },
       orderBy: {
         insertedAt: "asc",

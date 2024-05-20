@@ -14,7 +14,7 @@ type Querystring = FromSchema<typeof Querystring>;
 const schema: FastifySchema = {
   querystring: Querystring,
   description: "最新の申請情報リストの取得",
-  security: [{ bearerAuth: ["write:requests"] }],
+  security: [{ bearerAuth: ["write:requests", "write:reviews"] }],
   response: {
     200: {
       type: "array",
