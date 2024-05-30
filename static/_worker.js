@@ -18,7 +18,6 @@
 const users = new Map(
   Object.entries({
     op: "l17Fx7U7feOp",
-    tw: "KCkYg12B^Ofs",
   }),
 );
 
