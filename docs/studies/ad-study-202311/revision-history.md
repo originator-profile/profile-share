@@ -4,6 +4,10 @@ sidebar_position: 21
 
 # 編集履歴
 
+## 2024年5月30日
+
+- [実験共通の案内](../general-instruction/index.mdx)を作成しました。
+
 ## 2024年1月26日
 
 広告連携実験 2nd での署名対象を body 要素から img 要素に変更しました。

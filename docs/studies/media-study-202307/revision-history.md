@@ -4,6 +4,10 @@ sidebar_position: 99
 
 # 編集履歴
 
+## 2024年5月30日
+
+- [実験共通の案内](../general-instruction/index.mdx)を作成しました。
+
 ## 2024年1月9日
 
 - 記事管理に関するケース毎の対応方法についてページを追加しました。
@@ -23,15 +27,15 @@ sidebar_position: 99
 
 ## 2023年7月26日
 
-DP レジストリ DB への接続が不要な状態で SDP を発行いただけるよう、SDP 発行に使用する CLI を `profile-registry publisher:website` から `profile-registry publisher:sign` へと変更しました。
+- DP レジストリ DB への接続が不要な状態で SDP を発行いただけるよう、SDP 発行に使用する CLI を `profile-registry publisher:website` から `profile-registry publisher:sign` へと変更しました。
 
 ## 2023年07月21日
 
-WordPress プラグインあるいは CLI のセットアップが不要な方法として、JSON Web Key Generator を使用した鍵の生成方法を追加しました。
+- WordPress プラグインあるいは CLI のセットアップが不要な方法として、JSON Web Key Generator を使用した鍵の生成方法を追加しました。
 
 ## 2023年07月19日
 
-JWK 形式のプライベート鍵に対応したことに合わせて例示を更新しました。
+- JWK 形式のプライベート鍵に対応したことに合わせて例示を更新しました。
 
 ## 2023年07月12日
 
@@ -45,4 +49,4 @@ JWK 形式のプライベート鍵に対応したことに合わせて例示を�
 
 ## 2023年6月30日
 
-初版
+- 初版
