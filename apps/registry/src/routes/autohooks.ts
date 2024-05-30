@@ -39,7 +39,7 @@ const addErrorResponseSchema: onRouteHookHandler = async (opt) => {
       "400": {
         ...ErrorResponse,
         description: "不正なリクエスト",
-      }, // from http-errors-enhanced, PrismaClientKnownRequestError
+      }, // from PrismaClientKnownRequestError
       "404": {
         ...ErrorResponse,
         description: "リソースが見つかりません",
@@ -54,7 +54,7 @@ const addErrorResponseSchema: onRouteHookHandler = async (opt) => {
             },
           },
         },
-      }, // from http-errors-enhanced, PrismaClientKnownRequestError
+      }, // from Fastify default 404 handler, PrismaClientKnownRequestError
     },
     opt.schema.response,
   );
