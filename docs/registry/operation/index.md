@@ -12,7 +12,7 @@ sidebar_position: 1
 
 ## 企業・組織の担当者
 
-Originator Profile レジストリの会員となり、発行される [Signed Originator Profile（SOP）](/spec.md#signed-originator-profile)により自身の組織の身元を表明します。次の作業を実施します。
+Originator Profile レジストリの会員となり、発行される [Signed Originator Profile（SOP）](/spec/index.md#signed-originator-profile)により自身の組織の身元を表明します。次の作業を実施します。
 
 - [組織情報の提出](./org-info-submission.md)
 - [資格情報の提出](./credential-submission.md)
@@ -27,11 +27,11 @@ Originator Profile レジストリの会員となり、Originator Profile によ
 
 ## 記事出版・引用の担当者
 
-[Signed Document Profile（SDP）](/spec.md#signed-document-profile)を発行して自身の組織の出版物を表明します。また、自身の組織の SOP と SDP を利用して [Profile Set](/spec.md#profile-set) を作成します。これらは間接的に Document Profile レジストリ管理者が用意したレジストリ API 等によって行われます。
+[Signed Document Profile（SDP）](/spec/index.md#signed-document-profile)を発行して自身の組織の出版物を表明します。また、自身の組織の SOP と SDP を利用して [Profile Set](/spec/index.md#profile-set) を作成します。これらは間接的に Document Profile レジストリ管理者が用意したレジストリ API 等によって行われます。
 
 ## 企業・組織のウェブサイトの管理者
 
-[Signed Document Profile（SDP）](/spec.md#signed-document-profile)を発行して自身の組織のウェブサイトを表明します。また、自身の組織の SOP と SDP を利用して [Website Profile Pair](/terminology/website-profile-pair.md) を作成します。次の作業を実施します。
+[Signed Document Profile（SDP）](/spec/index.md#signed-document-profile)を発行して自身の組織のウェブサイトを表明します。また、自身の組織の SOP と SDP を利用して [Website Profile Pair](/terminology/website-profile-pair.md) を作成します。次の作業を実施します。
 
 - [署名付きサイトプロファイルの作成と設置](./website-profile-pair-installation.md)
 
@@ -57,17 +57,9 @@ Originator Profile の発行者です。次の作業を実施します。
 
 Document Profile の発行者です。次の作業を実施します。
 
-- [Document Profile レジストリ構築](../document-profile-registry-creation.md)
+- [Document Profile レジストリ構築](../integration/document-profile-registry-creation.md)
 - [レジストリ DB 参照](./registry-db-access.md)
 - [Signed Document Profile 発行・更新](./signed-document-profile-issuance.md)
 - [Profile Set 作成](./profile-set-creation.md)
-- [WordPress 連携](../wordpress-integration.md)
-- [Web サイト連携](../website-integration.md)
-
-## OP登録サイトの管理者
-
-- [Auth0 テナント構成の適用](./auth0-deploy.md)
-- [Auth0 ユーザーの role の変更](./auth0-role-assigning.md)
-- [Auth0 ユーザー管理](./auth0-user-management.md)
-- [R2 の設定](./r2-configuration.md)
-- [OP登録サイトのデプロイ](./op-request-deploy.md)
+- [WordPress 連携](../integration/wordpress-integration.md)
+- [Web サイト連携](../integration/website-integration.md)

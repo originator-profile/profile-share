@@ -32,7 +32,7 @@
     "docs": "run-p docs:*",
     "docs:cli": "oclif readme",
     "docs:api": "redocly build-docs dist/openapi.json -o ../../static/api/index.html",
-    "docs:assets": "shx cp dist/openapi.json ../../docs/registry/assets/openapi.json",
+    "docs:assets": "shx cp dist/openapi.json ../../docs/spec/assets/openapi.json",
     "e2e": "dotenv -e .env.development -- vitest --mode e2e run",
     "test": "vitest run",
     "lint": "eslint --fix .",

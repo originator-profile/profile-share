@@ -64,8 +64,18 @@ export default {
           position: "right",
         },
         {
+          href: `${githubUrl}/blob/main/apps/registry#commands`,
+          label: "CLI",
+          position: "right",
+        },
+        {
           href: githubUrl,
           label: "GitHub",
+          position: "right",
+        },
+        {
+          href: "https://originator-profile.org/",
+          label: "OP CIP",
           position: "right",
         },
       ],

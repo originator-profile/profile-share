@@ -6,9 +6,9 @@
     "build": "run-s build:schema build:docs",
     "build:schema": "node -r esbuild-register scripts/schema-gen.mts",
     "build:docs": "run-s build:docs:clean build:docs:gen",
-    "build:docs:clean": "rimraf ../../docs/model/assets",
-    "build:docs:gen": "jsonschema2md --input dist --out ../../docs/model/assets --schema-out ../../docs/model/assets",
-    "test": "markdown-link-check --config ./markdown-link-check.config.json ../../docs/model/assets/*.md",
+    "build:docs:clean": "rimraf ../../docs/spec/model/assets",
+    "build:docs:gen": "jsonschema2md --input dist --out ../../docs/spec/model/assets --schema-out ../../docs/spec/model/assets",
+    "test": "markdown-link-check --config ./markdown-link-check.config.json ../../docs/spec/model/assets/*.md",
     "lint": "eslint --fix ."
   },
   "devDependencies": {

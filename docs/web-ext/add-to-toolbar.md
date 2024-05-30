@@ -10,7 +10,7 @@ sidebar_position: 2
 
 ## 前提条件
 
-- [拡張機能のインストール](./experimental-use.md#インストール)
+- [拡張機能のインストール](./experimental-use.mdx#install)
 
 ## Google Chrome
 

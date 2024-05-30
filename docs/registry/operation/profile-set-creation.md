@@ -4,13 +4,13 @@ sidebar_position: 9
 
 # Profile Set 作成
 
-本ページでは Document Profile レジストリ管理者が自身の組織の Signed Originator Profile（SOP）と Signed Document Profile（SDP）を利用して、[Profile Set](/spec.md#profile-set) を作成する方法を説明します。
+本ページでは Document Profile レジストリ管理者が自身の組織の Signed Originator Profile（SOP）と Signed Document Profile（SDP）を利用して、[Profile Set](/spec/index.md#profile-set) を作成する方法を説明します。
 
 :::caution
 
 本ページの方法は都度検証をパスする SOP と SDP への更新が必要であり、推奨できません。あくまでレジストリ API を使用しない方法として仕様への理解を深める目的で参考にしてください。
 
-Document Profile レジストリ運用時は、レジストリ API を使用して常に最新の SOP と SDP が得られる [WordPress 連携](../wordpress-integration.md)か [Web サイト連携](../website-integration.md)を検討してください。
+Document Profile レジストリ運用時は、レジストリ API を使用して常に最新の SOP と SDP が得られる [WordPress 連携](../integration/wordpress-integration.md)か [Web サイト連携](../integration/website-integration.md)を検討してください。
 
 :::
 
@@ -46,7 +46,7 @@ Prisma Studio からレジストリ DB を参照して Profile Set を作成し�
 
 ### 作成
 
-Profile Set の profile プロパティに必要な jwt を含めていきます。詳細は [Profile Set の仕様](/spec.md#profile-set)を参照してください。
+Profile Set の profile プロパティに必要な jwt を含めていきます。詳細は [Profile Set の仕様](/spec/index.md#profile-set)を参照してください。
 
 ```json
 {
@@ -76,4 +76,4 @@ Profile Set の profile プロパティに必要な jwt を含めていきます
 
 公開する Web ページに配置する際には、HTML 中に Profile Set への <link\> 要素を追加します。
 
-詳細は [<link\> 要素を使用する外部的な表現の仕様](/spec.md#link)を参照してください。
+詳細は [<link\> 要素を使用する外部的な表現の仕様](/spec/index.md#link)を参照してください。
