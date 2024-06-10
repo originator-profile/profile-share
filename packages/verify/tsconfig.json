@@ -2,6 +2,6 @@
   "extends": "@originator-profile/tsconfig/tsconfig.json",
   "compilerOptions": {
     "types": ["vi-fetch/matchers"],
-    "resolveJsonModule": true,
-  },
+    "resolveJsonModule": true
+  }
 }
