@@ -1,7 +1,8 @@
 import { FastifySchema, FastifyRequest, FastifyReply } from "fastify";
 import { FromSchema } from "json-schema-to-ts";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
-import context from "@originator-profile/model/context.json" assert { type: "json" };
+import context from "@originator-profile/model/context.json" assert { type:
+  "json" };
 import document from "./get-profile-set.doc.md?raw";
 
 const Query = {

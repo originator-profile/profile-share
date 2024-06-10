@@ -6,6 +6,6 @@
     "module": "esnext",
     "moduleResolution": "node",
     "target": "esnext",
-    "allowJs": true,
-  },
+    "allowJs": true
+  }
 }
