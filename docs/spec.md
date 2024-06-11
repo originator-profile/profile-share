@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# 仕様
+# 仕様 (outdated)
 
 :::note
 

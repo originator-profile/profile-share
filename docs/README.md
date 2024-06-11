@@ -5,7 +5,7 @@ sidebar_position: 0
 # ドキュメント
 
 - [Originator Profile について](tech/)
-- [仕様](spec.md)
+- [Originator Profile RFC](rfc/)
 - [開発ガイド](development/)
 - [Profile Registry](registry/)
 - [Profile Web Extension](web-ext/)
