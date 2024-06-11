@@ -28,7 +28,7 @@
     "@docusaurus/preset-classic": "^3.4.0",
     "@docusaurus/theme-mermaid": "^3.4.0",
     "@docusaurus/types": "^3.4.0",
-    "@easyops-cn/docusaurus-search-local": "^0.41.0",
+    "@easyops-cn/docusaurus-search-local": "^0.44.0",
     "@lerna-lite/cli": "^3.4.0",
     "@lerna-lite/version": "^3.4.0",
     "@mdx-js/react": "^3.0.1",
