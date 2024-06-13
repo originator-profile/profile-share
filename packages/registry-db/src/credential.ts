@@ -1,14 +1,26 @@
 import { Prisma, credentials } from "@prisma/client";
 import { getClient } from "./lib/prisma-client";
 
+const credentialsExtArgs = {
+  include: {
+    verifier: true,
+    certifier: true,
+  },
+} as const;
+
+export type Credentials = Prisma.credentialsGetPayload<
+  typeof credentialsExtArgs
+>;
+
 export const CredentialRepository = () => ({
   /**
    * 資格情報の表示
    * @param accountId 会員 ID
    */
-  async read(accountId: string, validAt?: Date): Promise<Array<credentials>> {
+  async read(accountId: string, validAt?: Date): Promise<Array<Credentials>> {
     const prisma = getClient();
     return await prisma.credentials.findMany({
+      ...credentialsExtArgs,
       where: { accountId, expiredAt: { gt: validAt } },
     });
   },

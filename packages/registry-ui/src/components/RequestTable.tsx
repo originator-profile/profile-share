@@ -1,4 +1,5 @@
-import { Request } from "@originator-profile/model";
+import { formatDatetoYYYYmd } from "@originator-profile/core";
+import { Request } from "../utils/request";
 
 type LatestRequestListProps = {
   className?: string;
@@ -11,21 +12,34 @@ type RequestTableProps = RequestRequiredProps | LatestRequestListProps;
 
 type RequestTableRowProps = {
   org: string;
+  orgId: string;
   comment: string;
   date: Date;
 };
 
-function RequestTableRow({ org, comment, date }: RequestTableRowProps) {
+function RequestTableRow({ org, orgId, comment, date }: RequestTableRowProps) {
   return (
-    <tr className="border border-collapse border-gray-200 text-black">
-      <td className="text-start px-4 py-2 truncate text-base">{org}</td>
-      <td className="text-start py-2 truncate text-sm">{comment}</td>
-      <td className="text-start px-4 py-2 text-xs">
-        {date.toLocaleDateString("ja-JP", {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        })}
+    <tr className="border border-collapse border-gray-200 text-black hover:bg-gray-50">
+      <td className="text-start truncate text-base">
+        <a
+          className="block px-4 py-2"
+          href={`/app/review-op/accounts/${orgId}/`}
+        >
+          {org}
+        </a>
+      </td>
+      <td className="text-start truncate text-sm">
+        <a className="block py-2" href={`/app/review-op/accounts/${orgId}/`}>
+          {comment}
+        </a>
+      </td>
+      <td className="text-start text-xs">
+        <a
+          className="block pl-4 py-2"
+          href={`/app/review-op/accounts/${orgId}/`}
+        >
+          {formatDatetoYYYYmd(date)}
+        </a>
       </td>
     </tr>
   );
@@ -56,7 +70,8 @@ function RequestTable(props: RequestTableProps) {
               return (
                 <RequestTableRow
                   key={index}
-                  org={item.group}
+                  org={item.request.group.name}
+                  orgId={item.request.group.id}
                   comment={item.reviewSummary ?? item.requestSummary ?? ""}
                   date={new Date(item.createdAt)}
                 />

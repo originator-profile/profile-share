@@ -20,29 +20,18 @@ export const UserAccountService = ({ userAccountRepository }: Options) => ({
    * ユーザーアカウントの取得
    * @param requestUser ログインしているユーザー
    * @param targetUser 対象のユーザー
-   * @throws {NotFoundError} ユーザーが見つからない (グローマー拒否)
    * @throws {ForbiddenError} 対象のユーザーがまだ登録されていない
    * @return ユーザーアカウント
    */
-  async read(
-    requestUser: Pick<User, "id">,
-    targetUser: Pick<User, "id">,
-  ): Promise<UserWithOpAccountId> {
-    if (requestUser.id !== targetUser.id) {
-      await this.reviewerMembershipOrThrow({
-        id: requestUser.id,
-        reviewerId: targetUser.id,
-      });
-    }
-
+  async read(targetUser: Pick<User, "id">): Promise<UserWithOpAccountId> {
     const data = await userAccountRepository.read(targetUser);
 
     if (!data) {
       throw new ForbiddenError("User activation is required.");
     }
 
-    const { id, name, picture, accountId } = data;
-    return { id, name, picture, accountId };
+    const { id, name, picture, email, accountId } = data;
+    return { id, name, picture, email, accountId };
   },
   /**
    * ユーザーアカウントの更新・作成
@@ -82,24 +71,12 @@ export const UserAccountService = ({ userAccountRepository }: Options) => ({
     }
   },
   /**
-   * 審査担当者かどうか
-   * @throws {NotFoundError} 審査担当者ではない
-   */
-  async reviewerMembershipOrThrow(input: {
-    /** ユーザーID */
-    id: string;
-    /** 審査担当者ID */
-    reviewerId: string;
-  }): Promise<void> {
-    await userAccountRepository.reviewerMembershipOrThrow(input);
-  },
-  /**
    * ログインしているユーザーが登録されているかどうか
    * @param requestUser ログインしているユーザー
    * @throws {ForbiddenError} まだ登録されていない
    */
   async signedUpOrThrow(requestUser: Pick<User, "id">): Promise<void> {
-    await this.read(requestUser, requestUser);
+    await this.read(requestUser);
   },
   /**
    * ユーザーの所属組織かどうか
@@ -112,7 +89,7 @@ export const UserAccountService = ({ userAccountRepository }: Options) => ({
     requestUser: Pick<User, "id">,
     targetGroup: { id: string },
   ): Promise<void> {
-    const user = await this.read(requestUser, requestUser);
+    const user = await this.read(requestUser);
 
     if (user.accountId !== targetGroup.id) {
       throw new NotFoundError("Group not found.");

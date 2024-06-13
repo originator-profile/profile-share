@@ -17,13 +17,12 @@ const schema: FastifySchema = {
 };
 
 async function get({
-  user,
   server,
   params,
 }: FastifyRequest<{
   Params: Params;
 }>) {
-  return await server.services.userAccount.read({ id: user.sub }, params);
+  return await server.services.userAccount.read(params);
 }
 
 export { get, schema };

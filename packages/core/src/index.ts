@@ -6,3 +6,4 @@ export * from "./profile";
 export * from "./jwt-payload";
 export * from "./account";
 export * from "./date";
+export * from "./typefunc";

@@ -1,7 +1,6 @@
 import clsx from "clsx";
-import { Request } from "@originator-profile/model";
 import { AlertDialog, PromptDialog, useDialog } from "./dialog";
-import { useLatestRequest } from "../utils/request";
+import { Request, useLatestRequest } from "../utils/request";
 
 type CardProps = {
   className?: string;

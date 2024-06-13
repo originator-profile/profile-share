@@ -1,5 +1,8 @@
 import { credentials } from "@prisma/client";
-import { type CredentialRepository } from "@originator-profile/registry-db";
+import {
+  Credentials,
+  type CredentialRepository,
+} from "@originator-profile/registry-db";
 import { CertificateService } from "./certificate";
 import { BadRequestError } from "http-errors-enhanced";
 
@@ -17,7 +20,7 @@ export const CredentialService = ({
    * @param accountId 会員 ID
    * @return 資格情報
    */
-  async read(accountId: string, validAt?: Date): Promise<Array<credentials>> {
+  async read(accountId: string, validAt?: Date): Promise<Array<Credentials>> {
     return await credentialRepository.read(accountId, validAt);
   },
   /**

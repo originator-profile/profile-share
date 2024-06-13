@@ -1,6 +1,6 @@
 import { ComponentProps, ReactNode, useState } from "react";
 import { CertificationSystem } from "@originator-profile/model";
-import { Table, TableRow } from "@originator-profile/ui";
+import { CredentialTable } from "@originator-profile/ui";
 import {
   expirationDateTimeLocaleFrom,
   isExpired,
@@ -272,23 +272,6 @@ function CredentialForm({
   );
 }
 
-function CredentialTableRow({
-  className,
-  header,
-  data,
-}: {
-  className?: string;
-  header: string;
-  data: string;
-}) {
-  return (
-    <TableRow
-      header={<span className="text-black text-sm">{header}</span>}
-      data={<span className={clsx(className, "text-base")}>{data}</span>}
-    />
-  );
-}
-
 function MenuButton({
   handleClickEdit,
   handleClickDelete,
@@ -320,7 +303,7 @@ function MenuButton({
   );
 }
 
-function CredentialTable({
+function CredentialEntry({
   data,
   handleDelete,
   handleEdit,
@@ -354,31 +337,10 @@ function CredentialTable({
           handleClickDelete={() => handleDelete(data.id)}
         />
       </div>
-      <Table>
-        <CredentialTableRow header="認定内容" data={data.name} />
-        <CredentialTableRow header="認証機関" data={data.certifier.name} />
-        <CredentialTableRow header="検証機関" data={data.verifier.name} />
-        <CredentialTableRow
-          className="text-gray-700"
-          header="認定書発行日"
-          data={new Date(data.issuedAt).toLocaleString("ja-JP", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        />
-        <CredentialTableRow
-          className={clsx({
-            ["text-danger"]: isExpired(data.expiredAt),
-          })}
-          header="有効期限"
-          data={expirationDateTimeLocaleFrom(data.expiredAt, "ja-JP", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        />
-      </Table>
+      <CredentialTable
+        className={"[&_th]:text-black [&_th]:text-sm [&_td]:text-base"}
+        data={data}
+      />
     </div>
   );
 }
@@ -460,7 +422,7 @@ export default function Credential() {
             validCredentials.length > 0 &&
             validCredentials.map((credential) => {
               return (
-                <CredentialTable
+                <CredentialEntry
                   data={credential}
                   key={credential.id}
                   handleDelete={handleDelete}
@@ -482,7 +444,7 @@ export default function Credential() {
             <div className="flex flex-col gap-6">
               {expiredCredentials.map((credential) => {
                 return (
-                  <CredentialTable
+                  <CredentialEntry
                     data={credential}
                     key={credential.id}
                     handleDelete={handleDelete}

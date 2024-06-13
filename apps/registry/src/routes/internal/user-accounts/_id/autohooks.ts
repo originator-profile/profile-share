@@ -1,15 +1,14 @@
 import { FastifyInstance, FastifyRequest, RouteOptions } from "fastify";
 import Params from "./params";
 import { ErrorResponse } from "../../../../error";
+import { ForbiddenError } from "http-errors-enhanced";
 
-async function requiredReviewerMembership(
-  req: FastifyRequest<{ Params: Params }>,
-) {
+async function requiredRoleCertifier(req: FastifyRequest<{ Params: Params }>) {
   if (req.user.sub !== req.params.id) {
-    await req.server.services.userAccount.reviewerMembershipOrThrow({
-      id: req.user.sub,
-      reviewerId: req.params.id,
-    });
+    const user = req.user;
+    if (!user.permissions.includes("write:reviews")) {
+      throw new ForbiddenError("Insufficient permissions");
+    }
   }
 }
 
@@ -26,7 +25,7 @@ async function addErrorResponseSchema(opt: RouteOptions) {
 }
 
 async function autohooks(fastify: FastifyInstance): Promise<void> {
-  fastify.addHook("preHandler", requiredReviewerMembership);
+  fastify.addHook("preHandler", requiredRoleCertifier);
   fastify.addHook("onRoute", addErrorResponseSchema);
 }
 
