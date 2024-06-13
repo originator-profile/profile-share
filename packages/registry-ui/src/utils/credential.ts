@@ -2,6 +2,10 @@ import {
   parseExpirationDate,
   parseIssuanceDate,
 } from "@originator-profile/core";
+import { useSession } from "./session";
+import useSWR from "swr";
+import fetcher from "./fetcher";
+import { OpCredential } from "./account";
 
 export interface FormData {
   name: string;
@@ -81,4 +85,45 @@ export async function deleteCredential(
       "Content-Type": "application/json",
     },
   });
+}
+
+type FetchCredentialsKey = {
+  requestId: "latest";
+  url: `/internal/accounts/${string}/credentials/`;
+  token: string;
+};
+
+async function fetchCredentials(
+  req: FetchCredentialsKey,
+): Promise<OpCredential[] | undefined> {
+  try {
+    const res = await fetcher<OpCredential[]>(req);
+    return res;
+  } catch (e) {
+    const res = (e as Error).cause as Response | undefined;
+    if (res?.status === 404) return;
+  }
+}
+
+/**
+ * 資格情報へのアクセス
+ * @param accountId ユーザーの所属組織以外の資格情報を取得する場合に指定
+ */
+export function useCredentials(accountId?: string) {
+  const session = useSession();
+  const accessTokenOrNull = session.data?.accessToken ?? null;
+
+  const id = accountId ?? session.data?.user?.accountId;
+
+  const key: FetchCredentialsKey | null = accessTokenOrNull
+    ? {
+        requestId: "latest",
+        url: `/internal/accounts/${id}/credentials/`,
+        token: accessTokenOrNull,
+      }
+    : null;
+
+  const credentials = useSWR(key, fetchCredentials);
+
+  return credentials;
 }

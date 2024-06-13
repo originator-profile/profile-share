@@ -149,6 +149,27 @@ export const formValidationSchema: Yup.ObjectSchema<IFormInput> = Yup.object({
   description: Yup.string().optional(),
 });
 
+export const NAMES = {
+  domainName: "組織代表ドメイン名",
+  name: "所有者",
+  postalCode: "郵便番号",
+  addressRegion: "都道府県",
+  addressLocality: "市区町村",
+  streetAddress: "町名・番地・ビル名・部屋番号など",
+  phoneNumber: "電話番号",
+  email: "メールアドレス",
+  corporateNumber: "法人番号",
+  businessCategory: "事業種目",
+  url: "WebサイトURL",
+  contactTitle: "お問い合わせページの名称",
+  contactUrl: "お問い合わせページ URL",
+  publishingPrincipleTitle: "編集ガイドラインページの名称",
+  publishingPrincipleUrl: "編集ガイドラインページ URL",
+  privacyPolicyTitle: "プライバシーポリシーページの名称",
+  privacyPolicyUrl: "プライバシーポリシーページ URL",
+  description: "説明",
+} as const;
+
 export const HELP_TEXT = {
   domainName:
     "OP ID になります。法人組織の ID であり、コンテンツを配信するサイト・サービスや CMS のドメインとは独立です。",

@@ -16,3 +16,4 @@ export { default as TechInfo } from "./TechInfo";
 export { default as TechTable } from "./TechTable";
 export { default as WebsiteMainTable } from "./WebsiteMainTable";
 export { default as WebsiteSubTable } from "./WebsiteSubTable";
+export { default as CredentialTable } from "./CredentialTable";

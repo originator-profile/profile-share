@@ -1,8 +1,9 @@
-import { Request as OpModelRequest } from "@originator-profile/model";
+import { OpHolder, Request as OpModelRequest } from "@originator-profile/model";
 import { Prisma, requests } from "@prisma/client";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
 import { getClient } from "./lib/prisma-client";
 import { beginTransaction } from "./lib/transaction";
+import { MakeOptional, NullableKeysType } from "@originator-profile/core";
 
 type GroupId = requests["groupId"];
 
@@ -10,7 +11,11 @@ const requestLogsExtArgs = {
   include: {
     request: {
       include: {
-        group: true,
+        group: {
+          include: {
+            businessCategories: true,
+          },
+        },
       },
     },
     reviewComments: true,
@@ -19,7 +24,15 @@ const requestLogsExtArgs = {
 
 type RequestLogs = Prisma.requestLogsGetPayload<typeof requestLogsExtArgs>;
 
-type OpRequestWithoutDate = Omit<OpModelRequest, "createdAt" | "updatedAt"> & {
+type OpRequestWithoutDate = Omit<
+  OpModelRequest,
+  "createdAt" | "updatedAt" | "group"
+> & {
+  request: {
+    group: NullableKeysType<
+      Omit<MakeOptional<OpHolder, "url">, "type" | "logos">
+    > & { id: string };
+  };
   requestId: number;
   authorId: string;
 };
@@ -29,14 +42,21 @@ export type OpRequest = OpRequestWithoutDate & {
   updatedAt: Date;
 };
 
-export type OpRequestList = Array<OpRequestWithoutDate> | Array<OpRequest>;
+export type OpRequestList = Array<OpRequest>;
 
 function convertPrismaRequestToOpRequest(
   body: RequestLogs,
 ): OpRequestWithoutDate {
   return {
     ...body,
-    group: body.request.group.name,
+    request: {
+      group: {
+        ...body.request.group,
+        businessCategory: body.request.group.businessCategories.map(
+          (bc) => bc.businessCategoryValue,
+        ),
+      },
+    },
     requestSummary: body.requestSummary ?? undefined,
     reviewSummary: body.reviewSummary ?? undefined,
     status: body.statusValue as unknown as OpRequest["status"],
@@ -207,7 +227,7 @@ export const RequestRepository = () => ({
             typeof pending === "undefined" ||
             pending === (rl.statusValue === "pending"),
         )
-        .flatMap((rl) => {
+        .map((rl) => {
           return {
             ...convertPrismaRequestToOpRequest(rl),
             createdAt:

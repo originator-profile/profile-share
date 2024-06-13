@@ -16,9 +16,10 @@ export type Path =
   | `/app/request-op/public-key`
   | `/app/request-op/welcome`
   | `/app/review-op`
+  | `/app/review-op/accounts/:accountId`
 
 export type Params = {
-  
+  '/app/review-op/accounts/:accountId': { accountId: string }
 }
 
 export type ModalPath = never
