@@ -92,3 +92,16 @@ export function parseIssuanceDate(input: string): Date {
 
   return new Date(input);
 }
+
+/**
+ * 日付をYYYY/m/d形式の文字列にフォーマットします。
+ * @param date フォーマットする日付
+ * @returns フォーマットされた日付文字列
+ */
+export function formatDatetoYYYYmd(date: Date): string {
+  return date.toLocaleDateString("ja-JP", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
