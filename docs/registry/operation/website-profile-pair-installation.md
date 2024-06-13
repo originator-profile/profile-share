@@ -13,13 +13,13 @@
 - プライベート鍵
 - profile-registry CLI
 
-## 署名付きサイトプロファイルの作成
+## 署名付きサイトプロファイルの作成 {#create-ssp}
 
-`site-profile.json` ファイルを用意します。
+`site-profile.json` ファイルを用意します。 id はサイトプロファイルの DP ID です。UUIDv4 形式の文字列を指定してください。
 
 ```json
 {
-  "id": "<UUID>",
+  "id": "<UUIDv4>",
   "title": "<サイト名>",
   "image": "<サムネイル画像URL>",
   "description": "<サイトの説明>"
@@ -73,6 +73,7 @@ eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.e30.0CmA8cCMZAVeCAslkmMLkNehAwM7tr-Y9y6LHAm
 ## Profile Pair の作成と Well-Known URL による設置
 
 レジストリから発行された SOP と署名付きサイトプロファイルを組み合わせて Profile Pair を作成します。
+dp プロパティの中の `sub` には、[署名付きサイトプロファイルの作成](#create-ssp)で生成した UUID を指定してください。
 
 書式:
 

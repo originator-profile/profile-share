@@ -24,7 +24,7 @@ SDP 発行済みの記事を削除したり、非公開にした場合、再度�
 次のコマンドを実行することで、 SDP を削除することができます。
 
 ```shell
-curl -X DELETE https://dprexpt.originator-profile.org/admin/publisher/8fe1b860-558c-5107-a9af-21c376a6a27c/website \
+curl -X DELETE https://dprexpt.originator-profile.org/admin/publisher/8fe1b860-558c-5107-a9af-21c376a6a27c/ \
     -u 8fe1b860-558c-5107-a9af-21c376a6a27c:eqjyPR--HaS0mMj0wiDP1HA7yT1WGgYpHcUjDia3py8 \
     -H 'Content-Type: application/json' \
     -d '{"input":{"id":"41632705-9600-49df-b80d-a357d474f37e"}}'
@@ -34,7 +34,7 @@ curl -X DELETE https://dprexpt.originator-profile.org/admin/publisher/8fe1b860-5
 
 [Originator Profile 技術研究組合 (OP CIP)](https://originator-profile.org/) から受け取った認証情報が `8fe1b860-558c-5107-a9af-21c376a6a27c:eqjyPR--HaS0mMj0wiDP1HA7yT1WGgYpHcUjDia3py8` だとしています。
 
-エンドポイントの URL は、アカウント ID を入れて `https://dprexpt.originator-profile.org/admin/publisher/8fe1b860-558c-5107-a9af-21c376a6a27c/website` とし、 `-u` オプションで上記アカウント ID とパスワードを `:` で連結した値を Basic 認証の認証情報として利用するようにしています。
+エンドポイントの URL は、アカウント ID を入れて `https://dprexpt.originator-profile.org/admin/publisher/8fe1b860-558c-5107-a9af-21c376a6a27c/` とし、 `-u` オプションで上記アカウント ID とパスワードを `:` で連結した値を Basic 認証の認証情報として利用するようにしています。
 
 `-d` オプションでパラメータを指定しています。これらのパラメータはリクエストのボディ部に JSON 形式で渡されます。SDP の削除の場合、必要なパラメータは削除したい SDP の id だけであり、それを `{"input":{"id":"41632705-9600-49df-b80d-a357d474f37e"}}` という形式にします。
 
@@ -48,7 +48,8 @@ SDP を完全に削除すると、 [Profile Set 取得エンドポイント](./h
 
 ## SDP を間違って登録した場合
 
-[記事を削除・非公開にした場合](#on-delete) を参照してください。
+SDP を間違って登録した場合、一度 SDP を削除して改めて新しい SDP を登録していただけます。
+SDP の削除方法については、[記事を削除・非公開にした場合](#on-delete)を参照してください。
 
 ## 有料記事/無料記事/モバイル向けなど記事内容が変わる場合
 
