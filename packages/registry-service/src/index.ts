@@ -19,6 +19,7 @@ import { CredentialService } from "./credential";
 import { RequestService } from "./request";
 import { LogoService } from "./logo";
 import { UserAccountService } from "./user-account";
+import { initLogger } from "./utils/logger";
 
 export type { Website } from "./website";
 
@@ -29,6 +30,7 @@ type Options = {
 export { Config };
 
 export const Services = (options: Options) => {
+  initLogger(options.config.LOG_QUIET);
   const validator = ValidatorService();
   const account = AccountService({ ...options, validator });
   const admin = AdminService();
@@ -49,7 +51,10 @@ export const Services = (options: Options) => {
   const userAccountRepository = UserAccountRepository();
   const userAccount = UserAccountService({ ...options, userAccountRepository });
   const requestRepository = RequestRepository();
-  const request = RequestService({ requestRepository });
+  const request = RequestService({
+    requestRepository,
+    userAccountRepository,
+  });
   return {
     validator,
     account,

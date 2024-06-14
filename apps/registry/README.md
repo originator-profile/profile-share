@@ -907,22 +907,22 @@ AUTH0_CLIENT_ID
 PORT
 : リッスンポート
 
-MAIL_FROM [^gh-770]
+MAIL_FROM
 : メールの送信元
 
-SMTP_HOST [^gh-770]
+SMTP_HOST
 : SMTPサーバーホスト名
 
-SMTP_PORT [^gh-770]
+SMTP_PORT
 : SMTPサーバーポート
 
-SMTP_SECURE [^gh-770]
+SMTP_SECURE
 : SMTPS接続（SMTP over TLS）の有無 (形式: `true` or `false`)
 
-SMTP_AUTH_USER [^gh-770]
+SMTP_AUTH_USER
 : SMTPサーバーの認証に使用するユーザー
 
-SMTP_AUTH_PASSWORD [^gh-770]
+SMTP_AUTH_PASSWORD
 : SMTPサーバーの認証に使用するパスワード
 
 MINIO_PORT
@@ -945,5 +945,3 @@ S3_API_ENDPOINT
 
 S3_ACCOUNT_LOGO_PUBLIC_ENDPOINT
 : 画像ファイルをインターネットに公開する場合のエンドポイント
-
-[^gh-770]: 未実装。[審査結果メール通知機能](https://github.com/originator-profile/profile/issues/770)にて実装予定。
