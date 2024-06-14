@@ -36,6 +36,9 @@ const Config = {
     S3_ACCOUNT_LOGO_PUBLIC_ENDPOINT: {
       type: "string",
     },
+    LOG_QUIET: {
+      type: "boolean",
+    },
   },
   required: ["ISSUER_UUID"],
 } as const;

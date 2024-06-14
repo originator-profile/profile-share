@@ -79,6 +79,20 @@ export const UserAccountRepository = () => ({
     });
     if (user === 0) throw new NotFoundError("User not found.");
   },
+  /**
+   * 審査担当者候補のリストを返す
+   * @returns 審査担当者候補のリスト
+   */
+  async getReviewerCandidates() {
+    const prisma = getClient();
+    return prisma.userAccounts.findMany({
+      where: {
+        account: {
+          roleValue: "certifier",
+        },
+      },
+    });
+  },
 });
 
 export type UserAccountRepository = ReturnType<typeof UserAccountRepository>;
