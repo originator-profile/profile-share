@@ -9,7 +9,7 @@ generator client {
 
 generator erd {
   provider = "prisma-erd-generator"
-  output   = "../../../docs/registry/assets/erd.md"
+  output   = "../../../docs/spec/er.md"
 }
 
 /// Signed Originator Profile

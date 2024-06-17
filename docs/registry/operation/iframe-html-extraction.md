@@ -48,3 +48,5 @@ ad.json は以下のような JSON データを含んで出力されます。こ
 ```
 
 この ad.json ファイルを元にして「[署名付き広告プロファイルの作成と設置](./ad-profile-pair-installation.md)」を行うことができます。
+
+抽出方法の詳細については[記事本文の抽出](/integration-development/cli.md#extract-website)を参照してください。

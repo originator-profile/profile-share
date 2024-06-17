@@ -13,9 +13,9 @@ vendor
 /apps/web-ext/web-ext-artifacts*
 /apps/web-ext/dist*
 /apps/web-ext/screenshots
-/docs/model/assets
-/docs/registry/assets/*
-!/docs/registry/assets/.keep
+/docs/spec/er.md
+/docs/spec/assets/openapi.json
+/docs/spec/model/assets/*
 /pages
 /static/ts
 /static/api

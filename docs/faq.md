@@ -32,7 +32,7 @@ sidebar_position: 100
 
 ### 実験で Originator Profile 技術研究組合 (OP CIP) 提供の OP/DP レジストリの API を使ったところ、 400 Bad Request のエラーが返ってきました。どのような原因が考えられますか
 
-[OP CIP](https://originator-profile.org/) 提供のレジストリの使い方については、[CIP 提供 DP レジストリについて](./media-study-202307/howto.md#cip-提供-dp-レジストリについて)をご確認ください。それでも解決しない場合はお問い合わせください。
+[OP CIP](https://originator-profile.org/) 提供のレジストリの使い方については、[API ドキュメント](pathname:///api/)をご確認ください。それでも解決しない場合はお問い合わせください。
 
 ## OP/DP の使い方・運用について
 
@@ -42,11 +42,11 @@ OP ID は法人などの組織に対して割り振られる ID です。 ID の
 
 ### 利用者の課金状態などに応じて表示が変わるコンテンツにはどのように DP を発行すべきですか
 
-課金・無課金でのコンテンツそれぞれに対して DP を発行してください。詳細は[記事管理に関するケース毎の対応方法](./media-study-202307/sdp-case-study.md)を参照してください。
+課金・無課金でのコンテンツそれぞれに対して DP を発行してください。詳細は[記事管理に関するケース毎の対応方法](./integration-development/sdp-case-study.md)を参照してください。
 
 ### 複数ページにわたるコンテンツにはどのように DP を発行すべきですか
 
-各ページに1つずつ DP を発行してください。詳細は[記事管理に関するケース毎の対応方法](./media-study-202307/sdp-case-study.md)を参照してください。
+各ページに1つずつ DP を発行してください。詳細は[記事管理に関するケース毎の対応方法](./integration-development/sdp-case-study.md)を参照してください。
 
 ### コンテンツを更新した際には、必ず DP の再発行が必要ですか
 

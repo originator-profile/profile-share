@@ -22,6 +22,7 @@ const addErrorResponseSchema: onRouteHookHandler = async (opt) => {
   opt.schema.tags = ["internal", ...(opt.schema.tags ?? [])];
 
   Object.assign(opt.schema.response, {
+    // 400: from fastify-auth0-verify, injected by src/routes/autohooks.ts
     401: {
       ...ErrorResponse,
       "x-examples": {
@@ -35,8 +36,36 @@ const addErrorResponseSchema: onRouteHookHandler = async (opt) => {
           },
         },
       },
-    },
-    403: ErrorResponse,
+    }, // from fastify-auth0-verify
+    403: {
+      ...ErrorResponse,
+      "x-examples": {
+        insufficientPermission: {
+          summary: "insufficient permission",
+          description: "権限が不足している",
+          value: {
+            statusCode: 403,
+            error: "Forbidden",
+            message: "Insufficient permissions",
+          },
+        },
+      },
+    }, // from requiredPermissions
+    500: {
+      ...ErrorResponse,
+      "x-examples": {
+        unavailableAuthorizationServer: {
+          summary: "unavailable authorization server",
+          description: "認可サーバーとの通信に失敗",
+          value: {
+            statusCode: 500,
+            error: "Internal Server Error",
+            message:
+              'Unable to get the JWS due to a HTTP error: [HTTP 404] {"error":"Not found."}',
+          },
+        },
+      },
+    }, // from fastify-auth0-verify
   });
 };
 

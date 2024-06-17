@@ -21,7 +21,7 @@ async function addErrorResponseSchema(opt: RouteOptions) {
   }
 
   Object.assign(opt.schema.response, {
-    404: ErrorResponse,
+    404: ErrorResponse, // from requiredReviewerMembership
   });
 }
 

@@ -9,13 +9,13 @@
   },
   "devDependencies": {
     "@originator-profile/tsconfig": "workspace:*",
-    "@types/jsonld": "^1.5.13",
-    "ajv": "^8.12.0",
+    "@types/jsonld": "^1.5.14",
+    "ajv": "^8.14.0",
     "eslint": "^8.56.0",
     "eslint-config-originator-profile": "workspace:*",
-    "json-schema-to-ts": "^3.0.0",
+    "json-schema-to-ts": "^3.1.0",
     "jsonld": "^8.3.2",
-    "msw": "^2.1.4",
-    "vitest": "^1.2.1"
+    "msw": "^2.3.1",
+    "vitest": "^1.6.0"
   }
 }
