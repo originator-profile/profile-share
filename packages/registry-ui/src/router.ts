@@ -15,6 +15,7 @@ export type Path =
   | `/app/request-op/notifications`
   | `/app/request-op/public-key`
   | `/app/request-op/welcome`
+  | `/app/review-op`
 
 export type Params = {
   

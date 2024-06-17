@@ -10,8 +10,8 @@
   "devDependencies": {
     "@originator-profile/sign": "workspace:*",
     "@originator-profile/verify": "workspace:*",
-    "@playwright/test": "^1.41.1",
-    "@wordpress/e2e-test-utils-playwright": "0.16.0",
+    "@playwright/test": "^1.44.1",
+    "@wordpress/e2e-test-utils-playwright": "1.0.0",
     "shx": "^0.3.4"
   }
 }

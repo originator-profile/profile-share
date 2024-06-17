@@ -6,6 +6,10 @@ const Request = {
   description: "OP 発行申請",
   type: "object",
   properties: {
+    group: {
+      title: "組織名",
+      type: "string",
+    },
     status: {
       title: "承認フローステータス",
       enum: ["pending", "approved", "rejected", "cancelled"],
@@ -34,7 +38,7 @@ const Request = {
       format: "date-time",
     },
   },
-  required: ["status", "reviewComments", "createdAt", "updatedAt"],
+  required: ["group", "status", "reviewComments", "createdAt", "updatedAt"],
   additionalProperties: false,
 } as const;
 

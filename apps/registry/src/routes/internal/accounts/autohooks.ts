@@ -13,7 +13,7 @@ async function addErrorResponseSchema(opt: RouteOptions) {
   }
 
   Object.assign(opt.schema.response, {
-    403: ErrorResponse, // from requiredSignUp, requiredPermissions
+    403: ErrorResponse, // from requiredSignUp
   });
 }
 

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 7
 ---
 
 # 拡張機能の再読み込み
@@ -10,7 +10,7 @@ sidebar_position: 3
 
 ## 前提条件
 
-- [拡張機能のインストール](./experimental-use.md#インストール)
+- [拡張機能のインストール](./experimental-use.mdx#install)
 
 ## 拡張機能を再読み込みする手順
 

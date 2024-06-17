@@ -1,4 +1,4 @@
-import { OpHolder, Request as OpModelRequest } from "@originator-profile/model";
+import { Request as OpModelRequest } from "@originator-profile/model";
 import { Prisma, requests } from "@prisma/client";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
 import { getClient } from "./lib/prisma-client";
@@ -22,7 +22,6 @@ type RequestLogs = Prisma.requestLogsGetPayload<typeof requestLogsExtArgs>;
 type OpRequestWithoutDate = Omit<OpModelRequest, "createdAt" | "updatedAt"> & {
   requestId: number;
   authorId: string;
-  group: Pick<OpHolder, "name">;
 };
 
 export type OpRequest = OpRequestWithoutDate & {
@@ -37,7 +36,7 @@ function convertPrismaRequestToOpRequest(
 ): OpRequestWithoutDate {
   return {
     ...body,
-    group: body.request.group,
+    group: body.request.group.name,
     requestSummary: body.requestSummary ?? undefined,
     reviewSummary: body.reviewSummary ?? undefined,
     status: body.statusValue as unknown as OpRequest["status"],
@@ -177,22 +176,47 @@ export const RequestRepository = () => ({
   }): Promise<OpRequestList> {
     const prisma = getClient();
 
-    const statusValue: Prisma.requestLogsWhereInput["statusValue"] = {
-      undefined: undefined,
-      true: { equals: "pending" },
-      false: { not: "pending" },
-    }[String(pending)];
-    const data = await prisma.requestLogs.findMany({
-      ...requestLogsExtArgs,
-      where: {
-        statusValue,
-      },
-      orderBy: {
-        insertedAt: "asc",
+    const data = await prisma.requests.findMany({
+      include: {
+        requestLogs: {
+          ...requestLogsExtArgs,
+          take: 1,
+          orderBy: {
+            insertedAt: "desc",
+          },
+        },
       },
     });
 
-    return data.map(convertPrismaRequestToOpRequest);
+    /* pending === true の場合はそのrequestLogs.insertedAtをcreatedAtとして使用するので収集不要 */
+    const createdAt =
+      pending === true
+        ? []
+        : await prisma.requestLogs.groupBy({
+            by: ["requestId", "statusValue"],
+            where: {
+              statusValue: "pending",
+            },
+            _max: { insertedAt: true },
+          });
+
+    return data.flatMap((r) =>
+      r.requestLogs
+        .filter(
+          (rl) =>
+            typeof pending === "undefined" ||
+            pending === (rl.statusValue === "pending"),
+        )
+        .flatMap((rl) => {
+          return {
+            ...convertPrismaRequestToOpRequest(rl),
+            createdAt:
+              createdAt.find((c) => c.requestId === rl.requestId)?._max
+                .insertedAt ?? rl.insertedAt,
+            updatedAt: rl.insertedAt,
+          };
+        }),
+    );
   },
 
   /**

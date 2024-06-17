@@ -14,6 +14,11 @@ type CreateRequestProps = {
   requestSummary: string;
 };
 
+type FetchLatestRequestListKey = {
+  url: `/internal/requests/?pending=${boolean}`;
+  token: string;
+};
+
 async function fetchLatestRequest(
   req: FetchLatestRequestKey,
 ): Promise<Request | undefined> {
@@ -83,4 +88,35 @@ export function useLatestRequest() {
     create: createRequestMutation.trigger,
     cancel: cancelRequestMutation.trigger,
   });
+}
+
+async function fetchLatestRequestList(
+  req: FetchLatestRequestListKey,
+): Promise<Request[] | undefined> {
+  try {
+    const res = await fetcher<Request[]>(req);
+    return res;
+  } catch (e) {
+    const res = (e as Error).cause as Response | undefined;
+    if (res?.status === 404) return;
+  }
+}
+
+/**
+ * 申請情報へのアクセス
+ */
+export function useLatestRequestList(pending: boolean) {
+  const session = useSession();
+  const accessTokenOrNull = session.data?.accessToken ?? null;
+
+  const key: FetchLatestRequestListKey | null = accessTokenOrNull
+    ? {
+        url: `/internal/requests/?pending=${pending}`,
+        token: accessTokenOrNull,
+      }
+    : null;
+
+  const latestRequestList = useSWR(key, fetchLatestRequestList);
+
+  return latestRequestList;
 }
