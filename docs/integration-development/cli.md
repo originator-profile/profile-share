@@ -183,14 +183,14 @@ DP を定義する `website.json` ファイルをコマンドに頼らずに書�
 
 ### SDP の登録
 
-生成した SDP を DP レジストリに登録します。これには　DP レジストリ (`dprexpt.originator-profile.org`) の [SDP 登録用のエンドポイント](path:///api/index.html#operation/registerSignedDocumentProfile) を利用します。
+生成した SDP を DP レジストリに登録します。これには　DP レジストリ (`dprexpt.originator-profile.org`) の [SDP 登録用のエンドポイント](pathname:///api/index.html#operation/registerSignedDocumentProfile) を利用します。
 
-SDP 登録後、DP レジストリの [Profile Set 取得エンドポイント](path:///api/index.html#operation/website.getProfileSet)を使用して OP 拡張機能での閲覧に必要な SOP と SDP を配信することが可能になります。
+SDP 登録後、DP レジストリの [Profile Set 取得エンドポイント](pathname:///api/index.html#operation/website.getProfileSet)を使用して OP 拡張機能での閲覧に必要な SOP と SDP を配信することが可能になります。
 
 ### Profile Set の配信
 
 SDP をレジストリに登録したら、最後に、記事から SDP を含む Profile Set を取得できるようにします。
-これには[Profile Set 取得エンドポイント](path:///api/index.html#operation/website.getProfileSet) を利用してください。
+これには[Profile Set 取得エンドポイント](pathname:///api/index.html#operation/website.getProfileSet) を利用してください。
 
 結果的に次のような <link\> 要素が記事の HTML の <head\> 要素内に追記されれば、完了となります。
 
