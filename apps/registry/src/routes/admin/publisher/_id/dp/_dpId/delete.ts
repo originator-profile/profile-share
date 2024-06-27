@@ -4,9 +4,10 @@ import document from "./delete.doc.md?raw";
 
 export const schema: FastifySchema = {
   operationId: "deleteSignedDocumentProfile",
+  tags: ["SDP"],
   summary: "SDP の削除",
-  description: document,
   params: Params,
+  description: document,
   security: [{ basicAuth: [] }],
   response: {
     200: {
