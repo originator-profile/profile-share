@@ -10,7 +10,7 @@ sidebar_position: 1
 
 ## システム構成と基本シーケンス
 
-CMS 上での記事の追加・更新と連動して SDP を発行するシステムを開発する場合、このようなシステム構成でレジストリ、CMS、ブラウザが連携することを想定しています。
+CMS 上での記事の追加・更新と連動して SDP を発行するシステムを開発する場合、次の図のようなシステム構成でレジストリ、CMS、ブラウザが連携することを想定しています。
 
 ![CMS OP 連携のシステム構成図](./assets/cms.jpeg)
 
@@ -29,7 +29,7 @@ Originator Profile レジストリ-->>コンテンツ担当者: Signed Originato
 コンテンツ担当者->>CMS: Signed Originator Profile の登録
 
 コンテンツ担当者->>+CMS: 記事の追加・更新・公開
-CMS->>CMS: Signed Document Profile 生成
+CMS->>CMS: Signed Document Profile 生成・署名
 CMS->>CMS: Signed Document Profile の保存
 CMS-->>-コンテンツ担当者: 記事の修正完了
 
