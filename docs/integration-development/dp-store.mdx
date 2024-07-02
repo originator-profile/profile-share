@@ -12,7 +12,7 @@ import dpStoreJpeg from "./assets/dp-store.jpeg";
 
 <img src={dpStoreJpeg} width={550} />
 
-DP Store を使って CMP を OP 対応にする場合、次のようなシステム構成で実装してください。
+DP Store を使って CMP を OP 対応にする場合、次の図のようなシステム構成で実装してください。具体的には、 CMS 内で SDP の作成・署名を行いそれを DP Store に登録し、同一ページ内の SOP と SDP 一式をまとめた Profile Set を DP Store から取得し、Profile Set を HTML と共にブラウザに配信する仕組みを実装してください。
 
 ![DP Store を利用して CMS 連携を実装する場合のシステム構成図](./assets/with-dp-store.jpeg)
 
@@ -32,7 +32,7 @@ Originator Profile レジストリ-->>コンテンツ担当者: Signed Originato
 コンテンツ担当者->>DP Store: Signed Originator Profile の登録
 
 コンテンツ担当者->>+CMS: 記事の追加・更新・公開
-CMS->>CMS: Signed Document Profile 生成
+CMS->>CMS: Signed Document Profile 生成・署名
 CMS->>+DP Store: Signed Document Profile の登録
 DP Store->>-DP Store: Signed Document Profile の保存
 CMS-->>-コンテンツ担当者: 記事の修正完了
