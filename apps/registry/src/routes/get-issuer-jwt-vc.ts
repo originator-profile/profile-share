@@ -13,9 +13,9 @@ const schema: FastifySchema = {
         jwks: Jwks,
       },
       required: ["issuer", "jwks"],
-      additionalProperties: false
-    }
-  }
+      additionalProperties: false,
+    },
+  },
 };
 
 async function getIssuerJwtVc(req: FastifyRequest) {
