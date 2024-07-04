@@ -3,7 +3,7 @@ import getKeys from "./account/_id/get-keys";
 import { Jwks } from "@originator-profile/model";
 
 const schema: FastifySchema = {
-  operationId: "getIssuerJwtVc",
+  operationId: "getJwtVcIssuer",
   tags: ["registry"],
   response: {
     200: {
@@ -18,7 +18,7 @@ const schema: FastifySchema = {
   }
 };
 
-async function getIssuerJwtVc(req: FastifyRequest) {
+async function getJwtVcIssuer(req: FastifyRequest) {
   const keysData = await getKeys(
     Object.assign(req, { params: { id: req.server.config.ISSUER_UUID } }),
   );
@@ -29,4 +29,4 @@ async function getIssuerJwtVc(req: FastifyRequest) {
   };
 }
 
-export default Object.assign(getIssuerJwtVc, { schema });
+export default Object.assign(getJwtVcIssuer, { schema });

@@ -4,7 +4,7 @@ import { FromHandler } from "../types";
 import getFrontendProfileSet from "./get-frontend-profile-set";
 import getIssuerKeys from "./get-issuer-keys";
 import getIssuerProfileSet from "./get-issuer-profile-set";
-import getIssuerJwtVc from "./get-issuer-jwt-vc";
+import getJwtVcIssuer from "./get-jwt-vc-issuer";
 
 async function index(fastify: FastifyInstance): Promise<void> {
   fastify.get(
@@ -72,8 +72,8 @@ async function index(fastify: FastifyInstance): Promise<void> {
   );
   fastify.get<FromHandler<typeof getIssuerProfileSet>>(
     "/.well-known/jwt-vc-issuer",
-    { ...getIssuerJwtVc },
-    getIssuerJwtVc,
+    { ...getJwtVcIssuer },
+    getJwtVcIssuer,
   );
 }
 
