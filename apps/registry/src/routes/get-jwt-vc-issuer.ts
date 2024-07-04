@@ -40,7 +40,10 @@ async function getJwtVcIssuer(req: FastifyRequest) {
     Object.assign(req, { params: { id: req.server.config.ISSUER_UUID } }),
   );
 
-  const issuer = (req.server.config.APP_URL || "http://localhost:8080").replace(/\/$/, '');
+  const issuer = (req.server.config.APP_URL || "http://localhost:8080").replace(
+    /\/$/,
+    "",
+  );
 
   return {
     issuer: issuer,
