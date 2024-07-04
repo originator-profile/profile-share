@@ -7,6 +7,11 @@ declare module "fastify" {
     config: Config;
     services: Services;
   }
+
+  interface FastifyRequest {
+    // Basic 認証で認証したアカウントの ID
+    accountId?: string;
+  }
 }
 
 declare module "@fastify/jwt" {
