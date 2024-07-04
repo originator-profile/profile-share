@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
+    "dev": "turbo run dev --parallel --env-mode=loose",
     "e2e": "start-test dev http-get://localhost:8080/ e2e:run",
     "e2e:run": "turbo run e2e --concurrency=1 --filter=!@originator-profile/wordpress",
     "wordpress:e2e": "pnpm --filter=@originator-profile/wordpress e2e",
@@ -37,11 +37,11 @@
     "prettier": "^3.3.0",
     "react": "18.3.1",
     "start-server-and-test": "^2.0.3",
-    "turbo": "1.13.3",
-    "typedoc": "^0.25.13"
+    "turbo": "2.0.6",
+    "typedoc": "^0.26.0"
   },
   "engines": {
     "node": "^18.18.0 || ^20.5.1 || ^22.2.0"
   },
-  "packageManager": "pnpm@9.1.4"
+  "packageManager": "pnpm@9.4.0"
 }

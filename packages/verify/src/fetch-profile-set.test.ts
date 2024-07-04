@@ -1,21 +1,37 @@
-import "vi-fetch/setup";
-import { mockFetch, mockGet } from "vi-fetch";
-import { describe, beforeEach, afterEach, test, expect } from "vitest";
+import { setupServer } from "msw/node";
+import { HttpResponse, http } from "msw";
+import {
+  describe,
+  beforeAll,
+  beforeEach,
+  afterEach,
+  afterAll,
+  test,
+  expect,
+} from "vitest";
 import { Window } from "happy-dom";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
-import { JsonLdDocument } from "jsonld";
 import { generateKey, signOp } from "@originator-profile/sign";
 import { Op } from "@originator-profile/model";
 import { fetchProfileSet } from "./fetch-profile-set";
 import { ProfilesFetchFailed } from "./errors";
 
-interface FetchProfileSetTestContext {
-  profiles: JsonLdDocument;
-}
+const server = setupServer();
+
+beforeAll(() => {
+  server.listen({ onUnhandledRequest: "error" });
+});
+afterEach(() => {
+  server.resetHandlers();
+});
+afterAll(() => {
+  server.close();
+});
 
 describe("単純なlinkから取得", () => {
   const profileEndpoint = "https://example.com/ps.json";
-  beforeEach<FetchProfileSetTestContext>(async (context) => {
+
+  test("有効なエンドポイント指定時 Profile Set が得られる", async () => {
     const iat = getUnixTime(new Date());
     const exp = getUnixTime(addYears(new Date(), 10));
     const op: Op = {
@@ -28,21 +44,14 @@ describe("単純なlinkから取得", () => {
     };
     const { privateKey } = await generateKey();
     const jwt = await signOp(op, privateKey);
-    const profiles = (context.profiles = {
+    const profiles = {
       "@context": "https://originator-profile.org/context.jsonld",
       main: ["example.com"],
       profile: [jwt],
-    });
-    mockGet(profileEndpoint).willResolve(profiles);
-  });
+    };
 
-  afterEach(() => {
-    mockFetch.clearAll();
-  });
+    server.use(http.get(profileEndpoint, () => HttpResponse.json(profiles)));
 
-  test<FetchProfileSetTestContext>("有効なエンドポイント指定時 Profile Set が得られる", async ({
-    profiles,
-  }) => {
     const window = new Window();
     window.document.body.innerHTML = `
 <link
@@ -75,7 +84,13 @@ describe("単純なlinkから取得", () => {
   });
 
   test("取得先に Profile Set が存在しないとき Profile Set の取得に失敗", async () => {
-    mockGet(profileEndpoint).willFail({}, 404);
+    server.use(
+      http.get(
+        "https://example.com/ps.json",
+        () => new HttpResponse(null, { status: 404 }),
+      ),
+    );
+
     const window = new Window();
     window.document.body.innerHTML = `
 <link
@@ -95,19 +110,24 @@ describe("単純なlinkから取得", () => {
 });
 
 describe("<link> 要素が2つ以上存在するとき", () => {
-  beforeEach(() => {
-    mockGet("https://example.com/1/ps.json").willResolve({
-      "@context": "https://originator-profile.org/context.jsonld",
-      profiles: "{Signed Document Profile または Signed Originator Profile}",
-    });
-    mockGet("https://example.com/2/ps.json").willResolve({
-      "@context": "https://originator-profile.org/context.jsonld",
-      profiles:
-        "{別の Signed Document Profile または Signed Originator Profile}",
-    });
-  });
-
   test("有効な Profile Set が得られる", async () => {
+    server.use(
+      http.get("https://example.com/1/ps.json", () =>
+        HttpResponse.json({
+          "@context": "https://originator-profile.org/context.jsonld",
+          profiles:
+            "{Signed Document Profile または Signed Originator Profile}",
+        }),
+      ),
+      http.get("https://example.com/2/ps.json", () =>
+        HttpResponse.json({
+          "@context": "https://originator-profile.org/context.jsonld",
+          profiles:
+            "{別の Signed Document Profile または Signed Originator Profile}",
+        }),
+      ),
+    );
+
     const window = new Window();
     const profileEndpoints = [
       "https://example.com/1/ps.json",
@@ -147,14 +167,18 @@ describe("<script>要素から Profile Set を取得する", () => {
   };
 
   beforeEach(() => {
-    mockGet("https://example.com/1/ps.json").willResolve({
-      "@context": "https://originator-profile.org/context.jsonld",
-      main: ["https://example.com"],
-      profile: [
-        "{Signed Document Profile または Signed Originator Profile}",
-        "{Signed Document Profile または Signed Originator Profile}",
-      ],
-    });
+    server.use(
+      http.get("https://example.com/1/ps.json", () =>
+        HttpResponse.json({
+          "@context": "https://originator-profile.org/context.jsonld",
+          main: ["https://example.com"],
+          profile: [
+            "{Signed Document Profile または Signed Originator Profile}",
+            "{Signed Document Profile または Signed Originator Profile}",
+          ],
+        }),
+      ),
+    );
   });
 
   test("<script> から profile set を取得できる", async () => {
@@ -202,26 +226,35 @@ describe("<script>要素から Profile Set を取得する", () => {
 
 describe("ad Profile Pair が存在するとき", () => {
   beforeEach(() => {
-    mockGet(
-      "https://ad.example.com/pps/9a96268b-a937-4468-8b4e-5dc488a7865f/pp.json",
-    ).willResolve({
-      "@context": "https://originator-profile.org/context.jsonld",
-      ad: {
-        op: {
-          iss: "originator-profile.org",
-          sub: "example.com",
-          profile: "sop1...",
-        },
-        dp: {
-          sub: "9a96268b-a937-4468-8b4e-5dc488a7865f",
-          profile: "sdp1...",
-        },
-      },
-    });
-    mockGet("https://example.com/1/ps.json").willResolve({
-      "@context": "https://originator-profile.org/context.jsonld",
-      profiles: "{Signed Document Profile または Signed Originator Profile}",
-    });
+    server.use(
+      http.get(
+        "https://ad.example.com/pps/9a96268b-a937-4468-8b4e-5dc488a7865f/pp.json",
+        () =>
+          HttpResponse.json({
+            "@context": "https://originator-profile.org/context.jsonld",
+            ad: {
+              op: {
+                iss: "originator-profile.org",
+                sub: "example.com",
+                profile: "sop1...",
+              },
+              dp: {
+                sub: "9a96268b-a937-4468-8b4e-5dc488a7865f",
+                profile: "sdp1...",
+              },
+            },
+          }),
+      ),
+    ),
+      server.use(
+        http.get("https://example.com/1/ps.json", () =>
+          HttpResponse.json({
+            "@context": "https://originator-profile.org/context.jsonld",
+            profiles:
+              "{Signed Document Profile または Signed Originator Profile}",
+          }),
+        ),
+      );
   });
 
   test("有効な ad Profile Pair と Profile Set が得られる", async () => {

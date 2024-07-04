@@ -1,14 +1,15 @@
-import { Command, Flags, ux } from "@oclif/core";
-import crypto from "node:crypto";
-import fs from "node:fs/promises";
-import { chromium, BrowserContextOptions } from "playwright";
+import { Command, Flags } from "@oclif/core";
+import { extractBody } from "@originator-profile/verify";
+import { SingleBar } from "cli-progress";
 import metascraper, { Metadata } from "metascraper";
 import author from "metascraper-author";
 import date from "metascraper-date";
 import description from "metascraper-description";
 import image from "metascraper-image";
 import title from "metascraper-title";
-import { extractBody } from "@originator-profile/verify";
+import crypto from "node:crypto";
+import fs from "node:fs/promises";
+import { BrowserContextOptions, chromium } from "playwright";
 
 type Input = Array<{
   id?: string;
@@ -134,7 +135,7 @@ https://playwright.dev/docs/api/class-browser#browser-new-context`,
       const contextBuffer = await fs.readFile(flags.context);
       context = JSON.parse(contextBuffer.toString());
     }
-    const bar = ux.progress();
+    const bar = new SingleBar({});
     bar.start(input.length, 0);
     await Promise.all(
       input.map((i) =>

@@ -10,7 +10,7 @@ export class AdminCreate extends Command {
     id: Flags.string({
       summary: "会員 ID またはドメイン名",
       description: `\
-UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501) を指定します。
 会員を新規登録する場合、ドメイン名でなければなりません。`,
       required: true,
     }),

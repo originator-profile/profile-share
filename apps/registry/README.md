@@ -192,7 +192,7 @@ DESCRIPTION
 FLAG DESCRIPTIONS
   --certifier=<value>  認証機関の ID またはドメイン名
 
-    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+    UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501) を指定します。
 
   --expired-at=<value>  有効期限 (ISO 8601)
 
@@ -200,7 +200,7 @@ FLAG DESCRIPTIONS
 
   --id=<value>  アカウントの ID またはドメイン名
 
-    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+    UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501) を指定します。
 
   --image=<value>  画像URL
 
@@ -208,7 +208,7 @@ FLAG DESCRIPTIONS
 
   --verifier=<value>  検証機関の ID またはドメイン名
 
-    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+    UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501) を指定します。
 ```
 
 ## `profile-registry account:register-key`
@@ -229,7 +229,7 @@ DESCRIPTION
 FLAG DESCRIPTIONS
   --id=<value>  会員 ID またはドメイン名
 
-    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+    UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501) を指定します。
 ```
 
 ## `profile-registry account:register-op`
@@ -250,7 +250,7 @@ DESCRIPTION
 FLAG DESCRIPTIONS
   --id=<value>  会員 ID またはドメイン名
 
-    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+    UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501) を指定します。
 
   --op=<value>  Signed Originator Profile ファイル
 
@@ -276,7 +276,7 @@ DESCRIPTION
 FLAG DESCRIPTIONS
   --id=<value>  アカウントの ID またはドメイン名
 
-    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+    UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501) を指定します。
 ```
 
 ## `profile-registry admin:create`
@@ -297,7 +297,7 @@ DESCRIPTION
 FLAG DESCRIPTIONS
   --id=<value>  会員 ID またはドメイン名
 
-    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+    UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501) を指定します。
     会員を新規登録する場合、ドメイン名でなければなりません。
 ```
 
@@ -318,7 +318,7 @@ DESCRIPTION
 FLAG DESCRIPTIONS
   --id=<value>  会員 ID またはドメイン名
 
-    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+    UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501) を指定します。
 ```
 
 ## `profile-registry advertiser:sign`
@@ -327,8 +327,8 @@ FLAG DESCRIPTIONS
 
 ```
 USAGE
-  $ profile-registry advertiser:sign -i <value> --id <value> --input <value> [--issued-at <value>] [--expired-at
-    <value>] [--allowed-origins <value>]
+  $ profile-registry advertiser:sign -i <value> --id <value> --input <filepath> [--issued-at <value>] [--expired-at
+    <value>] [--allowed-origins <origins>]
 
 FLAGS
   -i, --identity=<value>           (required) プライベート鍵のファイルパス
@@ -438,7 +438,7 @@ FLAG DESCRIPTIONS
 
   --certifier=<value>  認証機関 ID またはドメイン名
 
-    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+    UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501) を指定します。
 
   --expired-at=<value>  有効期限 (ISO 8601)
 
@@ -446,7 +446,7 @@ FLAG DESCRIPTIONS
 
   --holder=<value>  所有者となる会員 ID またはドメイン名
 
-    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+    UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501) を指定します。
 ```
 
 ## `profile-registry db:init`
@@ -668,8 +668,8 @@ DESCRIPTION
 
 ```
 USAGE
-  $ profile-registry publisher:sign -i <value> --id <value> --input <value> [--issued-at <value>] [--expired-at
-    <value>] [--site-profile] [--allowed-origins <value>]
+  $ profile-registry publisher:sign -i <value> --id <value> --input <filepath> [--issued-at <value>] [--expired-at
+    <value>] [--site-profile] [--allowed-origins <origins>]
 
 FLAGS
   -i, --identity=<value>           (required) プライベート鍵のファイルパス
@@ -844,7 +844,7 @@ FLAG DESCRIPTIONS
 
   --id=<value>  会員 ID またはドメイン名
 
-    UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501) を指定します。
+    UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501) を指定します。
 
   --input=<value>  JSON file
 
