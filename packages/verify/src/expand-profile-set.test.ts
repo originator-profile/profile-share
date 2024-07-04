@@ -1,21 +1,24 @@
-import "vi-fetch/setup";
-import { mockFetch, mockGet } from "vi-fetch";
-import { describe, beforeEach, afterEach, test, expect } from "vitest";
+import { setupServer } from "msw/node";
+import { HttpResponse, http } from "msw";
+import { describe, beforeAll, afterAll, test, expect } from "vitest";
 import { JsonLdDocument } from "jsonld";
 import context from "@originator-profile/model/context.json";
 import { expandProfileSet, expandProfilePairs } from "./expand-profile-set";
 
+const server = setupServer(
+  http.get("https://originator-profile.org/context.jsonld", () =>
+    HttpResponse.json(context),
+  ),
+);
+
+beforeAll(() => {
+  server.listen({ onUnhandledRequest: "error" });
+});
+afterAll(() => {
+  server.close();
+});
+
 describe("expand-profiles", () => {
-  beforeEach(() => {
-    mockGet("https://originator-profile.org/context.jsonld").willResolve(
-      context,
-    );
-  });
-
-  afterEach(() => {
-    mockFetch.clearAll();
-  });
-
   test("expand empty Profile Set", async () => {
     const profiles: JsonLdDocument = [];
     const result = await expandProfileSet(profiles);
@@ -69,15 +72,6 @@ describe("expand-profiles", () => {
 });
 
 describe("expand-profile-pairs", () => {
-  beforeEach(() => {
-    mockGet("https://originator-profile.org/context.jsonld").willResolve(
-      context,
-    );
-  });
-  afterEach(() => {
-    mockFetch.clearAll();
-  });
-
   test("expand empty Profile Pair", async () => {
     const profiles: JsonLdDocument = [];
     const result = await expandProfilePairs(profiles);

@@ -2,7 +2,7 @@ import { validate, v5 as uuid5 } from "uuid";
 
 /**
  * 会員 ID またはドメイン名の解析
- * @param uuidOrDns UUID 文字列表現 (RFC 4122) またはドメイン名 (RFC 4501)
+ * @param uuidOrDns UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501)
  * @return UUID 文字列表現
  */
 export function parseAccountId(uuidOrDns: string): string {

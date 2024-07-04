@@ -1,14 +1,15 @@
-import { Command, Flags, ux } from "@oclif/core";
-import { addYears } from "date-fns";
+import { Command, Flags } from "@oclif/core";
+import { Jwk } from "@originator-profile/model";
 import {
   Services,
   type Website as WebsiteType,
 } from "@originator-profile/registry-service";
-import fs from "node:fs/promises";
-import { globby } from "globby";
-import { accountId, expirationDate, operation, privateKey } from "../../flags";
-import { Jwk } from "@originator-profile/model";
 import { signBody } from "@originator-profile/sign";
+import { SingleBar } from "cli-progress";
+import { addYears } from "date-fns";
+import { globby } from "globby";
+import fs from "node:fs/promises";
+import { accountId, expirationDate, operation, privateKey } from "../../flags";
 
 type Website = Omit<WebsiteType, "accountId" | "proofJws">;
 
@@ -161,7 +162,7 @@ imageプロパティの画像リソースは拡張機能Webページから参照
     }
     const paths = await globby(flags["glob-input"]);
     if (paths.length === 0) this.error("Pattern does not match any files");
-    const bar = ux.progress();
+    const bar = new SingleBar({});
     bar.start(paths.length, 0);
     await Promise.all(
       paths.map((path) =>

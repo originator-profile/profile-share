@@ -1,8 +1,9 @@
-import { Command, Flags, ux } from "@oclif/core";
-import { Prisma } from "@prisma/client";
+import { Command, Flags } from "@oclif/core";
 import { Services } from "@originator-profile/registry-service";
-import fs from "node:fs/promises";
+import { Prisma } from "@prisma/client";
+import { SingleBar } from "cli-progress";
 import { globby } from "globby";
+import fs from "node:fs/promises";
 
 export class PublisherCategory extends Command {
   static description = "カテゴリーの作成・表示・削除";
@@ -51,7 +52,7 @@ https://docs.originator-profile.org/ts/modules/_originator_profile_registry_db.d
     }
     const paths = await globby(flags["glob-input"]);
     if (paths.length === 0) this.error("Pattern does not match any files");
-    const bar = ux.progress();
+    const bar = new SingleBar({});
     bar.start(paths.length, 0);
     await Promise.all(
       paths.map((path) =>

@@ -38,10 +38,10 @@
     "start": "bin/run start"
   },
   "dependencies": {
-    "@fastify/swagger-ui": "^3.0.0",
+    "@fastify/swagger-ui": "^4.0.0",
     "@fastify/vite": "^6.0.6",
     "@generouted/react-router": "^1.19.5",
-    "@oclif/core": "^3.26.6",
+    "@oclif/core": "^4.0.0",
     "@oclif/plugin-help": "^6.1.0",
     "@prisma/client": "^5.14.0",
     "@vitejs/plugin-react": "^4.3.0",
@@ -77,10 +77,12 @@
     "@originator-profile/tsconfig": "workspace:*",
     "@originator-profile/ui": "workspace:*",
     "@originator-profile/verify": "workspace:*",
-    "@redocly/cli": "^1.14.0",
+    "@redocly/cli": "^1.17.0",
+    "@types/cli-progress": "^3.11.5",
     "@types/jsonld": "^1.5.14",
-    "@types/uuid": "^9.0.8",
+    "@types/uuid": "^10.0.0",
     "ajv": "^8.14.0",
+    "cli-progress": "^3.12.0",
     "date-fns": "^3.6.0",
     "dotenv-cli": "^7.4.2",
     "esbuild-register": "^3.5.0",
@@ -104,7 +106,7 @@
     "tailwind-config-originator-profile": "workspace:*",
     "tsup": "^8.0.2",
     "typescript": "^5.4.5",
-    "uuid": "^9.0.1",
+    "uuid": "^10.0.0",
     "vitest": "^1.6.0"
   },
   "oclif": {
