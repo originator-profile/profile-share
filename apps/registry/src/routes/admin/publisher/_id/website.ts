@@ -69,6 +69,13 @@ async function website({
     throw new BadRequestError("invalid id property");
   }
 
+  if (operation === "delete") {
+    return await server.services.website.delete({
+      id: input.id,
+      accountId: params.id,
+    });
+  }
+
   const res = await server.services.website[operation]({
     ...input,
     account: { connect: { id: params.id } },
