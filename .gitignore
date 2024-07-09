@@ -15,7 +15,6 @@ vendor
 /apps/web-ext/screenshots
 /docs/spec/er.md
 /docs/spec/assets/openapi.json
-/docs/spec/model/assets/*
 /pages
 /static/ts
 /static/api

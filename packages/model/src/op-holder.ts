@@ -2,7 +2,9 @@ import { FromSchema } from "json-schema-to-ts";
 import BusinessCategory from "./business-category";
 import Logo from "./logo";
 
+/** @deprecated */
 const OpHolder = {
+  deprecated: true,
   title: "Originator Profile Holder",
   description: "資格情報を保有する組織",
   type: "object",
@@ -99,6 +101,7 @@ const OpHolder = {
   additionalProperties: false,
 } as const;
 
+/** @deprecated */
 type OpHolder = FromSchema<typeof OpHolder>;
 
 export default OpHolder;
