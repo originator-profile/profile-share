@@ -2,7 +2,9 @@ import { FromSchema } from "json-schema-to-ts";
 import BusinessCategory from "./business-category";
 import Logo from "./logo";
 
+/** @deprecated */
 const OpVerifier = {
+  deprecated: true,
   title: "Originator Profile Verifier",
   description: "資格情報を検証する検証機関",
   type: "object",
@@ -99,6 +101,7 @@ const OpVerifier = {
   additionalProperties: false,
 } as const;
 
+/** @deprecated */
 type OpVerifier = FromSchema<typeof OpVerifier>;
 
 export default OpVerifier;

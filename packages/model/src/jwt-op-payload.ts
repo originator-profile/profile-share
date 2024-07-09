@@ -1,8 +1,10 @@
 import { FromSchema } from "json-schema-to-ts";
-import OpItem from "./op-item";
 import Jwks from "./jwks";
+import OpItem from "./op-item";
 
+/** @deprecated */
 const JwtOpPayload = {
+  deprecated: true,
   title: "OP JWT Claims Set object",
   type: "object",
   properties: {
@@ -44,6 +46,7 @@ const JwtOpPayload = {
   additionalProperties: false,
 } as const;
 
+/** @deprecated */
 type JwtOpPayload = FromSchema<typeof JwtOpPayload>;
 
 export default JwtOpPayload;

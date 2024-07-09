@@ -2,6 +2,7 @@ import { FromSchema } from "json-schema-to-ts";
 import BusinessCategory from "./business-category";
 import Logo from "./logo";
 
+/** @deprecated */
 const OpCertifier = {
   title: "Originator Profile Certifier",
   description: "資格情報を発行する認証機関",
@@ -99,6 +100,7 @@ const OpCertifier = {
   additionalProperties: false,
 } as const;
 
+/** @deprecated */
 type OpCertifier = FromSchema<typeof OpCertifier>;
 
 export default OpCertifier;

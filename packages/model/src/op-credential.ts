@@ -1,6 +1,8 @@
 import { FromSchema } from "json-schema-to-ts";
 
+/** @deprecated */
 const OpCredential = {
+  deprecated: true,
   title: "Originator Profile Credential",
   description: "認証機関の報告書などの資格情報",
   type: "object",
@@ -43,6 +45,7 @@ const OpCredential = {
   additionalProperties: false,
 } as const;
 
+/** @deprecated */
 type OpCredential = FromSchema<typeof OpCredential>;
 
 export default OpCredential;

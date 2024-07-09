@@ -1,8 +1,10 @@
 import { FromSchema } from "json-schema-to-ts";
-import OpItem from "./op-item";
 import Jwks from "./jwks";
+import OpItem from "./op-item";
 
+/** @deprecated */
 const Op = {
+  deprecated: true,
   title: "Originator Profile",
   type: "object",
   properties: {
@@ -39,6 +41,7 @@ const Op = {
   additionalProperties: false,
 } as const;
 
+/** @deprecated */
 type Op = FromSchema<typeof Op>;
 
 export default Op;
