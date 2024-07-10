@@ -50,8 +50,16 @@ export const OrganizationJp = {
       title: "郵便番号",
       type: "string",
     },
-    address: {
-      title: "所在地",
+    region: {
+      title: "都道府県",
+      type: "string",
+    },
+    locality: {
+      title: "市区町村",
+      type: "string",
+    },
+    street_address: {
+      title: "丁目番地など",
       type: "string",
     },
     contact_title: {
