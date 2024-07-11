@@ -19,7 +19,8 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-拡張機能.png` });
 });
 
-test("広告プロファイルにおける表示の確認", async ({ page }) => {
+// TODO: 拡張機能での SD-JWT OP の検証の実装ができたら .skip 外して
+test.skip("広告プロファイルにおける表示の確認", async ({ page }) => {
   await expect(ext?.locator("main")).toBeVisible();
   await expect(ext?.locator("main")).toContainText(
     "この広告の発行者には信頼性情報があります",

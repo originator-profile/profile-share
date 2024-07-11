@@ -1,4 +1,5 @@
 export * from "./decode";
+export * from "./decode-sd-jwt";
 export * from "./errors";
 export * from "./expand-profile-set";
 export * from "./extract-body";

@@ -9,8 +9,9 @@ export class CertIssue extends Command {
   static description = "OP の発行";
   static flags = {
     identity: privateKey({ required: true }),
-    certifier: accountId({
-      summary: "認証機関 ID またはドメイン名",
+    issuer: accountId({
+      summary: "OP 発行機関の ID またはドメイン名",
+      aliases: ["certifier"],
       required: true,
     }),
     holder: accountId({
@@ -30,8 +31,8 @@ export class CertIssue extends Command {
   async run(): Promise<void> {
     const { flags } = await this.parse(CertIssue);
     const services = Services({ config });
-    const isCertifier = await services.certificate.isCertifier(flags.certifier);
-    if (!isCertifier) this.error("Invalid certifier.");
+    const isCertifier = await services.certificate.isCertifier(flags.issuer);
+    if (!isCertifier) this.error("Invalid issuer.");
     const jwk = flags.identity;
     const issuedAt = flags["issued-at"]
       ? new Date(flags["issued-at"])
@@ -40,13 +41,13 @@ export class CertIssue extends Command {
     const validAt = flags["valid-at"] ? new Date(flags["valid-at"]) : issuedAt;
 
     const jwt = await services.certificate.signOp(
-      flags.certifier,
+      flags.issuer,
       flags.holder,
       jwk,
       { issuedAt, expiredAt, validAt },
     );
 
-    const opId = await services.certificate.issue(flags.certifier, jwt);
+    const opId = await services.certificate.issue(flags.issuer, jwt);
 
     await services.account.publishProfile(flags.holder, opId);
 

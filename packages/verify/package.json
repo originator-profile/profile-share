@@ -17,6 +17,7 @@
     "@types/jsonld": "^1.5.14",
     "ajv": "^8.14.0",
     "ajv-formats": "^3.0.1",
+    "change-case": "^5.4.4",
     "date-fns": "^3.6.0",
     "eslint": "^8.56.0",
     "eslint-config-originator-profile": "workspace:*",

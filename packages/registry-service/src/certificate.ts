@@ -1,15 +1,13 @@
 import { Prisma } from "@prisma/client";
 import flush from "just-flush";
-import { addYears, fromUnixTime } from "date-fns";
+import { addYears, fromUnixTime, getUnixTime } from "date-fns";
 import { NotFoundError } from "http-errors-enhanced";
 import {
-  Op,
-  OpHolder,
-  OpVerifier,
-  OpCertifier,
   Jwk,
+  OrganizationMetadata,
+  OriginatorProfile,
 } from "@originator-profile/model";
-import { signOp } from "@originator-profile/sign";
+import { signSdJwtOp } from "@originator-profile/sign";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
 import { getClient } from "@originator-profile/registry-db";
@@ -66,29 +64,19 @@ export const CertificateService = ({ account, validator }: Options) => ({
     const credentials = await prisma.credentials.findMany({
       where: { accountId, expiredAt: { gt: options.validAt } },
       orderBy: { id: "asc" },
-      include: {
-        certifier: true,
-        verifier: true,
-      },
     });
+    if (credentials.length === 0) {
+      throw new NotFoundError(
+        "At least one credential is required to issue OP.",
+      );
+    }
     const accountsInclude: Prisma.accountsInclude = {
       logos: true,
-      businessCategories: true,
     };
     const data = await Promise.all([
-      prisma.accounts.findMany({
+      prisma.accounts.findUnique({
         where: {
-          id: {
-            in: [id, ...credentials.map(({ certifierId }) => certifierId)],
-          },
-        },
-        include: accountsInclude,
-      }),
-      prisma.accounts.findMany({
-        where: {
-          id: {
-            in: credentials.map(({ verifierId }) => verifierId),
-          },
+          id: id,
         },
         include: accountsInclude,
       }),
@@ -98,59 +86,81 @@ export const CertificateService = ({ account, validator }: Options) => ({
       }),
     ]);
 
-    const [certifiers, verifiers, holder] = data;
-    const certifier = certifiers.find((certifier) => certifier.id === id);
-    if (!certifier) throw new NotFoundError("Certifier not found.");
+    const [issuer, holder] = data;
+
+    if (!issuer) throw new NotFoundError("Issuer not found.");
     if (!holder) throw new NotFoundError("Holder not found.");
+
+    const holderKeys = await account.getKeys(accountId);
+    if (holderKeys.length === 0) {
+      throw new NotFoundError("Holder must have at least one public key.");
+    }
 
     const toAccountModel = (
       accounts: Prisma.accountsGetPayload<{
         include: typeof accountsInclude;
       }>,
-    ): Partial<OpHolder | OpVerifier | OpCertifier> => ({
-      ...flush(accounts),
-      businessCategory: accounts.businessCategories?.map(
-        ({ businessCategoryValue }) => businessCategoryValue,
-      ),
-    });
-    const input: Op = {
-      type: "op",
-      issuedAt: options.issuedAt.toISOString(),
-      expiredAt: options.expiredAt.toISOString(),
-      issuer: certifier.domainName,
-      subject: holder.domainName,
-      item: [
-        // @ts-expect-error any properties
-        ...credentials.map((credential) => ({
-          type: "credential",
-          ...flush(credential),
-          certifier: credential.certifier.domainName,
-          verifier: credential.verifier.domainName,
-          issuedAt: credential.issuedAt.toISOString(),
-          expiredAt: credential.expiredAt.toISOString(),
-        })),
-        // @ts-expect-error any properties
-        ...certifiers.map((certifier) => ({
-          type: "certifier",
-          ...toAccountModel(certifier),
-        })),
-        // @ts-expect-error any properties
-        ...verifiers.map((verifier) => ({
-          type: "verifier",
-          ...toAccountModel(verifier),
-        })),
-        {
-          // @ts-expect-error any properties
-          type: "holder",
-          ...toAccountModel(holder),
-        },
-      ],
+    ) => {
+      const {
+        logos,
+        addressCountry,
+        addressLocality,
+        addressRegion,
+        description,
+        ...rest
+      } = accounts;
+      const logo =
+        logos?.find((l) => l.isMain)?.url || logos?.[0]?.url || undefined;
+      // クレームの順序を整理する
+      const metadata = {
+        country: addressCountry,
+        domain_name: rest.domainName,
+        url: rest.url,
+        name: rest.name,
+        logo,
+        corporate_number: rest.corporateNumber,
+        email: rest.email,
+        phone_number: rest.phoneNumber,
+        postal_code: rest.postalCode,
+        region: addressRegion,
+        locality: addressLocality,
+        street_address: rest.streetAddress,
+        contact_title: rest.contactTitle,
+        contact_url: rest.contactUrl,
+        privacy_policy_title: rest.privacyPolicyTitle,
+        privacy_policy_url: rest.privacyPolicyUrl,
+        publishing_principle_title: rest.publishingPrincipleTitle,
+        publishing_principle_url: rest.publishingPrincipleUrl,
+        description:
+          description !== null
+            ? {
+                type: "text/plain",
+                data: description,
+              }
+            : undefined,
+      };
+      return flush(metadata) as OrganizationMetadata["holder"];
     };
 
-    const holderKeys = await account.getKeys(accountId);
-    if (holderKeys.keys.length > 0) Object.assign(input, { jwks: holderKeys });
+    const input: OriginatorProfile = {
+      vct: "https://originator-profile.org/orgnization",
+      "vct#integrity": "sha256",
+      iss:
+        issuer.domainName === "localhost"
+          ? "http://localhost:8080/"
+          : `https://${issuer.domainName}/`,
+      "iss#integrity": "sha256",
+      sub: holder.domainName,
+      locale: "ja-JP",
+      issuer: toAccountModel(issuer),
+      holder: toAccountModel(holder),
+      jwks: holderKeys,
+      iat: getUnixTime(options.issuedAt),
+      exp: getUnixTime(options.expiredAt),
+    };
+
     const valid = validator.opValidate(input);
-    const jwt: string = await signOp(valid, privateKey);
+    const jwt: string = await signSdJwtOp(valid, privateKey);
     return jwt;
   },
   /**

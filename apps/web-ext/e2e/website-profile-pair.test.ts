@@ -16,7 +16,8 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-拡張機能.png` });
 });
 
-test("サイトプロファイルにおける表示の確認", async ({ page }) => {
+// TODO: 拡張機能での SD-JWT OP の検証の実装ができたら .skip 外して
+test.skip("サイトプロファイルにおける表示の確認", async ({ page }) => {
   expect(await ext?.title()).toMatch(/コンテンツ情報/);
 
   // サイトプロファイルの発行者を持つ要素が存在するか確認

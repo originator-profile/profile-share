@@ -18,9 +18,10 @@ type Body = FromSchema<typeof Body>;
 
 const schema: FastifySchema = {
   params: Params,
+  deprecated: true,
   body: Body,
   tags: ["SOP"],
-  description: "OP の登録",
+  summary: "OP の登録",
   security: [{ basicAuth: [] }],
   response: {
     200: { description: "ok", type: "string" },
