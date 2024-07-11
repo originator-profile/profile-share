@@ -40,10 +40,12 @@ export function getJsonLdNodeObjects(doc: Document = document): NodeObject[] {
 /**
  * Profile Set の取得
  * @param doc Document オブジェクト
+ * @deprecated この関数は非推奨です。代わりに fetchWebAssertionSet を使用してください。
  */
 export async function fetchProfileSet(
   doc: Document,
 ): Promise<JsonLdDocument | ProfilesFetchFailed> {
+  console.warn("fetchProfileSet は非推奨です。代わりに fetchWebAssertionSet を使用してください。");
   let profiles = getJsonLdNodeObjects(doc);
   try {
     const profileEndpoints = getEndpoints(doc);
