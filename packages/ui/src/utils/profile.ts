@@ -95,7 +95,7 @@ export abstract class Profile {
    */
   printIssuedAt(): string {
     return "vct" in this.payload &&
-      this.payload.vct === "https://originaotr-profile.org/organization"
+      this.payload.vct === "https://originator-profile.org/organization"
       ? new Date(this.payload.iat * 1000).toLocaleString()
       : new Date((this.payload as Dp).issuedAt).toLocaleString();
   }
@@ -106,7 +106,7 @@ export abstract class Profile {
    */
   printExpiredAt(): string {
     return "vct" in this.payload &&
-      this.payload.vct === "https://originaotr-profile.org/organization"
+      this.payload.vct === "https://originator-profile.org/organization"
       ? new Date(this.payload.exp * 1000).toLocaleString()
       : expirationDateTimeLocaleFrom((this.payload as Dp).expiredAt);
   }
@@ -404,6 +404,8 @@ export class OriginatorProfile extends Profile {
       type: "holder",
       // @ts-expect-error Spread types may only be created from object types.ts(2698)
       ...changeKeys.camelCase(this.payload.holder),
+      addressLocality: this.payload.holder.locality,
+      addressRegion: this.payload.holder.region,
     };
   }
 
@@ -417,6 +419,8 @@ export class OriginatorProfile extends Profile {
         type: "certifier",
         // @ts-expect-error Spread types may only be created from object types.ts(2698)
         ...changeKeys.camelCase(this.payload.issuer),
+        addressLocality: this.payload.issuer.locality,
+        addressRegion: this.payload.issuer.region,
       },
       {
         type: "certifier",

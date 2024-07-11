@@ -143,7 +143,7 @@ export const CertificateService = ({ account, validator }: Options) => ({
     };
 
     const input: OriginatorProfile = {
-      vct: "https://originator-profile.org/orgnization",
+      vct: "https://originator-profile.org/organization",
       "vct#integrity": "sha256",
       iss:
         issuer.domainName === "localhost"

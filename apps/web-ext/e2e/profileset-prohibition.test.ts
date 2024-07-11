@@ -35,15 +35,14 @@ test.afterEach(async ({ page }, testInfo) => {
   }
   if (testInfo.title === "OPの検証失敗時は閲覧を禁止する") {
     executeCommand(
-      "bin/dev cert:issue -i account-key.example.priv.json --certifier localhost --holder localhost",
+      "bin/dev cert:issue -i account-key.example.priv.json --issuer localhost --holder localhost",
       "../registry",
     );
   }
   await fs.rm(tempDir, { recursive: true });
 });
 
-// TODO: 拡張機能での SD-JWT OP の検証の実装ができたら .skip 外して
-test.skip("DPの検証失敗時は閲覧を禁止する", async ({ context, page }) => {
+test("DPの検証失敗時は閲覧を禁止する", async ({ context, page }) => {
   executeCommand(
     "bin/dev key-gen --output " + path.join(tempDir, "evil"),
     "../registry",
@@ -71,8 +70,7 @@ test.skip("DPの検証失敗時は閲覧を禁止する", async ({ context, page
   ).toHaveCount(1);
 });
 
-// TODO: 拡張機能での SD-JWT OP の検証の実装ができたら .skip 外して
-test.skip("OPの検証失敗時は閲覧を禁止する", async ({ context, page }) => {
+test("OPの検証失敗時は閲覧を禁止する", async ({ context, page }) => {
   executeCommand(
     "bin/dev key-gen --output " + path.join(tempDir, "evil"),
     "../registry",
@@ -81,7 +79,7 @@ test.skip("OPの検証失敗時は閲覧を禁止する", async ({ context, page
     `bin/dev cert:issue -i ${path.join(
       tempDir,
       "evil.priv.json",
-    )} --certifier localhost --holder localhost`,
+    )} --issuer localhost --holder localhost`,
     "../registry",
   );
 

@@ -80,12 +80,11 @@ describe("複数のSigned Document Profilesが存在する場合", () => {
     }
   });
 
-  // TODO: 拡張機能での SD-JWT OP の検証の実装ができたら .skip 外して
-  test.skip("/ps.json response is a valid Profile Set", async () => {
+  test("/ps.json response is a valid Profile Set", async () => {
     const res = await fetch("http://localhost:8080/ps.json");
     const profiles = await res.json();
     const { profile } = await expandProfileSet(profiles);
-    const registry = "localhost";
+    const registry = "http://localhost:8080/";
     const keys = RemoteKeys(
       new URL("http://localhost:8080/.well-known/jwks.json"),
     );
