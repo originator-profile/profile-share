@@ -106,7 +106,7 @@ export async function expandProfilePairs(profiles: JsonLdDocument) {
  * @deprecated この関数は非推奨です。代わりに fetchWebAssertionSet を使用してください。
  */
 export async function expandProfileSet(profiles: JsonLdDocument) {
-  console.warn("fetchProfileSet は非推奨です。代わりに fetchWebAssertionSet を使用してください。");
+  console.warn("expandProfileSet は非推奨です。代わりに fetchWebAssertionSet を使用してください。");
   const expanded = await jsonld.expand(profiles);
   const res: {
     advertisers: string[];
