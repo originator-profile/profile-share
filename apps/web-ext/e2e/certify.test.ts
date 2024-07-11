@@ -16,7 +16,6 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-拡張機能.png` });
 });
 
-// TODO: 拡張機能での SD-JWT OP の検証の実装ができたら .skip 外して
 test("拡張機能画面での認証および対象ページのマークを確認", async ({ page }) => {
   const holderNamePattern = /Originator Profile 技術研究組合/;
 

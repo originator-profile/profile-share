@@ -34,7 +34,7 @@ const op: OriginatorProfile = {
   exp,
   iss: "https://example.org",
   sub: "example.com",
-  vct: "https://originator-profile.org/orgnization",
+  vct: "https://originator-profile.org/organization",
   "vct#integrity": "sha256",
   "iss#integrity": "sha256",
   locale: "ja-JP",

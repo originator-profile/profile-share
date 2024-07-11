@@ -46,11 +46,8 @@ export function TokenVerifier(
     if (verified instanceof Error) {
       return new ProfileTokenVerifyFailed(verified.message, {
         ...decoded,
-        error: {
-          name: verified.name,
-          code: verified.code,
-          message: verified.message,
-        },
+        jwt,
+        error: verified,
       });
     }
     if (isSdJwtOpPayload(verified.payload)) {

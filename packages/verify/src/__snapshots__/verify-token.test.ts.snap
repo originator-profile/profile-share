@@ -37,7 +37,7 @@ exports[`verify OP Token 1`] = `
   },
   "locale": "ja-JP",
   "sub": "example.com",
-  "vct": "https://originator-profile.org/orgnization",
+  "vct": "https://originator-profile.org/organization",
   "vct#integrity": "sha256",
 }
 `;

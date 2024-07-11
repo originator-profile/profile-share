@@ -1,8 +1,8 @@
 import { Profile, Op, Dp, OriginatorProfile } from "@originator-profile/model";
 
 /**
- * @deprecated
  * Profile が Op 型であるか否か
+ * @deprecated
  * @param profile
  * @return Op 型であれば true、それ以外ならば false
  */
@@ -12,6 +12,7 @@ export function isOp(profile: Profile): profile is Op {
 
 /**
  * Profile が Dp 型であるか否か
+ * @deprecated
  * @param profile
  * @return Dp 型であれば true、それ以外ならば false
  */
@@ -29,6 +30,6 @@ export function isSdJwtOp(
 ): profile is OriginatorProfile {
   return (
     "vct" in profile &&
-    profile.vct === "https://originator-profile.org/orgnization"
+    profile.vct === "https://originator-profile.org/organization"
   );
 }
