@@ -1,4 +1,4 @@
-import { Dp as DpModel, Op as OpModel } from "@originator-profile/model";
+import { Dp as DpModel, OriginatorProfile } from "@originator-profile/model";
 import * as errors from "@originator-profile/verify/src/errors";
 import { Role } from "./role";
 
@@ -12,7 +12,7 @@ export type ProfileBodyError =
   | errors.ProfileBodyExtractFailed
   | errors.ProfileBodyVerifyFailed;
 
-export type Op = OpModel & { error?: ProfileError };
+export type Op = OriginatorProfile & { error?: ProfileError };
 export type Dp = DpModel & { error?: ProfileError };
 export type ProfilePayload = Op | Dp;
 

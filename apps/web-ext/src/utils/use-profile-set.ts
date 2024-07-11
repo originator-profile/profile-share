@@ -29,7 +29,7 @@ import {
   PopupMessageRequest,
 } from "../types/message";
 import { buildPublUrl } from "./routes";
-import { DpLocator, isDp } from "@originator-profile/core";
+import { DpLocator, isSdJwtOp } from "@originator-profile/core";
 import { Jwks } from "@originator-profile/model";
 import { makeAdTree, updateAdIframe } from "../utils/ad-tree";
 
@@ -98,7 +98,8 @@ async function fetchVerifiedProfiles([, tabId]: [
 
   const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(
-    import.meta.env.MODE === "development" && registry === "localhost"
+    import.meta.env.MODE === "development" &&
+    registry === "http://localhost:8080/"
       ? `http://localhost:8080/.well-known/jwks.json`
       : `https://${registry}/.well-known/jwks.json`,
   );
@@ -285,7 +286,8 @@ async function fetchVerifiedWebsiteProfilePair([, tabId]: [
 
   const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(
-    import.meta.env.MODE === "development" && registry === "localhost"
+    import.meta.env.MODE === "development" &&
+    registry === "http://localhost:8080/"
       ? `http://localhost:8080/.well-known/jwks.json`
       : `https://${registry}/.well-known/jwks.json`,
   );
@@ -298,7 +300,7 @@ async function fetchVerifiedWebsiteProfilePair([, tabId]: [
           profile: [website[0].op.profile, website[0].dp.profile],
         },
         keys,
-        registry,
+        "http://localhost:8080/",
         null,
         origin,
       )())) ??
@@ -306,9 +308,9 @@ async function fetchVerifiedWebsiteProfilePair([, tabId]: [
 
   return {
     website: verifyResults.map(toProfilePayload).map((profile) => {
-      return isDp(profile)
-        ? new DocumentProfile(profile)
-        : new OriginatorProfile(profile);
+      return isSdJwtOp(profile)
+        ? new OriginatorProfile(profile)
+        : new DocumentProfile(profile);
     }),
     origin,
   };

@@ -32,20 +32,25 @@ export function TokenVerifier(
    * @return 検証結果
    */
   async function verifyToken(jwt: string): Promise<VerifyTokenResult> {
-    const decoded = decoder(jwt);
+    const issuerJwt = jwt.split("~")[0];
+    const decoded = decoder(issuerJwt);
     if (decoded instanceof Error) return decoded;
     if (
       isJwtDpPayload(decoded.payload) &&
       !verifyOrigin(origin, decoded.payload)
     )
       return new ProfileTokenVerifyFailed("Unavailable origin", decoded);
-    const verified = await jwtVerify(jwt, keys, { issuer }).catch(
+    const verified = await jwtVerify(issuerJwt, keys, { issuer }).catch(
       (e: JOSEError) => e,
     );
     if (verified instanceof Error) {
       return new ProfileTokenVerifyFailed(verified.message, {
         ...decoded,
-        error: verified,
+        error: {
+          name: verified.name,
+          code: verified.code,
+          message: verified.message,
+        },
       });
     }
     if (isSdJwtOpPayload(verified.payload)) {

@@ -1,9 +1,12 @@
 import { ProjectSummary } from "@originator-profile/ui";
 import {
+  ProfileGenericError,
   ProfilesVerifier,
   RemoteKeys,
   expandProfilePairs,
   expandProfileSet,
+  VerifyResults,
+  VerifyResult,
 } from "@originator-profile/verify";
 import clsx from "clsx";
 import { Fragment, useState, type ChangeEvent, type FormEvent } from "react";
@@ -24,7 +27,7 @@ function loadInitialValues() {
     return JSON.parse(window.atob(document.location.hash.slice(1)));
   } catch {
     return {
-      registry: document.location.hostname,
+      registry: new URL(document.location.origin).href,
       endpoint: `${document.location.origin}/ps.json`,
     };
   }
@@ -89,8 +92,59 @@ function transformEndpoint(endpoint: string): string {
   return endpoint;
 }
 
+function Result({ value }: { value: VerifyResult }) {
+  if (value instanceof ProfileGenericError) {
+    return (
+      <>
+        <p>
+          type: {"op" in value.result ? "Originator Profile" : "Web Assertion"}
+        </p>
+        <p>{value.code}</p>
+        <p>{value.message}</p>
+        <pre className="jumpu-card block text-sm font-mono bg-gray-50 px-3 py-2 overflow-auto">
+          {JSON.stringify(value.result.payload, null, "  ")}
+        </pre>
+        <pre className="jumpu-card block text-sm font-mono bg-gray-50 px-3 py-2 overflow-auto">
+          {value.result.jwt}
+        </pre>
+        {"error" in value.result && (
+          <pre className="jumpu-card block text-sm font-mono bg-gray-50 px-3 py-2 overflow-auto">
+            {JSON.stringify(value.result.error, null, "  ")}
+          </pre>
+        )}
+      </>
+    );
+  } else if ("op" in value) {
+    return (
+      <pre className="jumpu-card block text-sm font-mono bg-gray-50 px-3 py-2 overflow-auto">
+        {JSON.stringify(value, null, "  ")}
+      </pre>
+    );
+  } else if ("dp" in value) {
+    return (
+      <pre className="jumpu-card block text-sm font-mono bg-gray-50 px-3 py-2 overflow-auto">
+        {JSON.stringify(value, null, "  ")}
+      </pre>
+    );
+  }
+}
+
+function ErrorResult({ value }: { value: VerifyResults }) {
+  return (
+    <>
+      {(value as VerifyResults).map((value) => (
+        <Result
+          value={value}
+          key={"result" in value ? value.result.jwt : value.jwt}
+        />
+      ))}
+    </>
+  );
+}
+
 export default function Debugger() {
   const [values, setValues] = useState<Record<string, unknown>>({});
+  const [results, setResults] = useState<VerifyResults>([]);
   const [presentation, setPresentation] = useState(
     "profileSet" in initialValues ? "direct" : "url",
   );
@@ -156,9 +210,9 @@ export default function Debugger() {
     if (expanded instanceof Error) return;
 
     const jwksEndpoint = new URL(
-      import.meta.env.DEV && registry === "localhost"
+      import.meta.env.DEV && registry === "http://localhost:8080/"
         ? `http://localhost:8080/.well-known/jwks.json`
-        : `https://${registry}/.well-known/jwks.json`,
+        : `${registry}.well-known/jwks.json`,
     );
     const results = await ProfilesVerifier(
       expanded,
@@ -167,7 +221,7 @@ export default function Debugger() {
       null,
       document.location.origin,
     )();
-    setValues((values) => ({ ...values, results }));
+    setResults(results);
   }
   return (
     <article className="max-w-3xl px-4 pt-12 pb-8 space-y-8 mx-auto">
@@ -234,6 +288,14 @@ export default function Debugger() {
                   </dd>
                 </Fragment>
               ),
+            )}
+            {results.length > 0 && (
+              <Fragment>
+                <dt className="text-sm font-bold mb-2">Results</dt>
+                <dd className="ml-4 mb-6">
+                  <ErrorResult value={results} />
+                </dd>
+              </Fragment>
             )}
           </dl>
         </section>
