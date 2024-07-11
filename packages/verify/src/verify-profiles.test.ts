@@ -1,6 +1,5 @@
 import { beforeEach, describe, test, expect } from "vitest";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
-import * as changeKeys from "change-case/keys";
 import { Dp, OriginatorProfile } from "@originator-profile/model";
 import {
   signOp,
@@ -68,19 +67,6 @@ const op: OriginatorProfile = {
   },
 };
 
-const expected = {
-  op: {
-    issuer: op.iss,
-    subject: op.sub,
-    item: [
-      // @ts-expect-error Spread types may only be created from object types  tsc/config
-      { type: "holder", ...changeKeys.camelCase(op.holder) },
-      // @ts-expect-error Spread types may only be created from object types  tsc/config
-      { type: "certifier", ...changeKeys.camelCase(op.issuer) },
-    ],
-  },
-};
-
 describe("verify-profiles", () => {
   const iat = getUnixTime(new Date());
   const exp = getUnixTime(addYears(new Date(), 10));
@@ -120,18 +106,7 @@ describe("verify-profiles", () => {
       origin,
     );
     const verified = await verifier();
-    expect(verified[0]).toMatchObject({
-      op: {
-        issuer: op.iss,
-        subject: op.sub,
-        item: [
-          // @ts-expect-error Spread types may only be created from object types  tsc/config
-          { type: "holder", ...changeKeys.camelCase(op.holder) },
-          // @ts-expect-error Spread types may only be created from object types  tsc/config
-          { type: "certifier", ...changeKeys.camelCase(op.issuer) },
-        ],
-      },
-    });
+    expect(verified[0]).toMatchObject({ op });
     expect(verified[1]).toMatchObject({ dp });
   });
 
@@ -223,7 +198,7 @@ describe("verify-profiles", () => {
     );
     const results = await verifier();
     expect(results.length).toBe(2);
-    expect(results[0]).toMatchObject({ op: { ...expected.op, jwks: op.jwks } });
+    expect(results[0]).toMatchObject({ op });
     expect(results[1]).toMatchObject({ dp });
     expect(results[0]).not.toEqual(results[1]);
   });
@@ -295,7 +270,7 @@ describe("verify-profiles", () => {
     );
     const verified = await verifier();
     expect(verified[0]).toMatchObject({
-      op: { ...expected.op, jwks: op.jwks },
+      op,
     });
     expect(verified[1]).toMatchObject({ dp });
   });

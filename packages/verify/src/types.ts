@@ -1,9 +1,4 @@
-import {
-  Op,
-  Dp,
-  JwtDpPayload,
-  OriginatorProfile,
-} from "@originator-profile/model";
+import { Dp, JwtDpPayload, OriginatorProfile } from "@originator-profile/model";
 import { JWTVerifyResult, ResolvedKey } from "jose";
 import {
   ProfileClaimsValidationFailed,
@@ -44,7 +39,7 @@ export type DecodeResult =
 export type VerifyTokenResult =
   | (JWTVerifyResult &
       ResolvedKey &
-      ({ op: Op; jwt: string } | { dp: Dp; jwt: string }))
+      ({ op: OriginatorProfile; jwt: string } | { dp: Dp; jwt: string }))
   | ProfileClaimsValidationFailed
   | ProfileTokenVerifyFailed;
 

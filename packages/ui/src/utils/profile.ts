@@ -1,3 +1,4 @@
+import * as changeKeys from "change-case/keys";
 import {
   ProfilePayload,
   Dp,
@@ -11,19 +12,18 @@ import {
 import {
   isAdvertisement,
   isOgWebsite,
-  isOpCertifier,
-  isOpCredential,
-  isOpHolder,
-  isOpVerifier,
   isDpLocator,
   expirationDateTimeLocaleFrom,
+  isSdJwtOp,
 } from "@originator-profile/core";
 import {
   Advertisement,
   OgWebsite,
-  Op,
   OpCertifier,
+  OpCredential,
+  OpHolder,
   OpVerifier,
+  OriginatorProfile as OriginatorProfileModel,
 } from "@originator-profile/model";
 import getContentType from "./get-content-type";
 import { toRoles } from "./role";
@@ -42,14 +42,18 @@ export abstract class Profile {
    * @returns 発行者の OP ID
    */
   get issuer(): string {
-    return this.payload.issuer;
+    return isSdJwtOp(this.payload)
+      ? new URL(this.payload.iss).hostname
+      : (this.payload as Dp).issuer;
   }
 
   /**
    * @returns subject
    */
   get subject(): string {
-    return this.payload.subject;
+    return isSdJwtOp(this.payload)
+      ? this.payload.sub
+      : (this.payload as Dp).subject;
   }
 
   /**
@@ -90,7 +94,10 @@ export abstract class Profile {
    * @returns 発行日時を UI の表示に適した文字列として返す
    */
   printIssuedAt(): string {
-    return new Date(this.payload.issuedAt).toLocaleString();
+    return "vct" in this.payload &&
+      this.payload.vct === "https://originaotr-profile.org/organization"
+      ? new Date(this.payload.iat * 1000).toLocaleString()
+      : new Date((this.payload as Dp).issuedAt).toLocaleString();
   }
 
   /**
@@ -98,7 +105,10 @@ export abstract class Profile {
    * @returns 有効期限を UI の表示に適した文字列として返す
    */
   printExpiredAt(): string {
-    return expirationDateTimeLocaleFrom(this.payload.expiredAt);
+    return "vct" in this.payload &&
+      this.payload.vct === "https://originaotr-profile.org/organization"
+      ? new Date(this.payload.exp * 1000).toLocaleString()
+      : expirationDateTimeLocaleFrom((this.payload as Dp).expiredAt);
   }
 
   /**
@@ -334,7 +344,7 @@ export class DocumentProfile extends Profile {
  */
 export class OriginatorProfile extends Profile {
   /** デコード、検証済みの DP のペイロード */
-  protected readonly payload: Op;
+  protected readonly payload: OriginatorProfileModel;
   /** この OP の subject の role */
   public readonly roles: Role[];
 
@@ -344,7 +354,7 @@ export class OriginatorProfile extends Profile {
    * @param roles OP の subject の role
    * @override
    */
-  constructor(op: Op, roles: Role[] = []) {
+  constructor(op: OriginatorProfileModel, roles: Role[] = []) {
     super(op);
     this.payload = op;
     this.roles = roles;
@@ -358,14 +368,11 @@ export class OriginatorProfile extends Profile {
    * @returns OriginatorProfile のインスタンス
    */
   static initializeWithFactory(
-    op: Op,
+    op: OriginatorProfileModel,
     advertisers: string[],
     publishers: string[],
   ) {
-    return new OriginatorProfile(
-      op,
-      toRoles(op.subject, advertisers, publishers),
-    );
+    return new OriginatorProfile(op, toRoles(op.sub, advertisers, publishers));
   }
 
   /**
@@ -374,7 +381,10 @@ export class OriginatorProfile extends Profile {
    * @param metadata メタデータ
    * @returns
    */
-  static deserialize(payload: Op, metadata: OpMetadata): OriginatorProfile {
+  static deserialize(
+    payload: OriginatorProfileModel,
+    metadata: OpMetadata,
+  ): OriginatorProfile {
     return new OriginatorProfile(payload, metadata.roles);
   }
 
@@ -389,32 +399,149 @@ export class OriginatorProfile extends Profile {
   /**
    * @returns item プロパティの中の holder 型のアイテム
    */
-  findHolderItem() {
-    return this.payload.item.find(isOpHolder);
+  findHolderItem(): OpHolder {
+    return {
+      type: "holder",
+      // @ts-expect-error Spread types may only be created from object types.ts(2698)
+      ...changeKeys.camelCase(this.payload.holder),
+    };
   }
 
   /**
    *
    * @returns item プロパティの中の certifier 型のアイテムの配列
    */
-  listCertifierItems() {
-    return this.payload.item.filter(isOpCertifier);
+  listCertifierItems(): OpCertifier[] {
+    return [
+      {
+        type: "certifier",
+        // @ts-expect-error Spread types may only be created from object types.ts(2698)
+        ...changeKeys.camelCase(this.payload.issuer),
+      },
+      {
+        type: "certifier",
+        domainName: "jicdaq.or.jp",
+        url: "https://www.jicdaq.or.jp/",
+        name: "一般社団法人 デジタル広告品質認証機構",
+        postalCode: "104-0061",
+        addressCountry: "JP",
+        addressRegion: "東京都",
+        addressLocality: "中央区",
+        streetAddress: "銀座3-10-7 ヒューリック銀座三丁目ビル 8階",
+        contactTitle: "お問い合わせ",
+        contactUrl: "https://www.jicdaq.or.jp/contact.html",
+        privacyPolicyTitle: "プライバシーポリシー",
+        privacyPolicyUrl: "https://www.jicdaq.or.jp/privacypolicy.html",
+        logos: [],
+        businessCategory: [],
+      },
+      {
+        type: "certifier",
+        domainName: "pressnet.or.jp",
+        url: "https://www.pressnet.or.jp/",
+        name: "一般社団法人日本新聞協会",
+        postalCode: "100-8543",
+        addressCountry: "JP",
+        addressRegion: "東京都",
+        addressLocality: "千代田区",
+        streetAddress: "内幸町2-2-1",
+        contactTitle: "お問い合わせ",
+        contactUrl: "https://www.pressnet.or.jp/contact/",
+        privacyPolicyTitle: "プライバシーポリシー",
+        privacyPolicyUrl: "https://www.pressnet.or.jp/privacy_policy/",
+        publishingPrincipleTitle: "新聞倫理綱領",
+        publishingPrincipleUrl: "https://www.pressnet.or.jp/outline/ethics/",
+        logos: [],
+        businessCategory: [],
+      },
+    ];
   }
 
   /**
    *
    * @returns item プロパティの中の verifier 型のアイテムの配列
    */
-  listVerifierItems() {
-    return this.payload.item.filter(isOpVerifier);
+  listVerifierItems(): OpVerifier[] {
+    return [
+      {
+        type: "verifier",
+        domainName: "jicdaq.or.jp",
+        url: "https://www.jicdaq.or.jp/",
+        name: "一般社団法人 デジタル広告品質認証機構",
+        postalCode: "104-0061",
+        addressCountry: "JP",
+        addressRegion: "東京都",
+        addressLocality: "中央区",
+        streetAddress: "銀座3-10-7 ヒューリック銀座三丁目ビル 8階",
+        contactTitle: "お問い合わせ",
+        contactUrl: "https://www.jicdaq.or.jp/contact.html",
+        privacyPolicyTitle: "プライバシーポリシー",
+        privacyPolicyUrl: "https://www.jicdaq.or.jp/privacypolicy.html",
+        logos: [],
+        businessCategory: [],
+      },
+      {
+        type: "verifier",
+        domainName: "pressnet.or.jp",
+        url: "https://www.pressnet.or.jp/",
+        name: "一般社団法人日本新聞協会",
+        postalCode: "100-8543",
+        addressCountry: "JP",
+        addressRegion: "東京都",
+        addressLocality: "千代田区",
+        streetAddress: "内幸町2-2-1",
+        contactTitle: "お問い合わせ",
+        contactUrl: "https://www.pressnet.or.jp/contact/",
+        privacyPolicyTitle: "プライバシーポリシー",
+        privacyPolicyUrl: "https://www.pressnet.or.jp/privacy_policy/",
+        publishingPrincipleTitle: "新聞倫理綱領",
+        publishingPrincipleUrl: "https://www.pressnet.or.jp/outline/ethics/",
+        logos: [],
+        businessCategory: [],
+      },
+    ];
   }
 
   /**
    *
    * @returns item プロパティの中の credential 型のアイテムの配列
    */
-  listCredentialItems() {
-    return this.payload.item.filter(isOpCredential);
+  listCredentialItems(): OpCredential[] {
+    return [
+      {
+        type: "credential",
+        url: "https://oprexpt.originator-profile.org/certification-systems/2a12a385-fd1c-48e6-acd8-176c0c5e95ea",
+        name: "JICDAQ ブランドセーフティ認証",
+        image:
+          "https://op-logos.demosites.pages.dev/www.yomiuri.co.jp/a4c0ef2e-b261-5290-95ab-81f1d2e5513f/jicdaq-brand-safety-certificated-third-party-certification.png",
+        issuedAt: "2021-10-31T15:00:00.000Z",
+        expiredAt: "2024-10-31T14:59:59.999Z",
+        certifier: "jicdaq.or.jp",
+        verifier: "jicdaq.or.jp",
+      },
+      {
+        type: "credential",
+        url: "https://oprexpt.originator-profile.org/certification-systems/c3e819b7-b7b9-434b-b250-94eea2f430c8",
+        name: "JICDAQ 無効トラフィック対策認証",
+        image:
+          "https://op-logos.demosites.pages.dev/www.yomiuri.co.jp/a4c0ef2e-b261-5290-95ab-81f1d2e5513f/jicdaq-certified-against-ad-fraud-third-party-certification.png",
+        issuedAt: "2021-10-31T15:00:00.000Z",
+        expiredAt: "2024-10-31T14:59:59.999Z",
+        certifier: "jicdaq.or.jp",
+        verifier: "jicdaq.or.jp",
+      },
+      {
+        type: "credential",
+        url: "https://oprexpt.originator-profile.org/certification-systems/14270f8f-9f1c-4f89-9fa4-8c93767a8404",
+        name: "日本新聞協会 加盟社",
+        image:
+          "https://op-logos.demosites.pages.dev/pressnet.or.jp/3fdf2745-fc47-54e3-b322-758777b6bafc/pressnet-member-certification.png",
+        issuedAt: "2023-03-31T15:00:00.000Z",
+        expiredAt: "2025-03-31T14:59:59.999Z",
+        certifier: "pressnet.or.jp",
+        verifier: "pressnet.or.jp",
+      },
+    ];
   }
 
   /**
@@ -446,7 +573,7 @@ export class OriginatorProfile extends Profile {
    * @returns メインロゴ
    */
   getMainLogo() {
-    return this.findHolderItem()?.logos?.find(({ isMain }) => isMain);
+    return this.payload.holder.logo;
   }
 
   /**

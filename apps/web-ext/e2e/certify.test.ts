@@ -17,9 +17,7 @@ test.afterEach(async ({ page }, testInfo) => {
 });
 
 // TODO: 拡張機能での SD-JWT OP の検証の実装ができたら .skip 外して
-test.skip("拡張機能画面での認証および対象ページのマークを確認", async ({
-  page,
-}) => {
+test("拡張機能画面での認証および対象ページのマークを確認", async ({ page }) => {
   const holderNamePattern = /Originator Profile 技術研究組合/;
 
   // 記事発行者の名前を持つ要素が存在するか確認
