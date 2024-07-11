@@ -4,6 +4,7 @@ export * from "./dp";
 export * from "./dp-item";
 export * from "./profile";
 export * from "./jwt-payload";
+export * from "./sd-jwt-payload";
 export * from "./account";
 export * from "./date";
 export * from "./typefunc";

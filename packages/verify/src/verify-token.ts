@@ -1,10 +1,10 @@
 import { jwtVerify } from "jose";
-import { JOSEError } from "jose/dist/types/util/errors";
+import { JOSEError } from "jose/errors";
 import {
-  fromJwtOpPayload,
   fromJwtDpPayload,
-  isJwtOpPayload,
   isJwtDpPayload,
+  isSdJwtOpPayload,
+  fromSdJwtOpPayload,
 } from "@originator-profile/core";
 import { TokenDecoder } from "./decode";
 import { ProfileTokenVerifyFailed } from "./errors";
@@ -48,8 +48,8 @@ export function TokenVerifier(
         error: verified,
       });
     }
-    if (isJwtOpPayload(verified.payload)) {
-      return { ...verified, op: fromJwtOpPayload(verified.payload), jwt };
+    if (isSdJwtOpPayload(verified.payload)) {
+      return { ...verified, op: fromSdJwtOpPayload(verified.payload), jwt };
     }
     if (isJwtDpPayload(verified.payload)) {
       return { ...verified, dp: fromJwtDpPayload(verified.payload), jwt };

@@ -1,17 +1,18 @@
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import { decodeJwt, JWTPayload } from "jose";
-import { JwtOpPayload, JwtDpPayload } from "@originator-profile/model";
-import { isJwtOpPayload, isJwtDpPayload } from "@originator-profile/core";
-import { JOSEError } from "jose/dist/types/util/errors";
+import { JwtDpPayload, OriginatorProfile } from "@originator-profile/model";
+import { isJwtDpPayload, isSdJwtOpPayload } from "@originator-profile/core";
+import { JOSEError } from "jose/errors";
 import { ProfileClaimsValidationFailed } from "./errors";
 import { DecodeResult } from "./types";
+import { decodeSdJwt } from "./decode-sd-jwt";
 
 /** Signed Profile ペイロードの確認のためのバリデーター */
 export function SignedProfileValidator() {
   const ajv = new Ajv();
   addFormats(ajv);
-  const validateJwtOpPayload = ajv.compile(JwtOpPayload);
+  const validateJwtOpPayload = ajv.compile(OriginatorProfile);
   const validateJwtDpPayload = ajv.compile(JwtDpPayload);
   return { ajv, validateJwtOpPayload, validateJwtDpPayload };
 }
@@ -33,18 +34,22 @@ export function TokenDecoder(validator: SignedProfileValidator | null) {
   function decodeToken(jwt: string): DecodeResult {
     let payload: JWTPayload;
     try {
-      payload = decodeJwt(jwt);
+      if (jwt.includes("~")) {
+        payload = decodeSdJwt(jwt);
+      } else {
+        payload = decodeJwt(jwt);
+      }
     } catch (e) {
       const error = e as JOSEError;
       return new ProfileClaimsValidationFailed(error.message, { error, jwt });
     }
     if (validator) {
-      const valid = isJwtOpPayload(payload)
+      const valid = isSdJwtOpPayload(payload)
         ? validator.validateJwtOpPayload(payload)
         : validator.validateJwtDpPayload(payload);
 
       if (!valid) {
-        const errors = isJwtOpPayload(payload)
+        const errors = isSdJwtOpPayload(payload)
           ? validator.validateJwtOpPayload.errors
           : validator.validateJwtDpPayload.errors;
 
@@ -58,7 +63,7 @@ export function TokenDecoder(validator: SignedProfileValidator | null) {
         );
       }
     }
-    if (isJwtOpPayload(payload)) return { op: true, payload, jwt };
+    if (isSdJwtOpPayload(payload)) return { op: true, payload, jwt };
     if (isJwtDpPayload(payload)) return { dp: true, payload, jwt };
     return new ProfileClaimsValidationFailed("Unknown Claims Set", {
       errors: [],
