@@ -45,7 +45,9 @@ export function getJsonLdNodeObjects(doc: Document = document): NodeObject[] {
 export async function fetchProfileSet(
   doc: Document,
 ): Promise<JsonLdDocument | ProfilesFetchFailed> {
-  console.warn("fetchProfileSet は非推奨です。代わりに fetchWebAssertionSet を使用してください。");
+  console.warn(
+    "fetchProfileSet は非推奨です。代わりに fetchWebAssertionSet を使用してください。",
+  );
   let profiles = getJsonLdNodeObjects(doc);
   try {
     const profileEndpoints = getEndpoints(doc);
