@@ -150,7 +150,9 @@ describe("<link> 要素が2つ以上存在するとき", () => {
 
 test("エンドポイントを指定しない時 空の配列が得られる", async () => {
   const window = new Window();
-  const result = await fetchWebAssertionSet(window.document as unknown as Document);
+  const result = await fetchWebAssertionSet(
+    window.document as unknown as Document,
+  );
   expect(result).toBeInstanceOf(Array);
   expect(result).toHaveLength(0);
 });
