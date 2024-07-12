@@ -13,7 +13,6 @@ import { Window } from "happy-dom";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { generateKey, signOp } from "@originator-profile/sign";
 import { Op } from "@originator-profile/model";
-import { fetchProfileSet } from "./fetch-profile-set";
 import { ProfilesFetchFailed } from "./errors";
 import { fetchWebAssertionSet } from "./fetch-web-assertion-set";
 
