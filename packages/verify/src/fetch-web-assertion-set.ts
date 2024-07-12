@@ -3,9 +3,7 @@ import { ProfilesFetchFailed } from "./errors";
 
 function getEndpoints(doc: Document): string[] {
   const endpoints = [
-    ...doc.querySelectorAll(
-      `script[src][type="application/was+json"]`
-    ),
+    ...doc.querySelectorAll(`script[src][type="application/was+json"]`),
   ].map((e) => new URL(e.getAttribute("src") ?? "", doc.location.href).href);
 
   return endpoints;
