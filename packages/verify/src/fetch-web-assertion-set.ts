@@ -36,7 +36,7 @@ export function getJsonLdNodeObjects(doc: Document = document): NodeObject[] {
 }
 
 /**
- * Profile Set の取得
+ * Web Assertion Set の取得
  * @param doc Document オブジェクト
  */
 export async function fetchWebAssertionSet(
