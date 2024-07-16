@@ -1,6 +1,6 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "readme": "src/pages/ts.md",
+  "readme": "src/ts.md",
   "out": "static/ts",
   "entryPointStrategy": "packages",
   "entryPoints": [

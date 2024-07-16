@@ -81,8 +81,14 @@ export const WebsiteService = ({ websiteRepository }: Options) => ({
   },
 
   /** {@link WebsiteRepository.delete} */
-  async delete({ id }: { id: string }): Promise<websites> {
-    return await websiteRepository.delete({ id });
+  async delete({
+    id,
+    accountId,
+  }: {
+    id: string;
+    accountId: string;
+  }): Promise<websites> {
+    return await websiteRepository.delete({ id, accountId });
   },
 
   /**
