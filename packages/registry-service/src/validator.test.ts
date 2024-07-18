@@ -8,7 +8,7 @@ test("opValidate() return OP", () => {
   const issuedAt = getUnixTime(new Date());
   const expiredAt = getUnixTime(addYears(new Date(), 10));
   const op: OriginatorProfile = {
-    vct: "https://originator-profile.org/orgnization",
+    vct: "https://originator-profile.org/organization",
     "vct#integrity": "sha256",
     iss: "https://originator-profile.org",
     "iss#integrity": "sha256",

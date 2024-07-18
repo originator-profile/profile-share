@@ -4,7 +4,7 @@ import { isSdJwtOpPayload } from "./sd-jwt-payload";
 
 test("isSdJwtOpPayload() returns true if of type OriginatorProfile", () => {
   const payload: OriginatorProfile = {
-    vct: "https://originator-profile.org/orgnization",
+    vct: "https://originator-profile.org/organization",
     "vct#integrity": "sha256-...",
     iss: "https://example.org",
     "iss#integrity": "sha256-...",

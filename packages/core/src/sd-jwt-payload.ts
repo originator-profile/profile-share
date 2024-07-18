@@ -9,5 +9,5 @@ import { OriginatorProfile } from "@originator-profile/model";
 export function isSdJwtOpPayload(
   payload: JWTPayload,
 ): payload is OriginatorProfile {
-  return payload.vct === "https://originator-profile.org/orgnization";
+  return payload.vct === "https://originator-profile.org/organization";
 }
