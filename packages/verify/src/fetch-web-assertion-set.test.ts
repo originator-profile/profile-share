@@ -29,7 +29,7 @@ afterAll(() => {
 });
 
 describe("単純なscriptから取得", () => {
-  const wasEndpoint = "https://example.com/ps.json";
+  const wasEndpoint = "https://example.com/was.json";
 
   test("有効なエンドポイント指定時 Web Assertion Set が得られる", async () => {
     const iat = getUnixTime(new Date());
@@ -84,7 +84,7 @@ describe("単純なscriptから取得", () => {
   test("取得先に Web Assertion Set が存在しないとき Web Assertion Set の取得に失敗", async () => {
     server.use(
       http.get(
-        "https://example.com/ps.json",
+        "https://example.com/was.json",
         () => new HttpResponse(null, { status: 404 }),
       ),
     );
