@@ -71,5 +71,6 @@ export async function fetchWebAssertionSet(
     }
   }
 
+  // 現状 Web Assertion Setは実装されていないのでProfiles Setを返す
   return profiles as JsonLdDocument;
 }
