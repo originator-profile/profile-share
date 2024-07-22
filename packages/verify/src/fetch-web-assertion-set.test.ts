@@ -44,13 +44,13 @@ describe("単純なscriptから取得", () => {
     };
     const { privateKey } = await generateKey();
     const jwt = await signOp(op, privateKey);
-    const profiles = {
+    const webassertions = {
       "@context": "https://originator-profile.org/context.jsonld",
       main: ["example.com"],
       profile: [jwt],
     };
 
-    server.use(http.get(wasEndpoint, () => HttpResponse.json(profiles)));
+    server.use(http.get(wasEndpoint, () => HttpResponse.json(webassertions)));
 
     const window = new Window();
     window.document.body.innerHTML = `
@@ -61,7 +61,7 @@ describe("単純なscriptから取得", () => {
     const result = await fetchWebAssertionSet(
       window.document as unknown as Document,
     );
-    expect(result).toEqual([profiles]);
+    expect(result).toEqual([webassertions]);
   });
 
   test("無効なエンドポイント指定時 Web Assertion Set の取得に失敗", async () => {
@@ -116,7 +116,7 @@ test("エンドポイントを指定しない時 空の配列が得られる", a
 });
 
 describe("<script>要素から Web Assertion Set を取得する", () => {
-  const profileSet = {
+  const webassertionSet = {
     "@context": "https://originator-profile.org/context.jsonld",
     main: ["https://example.org"],
     profile: ["{Signed Document Profile または Signed Originator Profile}"],
@@ -124,7 +124,7 @@ describe("<script>要素から Web Assertion Set を取得する", () => {
 
   beforeEach(() => {
     server.use(
-      http.get("https://example.com/1/ps.json", () =>
+      http.get("https://example.com/1/was.json", () =>
         HttpResponse.json({
           "@context": "https://originator-profile.org/context.jsonld",
           main: ["https://example.com"],
@@ -140,7 +140,7 @@ describe("<script>要素から Web Assertion Set を取得する", () => {
   test("<script> から Web Assertion Set を取得できる", async () => {
     const window = new Window();
     window.document.body.innerHTML = `
-<script type="application/was+json">${JSON.stringify(profileSet)}</script>
+<script type="application/was+json">${JSON.stringify(webassertionSet)}</script>
 `;
 
     const result = await fetchWebAssertionSet(
@@ -153,8 +153,8 @@ describe("<script>要素から Web Assertion Set を取得する", () => {
   test("<script> が2つ以上存在する", async () => {
     const window = new Window();
     window.document.body.innerHTML = `
-<script type="application/was+json">${JSON.stringify(profileSet)}</script>
-<script type="application/was+json">${JSON.stringify(profileSet)}</script>
+<script type="application/was+json">${JSON.stringify(webassertionSet)}</script>
+<script type="application/was+json">${JSON.stringify(webassertionSet)}</script>
 `;
 
     const result = await fetchWebAssertionSet(
