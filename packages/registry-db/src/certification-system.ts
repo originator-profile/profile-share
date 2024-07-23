@@ -1,27 +1,7 @@
-import { getClient } from "./lib/prisma-client";
 import { CertificationSystem } from "@originator-profile/model";
-import { NotFoundError } from "http-errors-enhanced";
+import { getClient } from "./lib/prisma-client";
 
 export const CertificationSystemRepository = () => ({
-  /** 認証制度の取得 */
-  async read({ uuid }: { uuid: string }): Promise<CertificationSystem> {
-    const prisma = getClient();
-    const data = await prisma.certificationSystems.findUnique({
-      where: { id: uuid },
-      include: {
-        certifier: true,
-        verifier: true,
-      },
-    });
-
-    if (!data) throw new NotFoundError("Certification system not found.");
-
-    return {
-      type: "certification-system",
-      ...data,
-    } satisfies CertificationSystem;
-  },
-
   /** すべての認証制度の取得 */
   async all(opts: {
     selfDeclaration: {

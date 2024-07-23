@@ -1,11 +1,11 @@
+import { isJwtOpPayload } from "@originator-profile/core";
+import { Jwk, Jwks, type OpHolder } from "@originator-profile/model";
+import { beginTransaction, getClient } from "@originator-profile/registry-db";
 import { Prisma, accounts } from "@prisma/client";
-import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { fromUnixTime } from "date-fns";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
-import { Jwk, Jwks, type OpHolder } from "@originator-profile/model";
-import { isJwtOpPayload } from "@originator-profile/core";
+import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { ValidatorService } from "./validator";
-import { beginTransaction, getClient } from "@originator-profile/registry-db";
 
 type Options = {
   validator: ValidatorService;
@@ -75,7 +75,7 @@ export const AccountService = ({ validator }: Options) => ({
    * @param input 会員
    * @return 会員
    */
-  async updateAccount({
+  async update({
     id,
     businessCategory,
     ...input
@@ -112,30 +112,6 @@ export const AccountService = ({ validator }: Options) => ({
         where: { id },
         data: input,
       });
-    });
-  },
-  /**
-   * 会員の更新
-   * @param input 会員
-   * @return 会員
-   *
-   * @deprecated 代わりに {@link updateAccount} を利用してください。
-   */
-  async update({
-    id,
-    ...input
-  }: Prisma.accountsUpdateInput & { id: AccountId }): Promise<accounts> {
-    const prisma = getClient();
-    if (input.domainName) {
-      const newDomainName =
-        typeof input.domainName === "string"
-          ? input.domainName
-          : input.domainName.set;
-      this.raiseIfDomainNameCannotChange(id, newDomainName);
-    }
-    return await prisma.accounts.update({
-      where: { id },
-      data: input,
     });
   },
   /**

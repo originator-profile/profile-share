@@ -7,6 +7,28 @@ const endpoints = [
   http.get("https://originator-profile.org/context.jsonld", () => {
     return HttpResponse.json(context);
   }),
+  http.get("https://example.org/.well-known/jwt-vc-issuer", () => {
+    // 中身はダミー
+    return HttpResponse.json({});
+  }),
+  http.get("https://example.com/integrity-target-text", () => {
+    const binaryData = Buffer.from("Hello, world!\r\n", "utf-8");
+    console.log(binaryData.length);
+    return HttpResponse.arrayBuffer(binaryData, {
+      headers: { "Content-Type": "text/plain" },
+    });
+  }),
+  http.get("https://example.com/integrity-target-json", () => {
+    /* JSONの改行はNLと想定 */
+    const binaryData = Buffer.from("{}\n", "utf-8");
+    console.log(binaryData.length);
+    return HttpResponse.arrayBuffer(binaryData, {
+      headers: { "Content-Type": "application/json" },
+    });
+  }),
+  http.get("https://example.com/not-found", () => {
+    return new HttpResponse(null, { status: 404 });
+  }),
 ];
 const server = setupServer(...endpoints);
 

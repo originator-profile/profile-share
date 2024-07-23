@@ -1,13 +1,13 @@
 import { FastifyInstance } from "fastify";
 import { FromHandler } from "../../../../../../types";
 import Params from "./params";
-import issue from "./issue";
+import deleteDp from "./delete";
 
 async function index(fastify: FastifyInstance): Promise<void> {
-  fastify.post<FromHandler<typeof issue, Params>>(
-    "/issue",
-    { ...issue },
-    issue,
+  fastify.delete<FromHandler<typeof deleteDp, Params>>(
+    "/",
+    { ...deleteDp },
+    deleteDp,
   );
 }
 

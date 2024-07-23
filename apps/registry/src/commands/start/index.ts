@@ -17,17 +17,18 @@ export default class Start extends Command {
 
   async run(): Promise<void> {
     const { flags } = await this.parse(Start);
+    const isDev = process.env.NODE_ENV === "development";
+    const server = await create({
+      isDev,
+      routes: path.resolve(__dirname, "../../routes"),
+    });
+    /* DbInitはseed時にOPを発行するが、OP発行はserverに依存している */
+    await start(server, flags.port);
     await DbInit.run([
       `--schema=${
         flags.schema ?? path.join(__dirname, "../../prisma/schema.prisma")
       }`,
       `--${flags.seed ? "" : "no-"}seed`,
     ]);
-    const isDev = process.env.NODE_ENV === "development";
-    const server = await create({
-      isDev,
-      routes: path.resolve(__dirname, "../../routes"),
-    });
-    await start(server, flags.port);
   }
 }

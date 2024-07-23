@@ -179,9 +179,15 @@ export const WebsiteRepository = () => ({
    * @param input.id ウェブページ ID
    * @return ウェブページ
    */
-  async delete({ id }: { id: string }): Promise<websites> {
+  async delete({
+    id,
+    accountId,
+  }: {
+    id: string;
+    accountId: string;
+  }): Promise<websites> {
     const prisma = getClient();
-    return await prisma.websites.delete({ where: { id } });
+    return await prisma.websites.delete({ where: { id, accountId } });
   },
 
   /**

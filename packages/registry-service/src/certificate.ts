@@ -10,6 +10,7 @@ import {
 import { signSdJwtOp } from "@originator-profile/sign";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
+import { calcIntegrity } from "./utils/integrity";
 import { getClient } from "@originator-profile/registry-db";
 
 type Options = {
@@ -20,6 +21,20 @@ type Options = {
 type CertifierId = string;
 type AccountId = string;
 type OpId = string;
+
+/**
+ * URLに .well-known/jwt-vc-issuer を挿入する
+ * see https://www.ietf.org/archive/id/draft-ietf-oauth-sd-jwt-vc-04.html#name-jwt-vc-issuer-metadata
+ * @param urlString 挿入対象のURL
+ * @return .well-known/jwt-vc-issuer 挿入後の文字列
+ */
+function insertJwtVcIssuerPath(urlString: string) {
+  const url = new URL(urlString);
+  url.pathname =
+    ".well-known/jwt-vc-issuer" +
+    (url.pathname && url.pathname !== "/" ? url.pathname : "");
+  return url.toString();
+}
 
 export const CertificateService = ({ account, validator }: Options) => ({
   /**
@@ -142,14 +157,21 @@ export const CertificateService = ({ account, validator }: Options) => ({
       return flush(metadata) as OrganizationMetadata["holder"];
     };
 
+    const vct = "https://originator-profile.org/organization";
+    const iss =
+      issuer.domainName === "localhost"
+        ? "http://localhost:8080/"
+        : `https://${issuer.domainName}/`;
     const input: OriginatorProfile = {
-      vct: "https://originator-profile.org/organization",
-      "vct#integrity": "sha256",
-      iss:
-        issuer.domainName === "localhost"
-          ? "http://localhost:8080/"
-          : `https://${issuer.domainName}/`,
-      "iss#integrity": "sha256",
+      vct,
+      /*
+       TODO: 本来は await calcIntegrity(vct) で計算するが、未公開なため https://next.docs-originator-profile-org.pages.dev/rfc/7/#sd-jwt-vc-type-metadata から
+       あらかじめ計算した値。
+       VC Type Metadataの最後に改行がないことに注意。
+       */
+      "vct#integrity": "sha256-w+4TN1Ad3s6wksEJtaJncFo8+CBg3i31nCuAntyZ70o=",
+      iss,
+      "iss#integrity": await calcIntegrity(insertJwtVcIssuerPath(iss)),
       sub: holder.domainName,
       locale: "ja-JP",
       issuer: toAccountModel(issuer),
