@@ -106,6 +106,48 @@ describe("単純なscriptから取得", () => {
   });
 });
 
+describe("異なるエンドポイントに <script> 要素が2つ以上存在するとき", () => {
+  test("有効な Web Assertion Set が得られる", async () => {
+    server.use(
+      http.get("https://example.com/1/was.json", () =>
+        HttpResponse.json({
+          "@context": "https://originator-profile.org/context.jsonld",
+          profiles:
+            "{Signed Document Profile または Signed Originator Profile}",
+        }),
+      ),
+      http.get("https://example.com/2/was.json", () =>
+        HttpResponse.json({
+          "@context": "https://originator-profile.org/context.jsonld",
+          profiles:
+            "{別の Signed Document Profile または Signed Originator Profile}",
+        }),
+      ),
+    );
+
+    const window = new Window();
+    const profileEndpoints = [
+      "https://example.com/1/was.json",
+      "https://example.com/2/was.json",
+    ];
+    window.document.body.innerHTML = profileEndpoints
+      .map(
+        (endpoint) => `
+<script
+  src="${endpoint}"
+  type="application/was+json"
+></script>
+  `,
+      )
+      .join("");
+    const result = await fetchWebAssertionSet(
+      window.document as unknown as Document,
+    );
+    expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
+    expect(result).toMatchSnapshot();
+  });
+});
+
 test("エンドポイントを指定しない時 空の配列が得られる", async () => {
   const window = new Window();
   const result = await fetchWebAssertionSet(
