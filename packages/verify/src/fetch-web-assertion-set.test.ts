@@ -115,7 +115,7 @@ test("エンドポイントを指定しない時 空の配列が得られる", a
   expect(result).toHaveLength(0);
 });
 
-describe("<script>要素から Web Assertion Set を取得する", () => {
+describe("<script> 要素から Web Assertion Set を取得する", () => {
   const webassertionSet = {
     "@context": "https://originator-profile.org/context.jsonld",
     main: ["https://example.org"],
@@ -137,7 +137,7 @@ describe("<script>要素から Web Assertion Set を取得する", () => {
     );
   });
 
-  test("<script> から Web Assertion Set を取得できる", async () => {
+  test("<script> 要素 から Web Assertion Set を取得できる", async () => {
     const window = new Window();
     window.document.body.innerHTML = `
 <script type="application/was+json">${JSON.stringify(webassertionSet)}</script>
@@ -150,7 +150,7 @@ describe("<script>要素から Web Assertion Set を取得する", () => {
     expect(result).toMatchSnapshot();
   });
 
-  test("<script> が2つ以上存在する", async () => {
+  test("<script> 要素 が2つ以上存在する", async () => {
     const window = new Window();
     window.document.body.innerHTML = `
 <script type="application/was+json">${JSON.stringify(webassertionSet)}</script>
