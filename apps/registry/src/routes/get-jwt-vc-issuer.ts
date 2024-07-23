@@ -1,8 +1,10 @@
-import { FastifySchema, FastifyRequest } from "fastify";
-import getKeys from "./account/_id/get-keys";
 import { Jwks } from "@originator-profile/model";
+import { FastifyRequest, FastifySchema } from "fastify";
 
-const schema: FastifySchema = {
+export const method = "GET";
+export const url = "/.well-known/jwt-vc-issuer";
+
+export const schema = {
   operationId: "getJwtVcIssuer",
   tags: ["registry"],
   summary: "OPレジストリ JWT VC Issuer Metadata の取得",
@@ -33,11 +35,11 @@ const schema: FastifySchema = {
       ],
     },
   },
-};
+} as const satisfies FastifySchema;
 
-async function getJwtVcIssuer(req: FastifyRequest) {
-  const keysData = await getKeys(
-    Object.assign(req, { params: { id: req.server.config.ISSUER_UUID } }),
+export async function handler(req: FastifyRequest) {
+  const keysData = await req.server.services.account.getKeys(
+    req.server.config.ISSUER_UUID,
   );
 
   const issuer = (req.server.config.APP_URL || "http://localhost:8080").replace(
@@ -50,5 +52,3 @@ async function getJwtVcIssuer(req: FastifyRequest) {
     jwks: keysData,
   };
 }
-
-export default Object.assign(getJwtVcIssuer, { schema });

@@ -1,7 +1,7 @@
-import { FastifyInstance } from "fastify";
 import helmet from "@fastify/helmet";
+import { FastifyInstance } from "fastify";
 import { ForbiddenError } from "http-errors-enhanced";
-import Params from "../params";
+import Params from "./params";
 
 async function autohooks(fastify: FastifyInstance): Promise<void> {
   fastify.after(() =>
