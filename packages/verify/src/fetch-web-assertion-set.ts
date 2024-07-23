@@ -3,21 +3,19 @@ import { ProfilesFetchFailed } from "./errors";
 
 function getEndpoints(doc: Document): string[] {
   const endpoints = [
-    ...doc.querySelectorAll(
-      `link[rel="alternate"][type="application/ld+json"]`,
-    ),
-  ].map((e) => new URL(e.getAttribute("href") ?? "", doc.location.href).href);
+    ...doc.querySelectorAll(`script[src][type="application/was+json"]`),
+  ].map((e) => new URL(e.getAttribute("src") ?? "", doc.location.href).href);
 
   return endpoints;
 }
 
 /**
- * 文書内のapplication/ld+json NodeObjectの取得
+ * 文書内のapplication/was+json NodeObjectの取得
  * @param doc Document オブジェクト
  */
 export function getJsonLdNodeObjects(doc: Document = document): NodeObject[] {
   const elements = [
-    ...doc.querySelectorAll(`script[type="application/ld+json"]`),
+    ...doc.querySelectorAll(`script[type="application/was+json"]`),
   ];
   const nodeObj = elements
     .map((elem) => {
@@ -38,16 +36,12 @@ export function getJsonLdNodeObjects(doc: Document = document): NodeObject[] {
 }
 
 /**
- * Profile Set の取得
+ * Web Assertion Set の取得
  * @param doc Document オブジェクト
- * @deprecated この関数は非推奨です。代わりに fetchWebAssertionSet を使用してください。
  */
-export async function fetchProfileSet(
+export async function fetchWebAssertionSet(
   doc: Document,
 ): Promise<JsonLdDocument | ProfilesFetchFailed> {
-  console.warn(
-    "fetchProfileSet は非推奨です。代わりに fetchWebAssertionSet を使用してください。",
-  );
   let profiles = getJsonLdNodeObjects(doc);
   try {
     const profileEndpoints = getEndpoints(doc);
@@ -77,5 +71,6 @@ export async function fetchProfileSet(
     }
   }
 
+  // 現状 Web Assertion Setは実装されていないのでProfiles Setを返す
   return profiles as JsonLdDocument;
 }
