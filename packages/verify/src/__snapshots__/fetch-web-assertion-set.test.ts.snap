@@ -1,0 +1,51 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<script> 要素から Web Assertion Set を取得する > <script> 要素 から Web Assertion Set を取得できる 1`] = `
+[
+  {
+    "@context": "https://originator-profile.org/context.jsonld",
+    "main": [
+      "https://example.org",
+    ],
+    "profile": [
+      "{Signed Document Profile または Signed Originator Profile}",
+    ],
+  },
+]
+`;
+
+exports[`<script> 要素から Web Assertion Set を取得する > <script> 要素 が2つ以上存在する 1`] = `
+[
+  {
+    "@context": "https://originator-profile.org/context.jsonld",
+    "main": [
+      "https://example.org",
+    ],
+    "profile": [
+      "{Signed Document Profile または Signed Originator Profile}",
+    ],
+  },
+  {
+    "@context": "https://originator-profile.org/context.jsonld",
+    "main": [
+      "https://example.org",
+    ],
+    "profile": [
+      "{Signed Document Profile または Signed Originator Profile}",
+    ],
+  },
+]
+`;
+
+exports[`異なるエンドポイントに <script> 要素が2つ以上存在するとき > 有効な Web Assertion Set が得られる 1`] = `
+[
+  {
+    "@context": "https://originator-profile.org/context.jsonld",
+    "profiles": "{Signed Document Profile または Signed Originator Profile}",
+  },
+  {
+    "@context": "https://originator-profile.org/context.jsonld",
+    "profiles": "{別の Signed Document Profile または Signed Originator Profile}",
+  },
+]
+`;
