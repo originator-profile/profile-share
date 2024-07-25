@@ -1,6 +1,6 @@
 import { FromSchema } from "json-schema-to-ts";
 
-const WebAssertionSet = {
+const WebAssertionSetItem = {
   title: "Web Assertion Set",
   type: "object",
   properties: {
@@ -26,11 +26,29 @@ const WebAssertionSet = {
         type: "string"
       }
     },
+    main: {
+      title: "文書の中心的なトピックか否かの真偽値(true: メインコンテンツ、false: それ以外)",
+      description: "main が true の JSON Object の中の assertions 配列は要素数が1でなければなりません",
+      type: "boolean",
+      default: false
+    }
   },
   required: ["originator", "certificates", "assertions"],
   additionalProperties: true,
 } as const;
 
+const WebAssertionSet = {
+  title: "Web Assertion Set",
+  oneOf: [
+    WebAssertionSetItem,
+    {
+      type: "array",
+      items: WebAssertionSetItem
+    }
+  ]
+} as const;
+
+type WebAssertionSetItem = FromSchema<typeof WebAssertionSetItem>;
 type WebAssertionSet = FromSchema<typeof WebAssertionSet>;
 
 export default WebAssertionSet;
