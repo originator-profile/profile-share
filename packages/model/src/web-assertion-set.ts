@@ -30,11 +30,13 @@ const WebAssertionSetItem = {
       },
     },
     main: {
-      title: "文書の中心的なトピックか否かの真偽値(true: メインコンテンツ、false: それ以外)",
-      description: "main が true の JSON Object の中の assertions 配列は要素数が1でなければなりません",
+      title:
+        "文書の中心的なトピックか否かの真偽値(true: メインコンテンツ、false: それ以外)",
+      description:
+        "main が true の JSON Object の中の assertions 配列は要素数が1でなければなりません",
       type: "boolean",
-      default: false
-    }
+      default: false,
+    },
   },
   required: ["originator", "certificates", "assertions"],
   additionalProperties: true,
@@ -46,9 +48,9 @@ const WebAssertionSet = {
     WebAssertionSetItem,
     {
       type: "array",
-      items: WebAssertionSetItem
-    }
-  ]
+      items: WebAssertionSetItem,
+    },
+  ],
 } as const;
 
 type WebAssertionSetItem = FromSchema<typeof WebAssertionSetItem>;
