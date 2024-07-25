@@ -1,6 +1,5 @@
 import { JsonLdDocument, NodeObject } from "jsonld";
 import { ProfilesFetchFailed } from "./errors";
-import { WebAssertionSet } from "@originator-profile/model";
 
 function getEndpoints(doc: Document): string[] {
   const endpoints = [
@@ -42,7 +41,7 @@ export function getJsonLdNodeObjects(doc: Document = document): NodeObject[] {
  */
 export async function fetchWebAssertionSet(
   doc: Document,
-): Promise<WebAssertionSet | ProfilesFetchFailed> {
+): Promise<JsonLdDocument | ProfilesFetchFailed> {
   let profiles = getJsonLdNodeObjects(doc);
   try {
     const profileEndpoints = getEndpoints(doc);
@@ -73,5 +72,5 @@ export async function fetchWebAssertionSet(
   }
 
   // 現状 Web Assertion Setは実装されていないのでProfiles Setを返す
-  return profiles as WebAssertionSet;
+  return profiles as JsonLdDocument;
 }
