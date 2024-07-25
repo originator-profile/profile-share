@@ -61,7 +61,7 @@ describe("単純なscriptから取得", () => {
     const result = await fetchWebAssertionSet(
       window.document as unknown as Document,
     );
-    console.log(result)
+    console.log(result);
     expect(result).toEqual([webassertions]);
   });
 
