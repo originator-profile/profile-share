@@ -42,7 +42,7 @@ export function getJsonLdNodeObjects(doc: Document = document): NodeObject[] {
  */
 export async function fetchWebAssertionSet(
   doc: Document,
-): Promise< WebAssertionSet | ProfilesFetchFailed> {
+): Promise<WebAssertionSet | ProfilesFetchFailed> {
   let profiles = getJsonLdNodeObjects(doc);
   try {
     const profileEndpoints = getEndpoints(doc);
