@@ -245,16 +245,14 @@ describe("ad Profile Pair が存在するとき", () => {
             },
           }),
       ),
-    ),
-      server.use(
-        http.get("https://example.com/1/ps.json", () =>
-          HttpResponse.json({
-            "@context": "https://originator-profile.org/context.jsonld",
-            profiles:
-              "{Signed Document Profile または Signed Originator Profile}",
-          }),
-        ),
-      );
+      http.get("https://example.com/1/ps.json", () =>
+        HttpResponse.json({
+          "@context": "https://originator-profile.org/context.jsonld",
+          profiles:
+            "{Signed Document Profile または Signed Originator Profile}",
+        }),
+      ),
+    );
   });
 
   test("有効な ad Profile Pair と Profile Set が得られる", async () => {

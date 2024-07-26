@@ -16,7 +16,7 @@
     "@originator-profile/model": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
     "esbuild-register": "^3.5.0",
-    "eslint": "^8.56.0",
+    "eslint": "^9.7.0",
     "eslint-config-originator-profile": "workspace:*",
     "just-kebab-case": "^4.2.0",
     "markdown-link-check": "^3.12.2",

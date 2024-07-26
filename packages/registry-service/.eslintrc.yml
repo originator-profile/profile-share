@@ -1,7 +1,0 @@
-extends: originator-profile
-overrides:
-  - files: src/account.ts
-    rules:
-      "@typescript-eslint/no-unused-vars":
-        - error
-        - argsIgnorePattern: ^_
