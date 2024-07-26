@@ -76,9 +76,8 @@ const env = {
 };
 
 import { rm } from "node:fs/promises";
-// @ts-expect-error
 import copy from "esbuild-copy-static-files";
-// @ts-expect-error
+// @ts-expect-error: 型定義がない
 import webExt from "web-ext";
 import esbuild from "esbuild";
 import postcss from "./esbuild.postcss.cjs";
@@ -141,7 +140,9 @@ if (watch) {
     sourceDir: outdir,
     startUrl: args.values.url,
   });
-  await new Promise((r) => runner.registerCleanup(() => r(1)));
+  await new Promise((r) => {
+    runner.registerCleanup(() => r(1));
+  });
 } else {
   await webExt.cmd.build({
     target: args.values.target,
