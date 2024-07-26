@@ -23,3 +23,4 @@ export { OriginatorProfile } from "./originator-profile";
 export { default as Profile } from "./profile";
 export { default as Request } from "./request";
 export { default as User } from "./user";
+export { default as WebAssertionSet } from "./web-assertion-set";
