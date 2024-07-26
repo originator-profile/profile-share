@@ -1,15 +1,15 @@
-import fastify, { FastifyInstance } from "fastify";
-import FastifyVite from "@fastify/vite";
 import autoload from "@fastify/autoload";
 import cors from "@fastify/cors";
 import env from "@fastify/env";
 import helmet from "@fastify/helmet";
 import swagger, { FastifyDynamicSwaggerOptions } from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
-import httpErrorsEnhanced from "fastify-http-errors-enhanced";
+import vite from "@fastify/vite";
 import { Config, Services } from "@originator-profile/registry-service";
-import pkg from "./package.json";
+import fastify, { FastifyInstance } from "fastify";
+import httpErrorsEnhanced from "fastify-http-errors-enhanced";
 import { resolve } from "node:path";
+import pkg from "./package.json";
 
 type Options = {
   isDev: boolean;
@@ -167,20 +167,24 @@ export async function create(options: Options): Promise<Server> {
           .join(";"),
     });
   }
+
   await app.register(autoload, {
     dir: options.routes ?? resolve(__dirname, "routes"),
     routeParams: true,
     autoHooks: true,
     cascadeHooks: true,
   });
-  app.register(cors);
+
+  await app.register(cors);
+
   const viteHmr =
     app.config.NODE_ENV === "development"
       ? ["http://localhost:24678", "ws://localhost:24678"]
       : [];
   const staticServer =
     app.config.NODE_ENV === "development" ? ["http://localhost:8081"] : [];
-  app.register(helmet, {
+
+  await app.register(helmet, {
     hsts: { preload: true },
     contentSecurityPolicy: {
       directives: {
@@ -206,15 +210,13 @@ export async function create(options: Options): Promise<Server> {
 
   const REGISTRY_ROOT = resolve(require.main?.path ?? "", "..");
 
-  await app.register(FastifyVite, {
+  await app.register(vite, {
     dev: options.isDev,
     root: REGISTRY_ROOT,
     spa: true,
   });
 
-  app.after(() => {
-    app.decorate("services", Services({ config: app.config }));
-  });
+  app.decorate("services", Services({ config: app.config }));
 
   return app;
 }

@@ -1,9 +1,8 @@
-import { FastifyInstance, onRouteHookHandler } from "fastify";
 import basicAuth from "@fastify/basic-auth";
-import helmet from "@fastify/helmet";
+import { FastifyInstance, onRouteHookHandler } from "fastify";
 import { UnauthorizedError } from "http-errors-enhanced";
-import { ErrorResponse } from "../../error";
 import merge from "just-merge";
+import { ErrorResponse } from "../../error";
 
 const addErrorResponseSchema: onRouteHookHandler = async (opt) => {
   if (!opt.schema?.response) {
@@ -35,7 +34,7 @@ const addErrorResponseSchema: onRouteHookHandler = async (opt) => {
 };
 
 async function autohooks(fastify: FastifyInstance): Promise<void> {
-  fastify.register(basicAuth, {
+  await fastify.register(basicAuth, {
     authenticate: { realm: "Profile Registry" },
     async validate(id, password, request) {
       const valid = await fastify.services.admin.auth(id, password);
@@ -43,10 +42,8 @@ async function autohooks(fastify: FastifyInstance): Promise<void> {
       request.accountId = id;
     },
   });
-  fastify.after(() => fastify.addHook("onRequest", fastify.basicAuth));
-  fastify.register(helmet, {
-    hsts: { preload: true },
-  });
+
+  fastify.addHook("onRequest", fastify.basicAuth);
   fastify.addHook("onRoute", addErrorResponseSchema);
 }
 
