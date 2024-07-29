@@ -1,4 +1,4 @@
-import { JwtDpPayload, OriginatorProfile } from "@originator-profile/model";
+import { JwtOpPayload, JwtDpPayload } from "@originator-profile/model";
 import { SignedProfileValidator, TokenDecoder } from "./decode";
 import {
   ProfileGenericError,
@@ -31,6 +31,7 @@ type Token = ReturnType<typeof getToken>;
  * @param validator ペイロード確認のためのバリデーター (null: 無効)
  * @param origin 対象とするオリジン
  * @return 検証者
+ * @deprecated
  */
 
 export function ProfilesVerifier(
@@ -43,8 +44,7 @@ export function ProfilesVerifier(
   const results = new Map<Token | symbol, VerifyResult>();
   const decoder = TokenDecoder(validator);
   const opVerifier = TokenVerifier(registryKeys, registry, decoder, origin);
-  const opTokens: Array<{ op: true; payload: OriginatorProfile; jwt: string }> =
-    [];
+  const opTokens: Array<{ op: true; payload: JwtOpPayload; jwt: string }> = [];
   const dpTokens: Array<{ dp: true; payload: JwtDpPayload; jwt: string }> = [];
   const profilesFromAd =
     profiles.ad?.flatMap((pair) => [pair.op.profile, pair.dp.profile]) ?? [];
