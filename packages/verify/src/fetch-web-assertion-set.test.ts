@@ -30,9 +30,9 @@ describe("単純なscriptから取得", () => {
 
   test("有効なエンドポイント指定時 Web Assertion Set が得られる", async () => {
     const webassertions = {
-      "originator": "SD-JWT VC 形式の Originator Profile",
-      "certificates": ["SD-JWT VC の配列"],
-      "assertions": ["SD-JWT VC 形式のWeb Assertionの配列"],
+      originator: "SD-JWT VC 形式の Originator Profile",
+      certificates: ["SD-JWT VC の配列"],
+      assertions: ["SD-JWT VC 形式のWeb Assertionの配列"],
     };
     server.use(http.get(wasEndpoint, () => HttpResponse.json(webassertions)));
 
@@ -95,16 +95,16 @@ describe("異なるエンドポイントに <script> 要素が2つ以上存在�
     server.use(
       http.get("https://example.com/1/was.json", () =>
         HttpResponse.json({
-          "originator": "SD-JWT VC 形式の Originator Profile",
-          "certificates": ["SD-JWT VC の配列"],
-          "assertions": ["SD-JWT VC 形式のWeb Assertionの配列"],
+          originator: "SD-JWT VC 形式の Originator Profile",
+          certificates: ["SD-JWT VC の配列"],
+          assertions: ["SD-JWT VC 形式のWeb Assertionの配列"],
         }),
       ),
       http.get("https://example.com/2/was.json", () =>
         HttpResponse.json({
-          "originator": "SD-JWT VC 形式の Originator Profile",
-          "certificates": ["SD-JWT VC の配列"],
-          "assertions": ["SD-JWT VC 形式のWeb Assertionの配列"],
+          originator: "SD-JWT VC 形式の Originator Profile",
+          certificates: ["SD-JWT VC の配列"],
+          assertions: ["SD-JWT VC 形式のWeb Assertionの配列"],
         }),
       ),
     );
@@ -143,20 +143,20 @@ test("エンドポイントを指定しない時 空の配列が得られる", a
 
 describe("<script> 要素から Web Assertion Set を取得する", () => {
   const webassertionSet = {
-    "originator": "SD-JWT VC 形式の Originator Profile",
-    "certificates": ["SD-JWT VC の配列"],
-    "assertions": ["SD-JWT VC 形式のWeb Assertionの配列"],
+    originator: "SD-JWT VC 形式の Originator Profile",
+    certificates: ["SD-JWT VC の配列"],
+    assertions: ["SD-JWT VC 形式のWeb Assertionの配列"],
   };
 
   beforeEach(() => {
     server.use(
       http.get("https://example.com/1/was.json", () =>
         HttpResponse.json({
-          "originator": "SD-JWT VC 形式の Originator Profile",
-          "certificates": ["SD-JWT VC の配列"],
-          "assertions": [
+          originator: "SD-JWT VC 形式の Originator Profile",
+          certificates: ["SD-JWT VC の配列"],
+          assertions: [
             "SD-JWT VC 形式のWeb Assertionの配列",
-            "SD-JWT VC 形式のWeb Assertionの配列"
+            "SD-JWT VC 形式のWeb Assertionの配列",
           ],
         }),
       ),
