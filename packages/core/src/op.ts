@@ -1,4 +1,4 @@
-import { Op, JwtOpPayload, OriginatorProfile } from "@originator-profile/model";
+import { Op, JwtOpPayload } from "@originator-profile/model";
 import { opNamespace } from "./jwt-payload";
 
 /**
@@ -17,15 +17,4 @@ export function fromJwtOpPayload(payload: JwtOpPayload): Op {
     expiredAt: new Date(payload.exp * 1000).toISOString(),
     ...claims,
   } as Op;
-}
-
-/**
- * JwtOpPayload を与えると有効な Op を返す関数
- * @param payload
- * @return Op
- */
-export function fromSdJwtOpPayload(
-  payload: OriginatorProfile,
-): OriginatorProfile {
-  return payload;
 }
