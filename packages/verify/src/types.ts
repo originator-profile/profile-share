@@ -1,4 +1,4 @@
-import { Op, JwtOpPayload, Dp, JwtDpPayload, OriginatorProfile } from "@originator-profile/model";
+import { Op, JwtOpPayload, Dp, JwtDpPayload } from "@originator-profile/model";
 import { JWTVerifyResult, ResolvedKey } from "jose";
 import {
   ProfileClaimsValidationFailed,
@@ -31,7 +31,7 @@ export interface AdProfilePair {
 
 /** Profile の Token の復号結果 */
 export type DecodeResult =
-  | { op: true; payload: OriginatorProfile; jwt: string }
+  | { op: true; payload: JwtOpPayload; jwt: string }
   | { dp: true; payload: JwtDpPayload; jwt: string }
   | ProfileClaimsValidationFailed;
 
