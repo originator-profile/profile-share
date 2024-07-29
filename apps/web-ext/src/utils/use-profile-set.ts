@@ -96,7 +96,7 @@ async function fetchVerifiedProfiles([, tabId]: [
   const adTree = makeAdTree(ads);
   if (adTree) await updateAdIframe(tabId, adTree);
 
-  const registry = import.meta.env.PROFILE_ISSUER;
+  const registry = import.meta.env.PROFILE_REGISTRY_URL;
   const jwksEndpoint = new URL(
     import.meta.env.MODE === "development" &&
     registry === "http://localhost:8080/"
@@ -284,7 +284,7 @@ async function fetchVerifiedWebsiteProfilePair([, tabId]: [
   const parsed = JSON.parse(data);
   const { website } = await expandProfilePairs([parsed]);
 
-  const registry = import.meta.env.PROFILE_ISSUER;
+  const registry = import.meta.env.PROFILE_REGISTRY_URL;
   const jwksEndpoint = new URL(
     import.meta.env.MODE === "development" &&
     registry === "http://localhost:8080/"

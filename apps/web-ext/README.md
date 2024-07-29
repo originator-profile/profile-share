@@ -33,7 +33,7 @@ Step 4
 次のコマンドをターミナルで実行し、拡張機能をプレビューします。
 
 ```
-$ pnpm dev --issuer=oprexpt.originator-profile.org --url=https://originator-profile.org/
+$ pnpm dev --registry-url=https://oprexpt.originator-profile.org/ --url=https://originator-profile.org/
 ```
 
 ### ローカル環境での動作確認
@@ -44,7 +44,7 @@ $ pnpm dev --issuer=oprexpt.originator-profile.org --url=https://originator-prof
 
 ## 環境変数
 
-- `PROFILE_ISSUER`: プロファイルを発行しているレジストリ。プロファイルの署名検証時に使用する公開鍵の参照先のドメイン名。
+- `PROFILE_REGISTRY_URL`: Originator Profile を発行しているレジストリ URL。Originator Profile の署名検証時に JWT VC Issuer Metadata を参照します。
   - `pnpm dev` 時のデフォルト値: `localhost`
   - `pnpm build` 時のデフォルト値: `oprexpt.originator-profile.org`
 
@@ -53,11 +53,11 @@ $ pnpm dev --issuer=oprexpt.originator-profile.org --url=https://originator-prof
 - `pnpm build`: 拡張機能をビルドしたのち、パッケージングします。
 - `pnpm build:chromium` `pnpm build:firefox`: 拡張機能をビルドしパッケージングします。
   - `-t, --target`: 対象のランタイムを指定します。ランタイムを変更すると出力先も変更されます。
-  - `-i, --issuer`: 環境変数 `PROFILE_ISSUER` と同じです。
+  - `-r, --registry-url`: 環境変数 `PROFILE_REGISTRY_URL` と同じです。
 - `pnpm dev`: 拡張機能をブラウザーでプレビューします。
   - `-t, --target`: プレビューする対象のランタイムを指定します。
   - `-u, --url`: プレビュー開始時に表示される URL を指定します。
-  - `-i, --issuer`: 環境変数 `PROFILE_ISSUER` と同じです。
+  - `-r, --registry-url`: 環境変数 `PROFILE_REGISTRY_URL` と同じです。
 - `pnpm lint`: コードリントと fixable なリントエラーを修正します。
 - `pnpm test`: ユニットテストを実行します。
 - `pnpm e2e`: Chrome用拡張機能のe2eテストを実行します。`pnpm dev`で拡張機能をビルドした状態で実行してください。
