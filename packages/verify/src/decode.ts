@@ -1,18 +1,17 @@
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
 import { decodeJwt, JWTPayload } from "jose";
-import { JwtDpPayload, OriginatorProfile } from "@originator-profile/model";
-import { isJwtDpPayload, isSdJwtOpPayload } from "@originator-profile/core";
+import { JwtOpPayload, JwtDpPayload } from "@originator-profile/model";
+import { isJwtOpPayload, isJwtDpPayload } from "@originator-profile/core";
 import { JOSEError } from "jose/errors";
 import { ProfileClaimsValidationFailed } from "./errors";
 import { DecodeResult } from "./types";
-import { decodeSdJwt } from "./decode-sd-jwt";
 
 /** Signed Profile ペイロードの確認のためのバリデーター */
 export function SignedProfileValidator() {
   const ajv = new Ajv();
   addFormats(ajv);
-  const validateJwtOpPayload = ajv.compile(OriginatorProfile);
+  const validateJwtOpPayload = ajv.compile(JwtOpPayload);
   const validateJwtDpPayload = ajv.compile(JwtDpPayload);
   return { ajv, validateJwtOpPayload, validateJwtDpPayload };
 }
@@ -24,6 +23,7 @@ export type SignedProfileValidator = ReturnType<typeof SignedProfileValidator>;
  * Signed Profile の復号器の生成
  * @param validator ペイロード確認のためのバリデーター (null: 無効)
  * @return 復号器
+ * @deprecated
  */
 export function TokenDecoder(validator: SignedProfileValidator | null) {
   /**
@@ -34,22 +34,18 @@ export function TokenDecoder(validator: SignedProfileValidator | null) {
   function decodeToken(jwt: string): DecodeResult {
     let payload: JWTPayload;
     try {
-      if (jwt.includes("~")) {
-        payload = decodeSdJwt(jwt);
-      } else {
-        payload = decodeJwt(jwt);
-      }
+      payload = decodeJwt(jwt);
     } catch (e) {
       const error = e as JOSEError;
       return new ProfileClaimsValidationFailed(error.message, { error, jwt });
     }
     if (validator) {
-      const valid = isSdJwtOpPayload(payload)
+      const valid = isJwtOpPayload(payload)
         ? validator.validateJwtOpPayload(payload)
         : validator.validateJwtDpPayload(payload);
 
       if (!valid) {
-        const errors = isSdJwtOpPayload(payload)
+        const errors = isJwtOpPayload(payload)
           ? validator.validateJwtOpPayload.errors
           : validator.validateJwtDpPayload.errors;
 
@@ -63,7 +59,7 @@ export function TokenDecoder(validator: SignedProfileValidator | null) {
         );
       }
     }
-    if (isSdJwtOpPayload(payload)) return { op: true, payload, jwt };
+    if (isJwtOpPayload(payload)) return { op: true, payload, jwt };
     if (isJwtDpPayload(payload)) return { dp: true, payload, jwt };
     return new ProfileClaimsValidationFailed("Unknown Claims Set", {
       errors: [],
