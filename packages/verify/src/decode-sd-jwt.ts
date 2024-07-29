@@ -5,7 +5,7 @@ import { decodeJwt } from "jose";
  * @param sdJwt SD-JWT
  * @return SD-JWT の JWT のペイロード
  * **/
-export function decodeSdJwt(sdJwt: string) {
-  const jwt = sdJwt.split("~")[0];
-  return decodeJwt(jwt);
+export function decodeSdJwt(sdJwt: string): ReturnType<typeof decodeJwt> {
+  const [issuerJwt] = sdJwt.split("~");
+  return decodeJwt(issuerJwt);
 }
