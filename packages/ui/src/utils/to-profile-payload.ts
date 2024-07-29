@@ -3,8 +3,8 @@ import { VerifyResult, ProfileGenericError } from "@originator-profile/verify";
 import { JwtDpPayload } from "@originator-profile/model";
 import {
   fromJwtDpPayload,
-  fromSdJwtOpPayload,
-  isSdJwtOpPayload,
+  fromJwtOpPayload,
+  isJwtOpPayload,
 } from "@originator-profile/core";
 
 /**
@@ -17,8 +17,8 @@ export default function toProfilePayload(
 ): ProfilePayload {
   if (verifyResult instanceof ProfileGenericError) {
     const payload = verifyResult.result.payload ?? {};
-    const profile = isSdJwtOpPayload(payload)
-      ? fromSdJwtOpPayload(payload)
+    const profile = isJwtOpPayload(payload)
+      ? fromJwtOpPayload(payload)
       : fromJwtDpPayload(payload as JwtDpPayload);
     return { ...profile, error: verifyResult };
   }
