@@ -19,12 +19,14 @@ const options = /** @type {const} */ ({
       return `chromium|firefox-desktop|firefox-android (default: ${this.default})`;
     },
   },
-  issuer: {
+  ["registry-url"]: {
     type: "string",
-    short: "i",
-    default: process.env.PROFILE_ISSUER ?? "oprexpt.originator-profile.org",
+    short: "r",
+    default:
+      process.env.PROFILE_REGISTRY_URL ??
+      "https://oprexpt.originator-profile.org/",
     toString() {
-      return `<issuer> (default: ${this.default})`;
+      return `<registry-url> (default: ${this.default})`;
     },
   },
   url: {
@@ -72,7 +74,7 @@ const outdir = path.join(
 );
 const env = {
   MODE: args.values.mode,
-  PROFILE_ISSUER: args.values.issuer,
+  PROFILE_REGISTRY_URL: args.values["registry-url"],
 };
 
 import { rm } from "node:fs/promises";
