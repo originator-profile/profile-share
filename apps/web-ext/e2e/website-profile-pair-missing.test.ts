@@ -11,6 +11,9 @@ type Response = {
   body: string;
 };
 
+const profileSetEndpoint =
+  "/website/ef9d78e0-d81a-4e39-b7a0-27e15405edc7/profiles";
+
 const responseMap: Record<string, Response> = {
   "/test": {
     status: 200,
@@ -22,7 +25,7 @@ const responseMap: Record<string, Response> = {
         <meta charset="utf-8">
         <title>Title</title>
         <link
-          href="/ps.json"
+          href="${profileSetEndpoint}"
           rel="alternate"
           type="application/ld+json"
         />
@@ -103,8 +106,8 @@ async function runTest(
       return route.abort();
     }
 
-    // /ps.json へのリクエストを拒否で取得失敗を再現
-    if (url.pathname === "/ps.json" && noProfileSet) {
+    // Profile Set エンドポイントへのリクエストを拒否で取得失敗を再現
+    if (url.pathname === profileSetEndpoint && noProfileSet) {
       return route.abort();
     }
 
