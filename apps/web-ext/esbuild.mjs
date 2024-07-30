@@ -19,6 +19,11 @@ const options = /** @type {const} */ ({
       return `chromium|firefox-desktop|firefox-android (default: ${this.default})`;
     },
   },
+  issuer: {
+    type: "string",
+    short: "i",
+    default: process.env.PROFILE_ISSUER ?? "oprexpt.originator-profile.org",
+  },
   ["registry-url"]: {
     type: "string",
     short: "r",
@@ -74,6 +79,7 @@ const outdir = path.join(
 );
 const env = {
   MODE: args.values.mode,
+  PROFILE_ISSUER: args.values.issuer,
   PROFILE_REGISTRY_URL: args.values["registry-url"],
 };
 

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import useSWRImmutable from "swr/immutable";
 import { useEvent } from "react-use";
 import {
-  RemoteKeys,
+  JwtVcIssuerKeys,
   ProfilesVerifier,
   expandProfileSet,
   expandProfilePairs,
@@ -96,13 +96,13 @@ async function fetchVerifiedProfiles([, tabId]: [
   const adTree = makeAdTree(ads);
   if (adTree) await updateAdIframe(tabId, adTree);
 
-  const registry = import.meta.env.PROFILE_REGISTRY_URL;
+  const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(
     import.meta.env.MODE === "development" && registry === "localhost"
-      ? `http://localhost:8080/.well-known/jwks.json`
-      : `https://${registry}/.well-known/jwks.json`,
+      ? `http://localhost:8080/.well-known/jwt-vc-issuer`
+      : `https://${registry}/.well-known/jwt-vc-issuer`,
   );
-  const keys = RemoteKeys(jwksEndpoint);
+  const keys = JwtVcIssuerKeys(jwksEndpoint);
   const origin = topLevelResponse?.origin ?? "";
   const verify = ProfilesVerifier(
     {
@@ -283,13 +283,13 @@ async function fetchVerifiedWebsiteProfilePair([, tabId]: [
   const parsed = JSON.parse(data);
   const { website } = await expandProfilePairs([parsed]);
 
-  const registry = import.meta.env.PROFILE_REGISTRY_URL;
+  const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(
     import.meta.env.MODE === "development" && registry === "localhost"
-      ? `http://localhost:8080/.well-known/jwks.json`
-      : `https://${registry}/.well-known/jwks.json`,
+      ? `http://localhost:8080/.well-known/jwt-vc-issuer`
+      : `https://${registry}/.well-known/jwt-vc-issuer`,
   );
-  const keys = RemoteKeys(jwksEndpoint);
+  const keys = JwtVcIssuerKeys(jwksEndpoint);
 
   const verifyResults =
     (website[0] &&
