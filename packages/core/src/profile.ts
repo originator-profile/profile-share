@@ -1,4 +1,4 @@
-import { Profile, Op, Dp, OriginatorProfile } from "@originator-profile/model";
+import { Profile, Op, Dp } from "@originator-profile/model";
 
 /**
  * Profile が Op 型であるか否か
