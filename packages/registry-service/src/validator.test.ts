@@ -3,7 +3,7 @@ import { addYears, getUnixTime } from "date-fns";
 import { OriginatorProfile } from "@originator-profile/model";
 import { ValidatorService } from "./validator";
 
-test("opValidate() return OP", () => {
+test("originatorProfileValidate() return Originator Profile", () => {
   const validator = ValidatorService();
   const issuedAt = getUnixTime(new Date());
   const expiredAt = getUnixTime(addYears(new Date(), 10));
@@ -58,7 +58,7 @@ test("opValidate() return OP", () => {
     iat: issuedAt,
     exp: expiredAt,
   };
-  const valid = validator.opValidate(op);
+  const valid = validator.originatorProfileValidate(op);
   expect(valid).toEqual(op);
 });
 
