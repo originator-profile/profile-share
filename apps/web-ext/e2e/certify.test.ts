@@ -6,7 +6,7 @@ let ext: Page | undefined;
 
 test.beforeEach(async ({ context, page }) => {
   // Profile Registry にアクセス (apps/registry)
-  await page.goto("http://localhost:8080/app/debugger");
+  await page.goto("http://localhost:8080/example-profile-set");
 
   ext = await popup(context);
 });
@@ -28,7 +28,7 @@ test("拡張機能画面での認証および対象ページのマークを確�
   expect(await ext?.title()).toMatch(/コンテンツ情報/);
   expect(
     await ext
-      ?.locator(':text("この記事の発行者には信頼性情報があります")')
+      ?.locator(':text("このメインコンテンツの発行者には信頼性情報があります")')
       .count(),
   ).toEqual(1);
 
@@ -36,7 +36,7 @@ test("拡張機能画面での認証および対象ページのマークを確�
   await page.waitForSelector("iframe");
 
   // 対象Webページにマークは表示されているか
-  expect(await page.title()).toMatch(/OP登録サイト/);
+  expect(await page.title()).toMatch(/Example Profile Set/);
   expect(
     await page
       .frameLocator("iframe")

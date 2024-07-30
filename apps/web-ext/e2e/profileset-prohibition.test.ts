@@ -55,7 +55,7 @@ test("DPの検証失敗時は閲覧を禁止する", async ({ context, page }) =
     "../registry",
   );
 
-  await page.goto("http://localhost:8080/app/debugger");
+  await page.goto("http://localhost:8080/example-profile-set");
 
   ext = await popup(context);
 
@@ -83,7 +83,7 @@ test("OPの検証失敗時は閲覧を禁止する", async ({ context, page }) =
     "../registry",
   );
 
-  await page.goto("http://localhost:8080/app/debugger");
+  await page.goto("http://localhost:8080/example-profile-set");
 
   ext = await popup(context);
 
