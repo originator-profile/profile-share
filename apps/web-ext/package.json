@@ -58,8 +58,8 @@
     "build": "run-p build:*",
     "build:chromium": "node esbuild.mjs",
     "build:firefox": "node esbuild.mjs -t firefox-desktop",
-    "dev": "node esbuild.mjs --mode=development --registry-url=http://localhost:8080/",
-    "dev:firefox": "node esbuild.mjs --mode=development --registry-url=http://localhost:8080/ -t firefox-desktop",
+    "dev": "node esbuild.mjs --mode=development --issuer=localhost --registry-url=http://localhost:8080/",
+    "dev:firefox": "node esbuild.mjs --mode=development --issuer=localhost --registry-url=http://localhost:8080/ -t firefox-desktop",
     "lint": "eslint --fix .",
     "e2e": "dotenv -e ../registry/.env.development playwright test",
     "test": "vitest run"

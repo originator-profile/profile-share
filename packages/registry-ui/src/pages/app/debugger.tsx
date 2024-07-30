@@ -2,7 +2,7 @@ import { ProjectSummary } from "@originator-profile/ui";
 import {
   ProfileGenericError,
   ProfilesVerifier,
-  RemoteKeys,
+  JwtVcIssuerKeys,
   expandProfilePairs,
   expandProfileSet,
   VerifyResults,
@@ -27,7 +27,7 @@ function loadInitialValues() {
     return JSON.parse(window.atob(document.location.hash.slice(1)));
   } catch {
     return {
-      registry: new URL(document.location.origin).href,
+      registry: document.location.hostname,
       endpoint: `${document.location.origin}/ps.json`,
     };
   }
@@ -210,13 +210,13 @@ export default function Debugger() {
     if (expanded instanceof Error) return;
 
     const jwksEndpoint = new URL(
-      import.meta.env.DEV && registry === "http://localhost:8080/"
-        ? `http://localhost:8080/.well-known/jwks.json`
-        : `${registry}.well-known/jwks.json`,
+      import.meta.env.DEV && registry === "localhost"
+        ? `http://localhost:8080/.well-known/jwt-vc-issuer`
+        : `https://${registry}/.well-known/jwt-vc-issuer`,
     );
     const results = await ProfilesVerifier(
       expanded,
-      RemoteKeys(jwksEndpoint),
+      JwtVcIssuerKeys(jwksEndpoint),
       registry,
       null,
       document.location.origin,
