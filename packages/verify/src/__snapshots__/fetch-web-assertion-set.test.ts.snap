@@ -3,13 +3,13 @@
 exports[`<script> 要素から Web Assertion Set を取得する > <script> 要素 から Web Assertion Set を取得できる 1`] = `
 [
   {
-    "@context": "https://originator-profile.org/context.jsonld",
-    "main": [
-      "https://example.org",
+    "assertions": [
+      "SD-JWT VC 形式のWeb Assertionの配列",
     ],
-    "profile": [
-      "{Signed Document Profile または Signed Originator Profile}",
+    "certificates": [
+      "SD-JWT VC の配列",
     ],
+    "originator": "SD-JWT VC 形式の Originator Profile",
   },
 ]
 `;
@@ -17,22 +17,22 @@ exports[`<script> 要素から Web Assertion Set を取得する > <script> 要�
 exports[`<script> 要素から Web Assertion Set を取得する > <script> 要素 が2つ以上存在する 1`] = `
 [
   {
-    "@context": "https://originator-profile.org/context.jsonld",
-    "main": [
-      "https://example.org",
+    "assertions": [
+      "SD-JWT VC 形式のWeb Assertionの配列",
     ],
-    "profile": [
-      "{Signed Document Profile または Signed Originator Profile}",
+    "certificates": [
+      "SD-JWT VC の配列",
     ],
+    "originator": "SD-JWT VC 形式の Originator Profile",
   },
   {
-    "@context": "https://originator-profile.org/context.jsonld",
-    "main": [
-      "https://example.org",
+    "assertions": [
+      "SD-JWT VC 形式のWeb Assertionの配列",
     ],
-    "profile": [
-      "{Signed Document Profile または Signed Originator Profile}",
+    "certificates": [
+      "SD-JWT VC の配列",
     ],
+    "originator": "SD-JWT VC 形式の Originator Profile",
   },
 ]
 `;
@@ -40,12 +40,22 @@ exports[`<script> 要素から Web Assertion Set を取得する > <script> 要�
 exports[`異なるエンドポイントに <script> 要素が2つ以上存在するとき > 有効な Web Assertion Set が得られる 1`] = `
 [
   {
-    "@context": "https://originator-profile.org/context.jsonld",
-    "profiles": "{Signed Document Profile または Signed Originator Profile}",
+    "assertions": [
+      "SD-JWT VC 形式のWeb Assertionの配列",
+    ],
+    "certificates": [
+      "SD-JWT VC の配列",
+    ],
+    "originator": "SD-JWT VC 形式の Originator Profile",
   },
   {
-    "@context": "https://originator-profile.org/context.jsonld",
-    "profiles": "{別の Signed Document Profile または Signed Originator Profile}",
+    "assertions": [
+      "SD-JWT VC 形式のWeb Assertionの配列",
+    ],
+    "certificates": [
+      "SD-JWT VC の配列",
+    ],
+    "originator": "SD-JWT VC 形式の Originator Profile",
   },
 ]
 `;

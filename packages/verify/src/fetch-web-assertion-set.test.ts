@@ -10,9 +10,6 @@ import {
   expect,
 } from "vitest";
 import { Window } from "happy-dom";
-import { addYears, getUnixTime, fromUnixTime } from "date-fns";
-import { generateKey, signOp } from "@originator-profile/sign";
-import { Op } from "@originator-profile/model";
 import { ProfilesFetchFailed } from "./errors";
 import { fetchWebAssertionSet } from "./fetch-web-assertion-set";
 
@@ -32,24 +29,11 @@ describe("単純なscriptから取得", () => {
   const wasEndpoint = "https://example.com/was.json";
 
   test("有効なエンドポイント指定時 Web Assertion Set が得られる", async () => {
-    const iat = getUnixTime(new Date());
-    const exp = getUnixTime(addYears(new Date(), 10));
-    const op: Op = {
-      type: "op",
-      issuedAt: fromUnixTime(iat).toISOString(),
-      expiredAt: fromUnixTime(exp).toISOString(),
-      issuer: "example.org",
-      subject: "example.com",
-      item: [],
-    };
-    const { privateKey } = await generateKey();
-    const jwt = await signOp(op, privateKey);
     const webassertions = {
-      "@context": "https://originator-profile.org/context.jsonld",
-      main: ["example.com"],
-      profile: [jwt],
+      originator: "SD-JWT VC 形式の Originator Profile",
+      certificates: ["SD-JWT VC の配列"],
+      assertions: ["SD-JWT VC 形式のWeb Assertionの配列"],
     };
-
     server.use(http.get(wasEndpoint, () => HttpResponse.json(webassertions)));
 
     const window = new Window();
@@ -111,16 +95,16 @@ describe("異なるエンドポイントに <script> 要素が2つ以上存在�
     server.use(
       http.get("https://example.com/1/was.json", () =>
         HttpResponse.json({
-          "@context": "https://originator-profile.org/context.jsonld",
-          profiles:
-            "{Signed Document Profile または Signed Originator Profile}",
+          originator: "SD-JWT VC 形式の Originator Profile",
+          certificates: ["SD-JWT VC の配列"],
+          assertions: ["SD-JWT VC 形式のWeb Assertionの配列"],
         }),
       ),
       http.get("https://example.com/2/was.json", () =>
         HttpResponse.json({
-          "@context": "https://originator-profile.org/context.jsonld",
-          profiles:
-            "{別の Signed Document Profile または Signed Originator Profile}",
+          originator: "SD-JWT VC 形式の Originator Profile",
+          certificates: ["SD-JWT VC の配列"],
+          assertions: ["SD-JWT VC 形式のWeb Assertionの配列"],
         }),
       ),
     );
@@ -159,20 +143,20 @@ test("エンドポイントを指定しない時 空の配列が得られる", a
 
 describe("<script> 要素から Web Assertion Set を取得する", () => {
   const webassertionSet = {
-    "@context": "https://originator-profile.org/context.jsonld",
-    main: ["https://example.org"],
-    profile: ["{Signed Document Profile または Signed Originator Profile}"],
+    originator: "SD-JWT VC 形式の Originator Profile",
+    certificates: ["SD-JWT VC の配列"],
+    assertions: ["SD-JWT VC 形式のWeb Assertionの配列"],
   };
 
   beforeEach(() => {
     server.use(
       http.get("https://example.com/1/was.json", () =>
         HttpResponse.json({
-          "@context": "https://originator-profile.org/context.jsonld",
-          main: ["https://example.com"],
-          profile: [
-            "{Signed Document Profile または Signed Originator Profile}",
-            "{Signed Document Profile または Signed Originator Profile}",
+          originator: "SD-JWT VC 形式の Originator Profile",
+          certificates: ["SD-JWT VC の配列"],
+          assertions: [
+            "SD-JWT VC 形式のWeb Assertionの配列",
+            "SD-JWT VC 形式のWeb Assertionの配列",
           ],
         }),
       ),
