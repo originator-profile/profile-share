@@ -5,7 +5,7 @@ import {
   OpMetadata,
   DpMetadata,
 } from "../types";
-import { isDp, isSdJwtOp } from "@originator-profile/core";
+import { isDp, isOp } from "@originator-profile/core";
 import { ProfileGenericError } from "@originator-profile/verify";
 import { Profile, DocumentProfile, OriginatorProfile } from "./profile";
 
@@ -64,23 +64,23 @@ export class ProfileSet {
   ) {
     const profileSet = new ProfileSet(
       profiles.map(({ profile, metadata }) => {
-        if (isSdJwtOp(profile)) {
-          return OriginatorProfile.deserialize(profile, metadata as OpMetadata);
-        } else {
+        if (isDp(profile)) {
           return DocumentProfile.deserialize(profile, metadata as DpMetadata);
+        } else {
+          return OriginatorProfile.deserialize(profile, metadata as OpMetadata);
         }
       }),
     );
     if (websiteProfiles) {
       profileSet.setWebsiteProfiles(
         websiteProfiles.map(({ profile, metadata }) => {
-          if (isSdJwtOp(profile)) {
+          if (isDp(profile)) {
+            return DocumentProfile.deserialize(profile, metadata as DpMetadata);
+          } else {
             return OriginatorProfile.deserialize(
               profile,
               metadata as OpMetadata,
             );
-          } else {
-            return DocumentProfile.deserialize(profile, metadata as DpMetadata);
           }
         }),
       );
@@ -323,7 +323,7 @@ export class ProfileFactory {
     profile: ProfilePayload,
     info?: { frameIds: number[]; origins: string[] },
   ) {
-    if (isSdJwtOp(profile)) {
+    if (isOp(profile)) {
       return OriginatorProfile.initializeWithFactory(
         profile,
         this.advertiserOpIds,
