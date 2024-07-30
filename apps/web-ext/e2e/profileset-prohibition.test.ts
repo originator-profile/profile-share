@@ -35,7 +35,7 @@ test.afterEach(async ({ page }, testInfo) => {
   }
   if (testInfo.title === "OPの検証失敗時は閲覧を禁止する") {
     executeCommand(
-      "bin/dev cert:issue -i account-key.example.priv.json --issuer localhost --holder localhost",
+      "bin/dev cert:issue -i account-key.example.priv.json --issuer localhost --holder localhost --format jwt",
       "../registry",
     );
   }
@@ -79,7 +79,7 @@ test("OPの検証失敗時は閲覧を禁止する", async ({ context, page }) =
     `bin/dev cert:issue -i ${path.join(
       tempDir,
       "evil.priv.json",
-    )} --issuer localhost --holder localhost`,
+    )} --issuer localhost --holder localhost --format jwt`,
     "../registry",
   );
 
