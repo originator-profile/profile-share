@@ -2,7 +2,6 @@ import { test, expect } from "vitest";
 import { addYears, getUnixTime } from "date-fns";
 import { OriginatorProfile } from "@originator-profile/model";
 import { OriginatorProfileDecoder } from "./decode-originator-profile";
-import { LocalKeys } from "./keys";
 import { signSdJwtOp, generateKey } from "@originator-profile/sign";
 
 const iat = getUnixTime(new Date());
