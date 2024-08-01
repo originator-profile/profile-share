@@ -1,5 +1,6 @@
 import { FromSchema } from "json-schema-to-ts";
 
+/** @deprecated */
 const DpProof = {
   title: "Proof",
   description: "対象のテキストへの署名",
@@ -14,6 +15,7 @@ const DpProof = {
   additionalProperties: false,
 } as const;
 
+/** @deprecated */
 type DpProof = FromSchema<typeof DpProof>;
 
 export default DpProof;
