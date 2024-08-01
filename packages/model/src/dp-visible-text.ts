@@ -3,6 +3,7 @@ import DpUrl from "./dp-url";
 import DpLocation from "./dp-location";
 import DpProof from "./dp-proof";
 
+/** @deprecated */
 const DpVisibleText = {
   title: "Document Profile Visible Text",
   description:
@@ -18,6 +19,7 @@ const DpVisibleText = {
   additionalProperties: false,
 } as const;
 
+/** @deprecated */
 type DpVisibleText = FromSchema<typeof DpVisibleText>;
 
 export default DpVisibleText;

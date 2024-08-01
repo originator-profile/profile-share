@@ -1,5 +1,6 @@
 import { FromSchema } from "json-schema-to-ts";
 
+/** @deprecated */
 const DpAllowedOrigins = {
   title: "Allowed Origins",
   description: "利用可能なオリジンのリスト",
@@ -11,6 +12,7 @@ const DpAllowedOrigins = {
   },
 } as const;
 
+/** @deprecated */
 type DpAllowedOrigins = FromSchema<typeof DpAllowedOrigins>;
 
 export default DpAllowedOrigins;
