@@ -1,6 +1,6 @@
 import { FromSchema } from "json-schema-to-ts";
 
-const contentMetadataSchema = {
+const contentMetadata = {
   $schema: "https://json-schema.org/draft/2020-12/schema",
   title: "Content Metadata",
   type: "object",
@@ -175,7 +175,7 @@ const contentMetadataSchema = {
   allOf: [{ $ref: "#/$defs/assertion" }, { $ref: "#/$defs/content" }]
 } as const;
 
-type ContentMetadata = FromSchema<typeof contentMetadataSchema>;
+type ContentMetadata = FromSchema<typeof contentMetadata>;
 
-export default contentMetadataSchema;
+export default contentMetadata;
 export type { ContentMetadata };
