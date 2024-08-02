@@ -15,32 +15,30 @@ const webAssertion = {
       title: "JWT Issuer",
       type: "string",
       format: "uri",
-      description: "[RFC7519#section-4.1.1](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.1)"
+      description:
+        "[RFC7519#section-4.1.1](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.1)",
     },
     sub: {
       title: "JWT Subject",
       type: "string",
       format: "hostname",
-      description: "[RFC7519#section-4.1.2](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.2)"
+      description:
+        "[RFC7519#section-4.1.2](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.2)",
     },
     iat: {
       title: "JWT Issued At",
       type: "number",
-      description: "[RFC7519#section-4.1.6](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.6)"
+      description:
+        "[RFC7519#section-4.1.6](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.6)",
     },
     exp: {
       title: "JWT Expiration Time",
       type: "number",
-      description: "[RFC7519#section-4.1.4](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.4)"
-    }
+      description:
+        "[RFC7519#section-4.1.4](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.4)",
+    },
   },
-  required: [
-    "vct#integrity",
-    "iss",
-    "sub",
-    "iat",
-    "exp",
-  ],
+  required: ["vct#integrity", "iss", "sub", "iat", "exp"],
 } as const;
 
 type WebAssertion = FromSchema<typeof webAssertion>;
