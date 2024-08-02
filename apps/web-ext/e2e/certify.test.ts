@@ -5,7 +5,7 @@ test.describe.configure({ mode: "serial" });
 let ext: Page | undefined;
 
 test.beforeEach(async ({ context, page }) => {
-  // Profile Registry にアクセス (apps/registry)
+  // モック Profile Set 配信 HTML ページにアクセス (apps/registry)
   await page.goto("http://localhost:8080/example-profile-set");
 
   ext = await popup(context);
