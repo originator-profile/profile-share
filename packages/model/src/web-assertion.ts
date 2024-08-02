@@ -1,13 +1,13 @@
 import { FromSchema } from "json-schema-to-ts";
-import contentMetadataSchema from "./content-metadata";
+import contentMetadata from "./content-metadata";
 
-const webAssertionSchema = {
+const webAssertion = {
   $schema: "https://json-schema.org/draft/2020-12/schema",
   title: "Web Assertion",
   type: "object",
   additionalProperties: true,
   properties: {
-    ...contentMetadataSchema.properties,
+    ...contentMetadata.properties,
     "vct#integrity": {
       type: "string",
     },
@@ -43,7 +43,7 @@ const webAssertionSchema = {
   ],
 } as const;
 
-type WebAssertion = FromSchema<typeof webAssertionSchema>;
+type WebAssertion = FromSchema<typeof webAssertion>;
 
-export default webAssertionSchema;
+export default webAssertion;
 export type { WebAssertion };
