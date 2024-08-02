@@ -91,7 +91,7 @@ async function issueDp(
     );
     await services.publisher.registerDp(issuerUuid, dpJwt);
     if (input.id === exampleWebsite.id) {
-      // Profile Set Debugger の SDP
+      // Debugger の SDP
       console.log(`Document Profile: ${dpJwt}`);
     }
   }

@@ -2,80 +2,61 @@ import { ProjectSummary } from "@originator-profile/ui";
 import {
   ProfileGenericError,
   ProfilesVerifier,
+  OriginatorProfileDecoder,
+  OriginatorProfileVerifier,
   JwtVcIssuerKeys,
-  expandProfilePairs,
-  expandProfileSet,
   VerifyResults,
   VerifyResult,
 } from "@originator-profile/verify";
-import clsx from "clsx";
 import { Fragment, useState, type ChangeEvent, type FormEvent } from "react";
-import FormRow from "../../components/FormRow";
+import {
+  DebugTargetSelectField,
+  DebugTargetValue,
+  DirectInputField,
+  EndpointInputField,
+  PresentationTypeInputField,
+  PresentationTypeValue,
+  RegistryInputField,
+  ResultText,
+  expand,
+} from "../../components/debugger";
 
 type InitialValues = {
+  debugTarget: DebugTargetValue;
   registry: string;
   endpoint: string;
-  profileSet?: unknown;
+  source?: unknown;
 };
 
-function saveInitialValues(val: InitialValues) {
-  window.history.replaceState(null, "", `#${window.btoa(JSON.stringify(val))}`);
-}
+type VerifyResultOriginatorProfile = Awaited<
+  ReturnType<OriginatorProfileVerifier>
+>;
 
-function loadInitialValues() {
+function loadInitialValues(): InitialValues {
   try {
     return JSON.parse(window.atob(document.location.hash.slice(1)));
   } catch {
     return {
+      debugTarget: "SD-JWT OP",
       registry: document.location.hostname,
-      endpoint: `${document.location.origin}/ps.json`,
+      endpoint: `${document.location.origin}/website/ef9d78e0-d81a-4e39-b7a0-27e15405edc7/profiles`,
     };
   }
 }
 
-const initialValues = loadInitialValues();
-
-function EndpointInputField({ hidden }: { hidden: boolean }) {
-  const helpText =
-    "Profile Set を取得するエンドポイントです。URL ではない場合、ドメイン名とみなして https スキームと連結します。URL パスを含まない場合、サイトプロファイル Well-known URL パスと連結します。";
-  return (
-    <FormRow
-      className={clsx({ hidden })}
-      label="Endpoint"
-      htmlFor="endpoint"
-      helpText={helpText}
-    >
-      <input
-        id="endpoint"
-        className="jumpu-input flex-1"
-        name="endpoint"
-        defaultValue={initialValues.endpoint}
-        hidden={hidden}
-      />
-    </FormRow>
-  );
+function saveInitialValues(
+  input: InitialValues | ((oldVal: InitialValues) => InitialValues),
+) {
+  let val: InitialValues;
+  if (typeof input === "function") {
+    val = input(loadInitialValues());
+  } else {
+    val = input;
+  }
+  window.history.replaceState(null, "", `#${window.btoa(JSON.stringify(val))}`);
 }
 
-function DirectInputField({ hidden }: { hidden: boolean }) {
-  return (
-    <FormRow className={clsx({ hidden })} label="Profile Set" htmlFor="jsonld">
-      <textarea
-        id="jsonld"
-        className="jumpu-textarea resize flex-1"
-        name="jsonld"
-        cols={12}
-        rows={18}
-        style={{ fontFamily: "monospace" }}
-        defaultValue={
-          initialValues.profileSet
-            ? JSON.stringify(initialValues.profileSet)
-            : ""
-        }
-        hidden={hidden}
-      />
-    </FormRow>
-  );
-}
+const initialValues: InitialValues = loadInitialValues();
 
 /** URL としてパースできないケースや URL path が "" や "/" のケースでの変換処理 */
 function transformEndpoint(endpoint: string): string {
@@ -92,7 +73,7 @@ function transformEndpoint(endpoint: string): string {
   return endpoint;
 }
 
-function Result({ value }: { value: VerifyResult }) {
+function ResultFragment({ value }: { value: VerifyResult }) {
   if (value instanceof ProfileGenericError) {
     return (
       <>
@@ -101,201 +82,210 @@ function Result({ value }: { value: VerifyResult }) {
         </p>
         <p>{value.code}</p>
         <p>{value.message}</p>
-        <pre className="jumpu-card block text-sm font-mono bg-gray-50 px-3 py-2 overflow-auto">
+        <ResultText>
           {JSON.stringify(value.result.payload, null, "  ")}
-        </pre>
-        <pre className="jumpu-card block text-sm font-mono bg-gray-50 px-3 py-2 overflow-auto">
-          {value.result.jwt}
-        </pre>
+        </ResultText>
+        <ResultText>{value.result.jwt}</ResultText>
         {"error" in value.result && (
-          <pre className="jumpu-card block text-sm font-mono bg-gray-50 px-3 py-2 overflow-auto">
+          <ResultText>
             {JSON.stringify(value.result.error, null, "  ")}
-          </pre>
+          </ResultText>
         )}
       </>
     );
   } else if ("op" in value) {
-    return (
-      <pre className="jumpu-card block text-sm font-mono bg-gray-50 px-3 py-2 overflow-auto">
-        {JSON.stringify(value, null, "  ")}
-      </pre>
-    );
+    return <ResultText>{JSON.stringify(value, null, "  ")}</ResultText>;
   } else if ("dp" in value) {
-    return (
-      <pre className="jumpu-card block text-sm font-mono bg-gray-50 px-3 py-2 overflow-auto">
-        {JSON.stringify(value, null, "  ")}
-      </pre>
-    );
+    return <ResultText>{JSON.stringify(value, null, "  ")}</ResultText>;
   }
 }
 
-function ErrorResult({ value }: { value: VerifyResults }) {
+function Result({
+  value,
+}: {
+  value: VerifyResults | VerifyResultOriginatorProfile;
+}) {
+  if (!Array.isArray(value))
+    return <ResultText>{JSON.stringify(value, null, "  ")}</ResultText>;
   return (
     <>
-      {(value as VerifyResults).map((value) => (
-        <Result
-          value={value}
-          key={"result" in value ? value.result.jwt : value.jwt}
-        />
-      ))}
+      {value.map((value) => {
+        return (
+          <ResultFragment
+            value={value}
+            key={"result" in value ? value.result.jwt : value.jwt}
+          />
+        );
+      })}
     </>
   );
 }
 
 export default function Debugger() {
   const [values, setValues] = useState<Record<string, unknown>>({});
-  const [results, setResults] = useState<VerifyResults>([]);
-  const [presentation, setPresentation] = useState(
-    "profileSet" in initialValues ? "direct" : "url",
-  );
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
-    setPresentation(event.target.value);
+  const [result, setResult] = useState<
+    VerifyResults | VerifyResultOriginatorProfile | null
+  >(null);
+  const [presentationType, setPresentationType] =
+    useState<PresentationTypeValue>(
+      "source" in initialValues ? "direct" : "url",
+    );
+  const handleChangePresentationType = (event: ChangeEvent<HTMLInputElement>) =>
+    setPresentationType(event.target.value as PresentationTypeValue);
 
-  async function onSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const formData = new FormData(e.currentTarget);
-    const registry = String(formData.get("registry"));
-    const endpoint = transformEndpoint(String(formData.get("endpoint")));
-    const jsonld = String(formData.get("jsonld"));
-
-    let profileSet;
-
-    switch (presentation) {
+  async function prepareSource({
+    directInput,
+    registry,
+    endpoint,
+  }: {
+    directInput: string;
+    registry: string;
+    endpoint: string;
+  }): Promise<unknown> {
+    switch (presentationType) {
       case "direct": {
+        let source: unknown;
         try {
-          profileSet = JSON.parse(jsonld);
+          source = JSON.parse(directInput);
         } catch {
-          profileSet = jsonld;
+          source = directInput;
         }
-        setValues({ registry, profileSet });
-        saveInitialValues({ registry, endpoint, profileSet });
-        break;
+        setValues({ registry, source });
+        saveInitialValues((val) => ({ ...val, source }));
+        return source;
       }
       case "url": {
         setValues({ registry, endpoint });
-        saveInitialValues({ registry, endpoint });
 
         const response = await fetch(endpoint)
           .then((res) =>
             res.ok ? res.json() : new Error(`${res.status} ${res.statusText}`),
           )
           .catch((e: Error) => e);
-        setValues((values) => ({ ...values, response }));
-        if (response instanceof Error) return;
+        setValues({ registry, endpoint, response });
+        return response;
+      }
+    }
+  }
 
-        profileSet = response;
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setResult(null);
+
+    const formData = new FormData(e.currentTarget);
+    const debugTarget =
+      (formData.get("debugTarget") as DebugTargetValue) ?? "SD-JWT OP";
+    const registry = String(formData.get("registry"));
+    const endpoint = transformEndpoint(String(formData.get("endpoint")));
+    const directInput = String(formData.get("directInput"));
+
+    saveInitialValues({ debugTarget, registry, endpoint });
+
+    /* 検証ソース */
+    const source = await prepareSource({ directInput, registry, endpoint });
+    if (source instanceof Error) return;
+
+    const issuer =
+      import.meta.env.DEV && registry === "localhost"
+        ? "http://localhost:8080/"
+        : `https://${registry}/`;
+    const jwtVcIssuerMetadata = new URL(`${issuer}.well-known/jwt-vc-issuer`);
+    const issuerKey = JwtVcIssuerKeys(jwtVcIssuerMetadata);
+
+    setValues((values) => ({
+      ...values,
+      ["JWT VC Issuer Metadata Endpoint"]: jwtVcIssuerMetadata.href,
+    }));
+
+    switch (debugTarget) {
+      case "SD-JWT OP": {
+        const result = await OriginatorProfileVerifier(
+          issuerKey,
+          issuer,
+          OriginatorProfileDecoder(null),
+        )(String(source));
+        setResult(result);
+        break;
+      }
+      case "Profile Set": {
+        const expanded = await expand(source);
+        setValues((values) => ({ ...values, expanded }));
+        if (expanded instanceof Error) return;
+        const result = await ProfilesVerifier(
+          expanded,
+          issuerKey,
+          registry,
+          null,
+          document.location.origin,
+        )();
+        setResult(result);
         break;
       }
     }
-
-    const pp = await expandProfilePairs(profileSet).catch((e) => e);
-    const isAdPp = pp.ad?.length > 0;
-    const isSitePp = pp.website?.length > 0;
-    const expanded = await expandProfileSet(
-      isAdPp
-        ? {
-            ...profileSet,
-            profile: [pp.ad[0].op.profile, pp.ad[0].dp.profile],
-          }
-        : isSitePp
-          ? {
-              ...profileSet,
-              profile: [pp.website[0].op.profile, pp.website[0].dp.profile],
-            }
-          : profileSet,
-    ).catch((e) => e);
-
-    setValues((values) => ({ ...values, expanded }));
-    if (expanded instanceof Error) return;
-
-    const jwksEndpoint = new URL(
-      import.meta.env.DEV && registry === "localhost"
-        ? `http://localhost:8080/.well-known/jwt-vc-issuer`
-        : `https://${registry}/.well-known/jwt-vc-issuer`,
-    );
-    const results = await ProfilesVerifier(
-      expanded,
-      JwtVcIssuerKeys(jwksEndpoint),
-      registry,
-      null,
-      document.location.origin,
-    )();
-    setResults(results);
   }
+
   return (
     <article className="max-w-3xl px-4 pt-12 pb-8 space-y-8 mx-auto">
-      <h1 className="text-4xl font-bold">Profile Set Debugger</h1>
-      <link href="/ps.json" rel="alternate" type="application/ld+json" />
+      <h1 className="text-4xl font-bold">Debugger</h1>
       <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-        <FormRow label="Registry" htmlFor="registry">
-          <input
-            id="registry"
-            className="jumpu-input flex-1"
-            name="registry"
-            required
-            defaultValue={initialValues.registry}
-          />
-        </FormRow>
-
-        <FormRow label="Profile Set Presentation">
-          <div className="flex gap-1 items-center">
-            <label className="flex items-center py-1">
-              <input
-                id="presentation-url"
-                name="presentation"
-                type="radio"
-                value="url"
-                checked={presentation === "url"}
-                onChange={handleChange}
-              />
-              URL
-            </label>
-            <label className="flex items-center py-1">
-              <input
-                id="presentation-direct"
-                name="presentation"
-                type="radio"
-                value="direct"
-                checked={presentation === "direct"}
-                onChange={handleChange}
-              />
-              Direct Input
-            </label>
-          </div>
-        </FormRow>
-
-        <EndpointInputField hidden={presentation !== "url"} />
-
-        <DirectInputField hidden={presentation !== "direct"} />
+        <DebugTargetSelectField
+          name="debugTarget"
+          defaultValue={initialValues.debugTarget}
+        />
+        <RegistryInputField
+          id="registry"
+          name="registry"
+          defaultValue={initialValues.registry}
+        />
+        <PresentationTypeInputField
+          value={presentationType}
+          name="presentationType"
+          onChange={handleChangePresentationType}
+        />
+        <EndpointInputField
+          hidden={presentationType !== "url"}
+          id="endpoint"
+          name="endpoint"
+          defaultValue={initialValues.endpoint}
+        />
+        <DirectInputField
+          hidden={presentationType !== "direct"}
+          id="directInput"
+          name="directInput"
+          defaultValue={initialValues.source}
+        />
 
         <input className="jumpu-button" type="submit" value="Verify" />
       </form>
       {Object.entries(values).length > 0 && (
-        <section className="[&>:first-child]:mb-4">
-          <h2 className="text-2xl font-bold">Result</h2>
+        <section>
+          <h2 className="text-2xl font-bold mb-2">Result</h2>
           <dl>
             {[...Object.entries(values)].map(
               ([key, value]: [string, unknown]) => (
                 <Fragment key={key}>
-                  <dt className="text-sm font-bold mb-2">{key}</dt>
-                  <dd className="ml-4 mb-6">
-                    <pre className="jumpu-card block text-sm font-mono bg-gray-50 px-3 py-2 overflow-auto">
+                  <dt className="text-sm font-bold -mx-2 p-2 capitalize sticky top-0 bg-white">
+                    {key}
+                  </dt>
+                  <dd className="ml-4 mb-4">
+                    <ResultText>
                       {typeof value === "string" || value instanceof Error
                         ? String(value)
                         : JSON.stringify(value, null, "  ")}
-                    </pre>
+                    </ResultText>
                   </dd>
                 </Fragment>
               ),
             )}
-            {results.length > 0 && (
-              <Fragment>
-                <dt className="text-sm font-bold mb-2">Results</dt>
-                <dd className="ml-4 mb-6">
-                  <ErrorResult value={results} />
+            {result && (
+              <>
+                <dt className="text-sm font-bold -mx-2 p-2 sticky top-0 bg-white">
+                  Verification Result
+                </dt>
+                <dd className="ml-4 mb-4 space-y-4">
+                  <Result value={result} />
                 </dd>
-              </Fragment>
+              </>
             )}
           </dl>
         </section>
