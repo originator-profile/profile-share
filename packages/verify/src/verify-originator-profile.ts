@@ -1,5 +1,6 @@
-import { jwtVerify } from "jose";
+import { jwtVerify, JWTVerifyResult } from "jose";
 import { JOSEError } from "jose/errors";
+import { OriginatorProfile } from "@originator-profile/model";
 import { Keys } from "./keys";
 import { OriginatorProfileDecoder } from "./decode-originator-profile";
 
@@ -14,13 +15,15 @@ export function OriginatorProfileVerifier(
   keys: Keys,
   issuer: string,
   decoder: OriginatorProfileDecoder,
-): (sdJwt: string) => unknown {
+): (
+  sdJwt: string,
+) => Promise<(JWTVerifyResult & { payload: OriginatorProfile }) | Error> {
   /**
    * Originator Profile の検証
    * @param sdJwt SD-JWT
    * @return 検証結果
    */
-  async function verify(sdJwt: string): Promise<unknown> {
+  async function verify(sdJwt: string) {
     const [issuerJwt] = sdJwt.split("~");
     const decoded = decoder(issuerJwt);
     if (decoded instanceof Error) return decoded;

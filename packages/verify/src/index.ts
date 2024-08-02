@@ -1,4 +1,5 @@
 export * from "./decode";
+export * from "./decode-originator-profile";
 export * from "./decode-sd-jwt";
 export * from "./errors";
 export * from "./expand-profile-set";
@@ -9,5 +10,6 @@ export * from "./keys";
 export * from "./types";
 export * from "./validate-certification-system";
 export * from "./verify-body";
+export * from "./verify-originator-profile";
 export * from "./verify-profiles";
 export * from "./verify-token";
