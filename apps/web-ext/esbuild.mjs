@@ -23,6 +23,9 @@ const options = /** @type {const} */ ({
     type: "string",
     short: "i",
     default: process.env.PROFILE_ISSUER ?? "oprexpt.originator-profile.org",
+    toString() {
+      return `<issuer> (default: ${this.default})`;
+    },
   },
   ["registry-url"]: {
     type: "string",
