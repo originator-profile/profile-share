@@ -2,6 +2,7 @@
 import util from "node:util";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import chokidar from "chokidar";
 
 const options = /** @type {const} */ ({
   mode: {
@@ -135,6 +136,21 @@ if (watch) {
   const ctx = await esbuild.context(buildOptions);
   await ctx.watch();
   console.log("watching...");
+  const watcher = chokidar.watch("./public");
+  watcher
+    .on("add", (path) => {
+      console.log(`File ${path} has been added`);
+      ctx.rebuild();
+    })
+    .on("change", (path) => {
+      console.log(`File ${path} has been changed`);
+      ctx.rebuild();
+    })
+    .on("unlink", (path) => {
+      console.log(`File ${path} has been removed`);
+      ctx.rebuild();
+    });
+
   const runner = await webExt.cmd.run({
     target: args.values.target,
     sourceDir: outdir,

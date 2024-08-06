@@ -16,6 +16,7 @@ const base = {
     48: "icons/48x48.png",
     128: "icons/128x128.png",
   },
+  default_locale: "en",
   action: {},
   content_scripts: [
     {
