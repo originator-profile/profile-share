@@ -26,6 +26,12 @@ export class CertIssue extends Command {
       description:
         "この日時に既に失効している資格情報を含めない。デフォルトは issued-at と同じ日時。",
     }),
+    format: Flags.string({
+      summary: "データ形式",
+      char: "f",
+      options: ["sd-jwt", "jwt"],
+      default: "sd-jwt",
+    }),
   };
 
   async run(): Promise<void> {
@@ -40,17 +46,30 @@ export class CertIssue extends Command {
     const expiredAt = flags["expired-at"] ?? addYears(new Date(), 1);
     const validAt = flags["valid-at"] ? new Date(flags["valid-at"]) : issuedAt;
 
-    const jwt = await services.certificate.signOp(
-      flags.issuer,
-      flags.holder,
-      jwk,
-      { issuedAt, expiredAt, validAt },
-    );
+    if (flags.format === "sd-jwt") {
+      const sdJwt = await services.certificate.signOriginatorProfile(
+        flags.issuer,
+        flags.holder,
+        jwk,
+        { issuedAt, expiredAt, validAt },
+      );
 
-    const opId = await services.certificate.issue(flags.issuer, jwt);
+      this.log(sdJwt);
+    }
 
-    await services.account.publishProfile(flags.holder, opId);
+    if (flags.format === "jwt") {
+      const jwt = await services.certificate.signOp(
+        flags.issuer,
+        flags.holder,
+        jwk,
+        { issuedAt, expiredAt, validAt },
+      );
 
-    this.log("Published.");
+      const opId = await services.certificate.issue(flags.issuer, jwt);
+
+      await services.account.publishProfile(flags.holder, opId);
+
+      this.log("Published.");
+    }
   }
 }

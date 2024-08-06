@@ -5,8 +5,8 @@ test.describe.configure({ mode: "serial" });
 let ext: Page | undefined;
 
 test.beforeEach(async ({ context, page }) => {
-  // Profile Registry にアクセス (apps/registry)
-  await page.goto("http://localhost:8080/app/debugger");
+  // モック Profile Set 配信 HTML ページにアクセス (apps/registry)
+  await page.goto("http://localhost:8080/example-profile-set");
 
   ext = await popup(context);
 });
@@ -16,10 +16,7 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-拡張機能.png` });
 });
 
-// TODO: 拡張機能での SD-JWT OP の検証の実装ができたら .skip 外して
-test.skip("拡張機能画面での認証および対象ページのマークを確認", async ({
-  page,
-}) => {
+test("拡張機能画面での認証および対象ページのマークを確認", async ({ page }) => {
   const holderNamePattern = /Originator Profile 技術研究組合/;
 
   // 記事発行者の名前を持つ要素が存在するか確認
@@ -31,7 +28,7 @@ test.skip("拡張機能画面での認証および対象ページのマークを
   expect(await ext?.title()).toMatch(/コンテンツ情報/);
   expect(
     await ext
-      ?.locator(':text("この記事の発行者には信頼性情報があります")')
+      ?.locator(':text("このメインコンテンツの発行者には信頼性情報があります")')
       .count(),
   ).toEqual(1);
 
@@ -39,7 +36,7 @@ test.skip("拡張機能画面での認証および対象ページのマークを
   await page.waitForSelector("iframe");
 
   // 対象Webページにマークは表示されているか
-  expect(await page.title()).toMatch(/OP登録サイト/);
+  expect(await page.title()).toMatch(/Example Profile Set/);
   expect(
     await page
       .frameLocator("iframe")

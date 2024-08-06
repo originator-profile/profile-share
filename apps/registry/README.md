@@ -417,9 +417,11 @@ OP の発行
 ```
 USAGE
   $ profile-registry cert:issue -i <value> --issuer <value> --holder <value> [--issued-at <value>] [--expired-at
-    <value>] [--valid-at <value>]
+    <value>] [--valid-at <value>] [-f sd-jwt|jwt]
 
 FLAGS
+  -f, --format=<option>     [default: sd-jwt] データ形式
+                            <options: sd-jwt|jwt>
   -i, --identity=<value>    (required) プライベート鍵のファイルパス
       --expired-at=<value>  有効期限 (ISO 8601)
       --holder=<value>      (required) 所有者となる会員 ID またはドメイン名

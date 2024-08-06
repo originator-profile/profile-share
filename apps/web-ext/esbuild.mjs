@@ -27,6 +27,16 @@ const options = /** @type {const} */ ({
       return `<issuer> (default: ${this.default})`;
     },
   },
+  ["registry-url"]: {
+    type: "string",
+    short: "r",
+    default:
+      process.env.PROFILE_REGISTRY_URL ??
+      "https://oprexpt.originator-profile.org/",
+    toString() {
+      return `<registry-url> (default: ${this.default})`;
+    },
+  },
   url: {
     type: "string",
     short: "u",
@@ -73,6 +83,7 @@ const outdir = path.join(
 const env = {
   MODE: args.values.mode,
   PROFILE_ISSUER: args.values.issuer,
+  PROFILE_REGISTRY_URL: args.values["registry-url"],
 };
 
 import { rm } from "node:fs/promises";

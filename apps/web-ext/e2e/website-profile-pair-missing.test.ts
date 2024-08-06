@@ -11,6 +11,9 @@ type Response = {
   body: string;
 };
 
+const profileSetEndpoint =
+  "/website/ef9d78e0-d81a-4e39-b7a0-27e15405edc7/profiles";
+
 const responseMap: Record<string, Response> = {
   "/test": {
     status: 200,
@@ -22,7 +25,7 @@ const responseMap: Record<string, Response> = {
         <meta charset="utf-8">
         <title>Title</title>
         <link
-          href="/ps.json"
+          href="${profileSetEndpoint}"
           rel="alternate"
           type="application/ld+json"
         />
@@ -103,8 +106,8 @@ async function runTest(
       return route.abort();
     }
 
-    // /ps.json へのリクエストを拒否で取得失敗を再現
-    if (url.pathname === "/ps.json" && noProfileSet) {
+    // Profile Set エンドポイントへのリクエストを拒否で取得失敗を再現
+    if (url.pathname === profileSetEndpoint && noProfileSet) {
       return route.abort();
     }
 
@@ -130,11 +133,7 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-web-ext.png` });
 });
 
-// TODO: 拡張機能での SD-JWT OP の検証の実装ができたら .skip 外して
-test.skip("pp.json取得成功(エンドポイントなし)の確認", async ({
-  context,
-  page,
-}) => {
+test("pp.json取得成功(エンドポイントなし)の確認", async ({ context, page }) => {
   const noProfilePair = false;
   await runTest(
     context,
@@ -147,11 +146,7 @@ test.skip("pp.json取得成功(エンドポイントなし)の確認", async ({
   await checkSiteProfileWithoutOtherProfiles();
 });
 
-// TODO: 拡張機能での SD-JWT OP の検証の実装ができたら .skip 外して
-test.skip("pp.json取得失敗(エンドポイントなし)の確認", async ({
-  context,
-  page,
-}) => {
+test("pp.json取得失敗(エンドポイントなし)の確認", async ({ context, page }) => {
   const noProfilePair = true;
   await runTest(
     context,
@@ -164,8 +159,7 @@ test.skip("pp.json取得失敗(エンドポイントなし)の確認", async ({
   await checkUnsupportedMessages();
 });
 
-// TODO: 拡張機能での SD-JWT OP の検証の実装ができたら .skip 外して
-test.skip("ps.jsonの取得失敗、pp.json取得失敗(エンドポイントあり)の確認", async ({
+test("ps.jsonの取得失敗、pp.json取得失敗(エンドポイントあり)の確認", async ({
   context,
   page,
 }) => {
@@ -182,8 +176,7 @@ test.skip("ps.jsonの取得失敗、pp.json取得失敗(エンドポイントあ
   await checkUnsupportedMessages();
 });
 
-// TODO: 拡張機能での SD-JWT OP の検証の実装ができたら .skip 外して
-test.skip("ps.jsonの取得失敗、pp.json取得成功(エンドポイントあり)の確認", async ({
+test("ps.jsonの取得失敗、pp.json取得成功(エンドポイントあり)の確認", async ({
   context,
   page,
 }) => {

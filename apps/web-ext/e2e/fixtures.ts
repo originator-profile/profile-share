@@ -23,6 +23,30 @@ export const test = base.extend<{
     await use(context);
     await context.close();
   },
+  page: async ({ page }, use) => {
+    await page.route(
+      "http://localhost:8080/example-profile-set",
+      async (route) =>
+        route.fulfill({
+          body: `
+        <!doctype html>
+        <html lang="ja">
+        <head>
+          <meta charset="utf-8">
+          <title>Example Profile Set</title>
+          <link
+            href="/website/ef9d78e0-d81a-4e39-b7a0-27e15405edc7/profiles";
+            rel="alternate"
+            type="application/ld+json"
+          />
+        </head>
+        <body><h1>OP 確認くん</h1></body>
+      `,
+          contentType: "text/html",
+        }),
+    );
+    await use(page);
+  },
 });
 
 export const expect = test.expect;

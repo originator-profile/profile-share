@@ -26,7 +26,7 @@ describe("CertificateService", () => {
     expect(data).toBe(true);
   });
 
-  test("signOp() return a valid JWT", async () => {
+  test("signOriginatorProfile() return a valid SD-JWT", async () => {
     const issuerId = crypto.randomUUID();
     const accountId = crypto.randomUUID();
     const { publicKey, privateKey } = await generateKey();
@@ -93,7 +93,11 @@ describe("CertificateService", () => {
     prisma.keys.findMany.mockResolvedValue([
       { id: publicKey.kid, accountId, jwk: publicKey as Prisma.JsonValue },
     ]);
-    const sdJwt = await certificate.signOp(issuerId, accountId, privateKey);
+    const sdJwt = await certificate.signOriginatorProfile(
+      issuerId,
+      accountId,
+      privateKey,
+    );
     const valid = decodeSdJwt(sdJwt);
     expect(valid).toMatchObject({
       iss: "https://example.org/",

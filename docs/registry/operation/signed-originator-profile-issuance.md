@@ -15,12 +15,12 @@ sidebar_position: 7
 ここで必要な情報は以下の 3 点です。
 
 - `--holder` に指定する Signed Originator Profile の所有者となる組織の id
-- `--certifier` に指定する Signed Originator Profile の発行者となる組織の id
+- `--issuer` に指定する Signed Originator Profile の発行者となる組織の id
 - `--identity` に指定する発行者のプライベート鍵のファイルパス
 
 <img width="1552" alt="Signed Originator Profile の発行" src="https://user-images.githubusercontent.com/281424/193493119-5d092c32-7437-4ebe-a453-96457f2fda72.png" />
 
-例えば、所有者となる組織のドメイン名が `example.com`、発行者となる組織のドメイン名が `oprexpt.originator-profile.org` である場合、`--holder example.com --certifier oprexpt.originator-profile.org` となります。
+例えば、所有者となる組織のドメイン名が `example.com`、発行者となる組織のドメイン名が `oprexpt.originator-profile.org` である場合、`--holder example.com --issuer oprexpt.originator-profile.org` となります。
 
 さらに先程取得した発行者のプライベート鍵のファイルパスも必要となります。例えばプライベート鍵のファイル名が `certifier-key.priv.json` である場合、`--identity certifier-key.priv.json` となります。
 
@@ -29,7 +29,7 @@ sidebar_position: 7
 ```console
 profile-registry cert:issue \
   --identity certifier-key.priv.json \
-  --certifier oprexpt.originator-profile.org \
+  --issuer oprexpt.originator-profile.org \
   --holder example.com
 ```
 
