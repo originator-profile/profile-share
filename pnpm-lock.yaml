@@ -316,6 +316,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.38)
+      chokidar:
+        specifier: ^3.6.0
+        version: 3.6.0
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -843,6 +846,9 @@ importers:
       '@originator-profile/verify':
         specifier: workspace:*
         version: link:../verify
+      '@types/chrome':
+        specifier: ^0.0.269
+        version: 0.0.269
       '@types/dompurify':
         specifier: ^3.0.5
         version: 3.0.5
