@@ -1,13 +1,7 @@
 import { beforeEach, describe, test, expect } from "vitest";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
-import * as changeKeys from "change-case/keys";
-import { Dp, OriginatorProfile } from "@originator-profile/model";
-import {
-  signOp,
-  signDp,
-  generateKey,
-  signSdJwtOp,
-} from "@originator-profile/sign";
+import { Op, Dp } from "@originator-profile/model";
+import { signOp, signDp, generateKey } from "@originator-profile/sign";
 import {
   ProfileClaimsValidationFailed,
   ProfilesVerifyFailed,
@@ -21,65 +15,12 @@ import { ProfilesVerifier } from "./verify-profiles";
 interface VerifyProfileTestContext {
   certKeys: Awaited<ReturnType<typeof generateKey>>;
   subKeys: Awaited<ReturnType<typeof generateKey>>;
-  op: OriginatorProfile;
+  op: Op;
   dp: Dp;
   opToken: string;
   dpToken: string;
   registryKeys: ReturnType<typeof LocalKeys>;
 }
-
-const iat = getUnixTime(new Date("2024-01-01T00:00:00"));
-const exp = getUnixTime(addYears(new Date("2024-01-01T00:00:00"), 10));
-const op: OriginatorProfile = {
-  iat,
-  exp,
-  iss: "https://example.org",
-  sub: "example.com",
-  vct: "https://originator-profile.org/organization",
-  "vct#integrity": "sha256",
-  "iss#integrity": "sha256",
-  locale: "ja-JP",
-  jwks: { keys: [] },
-  issuer: {
-    domain_name: "example.org",
-    url: "https://example.org/",
-    name: "Example Organization",
-    corporate_number: "1234567890123",
-    postal_code: "123-4567",
-    contact_title: "Contact",
-    contact_url: "https://example.org/contact/",
-    privacy_policy_title: "Privacy Policy",
-    privacy_policy_url: "https://example.org/privacy/",
-    country: "JP",
-    logo: "https://example.org/logo.svg",
-  },
-  holder: {
-    domain_name: "example.com",
-    url: "https://example.com/",
-    name: "Example",
-    corporate_number: "1234567890123",
-    postal_code: "123-4567",
-    contact_title: "Contact",
-    contact_url: "https://example.com/contact/",
-    privacy_policy_title: "Privacy Policy",
-    privacy_policy_url: "https://example.com/privacy/",
-    country: "JP",
-    logo: "https://example.com/logo.svg",
-  },
-};
-
-const expected = {
-  op: {
-    issuer: op.iss,
-    subject: op.sub,
-    item: [
-      // @ts-expect-error Spread types may only be created from object types  tsc/config
-      { type: "holder", ...changeKeys.camelCase(op.holder) },
-      // @ts-expect-error Spread types may only be created from object types  tsc/config
-      { type: "certifier", ...changeKeys.camelCase(op.issuer) },
-    ],
-  },
-};
 
 describe("verify-profiles", () => {
   const iat = getUnixTime(new Date());
@@ -89,6 +30,15 @@ describe("verify-profiles", () => {
   beforeEach<VerifyProfileTestContext>(async (context) => {
     const certKeys = (context.certKeys = await generateKey());
     const subKeys = (context.subKeys = await generateKey());
+    const op = (context.op = {
+      type: "op",
+      issuedAt: fromUnixTime(iat).toISOString(),
+      expiredAt: fromUnixTime(exp).toISOString(),
+      issuer: "example.org",
+      subject: "example.com",
+      item: [],
+      jwks: { keys: [subKeys.publicKey] },
+    });
     const dp = (context.dp = {
       type: "dp",
       issuedAt: fromUnixTime(iat).toISOString(),
@@ -98,9 +48,7 @@ describe("verify-profiles", () => {
       item: [],
       allowedOrigins: ["https://example.com"],
     });
-    const opWithKeys = { ...op, jwks: { keys: [subKeys.publicKey] } };
-    context.op = opWithKeys;
-    context.opToken = await signSdJwtOp(opWithKeys, certKeys.privateKey);
+    context.opToken = await signOp(op, certKeys.privateKey);
     context.dpToken = await signDp(dp, subKeys.privateKey);
     context.registryKeys = LocalKeys({ keys: [certKeys.publicKey] });
   });
@@ -115,23 +63,12 @@ describe("verify-profiles", () => {
     const verifier = ProfilesVerifier(
       { profile: [opToken, dpToken] },
       registryKeys,
-      op.iss,
+      op.issuer,
       null,
       origin,
     );
     const verified = await verifier();
-    expect(verified[0]).toMatchObject({
-      op: {
-        issuer: op.iss,
-        subject: op.sub,
-        item: [
-          // @ts-expect-error Spread types may only be created from object types  tsc/config
-          { type: "holder", ...changeKeys.camelCase(op.holder) },
-          // @ts-expect-error Spread types may only be created from object types  tsc/config
-          { type: "certifier", ...changeKeys.camelCase(op.issuer) },
-        ],
-      },
-    });
+    expect(verified[0]).toMatchObject({ op });
     expect(verified[1]).toMatchObject({ dp });
   });
 
@@ -141,11 +78,11 @@ describe("verify-profiles", () => {
     registryKeys,
   }) => {
     const evilKeys = await generateKey();
-    const evilOpToken = await signSdJwtOp(op, evilKeys.privateKey);
+    const evilOpToken = await signOp(op, evilKeys.privateKey);
     const verifier = ProfilesVerifier(
       { profile: [evilOpToken, dpToken] },
       registryKeys,
-      op.iss,
+      op.issuer,
       null,
       origin,
     );
@@ -166,7 +103,7 @@ describe("verify-profiles", () => {
     const invalidOp = {
       issuedAt: fromUnixTime(iat).toISOString(),
       expiredAt: fromUnixTime(exp).toISOString(),
-      issuer: "https://example.org",
+      issuer: "example.org",
       subject: "example.com",
       item: ["invalid"],
       jwks: { keys: [subKeys.publicKey] },
@@ -176,7 +113,7 @@ describe("verify-profiles", () => {
     const verifier = ProfilesVerifier(
       { profile: [invalidOpToken] },
       registryKeys,
-      op.iss,
+      op.issuer,
       signedProfileValidator,
       origin,
     );
@@ -191,15 +128,20 @@ describe("verify-profiles", () => {
     registryKeys,
   }) => {
     const evilKeys = await generateKey();
-    const evilOp: OriginatorProfile = {
-      ...op,
+    const evilOp: Op = {
+      type: "op",
+      issuedAt: fromUnixTime(iat).toISOString(),
+      expiredAt: fromUnixTime(exp).toISOString(),
+      issuer: "example.org",
+      subject: "example.com",
+      item: [],
       jwks: { keys: [evilKeys.publicKey] },
     };
-    const evilOpToken = await signSdJwtOp(evilOp, certKeys.privateKey);
+    const evilOpToken = await signOp(evilOp, certKeys.privateKey);
     const verifier = ProfilesVerifier(
       { profile: [evilOpToken, dpToken] },
       registryKeys,
-      op.iss,
+      op.issuer,
       null,
       origin,
     );
@@ -217,13 +159,13 @@ describe("verify-profiles", () => {
     const verifier = ProfilesVerifier(
       { profile: [opToken, opToken, dpToken] },
       registryKeys,
-      op.iss,
+      op.issuer,
       null,
       origin,
     );
     const results = await verifier();
     expect(results.length).toBe(2);
-    expect(results[0]).toMatchObject({ op: { ...expected.op, jwks: op.jwks } });
+    expect(results[0]).toMatchObject({ op });
     expect(results[1]).toMatchObject({ dp });
     expect(results[0]).not.toEqual(results[1]);
   });
@@ -236,7 +178,7 @@ describe("verify-profiles", () => {
     const verifier = ProfilesVerifier(
       { profile: [opToken] },
       registryKeys,
-      op.iss,
+      op.issuer,
       null,
       origin,
     );
@@ -255,7 +197,7 @@ describe("verify-profiles", () => {
     const verifier = ProfilesVerifier(
       { profile: [opToken, evilDpToken] },
       registryKeys,
-      op.iss,
+      op.issuer,
       null,
       origin,
     );
@@ -277,8 +219,8 @@ describe("verify-profiles", () => {
         ad: [
           {
             op: {
-              iss: op.iss,
-              sub: op.sub,
+              iss: op.issuer,
+              sub: op.subject,
               profile: opToken,
             },
             dp: {
@@ -289,14 +231,12 @@ describe("verify-profiles", () => {
         ],
       },
       registryKeys,
-      op.iss,
+      op.issuer,
       null,
       origin,
     );
     const verified = await verifier();
-    expect(verified[0]).toMatchObject({
-      op: { ...expected.op, jwks: op.jwks },
-    });
+    expect(verified[0]).toMatchObject({ op });
     expect(verified[1]).toMatchObject({ dp });
   });
 });

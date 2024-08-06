@@ -1,10 +1,10 @@
 import { jwtVerify } from "jose";
 import { JOSEError } from "jose/errors";
 import {
+  fromJwtOpPayload,
   fromJwtDpPayload,
+  isJwtOpPayload,
   isJwtDpPayload,
-  isSdJwtOpPayload,
-  fromSdJwtOpPayload,
 } from "@originator-profile/core";
 import { TokenDecoder } from "./decode";
 import { ProfileTokenVerifyFailed } from "./errors";
@@ -19,6 +19,7 @@ import { verifyOrigin } from "./verify-origin";
  * @param decoder 復号器
  * @param origin 対象とするオリジン
  * @return 検証者
+ * @deprecated
  */
 export function TokenVerifier(
   keys: Keys,
@@ -45,11 +46,12 @@ export function TokenVerifier(
     if (verified instanceof Error) {
       return new ProfileTokenVerifyFailed(verified.message, {
         ...decoded,
+        jwt,
         error: verified,
       });
     }
-    if (isSdJwtOpPayload(verified.payload)) {
-      return { ...verified, op: fromSdJwtOpPayload(verified.payload), jwt };
+    if (isJwtOpPayload(verified.payload)) {
+      return { ...verified, op: fromJwtOpPayload(verified.payload), jwt };
     }
     if (isJwtDpPayload(verified.payload)) {
       return { ...verified, dp: fromJwtDpPayload(verified.payload), jwt };

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import useSWRImmutable from "swr/immutable";
 import { useEvent } from "react-use";
 import {
-  RemoteKeys,
+  JwtVcIssuerKeys,
   ProfilesVerifier,
   expandProfileSet,
   expandProfilePairs,
@@ -99,10 +99,10 @@ async function fetchVerifiedProfiles([, tabId]: [
   const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(
     import.meta.env.MODE === "development" && registry === "localhost"
-      ? `http://localhost:8080/.well-known/jwks.json`
-      : `https://${registry}/.well-known/jwks.json`,
+      ? `http://localhost:8080/.well-known/jwt-vc-issuer`
+      : `https://${registry}/.well-known/jwt-vc-issuer`,
   );
-  const keys = RemoteKeys(jwksEndpoint);
+  const keys = JwtVcIssuerKeys(jwksEndpoint);
   const origin = topLevelResponse?.origin ?? "";
   const verify = ProfilesVerifier(
     {
@@ -286,10 +286,10 @@ async function fetchVerifiedWebsiteProfilePair([, tabId]: [
   const registry = import.meta.env.PROFILE_ISSUER;
   const jwksEndpoint = new URL(
     import.meta.env.MODE === "development" && registry === "localhost"
-      ? `http://localhost:8080/.well-known/jwks.json`
-      : `https://${registry}/.well-known/jwks.json`,
+      ? `http://localhost:8080/.well-known/jwt-vc-issuer`
+      : `https://${registry}/.well-known/jwt-vc-issuer`,
   );
-  const keys = RemoteKeys(jwksEndpoint);
+  const keys = JwtVcIssuerKeys(jwksEndpoint);
 
   const verifyResults =
     (website[0] &&
@@ -316,6 +316,7 @@ async function fetchVerifiedWebsiteProfilePair([, tabId]: [
 
 /**
  * Profile Set 取得 (要 Base コンポーネント)
+ * @deprecated
  */
 function useProfileSet() {
   const params = useParams<{ tabId: string }>();
