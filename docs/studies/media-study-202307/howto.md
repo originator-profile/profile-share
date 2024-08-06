@@ -161,7 +161,7 @@ Step 2
 : 下記のコマンドをターミナルで実行
 
 ```console
-git clone https://github.com/originator-profile/profile-share
+git clone -c core.symlinks=true https://github.com/originator-profile/profile-share
 cd profile-share
 corepack enable pnpm
 pnpm install
