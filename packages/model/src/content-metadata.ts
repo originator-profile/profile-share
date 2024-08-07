@@ -2,8 +2,6 @@ import { FromSchema } from "json-schema-to-ts";
 import Category from "./category";
 import AllowedUrls from "./allowed-urls";
 import AllowedOrigins from "./allowed-origins";
-import BaseTargetIntegrity from "./base-target-integrity";
-import AllowedOrigExternalResourceTargetIntegrityins from "./external-resource-target-integrity";
 
 const contentMetadata = {
   $schema: "https://json-schema.org/draft/2020-12/schema",
@@ -14,8 +12,7 @@ const contentMetadata = {
     vct: {
       type: "string",
       const: "https://originator-profile.org/content",
-      description:
-        "SD-JWT VC タイプの識別子",
+      description: "SD-JWT VC タイプの識別子",
     },
     allowed_urls: {
       $ref: "#/$defs/allowed_urls",
@@ -26,32 +23,8 @@ const contentMetadata = {
   },
   required: ["vct", "allowed_urls"],
   $defs: {
-    base_target_integrity: BaseTargetIntegrity,
-    external_resource_target_integrity: AllowedOrigExternalResourceTargetIntegrityins,
-    target_integrity: {
-      oneOf: [
-        { $ref: "#/$defs/base_target_integrity" },
-        { $ref: "#/$defs/external_resource_target_integrity" },
-      ],
-    },
     allowed_urls: AllowedUrls,
     allowed_origins: AllowedOrigins,
-    assertion: {
-      type: "object",
-      additionalProperties: true,
-      properties: {
-        allowed_urls: { $ref: "#/$defs/allowed_urls" },
-        target: {
-          type: "array",
-          items: {
-            $ref: "#/$defs/target_integrity",
-          },
-          minItems: 1,
-          description: "Web Assertion に登録済みのクレーム。",
-        },
-      },
-      required: ["allowed_urls", "target"],
-    },
     content: {
       type: "object",
       additionalProperties: true,
@@ -120,7 +93,7 @@ const contentMetadata = {
       required: ["title", "description", "locale"],
     },
   },
-  allOf: [{ $ref: "#/$defs/assertion" }, { $ref: "#/$defs/content" }],
+  allOf: [{ $ref: "#/$defs/content" }],
 } as const;
 
 type ContentMetadata = FromSchema<typeof contentMetadata>;
