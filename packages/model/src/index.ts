@@ -26,5 +26,5 @@ export { default as User } from "./user";
 export { default as WebAssertionSet } from "./web-assertion-set";
 export { default as ContentMetadata } from "./content-metadata";
 export { default as AllowedUrls } from "./allowed-urls";
-export { default as AllowedOrigin } from "./allowed-origin";
+export { default as AllowedOrigins } from "./allowed-origins";
 

@@ -1,7 +1,7 @@
 import { FromSchema } from "json-schema-to-ts";
 import Category from "./category";
 import AllowedUrls from "./allowed-urls";
-import AllowedOrigin from "./allowed-origin";
+import AllowedOrigins from "./allowed-origins";
 
 const contentMetadata = {
   $schema: "https://json-schema.org/draft/2020-12/schema",
@@ -19,7 +19,7 @@ const contentMetadata = {
       $ref: "#/$defs/allowed_urls",
     },
     allowed_origins: {
-      $ref: "#/$defs/allowed_origin",
+      $ref: "#/$defs/allowed_origins",
     },
   },
   required: ["vct", "allowed_urls"],
@@ -66,7 +66,7 @@ const contentMetadata = {
       ],
     },
     allowed_urls: AllowedUrls,
-    allowed_origin: AllowedOrigin,
+    allowed_origins: AllowedOrigins,
     assertion: {
       type: "object",
       additionalProperties: true,
