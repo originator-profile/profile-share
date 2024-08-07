@@ -11,25 +11,25 @@ const JwtOpPayload = {
     iss: {
       title: "JWT Issuer",
       description:
-        "[RFC7519#section-4.1.1](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.1)",
+        "[RFC 7519 Section 4.1.1](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.1)",
       type: "string",
     },
     sub: {
       title: "JWT Subject",
       description:
-        "[RFC7519#section-4.1.2](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.2)",
+        "[RFC 7519 Section 4.1.2](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.2)",
       type: "string",
     },
     exp: {
       title: "JWT Expiration Time",
       description:
-        "[RFC7519#section-4.1.4](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.4)",
+        "[RFC 7519 Section 4.1.4](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.4)",
       type: "number",
     },
     iat: {
       title: "JWT Issued At",
       description:
-        "[RFC7519#section-4.1.6](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.6)",
+        "[RFC 7519 Section 4.1.6](https://www.rfc-editor.org/rfc/rfc7519#section-4.1.6)",
       type: "number",
     },
     "https://originator-profile.org/op": {

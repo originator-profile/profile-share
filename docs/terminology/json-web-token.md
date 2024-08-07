@@ -1,6 +1,6 @@
 # JSON Web トークン / JSON Web Token (JWT)
 
-[RFC7519](https://datatracker.ietf.org/doc/html/rfc7519) として標準化されたトークン表現。詳しくは https://jwt.io/ などを参照。
+[RFC 7519](https://www.rfc-editor.org/rfc/rfc7519.html) として標準化されたトークン表現。詳しくは https://jwt.io/ などを参照。
 
 > JSON Web Token (JWT) is a compact, URL-safe means of representing
 > claims to be transferred between two parties.
