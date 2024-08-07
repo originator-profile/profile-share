@@ -11,7 +11,7 @@ const contentMetadata = {
       type: "string",
       const: "https://originator-profile.org/content",
       description:
-        "必ず https://originator-profile.org/content でなければなりません (MUST)。",
+        "SD-JWT VC のタイプの識別子",
     },
     allowed_urls: {
       $ref: "#/$defs/allowed_urls",
