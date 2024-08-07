@@ -1,5 +1,6 @@
 import { FromSchema } from "json-schema-to-ts";
 import Category from "./category";
+import AllowedUrls from "./allowed-urls";
 
 const contentMetadata = {
   $schema: "https://json-schema.org/draft/2020-12/schema",
@@ -70,13 +71,7 @@ const contentMetadata = {
         { $ref: "#/$defs/external_resource_target_integrity" },
       ],
     },
-    allowed_urls: {
-      type: "array",
-      items: {
-        type: "string",
-        format: "uri",
-      },
-    },
+    allowed_urls: AllowedUrls,
     assertion: {
       type: "object",
       additionalProperties: true,
