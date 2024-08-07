@@ -8,6 +8,7 @@ const allowedUrls = {
     type: "string",
     format: "uri",
   },
+  description: "この Web Assertion によって表明される情報の対象となる URL の配列です。 配列の要素の文字列は必ず [URL Pattern strings](https://urlpattern.spec.whatwg.org/) 形式でなければなりません (MUST)。",
 } as const;
 
 type AllowedUrls = FromSchema<typeof allowedUrls>;
