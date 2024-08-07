@@ -19,7 +19,7 @@ const contentMetadata = {
       $ref: "#/$defs/allowed_urls",
     },
     allowed_origins: {
-      $ref: "#/$defs/allowed_urls",
+      $ref: "#/$defs/allowed_origin",
     },
   },
   required: ["vct", "allowed_urls"],
@@ -66,6 +66,7 @@ const contentMetadata = {
       ],
     },
     allowed_urls: AllowedUrls,
+    allowed_origin: AllowedOrigin,
     assertion: {
       type: "object",
       additionalProperties: true,
