@@ -1,6 +1,7 @@
 import { FromSchema } from "json-schema-to-ts";
 import Category from "./category";
 import AllowedUrls from "./allowed-urls";
+import AllowedOrigin from "./allowed-origin";
 
 const contentMetadata = {
   $schema: "https://json-schema.org/draft/2020-12/schema",
@@ -12,20 +13,14 @@ const contentMetadata = {
       type: "string",
       const: "https://originator-profile.org/content",
       description:
-        "SD-JWT VC のタイプの識別子",
+        "SD-JWT VC タイプの識別子",
     },
     allowed_urls: {
       $ref: "#/$defs/allowed_urls",
       description: "Web Assertion に登録済みのクレーム。",
     },
     allowed_origins: {
-      type: "array",
-      items: {
-        type: "string",
-        format: "uri",
-      },
-      description:
-        "Web Assertion に登録済みのクレーム。含めてはいけません (MUST NOT)。",
+      $ref: "#/$defs/allowed_urls",
     },
   },
   required: ["vct", "allowed_urls"],
