@@ -1,7 +1,7 @@
 import { FromSchema } from "json-schema-to-ts";
 import DpAllowedOrigins from "./dp-allowed-origins";
 
-const allowedOrigin = {
+const allowedOrigins = {
   $schema: "https://json-schema.org/draft/2020-12/schema",
   title: "Allowed Origins",
   type: "array",
@@ -13,7 +13,7 @@ const allowedOrigin = {
   not: DpAllowedOrigins
 } as const;
 
-type AllowedOrigin = FromSchema<typeof allowedOrigin>;
+type AllowedOrigins = FromSchema<typeof allowedOrigins>;
 
-export default allowedOrigin;
-export type { AllowedOrigin };
+export default allowedOrigins;
+export type { AllowedOrigins };
