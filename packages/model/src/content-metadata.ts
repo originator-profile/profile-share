@@ -17,7 +17,6 @@ const contentMetadata = {
     },
     allowed_urls: {
       $ref: "#/$defs/allowed_urls",
-      description: "Web Assertion に登録済みのクレーム。",
     },
     allowed_origins: {
       $ref: "#/$defs/allowed_urls",
