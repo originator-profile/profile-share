@@ -1,4 +1,5 @@
 import { FromSchema } from "json-schema-to-ts";
+import Category from "./category";
 
 const contentMetadata = {
   $schema: "https://json-schema.org/draft/2020-12/schema",
@@ -28,24 +29,6 @@ const contentMetadata = {
   },
   required: ["vct", "allowed_urls"],
   $defs: {
-    category: {
-      type: "object",
-      additionalProperties: true,
-      properties: {
-        cat: {
-          title: "カテゴリー ID",
-          type: "string",
-        },
-        cattax: {
-          title: "カテゴリータクソノミー ID",
-          type: "string",
-        },
-        name: {
-          title: "カテゴリー名",
-          type: "string",
-        },
-      },
-    },
     base_target_integrity: {
       type: "object",
       additionalProperties: true,
@@ -165,7 +148,7 @@ const contentMetadata = {
         categories: {
           type: "array",
           items: {
-            $ref: "#/$defs/category",
+            $ref: Category,
           },
           description:
             "IAB カテゴリータクソノミーによる分類の JSON 配列。空配列でもよい (MAY)。",
