@@ -2,6 +2,8 @@ import { FromSchema } from "json-schema-to-ts";
 import Category from "./category";
 import AllowedUrls from "./allowed-urls";
 import AllowedOrigins from "./allowed-origins";
+import BaseTargetIntegrity from "./base-target-integrity";
+import AllowedOrigExternalResourceTargetIntegrityins from "./external-resource-target-integrity";
 
 const contentMetadata = {
   $schema: "https://json-schema.org/draft/2020-12/schema",
@@ -24,41 +26,8 @@ const contentMetadata = {
   },
   required: ["vct", "allowed_urls"],
   $defs: {
-    base_target_integrity: {
-      type: "object",
-      additionalProperties: true,
-      properties: {
-        type: {
-          type: "string",
-          enum: ["text", "visibleText", "html"],
-        },
-        integrity: {
-          type: "string",
-        },
-        selector: {
-          type: "string",
-        },
-      },
-      required: ["type", "integrity", "selector"],
-    },
-    external_resource_target_integrity: {
-      type: "object",
-      additionalProperties: true,
-      properties: {
-        type: {
-          type: "string",
-          enum: ["externalResource"],
-        },
-        integrity: {
-          type: "string",
-        },
-        url: {
-          type: "string",
-          format: "uri",
-        },
-      },
-      required: ["type", "integrity", "url"],
-    },
+    base_target_integrity: BaseTargetIntegrity,
+    external_resource_target_integrity: AllowedOrigExternalResourceTargetIntegrityins,
     target_integrity: {
       oneOf: [
         { $ref: "#/$defs/base_target_integrity" },
