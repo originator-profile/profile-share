@@ -29,4 +29,3 @@ export { default as AllowedUrls } from "./allowed-urls";
 export { default as AllowedOrigins } from "./allowed-origins";
 export { default as BaseTargetIntegrity } from "./base-target-integrity";
 export { default as ExternalResourceTargetIntegrity } from "./external-resource-target-integrity";
-
