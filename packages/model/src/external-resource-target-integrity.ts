@@ -21,7 +21,9 @@ const externalResourceTargetIntegrity = {
   required: ["type", "integrity", "url"],
 } as const;
 
-type ExternalResourceTargetIntegrity = FromSchema<typeof externalResourceTargetIntegrity>;
+type ExternalResourceTargetIntegrity = FromSchema<
+  typeof externalResourceTargetIntegrity
+>;
 
 export default externalResourceTargetIntegrity;
 export type { ExternalResourceTargetIntegrity };
