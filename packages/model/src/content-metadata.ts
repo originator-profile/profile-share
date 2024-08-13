@@ -79,9 +79,7 @@ const contentMetadata = {
         },
         categories: {
           type: "array",
-          items: {
-            $ref: Category,
-          },
+          items: Category,
           description:
             "IAB カテゴリータクソノミーによる分類の JSON 配列。空配列でもよい (MAY)。",
         },
