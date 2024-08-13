@@ -9,8 +9,9 @@ const allowedOrigins = {
     type: "string",
     format: "uri",
   },
-  description: "Web Assertion によって表明される情報の対象となる [origin](https://www.rfc-editor.org/rfc/rfc6454#section-7)",
-  not: DpAllowedOrigins
+  description:
+    "Web Assertion によって表明される情報の対象となる [origin](https://www.rfc-editor.org/rfc/rfc6454#section-7)",
+  not: DpAllowedOrigins,
 } as const;
 
 type AllowedOrigins = FromSchema<typeof allowedOrigins>;
