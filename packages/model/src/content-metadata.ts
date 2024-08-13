@@ -14,17 +14,11 @@ const contentMetadata = {
       const: "https://originator-profile.org/content",
       description: "SD-JWT VC タイプの識別子",
     },
-    allowed_urls: {
-      $ref: "#/$defs/allowed_urls",
-    },
-    allowed_origins: {
-      $ref: "#/$defs/allowed_origins",
-    },
+    allowed_urls: AllowedUrls,
+    allowed_origins: AllowedOrigins,
   },
   required: ["vct", "allowed_urls"],
   $defs: {
-    allowed_urls: AllowedUrls,
-    allowed_origins: AllowedOrigins,
     content: {
       type: "object",
       additionalProperties: true,
