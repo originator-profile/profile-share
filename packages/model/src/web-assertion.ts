@@ -4,6 +4,13 @@ import AllowedUrls from "./allowed-urls";
 import BaseTargetIntegrity from "./base-target-integrity";
 import ExternalResourceTargetIntegrity from "./external-resource-target-integrity";
 
+const targetIntegrity = {
+  oneOf: [
+    BaseTargetIntegrity,
+    ExternalResourceTargetIntegrity,
+  ],
+} as const;
+
 const webAssertion = {
   $schema: "https://json-schema.org/draft/2020-12/schema",
   title: "Web Assertion",
@@ -44,12 +51,10 @@ const webAssertion = {
       type: "object",
       additionalProperties: true,
       properties: {
-        allowed_urls: { $ref: "#/$defs/allowed_urls" },
+        allowed_urls: AllowedUrls,
         target: {
           type: "array",
-          items: {
-            $ref: "#/$defs/target_integrity",
-          },
+          items: targetIntegrity,
           minItems: 1,
           description: "Web Assertion に登録済みのクレーム。",
         },
@@ -58,17 +63,6 @@ const webAssertion = {
     },
   },
   required: ["vct#integrity", "iss", "sub", "iat", "exp"],
-  $defs: {
-    allowed_urls: AllowedUrls,
-    target_integrity: {
-      oneOf: [
-        { $ref: "#/$defs/base_target_integrity" },
-        { $ref: "#/$defs/external_resource_target_integrity" },
-      ],
-    },
-    base_target_integrity: BaseTargetIntegrity,
-    external_resource_target_integrity: ExternalResourceTargetIntegrity,
-  },
 } as const;
 
 type WebAssertion = FromSchema<typeof webAssertion>;
