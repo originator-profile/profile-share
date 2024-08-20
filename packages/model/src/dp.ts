@@ -2,6 +2,7 @@ import { FromSchema } from "json-schema-to-ts";
 import DpItem from "./dp-item";
 import DpAllowedOrigins from "./dp-allowed-origins";
 
+/** @deprecated */
 const Dp = {
   title: "Document Profile",
   type: "object",
@@ -38,6 +39,7 @@ const Dp = {
   additionalProperties: false,
 } as const;
 
+/** @deprecated */
 type Dp = FromSchema<typeof Dp>;
 
 export default Dp;

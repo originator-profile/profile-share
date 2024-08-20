@@ -24,3 +24,8 @@ export { default as Profile } from "./profile";
 export { default as Request } from "./request";
 export { default as User } from "./user";
 export { default as WebAssertionSet } from "./web-assertion-set";
+export { default as ContentMetadata } from "./content-metadata";
+export { default as AllowedUrls } from "./allowed-urls";
+export { default as AllowedOrigins } from "./allowed-origins";
+export { default as BaseTargetIntegrity } from "./base-target-integrity";
+export { default as ExternalResourceTargetIntegrity } from "./external-resource-target-integrity";

@@ -3,6 +3,7 @@ import DpUrl from "./dp-url";
 import DpLocation from "./dp-location";
 import DpProof from "./dp-proof";
 
+/** @deprecated */
 const DpHtml = {
   title: "Document Profile HTML",
   description: "対象の要素とその子孫を含む部分の HTML とその HTML への署名",
@@ -17,6 +18,7 @@ const DpHtml = {
   additionalProperties: false,
 } as const;
 
+/** @deprecated */
 type DpHtml = FromSchema<typeof DpHtml>;
 
 export default DpHtml;

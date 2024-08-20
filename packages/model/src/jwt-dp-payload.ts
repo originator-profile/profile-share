@@ -2,6 +2,7 @@ import { FromSchema } from "json-schema-to-ts";
 import DpItem from "./dp-item";
 import DpAllowedOrigins from "./dp-allowed-origins";
 
+/** @deprecated */
 const JwtDpPayload = {
   title: "DP JWT Claims Set object",
   type: "object",
@@ -44,6 +45,7 @@ const JwtDpPayload = {
   additionalProperties: false,
 } as const;
 
+/** @deprecated */
 type JwtDpPayload = FromSchema<typeof JwtDpPayload>;
 
 export default JwtDpPayload;
