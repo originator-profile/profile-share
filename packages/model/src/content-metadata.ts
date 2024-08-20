@@ -81,7 +81,6 @@ const contentMetadata = {
       description: "SD-JWT VC タイプの識別子",
     },
     allowed_urls: AllowedUrls,
-    allowed_origins: AllowedOrigins,
   },
   required: ["vct", "allowed_urls"],
   allOf: [content],
