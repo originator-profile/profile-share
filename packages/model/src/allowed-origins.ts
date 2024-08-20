@@ -1,5 +1,4 @@
 import { FromSchema } from "json-schema-to-ts";
-import DpAllowedOrigins from "./dp-allowed-origins";
 
 const allowedOrigins = {
   $schema: "https://json-schema.org/draft/2020-12/schema",

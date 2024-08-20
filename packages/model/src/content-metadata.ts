@@ -1,7 +1,6 @@
 import { FromSchema } from "json-schema-to-ts";
 import Category from "./category";
 import AllowedUrls from "./allowed-urls";
-import AllowedOrigins from "./allowed-origins";
 
 const content = {
   type: "object",
