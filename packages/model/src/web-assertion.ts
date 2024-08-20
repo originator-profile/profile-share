@@ -5,10 +5,7 @@ import BaseTargetIntegrity from "./base-target-integrity";
 import ExternalResourceTargetIntegrity from "./external-resource-target-integrity";
 
 const targetIntegrity = {
-  oneOf: [
-    BaseTargetIntegrity,
-    ExternalResourceTargetIntegrity,
-  ],
+  oneOf: [BaseTargetIntegrity, ExternalResourceTargetIntegrity],
 } as const;
 
 const webAssertion = {
