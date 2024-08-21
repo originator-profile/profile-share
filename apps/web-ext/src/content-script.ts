@@ -1,4 +1,7 @@
-import { fetchWebsiteProfilePair } from "@originator-profile/verify";
+import {
+  fetchWebsiteProfilePair,
+  fetchWebsiteMetadata,
+} from "@originator-profile/verify";
 import {
   ProfilePayloadWithMetadata,
   DpPayloadWithMetadata,
@@ -9,6 +12,7 @@ import {
   ContentWindowPostMessageEvent,
 } from "./types/message";
 import { initialize, activate, deactivate } from "./utils/iframe";
+import { websiteMetadataMessenger } from "./components/websiteMetadata";
 
 let profiles: ProfilePayloadWithMetadata[] = [];
 let websiteProfiles: ProfilePayloadWithMetadata[] = [];
@@ -103,3 +107,8 @@ function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
 }
 
 window.addEventListener("message", handlePostMessageResponse);
+
+websiteMetadataMessenger.onMessage("fetchWebsiteMetadata", async () => {
+  const data = await fetchWebsiteMetadata(document);
+  return data;
+});

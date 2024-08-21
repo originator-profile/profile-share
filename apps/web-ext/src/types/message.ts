@@ -6,6 +6,8 @@ import { ProfilePair } from "@originator-profile/verify";
 
 export type fetchProfileSetMessageRequest = {
   type: "fetch-profiles";
+  /** エポックミリ秒 */
+  timestamp: number;
 };
 export type fetchProfileSetMessageResponse = {
   type: "fetch-profiles";
@@ -18,6 +20,8 @@ export type fetchProfileSetMessageResponse = {
 };
 export type fetchWebsiteProfilePairMessageRequest = {
   type: "fetch-website-profile-pair";
+  /** エポックミリ秒 */
+  timestamp: number;
 };
 export type fetchWebsiteProfilePairMessageResponse = {
   type: "fetch-website-profile-pair";
@@ -31,6 +35,8 @@ export type fetchWebsiteProfilePairMessageResponse = {
 
 export type extractBodyRequest = {
   type: "extract-body";
+  /** エポックミリ秒 */
+  timestamp: number;
   /** 署名対象テキストを指定する JSON 文字列 (DpLocator 型) */
   dpLocator: string;
   /** Dp が広告か否か (boolean) */
@@ -49,6 +55,8 @@ export type extractBodyResponse = {
 
 export type OverlayProfilesMessageRequest = {
   type: "overlay-profiles";
+  /** エポックミリ秒 */
+  timestamp: number;
   profiles: ProfilePayloadWithMetadata[];
   websiteProfiles?: ProfilePayloadWithMetadata[];
   activeDp: DpPayloadWithMetadata | null;
@@ -58,6 +66,8 @@ export type OverlayProfilesMessageResponse = {
 };
 export type CloseWindowMessageRequest = {
   type: "close-window";
+  /** エポックミリ秒 */
+  timestamp: number;
 };
 export type CloseWindowMessageResponse = {
   type: "close-window";

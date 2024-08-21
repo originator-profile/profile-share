@@ -20,6 +20,7 @@ function Redirect({
     if (profiles) {
       chrome.tabs.sendMessage(tabId, {
         type: "overlay-profiles",
+        timestamp: Date.now(),
         ...profiles.serialize(),
         activeDp: dp?.serialize(),
       });

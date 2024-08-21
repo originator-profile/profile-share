@@ -4,6 +4,7 @@ import Base from "./pages/Base";
 import Org from "./pages/Org";
 import Publ from "./pages/Publ";
 import Prohibition from "./pages/Prohibition";
+import WebsiteMetadata from "./pages/WebsiteMetadata";
 
 const org: RouteObject = {
   path: routes.org.path,
@@ -13,7 +14,18 @@ const org: RouteObject = {
 const publ: RouteObject = {
   path: routes.publ.path,
   element: <Outlet />,
-  children: [{ path: "", element: <Publ /> }, org],
+  children: [
+    {
+      path: "",
+      element: (
+        <>
+          <WebsiteMetadata />
+          <Publ />
+        </>
+      ),
+    },
+    org,
+  ],
 };
 const site: RouteObject = {
   path: routes.site.path,
