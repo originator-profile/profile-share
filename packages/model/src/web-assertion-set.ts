@@ -1,6 +1,6 @@
 import { FromSchema } from "json-schema-to-ts";
 
-const WebAssertionSetItem = {
+const SingleWebAssertionSet = {
   title: "Web Assertion Set",
   type: "object",
   properties: {
@@ -45,15 +45,15 @@ const WebAssertionSetItem = {
 const WebAssertionSet = {
   title: "Web Assertion Set",
   oneOf: [
-    WebAssertionSetItem,
+    SingleWebAssertionSet,
     {
       type: "array",
-      items: WebAssertionSetItem,
+      items: SingleWebAssertionSet,
     },
   ],
 } as const;
 
-type WebAssertionSetItem = FromSchema<typeof WebAssertionSetItem>;
+export type SingleWebAssertionSet = FromSchema<typeof SingleWebAssertionSet>;
 type WebAssertionSet = FromSchema<typeof WebAssertionSet>;
 
 export default WebAssertionSet;

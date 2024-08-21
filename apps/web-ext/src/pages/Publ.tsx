@@ -96,6 +96,7 @@ function Publ() {
   const handleClickDp = (dp: DocumentProfile) => async () => {
     await chrome.tabs.sendMessage(Number(tabId), {
       type: "overlay-profiles",
+      timestamp: Date.now(),
       ...profileSet.serialize(),
       activeDp: dp.serialize(),
     });

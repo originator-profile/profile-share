@@ -23,7 +23,10 @@ export { OriginatorProfile } from "./originator-profile";
 export { default as Profile } from "./profile";
 export { default as Request } from "./request";
 export { default as User } from "./user";
-export { default as WebAssertionSet } from "./web-assertion-set";
+export {
+  default as WebAssertionSet,
+  type SingleWebAssertionSet,
+} from "./web-assertion-set";
 export { default as ContentMetadata } from "./content-metadata";
 export { default as AllowedUrls } from "./allowed-urls";
 export { default as AllowedOrigins } from "./allowed-origins";

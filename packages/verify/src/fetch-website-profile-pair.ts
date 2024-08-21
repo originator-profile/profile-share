@@ -7,6 +7,7 @@ function getProfilePairUrl(origin: string) {
 
 /**
  * Website Profile Pair の取得
+ * @deprecated
  * @param doc Document オブジェクト
  */
 export async function fetchWebsiteProfilePair(

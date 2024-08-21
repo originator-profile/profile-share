@@ -57,6 +57,7 @@ async function fetchVerifiedProfiles([, tabId]: [
           tabId,
           {
             type: "fetch-profiles",
+            timestamp: Date.now(),
           },
           {
             frameId: frame.frameId,
@@ -181,6 +182,7 @@ async function extractBodiesOfDp(
           tabId,
           {
             type: "extract-body",
+            timestamp: Date.now(),
             dpLocator: JSON.stringify(dpLocator),
             isAdvertisement: isAd,
           },
@@ -275,6 +277,7 @@ async function fetchVerifiedWebsiteProfilePair([, tabId]: [
   const { ok, data, origin }: fetchWebsiteProfilePairMessageResponse =
     await chrome.tabs.sendMessage(tabId, {
       type: "fetch-website-profile-pair",
+      timestamp: Date.now(),
     });
   if (!ok) {
     // 取得に失敗した場合にはエラーにしない（ website PP の設置は任意のため）
@@ -343,7 +346,10 @@ function useProfileSet() {
   );
 
   useEvent("unload", async function () {
-    await chrome.tabs.sendMessage(tabId, { type: "close-window" });
+    await chrome.tabs.sendMessage(tabId, {
+      type: "close-window",
+      timestamp: Date.now(),
+    });
   });
 
   const navigate = useNavigate();
