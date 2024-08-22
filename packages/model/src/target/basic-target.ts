@@ -1,8 +1,7 @@
 import { FromSchema } from "json-schema-to-ts";
 
-const baseTargetIntegrity = {
-  $schema: "https://json-schema.org/draft/2020-12/schema",
-  title: "Base Target Integrity",
+export const BasicTarget = {
+  title: "Basic Target",
   type: "object",
   additionalProperties: true,
   properties: {
@@ -12,15 +11,15 @@ const baseTargetIntegrity = {
     },
     integrity: {
       type: "string",
+      description:
+        "ハッシュ値の形式は Subresource Integrity セクション 3.1 の Integrity metadata でなければなりません (MUST)。",
     },
     selector: {
       type: "string",
+      description: "CSS セレクター",
     },
   },
   required: ["type", "integrity", "selector"],
 } as const;
 
-type BaseTargetIntegrity = FromSchema<typeof baseTargetIntegrity>;
-
-export default baseTargetIntegrity;
-export type { BaseTargetIntegrity };
+export type BaseTarget = FromSchema<typeof BasicTarget>;

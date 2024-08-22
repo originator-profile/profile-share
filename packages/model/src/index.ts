@@ -1,7 +1,6 @@
 export { default as Advertisement } from "./advertisement";
 export { default as AllowedOrigins } from "./allowed-origins";
 export { default as AllowedUrls } from "./allowed-urls";
-export { default as BaseTargetIntegrity } from "./base-target-integrity";
 export { default as CertificationSystem } from "./certification-system";
 export { default as ContentMetadata } from "./content-metadata";
 export { default as Dp } from "./dp";
@@ -10,7 +9,6 @@ export { default as DpHtml } from "./dp-html";
 export { default as DpItem } from "./dp-item";
 export { default as DpText } from "./dp-text";
 export { default as DpVisibleText } from "./dp-visible-text";
-export { ExternalResourceTarget } from "./external-resource-target";
 export { default as Jwk } from "./jwk";
 export { default as Jwks } from "./jwks";
 export { default as JwtDpPayload } from "./jwt-dp-payload";
@@ -27,6 +25,7 @@ export { OrganizationMetadata } from "./organization-metadata";
 export { OriginatorProfile } from "./originator-profile";
 export { default as Profile } from "./profile";
 export { default as Request } from "./request";
+export * from "./target/";
 export { default as User } from "./user";
 export {
   default as WebAssertionSet,
