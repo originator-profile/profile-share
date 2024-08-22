@@ -1,12 +1,7 @@
 import { FromSchema } from "json-schema-to-ts";
 import AllowedUrls from "./allowed-urls";
-import BaseTargetIntegrity from "./base-target-integrity";
 import contentMetadata from "./content-metadata";
-import { ExternalResourceTarget } from "./external-resource-target";
-
-const targetIntegrity = {
-  oneOf: [BaseTargetIntegrity, ExternalResourceTarget],
-} as const;
+import { Target } from "./target/";
 
 const webAssertion = {
   $schema: "https://json-schema.org/draft/2020-12/schema",
@@ -51,7 +46,7 @@ const webAssertion = {
         allowed_urls: AllowedUrls,
         target: {
           type: "array",
-          items: targetIntegrity,
+          items: Target,
           minItems: 1,
           description: "Web Assertion に登録済みのクレーム。",
         },
