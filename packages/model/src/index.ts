@@ -1,11 +1,16 @@
 export { default as Advertisement } from "./advertisement";
+export { default as AllowedOrigins } from "./allowed-origins";
+export { default as AllowedUrls } from "./allowed-urls";
+export { default as BaseTargetIntegrity } from "./base-target-integrity";
 export { default as CertificationSystem } from "./certification-system";
+export { default as ContentMetadata } from "./content-metadata";
 export { default as Dp } from "./dp";
 export { default as DpAllowedOrigins } from "./dp-allowed-origins";
 export { default as DpHtml } from "./dp-html";
 export { default as DpItem } from "./dp-item";
 export { default as DpText } from "./dp-text";
 export { default as DpVisibleText } from "./dp-visible-text";
+export { ExternalResourceTarget } from "./external-resource-target";
 export { default as Jwk } from "./jwk";
 export { default as Jwks } from "./jwks";
 export { default as JwtDpPayload } from "./jwt-dp-payload";
@@ -27,8 +32,3 @@ export {
   default as WebAssertionSet,
   type SingleWebAssertionSet,
 } from "./web-assertion-set";
-export { default as ContentMetadata } from "./content-metadata";
-export { default as AllowedUrls } from "./allowed-urls";
-export { default as AllowedOrigins } from "./allowed-origins";
-export { default as BaseTargetIntegrity } from "./base-target-integrity";
-export { default as ExternalResourceTargetIntegrity } from "./external-resource-target-integrity";

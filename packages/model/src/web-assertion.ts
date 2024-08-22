@@ -1,11 +1,11 @@
 import { FromSchema } from "json-schema-to-ts";
-import contentMetadata from "./content-metadata";
 import AllowedUrls from "./allowed-urls";
 import BaseTargetIntegrity from "./base-target-integrity";
-import ExternalResourceTargetIntegrity from "./external-resource-target-integrity";
+import contentMetadata from "./content-metadata";
+import { ExternalResourceTarget } from "./external-resource-target";
 
 const targetIntegrity = {
-  oneOf: [BaseTargetIntegrity, ExternalResourceTargetIntegrity],
+  oneOf: [BaseTargetIntegrity, ExternalResourceTarget],
 } as const;
 
 const webAssertion = {
