@@ -1,8 +1,10 @@
 export { default as Advertisement } from "./advertisement";
-export { default as AllowedOrigins } from "./allowed-origins";
-export { default as AllowedUrls } from "./allowed-urls";
+export * from "./advertisement-metadata";
+export * from "./allowed-origins";
+export * from "./allowed-urls";
 export { default as CertificationSystem } from "./certification-system";
-export { default as ContentMetadata } from "./content-metadata";
+export * from "./content-assertion";
+export * from "./content-metadata";
 export { default as Dp } from "./dp";
 export { default as DpAllowedOrigins } from "./dp-allowed-origins";
 export { default as DpHtml } from "./dp-html";
@@ -31,3 +33,4 @@ export {
   default as WebAssertionSet,
   type SingleWebAssertionSet,
 } from "./web-assertion-set";
+export * from "./website-metadata";

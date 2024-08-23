@@ -1,8 +1,9 @@
 import { FromSchema } from "json-schema-to-ts";
+import { AllowedOrigins } from "./allowed-origins";
 import { AllowedUrls } from "./allowed-urls";
 import Category from "./category";
 import { ContentAssertion } from "./content-assertion";
-import { Target } from "./target/";
+import { Target } from "./target";
 
 const claims = {
   type: "object",
@@ -10,11 +11,7 @@ const claims = {
   properties: {
     vct: {
       type: "string",
-      const: "https://originator-profile.org/content",
-    },
-    allowed_urls: AllowedUrls,
-    allowed_origins: {
-      enum: [],
+      const: "https://originator-profile.org/advertisement",
     },
     target: {
       type: "array",
@@ -22,10 +19,30 @@ const claims = {
       minItems: 1,
     },
   },
-  required: ["vct", "allowed_urls", "target"],
+  required: ["vct", "target"],
+  oneOf: [
+    {
+      properties: {
+        allowed_urls: AllowedUrls,
+        allowed_origins: {
+          enum: [],
+        },
+      },
+      required: ["allowed_urls"],
+    },
+    {
+      properties: {
+        allowed_urls: {
+          enum: [],
+        },
+        allowed_origins: AllowedOrigins,
+      },
+      required: ["allowed_origins"],
+    },
+  ],
 } as const;
 
-const content = {
+const advertisement = {
   type: "object",
   additionalProperties: true,
   properties: {
@@ -37,13 +54,6 @@ const content = {
       type: "string",
       description: "コンテンツの説明（プレーンテキスト）。",
     },
-    source: {
-      title: "一次ソース",
-      type: "string",
-      format: "uri",
-      description:
-        "コンテンツの流通における1次ソース URL がある場合は記載を推奨 (RECOMMENDED)。",
-    },
     image: {
       type: "string",
       format: "uri",
@@ -54,28 +64,6 @@ const content = {
       type: "string",
       description:
         "コンテンツの画像のハッシュ値を指定します。ハッシュ値の形式は Subresource Integrity セクション 3.1 の Integrity metadata でなければなりません (MUST)。",
-    },
-    date_published: {
-      title: "公開日",
-      type: "string",
-    },
-    date_modified: {
-      title: "最終更新日",
-      type: "string",
-    },
-    editors: {
-      title: "編集者名",
-      type: "array",
-      items: {
-        type: "string",
-      },
-    },
-    authors: {
-      title: "著者名",
-      type: "array",
-      items: {
-        type: "string",
-      },
     },
     categories: {
       type: "array",
@@ -91,9 +79,9 @@ const content = {
   required: ["title", "description", "locale"],
 } as const;
 
-export const ContentMetadata = {
-  title: "Content Metadata",
-  allOf: [ContentAssertion, claims, content],
+export const AdvertisementMetadata = {
+  title: "Advertisement Metadata",
+  allOf: [ContentAssertion, claims, advertisement],
 } as const;
 
-export type ContentMetadata = FromSchema<typeof ContentMetadata>;
+export type AdvertisementMetadata = FromSchema<typeof AdvertisementMetadata>;
