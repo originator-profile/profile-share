@@ -1,7 +1,9 @@
 import { FromSchema } from "json-schema-to-ts";
 import Category from "./category";
 
+/** @deprecated */
 const OgWebsite = {
+  deprecated: true,
   title: "Website",
   description: "Website",
   type: "object",
@@ -32,6 +34,7 @@ const OgWebsite = {
   required: ["type"],
 } as const;
 
+/** @deprecated */
 type OgWebsite = FromSchema<typeof OgWebsite>;
 
 export default OgWebsite;
