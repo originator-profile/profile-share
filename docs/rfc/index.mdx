@@ -9,6 +9,45 @@ Originator Profile 技術は、特定のコンテンツの善悪の価値判断�
 これらの文書はすべて<ruby>草案<rt>draft</rt></ruby>です。
 :::
 
+## 全体像
+
+**Originator Profile** (OP: 組織の ID/Key と基本情報)、**Certificate** (Cert: 組織に関する証明書)、**Content Assertion** (CA: コンテンツの正当性検証) として定義する 3 つを SD-JWT VC 形式で表現し、**Presentation** で定義する形で束ねたり紐付けたりして Web コンテンツと共に配信する。
+
+OP, Cert, CA の 3 つに含めるデータの内、OP の組織情報メタデータ、サイト・コンテンツ・広告のメタデータ、署名対象特定情報といった種別に応じたデータや鍵の取扱については個別 RFC 内で規定する。その他、鍵交換などを含むトラストモデルなども合わせて設計している。
+
+- [**Originator Profile (OP)**](./02.md): 情報発信者となる組織の基本情報や検証鍵を含めレジストリが署名するデータ (SD-JWT VC 形式)
+  - [**Organization Metadata**](./07.md): OP 保有者情報のメタデータ
+- [**Content Assersion** (CA, 仮, 旧 WA/DP)](./04.md): OP が作成や管理する Web コンテンツなどに関する情報や対象コンテンツの特定、検証方法などを記載し OP 保有者が署名するデータ (SD-JWT VC 形式)
+  - [**Content Metadata**](./13.md): Web コンテンツタイプの CA にコンテンツ情報として含めるメタデータ
+  - [**Website Metadata**](./15.md): Web サイトタイプの CA にサイト情報として含めるメタデータ
+  - [**Advertisement Metadata**](./14.md): 広告タイプの CA に広告情報として含めるメタデータ
+  - Target Integrity: Web コンテンツ又は広告タイプの CA に含める署名対象コンテンツ特定情報とハッシュ・署名のデータ
+    - [HTML Target](./09.md): 対象 DOM 要素の HTML 文字列としての完全性検証
+    - [Text Target](./10.md): 対象 DOM 要素に含まれるテキストコンテンツの完全性検証
+    - [Visible Text Target](./11.md): 対象要素のレンダリングされているテキストの完全性検証
+    - [External Resource Target](12.md): 外部リソースの真正性検証
+- [**Certificate** (Cert, 旧資格情報)](./20.md): OP
+  - OP 保有者組織に関する証明書。実在性確認証明を兼ねる法人番号 Cert の他、認証情報や所属組織などの組織に関する任意の証明書 (SD-JWT VC形式)
+  - **[Certificate Metadata](./17.md)**: OP 保有者情報のメタデータ
+- 提示方法 (Presentation)
+  - **[Content Assertion Set (CAS)](./03.md)**: OP, Cert, CA を束ねたデータ
+  - [HTML への埋め込み](./05.md): CAS を HTML に埋め込む方法
+
+その他の仕様文書:
+
+- [暗号アルゴリズム](./19.md): OP で仕様が推奨される暗号アルゴリズムについての文書
+- [用語集](./18.md): 用語の定義
+
+次の文書は今後策定する予定です。
+
+- トラストモデル
+  - [Trust Model](./08.md)
+  - [Key States and Transitions](./06.md)
+
+次の文書は参考情報です。
+
+- [Certificate Category](./21.md): Certiticate の分類に関する文書
+
 import DocCardList from "@theme/DocCardList";
 
 <DocCardList />
