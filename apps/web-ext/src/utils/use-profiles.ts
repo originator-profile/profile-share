@@ -31,7 +31,7 @@ import {
 import { buildPublUrl } from "./routes";
 import { DpLocator, isDp } from "@originator-profile/core";
 import { Jwks } from "@originator-profile/model";
-import { makeAdTree, updateAdIframe } from "../utils/ad-tree";
+import { makeAdTree, updateAdIframe } from "./ad-tree";
 
 const key = "profiles" as const;
 const WebsiteProfilePairKey = "website-profile-pair" as const;
