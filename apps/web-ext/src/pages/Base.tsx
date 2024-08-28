@@ -2,7 +2,7 @@ import { useTitle, useMount } from "react-use";
 import { Navigate, useSearchParams } from "react-router-dom";
 import { DocumentProfile, ProfileSet } from "@originator-profile/ui";
 import { buildPublUrl } from "../utils/routes";
-import useProfileSet from "../utils/use-profile-set";
+import useProfiles from "../utils/use-profiles";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
 import useVerifyFailureFeedback from "../utils/use-verify-failure-feedback";
@@ -32,7 +32,7 @@ function Redirect({
 
 function Base() {
   const [queryParams] = useSearchParams();
-  const { tabId, profileSet, error, origin } = useProfileSet();
+  const { tabId, profileSet, error, origin } = useProfiles();
 
   useTitle(["コンテンツ情報", origin].filter(Boolean).join(" ― "));
 

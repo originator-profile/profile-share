@@ -1,8 +1,8 @@
-import useProfileSet from "../utils/use-profile-set";
+import useProfiles from "../utils/use-profiles";
 import { Spinner } from "@originator-profile/ui";
 
 function Loading() {
-  const { origin } = useProfileSet();
+  const { origin } = useProfiles();
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <div className="p-2 flex flex-col items-center gap-4">
