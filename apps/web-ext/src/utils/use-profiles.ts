@@ -31,7 +31,7 @@ import {
 import { buildPublUrl } from "./routes";
 import { DpLocator, isDp } from "@originator-profile/core";
 import { Jwks } from "@originator-profile/model";
-import { makeAdTree, updateAdIframe } from "../utils/ad-tree";
+import { makeAdTree, updateAdIframe } from "./ad-tree";
 
 const key = "profiles" as const;
 const WebsiteProfilePairKey = "website-profile-pair" as const;
@@ -318,10 +318,10 @@ async function fetchVerifiedWebsiteProfilePair([, tabId]: [
 }
 
 /**
- * Profile Set 取得 (要 Base コンポーネント)
+ * Profiles 取得 (要 Base コンポーネント)
  * @deprecated
  */
-function useProfileSet() {
+function useProfiles() {
   const params = useParams<{ tabId: string }>();
   const tabId = Number(params.tabId);
   // TODO: 自動再検証する場合は取得エンドポイントが変わりうることをUIの振る舞いで考慮して
@@ -389,4 +389,4 @@ function useProfileSet() {
   };
 }
 
-export default useProfileSet;
+export default useProfiles;
