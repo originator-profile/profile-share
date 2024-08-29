@@ -7,8 +7,10 @@ import {
   JwtVcIssuerKeys,
   VerifyResults,
   VerifyResult,
+  ProfileClaimsValidationFailed,
 } from "@originator-profile/verify";
 import { Fragment, useState, type ChangeEvent, type FormEvent } from "react";
+import ReactJson from "react-json-view";
 import {
   DebugTargetSelectField,
   DebugTargetValue,
@@ -73,30 +75,78 @@ function transformEndpoint(endpoint: string): string {
   return endpoint;
 }
 
-function ResultFragment({ value }: { value: VerifyResult }) {
+function DetailItem<C>(props: { title: string; content: C }) {
+  const content =
+    typeof props.content === "object" && props.content !== null ? (
+      <ReactJson
+        name={null}
+        src={props.content}
+        displayDataTypes={false}
+        displayObjectSize={false}
+      />
+    ) : (
+      String(props.content)
+    );
+
+  return (
+    <>
+      <dt className="text-xs font-bold -mx-2 p-2">{props.title}</dt>
+      <dd className="ml-4">
+        <ResultText>{content}</ResultText>
+      </dd>
+    </>
+  );
+}
+
+function VerificationResultDetail({
+  value,
+  index,
+}: {
+  value: VerifyResult;
+  index: number;
+}) {
   if (value instanceof ProfileGenericError) {
     return (
-      <>
-        <p>
-          type: {"op" in value.result ? "Originator Profile" : "Web Assertion"}
-        </p>
-        <p>{value.code}</p>
-        <p>{value.message}</p>
-        <ResultText>
-          {JSON.stringify(value.result.payload, null, "  ")}
-        </ResultText>
-        <ResultText>{value.result.jwt}</ResultText>
-        {"error" in value.result && (
-          <ResultText>
-            {JSON.stringify(value.result.error, null, "  ")}
-          </ResultText>
+      <dl>
+        <DetailItem
+          title={`Error Code of Profile #${index}`}
+          content={value.code}
+        />
+        <DetailItem
+          title={`Error Message of Profile #${index}`}
+          content={value.message}
+        />
+        {"error" in value.result && value.result.error && (
+          <DetailItem
+            title={`JWT Error of Profile #${index}`}
+            content={value.result.error}
+          />
         )}
-      </>
+        {value instanceof ProfileClaimsValidationFailed && (
+          <DetailItem
+            title={`Claims Error of Profile #${index}`}
+            content={value.result.errors}
+          />
+        )}
+        {value.result.payload && (
+          <DetailItem
+            title={`Payload of Profile #${index}`}
+            content={value.result.payload}
+          />
+        )}
+        <DetailItem
+          title={`JWT of Profile #${index}`}
+          content={value.result.jwt}
+        />
+      </dl>
     );
-  } else if ("op" in value) {
-    return <ResultText>{JSON.stringify(value, null, "  ")}</ResultText>;
-  } else if ("dp" in value) {
-    return <ResultText>{JSON.stringify(value, null, "  ")}</ResultText>;
+  } else {
+    return (
+      <dl>
+        <DetailItem title={`Status of Profile #${index}`} content={"Success"} />
+        <DetailItem title={`Results of Profile #${index}`} content={value} />
+      </dl>
+    );
   }
 }
 
@@ -109,10 +159,11 @@ function Result({
     return <ResultText>{JSON.stringify(value, null, "  ")}</ResultText>;
   return (
     <>
-      {value.map((value) => {
+      {value.map((value, index) => {
         return (
-          <ResultFragment
+          <VerificationResultDetail
             value={value}
+            index={index}
             key={"result" in value ? value.result.jwt : value.jwt}
           />
         );
@@ -279,7 +330,7 @@ export default function Debugger() {
             )}
             {result && (
               <>
-                <dt className="text-sm font-bold -mx-2 p-2 sticky top-0 bg-white">
+                <dt className="text-sm font-bold -mx-2 p-2 sticky z-10 top-0 bg-white">
                   Verification Result
                 </dt>
                 <dd className="ml-4 mb-4 space-y-4">
