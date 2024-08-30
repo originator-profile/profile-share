@@ -82,9 +82,9 @@ function ResubmitButton() {
   const dialog = useDialog();
   return (
     <>
-      <button 
+      <button
         type="button"
-        className="jumpu-button font-bold" 
+        className="jumpu-button font-bold"
         onClick={() => dialog.open()}
       >
         再申請する
@@ -132,10 +132,7 @@ function Rejected(props: LatestRequestProps) {
       </p>
       {/* TODO: https://github.com/originator-profile/profile/issues/805 */}
       <div className="flex flex-row gap-3">
-        <button 
-          type="button"
-          className="jumpu-button font-bold"
-          >
+        <button type="button" className="jumpu-button font-bold">
           お知らせを確認する
         </button>
         <ResubmitButton />
