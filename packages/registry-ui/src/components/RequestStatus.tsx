@@ -58,6 +58,7 @@ function Pending(props: LatestRequestProps) {
       </p>
 
       <button
+        type="button"
         className="jumpu-button font-bold bg-danger"
         onClick={() => dialog.open()}
       >
@@ -81,7 +82,11 @@ function ResubmitButton() {
   const dialog = useDialog();
   return (
     <>
-      <button className="jumpu-button font-bold" onClick={() => dialog.open()}>
+      <button 
+        type="button"
+        className="jumpu-button font-bold" 
+        onClick={() => dialog.open()}
+      >
         再申請する
       </button>
 
@@ -127,7 +132,12 @@ function Rejected(props: LatestRequestProps) {
       </p>
       {/* TODO: https://github.com/originator-profile/profile/issues/805 */}
       <div className="flex flex-row gap-3">
-        <button className="jumpu-button font-bold">お知らせを確認する</button>
+        <button 
+          type="button"
+          className="jumpu-button font-bold"
+          >
+          お知らせを確認する
+        </button>
         <ResubmitButton />
       </div>
     </Card>
@@ -156,6 +166,7 @@ function RequestRequired(props: RequestRequiredProps) {
       </p>
 
       <button
+        type="button"
         className="jumpu-button font-bold mt-3"
         onClick={() => dialog.open()}
       >
