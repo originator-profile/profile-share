@@ -5,6 +5,7 @@ rules:
   jsx-a11y/no-noninteractive-element-to-interactive-role:
     - error
     - nav: ["tablist"]
+  react/button-has-type: "error"
 overrides:
   - files: src/components/*.tsx
     rules:
