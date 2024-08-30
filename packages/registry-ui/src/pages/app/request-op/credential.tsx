@@ -411,6 +411,7 @@ export default function Credential() {
             <CredentialForm onSubmit={onSubmit} />
           ) : (
             <button
+              type="button"
               className="jumpu-outlined-button border-dashed border-gray-300 px-4 py-6 w-full"
               onClick={() => setShowCreateForm(true)}
             >
