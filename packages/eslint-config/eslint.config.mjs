@@ -1,13 +1,13 @@
 // @ts-check
-import eslint from "@eslint/js";
-import tseslint from "typescript-eslint";
 import { fixupPluginRules } from "@eslint/compat";
+import eslint from "@eslint/js";
+import vitest from "@vitest/eslint-plugin";
+import canonicalPlugin from "eslint-plugin-canonical";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactConfig from "eslint-plugin-react/configs/recommended.js";
-import vitestPlugin from "eslint-plugin-vitest";
-import canonicalPlugin from "eslint-plugin-canonical";
 import globals from "globals";
+import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
@@ -43,13 +43,13 @@ export default tseslint.config(
     },
     plugins: {
       canonical: fixupPluginRules(canonicalPlugin),
-      vitest: vitestPlugin,
+      vitest,
     },
     settings: {
       react: { version: "detect" },
     },
     rules: {
-      ...vitestPlugin.configs.recommended.rules,
+      ...vitest.configs.recommended.rules,
       "canonical/filename-match-exported": ["error", { transforms: "kebab" }],
       "react/react-in-jsx-scope": "off",
 
