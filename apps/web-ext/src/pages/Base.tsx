@@ -6,6 +6,7 @@ import useProfileSet from "../utils/use-profile-set";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
 import useVerifyFailureFeedback from "../utils/use-verify-failure-feedback";
+import { _ } from "@originator-profile/ui/src/utils";
 
 function Redirect({
   dp,
@@ -33,7 +34,7 @@ function Base() {
   const [queryParams] = useSearchParams();
   const { tabId, profileSet, error, origin } = useProfileSet();
 
-  useTitle(["コンテンツ情報", origin].filter(Boolean).join(" ― "));
+  useTitle([_("Base_ContentsInformation"), origin].filter(Boolean).join(" ― "));
 
   const element = useVerifyFailureFeedback({
     profiles: profileSet,

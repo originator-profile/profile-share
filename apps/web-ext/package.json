@@ -64,7 +64,7 @@
     "dev": "node esbuild.mjs --mode=development --issuer=localhost",
     "dev:firefox": "node esbuild.mjs --mode=development --issuer=localhost -t firefox-desktop",
     "lint": "eslint --fix .",
-    "e2e": "dotenv -e ../registry/.env.development playwright test",
+    "e2e": "LC_ALL=ja_JP.UTF-8 dotenv -e ../registry/.env.development playwright test",
     "test": "vitest run"
   }
 }
