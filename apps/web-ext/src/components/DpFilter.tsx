@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { Icon } from "@iconify/react";
 import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
+import { _ } from "@originator-profile/ui/src/utils";
 
 type ContentType = "all" | "main" | "other" | "advertisement";
 
@@ -73,25 +74,25 @@ function DpFilter({ contentType, setContentType }: Props) {
             >
               <MenuItem
                 contentType="all"
-                title="すべて"
+                title={_("DpFilter_All")}
                 selected={contentType === "all"}
                 setContentType={setContentType}
               />
               <MenuItem
                 contentType="main"
-                title="メインコンテンツ"
+                title={_("DpFilter_MainContent")}
                 selected={contentType === "main"}
                 setContentType={setContentType}
               />
               <MenuItem
                 contentType="other"
-                title="その他コンテンツ"
+                title={_("DpFilter_Other")}
                 selected={contentType === "other"}
                 setContentType={setContentType}
               />
               <MenuItem
                 contentType="advertisement"
-                title="広告"
+                title={_("DpFilter_Advertisements")}
                 selected={contentType === "advertisement"}
                 setContentType={setContentType}
               />
