@@ -114,7 +114,7 @@
     "message": "信頼性情報について"
   },
   "ReliabilityGuide_VerifiedOrganizationStatement": {
-    "message": "この組織と組織が保有する資格の実在性は OP レジストリ運用者によって確認済みです。組織の信頼性の判断に資するものとして組織の基本情報と資格情報を閲覧することができます。"
+    "message": "この組織の実在性と組織が保有する証明書は OP レジストリ運用者によって確認済みです。組織の信頼性の判断に資するものとして組織の基本情報と証明書を閲覧することができます。"
   },
   "Unsupported_NonconformingDescription": {
     "message": "信頼性情報あるいは流通経路が仕様どおりに記述されていません"
@@ -204,7 +204,7 @@
     "message": "プライバシーポリシー"
   },
   "Org_CredentialInformation": {
-    "message": "資格情報"
+    "message": "証明書"
   },
   "Org_OrganizationInformation": {
     "message": "組織情報"
@@ -255,13 +255,13 @@
     "message": "website Profile Pairを取得できませんでした"
   },
   "CredentialDetail_CredentialName": {
-    "message": "資格名"
+    "message": "証明書名"
   },
   "CredentialDetail_Certifier": {
     "message": "認証機関"
   },
   "CredentialDetail_Verifier": {
-    "message": "認証機関"
+    "message": "検証機関"
   },
   "CredentialDetail_IssuedAt": {
     "message": "発行日"
