@@ -114,7 +114,7 @@
     "message": "About reliability information"
   },
   "ReliabilityGuide_VerifiedOrganizationStatement": {
-    "message": "The existence of this organization and its qualifications have been verified by the OP Registry operator. You can view the organization's basic information and credential information to help assess the organization's reliability."
+    "message": "The existence of this organization and the certificates it holds have been verified by the OP Registry operator. You can view the organization's basic information and certificates to help assess the organization's reliability."
   },
   "Unsupported_NonconformingDescription": {
     "message": "Reliability information or distribution channel is not described according to specifications"
@@ -204,7 +204,7 @@
     "message": "Privacy Policy"
   },
   "Org_CredentialInformation": {
-    "message": "Credential Information"
+    "message": "Certificate Information"
   },
   "Org_OrganizationInformation": {
     "message": "Organization Information"
@@ -252,7 +252,7 @@
     "message": "Profile not found"
   },
   "CredentialDetail_CredentialName": {
-    "message": "Credential Name"
+    "message": "Certificate Name"
   },
   "CredentialDetail_Certifier": {
     "message": "Certifier"
