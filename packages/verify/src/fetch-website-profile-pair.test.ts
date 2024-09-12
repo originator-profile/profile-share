@@ -78,7 +78,9 @@ describe("fetch-website-profile-pair", () => {
     );
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
     // @ts-expect-error result is ProfilesFetchFailed
-    expect(result.message).toBe(`HTTP ステータスコード 404`);
+    expect(result.cause).toBeInstanceOf(ProfilesFetchFailed);
+    // @ts-expect-error result is ProfilesFetchFailed
+    expect(result.cause.cause.message).toEqual("404");
   });
 
   test("website Profile Pair の JSON parse に失敗したときエラーが返る", async () => {
@@ -95,8 +97,6 @@ describe("fetch-website-profile-pair", () => {
     );
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
     // @ts-expect-error result is ProfilesFetchFailed
-    expect(result.message).toContain(
-      `website Profile Pairを取得できませんでした:`,
-    );
+    expect(result.message).toContain("Error_WebsiteProfilePairNotFetched");
   });
 });

@@ -78,9 +78,9 @@ describe("単純なlinkから取得", () => {
     );
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
     // @ts-expect-error result is ProfilesFetchFailed
-    expect(result.message).toBe(
-      `プロファイルを取得できませんでした:\nInvalid URL`,
-    );
+    expect(result.message).toBe("Error_ProfileNotFetched");
+    // @ts-expect-error result is ProfilesFetchFailed
+    expect(result.cause.message).toBe("Invalid URL");
   });
 
   test("取得先に Profile Set が存在しないとき Profile Set の取得に失敗", async () => {
@@ -103,9 +103,9 @@ describe("単純なlinkから取得", () => {
     );
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
     // @ts-expect-error result is ProfilesFetchFailed
-    expect(result.message).toBe(
-      `プロファイルを取得できませんでした:\nHTTP ステータスコード 404`,
-    );
+    expect(result.cause).toBeInstanceOf(ProfilesFetchFailed);
+    // @ts-expect-error result is ProfilesFetchFailed
+    expect(result.cause.cause.message).toBe("404");
   });
 });
 

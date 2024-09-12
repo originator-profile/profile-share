@@ -4,14 +4,6 @@ import {
   ContentScriptAllFramesMessageResponse,
 } from "./types/message";
 
-if (import.meta.env.PROFILE_REGISTRY_AUTH) {
-  const __fetch = globalThis.fetch;
-  globalThis.fetch = (
-    input: RequestInfo | URL,
-    init?: RequestInit,
-  ): Promise<Response> => __fetch(input, { ...init, credentials: "include" });
-}
-
 async function handleMessageResponse(
   message: ContentScriptAllFramesMessageRequest,
 ): Promise<ContentScriptAllFramesMessageResponse> {
