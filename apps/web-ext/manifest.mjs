@@ -38,7 +38,13 @@ const base = {
     },
   ],
   host_permissions: ["<all_urls>"],
-  permissions: ["activeTab", "webNavigation", "scripting"],
+  permissions: [
+    "activeTab",
+    "webNavigation",
+    "scripting",
+    "webRequest",
+    "webRequestAuthProvider",
+  ],
 };
 
 const chromium = {

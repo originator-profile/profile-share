@@ -40,3 +40,25 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
 
 // https://www.typescriptlang.org/tsconfig#non-module-files
 export {};
+
+if (import.meta.env.PROFILE_REGISTRY_AUTH) {
+  chrome.webRequest.onAuthRequired.addListener(
+    () => ({
+      authCredentials: {
+        username: import.meta.env.PROFILE_REGISTRY_AUTH_USERNAME,
+        password: import.meta.env.PROFILE_REGISTRY_AUTH_PASSWORD,
+      },
+    }),
+    {
+      urls:
+        import.meta.env.PROFILE_ISSUER === "localhost"
+          ? [
+              "http://localhost:8080/*",
+              // Firefox のため
+              "http://localhost/*",
+            ]
+          : [`https://${import.meta.env.PROFILE_ISSUER}/*`],
+    },
+    ["blocking"],
+  );
+}
