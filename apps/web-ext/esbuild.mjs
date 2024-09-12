@@ -74,6 +74,12 @@ const outdir = path.join(
 const env = {
   MODE: args.values.mode,
   PROFILE_ISSUER: args.values.issuer,
+  PROFILE_REGISTRY_AUTH: process.env.BASIC_AUTH === "true",
+  PROFILE_REGISTRY_AUTH_USERNAME:
+    process.env.BASIC_AUTH === "true" ? process.env.BASIC_AUTH_USERNAME : "",
+  PROFILE_REGISTRY_AUTH_PASSWORD: process.env.BASIC_AUTH
+    ? process.env.BASIC_AUTH_PASSWORD
+    : "",
 };
 
 import { rm } from "node:fs/promises";

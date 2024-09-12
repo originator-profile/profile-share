@@ -12,7 +12,7 @@ import {
   OriginatorProfile,
   Role,
 } from "@originator-profile/ui";
-import { _, useModal } from "@originator-profile/ui/src/utils";
+import { useModal } from "@originator-profile/ui/src/utils";
 import HolderSummary from "../components/HolderSummary";
 import BackHeader from "../components/BackHeader";
 import ReliabilityGuide from "../components/ReliabilityGuide";
@@ -44,9 +44,7 @@ function ReliabilityInfo(props: { op: OriginatorProfile; holder: OpHolder }) {
     <div className="space-y-4">
       {props.holder.publishingPrincipleUrl && (
         <section>
-          <h2 className="whitespace-pre-line text-xs text-gray-600 mb-3">
-            {_("Org_EditorialGuidelines")}
-          </h2>
+          <h2 className="text-xs text-gray-600 mb-3">編集ガイドライン</h2>
           <ExternalLink href={props.holder.publishingPrincipleUrl}>
             {props.holder.publishingPrincipleTitle ??
               props.holder.publishingPrincipleUrl}
@@ -55,18 +53,14 @@ function ReliabilityInfo(props: { op: OriginatorProfile; holder: OpHolder }) {
       )}
       {props.holder.privacyPolicyUrl && (
         <section>
-          <h2 className="whitespace-pre-line text-xs text-gray-600 mb-3">
-            {_("Org_PrivacyPolicy")}
-          </h2>
+          <h2 className="text-xs text-gray-600 mb-3">プライバシーポリシー</h2>
           <ExternalLink href={props.holder.privacyPolicyUrl}>
             {props.holder.privacyPolicyTitle ?? props.holder.privacyPolicyUrl}
           </ExternalLink>
         </section>
       )}
       <section>
-        <h2 className="whitespace-pre-line text-xs text-gray-600 mb-3">
-          {_("Org_CredentialInformation")}
-        </h2>
+        <h2 className="text-xs text-gray-600 mb-3">資格情報</h2>
         <ul className="space-y-2">
           {credentials.map((credential, index) => (
             <li key={index}>
@@ -99,17 +93,13 @@ function OrgInfo(props: { op: OriginatorProfile; holder: OpHolder }) {
         <Description description={props.holder.description} onlyBody />
       )}
       <section>
-        <h2 className="whitespace-pre-line text-xs text-gray-600 mb-3">
-          {_("Org_OrganizationInformation")}
-        </h2>
+        <h2 className="text-xs text-gray-600 mb-3">組織情報</h2>
         <div className="jumpu-card p-4">
           <HolderTable holder={props.holder} />
         </div>
       </section>
       <section>
-        <h2 className="whitespace-pre-line text-xs text-gray-600 mb-3">
-          {_("Org_TechnicalInformation")}
-        </h2>
+        <h2 className="text-xs text-gray-600 mb-3">技術情報</h2>
         <div className="jumpu-card p-4">
           <TechTable
             className="p-4"
@@ -187,12 +177,12 @@ function Org({ contentType, site, op, holder, paths }: Props) {
   const tabs = [
     {
       id: "reliability",
-      name: _("Org_ReliabilityInformation"),
+      name: "信頼性情報",
       panel: <ReliabilityInfo op={op} holder={holder} />,
     },
     {
       id: "org",
-      name: _("Org_OrganizationInformation"),
+      name: "組織情報",
       panel: <OrgInfo op={op} holder={holder} />,
     },
   ] as const satisfies Tabs;

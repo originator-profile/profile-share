@@ -19,18 +19,18 @@ export async function fetchWebsiteProfilePair(
       const json = await response.json();
       return json;
     } else {
-      throw new ProfilesFetchFailed("Error_ProfileHTTPError", {
-        /* Response objectは拡張機能で受け取れていないので message を持ったError風objectを返す */
-        cause: {
-          message: String(response.status),
-        },
-      });
+      return new ProfilesFetchFailed(
+        `HTTP ステータスコード ${response.status}`,
+      );
     }
   } catch (e) {
     if (e instanceof Error || e instanceof window.Error) {
-      return new ProfilesFetchFailed("Error_WebsiteProfilePairNotFetched", {
-        cause: e,
-      });
+      return new ProfilesFetchFailed(
+        `website Profile Pairを取得できませんでした:\n${e.message}`,
+        {
+          cause: e,
+        },
+      );
     } else {
       throw new Error("Unknown error", { cause: e });
     }

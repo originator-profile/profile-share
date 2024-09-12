@@ -3,7 +3,6 @@ import { OpHolder } from "@originator-profile/model";
 import { Image } from "@originator-profile/ui";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
 import logomarkUrl from "@originator-profile/ui/src/assets/logomark.svg";
-import { _ } from "@originator-profile/ui/src/utils";
 
 type Props = {
   holder: OpHolder;
@@ -37,7 +36,7 @@ function HolderSummary({ holder }: Props) {
             <div className="bg-gray-100 rounded-full px-1 py-1 mx-1 my-1">
               <p className="inline-flex items-center align-middle text-xs text-gray-600 px-1">
                 <Icon className="inline mr-1" icon="gg:check-o" />
-                {_("HolderSummary_EditorialGuidelines")}
+                編集ガイドライン
               </p>
             </div>
           )}
@@ -45,7 +44,7 @@ function HolderSummary({ holder }: Props) {
             <div className="bg-gray-100 rounded-full px-1 py-1 mx-1 my-1">
               <p className="inline-flex items-center align-middle text-xs text-gray-600 px-1">
                 <Icon className="inline mr-1" icon="gg:check-o" />
-                {_("HolderSummary_PrivacyPolicy")}
+                プライバシーポリシー
               </p>
             </div>
           )}

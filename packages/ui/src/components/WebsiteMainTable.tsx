@@ -2,7 +2,6 @@ import { twMerge } from "tailwind-merge";
 import { OgWebsite } from "@originator-profile/model";
 import Table from "./Table";
 import TableRow from "./TableRow";
-import { _ } from "../utils";
 
 type Props = {
   className?: string;
@@ -20,7 +19,7 @@ function WebsiteMainTable({ className, website }: Props) {
     >
       {typeof website["https://schema.org/datePublished"] === "string" && (
         <TableRow
-          header={_("WebsiteMainTable_PublishDate")}
+          header="公開日"
           data={new Date(
             website["https://schema.org/datePublished"],
           ).toLocaleString()}
@@ -28,7 +27,7 @@ function WebsiteMainTable({ className, website }: Props) {
       )}
       {typeof website["https://schema.org/dateModified"] === "string" && (
         <TableRow
-          header={_("WebsiteMainTable_LastModified")}
+          header="最終更新日"
           data={new Date(
             website["https://schema.org/dateModified"],
           ).toLocaleString()}
@@ -36,18 +35,18 @@ function WebsiteMainTable({ className, website }: Props) {
       )}
       {"https://schema.org/editor" in website && (
         <TableRow
-          header={_("WebsiteMainTable_EditorInChief")}
+          header="編集責任者"
           data={website["https://schema.org/editor"]}
         />
       )}
       {"https://schema.org/author" in website && (
         <TableRow
-          header={_("WebsiteMainTable_Author")}
+          header="記事執筆者"
           data={website["https://schema.org/author"]}
         />
       )}
       {"category" in website && (
-        <TableRow header={_("WebsiteMainTable_Category")} data={genreNames} />
+        <TableRow header="ジャンル" data={genreNames} />
       )}
     </Table>
   );

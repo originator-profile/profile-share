@@ -36,7 +36,7 @@ const addErrorResponseSchema: onRouteHookHandler = async (opt) => {
 
 async function autohooks(fastify: FastifyInstance): Promise<void> {
   fastify.register(basicAuth, {
-    authenticate: { realm: "Profile Registry" },
+    authenticate: { realm: "Profile Registry (Admin API)" },
     async validate(id, password, request) {
       const valid = await fastify.services.admin.auth(id, password);
       if (!valid) throw new UnauthorizedError("Invalid password");

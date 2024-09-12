@@ -43,7 +43,7 @@ function Org(props: Props) {
   return (
     <Template
       paths={paths}
-      contentType={contentType ?? "ContentType_Document"}
+      contentType={contentType ?? "ドキュメント"}
       site={site}
       op={op}
       holder={holder}

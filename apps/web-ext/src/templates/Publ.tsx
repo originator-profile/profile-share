@@ -18,10 +18,9 @@ import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholde
 import HolderSummaryCard from "../components/HolderSummaryCard";
 import DpSelector from "../components/DpSelector";
 import DpFilter from "../components/DpFilter";
-import ReliabilityGuide from "../components/ReliabilityGuide";
+import ReliablilityGuide from "../components/ReliabilityGuide";
 import { BidResponse } from "../components/rtb";
 import { buildPublUrl } from "../utils/routes";
-import { _ } from "@originator-profile/ui/src/utils";
 
 type Props = {
   profiles: ProfileSet;
@@ -79,8 +78,8 @@ function Site({
               />
             )}
           </Modal>
-          <p className="whitespace-pre-line jumpu-badge bg-gray-600 text-xs text-white font-normal border border-gray-300 mb-3">
-            {_("ContentType_Site")}
+          <p className="jumpu-badge bg-gray-600 text-xs text-white font-normal border border-gray-300 mb-3">
+            サイト
           </p>
           <button
             className="jumpu-icon-button text-xs rounded-full bg-gray-100 border-gray-200 w-6 h-6 ml-1 group"
@@ -91,9 +90,9 @@ function Site({
             <span
               id="tooltip-1"
               role="tooltip"
-              className="whitespace-pre-line ![transform:translate(-50%,_150%)_scale(0)] group-hover:![transform:translate(-50%,_150%)_scale(1)]"
+              className="![transform:translate(-50%,_150%)_scale(0)] group-hover:![transform:translate(-50%,_150%)_scale(1)]"
             >
-              {_("PublSite_TechnicalInformation")}
+              技術情報
             </span>
           </button>
         </div>
@@ -111,7 +110,7 @@ function Site({
           <h1 className="w-fit text-base text-gray-700 mb-2">
             {dpItemContent.title}
           </h1>
-          <ReliabilityGuide className="mb-3" contentType="ContentType_Site" />
+          <ReliablilityGuide className="mb-3" contentType="サイト" />
         </div>
         <div className="mb-3" data-testid="pp-json-holder">
           <HolderSummaryCard to={paths.org} holder={holder} />
@@ -151,11 +150,11 @@ function Main({
           )}
         </Modal>
         <div className="flex items-center justify-center gap-1 mb-3">
-          <p className="whitespace-pre-line jumpu-badge inline-flex items-center gap-1 bg-gray-600 text-xs text-white font-normal border border-gray-300">
-            {contentType === "ContentType_MainContent" && (
+          <p className="jumpu-badge inline-flex items-center gap-1 bg-gray-600 text-xs text-white font-normal border border-gray-300">
+            {contentType === "メインコンテンツ" && (
               <Icon className="text-base" icon="fluent:window-text-20-filled" />
             )}
-            {_(contentType)}
+            {contentType}
           </p>
           <button
             className="jumpu-icon-button text-xs rounded-full bg-gray-100 border-gray-200 w-6 h-6 ml-1"
@@ -163,12 +162,12 @@ function Main({
             onClick={handleClick}
           >
             <Icon className="inline" icon={"fa6-solid:wrench"} />
-            <span id="whitespace-pre-line tooltip-2" role="tooltip">
-              {_("PublMain_TechnicalInformation")}
+            <span id="tooltip-2" role="tooltip">
+              技術情報
             </span>
           </button>
         </div>
-        <ReliabilityGuide className="mb-3" contentType={contentType} />
+        <ReliablilityGuide className="mb-3" contentType={contentType} />
         <div className="mb-3" data-testid="ps-json-holder">
           <HolderSummaryCard to={paths.org} holder={holder} />
         </div>

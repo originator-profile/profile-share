@@ -32,7 +32,6 @@ import { buildPublUrl } from "./routes";
 import { DpLocator, isDp } from "@originator-profile/core";
 import { Jwks } from "@originator-profile/model";
 import { makeAdTree, updateAdIframe } from "../utils/ad-tree";
-import { _ } from "@originator-profile/ui/src/utils";
 
 const key = "profiles" as const;
 const WebsiteProfilePairKey = "website-profile-pair" as const;
@@ -377,7 +376,7 @@ function useProfileSet() {
       errorWebsite ||
       errorVerifiedBodies ||
       (data?.isEmpty() && dataWebsite?.website.length === 0
-        ? new Error(_("Error_ProfileNotFound"))
+        ? new Error("プロファイルが見つかりませんでした")
         : null),
     tabId,
   };

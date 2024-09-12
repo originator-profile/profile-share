@@ -1,3 +1,4 @@
+import { ProjectSummary } from "@originator-profile/ui";
 import {
   ProfilesVerifier,
   RemoteKeys,
@@ -237,6 +238,7 @@ export default function Debugger() {
           </dl>
         </section>
       )}
+      <ProjectSummary />
     </article>
   );
 }

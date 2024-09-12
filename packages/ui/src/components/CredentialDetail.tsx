@@ -9,7 +9,6 @@ import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
 import useCertificationSystem from "../utils/use-certification-system";
 import range from "just-range";
 import useSanitizedHtml from "../utils/use-sanitized-html";
-import { _ } from "../utils/get-message";
 
 type Props = {
   className?: string;
@@ -59,28 +58,17 @@ function CredentialDetail({ className, credential }: Props) {
         </div>
       )}
       <Table className="mb-2">
-        <TableRow
-          header={_("CredentialDetail_CredentialName")}
-          data={credential.name}
-        />
-        {data && (
-          <TableRow
-            header={_("CredentialDetail_Certifier")}
-            data={data.certifier.name}
-          />
-        )}
+        <TableRow header="資格名" data={credential.name} />
+        {data && <TableRow header="認証機関" data={data.certifier.name} />}
         {data?.verifier && (
-          <TableRow
-            header={_("CredentialDetail_Verifier")}
-            data={data.verifier.name}
-          />
+          <TableRow header="検証機関" data={data.verifier.name} />
         )}
         <TableRow
-          header={_("CredentialDetail_IssuedAt")}
+          header="発行日"
           data={new Date(credential.issuedAt).toLocaleString()}
         />
         <TableRow
-          header={_("CredentialDetail_ExpiredAt")}
+          header="有効期限"
           data={expirationDateTimeLocaleFrom(credential.expiredAt)}
         />
       </Table>
@@ -92,9 +80,7 @@ function CredentialDetail({ className, credential }: Props) {
           href={data.url}
         >
           <span className="flex flex-col gap-1">
-            <span className="text-xs text-gray-500">
-              {_("CredentialDetail_Details")}
-            </span>
+            <span className="text-xs text-gray-500">くわしくはこちら</span>
             <span className="text-sm">{data.urlTitle}</span>
           </span>
           <Icon
@@ -104,7 +90,7 @@ function CredentialDetail({ className, credential }: Props) {
         </a>
       ) : (
         <div className="animate-pulse">
-          <div className="bg-slate-200 h-14 rounded-2xl" />
+          <div className="bg-slate-200 rounded h-14 rounded-2xl" />
         </div>
       )}
     </div>

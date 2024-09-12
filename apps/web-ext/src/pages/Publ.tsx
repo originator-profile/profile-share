@@ -52,7 +52,7 @@ function getTemplateProps<
       org: {
         pathname: routes.org.build(
           routes.org.getParams({
-            contentType: mustWebsite ? "ContentType_Site" : dp.getContentType(),
+            contentType: mustWebsite ? "サイト" : dp.getContentType(),
             op,
           }),
         ),
