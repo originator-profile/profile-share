@@ -2,7 +2,6 @@ import { OpHolder } from "@originator-profile/model";
 import { ExternalLink } from "./link";
 import Table from "./Table";
 import TableRow from "./TableRow";
-import { _ } from "../utils";
 
 type Props = {
   className?: string;
@@ -12,23 +11,18 @@ type Props = {
 function HolderTable({ className, holder }: Props) {
   return (
     <Table className={className}>
-      <TableRow header={_("HolderTable_Holder")} data={holder.name} />
+      <TableRow header="所有者" data={holder.name} />
       <TableRow
-        header={_("HolderTable_Address")}
-        data={_("HolderTable_AddressData", [
-          holder.postalCode,
-          holder.addressRegion,
-          holder.addressLocality,
-          holder.streetAddress,
-        ])}
+        header="所在地"
+        data={`〒${holder.postalCode} ${holder.addressRegion}${holder.addressLocality}${holder.streetAddress}`}
       />
       <TableRow
-        header={_("HolderTable_URL")}
+        header="URL"
         data={<ExternalLink href={holder.url}>{holder.url}</ExternalLink>}
       />
       {"phoneNumber" in holder && (
         <TableRow
-          header={_("HolderTable_PhoneNum")}
+          header="電話番号"
           data={
             <ExternalLink href={`tel:${holder.phoneNumber}`}>
               {holder.phoneNumber}
@@ -38,7 +32,7 @@ function HolderTable({ className, holder }: Props) {
       )}
       {"email" in holder && (
         <TableRow
-          header={_("HolderTable_Email")}
+          header="メールアドレス"
           data={
             <ExternalLink href={`mailto:${holder.email}`}>
               {holder.email}
@@ -48,7 +42,7 @@ function HolderTable({ className, holder }: Props) {
       )}
       {"corporateNumber" in holder && (
         <TableRow
-          header={_("HolderTable_CorpNum")}
+          header="法人番号"
           data={
             <ExternalLink
               href={`https://info.gbiz.go.jp/hojin/ichiran?hojinBango=${holder.corporateNumber}`}
@@ -60,7 +54,7 @@ function HolderTable({ className, holder }: Props) {
       )}
       {"contactUrl" in holder && (
         <TableRow
-          header={_("HolderTable_Contact")}
+          header="問い合わせ"
           data={
             <ExternalLink href={holder.contactUrl}>
               {holder.contactTitle ?? holder.contactUrl}
@@ -70,7 +64,7 @@ function HolderTable({ className, holder }: Props) {
       )}
       {"privacyPolicyUrl" in holder && (
         <TableRow
-          header={_("HolderTable_PrivacyPolicy")}
+          header="プライバシーポリシー"
           data={
             <ExternalLink href={holder.privacyPolicyUrl}>
               {holder.privacyPolicyTitle ?? holder.privacyPolicyUrl}
@@ -80,7 +74,7 @@ function HolderTable({ className, holder }: Props) {
       )}
       {"publishingPrincipleUrl" in holder && (
         <TableRow
-          header={_("HolderTable_Principle")}
+          header="編集ガイドライン"
           data={
             <ExternalLink href={holder.publishingPrincipleUrl}>
               {holder.publishingPrincipleTitle ?? holder.publishingPrincipleUrl}

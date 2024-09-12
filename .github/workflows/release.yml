@@ -28,6 +28,10 @@ jobs:
           pnpm exec lerna version --yes "${{ github.event.inputs.version }}"
       - name: Build
         uses: "./.github/actions/build"
+        with:
+          BASIC_AUTH: ${{ secrets.BASIC_AUTH }}
+          BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
+          BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
       - name: Build for WordPress plugin
         uses: "./.github/actions/wordpress_build"
       - name: Publish Registry CLI

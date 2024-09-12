@@ -2,18 +2,17 @@ import { Link } from "react-router-dom";
 import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
 import useProfileSet from "../utils/use-profile-set";
 import { routes } from "../utils/routes";
-import { _ } from "@originator-profile/ui/src/utils";
 
 type Props = {
   variant: "profile" | "op" | "dp" | "holder" | "website";
 };
 
 const label: { [key in Props["variant"]]: string } = {
-  profile: _("NotFound_OrganizationOrPublication"),
-  op: _("NotFound_Organization"),
-  dp: _("NotFound_Publication"),
-  holder: _("NotFound_Holder"),
-  website: _("NotFound_Website"),
+  profile: "組織あるいは出版物",
+  op: "組織",
+  dp: "出版物",
+  holder: "所有者",
+  website: "ウェブサイト",
 } as const;
 
 function NotFound({ variant }: Props) {
@@ -22,21 +21,25 @@ function NotFound({ variant }: Props) {
     <div className="px-4 py-12">
       <ProjectTitle as="header" />
       <article className="text-center mb-10">
-        <h1 className="whitespace-pre-line text-lg mb-2">
-          {_("NotFound_InformationNotFound", label[variant])}
+        <h1 className="text-lg mb-2">
+          {label[variant]}の情報が
+          <br />
+          見つかりませんでした
         </h1>
         <p
-          className="whitespace-pre-line text-xs text-gray-700 mb-8"
+          className="text-xs text-gray-700 mb-8"
           data-testid="p-elm-notfound-message"
         >
-          {_("NotFound_PageMightBeMoved", label[variant])}
+          ページの移動によって{label[variant]}の情報が
+          <br />
+          失われた可能性があります
         </p>
         <p>
           <Link
             className="text-xs text-blue-600 hover:underline"
             to={routes.base.build({ tabId: String(tabId) })}
           >
-            {_("NotFound_ViewOtherPublications")}
+            他の出版物をみる
           </Link>
         </p>
       </article>

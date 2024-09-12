@@ -25,7 +25,7 @@ services:
       db:
         condition: service_healthy
   db:
-    image: mariadb:11.5
+    image: mariadb:11.4
     restart: unless-stopped
     healthcheck:
       test: mariadb-admin ping

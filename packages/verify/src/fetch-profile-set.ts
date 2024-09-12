@@ -53,12 +53,7 @@ export async function fetchProfileSet(
         const res = await fetch(endpoint);
 
         if (!res.ok) {
-          throw new ProfilesFetchFailed("Error_ProfileHTTPError", {
-            cause: {
-              /* Response objectは拡張機能で受け取れていないので message を持ったError風objectを返す */
-              message: String(res.status),
-            },
-          });
+          throw new ProfilesFetchFailed(`HTTP ステータスコード ${res.status}`);
         }
 
         return await res.json();
@@ -67,9 +62,12 @@ export async function fetchProfileSet(
     profiles = profiles.concat(profileSetFromEndpoints);
   } catch (e) {
     if (e instanceof Error || e instanceof window.Error) {
-      return new ProfilesFetchFailed("Error_ProfileNotFetched", {
-        cause: e,
-      });
+      return new ProfilesFetchFailed(
+        `プロファイルを取得できませんでした:\n${e.message}`,
+        {
+          cause: e,
+        },
+      );
     } else {
       throw new Error("Unknown error", { cause: e });
     }
