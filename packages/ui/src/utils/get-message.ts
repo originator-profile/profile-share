@@ -7,4 +7,5 @@
 export function getMessage(msg: string, substitutions?: string | string[]) {
   return chrome.i18n.getMessage(msg, substitutions);
 }
+
 export const _ = getMessage;

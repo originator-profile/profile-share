@@ -18,7 +18,7 @@
     "@originator-profile/ui": "workspace:*",
     "@originator-profile/verify": "workspace:*",
     "@playwright/test": "^1.44.1",
-    "@types/chrome": "^0.0.269",
+    "@types/chrome": "^0.0.270",
     "@types/esbuild-copy-static-files": "^0.1.3",
     "@types/jsonld": "^1.5.14",
     "@types/react": "^18.3.3",
@@ -33,7 +33,7 @@
     "eslint": "^9.7.0",
     "eslint-config-originator-profile": "workspace:*",
     "globals": "^15.8.0",
-    "happy-dom": "^14.12.0",
+    "happy-dom": "^15.0.0",
     "jsonld": "^8.3.2",
     "just-extend": "^6.2.0",
     "npm-run-all2": "6.2.2",
@@ -59,12 +59,12 @@
   "repository": "git@github.com:originator-profile/profile.git",
   "scripts": {
     "build": "run-p build:*",
-    "build:chromium": "dotenv -e ../registry/.env.development.auth node esbuild.mjs",
-    "build:firefox": "dotenv -e ../registry/.env.development.auth node esbuild.mjs -t firefox-desktop",
-    "dev": "dotenv -e ../registry/.env.development.auth node esbuild.mjs -- --mode=development --issuer=localhost",
-    "dev:firefox": "dotenv -e ../registry/.env.development.auth node esbuild.mjs -- --mode=development --issuer=localhost -t firefox-desktop",
+    "build:chromium": "node esbuild.mjs",
+    "build:firefox": "node esbuild.mjs -t firefox-desktop",
+    "dev": "node esbuild.mjs --mode=development --issuer=localhost",
+    "dev:firefox": "node esbuild.mjs --mode=development --issuer=localhost -t firefox-desktop",
     "lint": "eslint --fix .",
-    "e2e": "dotenv -e ../registry/.env.development playwright test",
+    "e2e": "LC_ALL=ja_JP.UTF-8 dotenv -e ../registry/.env.development playwright test",
     "test": "vitest run"
   }
 }

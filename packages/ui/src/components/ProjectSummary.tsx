@@ -1,5 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import logoUrl from "../assets/logo.svg";
+import { _ } from "../utils";
 
 type Props = {
   as?: keyof JSX.IntrinsicElements;
@@ -22,12 +23,11 @@ function ProjectSummary({ as: As = "section", className }: Props) {
       >
         <img width={186} height={40} src={logoUrl} alt="Originator Profile" />
       </a>
-      <p className="text-gray-700">
-        Originator Profile
-        技術は、ウェブコンテンツの作成者や広告主などの情報を検証可能な形で付与することで、第三者認証済みの良質な記事やメディアを容易に見分けられるようにする技術です。
+      <p className="whitespace-pre-line text-gray-700">
+        {_("ProjectSummary_Statement_1")}
       </p>
-      <p className="text-gray-700">
-        コンテンツ作成者や流通経路の透明性を高め、信頼できる発信者を識別可能にすることで、責任ある良質な記事やメディアの増加と価値向上を助けます。
+      <p className="whitespace-pre-line text-gray-700">
+        {_("ProjectSummary_Statement_2")}
       </p>
       <p className="text-xs text-center underline">
         <a

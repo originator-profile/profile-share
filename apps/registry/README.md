@@ -945,12 +945,3 @@ S3_API_ENDPOINT
 
 S3_ACCOUNT_LOGO_PUBLIC_ENDPOINT
 : 画像ファイルをインターネットに公開する場合のエンドポイント
-
-BASIC_AUTH
-: すべてのレジストリ API への Basic 認証の有無 (形式: `true` or `false`)
-
-BASIC_AUTH_USERNAME
-: すべてのレジストリ API への Basic 認証のユーザー名
-
-BASIC_AUTH_PASSWORD
-: すべてのレジストリ API への Basic 認証のパスワード
