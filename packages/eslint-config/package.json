@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-originator-profile",
-  "version": "0.0.11",
+  "version": "0.0.12-alpha.0",
   "private": true,
   "exports": "./eslint.config.mjs",
   "dependencies": {
