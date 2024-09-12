@@ -41,6 +41,13 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
 // https://www.typescriptlang.org/tsconfig#non-module-files
 export {};
 
+// NOTE: gh-1583
+if (import.meta.env.MODE === "development") {
+  chrome.runtime.onInstalled.addListener(({ reason }) => {
+    if (reason === "install") chrome.tabs.reload();
+  });
+}
+
 if (import.meta.env.BASIC_AUTH) {
   for (const credential of import.meta.env.BASIC_AUTH_CREDENTIALS) {
     chrome.webRequest.onAuthRequired.addListener(
