@@ -1,6 +1,7 @@
 // @ts-check
-import util from "node:util";
 import path from "node:path";
+import util from "node:util";
+import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import chokidar from "chokidar";
 
@@ -67,19 +68,28 @@ if (args.values.help) {
 
 const filename = `{name}-${args.values.target}-{version}.zip`;
 const artifactsDir = "web-ext-artifacts";
-const outdir = path.join(
-  path.dirname(fileURLToPath(new URL(import.meta.url))),
-  `dist-${args.values.target}`,
-);
+const cwd = path.dirname(fileURLToPath(new URL(import.meta.url)));
+const outdir = path.join(cwd, `dist-${args.values.target}`);
+const credentialsPath = path.join(cwd, "credentials.json");
+/** @type {ImportMeta["env"]["BASIC_AUTH_CREDENTIALS"]} */
+let credentials = [];
+if (existsSync(credentialsPath)) {
+  const file = readFileSync(credentialsPath, { encoding: "utf8" });
+  credentials = JSON.parse(file);
+} else if (args.values.mode === "development") {
+  credentials = [
+    {
+      domain: args.values.issuer ?? "",
+      username: process.env.BASIC_AUTH_USERNAME ?? "",
+      password: process.env.BASIC_AUTH_PASSWORD ?? "",
+    },
+  ];
+}
 const env = {
   MODE: args.values.mode,
   PROFILE_ISSUER: args.values.issuer,
-  PROFILE_REGISTRY_AUTH: process.env.BASIC_AUTH === "true",
-  PROFILE_REGISTRY_AUTH_USERNAME:
-    process.env.BASIC_AUTH === "true" ? process.env.BASIC_AUTH_USERNAME : "",
-  PROFILE_REGISTRY_AUTH_PASSWORD: process.env.BASIC_AUTH
-    ? process.env.BASIC_AUTH_PASSWORD
-    : "",
+  BASIC_AUTH: process.env.BASIC_AUTH === "true",
+  BASIC_AUTH_CREDENTIALS: process.env.BASIC_AUTH === "true" ? credentials : [],
 };
 
 import { rm } from "node:fs/promises";

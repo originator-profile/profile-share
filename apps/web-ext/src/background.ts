@@ -41,24 +41,26 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
 // https://www.typescriptlang.org/tsconfig#non-module-files
 export {};
 
-if (import.meta.env.PROFILE_REGISTRY_AUTH) {
-  chrome.webRequest.onAuthRequired.addListener(
-    () => ({
-      authCredentials: {
-        username: import.meta.env.PROFILE_REGISTRY_AUTH_USERNAME,
-        password: import.meta.env.PROFILE_REGISTRY_AUTH_PASSWORD,
+if (import.meta.env.BASIC_AUTH) {
+  for (const credential of import.meta.env.BASIC_AUTH_CREDENTIALS) {
+    chrome.webRequest.onAuthRequired.addListener(
+      () => ({
+        authCredentials: {
+          username: credential.username,
+          password: credential.password,
+        },
+      }),
+      {
+        urls:
+          credential.domain === "localhost"
+            ? [
+                "http://localhost:8080/*",
+                // Firefox のため
+                "http://localhost/*",
+              ]
+            : [`https://${credential.domain}/*`],
       },
-    }),
-    {
-      urls:
-        import.meta.env.PROFILE_ISSUER === "localhost"
-          ? [
-              "http://localhost:8080/*",
-              // Firefox のため
-              "http://localhost/*",
-            ]
-          : [`https://${import.meta.env.PROFILE_ISSUER}/*`],
-    },
-    ["blocking"],
-  );
+      ["blocking"],
+    );
+  }
 }

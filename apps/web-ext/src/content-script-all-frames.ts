@@ -4,7 +4,7 @@ import {
   ContentScriptAllFramesMessageResponse,
 } from "./types/message";
 
-if (import.meta.env.PROFILE_REGISTRY_AUTH) {
+if (import.meta.env.BASIC_AUTH) {
   const __fetch = globalThis.fetch;
   globalThis.fetch = (
     input: RequestInfo | URL,
