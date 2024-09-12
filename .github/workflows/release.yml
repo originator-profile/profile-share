@@ -30,8 +30,7 @@ jobs:
         uses: "./.github/actions/build"
         with:
           BASIC_AUTH: ${{ secrets.BASIC_AUTH }}
-          BASIC_AUTH_USERNAME: ${{ secrets.BASIC_AUTH_USERNAME }}
-          BASIC_AUTH_PASSWORD: ${{ secrets.BASIC_AUTH_PASSWORD }}
+          BASIC_AUTH_CREDENTIALS: ${{ secrets.BASIC_AUTH_CREDENTIALS }}
       - name: Build for WordPress plugin
         uses: "./.github/actions/wordpress_build"
       - name: Publish Registry CLI

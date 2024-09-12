@@ -47,8 +47,27 @@ $ pnpm dev --issuer=oprexpt.originator-profile.org --url=https://originator-prof
 - `PROFILE_ISSUER`: プロファイルを発行しているレジストリ。プロファイルの署名検証時に使用する公開鍵の参照先のドメイン名。
   - `pnpm dev` 時のデフォルト値: `localhost`
   - `pnpm build` 時のデフォルト値: `oprexpt.originator-profile.org`
-- `BASIC_AUTH_USERNAME`: レジストリ API の Basic 認証のユーザー名
-- `BASIC_AUTH_PASSWORD`: レジストリ API の Basic 認証のパスワード
+- `BASIC_AUTH`: レジストリ API の Basic 認証 (形式: `true` or `false`)
+- `BASIC_AUTH_USERNAME`: 開発用レジストリ API の Basic 認証のユーザー名
+- `BASIC_AUTH_PASSWORD`: 開発用レジストリ API の Basic 認証のパスワード
+
+## 認証情報
+
+拡張機能をビルドする際、`credentials.json` JSON ファイルがあれば、その内容に基づいて拡張機能に認証情報を同梱し、Basic 認証に使用します。JSON ファイルは次の形式です。
+
+```jsonc
+[
+  {
+    // Basic 認証の対象とするドメイン
+    "domain": "example.com",
+    // ユーザー名
+    "username: "alice",
+    // パスワード
+    "password" "password"
+  },
+  // ...
+]
+```
 
 ## npm スクリプト
 

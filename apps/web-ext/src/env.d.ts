@@ -2,8 +2,11 @@ interface ImportMeta {
   env: {
     MODE: "development" | "production";
     PROFILE_ISSUER: string;
-    PROFILE_REGISTRY_AUTH: boolean;
-    PROFILE_REGISTRY_AUTH_USERNAME: string;
-    PROFILE_REGISTRY_AUTH_PASSWORD: string;
+    BASIC_AUTH: boolean;
+    BASIC_AUTH_CREDENTIALS: {
+      domain: string;
+      username: string;
+      password: string;
+    }[];
   };
 }
