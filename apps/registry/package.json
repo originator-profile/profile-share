@@ -1,7 +1,7 @@
 {
   "name": "@originator-profile/registry",
   "description": "Profile Registry API",
-  "version": "0.0.11-alpha.0",
+  "version": "0.0.11",
   "private": false,
   "bin": {
     "profile-registry": "bin/run"
