@@ -59,10 +59,10 @@
   "repository": "git@github.com:originator-profile/profile.git",
   "scripts": {
     "build": "run-p build:*",
-    "build:chromium": "node esbuild.mjs",
-    "build:firefox": "node esbuild.mjs -t firefox-desktop",
-    "dev": "node esbuild.mjs --mode=development --issuer=localhost",
-    "dev:firefox": "node esbuild.mjs --mode=development --issuer=localhost -t firefox-desktop",
+    "build:chromium": "dotenv -e ../registry/.env.development.auth node esbuild.mjs",
+    "build:firefox": "dotenv -e ../registry/.env.development.auth node esbuild.mjs -t firefox-desktop",
+    "dev": "dotenv -e ../registry/.env.development.auth node esbuild.mjs -- --mode=development --issuer=localhost",
+    "dev:firefox": "dotenv -e ../registry/.env.development.auth node esbuild.mjs -- --mode=development --issuer=localhost -t firefox-desktop",
     "lint": "eslint --fix .",
     "e2e": "LC_ALL=ja_JP.UTF-8 dotenv -e ../registry/.env.development playwright test",
     "test": "vitest run"

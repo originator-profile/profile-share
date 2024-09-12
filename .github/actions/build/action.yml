@@ -1,10 +1,24 @@
 name: build
 description: Build
+inputs:
+  BASIC_AUTH:
+    description: レジストリ API の Basic 認証
+    required: false
+  BASIC_AUTH_USERNAME:
+    description: レジストリ API の Basic 認証のユーザー名
+    required: false
+  BASIC_AUTH_PASSWORD:
+    description: レジストリ API の Basic 認証のパスワード
+    required: false
 runs:
   using: composite
   steps:
     - run: pnpm build
       shell: bash
+      env:
+        BASIC_AUTH: ${{ inputs.BASIC_AUTH }}
+        BASIC_AUTH_USERNAME: ${{ inputs.BASIC_AUTH_USERNAME }}
+        BASIC_AUTH_PASSWORD: ${{ inputs.BASIC_AUTH_PASSWORD }}
     - uses: actions/upload-artifact@v4
       with:
         name: web-ext

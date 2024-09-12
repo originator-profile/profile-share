@@ -47,6 +47,8 @@ $ pnpm dev --issuer=oprexpt.originator-profile.org --url=https://originator-prof
 - `PROFILE_ISSUER`: プロファイルを発行しているレジストリ。プロファイルの署名検証時に使用する公開鍵の参照先のドメイン名。
   - `pnpm dev` 時のデフォルト値: `localhost`
   - `pnpm build` 時のデフォルト値: `oprexpt.originator-profile.org`
+- `BASIC_AUTH_USERNAME`: レジストリ API の Basic 認証のユーザー名
+- `BASIC_AUTH_PASSWORD`: レジストリ API の Basic 認証のパスワード
 
 ## npm スクリプト
 
