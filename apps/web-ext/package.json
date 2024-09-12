@@ -60,7 +60,7 @@
   "scripts": {
     "build": "run-p build:*",
     "build:chromium": "dotenv -e ../registry/.env.development.auth node esbuild.mjs",
-    "build:firefox": "dotenv -e ../registry/.env.development.auth node esbuild.mjs -t firefox-desktop",
+    "build:firefox": "dotenv -e ../registry/.env.development.auth node esbuild.mjs -- -t firefox-desktop",
     "dev": "dotenv -e ../registry/.env.development.auth node esbuild.mjs -- --mode=development --issuer=localhost",
     "dev:firefox": "dotenv -e ../registry/.env.development.auth node esbuild.mjs -- --mode=development --issuer=localhost -t firefox-desktop",
     "lint": "eslint --fix .",
