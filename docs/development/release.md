@@ -28,8 +28,8 @@ Step 1
 
 レジストリ API の Basic 認証に使用する以下の[シークレットを作成](https://docs.github.com/ja/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions#creating-secrets-for-a-repository)します。作成済みであればこの手順を省略します。
 
-- `BASIC_AUTH_USERNAME`
-- `BASIC_AUTH_PASSWORD`
+- `BASIC_AUTH` (形式: `true` or `false`)
+- `BASIC_AUTH_CREDENTIALS` (形式: [拡張機能のソースコード](https://github.com/originator-profile/profile-share/blob/main/apps/web-ext) を参照してください)
 
 Step 2
 : バージョンの決定
