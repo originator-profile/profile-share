@@ -11,7 +11,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: echo $BASIC_AUTH_CREDENTIALS > apps/web-ext/credentials.json
+    - run: echo "${BASIC_AUTH_CREDENTIALS}" > apps/web-ext/credentials.json
       shell: bash
       if: ${{ inputs.BASIC_AUTH_CREDENTIALS != '' }}
       env:
