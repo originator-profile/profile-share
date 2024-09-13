@@ -13,7 +13,12 @@ export class AdminDelete extends Command {
   async run(): Promise<void> {
     const { flags } = await this.parse(AdminDelete);
     const services = Services({ config: { ISSUER_UUID: "" } });
-    const data = await services.admin.delete(flags.id);
-    this.log(`UUID: ${data.adminId}`);
+    /* OCLIF の例外が e2e の globalSetup を失敗させてしまうので返さないようにする */
+    try {
+      const data = await services.admin.delete(flags.id);
+      this.log(`UUID: ${data.adminId}`);
+    } catch (e) {
+      this.log(`Delete failed: UUID: ${flags.id}`);
+    }
   }
 }

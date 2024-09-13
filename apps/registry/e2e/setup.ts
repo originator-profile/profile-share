@@ -1,4 +1,3 @@
-import { beforeAll, afterAll } from "vitest";
 import { PrismaClient } from "@prisma/client";
 import { waitForDb } from "../src/seed";
 import { AdminCreate } from "../src/commands/admin/create";
@@ -7,24 +6,20 @@ import { AdminDelete } from "../src/commands/admin/delete";
 const ADMIN_ACCOUNT = "cd8f5f9f-e3e8-569f-87ef-f03c6cfc29bc";
 const ADMIN_PASSWORD = "bdf70f3d38c1311fa06a211a2205623a";
 
-beforeAll(async () => {
+export const setup = async () => {
   const prisma = new PrismaClient();
   await waitForDb(prisma);
 
-  try {
-    await AdminDelete.run([`--id=${ADMIN_ACCOUNT}`]);
-  } catch (e) {
-    // テスト用の管理者アカウントが存在しないケースだと考えて無視する
-  }
+  await AdminDelete.run([`--id=${ADMIN_ACCOUNT}`]);
 
   // テスト用の管理者アカウントを作成
   await AdminCreate.run([
     `--id=${ADMIN_ACCOUNT}`,
     `--password=${ADMIN_PASSWORD}`,
   ]);
-});
+};
 
-afterAll(async () => {
+export const teardown = async () => {
   // テスト用の管理者アカウントを削除
   await AdminDelete.run([`--id=${ADMIN_ACCOUNT}`]);
-});
+};
