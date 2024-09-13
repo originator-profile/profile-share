@@ -401,7 +401,7 @@ Signed Document Profile が利用可能なオリジンのリストを表明す�
 対象の要素のその子孫のレンダリングされたテキストの内容への署名を表すオブジェクトです。
 
 - `type` プロパティは、必ず文字列 `visibleText` でなければなりません。
-- `url` プロパティは、対象の要素が存在するページの URL です。
+- `url` プロパティは、対象の要素が存在するページの URL です。絶対 URL でなければなりません。
 - `location` プロパティは、対象の要素の場所を特定する CSS セレクターです。対象の要素は、そのページの `document` のルート要素 (例えば、 HTML 文書の場合は `<html>` 要素) から、`querySelectorAll()` メソッドを使用して検索します。値が未定義の場合は、そのページの `document` のルート要素 (例えば、HTML 文書の場合は `<html>` 要素) を対象の要素とみなします。
 - `proof` プロパティは、対象のテキストへの署名を表すオブジェクトです。そのオブジェクトには必ず `jws` プロパティを持たなければなりません。その `jws` プロパティには [Compact Serialization](https://www.rfc-editor.org/rfc/rfc7515#section-7.1) でシリアライズした JWS を入れなければなりません。JWS には必ず [RFC 7797](https://www.rfc-editor.org/rfc/rfc7797) の Unencoded Payload Option を付与し、同 RFC の[Section 5.1](https://www.rfc-editor.org/rfc/rfc7797#section-5.1) に則りペイロード部は JWS から省略しなければなりません。
 
