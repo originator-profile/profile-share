@@ -1,25 +1,28 @@
-import { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import useSWRImmutable from "swr/immutable";
-import { useEvent } from "react-use";
-import {
-  RemoteKeys,
-  ProfilesVerifier,
-  expandProfileSet,
-  expandProfilePairs,
-  LocalKeys,
-  verifyBody,
-  ProfileBodyExtractFailed,
-} from "@originator-profile/verify";
-import { NodeObject } from "jsonld";
+import { DpLocator, isDp } from "@originator-profile/core";
+import { Jwks } from "@originator-profile/model";
 import {
   DocumentProfile,
-  ProfileSet,
-  toProfilePayload,
-  ProfileFactory,
   OriginatorProfile,
   Profile,
+  ProfileFactory,
+  ProfileSet,
+  toProfilePayload,
 } from "@originator-profile/ui";
+import { _ } from "@originator-profile/ui/src/utils";
+import {
+  expandProfilePairs,
+  expandProfileSet,
+  LocalKeys,
+  ProfileBodyExtractFailed,
+  ProfilesVerifier,
+  RemoteKeys,
+  verifyBody,
+} from "@originator-profile/verify";
+import { NodeObject } from "jsonld";
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEvent } from "react-use";
+import useSWRImmutable from "swr/immutable";
 import {
   extractBodyRequest,
   extractBodyResponse,
@@ -28,15 +31,31 @@ import {
   fetchWebsiteProfilePairMessageResponse,
   PopupMessageRequest,
 } from "../types/message";
-import { buildPublUrl } from "./routes";
-import { DpLocator, isDp } from "@originator-profile/core";
-import { Jwks } from "@originator-profile/model";
 import { makeAdTree, updateAdIframe } from "../utils/ad-tree";
-import { _ } from "@originator-profile/ui/src/utils";
+import { buildPublUrl } from "./routes";
 
 const key = "profiles" as const;
 const WebsiteProfilePairKey = "website-profile-pair" as const;
 const bodiesKey = "bodies" as const;
+const registry = import.meta.env.PROFILE_ISSUER;
+
+const jwksEndpoint = new URL(
+  import.meta.env.MODE === "development" && registry === "localhost"
+    ? `http://localhost:8080/.well-known/jwks.json`
+    : `https://${registry}/.well-known/jwks.json`,
+);
+
+const auth =
+  import.meta.env.BASIC_AUTH &&
+  import.meta.env.BASIC_AUTH_CREDENTIALS.find(
+    ({ domain }) => domain === jwksEndpoint.hostname,
+  );
+
+const keys = RemoteKeys(jwksEndpoint, {
+  headers: auth
+    ? { authorization: `Basic ${btoa(`${auth.username}:${auth.password}`)}` }
+    : {},
+});
 
 async function fetchVerifiedProfiles([, tabId]: [
   _: typeof key,
@@ -97,13 +116,6 @@ async function fetchVerifiedProfiles([, tabId]: [
   const adTree = makeAdTree(ads);
   if (adTree) await updateAdIframe(tabId, adTree);
 
-  const registry = import.meta.env.PROFILE_ISSUER;
-  const jwksEndpoint = new URL(
-    import.meta.env.MODE === "development" && registry === "localhost"
-      ? `http://localhost:8080/.well-known/jwks.json`
-      : `https://${registry}/.well-known/jwks.json`,
-  );
-  const keys = RemoteKeys(jwksEndpoint);
   const origin = topLevelResponse?.origin ?? "";
   const verify = ProfilesVerifier(
     {
@@ -283,14 +295,6 @@ async function fetchVerifiedWebsiteProfilePair([, tabId]: [
   }
   const parsed = JSON.parse(data);
   const { website } = await expandProfilePairs([parsed]);
-
-  const registry = import.meta.env.PROFILE_ISSUER;
-  const jwksEndpoint = new URL(
-    import.meta.env.MODE === "development" && registry === "localhost"
-      ? `http://localhost:8080/.well-known/jwks.json`
-      : `https://${registry}/.well-known/jwks.json`,
-  );
-  const keys = RemoteKeys(jwksEndpoint);
 
   const verifyResults =
     (website[0] &&
