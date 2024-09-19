@@ -1,6 +1,6 @@
 {
   "name": "@originator-profile/registry-ui",
-  "version": "0.0.12",
+  "version": "0.0.13-alpha.0",
   "private": true,
   "scripts": {
     "build:prod": "pnpm --filter @originator-profile/registry ui:build",
