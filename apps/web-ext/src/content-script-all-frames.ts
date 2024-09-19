@@ -6,10 +6,21 @@ import {
 
 if (import.meta.env.BASIC_AUTH) {
   const __fetch = globalThis.fetch;
-  globalThis.fetch = (
+
+  globalThis.fetch = async function fetch(
     input: RequestInfo | URL,
     init?: RequestInit,
-  ): Promise<Response> => __fetch(input, { ...init, credentials: "include" });
+  ): Promise<Response> {
+    const url = new URL(input instanceof Request ? input.url : input);
+    const auth = import.meta.env.BASIC_AUTH_CREDENTIALS.find(
+      ({ domain }) => domain === url.hostname,
+    );
+
+    return await __fetch(
+      input,
+      auth ? { ...init, credentials: "include" } : init,
+    );
+  };
 }
 
 async function handleMessageResponse(
