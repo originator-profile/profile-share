@@ -1,4 +1,8 @@
-# Originator Profile Request for Comment - draft
+---
+sidebar_position: 0
+---
+
+# Originator Profile Request for Comment
 
 ## 概要
 
@@ -9,7 +13,7 @@ Originator Profile Request for Comment (RFC) の目的は関係者からフィ�
 
 RFC を追加するには、RFC の草案を GitHub Pull Request によって提出します。
 
-例: docs/rfc/01.md … この文書
+例: docs/rfc/process.md … この文書
 
 GitHub Pull Request は [HackMD](https://hackmd.io/) と同期し、コミュニティでの議論と改稿をおこないます。
 
@@ -37,8 +41,6 @@ WG Last Call (WGLC) -> [Area Director (AD)](https://www.ietf.org/about/groups/ie
 
 RFC の分類として Standards Track (STD), Informational, Experimental, Best Current Practice (BCP), Historical がある。
 
-参考: https://www.ietf.org/participate/tao/#6
-
 I-D 著者向けのページ: https://authors.ietf.org/
 
 ### The W3C Recommendation Track
@@ -58,8 +60,6 @@ https://www.w3.org/2023/Process-20231103/#recs-and-notes
 #### Recommendation Track
 
 https://www.w3.org/2023/Process-20231103/#rec-track
-
-![w3c-rec-process](https://hackmd.io/_uploads/rJ5YkspNA.png)
 
 1. Working Draft (WD)
    - First Public Working Draft を公開してプロセス開始

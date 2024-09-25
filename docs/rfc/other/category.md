@@ -1,4 +1,6 @@
-# Certificate Category - Editor's Draft
+# Certificate Category Note
+
+_この文書は非規範的です。_
 
 ## 概要
 

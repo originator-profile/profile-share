@@ -1,4 +1,4 @@
-# Visible Text Target - Editor's Draft
+# Visible Text Target Implementer's Guide
 
 ## 概要
 
@@ -8,7 +8,7 @@
 
 本文書に説明のない用語については、用語 RFC 文書を参照してください。
 
-- Web Assertion (WA)
+- Content Attestation (CA)
 
 ## Visible Text Target の形式
 
@@ -16,8 +16,8 @@ Visible Text Target は次のような形式です。
 
 ```json
 {
-  "type": "visibleText",
-  "selector": "<CSS セレクター>",
+  "type": "VisibleTextTargetIntegrity",
+  "cssSelector": "<CSS セレクター>",
   "integrity": "sha256-..."
 }
 ```
@@ -31,32 +31,32 @@ Visible Text Target は次のような形式です。
   "properties": {
     "type": {
       "type": "string",
-      "enum": ["visibleText"]
+      "enum": ["VisibleTextTargetIntegrity"]
     },
     "integrity": {
       "type": "string"
     },
-    "selector": {
+    "cssSelector": {
       "type": "string"
     }
   },
   "additionalProperties": true,
-  "required": ["type", "integrity", "selector"]
+  "required": ["type", "integrity", "cssSelector"]
 }
 ```
 
 ### プロパティ
 
-- `type`: REQUIRED. Target Integrity のタイプです。必ず `visibleText` でなければなりません (MUST)。
-- `integrity`: REQUIRED. [Subresource Integrity (SRI) セクション 3.1](https://www.w3.org/TR/SRI/#integrity-metadata) の Integrity metadata でなければなりません (MUST)。具体例: `sha256-4HLmAAYVRClrk+eCIrI1Rlf5/IKK0+wGoYjRs9vzl7U=`
-- `selector`: REQUIRED. 必ず [CSS セレクター (Selectors Level 3)](https://www.w3.org/TR/selectors-3/) でなければなりません (MUST)。
+- `type`: REQUIRED. Target Integrity のタイプです。必ず `VisibleTextTargetIntegrity` でなければなりません (MUST)。
+- `integrity`: REQUIRED. [Subresource Integrity (SRI) セクション 3.5](https://www.w3.org/TR/SRI/#the-integrity-attribute) の hash-expression でなければなりません (MUST)。具体例: `sha256-4HLmAAYVRClrk+eCIrI1Rlf5/IKK0+wGoYjRs9vzl7U=`
+- `cssSelector`: REQUIRED. 必ず [CSS セレクター (Selectors Level 3)](https://www.w3.org/TR/cssSelectors-3/) でなければなりません (MUST)。
 
 ## 検証プロセス
 
-1. `selector` プロパティの CSS セレクターで指定した要素を検索します。
+1. `cssSelector` プロパティの CSS セレクターで指定した要素を検索します。
 2. それらの要素の [`innerText` 属性](https://html.spec.whatwg.org/multipage/dom.html#the-innertext-idl-attribute)を使用し `DOMString` として対象を取得します。
 3. すべての対象を UTF-8 に符号化します。もし仮に対象が複数存在する場合は、それらの内容を結合します。
-4. その結果と `integrity` プロパティの Integrity metadata を [SRI セクション 3.3.5](https://www.w3.org/TR/SRI/#does-response-match-metadatalist) に規定されている方法で検証します
+4. その結果と `integrity` プロパティの Integrity Metadata を [SRI セクション 3.3.5](https://www.w3.org/TR/SRI/#does-response-match-metadatalist) に規定されている方法で検証します
 
 :::note
 
@@ -80,4 +80,4 @@ Visible Text Target は [`innerText` 属性](https://developer.mozilla.org/docs/
 
 ## 要素位置特定方法
 
-`selector` プロパティの CSS セレクターで指定した要素を検索します。
+`cssSelector` プロパティの CSS セレクターで指定した要素を検索します。

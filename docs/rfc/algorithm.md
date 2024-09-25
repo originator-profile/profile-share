@@ -1,4 +1,8 @@
-# 暗号アルゴリズム - Editor's Draft
+---
+sidebar_position: 40
+---
+
+# 暗号アルゴリズム
 
 :::note
 
@@ -31,7 +35,7 @@
 
 :::note
 
-C2PA 2.0 署名アルゴリズムの許可リストに含まれる `EdDSA` は[^1]、本仕様が書かれた時点ではサポートしない実装が一定数存在するため[^2]、`EdDSA` は許可リストに含めていません。
+C2PA 2.0 署名アルゴリズムの許可リストに含まれる `EdDSA` は[^1]、本文書が書かれた時点ではサポートしない実装が一定数存在するため[^2]、`EdDSA` は許可リストに含めていません。
 
 [^1]: https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_signature_algorithms
 
@@ -47,7 +51,7 @@ Originator Profile 技術研究組合の開発するアプリケーションで�
 
 ## ハッシュアルゴリズム
 
-OP の仕様に準拠するアプリケーションは、 WA の Target Integrity の `integrity` プロパティの値を生成・検証するとき、および OP, WA の `...#integrity` クレーム・プロパティの値を生成・検証するときに、使用するハッシュアルゴリズムについて次の要件を満たす必要があります (MUST)。
+OP の仕様に準拠するアプリケーションは、 CA の Target Integrity の `integrity` プロパティの値を生成・検証するとき、および各 VC の `digestSRI` プロパティの値を生成・検証するときに、使用するハッシュアルゴリズムについて次の要件を満たす必要があります (MUST)。
 
 検証者は、 SHA-256 ハッシュ値による検証をサポートしなければなりません (MUST)。また、SHA-384、SHA-512 ハッシュ値による検証をサポートしてもよいです (MAY)。
 

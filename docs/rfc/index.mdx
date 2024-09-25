@@ -1,5 +1,7 @@
 # Originator Profile RFC
 
+_この文書は非規範的です。_
+
 Originator Profile の技術仕様の文書化を目指します。
 
 これらの文書では、Originator Profile の技術的側面について説明しています。
@@ -11,42 +13,75 @@ Originator Profile 技術は、特定のコンテンツの善悪の価値判断�
 
 ## 全体像
 
-**Originator Profile** (OP: 組織の ID/Key と基本情報)、**Certificate** (Cert: 組織に関する証明書)、**Content Assertion** (CA: コンテンツの正当性検証) として定義する 3 つを SD-JWT VC 形式で表現し、**Presentation** で定義する形で束ねたり紐付けたりして Web コンテンツと共に配信する。
+import Overview from "./assets/spec-overview.svg";
 
-OP, Cert, CA の 3 つに含めるデータの内、OP の組織情報メタデータ、サイト・コンテンツ・広告のメタデータ、署名対象特定情報といった種別に応じたデータや鍵の取扱については個別 RFC 内で規定する。その他、鍵交換などを含むトラストモデルなども合わせて設計している。
+<Overview width="100%" height="100%" />
 
-- [**Originator Profile (OP)**](./02.md): 情報発信者となる組織の基本情報や検証鍵を含めレジストリが署名するデータ (SD-JWT VC 形式)
-  - [**Organization Metadata**](./07.md): OP 保有者情報のメタデータ
-- [**Content Assersion** (CA, 仮, 旧 WA/DP)](./04.md): OP が作成や管理する Web コンテンツなどに関する情報や対象コンテンツの特定、検証方法などを記載し OP 保有者が署名するデータ (SD-JWT VC 形式)
-  - [**Content Metadata**](./13.md): Web コンテンツタイプの CA にコンテンツ情報として含めるメタデータ
-  - [**Website Metadata**](./15.md): Web サイトタイプの CA にサイト情報として含めるメタデータ
-  - [**Advertisement Metadata**](./14.md): 広告タイプの CA に広告情報として含めるメタデータ
-  - Target Integrity: Web コンテンツ又は広告タイプの CA に含める署名対象コンテンツ特定情報とハッシュ・署名のデータ
-    - [HTML Target](./09.md): 対象 DOM 要素の HTML 文字列としての完全性検証
-    - [Text Target](./10.md): 対象 DOM 要素に含まれるテキストコンテンツの完全性検証
-    - [Visible Text Target](./11.md): 対象要素のレンダリングされているテキストの完全性検証
-    - [External Resource Target](12.md): 外部リソースの真正性検証
-- [**Certificate** (Cert, 旧資格情報)](./20.md): OP
-  - OP 保有者組織に関する証明書。実在性確認証明を兼ねる法人番号 Cert の他、認証情報や所属組織などの組織に関する任意の証明書 (SD-JWT VC形式)
-  - **[Certificate Metadata](./17.md)**: OP 保有者情報のメタデータ
-- 提示方法 (Presentation)
-  - **[Content Assertion Set (CAS)](./03.md)**: OP, Cert, CA を束ねたデータ
-  - [HTML への埋め込み](./05.md): CAS を HTML に埋め込む方法
+OP の仕様は VC とその配布方法を定義します。
+仕様全体で共通の用語の定義が[用語集](./terminology.md)にあります。
 
-その他の仕様文書:
+OP は VC 共通の仕様として次の仕様を定めます。
 
-- [暗号アルゴリズム](./19.md): OP で仕様が推奨される暗号アルゴリズムについての文書
-- [用語集](./18.md): 用語の定義
+- [OP VC Data Model](./op-vc-data-model.md): OP で定める VC が準拠するデータモデル
+- [Securing Mechanism](./securing-mechanism.md): OP で定める VC の Securing Mechanism
 
-次の文書は今後策定する予定です。
+組織の ID として次を定義し、各 VC で利用します。
 
-- トラストモデル
-  - [Trust Model](./08.md)
-  - [Key States and Transitions](./06.md)
+- [OP ID](./op-id.md): OP ID
+- [DNS URI OP ID](./dns-uri-op-id.md): ドメイン名を利用した OP ID
 
-次の文書は参考情報です。
+中心的な役割を果たす3つの VC のデータモデルを定めた文書が次になります。
 
-- [Certificate Category](./21.md): Certiticate の分類に関する文書
+- [Core Profile](./cp.md): 組織の OP ID と公開鍵の VC
+- [Profile Annotation](./pa.md): 組織に関する情報を記述する VC。情報に応じて適切な主体が署名する。
+- [Content Attestation](./ca.md): OP が作成や管理する Web Content などに関する情報や対象コンテンツの特定、検証方法などを記載し CP 保有者が署名するデータ
+
+他に次の VC も定義します。
+
+- [Web Media Profile](./web-media-profile.md): Web での OP の利用においてユーザーに表示する情報を記述する VC。 CP 発行者が署名する。
+- [Website Profile](./website-profile.md): Web サイトを保有していることを示す VC。 CP 保有者が署名する。
+
+[Profile Annotation](./pa.md), [Content Attestation](./ca.md) を実際に利用する際にはアプリケーションに応じて具体的なプロパティを定義する必要があります。
+OP CIP で利用するプロパティ定義は次の実装者ガイドで定めています。
+
+- Content Attestation
+  - [Content Properties](./ca-guide/content-properties.md): インターネット上の記事に紐づく CA のデータモデル。
+  - [Advertisement Properties](./ca-guide/advertisement-properties.md): インターネット広告に紐づく CA のデータモデル。
+- Profile Annotataion
+  - [Certificate Data Model](./certificate.md): 証明書 PA のデータモデル。
+    - [Existence Certificate Properties](./pa-guide/existence.md): 実在性確認証明書 PA のデータモデル。
+    - [JICDAQ 認証 Certificate Properties](./pa-guide/jicdaq.md): JICDAQ 証明書のデータモデル。
+    - [日本新聞協会所属 Certificate Properties](./pa-guide/japan-pressnet.md): 日本新聞協会所属証明書のデータモデル。
+
+これら VC をまとめて配布する際のデータ形式として次のものを定義します。
+
+- [Content Attestation Set](./content-attestation-set.md): CA の配布形式
+- [Originator Profile Set](./originator-profile-set.md): CP, PA, Web Media Profile の配布形式
+- [Site Profile](./site-profile.md): Website Profile の配布形式
+- [Linking](./link-to-html.md): CAS, OPS を HTML ページに紐づける方法
+
+CA にはコンテンツの改ざんを防ぐ仕組みとして Target Integrity があります。次の実装ガイドがそれらの仕様です。
+
+- [Target Integrity Registry](./target-guide/index.mdx): Target Integrity のレジストリ
+- [HTML Target](./target-guide/html.md): 対象 DOM 要素の HTML 文字列としての完全性検証
+- [Text Target](./target-guide/text.md): 対象 DOM 要素に含まれるテキストコンテンツの完全性検証
+- [Visible Text Target](./target-guide/visible-text.md): 対象要素のレンダリングされているテキストの完全性検証
+- [External Resource Target](./target-guide/external-resource.md): 外部リソースの完全性検証
+
+OP の枠組み全体のセキュリティを担保する文書として次のものがあります。
+
+- [暗号アルゴリズム](./algorithm.md): OP で推奨される暗号アルゴリズム
+
+VC 全体で使われる JSON-LD のコンテキストは次の文書に記載しています。
+
+- [JSON-LD Context](./context.md)
+
+次の文書は執筆中です。
+
+- [`did:op` DID Method](./other/did-op.md): `did:op` DID Method による OP ID
+- [`did:2` DID Method](./other/did-2.md): `did:2` DID Method による OP ID
+- [Trust Model](./other/trust-model.md): トラストモデル
+- [Certificate Category](./other/category.md): Certiticate の表示順序を決める上でのカテゴリー分類に関する文書
 
 import DocCardList from "@theme/DocCardList";
 
