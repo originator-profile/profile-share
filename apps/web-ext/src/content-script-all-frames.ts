@@ -18,7 +18,15 @@ if (import.meta.env.BASIC_AUTH) {
 
     return await __fetch(
       input,
-      auth ? { ...init, credentials: "include" } : init,
+      auth
+        ? {
+            ...init,
+            headers: {
+              authorization: `Basic ${btoa(`${auth.username}:${auth.password}`)}`,
+              ...init?.headers,
+            },
+          }
+        : init,
     );
   };
 }
