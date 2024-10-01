@@ -2,7 +2,7 @@
 sidebar_position: 4
 ---
 
-# Web Media Profile Data Model
+# Web Media Profile Data Model Implementer's Guide
 
 ## 用語
 

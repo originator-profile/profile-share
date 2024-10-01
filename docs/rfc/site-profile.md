@@ -1,4 +1,8 @@
-# Site Profile Implementer's Guide
+---
+sidebar_position: 23
+---
+
+# Site Profile
 
 Site Profile は Website Profile を特定のドメインに紐づけるために利用するデータです。
 

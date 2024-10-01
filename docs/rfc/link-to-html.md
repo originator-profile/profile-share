@@ -2,7 +2,7 @@
 sidebar_position: 22
 ---
 
-# Linking Content Attestation Set and Originator Profile Set to A HTML Document - Implementer's Guide
+# Linking Content Attestation Set and Originator Profile Set to A HTML Document
 
 ## 概要
 

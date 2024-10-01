@@ -1,3 +1,7 @@
+---
+sidebar_position: 6
+---
+
 # Certificate Data Model
 
 ## 用語
