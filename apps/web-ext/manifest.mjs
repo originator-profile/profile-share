@@ -23,12 +23,14 @@ const base = {
       match_about_blank: true,
       matches: ["<all_urls>"],
       js: ["content-script.js"],
+      run_at: "document_start",
     },
     {
       match_about_blank: true,
       matches: ["<all_urls>"],
       all_frames: true,
       js: ["content-script-all-frames.js"],
+      run_at: "document_start",
     },
   ],
   web_accessible_resources: [

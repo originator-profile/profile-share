@@ -1,4 +1,5 @@
 import { BackgroundMessageRequest } from "./types/message";
+import "./utils/cors-basic-auth";
 
 const windowSize = {
   width: 520,
