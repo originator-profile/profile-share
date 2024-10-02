@@ -33,7 +33,7 @@ sidebar_position: 12
 
 ### [JWS](https://www.rfc-editor.org/rfc/rfc7515)
 
-- `typ` ヘッダーパラメーターは `vc-ld+jwt` でなければなりません (MUST)。
+- `typ` ヘッダーパラメーターは `vc+jwt` でなければなりません (MUST)。
 - `kid` ヘッダーパラメーターは [JWK Thumbprint](https://www.rfc-editor.org/rfc/rfc7638.html) でなければなりません (MUST)。
 - `cty` ヘッダーパラメーターは次の文字列です。
 
@@ -65,7 +65,7 @@ _このセクションは非規範的です。_
 
 ```json
 {
-  "typ": "vc-ld+jwt",
+  "typ": "vc+jwt",
   "cty": "CP",
   "kid": "...",
   "alg": "ES256"
@@ -102,7 +102,7 @@ _このセクションは非規範的です。_
 
 ```json
 {
-  "typ": "vc-ld+jwt",
+  "typ": "vc+jwt",
   "cty": "CA;Content",
   "kid": "...",
   "alg": "ES256"
@@ -152,7 +152,7 @@ _このセクションは非規範的です。_
 
 ```json
 {
-  "typ": "vc-ld+jwt",
+  "typ": "vc+jwt",
   "cty": "PA;Certificate;ECJP",
   "kid": "...",
   "alg": "ES256"
