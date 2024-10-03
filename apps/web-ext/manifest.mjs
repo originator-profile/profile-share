@@ -16,18 +16,21 @@ const base = {
     48: "icons/48x48.png",
     128: "icons/128x128.png",
   },
+  default_locale: "en",
   action: {},
   content_scripts: [
     {
       match_about_blank: true,
       matches: ["<all_urls>"],
       js: ["content-script.js"],
+      run_at: "document_start",
     },
     {
       match_about_blank: true,
       matches: ["<all_urls>"],
       all_frames: true,
       js: ["content-script-all-frames.js"],
+      run_at: "document_start",
     },
   ],
   web_accessible_resources: [
@@ -37,7 +40,13 @@ const base = {
     },
   ],
   host_permissions: ["<all_urls>"],
-  permissions: ["activeTab", "webNavigation", "scripting"],
+  permissions: [
+    "activeTab",
+    "webNavigation",
+    "scripting",
+    "webRequest",
+    "webRequestAuthProvider",
+  ],
 };
 
 const chromium = {

@@ -1,10 +1,25 @@
 name: build
 description: Build
+inputs:
+  BASIC_AUTH:
+    description: レジストリ API の Basic 認証
+    required: false
+  BASIC_AUTH_CREDENTIALS:
+    description: レジストリ API の Basic 認証情報 (JSON 文字列)
+    required: false
+    default: ""
 runs:
   using: composite
   steps:
+    - run: echo "${BASIC_AUTH_CREDENTIALS}" > apps/web-ext/credentials.json
+      shell: bash
+      if: ${{ inputs.BASIC_AUTH_CREDENTIALS != '' }}
+      env:
+        BASIC_AUTH_CREDENTIALS: ${{ inputs.BASIC_AUTH_CREDENTIALS }}
     - run: pnpm build
       shell: bash
+      env:
+        BASIC_AUTH: ${{ inputs.BASIC_AUTH }}
     - uses: actions/upload-artifact@v4
       with:
         name: web-ext

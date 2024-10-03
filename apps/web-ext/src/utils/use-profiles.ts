@@ -1,25 +1,28 @@
-import { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import useSWRImmutable from "swr/immutable";
-import { useEvent } from "react-use";
-import {
-  JwtVcIssuerKeys,
-  ProfilesVerifier,
-  expandProfileSet,
-  expandProfilePairs,
-  LocalKeys,
-  verifyBody,
-  ProfileBodyExtractFailed,
-} from "@originator-profile/verify";
-import { NodeObject } from "jsonld";
+import { DpLocator, isDp } from "@originator-profile/core";
+import { Jwks } from "@originator-profile/model";
 import {
   DocumentProfile,
-  ProfileSet,
-  toProfilePayload,
-  ProfileFactory,
   OriginatorProfile,
   Profile,
+  ProfileFactory,
+  ProfileSet,
+  toProfilePayload,
 } from "@originator-profile/ui";
+import {
+  expandProfilePairs,
+  expandProfileSet,
+  LocalKeys,
+  ProfileBodyExtractFailed,
+  ProfilePair,
+  ProfilesVerifier,
+  RemoteKeys,
+  verifyBody,
+} from "@originator-profile/verify";
+import { NodeObject } from "jsonld";
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEvent } from "react-use";
+import useSWRImmutable from "swr/immutable";
 import {
   extractBodyRequest,
   extractBodyResponse,
@@ -28,102 +31,120 @@ import {
   fetchWebsiteProfilePairMessageResponse,
   PopupMessageRequest,
 } from "../types/message";
+import { makeAdTree, updateAdIframe } from "../utils/ad-tree";
 import { buildPublUrl } from "./routes";
-import { DpLocator, isDp } from "@originator-profile/core";
-import { Jwks } from "@originator-profile/model";
-import { makeAdTree, updateAdIframe } from "./ad-tree";
 
-const key = "profiles" as const;
-const WebsiteProfilePairKey = "website-profile-pair" as const;
-const bodiesKey = "bodies" as const;
+const PROFILES_KEY = "profiles" as const;
+const WEBSITE_PROFILE_KEY = "website-profile-pair" as const;
+const VERIFIED_BODIES_KEY = "bodies" as const;
+const REGISTRY = import.meta.env.PROFILE_ISSUER;
 
-async function fetchVerifiedProfiles([, tabId]: [
-  _: typeof key,
+type FetchProfilesResult = {
+  data: NodeObject[];
+  origin: string;
+  frameId: number;
+  parentFrameId: number;
+};
+
+/**
+ * OP レジストリの JWKS を取得する
+ * @returns レジストリの JWKS
+ */
+function getRegistryKeys() {
+  const jwksEndpoint = new URL(
+    import.meta.env.MODE === "development" && REGISTRY === "localhost"
+      ? `http://localhost:8080/.well-known/jwks.json`
+      : `https://${REGISTRY}/.well-known/jwks.json`,
+  );
+
+  return RemoteKeys(jwksEndpoint);
+}
+
+/**
+ * タブ内の各フレームでプロファイルを取得する。
+ * @param frames フレームのリスト
+ * @param tabId タブID
+ * @returns 結果の配列
+ */
+async function fetchProfiles(
+  frames: chrome.webNavigation.GetAllFrameResultDetails[],
   tabId: number,
-]): Promise<ProfileSet> {
-  const frames = (await chrome.webNavigation.getAllFrames({ tabId })) ?? [];
-  const responses: Array<{
-    data: NodeObject;
+) {
+  const results: PromiseSettledResult<FetchProfilesResult>[] =
+    await Promise.allSettled(
+      frames.map((frame) =>
+        chrome.tabs
+          .sendMessage<
+            fetchProfileSetMessageRequest,
+            fetchProfileSetMessageResponse
+          >(
+            tabId,
+            {
+              type: "fetch-profiles",
+              timestamp: Date.now(),
+            },
+            {
+              frameId: frame.frameId,
+            },
+          )
+          .then((response) => {
+            const data = JSON.parse(response.data);
+            if (!response.ok) throw data;
+            return {
+              data,
+              origin: response.origin,
+              frameId: frame.frameId,
+              parentFrameId: frame.parentFrameId,
+            };
+          }),
+      ),
+    );
+
+  const errors = results.filter(
+    (r): r is PromiseRejectedResult => r.status === "rejected",
+  );
+  errors.forEach(({ reason }) => {
+    console.error(reason);
+  });
+
+  const responses = results
+    .filter(
+      (r): r is PromiseFulfilledResult<FetchProfilesResult> =>
+        r.status === "fulfilled",
+    )
+    .map(({ value }) => value);
+
+  if (responses.length === 0) {
+    const error = errors[0]?.reason;
+    throw Object.assign(new Error(error.message), error);
+  }
+  return responses;
+}
+
+/**
+ * プロファイルとフレームのマッピングを返す
+ * @param profileSet プロファイルセット
+ * @param topLevelFrameId トップレベルのフレームID
+ * @param origin オリジン
+ * @param ads 広告プロファイルペアのリスト
+ * @returns プロファイルとフレームのマッピング
+ */
+function mapProfileToFrame(
+  profileSet: {
+    advertisers: string[];
+    publishers: string[];
+    main: string[];
+    profile: string[];
+  },
+  topLevelFrameId: number | undefined,
+  origin: string,
+  ads: {
+    ad: ProfilePair[];
     origin: string;
     frameId: number;
     parentFrameId: number;
-  }> = await Promise.all(
-    frames.map((frame) =>
-      chrome.tabs
-        .sendMessage<
-          fetchProfileSetMessageRequest,
-          fetchProfileSetMessageResponse
-        >(
-          tabId,
-          {
-            type: "fetch-profiles",
-            timestamp: Date.now(),
-          },
-          {
-            frameId: frame.frameId,
-          },
-        )
-        .then((response) => {
-          const data = JSON.parse(response.data);
-          if (!response.ok) throw data;
-          return {
-            data,
-            origin: response.origin,
-            frameId: frame.frameId,
-            parentFrameId: frame.parentFrameId,
-          };
-        }),
-    ),
-  ).catch((data) => {
-    throw Object.assign(new Error(data.message), data);
-  });
-  const topLevelFrameIndex = frames.findIndex(
-    (frame) => frame.parentFrameId === -1,
-  );
-  const topLevelFrameId = frames[topLevelFrameIndex]?.frameId;
-  const topLevelResponse = responses[topLevelFrameIndex];
-
-  const profileSet = await expandProfileSet(topLevelResponse?.data ?? []);
-  const ads = await Promise.all(
-    responses.map(({ data, origin, frameId, parentFrameId }) =>
-      expandProfilePairs(data).then(({ ad }) => ({
-        ad,
-        origin,
-        frameId,
-        parentFrameId,
-      })),
-    ),
-  );
-  const adTree = makeAdTree(ads);
-  if (adTree) await updateAdIframe(tabId, adTree);
-
-  const registry = import.meta.env.PROFILE_ISSUER;
-  const jwksEndpoint = new URL(
-    import.meta.env.MODE === "development" && registry === "localhost"
-      ? `http://localhost:8080/.well-known/jwt-vc-issuer`
-      : `https://${registry}/.well-known/jwt-vc-issuer`,
-  );
-  const keys = JwtVcIssuerKeys(jwksEndpoint);
-  const origin = topLevelResponse?.origin ?? "";
-  const verify = ProfilesVerifier(
-    {
-      profile: profileSet.profile,
-      ad: ads.flatMap(({ ad }) => ad),
-    },
-    keys,
-    registry,
-    null,
-    origin,
-  );
-  const verifyResult = await verify();
-
-  const advertiserOpIds = [
-    ...new Set([
-      ...profileSet.advertisers,
-      ...ads.flatMap(({ ad }) => ad.map(({ op }) => op.sub)),
-    ]),
-  ];
-
+  }[],
+) {
   const frameInfoMap = new Map<
     string,
     { frameIds: number[]; origins: string[] }
@@ -147,6 +168,62 @@ async function fetchVerifiedProfiles([, tabId]: [
       frameInfoMap.set(dp.profile, { frameIds: [frameId], origins: [origin] });
     });
   });
+  return frameInfoMap;
+}
+
+async function fetchVerifiedProfiles([, tabId]: [
+  _: typeof PROFILES_KEY,
+  tabId: number,
+]): Promise<ProfileSet> {
+  const frames = (await chrome.webNavigation.getAllFrames({ tabId })) ?? [];
+  const responses = await fetchProfiles(frames, tabId);
+
+  const topLevelFrameIndex = frames.findIndex(
+    (frame) => frame.parentFrameId === -1,
+  );
+  const topLevelFrameId = frames[topLevelFrameIndex]?.frameId;
+  const topLevelResponse = responses[topLevelFrameIndex];
+
+  const profileSet = await expandProfileSet(topLevelResponse?.data ?? []);
+  const ads = await Promise.all(
+    responses.map(({ data, origin, frameId, parentFrameId }) =>
+      expandProfilePairs(data).then(({ ad }) => ({
+        ad,
+        origin,
+        frameId,
+        parentFrameId,
+      })),
+    ),
+  );
+  const adTree = makeAdTree(ads);
+  if (adTree) await updateAdIframe(tabId, adTree);
+
+  const origin = topLevelResponse?.origin ?? "";
+  const verify = ProfilesVerifier(
+    {
+      profile: profileSet.profile,
+      ad: ads.flatMap(({ ad }) => ad),
+    },
+    getRegistryKeys(),
+    REGISTRY,
+    null,
+    origin,
+  );
+  const verifyResult = await verify();
+
+  const advertiserOpIds = [
+    ...new Set([
+      ...profileSet.advertisers,
+      ...ads.flatMap(({ ad }) => ad.map(({ op }) => op.sub)),
+    ]),
+  ];
+
+  const frameInfoMap = mapProfileToFrame(
+    profileSet,
+    topLevelFrameId,
+    origin,
+    ads,
+  );
 
   const profileFactory = new ProfileFactory(
     advertiserOpIds,
@@ -219,7 +296,7 @@ async function verifyBodiesOfDp(
 }
 
 async function fetchVerifiedBodies([, tabId, profileSet]: [
-  _: typeof bodiesKey,
+  _: typeof VERIFIED_BODIES_KEY,
   tabId: number,
   profileSet: ProfileSet,
 ]): Promise<ProfileSet> {
@@ -268,7 +345,7 @@ async function fetchVerifiedBodies([, tabId, profileSet]: [
 }
 
 async function fetchVerifiedWebsiteProfilePair([, tabId]: [
-  _: typeof WebsiteProfilePairKey,
+  _: typeof WEBSITE_PROFILE_KEY,
   tabId: number,
 ]): Promise<{
   website: Profile[];
@@ -277,7 +354,6 @@ async function fetchVerifiedWebsiteProfilePair([, tabId]: [
   const { ok, data, origin }: fetchWebsiteProfilePairMessageResponse =
     await chrome.tabs.sendMessage(tabId, {
       type: "fetch-website-profile-pair",
-      timestamp: Date.now(),
     });
   if (!ok) {
     // 取得に失敗した場合にはエラーにしない（ website PP の設置は任意のため）
@@ -286,22 +362,14 @@ async function fetchVerifiedWebsiteProfilePair([, tabId]: [
   const parsed = JSON.parse(data);
   const { website } = await expandProfilePairs([parsed]);
 
-  const registry = import.meta.env.PROFILE_ISSUER;
-  const jwksEndpoint = new URL(
-    import.meta.env.MODE === "development" && registry === "localhost"
-      ? `http://localhost:8080/.well-known/jwt-vc-issuer`
-      : `https://${registry}/.well-known/jwt-vc-issuer`,
-  );
-  const keys = JwtVcIssuerKeys(jwksEndpoint);
-
   const verifyResults =
     (website[0] &&
       (await ProfilesVerifier(
         {
           profile: [website[0].op.profile, website[0].dp.profile],
         },
-        keys,
-        registry,
+        getRegistryKeys(),
+        REGISTRY,
         null,
         origin,
       )())) ??
@@ -318,40 +386,10 @@ async function fetchVerifiedWebsiteProfilePair([, tabId]: [
 }
 
 /**
- * Profiles 取得 (要 Base コンポーネント)
- * @deprecated
+ * select-overlay-dp メッセージのイベントハンドラを登録する
+ * @param tabId タブ ID
  */
-function useProfiles() {
-  const params = useParams<{ tabId: string }>();
-  const tabId = Number(params.tabId);
-  // TODO: 自動再検証する場合は取得エンドポイントが変わりうることをUIの振る舞いで考慮して
-  const { data, error } = useSWRImmutable([key, tabId], fetchVerifiedProfiles);
-  const { data: dataWebsite, error: errorWebsite } = useSWRImmutable(
-    [WebsiteProfilePairKey, tabId],
-    fetchVerifiedWebsiteProfilePair,
-  );
-
-  useEffect(() => {
-    if (data && dataWebsite) {
-      data.setWebsiteProfiles(dataWebsite.website);
-    }
-    if (data && errorWebsite) {
-      data.setWebsiteProfiles([]);
-    }
-  }, [data, dataWebsite, errorWebsite]);
-
-  const { data: profileSet, error: errorVerifiedBodies } = useSWRImmutable(
-    data && dataWebsite ? [bodiesKey, tabId, data] : null,
-    fetchVerifiedBodies,
-  );
-
-  useEvent("unload", async function () {
-    await chrome.tabs.sendMessage(tabId, {
-      type: "close-window",
-      timestamp: Date.now(),
-    });
-  });
-
+function useSelectDp(tabId: number) {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -374,17 +412,49 @@ function useProfiles() {
       chrome.runtime.onMessage.removeListener(handleMessageResponse);
     };
   }, [tabId, navigate]);
+}
+
+/**
+ * Profiles 取得 (要 Base コンポーネント)
+ * @deprecated
+ */
+function useProfiles() {
+  const params = useParams<{ tabId: string }>();
+  const tabId = Number(params.tabId);
+  // TODO: 自動再検証する場合は取得エンドポイントが変わりうることをUIの振る舞いで考慮して
+  const { data, error } = useSWRImmutable(
+    [PROFILES_KEY, tabId],
+    fetchVerifiedProfiles,
+  );
+  const { data: dataWebsite, error: errorWebsite } = useSWRImmutable(
+    [WEBSITE_PROFILE_KEY, tabId],
+    fetchVerifiedWebsiteProfilePair,
+  );
+
+  useEffect(() => {
+    if (data && dataWebsite) {
+      data.setWebsiteProfiles(dataWebsite.website);
+    }
+    if (data && errorWebsite) {
+      data.setWebsiteProfiles([]);
+    }
+  }, [data, dataWebsite, errorWebsite]);
+
+  const { data: profileSet, error: errorVerifiedBodies } = useSWRImmutable(
+    data && dataWebsite ? [VERIFIED_BODIES_KEY, tabId, data] : null,
+    fetchVerifiedBodies,
+  );
+
+  useEvent("unload", async function () {
+    await chrome.tabs.sendMessage(tabId, { type: "close-window" });
+  });
+
+  useSelectDp(tabId);
 
   return {
     origin: profileSet?.origin,
     profileSet: profileSet ?? ProfileSet.EMPTY_PROFILE_SET,
-    error:
-      error ||
-      errorWebsite ||
-      errorVerifiedBodies ||
-      (data?.isEmpty() && dataWebsite?.website.length === 0
-        ? new Error("プロファイルが見つかりませんでした")
-        : null),
+    error: error || errorWebsite || errorVerifiedBodies,
     tabId,
   };
 }

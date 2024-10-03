@@ -32,7 +32,7 @@ type Props = {
 };
 
 export default forwardRef<SVGSVGElement, Props>(function DpArea(
-  { className, dps },
+  { className, dps }: Props,
   ref,
 ) {
   const { width, height } = useWindowSize();

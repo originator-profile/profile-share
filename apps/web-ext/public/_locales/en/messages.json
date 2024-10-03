@@ -1,0 +1,417 @@
+{
+  "DpFilter_All": {
+    "message": "All"
+  },
+  "DpFilter_MainContent": {
+    "message": "Main Content"
+  },
+  "DpFilter_Other": {
+    "message": "Other"
+  },
+  "DpFilter_Advertisements": {
+    "message": "Advertisements"
+  },
+  "ContentType_MainContent": {
+    "message": "Main Content"
+  },
+  "ContentType_Article": {
+    "message": "Article"
+  },
+  "ContentType_Advertisement": {
+    "message": "Advertisement"
+  },
+  "ContentType_Unknown": {
+    "message": "N/A"
+  },
+  "ContentType_Document": {
+    "message": "Document"
+  },
+  "ContentType_Site": {
+    "message": "Website"
+  },
+  "HolderSummary_EditorialGuidelines": {
+    "message": "Editorial Guidelines"
+  },
+  "HolderSummary_PrivacyPolicy": {
+    "message": "Privacy Policy"
+  },
+  "Loading_RetrievingAndValidatingProfile": {
+    "message": "Retrieving and validating profile $of_origin$...",
+    "placeholders": {
+      "of_origin": {
+        "content": "$1",
+        "example": "of https://example.com"
+      }
+    }
+  },
+  "Loading_OfOrigin": {
+    "message": "of $origin$",
+    "placeholders": {
+      "origin": {
+        "content": "$1",
+        "example": "https://example.com"
+      }
+    }
+  },
+  "NotFound_OrganizationOrPublication": {
+    "message": "organization or publication"
+  },
+  "NotFound_Organization": {
+    "message": "organization"
+  },
+  "NotFound_Publication": {
+    "message": "publication"
+  },
+  "NotFound_Holder": {
+    "message": "holder"
+  },
+  "NotFound_Website": {
+    "message": "website"
+  },
+  "NotFound_InformationNotFound": {
+    "message": "Information on this $variant$ is missing",
+    "placeholders": {
+      "variant": {
+        "content": "$1",
+        "example": "publication"
+      }
+    }
+  },
+  "NotFound_PageMightBeMoved": {
+    "message": "Information for $variant$ may have been lost due to page relocation",
+    "placeholders": {
+      "variant": {
+        "content": "$1",
+        "example": "publication"
+      }
+    }
+  },
+  "NotFound_ViewOtherPublications": {
+    "message": "View other publications"
+  },
+  "ReliabilityGuide_HasReliabilityInformation": {
+    "message": "$subject$ has reliability information",
+    "placeholders": {
+      "subject": {
+        "content": "$1",
+        "example": "The operator of this site"
+      }
+    }
+  },
+  "ReliabilityGuide_SiteOperator": {
+    "message": "The operator of this site"
+  },
+  "ReliabilityGuide_Publisher": {
+    "message": "The publisher of this $content_type$",
+    "placeholders": {
+      "content_type": {
+        "content": "$1",
+        "example": "publication"
+      }
+    }
+  },
+  "ReliabilityGuide_AboutReliabilityInformation": {
+    "message": "About reliability information"
+  },
+  "ReliabilityGuide_VerifiedOrganizationStatement": {
+    "message": "The existence of this organization and the certificates it holds have been verified by the OP Registry operator. You can view the organization's basic information and certificates to help assess the organization's reliability."
+  },
+  "Unsupported_NonconformingDescription": {
+    "message": "Reliability information or distribution channel is not described according to specifications"
+  },
+  "Unsupported_MissingReliability": {
+    "message": "Organization reliability information is not included"
+  },
+  "Unsupported_MissingDistributionChannel": {
+    "message": "Publication distribution channel is not included"
+  },
+  "Unsupported_NoReliabilityInformationYet": {
+    "message": "Organization reliability information and publication distribution channel are not available yet"
+  },
+  "Unsupported_ReliabilityInformationRetrievalFailed": {
+    "message": "Failed to retrieve organization reliability information and publication distribution channel"
+  },
+  "Unsupported_ReliabilityInformationReadError": {
+    "message": "Organization reliability information and publication distribution channel could not be read correctly"
+  },
+  "Unsupported_FollowingCausesConsidered": {
+    "message": "The following causes are considered"
+  },
+  "Unsupported_ErrorDetails": {
+    "message": "Error details"
+  },
+  "Unsupported_Message": {
+    "message": "Message"
+  },
+  "Unsupported_ErrorCode": {
+    "message": "Error code"
+  },
+  "Unsupported_ReliabilityInformationContactStatement": {
+    "message": "If you want to know about the organization's reliability information and publication distribution channel on this page, please contact the site administrator listed on the site"
+  },
+  "Unsupported_ReliabilityResolvesFollowings": {
+    "message": "Having organization reliability information and publication distribution channel can solve the following issues"
+  },
+  "Unsupported_ChallengeInternetUser": {
+    "message": "Challenges for general internet users"
+  },
+  "Unsupported_ChallengeReliableInformation": {
+    "message": "Is there a way to see only reliable information in online articles and advertisements that actually convey facts...?"
+  },
+  "Unsupported_ChallengeFakeNews": {
+    "message": "Can't fake news and harmful sites be eliminated somehow...?"
+  },
+  "Unsupported_ChallengeReliabilityProblemAndSolutionStatement": {
+    "message": "Against the backdrop of the attention economy (valuing attention-grabbing), a structure has been created where articles that stand out, even if they are fake news, are more profitable than articles that convey facts. One major cause of this is the lack of a general means to verify the reliability of content publishers. By enabling viewers and ad delivery systems to identify quality articles and media, internet information distribution can be made healthier."
+  },
+  "Unsupported_ChallengeAdAndMedia": {
+    "message": "Challenges for advertising and media professionals"
+  },
+  "Unsupported_ChallengeSketchySite": {
+    "message": "What?! Our ad is on such a dangerous site!!"
+  },
+  "Unsupported_ChallengeAdClashWithArticle": {
+    "message": "Wait, doesn't our ad clash with the content of this article?!"
+  },
+  "Unsupported_ChallengeAdRiskAndSolutionStatement": {
+    "message": "Ads may be placed on inappropriate sites (media), or conversely, unwanted ads may be displayed. Fake sites may appear in search results, and fake news may be prominently spread on social media. By identifying appropriate sites and advertisers, matching appropriate sites and ads, and keeping records of their distribution, brand damage can be prevented."
+  },
+  "Unsupported_ChallengeHowever": {
+    "message": "However..."
+  },
+  "Unsupported_ChallengeInformationRegulation": {
+    "message": "But regulating information isn't good, freedom of speech must also be protected"
+  },
+  "Unsupported_OPDisclaimer_HTML": {
+    "message": "That's right. However, Originator Profile technology does not discriminate between media and advertisers. We are considering utilizing existing certification bodies."
+  },
+  "Unsupported_ChallengeIfThereWereInformation": {
+    "message": "If there were organization reliability information and publication distribution channel..."
+  },
+  "Unsupported_ChallengeReliabilityBenefits": {
+    "message": "It would become visible who created and published this page or content, making it possible to identify false and malicious sites, enabling safe and secure internet use."
+  },
+  "Unsupported_MoreDetailsOP": {
+    "message": "Learn more about Originator Profile"
+  },
+  "Base_ContentsInformation": {
+    "message": "Content Information"
+  },
+  "Org_EditorialGuidelines": {
+    "message": "Editorial Guidelines"
+  },
+  "Org_PrivacyPolicy": {
+    "message": "Privacy Policy"
+  },
+  "Org_CredentialInformation": {
+    "message": "Certificate Information"
+  },
+  "Org_OrganizationInformation": {
+    "message": "Organization Information"
+  },
+  "Org_TechnicalInformation": {
+    "message": "Technical Information"
+  },
+  "Org_ReliabilityInformation": {
+    "message": "Reliability Information"
+  },
+  "PublMain_TechnicalInformation": {
+    "message": "Technical Information"
+  },
+  "PublSite_TechnicalInformation": {
+    "message": "Technical Information"
+  },
+  "Prohibition_DetailStatement": {
+    "message": "Originator Profile verifies whether this site is genuine using electronic certification called 'authentication key'. If this message is displayed, two causes are possible"
+  },
+  "Prohibition_DetailReason_1": {
+    "message": "A legitimate organization representative has made some error in handling the authentication key without malicious intent"
+  },
+  "Prohibition_DetailReason_2": {
+    "message": "A malicious third party has tampered with the authentication key to make a fake site appear genuine"
+  },
+  "Prohibition_DetailAdditional": {
+    "message": "Especially in case 2, it is considered a dangerous site that may deceive you and cause harm. For these reasons, we are informing you of the possibility that this site may be fake. Please note that the certificate may have been tampered with or forged."
+  },
+  "Prohibition_DetailProceed": {
+    "message": "Understand the above and view the organization information and publication content"
+  },
+  "Prohibition_Warning": {
+    "message": "Please be cautious when accessing"
+  },
+  "Prohibition_Site": {
+    "message": "The source of this site cannot be confirmed"
+  },
+  "Prohibition_Statement_HTML": {
+    "message": "Many cases have occurred where people have fallen victim to logging in, registering personal information, or making payments on fake sites that look exactly like the real ones.<br />On this page, we could not confirm the site operator's information. Therefore, please <strong className=\"font-bold\">be very careful about whether this site is genuine.</strong>"
+  },
+  "Prohibition_StatementDetail": {
+    "message": "Learn more about why this message is displayed..."
+  },
+  "Error_ProfileNotFound": {
+    "message": "Profile not found"
+  },
+  "CredentialDetail_CredentialName": {
+    "message": "Certificate Name"
+  },
+  "CredentialDetail_Certifier": {
+    "message": "Certifier"
+  },
+  "CredentialDetail_Verifier": {
+    "message": "Verifier"
+  },
+  "CredentialDetail_IssuedAt": {
+    "message": "Issue Date"
+  },
+  "CredentialDetail_ExpiredAt": {
+    "message": "Expiration Date"
+  },
+  "CredentialDetail_Details": {
+    "message": "For more details"
+  },
+  "Description_Description": {
+    "message": "Description"
+  },
+  "HolderTable_Holder": {
+    "message": "Holder"
+  },
+  "HolderTable_Address": {
+    "message": "Address"
+  },
+  "HolderTable_AddressData": {
+    "message": "$street_address$, $locality$, $region$, $postal_code$",
+    "placeholders": {
+      "postal_code": {
+        "content": "$1",
+        "example": "000-0123"
+      },
+      "region": {
+        "content": "$2",
+        "example": "AA Prefecture"
+      },
+      "locality": {
+        "content": "$3",
+        "example": "BB City"
+      },
+      "street_address": {
+        "content": "$4",
+        "example": "CC Town DD"
+      }
+    }
+  },
+  "HolderTable_URL": {
+    "message": "URL"
+  },
+  "HolderTable_PhoneNum": {
+    "message": "Phone Number"
+  },
+  "HolderTable_Email": {
+    "message": "Email Address"
+  },
+  "HolderTable_CorpNum": {
+    "message": "Corporate Number"
+  },
+  "HolderTable_Contact": {
+    "message": "Contact"
+  },
+  "HolderTable_PrivacyPolicy": {
+    "message": "Privacy Policy"
+  },
+  "HolderTable_Principle": {
+    "message": "Editorial Guidelines"
+  },
+  "ProjectSummary_Statement_1": {
+    "message": "Originator Profile technology is a technology that makes it easy to distinguish high-quality articles and media that have been verified by third parties by attaching verifiable information about web content creators and advertisers."
+  },
+  "ProjectSummary_Statement_2": {
+    "message": "By increasing the transparency of content creators and distribution channels, and making it possible to identify reliable publishers, it helps increase and enhance the value of responsible, high-quality articles and media."
+  },
+  "ProjectTitle_TechSummary": {
+    "message": "Technology to easily distinguish high-quality articles and media"
+  },
+  "Roles_AdPlacement": {
+    "message": "Ad Placement"
+  },
+  "Roles_ContentsPublishing": {
+    "message": "Content Publishing"
+  },
+  "TechInfo_TechInfo": {
+    "message": "Technical Information"
+  },
+  "TechTable_VerificationResult": {
+    "message": "Verification Result"
+  },
+  "TechTable_VerificationError": {
+    "message": "Verification Error"
+  },
+  "TechTable_Subject": {
+    "message": "Subject"
+  },
+  "TechTable_Issuer": {
+    "message": "Issuer"
+  },
+  "TechTable_OPRegistry": {
+    "message": "OP Registry"
+  },
+  "TechTable_OPSubject": {
+    "message": "OP Subject"
+  },
+  "TechTable_IssuedAt": {
+    "message": "Issue Date"
+  },
+  "TechTable_ExpiredAt": {
+    "message": "Expiration Date"
+  },
+  "WebsiteMainTable_PublishDate": {
+    "message": "Publish Date"
+  },
+  "WebsiteMainTable_LastModified": {
+    "message": "Last Modified"
+  },
+  "WebsiteMainTable_EditorInChief": {
+    "message": "Editor-in-Chief"
+  },
+  "WebsiteMainTable_Author": {
+    "message": "Article Author"
+  },
+  "WebsiteMainTable_Category": {
+    "message": "Genre"
+  },
+  "WebsiteSubTable_URL": {
+    "message": "URL"
+  },
+  "WebsiteSubTable_Category": {
+    "message": "Category"
+  },
+  "Profile_Failed": {
+    "message": "Failed"
+  },
+  "Profile_Succeeded": {
+    "message": "Succeeded"
+  },
+  "Error_ProfileHTTPError": {
+    "message": "HTTP Status Code $status$",
+    "placeholders": {
+      "status": {
+        "content": "$1",
+        "example": "404"
+      }
+    }
+  },
+  "Error_ProfileNotFetched": {
+    "message": "Could not fetch profile:\n$cause$",
+    "placeholders": {
+      "cause": {
+        "content": "$1"
+      }
+    }
+  },
+  "Error_WebsiteProfilePairNotFetched": {
+    "message": "Could not fetch website Profile Pair:\n$cause$",
+    "placeholders": {
+      "cause": {
+        "content": "$1"
+      }
+    }
+  }
+}

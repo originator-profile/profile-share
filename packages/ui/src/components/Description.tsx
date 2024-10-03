@@ -1,5 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import useSanitizedHtml from "../utils/use-sanitized-html";
+import { _ } from "../utils/get-message";
 
 type Props = {
   className?: string;
@@ -20,7 +21,9 @@ function Description({ className, description, onlyBody = false }: Props) {
   if (onlyBody) return body;
   return (
     <section className={twMerge("py-1", className)}>
-      <h2 className="mb-1 text-gray-600 font-normal">説明</h2>
+      <h2 className="mb-1 text-gray-600 font-normal">
+        {_("Description_Description")}
+      </h2>
       {body}
     </section>
   );

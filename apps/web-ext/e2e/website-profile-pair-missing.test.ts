@@ -55,7 +55,7 @@ const responseMap: Record<string, Response> = {
 // Unsupportedの文言を確認する関数
 async function checkUnsupportedMessages() {
   const message1 =
-    "組織の信頼性情報と出版物の流通経路が正しく読み取れませんでした";
+    "組織の信頼性情報と出版物の流通経路が 正しく読み取れませんでした";
   const count1 = await ext?.locator(`:text("${message1}")`).count();
   expect(count1).toEqual(1);
 

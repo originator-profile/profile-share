@@ -1,17 +1,18 @@
 import { twMerge } from "tailwind-merge";
 import { Role } from "../types/role";
+import { _ } from "../utils";
 
 type Props = {
   className?: string;
   roles: Role[];
 };
 
-const roleName = {
-  advertiser: "広告の出稿",
-  publisher: "コンテンツの出版",
-} as const;
-
 function Roles({ className, roles }: Props) {
+  const roleName = {
+    advertiser: _("Roles_AdPlacement"),
+    publisher: _("Roles_ContentsPublishing"),
+  } as const;
+
   return (
     <ul className={className}>
       {roles.map((role, index) => (
