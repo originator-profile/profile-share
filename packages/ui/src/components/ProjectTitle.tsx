@@ -1,5 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import logoUrl from "../assets/logo.svg";
+import { _ } from "../utils/get-message";
 
 type Props = {
   as?: keyof JSX.IntrinsicElements;
@@ -11,8 +12,8 @@ function ProjectTitle({ as: As = "section", className }: Props) {
     <As
       className={twMerge("flex items-center flex-col gap-4 mb-12", className)}
     >
-      <p className="text-gray-700 text-xs">
-        良質な記事やメディアを容易に見分けられるようにする技術
+      <p className="whitespace-pre-line text-gray-700 text-xs">
+        {_("ProjectTitle_TechSummary")}
       </p>
       <a
         className="flex justify-center items-center gap-2"

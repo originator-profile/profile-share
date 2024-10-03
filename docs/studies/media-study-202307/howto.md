@@ -161,7 +161,7 @@ Step 2
 : 下記のコマンドをターミナルで実行
 
 ```console
-git clone https://github.com/originator-profile/profile-share
+git clone -c core.symlinks=true https://github.com/originator-profile/profile-share
 cd profile-share
 corepack enable pnpm
 pnpm install
@@ -326,6 +326,15 @@ curl https://dprexpt.originator-profile.org/website/profiles?url=https%3A%2F%2Fm
 上記の例は、curl コマンドで DP レジストリ (`dprexpt.originator-profile.org`) のエンドポイントに　 GET リクエストを送っています。
 `url` クエリパラメータに `https%3A%2F%2Fmedia.example.com%2F2023%2F06%2Fhello%2F` を付与し、 `https://media.example.com/2023/06/hello/` に紐づく Profile Set の取得を要求します。
 
+:::note
+
+2024年9月から DP レジストリの API 全てに認証が必要になりました。
+このエンドポイントの動作確認は OP 拡張機能をインストールしたブラウザで行ってください。
+
+参考: [OP, DP レジストリのアクセス制限について](../general-instruction/entire-api-auth.md)
+
+:::
+
 :::caution
 
 url パラメータには、 DP 登録時に指定した URL と**文字列として完全に一致する**ものを与えてください。例えば、登録時に URL の末尾に `/` を付与しなかった場合には、このエンドポイントにも、末尾に `/` のない URL を与えてください。その他、[URL の仕様](https://url.spec.whatwg.org/#url-serializing)上は無視すべき違いであっても、Profile Set が返ってこない原因となります。これは現時点の実装上の制約です
@@ -391,7 +400,7 @@ CIP から受け取った認証情報が `8fe1b860-558c-5107-a9af-21c376a6a27c:e
     "//": "記事の ID を渡してください。必ず UUID 文字列表現 (RFC 9562) でなければなりません",
     "id": "403cc6d4-53d6-4286-9f42-930e0bf7bd3f",
 
-    "//": "記事の URL です。",
+    "//": "記事の URL です。絶対 URL でなければなりません。",
     "url": "https://media.example.com/2023/06/hello/",
 
     "//": "bodyFormat 内は、このままの値を入力してください。",
@@ -692,6 +701,12 @@ SDP ペイロード部:
   "exp": 1720245795
 }
 ```
+
+:::note
+
+`url` には絶対 URL を指定してください。
+
+:::
 
 各クレームの詳細については[仕様](/spec/)をご確認ください。
 
@@ -996,6 +1011,15 @@ DP の登録に失敗した場合、以下のようなレスポンスが返っ�
 ```
 $ curl https://dprexpt.originator-profile.org/website/profiles?url=https%3A%2F%2Fmedia.example.com%2F2023%2F06%2Fhello%2F
 ```
+
+:::note
+
+2024年9月から DP レジストリの API 全てに認証が必要になりました。
+このエンドポイントの動作確認は OP 拡張機能をインストールしたブラウザで行ってください。
+
+参考: [OP, DP レジストリのアクセス制限について](../general-instruction/entire-api-auth.md)
+
+:::
 
 #### レスポンスの例（`/website/profiles` エンドポイント）
 

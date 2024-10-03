@@ -23,6 +23,9 @@
     "lint": {
       "dependsOn": ["@originator-profile/registry-db#build"],
       "outputs": []
+    },
+    "@originator-profile/web-ext#build": {
+      "env": ["PROFILE_ISSUER", "BASIC_AUTH"]
     }
   }
 }

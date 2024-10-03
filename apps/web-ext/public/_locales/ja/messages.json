@@ -1,0 +1,420 @@
+{
+  "DpFilter_All": {
+    "message": "すべて"
+  },
+  "DpFilter_MainContent": {
+    "message": "メインコンテンツ"
+  },
+  "DpFilter_Other": {
+    "message": "その他コンテンツ"
+  },
+  "DpFilter_Advertisements": {
+    "message": "広告"
+  },
+  "ContentType_MainContent": {
+    "message": "メインコンテンツ"
+  },
+  "ContentType_Article": {
+    "message": "記事"
+  },
+  "ContentType_Advertisement": {
+    "message": "広告"
+  },
+  "ContentType_Unknown": {
+    "message": "種別不明のコンテンツ"
+  },
+  "ContentType_Document": {
+    "message": "ドキュメント"
+  },
+  "ContentType_Site": {
+    "message": "ウェブサイト"
+  },
+  "HolderSummary_EditorialGuidelines": {
+    "message": "編集ガイドライン"
+  },
+  "HolderSummary_PrivacyPolicy": {
+    "message": "プライバシーポリシー"
+  },
+  "Loading_RetrievingAndValidatingProfile": {
+    "message": "$of_origin$プロファイルを取得検証しています...",
+    "placeholders": {
+      "of_origin": {
+        "content": "$1",
+        "example": "https://example.com の"
+      }
+    }
+  },
+  "Loading_OfOrigin": {
+    "message": "$origin$の",
+    "placeholders": {
+      "origin": {
+        "content": "$1",
+        "example": "https://example.com"
+      }
+    }
+  },
+  "NotFound_OrganizationOrPublication": {
+    "message": "組織あるいは出版物"
+  },
+  "NotFound_Organization": {
+    "message": "組織"
+  },
+  "NotFound_Publication": {
+    "message": "出版物"
+  },
+  "NotFound_Holder": {
+    "message": "所有者"
+  },
+  "NotFound_Website": {
+    "message": "ウェブサイト"
+  },
+  "NotFound_InformationNotFound": {
+    "message": "$variant$の情報が\n見つかりませんでした",
+    "placeholders": {
+      "variant": {
+        "content": "$1",
+        "example": "出版物"
+      }
+    }
+  },
+  "NotFound_PageMightBeMoved": {
+    "message": "ページの移動によって$variant$の情報が\n失われた可能性があります",
+    "placeholders": {
+      "variant": {
+        "content": "$1",
+        "example": "出版物"
+      }
+    }
+  },
+  "NotFound_ViewOtherPublications": {
+    "message": "他の出版物をみる"
+  },
+  "ReliabilityGuide_HasReliabilityInformation": {
+    "message": "$subject$には信頼性情報があります",
+    "placeholders": {
+      "subject": {
+        "content": "$1",
+        "example": "このサイトの運営者"
+      }
+    }
+  },
+  "ReliabilityGuide_SiteOperator": {
+    "message": "このサイトの運営者"
+  },
+  "ReliabilityGuide_Publisher": {
+    "message": "この$content_type$の発行者",
+    "placeholders": {
+      "content_type": {
+        "content": "$1",
+        "example": "出版物"
+      }
+    }
+  },
+  "ReliabilityGuide_AboutReliabilityInformation": {
+    "message": "信頼性情報について"
+  },
+  "ReliabilityGuide_VerifiedOrganizationStatement": {
+    "message": "この組織の実在性と組織が保有する証明書は OP レジストリ運用者によって確認済みです。組織の信頼性の判断に資するものとして組織の基本情報と証明書を閲覧することができます。"
+  },
+  "Unsupported_NonconformingDescription": {
+    "message": "信頼性情報あるいは流通経路が仕様どおりに記述されていません"
+  },
+  "Unsupported_MissingReliability": {
+    "message": "組織の信頼性情報が含まれていません"
+  },
+  "Unsupported_MissingDistributionChannel": {
+    "message": "出版物の流通経路が含まれていません"
+  },
+  "Unsupported_NoReliabilityInformationYet": {
+    "message": "組織の信頼性情報と出版物の流通経路がまだありません"
+  },
+  "Unsupported_ReliabilityInformationRetrievalFailed": {
+    "message": "組織の信頼性情報と出版物の流通経路の取得に失敗しました"
+  },
+  "Unsupported_ReliabilityInformationReadError": {
+    "message": "組織の信頼性情報と出版物の流通経路が\n正しく読み取れませんでした"
+  },
+  "Unsupported_FollowingCausesConsidered": {
+    "message": "以下のような原因が考えられます"
+  },
+  "Unsupported_ErrorDetails": {
+    "message": "エラーの詳細"
+  },
+  "Unsupported_Message": {
+    "message": "メッセージ"
+  },
+  "Unsupported_ErrorCode": {
+    "message": "エラーコード"
+  },
+  "Unsupported_ReliabilityInformationContactStatement": {
+    "message": "このページにおける組織の信頼性情報と出版物の流通経路について\n知りたい場合はサイト内に記載されている\n運営管理者にお問い合わせください"
+  },
+  "Unsupported_ReliabilityResolvesFollowings": {
+    "message": "組織の信頼性情報と出版物の流通経路があることで\n以下の課題を解決できます"
+  },
+  "Unsupported_ChallengeInternetUser": {
+    "message": "一般的なネットユーザーの課題"
+  },
+  "Unsupported_ChallengeReliableInformation": {
+    "message": "ちゃんと事実を伝えているウェブ上の記事とか広告とかって、信頼できる情報だけ見る方法はないのかしら...？"
+  },
+  "Unsupported_ChallengeFakeNews": {
+    "message": "フェイクニュースや有害サイトってどうやってもなくならないの...？"
+  },
+  "Unsupported_ChallengeReliabilityProblemAndSolutionStatement": {
+    "message": "アテンションエコノミー（関心を引くことの価値化）を背景に、事実を伝える記事より例えフェイクニュースであっても目立つ記事の方が利益が上がる構造ができています。これはコンテンツ発信者とその信頼性を確認する一般的な手段が無いことが大きな原因の一つです。閲覧者や広告配信システムが良質な記事やメディアを識別可能にすれば、インターネットの情報流通はより健全化できます。"
+  },
+  "Unsupported_ChallengeAdAndMedia": {
+    "message": "広告・メディア関係者の課題"
+  },
+  "Unsupported_ChallengeSketchySite": {
+    "message": "えええー！？ こんな危険なサイトにウチの広告が！！"
+  },
+  "Unsupported_ChallengeAdClashWithArticle": {
+    "message": "あれ、この記事の内容にウチの広告は合わないのでは！？"
+  },
+  "Unsupported_ChallengeAdRiskAndSolutionStatement": {
+    "message": "不適切なサイト (メディア) に広告が掲載されたり、逆に、表示して欲しくない広告が掲載されることがあります。検索結果に偽サイトなどが表示されたり、SNS でもフェイクニュースが目立った形で拡散されたりしています。適切なサイトや広告主を識別し、適切なサイトと広告のマッチングをしたり、その配信記録を残すことでブランド毀損を防げます。"
+  },
+  "Unsupported_ChallengeHowever": {
+    "message": "一方で..."
+  },
+  "Unsupported_ChallengeInformationRegulation": {
+    "message": "でも、情報の規制は良くないよね、言論の自由も認められなければいけない"
+  },
+  "Unsupported_OPDisclaimer_HTML": {
+    "message": "そのとおりです。ただし、Originator Profile技術はメディアや広告主の<ruby>峻別<rp>(</rp><rt>しゅんべつ</rt><rp>)</rp></ruby>をおこなうものではありません。現存する認証機関などに活用してもらうことを考えています。"
+  },
+  "Unsupported_ChallengeIfThereWereInformation": {
+    "message": "もしも組織の信頼性情報と出版物の流通経路があると..."
+  },
+  "Unsupported_ChallengeReliabilityBenefits": {
+    "message": "このページやコンテンツが誰のもとで作成・出版されたのかが見える化されて、虚偽、悪質なサイトも判別できるようになり、安心、安全なインターネット活用が可能になります。"
+  },
+  "Unsupported_MoreDetailsOP": {
+    "message": "Originator Profile をもっと詳しく"
+  },
+  "Base_ContentsInformation": {
+    "message": "コンテンツ情報"
+  },
+  "Org_EditorialGuidelines": {
+    "message": "編集ガイドライン"
+  },
+  "Org_PrivacyPolicy": {
+    "message": "プライバシーポリシー"
+  },
+  "Org_CredentialInformation": {
+    "message": "証明書"
+  },
+  "Org_OrganizationInformation": {
+    "message": "組織情報"
+  },
+  "Org_TechnicalInformation": {
+    "message": "技術情報"
+  },
+  "Org_ReliabilityInformation": {
+    "message": "信頼性情報"
+  },
+  "PublMain_TechnicalInformation": {
+    "message": "技術情報"
+  },
+  "PublSite_TechnicalInformation": {
+    "message": "技術情報"
+  },
+  "Prohibition_DetailStatement": {
+    "message": "Originator Profile ではこのサイトが本物であるかの確認を「認証鍵」という電子証明によって行っています。\nこのメッセージが表示されている場合、以下の2つの原因が考えられます"
+  },
+  "Prohibition_DetailReason_1": {
+    "message": "(悪意のない正当な組織担当者が)認証鍵の取り扱いについて何らかの誤りがある"
+  },
+  "Prohibition_DetailReason_2": {
+    "message": "(悪意のある第三者が)認証鍵を改ざんし、偽サイトを本物のように見せようとしている"
+  },
+  "Prohibition_DetailAdditional": {
+    "message": "特に 2. の場合はあなたを欺き不利益を与える危険なサイトと考えられます。\nこれらの理由によりこのサイトが偽サイトである可能性をあなたにお伝えしています。\n証明書は改ざん・偽装されている可能性があるのでご注意ください。\n"
+  },
+  "Prohibition_DetailProceed": {
+    "message": "上記を理解して組織情報や出版物の内容を閲覧する"
+  },
+  "Prohibition_Warning": {
+    "message": "アクセスにはご注意ください"
+  },
+  "Prohibition_Site": {
+    "message": "このサイトの発信元が確認できません"
+  },
+  "Prohibition_Statement_HTML": {
+    "message": "本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。<br />このページではサイトの運営者情報が確認できませんでした。そのため、この<strong className=\"font-bold\">サイトが本物かどうかは充分に注意してください。</strong>"
+  },
+  "Prohibition_StatementDetail": {
+    "message": "このメッセージが表示される理由についてもっと詳しく..."
+  },
+  "Error_ProfileNotFound": {
+    "message": "プロファイルが見つかりませんでした"
+  },
+  "Error_WebsiteProfilePairNotFound": {
+    "message": "website Profile Pairを取得できませんでした"
+  },
+  "CredentialDetail_CredentialName": {
+    "message": "証明書名"
+  },
+  "CredentialDetail_Certifier": {
+    "message": "認証機関"
+  },
+  "CredentialDetail_Verifier": {
+    "message": "検証機関"
+  },
+  "CredentialDetail_IssuedAt": {
+    "message": "発行日"
+  },
+  "CredentialDetail_ExpiredAt": {
+    "message": "有効期限"
+  },
+  "CredentialDetail_Details": {
+    "message": "くわしくはこちら"
+  },
+  "Description_Description": {
+    "message": "説明"
+  },
+  "HolderTable_Holder": {
+    "message": "所有者"
+  },
+  "HolderTable_Address": {
+    "message": "所在地"
+  },
+  "HolderTable_AddressData": {
+    "message": "〒$postal_code$ $region$$locality$$street_address$",
+    "placeholders": {
+      "postal_code": {
+        "content": "$1",
+        "example": "000-0123"
+      },
+      "region": {
+        "content": "$2",
+        "example": "〇〇県"
+      },
+      "locality": {
+        "content": "$3",
+        "example": "□□市"
+      },
+      "street_address": {
+        "content": "$4",
+        "example": "××町△△"
+      }
+    }
+  },
+  "HolderTable_URL": {
+    "message": "URL"
+  },
+  "HolderTable_PhoneNum": {
+    "message": "電話番号"
+  },
+  "HolderTable_Email": {
+    "message": "メールアドレス"
+  },
+  "HolderTable_CorpNum": {
+    "message": "法人番号"
+  },
+  "HolderTable_Contact": {
+    "message": "問い合わせ"
+  },
+  "HolderTable_PrivacyPolicy": {
+    "message": "プライバシーポリシー"
+  },
+  "HolderTable_Principle": {
+    "message": "編集ガイドライン"
+  },
+  "ProjectSummary_Statement_1": {
+    "message": "Originator Profile 技術は、ウェブコンテンツの作成者や広告主などの情報を検証可能な形で付与することで、第三者認証済みの良質な記事やメディアを容易に見分けられるようにする技術です。"
+  },
+  "ProjectSummary_Statement_2": {
+    "message": "コンテンツ作成者や流通経路の透明性を高め、信頼できる発信者を識別可能にすることで、責任ある良質な記事やメディアの増加と価値向上を助けます。"
+  },
+  "ProjectTitle_TechSummary": {
+    "message": "良質な記事やメディアを容易に見分けられるようにする技術"
+  },
+  "Roles_AdPlacement": {
+    "message": "広告の出稿"
+  },
+  "Roles_ContentsPublishing": {
+    "message": "コンテンツの出版"
+  },
+  "TechInfo_TechInfo": {
+    "message": "技術情報"
+  },
+  "TechTable_VerificationResult": {
+    "message": "検証結果"
+  },
+  "TechTable_VerificationError": {
+    "message": "検証エラー"
+  },
+  "TechTable_Subject": {
+    "message": "識別子"
+  },
+  "TechTable_Issuer": {
+    "message": "発行者"
+  },
+  "TechTable_OPRegistry": {
+    "message": "OP レジストリ"
+  },
+  "TechTable_OPSubject": {
+    "message": "OP 識別子"
+  },
+  "TechTable_IssuedAt": {
+    "message": "発行日"
+  },
+  "TechTable_ExpiredAt": {
+    "message": "有効期限"
+  },
+  "WebsiteMainTable_PublishDate": {
+    "message": "公開日"
+  },
+  "WebsiteMainTable_LastModified": {
+    "message": "最終更新日"
+  },
+  "WebsiteMainTable_EditorInChief": {
+    "message": "編集責任者"
+  },
+  "WebsiteMainTable_Author": {
+    "message": "記事執筆者"
+  },
+  "WebsiteMainTable_Category": {
+    "message": "ジャンル"
+  },
+  "WebsiteSubTable_URL": {
+    "message": "URL"
+  },
+  "WebsiteSubTable_Category": {
+    "message": "カテゴリー"
+  },
+  "Profile_Failed": {
+    "message": "失敗"
+  },
+  "Profile_Succeeded": {
+    "message": "成功"
+  },
+  "Error_ProfileHTTPError": {
+    "message": "HTTP ステータスコード $status$",
+    "placeholders": {
+      "status": {
+        "content": "$1",
+        "example": "404"
+      }
+    }
+  },
+  "Error_ProfileNotFetched": {
+    "message": "プロファイルを取得できませんでした:\n$cause$",
+    "placeholders": {
+      "cause": {
+        "content": "$1"
+      }
+    }
+  },
+  "Error_WebsiteProfilePairNotFetched": {
+    "message": "website Profile Pairを取得できませんでした:\n$cause$",
+    "placeholders": {
+      "cause": {
+        "content": "$1"
+      }
+    }
+  }
+}

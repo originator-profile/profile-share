@@ -1,7 +1,9 @@
 // @ts-check
-import util from "node:util";
 import path from "node:path";
+import util from "node:util";
+import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import chokidar from "chokidar";
 
 const options = /** @type {const} */ ({
   mode: {
@@ -76,20 +78,34 @@ if (args.values.help) {
 
 const filename = `{name}-${args.values.target}-{version}.zip`;
 const artifactsDir = "web-ext-artifacts";
-const outdir = path.join(
-  path.dirname(fileURLToPath(new URL(import.meta.url))),
-  `dist-${args.values.target}`,
-);
+const cwd = path.dirname(fileURLToPath(new URL(import.meta.url)));
+const outdir = path.join(cwd, `dist-${args.values.target}`);
+const credentialsPath = path.join(cwd, "credentials.json");
+/** @type {ImportMeta["env"]["BASIC_AUTH_CREDENTIALS"]} */
+let credentials = [];
+if (existsSync(credentialsPath)) {
+  const file = readFileSync(credentialsPath, { encoding: "utf8" });
+  credentials = JSON.parse(file);
+} else if (args.values.mode === "development") {
+  credentials = [
+    {
+      domain: args.values.issuer ?? "",
+      username: process.env.BASIC_AUTH_USERNAME ?? "",
+      password: process.env.BASIC_AUTH_PASSWORD ?? "",
+    },
+  ];
+}
 const env = {
   MODE: args.values.mode,
   PROFILE_ISSUER: args.values.issuer,
   PROFILE_REGISTRY_URL: args.values["registry-url"],
+  BASIC_AUTH: process.env.BASIC_AUTH === "true",
+  BASIC_AUTH_CREDENTIALS: process.env.BASIC_AUTH === "true" ? credentials : [],
 };
 
 import { rm } from "node:fs/promises";
-// @ts-expect-error
 import copy from "esbuild-copy-static-files";
-// @ts-expect-error
+// @ts-expect-error: 型定義がない
 import webExt from "web-ext";
 import esbuild from "esbuild";
 import postcss from "./esbuild.postcss.cjs";
@@ -147,12 +163,29 @@ if (watch) {
   const ctx = await esbuild.context(buildOptions);
   await ctx.watch();
   console.log("watching...");
+  const watcher = chokidar.watch("./public");
+  watcher
+    .on("add", (path) => {
+      console.log(`File ${path} has been added`);
+      ctx.rebuild();
+    })
+    .on("change", (path) => {
+      console.log(`File ${path} has been changed`);
+      ctx.rebuild();
+    })
+    .on("unlink", (path) => {
+      console.log(`File ${path} has been removed`);
+      ctx.rebuild();
+    });
+
   const runner = await webExt.cmd.run({
     target: args.values.target,
     sourceDir: outdir,
     startUrl: args.values.url,
   });
-  await new Promise((r) => runner.registerCleanup(() => r(1)));
+  await new Promise((r) => {
+    runner.registerCleanup(() => r(1));
+  });
 } else {
   await webExt.cmd.build({
     target: args.values.target,

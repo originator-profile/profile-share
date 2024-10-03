@@ -1,5 +1,5 @@
 import React from "react";
-import { ProfileSet } from "@originator-profile/ui";
+import { _, ProfileSet } from "@originator-profile/ui";
 import { routes } from "./routes";
 import { Navigate } from "react-router-dom";
 import Loading from "../components/Loading";
@@ -17,6 +17,12 @@ function useVerifyFailureFeedback({
   queryParams,
 }: useVerifyFailureFeedbackProps): React.ReactNode {
   if (profiles.isLoading) return React.createElement(Loading);
+
+  if (profiles.isEmpty()) {
+    return React.createElement(Unsupported, {
+      error: new Error(_("Error_ProfileNotFound")),
+    });
+  }
 
   const hasUnsafeParam = queryParams.has("unsafe");
   const errors = profiles.listProfileErrors();

@@ -1,4 +1,3 @@
-import { ProjectSummary } from "@originator-profile/ui";
 import {
   ProfileGenericError,
   ProfilesVerifier,
@@ -341,7 +340,6 @@ export default function Debugger() {
           </dl>
         </section>
       )}
-      <ProjectSummary />
     </article>
   );
 }
