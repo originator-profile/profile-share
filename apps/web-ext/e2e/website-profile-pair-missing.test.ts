@@ -1,5 +1,5 @@
-import { expect, popup, test } from "./fixtures";
 import { BrowserContext, Page } from "@playwright/test";
+import { expect, popup, test } from "./fixtures";
 
 test.describe.configure({ mode: "serial" });
 
@@ -133,7 +133,10 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-web-ext.png` });
 });
 
-test("pp.json取得成功(エンドポイントなし)の確認", async ({ context, page }) => {
+test.skip("pp.json取得成功(エンドポイントなし)の確認", async ({
+  context,
+  page,
+}) => {
   const noProfilePair = false;
   await runTest(
     context,

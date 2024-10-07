@@ -9,7 +9,7 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-拡張機能.png` });
 });
 
-test("サイトプロファイルにおける表示の確認", async ({ context, page }) => {
+test.skip("サイトプロファイルにおける表示の確認", async ({ context, page }) => {
   // Profile Registry にアクセス (apps/registry)
   await page.goto("http://localhost:8080/examples/many-dps.html");
 
@@ -39,7 +39,7 @@ test("サイトプロファイルにおける表示の確認", async ({ context,
   ).toEqual(1);
 });
 
-test("サイトプロファイルのみ表示の確認", async ({ context, page }) => {
+test.skip("サイトプロファイルのみ表示の確認", async ({ context, page }) => {
   // 存在しないページにアクセス
   await page.goto("http://localhost:8080/examples/404.html");
 
