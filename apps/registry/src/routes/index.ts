@@ -1,4 +1,5 @@
 import { FastifyInstance } from "fastify";
+import * as getJwks from "./get-jwks";
 import * as getJwtVcIssuer from "./get-jwt-vc-issuer";
 
 async function index(fastify: FastifyInstance): Promise<void> {
@@ -27,6 +28,7 @@ async function index(fastify: FastifyInstance): Promise<void> {
     },
     (_, reply) => reply.html(),
   );
+  fastify.route(getJwks);
   fastify.route(getJwtVcIssuer);
 }
 
