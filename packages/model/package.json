@@ -1,6 +1,6 @@
 {
   "name": "@originator-profile/model",
-  "version": "0.0.13-alpha.0",
+  "version": "0.0.13",
   "private": true,
   "main": "src/index.ts",
   "scripts": {
