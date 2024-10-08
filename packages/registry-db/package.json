@@ -1,6 +1,6 @@
 {
   "name": "@originator-profile/registry-db",
-  "version": "0.0.13",
+  "version": "0.0.14-alpha.0",
   "private": true,
   "main": "src/index.ts",
   "scripts": {
