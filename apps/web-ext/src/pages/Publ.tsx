@@ -40,7 +40,7 @@ function getTemplateProps<
   const dpItemContent = (
     mustWebsite
       ? dp.findOgWebsiteItem()
-      : dp.findOgWebsiteItem() ?? dp.findAdvertisementItem()
+      : (dp.findOgWebsiteItem() ?? dp.findAdvertisementItem())
   ) as R | undefined;
   if (!(holder && dpItemContent)) return;
   return {

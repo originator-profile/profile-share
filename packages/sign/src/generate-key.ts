@@ -21,12 +21,10 @@ export async function generateKey(
 
   return {
     publicKey: {
-      kty: publicJwk.kty,
       kid,
       ...publicJwk,
     },
     privateKey: {
-      kty: privateJwk.kty,
       kid,
       ...privateJwk,
     },
