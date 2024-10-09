@@ -15,12 +15,12 @@
     "@adobe/jsonschema2md": "^8.0.2",
     "@originator-profile/model": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
-    "esbuild-register": "^3.5.0",
-    "eslint": "^9.7.0",
+    "esbuild-register": "^3.6.0",
+    "eslint": "^9.12.0",
     "eslint-config-originator-profile": "workspace:*",
     "just-kebab-case": "^4.2.0",
     "markdown-link-check": "^3.12.2",
-    "npm-run-all2": "^6.2.0",
-    "rimraf": "^6.0.0"
+    "npm-run-all2": "^6.2.3",
+    "rimraf": "^6.0.1"
   }
 }

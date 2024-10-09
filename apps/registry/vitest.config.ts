@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
     },
     e2e: {
       dir: "e2e",
-      setupFiles: "e2e/setup.ts",
+      globalSetup: "e2e/setup.ts",
       testTimeout: 10_000,
       poolOptions: {
         threads: {

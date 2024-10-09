@@ -6,12 +6,11 @@
     "e2e": "playwright test",
     "version": "shx sed -i 's/(?<= Version: *)[^ ]*$/'${npm_package_version}/ profile.php && git add profile.php"
   },
-  "//": "NOTE: @wordpress/e2e-test-utils-playwright@0.15.0 のままなのは wordpress:6.4.2-php8.2 の Gutenberg のバージョンが古いため",
   "devDependencies": {
     "@originator-profile/sign": "workspace:*",
     "@originator-profile/verify": "workspace:*",
-    "@playwright/test": "^1.44.1",
-    "@wordpress/e2e-test-utils-playwright": "1.0.0",
+    "@playwright/test": "1.44.1",
+    "@wordpress/e2e-test-utils-playwright": "1.9.0",
     "shx": "^0.3.4"
   }
 }

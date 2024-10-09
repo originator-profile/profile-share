@@ -1,7 +1,6 @@
 import { FastifyRequest, FastifySchema } from "fastify";
 import { ContextDefinition } from "jsonld";
-import context from "@originator-profile/model/context.json" assert { type:
-  "json" };
+import context from "@originator-profile/model/context.json" assert { type: "json" };
 import Params from "./params";
 
 export const method = "GET";

@@ -1,7 +1,6 @@
 import { FastifySchema, FastifyRequest, FastifyReply } from "fastify";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
-import context from "@originator-profile/model/context.json" assert { type:
-  "json" };
+import context from "@originator-profile/model/context.json" assert { type: "json" };
 import Params from "./params";
 
 const schema: FastifySchema = {
