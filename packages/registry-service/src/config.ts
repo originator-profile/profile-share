@@ -39,6 +39,15 @@ const Config = {
     LOG_QUIET: {
       type: "boolean",
     },
+    BASIC_AUTH: {
+      type: "boolean",
+    },
+    BASIC_AUTH_USERNAME: {
+      type: "string",
+    },
+    BASIC_AUTH_PASSWORD: {
+      type: "string",
+    },
   },
   required: ["ISSUER_UUID"],
 } as const;

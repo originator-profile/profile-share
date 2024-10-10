@@ -1,6 +1,6 @@
 {
   "name": "@originator-profile/core",
-  "version": "0.0.11-alpha.0",
+  "version": "0.0.13-alpha.0",
   "private": true,
   "main": "src/index.ts",
   "scripts": {
@@ -13,10 +13,10 @@
     "@originator-profile/tsconfig": "workspace:*",
     "@types/uuid": "^10.0.0",
     "date-fns": "^3.6.0",
-    "eslint": "^8.56.0",
+    "eslint": "^9.7.0",
     "eslint-config-originator-profile": "workspace:*",
     "jose": "^5.3.0",
     "uuid": "^10.0.0",
-    "vitest": "^1.6.0"
+    "vitest": "^2.0.0"
   }
 }

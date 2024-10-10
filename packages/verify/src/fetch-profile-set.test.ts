@@ -1,20 +1,20 @@
-import { setupServer } from "msw/node";
+import { Op } from "@originator-profile/model";
+import { generateKey, signOp } from "@originator-profile/sign";
+import { addYears, fromUnixTime, getUnixTime } from "date-fns";
+import { Window } from "happy-dom";
 import { HttpResponse, http } from "msw";
+import { setupServer } from "msw/node";
 import {
-  describe,
+  afterAll,
+  afterEach,
   beforeAll,
   beforeEach,
-  afterEach,
-  afterAll,
-  test,
+  describe,
   expect,
+  test,
 } from "vitest";
-import { Window } from "happy-dom";
-import { addYears, getUnixTime, fromUnixTime } from "date-fns";
-import { generateKey, signOp } from "@originator-profile/sign";
-import { Op } from "@originator-profile/model";
-import { fetchProfileSet } from "./fetch-profile-set";
 import { ProfilesFetchFailed } from "./errors";
+import { fetchProfileSet } from "./fetch-profile-set";
 
 const server = setupServer();
 
@@ -78,9 +78,9 @@ describe("単純なlinkから取得", () => {
     );
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
     // @ts-expect-error result is ProfilesFetchFailed
-    expect(result.message).toBe(
-      `プロファイルを取得できませんでした:\nInvalid URL`,
-    );
+    expect(result.message).toBe("Error_ProfileNotFetched");
+    // @ts-expect-error result is ProfilesFetchFailed
+    expect(result.cause.message).toBe("Invalid URL");
   });
 
   test("取得先に Profile Set が存在しないとき Profile Set の取得に失敗", async () => {
@@ -103,9 +103,9 @@ describe("単純なlinkから取得", () => {
     );
     expect(result).toBeInstanceOf(ProfilesFetchFailed);
     // @ts-expect-error result is ProfilesFetchFailed
-    expect(result.message).toBe(
-      `プロファイルを取得できませんでした:\nHTTP ステータスコード 404`,
-    );
+    expect(result.cause).toBeInstanceOf(ProfilesFetchFailed);
+    // @ts-expect-error result is ProfilesFetchFailed
+    expect(result.cause.cause.message).toBe("404");
   });
 });
 
@@ -245,16 +245,17 @@ describe("ad Profile Pair が存在するとき", () => {
             },
           }),
       ),
-    ),
-      server.use(
-        http.get("https://example.com/1/ps.json", () =>
-          HttpResponse.json({
-            "@context": "https://originator-profile.org/context.jsonld",
-            profiles:
-              "{Signed Document Profile または Signed Originator Profile}",
-          }),
-        ),
-      );
+    );
+
+    server.use(
+      http.get("https://example.com/1/ps.json", () =>
+        HttpResponse.json({
+          "@context": "https://originator-profile.org/context.jsonld",
+          profiles:
+            "{Signed Document Profile または Signed Originator Profile}",
+        }),
+      ),
+    );
   });
 
   test("有効な ad Profile Pair と Profile Set が得られる", async () => {
@@ -268,7 +269,7 @@ describe("ad Profile Pair が存在するとき", () => {
         (endpoint) => `
 <link
   href="${endpoint}"
-  rel="alternate"Â
+  rel="alternate"
   type="application/ld+json"
 />
   `,

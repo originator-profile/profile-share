@@ -18,6 +18,10 @@
 const users = new Map(
   Object.entries({
     op: "l17Fx7U7feOp",
+    mic: "tgW5ZZZkfRWp",
+    tottori: "GuPFSuzFeBWD",
+    ishikawa: "CI1hWw1xZEAX",
+    kanazawa: "2CM7K82OvNw4",
   }),
 );
 

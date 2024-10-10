@@ -112,6 +112,12 @@ Web サイト https://originator-profile.org のうちの複数のページに�
 ]
 ```
 
+:::note
+
+`url` には絶対 URL を指定してください。
+
+:::
+
 詳細は [Profile Registry CLI ドキュメント](https://github.com/originator-profile/profile-share/blob/main/apps/registry#commands)を参照してください。
 
 #### .website.json の用意

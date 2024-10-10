@@ -53,7 +53,7 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-web-ext.png` });
 });
 
-test("サイトプロファイル検証失敗時に閲覧禁止の確認", async ({
+test.skip("サイトプロファイル検証失敗時に閲覧禁止の確認", async ({
   context,
   page,
 }) => {

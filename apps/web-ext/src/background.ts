@@ -1,4 +1,5 @@
 import { BackgroundMessageRequest } from "./types/message";
+import "./utils/cors-basic-auth";
 
 const windowSize = {
   width: 520,
@@ -40,3 +41,34 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
 
 // https://www.typescriptlang.org/tsconfig#non-module-files
 export {};
+
+// NOTE: gh-1583
+if (import.meta.env.MODE === "development") {
+  chrome.runtime.onInstalled.addListener(({ reason }) => {
+    if (reason === "install") chrome.tabs.reload();
+  });
+}
+
+if (import.meta.env.BASIC_AUTH) {
+  for (const credential of import.meta.env.BASIC_AUTH_CREDENTIALS) {
+    chrome.webRequest.onAuthRequired.addListener(
+      () => ({
+        authCredentials: {
+          username: credential.username,
+          password: credential.password,
+        },
+      }),
+      {
+        urls:
+          credential.domain === "localhost"
+            ? [
+                "http://localhost:8080/*",
+                // Firefox のため
+                "http://localhost/*",
+              ]
+            : [`https://${credential.domain}/*`],
+      },
+      ["blocking"],
+    );
+  }
+}

@@ -27,6 +27,7 @@ import {
 } from "@originator-profile/model";
 import getContentType from "./get-content-type";
 import { toRoles } from "./role";
+import { _ } from "./get-message";
 
 /**
  * プロファイルの基底クラス。
@@ -72,7 +73,9 @@ export abstract class Profile {
    * @returns 検証結果の文字列
    */
   printVerificationStatus(): string {
-    return this.error instanceof Error ? "失敗" : "成功";
+    return this.error instanceof Error
+      ? _("Profile_Failed")
+      : _("Profile_Succeeded");
   }
 
   /**
@@ -237,7 +240,7 @@ export class DocumentProfile extends Profile {
   getContentType() {
     const content = this.findAdvertisementItem() ?? this.findOgWebsiteItem();
     if (!content) {
-      return "種別不明のコンテンツ";
+      return "ContentType_Unknown";
     }
     const main = this.isMain ? [this.subject] : [];
     return getContentType(this, content, main);
