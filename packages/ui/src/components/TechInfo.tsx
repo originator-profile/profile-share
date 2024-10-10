@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import { OriginatorProfile, DocumentProfile } from "../utils";
+import { OriginatorProfile, DocumentProfile, _ } from "../utils";
 import TechTable from "./TechTable";
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 function TechInfo({ className, op, dp, holder, certifier }: Props) {
   return (
     <div className={twMerge("jumpu-card p-5 rounded-2xl text-sm", className)}>
-      <p className="text-base font-bold mb-3">技術情報</p>
+      <p className="text-base font-bold mb-3">{_("TechInfo_TechInfo")}</p>
       <div className="mb-3">
         <p className="text-base font-bold mb-1">OP</p>
         <TechTable profile={op} issuer={certifier} />

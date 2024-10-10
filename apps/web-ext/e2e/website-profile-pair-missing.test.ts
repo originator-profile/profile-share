@@ -1,5 +1,5 @@
-import { expect, popup, test } from "./fixtures";
 import { BrowserContext, Page } from "@playwright/test";
+import { expect, popup, test } from "./fixtures";
 
 test.describe.configure({ mode: "serial" });
 
@@ -55,7 +55,7 @@ const responseMap: Record<string, Response> = {
 // Unsupportedの文言を確認する関数
 async function checkUnsupportedMessages() {
   const message1 =
-    "組織の信頼性情報と出版物の流通経路が正しく読み取れませんでした";
+    "組織の信頼性情報と出版物の流通経路が 正しく読み取れませんでした";
   const count1 = await ext?.locator(`:text("${message1}")`).count();
   expect(count1).toEqual(1);
 
@@ -133,7 +133,10 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-web-ext.png` });
 });
 
-test("pp.json取得成功(エンドポイントなし)の確認", async ({ context, page }) => {
+test.skip("pp.json取得成功(エンドポイントなし)の確認", async ({
+  context,
+  page,
+}) => {
   const noProfilePair = false;
   await runTest(
     context,

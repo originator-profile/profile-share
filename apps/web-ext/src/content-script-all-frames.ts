@@ -1,4 +1,5 @@
 import { extractBody, fetchProfileSet } from "@originator-profile/verify";
+import "./utils/cors-basic-auth";
 import {
   ContentScriptAllFramesMessageRequest,
   ContentScriptAllFramesMessageResponse,
