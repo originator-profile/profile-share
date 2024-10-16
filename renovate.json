@@ -1,5 +1,19 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended", "config:semverAllMonthly"],
-  "ignoreDeps": ["@wordpress/e2e-test-utils-playwright"]
+  "ignoreDeps": [
+    "@fastify/autoload",
+    "@fastify/basic-auth",
+    "@fastify/cors",
+    "@fastify/env",
+    "@fastify/helmet",
+    "@fastify/jwt",
+    "@fastify/swagger",
+    "@playwright/test",
+    "@wordpress/e2e-test-utils-playwright",
+    "fastify",
+    "fastify-auth0-verify",
+    "fastify-http-errors-enhanced",
+    "playwright"
+  ]
 }

@@ -49,7 +49,7 @@ function Marker({
           active ? "bg-blue-500" : "bg-white",
         )}
         title={`${opHolder.name} ${dpTitle.title} ${
-          result && (result.bodyError ? result.bodyError : result.body ?? "")
+          result && (result.bodyError ? result.bodyError : (result.body ?? ""))
         }`}
         onClick={onClick}
       >

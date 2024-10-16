@@ -1,6 +1,6 @@
 {
   "name": "@originator-profile/model",
-  "version": "0.0.13-alpha.0",
+  "version": "0.0.14-alpha.0",
   "private": true,
   "main": "src/index.ts",
   "scripts": {
@@ -9,13 +9,13 @@
   },
   "devDependencies": {
     "@originator-profile/tsconfig": "workspace:*",
-    "@types/jsonld": "^1.5.14",
-    "ajv": "^8.14.0",
-    "eslint": "^9.7.0",
+    "@types/jsonld": "^1.5.15",
+    "ajv": "^8.17.1",
+    "eslint": "^9.12.0",
     "eslint-config-originator-profile": "workspace:*",
-    "json-schema-to-ts": "^3.1.0",
+    "json-schema-to-ts": "^3.1.1",
     "jsonld": "^8.3.2",
-    "msw": "^2.3.1",
-    "vitest": "^2.0.0"
+    "msw": "^2.4.9",
+    "vitest": "^2.1.2"
   }
 }
