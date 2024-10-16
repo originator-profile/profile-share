@@ -2,7 +2,8 @@ name: originator-profile/profile/test
 on: push
 jobs:
   main:
-    runs-on: ubuntu-latest
+    # NOTE: Ubuntu 24.04 LTS 環境だと Playwright v1.44.1 のセットアップに失敗するため
+    runs-on: ubuntu-22.04
     timeout-minutes: 15
     # format ステップで新しいコミットを push するために write 権限を与える
     permissions:
