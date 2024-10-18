@@ -1,0 +1,24 @@
+{
+  "name": "@originator-profile/jwt-securing-mechanism",
+  "version": "0.0.11-alpha.0",
+  "private": true,
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "vitest run",
+    "lint": "eslint --fix ."
+  },
+  "devDependencies": {
+    "@originator-profile/abstract-model": "workspace:*",
+    "@originator-profile/cryptography": "workspace:*",
+    "@originator-profile/model": "workspace:*",
+    "@originator-profile/tsconfig": "workspace:*",
+    "@originator-profile/op-vc-data-model": "workspace:*",
+    "ajv": "^8.14.0",
+    "ajv-formats": "^3.0.1",
+    "date-fns": "^3.6.0",
+    "eslint": "^8.56.0",
+    "eslint-config-originator-profile": "workspace:*",
+    "jose": "^5.3.0",
+    "vitest": "^1.6.0"
+  }
+}

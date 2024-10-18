@@ -1,4 +1,4 @@
-import { FromSchema } from "json-schema-to-ts";
+import { FromSchema, JSONSchema } from "json-schema-to-ts";
 
 export const BasicTarget = {
   title: "Basic Target",
@@ -7,19 +7,23 @@ export const BasicTarget = {
   properties: {
     type: {
       type: "string",
-      enum: ["text", "visibleText", "html"],
+      enum: [
+        "TextTargetIntegrity",
+        "VisibleTextTargetIntegrity",
+        "HtmlTargetIntegrity",
+      ],
     },
     integrity: {
       type: "string",
       description:
         "ハッシュ値の形式は Subresource Integrity セクション 3.1 の Integrity metadata でなければなりません (MUST)。",
     },
-    selector: {
+    cssSelector: {
       type: "string",
       description: "CSS セレクター",
     },
   },
-  required: ["type", "integrity", "selector"],
-} as const;
+  required: ["type", "integrity", "cssSelector"],
+} as const satisfies JSONSchema;
 
 export type BaseTarget = FromSchema<typeof BasicTarget>;

@@ -6,7 +6,7 @@ import {
   ProfilesVerifyFailed,
   ProfilesResolveFailed,
 } from "./errors";
-import { Keys, LocalKeys } from "./keys";
+import { Keys, LocalKeys } from "@originator-profile/cryptography";
 import {
   DecodeResult,
   VerifyTokenResult,

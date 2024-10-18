@@ -16,3 +16,7 @@ export async function calcIntegrity(url: string): Promise<string> {
   const hash = `sha256-${getSHA256(Buffer.from(buf))}`;
   return hash;
 }
+
+export async function calcIntegrityText(text: string): Promise<string> {
+  return `sha256-${getSHA256(Buffer.from(text))}`;
+}

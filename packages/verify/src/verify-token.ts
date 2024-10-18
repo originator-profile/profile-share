@@ -8,7 +8,7 @@ import {
 } from "@originator-profile/core";
 import { TokenDecoder } from "./decode";
 import { ProfileTokenVerifyFailed } from "./errors";
-import { Keys } from "./keys";
+import { Keys } from "@originator-profile/cryptography";
 import { VerifyTokenResult } from "./types";
 import { verifyOrigin } from "./verify-origin";
 

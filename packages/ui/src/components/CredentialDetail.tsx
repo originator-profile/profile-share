@@ -36,7 +36,7 @@ function CredentialDetail({ className, credential }: Props) {
             {name ?? credential.name}
           </h2>
           {data && (
-            <p className="text-xs text-gray-600">{data.certifier.name} 発行</p>
+            <p className="text-xs text-gray-600">{credential.certifier} 発行</p>
           )}
         </div>
       </header>
@@ -63,16 +63,16 @@ function CredentialDetail({ className, credential }: Props) {
           header={_("CredentialDetail_CredentialName")}
           data={credential.name}
         />
-        {data && (
+        {credential?.certifier && (
           <TableRow
             header={_("CredentialDetail_Certifier")}
-            data={data.certifier.name}
+            data={credential.certifier}
           />
         )}
-        {data?.verifier && (
+        {credential?.verifier && (
           <TableRow
             header={_("CredentialDetail_Verifier")}
-            data={data.verifier.name}
+            data={credential.verifier}
           />
         )}
         <TableRow
@@ -89,13 +89,13 @@ function CredentialDetail({ className, credential }: Props) {
           className="card border px-5 py-3 flex items-center justify-between gap-2.5 rounded-2xl"
           target="_blank"
           rel="noopener noreferrer"
-          href={data.url}
+          href={data.ref}
         >
           <span className="flex flex-col gap-1">
             <span className="text-xs text-gray-500">
               {_("CredentialDetail_Details")}
             </span>
-            <span className="text-sm">{data.urlTitle}</span>
+            <span className="text-sm">{data.description}</span>
           </span>
           <Icon
             className="text-sm text-gray-500"

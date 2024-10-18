@@ -13,15 +13,12 @@ const endpoints = [
   }),
   http.get("https://example.com/integrity-target-text", () => {
     const binaryData = Buffer.from("Hello, world!\r\n", "utf-8");
-    console.log(binaryData.length);
     return HttpResponse.arrayBuffer(binaryData, {
       headers: { "Content-Type": "text/plain" },
     });
   }),
   http.get("https://example.com/integrity-target-json", () => {
-    /* JSONの改行はNLと想定 */
-    const binaryData = Buffer.from("{}\n", "utf-8");
-    console.log(binaryData.length);
+    const binaryData = Buffer.from("{}", "utf-8");
     return HttpResponse.arrayBuffer(binaryData, {
       headers: { "Content-Type": "application/json" },
     });

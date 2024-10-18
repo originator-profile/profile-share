@@ -1,4 +1,4 @@
-import { FromSchema } from "json-schema-to-ts";
+import { FromSchema, JSONSchema } from "json-schema-to-ts";
 
 export const ExternalResourceTarget = {
   title: "External Resource Target",
@@ -7,7 +7,7 @@ export const ExternalResourceTarget = {
   properties: {
     type: {
       type: "string",
-      const: "externalResource",
+      const: "ExternalResourceTargetIntegrity",
     },
     integrity: {
       type: "string",
@@ -16,6 +16,6 @@ export const ExternalResourceTarget = {
     },
   },
   required: ["type", "integrity"],
-} as const;
+} as const satisfies JSONSchema;
 
 export type ExternalResourceTarget = FromSchema<typeof ExternalResourceTarget>;

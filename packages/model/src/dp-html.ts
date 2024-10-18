@@ -1,4 +1,4 @@
-import { FromSchema } from "json-schema-to-ts";
+import { FromSchema, JSONSchema } from "json-schema-to-ts";
 import DpUrl from "./dp-url";
 import DpLocation from "./dp-location";
 import DpProof from "./dp-proof";
@@ -16,7 +16,7 @@ const DpHtml = {
   },
   required: ["type", "proof"],
   additionalProperties: false,
-} as const;
+} as const satisfies JSONSchema;
 
 /** @deprecated */
 type DpHtml = FromSchema<typeof DpHtml>;

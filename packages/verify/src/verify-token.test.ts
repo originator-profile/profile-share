@@ -4,7 +4,7 @@ import { Op, Dp } from "@originator-profile/model";
 import { signOp, signDp, generateKey } from "@originator-profile/sign";
 import { ProfileTokenVerifyFailed } from "./errors";
 import { TokenDecoder } from "./decode";
-import { LocalKeys } from "./keys";
+import { LocalKeys } from "@originator-profile/cryptography";
 import { TokenVerifier } from "./verify-token";
 
 test("verify OP Token", async () => {

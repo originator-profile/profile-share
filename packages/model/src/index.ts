@@ -1,16 +1,23 @@
 export { default as Advertisement } from "./advertisement";
-export * from "./advertisement-metadata";
-export * from "./allowed-origins";
-export * from "./allowed-urls";
-export { default as CertificationSystem } from "./certification-system";
-export * from "./content-assertion";
-export * from "./content-metadata";
+export * from "./advertisement-ca";
+export * from "./allowed-origin";
+export * from "./allowed-url";
+export * from "./cert-system";
+export * from "./certificate";
+export * from "./content-attestation";
+export {
+  default as ContentAttestationSet,
+  type ContentAttestationSetItem,
+} from "./content-attestation-set";
+export * from "./content-ca";
+export * from "./core-profile";
 export { default as Dp } from "./dp";
 export { default as DpAllowedOrigins } from "./dp-allowed-origins";
 export { default as DpHtml } from "./dp-html";
 export { default as DpItem } from "./dp-item";
 export { default as DpText } from "./dp-text";
 export { default as DpVisibleText } from "./dp-visible-text";
+export * from "./japanese-existence-certificate";
 export { default as Jwk } from "./jwk";
 export { default as Jwks } from "./jwks";
 export { default as JwtDpPayload } from "./jwt-dp-payload";
@@ -25,12 +32,11 @@ export { default as OpItem } from "./op-item";
 export { default as OpVerifier } from "./op-verifier";
 export { OrganizationMetadata } from "./organization-metadata";
 export { OriginatorProfile } from "./originator-profile";
+export * from "./originator-profile-set";
 export { default as Profile } from "./profile";
 export { default as Request } from "./request";
+export * from "./site-profile";
 export * from "./target/";
 export { default as User } from "./user";
-export {
-  default as WebAssertionSet,
-  type SingleWebAssertionSet,
-} from "./web-assertion-set";
-export * from "./website-metadata";
+export * from "./web-media-profile";
+export * from "./website-profile";

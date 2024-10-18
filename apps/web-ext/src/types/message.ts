@@ -33,6 +33,21 @@ export type fetchWebsiteProfilePairMessageResponse = {
   origin: string;
 };
 
+export type FetchSiteProfileMessageRequest = {
+  type: "fetch-site-profile";
+  /** エポックミリ秒 */
+  timestamp: number;
+};
+export type FetchSiteProfileMessageResponse = {
+  type: "fetch-site-profile";
+  /** JSON の場合 true、ProfilesFetchFailed の場合 false */
+  ok: boolean;
+  /** JSON 文字列 (JSON または ProfilesFetchFailed) */
+  data: string;
+  /** 閲覧しているコンテンツの URL の origin 文字列 */
+  origin: string;
+};
+
 export type extractBodyRequest = {
   type: "extract-body";
   /** エポックミリ秒 */
@@ -79,11 +94,13 @@ export type SelectOverlayDpMessageRequest = {
 export type ContentScriptMessageRequest =
   | fetchWebsiteProfilePairMessageRequest
   | OverlayProfilesMessageRequest
-  | CloseWindowMessageRequest;
+  | CloseWindowMessageRequest
+  | FetchSiteProfileMessageRequest;
 export type ContentScriptMessageResponse =
   | fetchWebsiteProfilePairMessageResponse
   | OverlayProfilesMessageResponse
-  | CloseWindowMessageResponse;
+  | CloseWindowMessageResponse
+  | FetchSiteProfileMessageResponse;
 export type ContentScriptAllFramesMessageRequest =
   | fetchProfileSetMessageRequest
   | extractBodyRequest;

@@ -25,7 +25,7 @@ export const CertificationSystemRepository = () => ({
 
     const certificationSystems: Array<CertificationSystem & { id: string }> =
       data.map((c) => ({
-        type: "certification-system" as const,
+        type: "CertificationSystem" as const,
         ...c,
       }));
 

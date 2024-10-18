@@ -1,7 +1,7 @@
 import { jwtVerify, JWTVerifyResult } from "jose";
 import { JOSEError } from "jose/errors";
 import { OriginatorProfile } from "@originator-profile/model";
-import { Keys } from "./keys";
+import { Keys } from "@originator-profile/cryptography";
 import { OriginatorProfileDecoder } from "./decode-originator-profile";
 
 /**

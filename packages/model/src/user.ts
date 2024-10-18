@@ -1,4 +1,4 @@
-import { FromSchema } from "json-schema-to-ts";
+import { FromSchema, JSONSchema } from "json-schema-to-ts";
 
 const User = {
   title: "ユーザー",
@@ -24,7 +24,7 @@ const User = {
   },
   required: ["id", "name", "picture"],
   additionalProperties: false,
-} as const;
+} as const satisfies JSONSchema;
 
 type User = FromSchema<typeof User>;
 

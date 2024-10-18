@@ -1,6 +1,6 @@
 import {
   fetchWebsiteProfilePair,
-  fetchWebsiteMetadata,
+  fetchSiteProfile,
 } from "@originator-profile/verify";
 import {
   ProfilePayloadWithMetadata,
@@ -12,26 +12,38 @@ import {
   ContentWindowPostMessageEvent,
 } from "./types/message";
 import { initialize, activate, deactivate } from "./utils/iframe";
-import { websiteMetadataMessenger } from "./components/websiteMetadata";
+import { siteProfileMessenger } from "./components/siteProfile";
 
 let profiles: ProfilePayloadWithMetadata[] = [];
 let websiteProfiles: ProfilePayloadWithMetadata[] = [];
 let activeDp: DpPayloadWithMetadata | null = null;
 const overlay = initialize();
 
+function stringify(data: unknown): string {
+  return data instanceof Error
+    ? JSON.stringify(data, Object.getOwnPropertyNames(data))
+    : JSON.stringify(data);
+}
+
 async function handleMessageResponse(
   message: ContentScriptMessageRequest,
 ): Promise<ContentScriptMessageResponse> {
   switch (message.type) {
+    case "fetch-site-profile": {
+      const data = await fetchSiteProfile(document);
+      return {
+        type: "fetch-site-profile",
+        ok: !(data instanceof Error),
+        data: stringify(data),
+        origin: document.location.origin,
+      };
+    }
     case "fetch-website-profile-pair": {
       const data = await fetchWebsiteProfilePair(document);
       return {
         type: "fetch-website-profile-pair",
         ok: !(data instanceof Error),
-        data:
-          data instanceof Error
-            ? JSON.stringify(data, Object.getOwnPropertyNames(data))
-            : JSON.stringify(data),
+        data: stringify(data),
         origin: document.location.origin,
       };
     }
@@ -108,7 +120,7 @@ function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
 
 window.addEventListener("message", handlePostMessageResponse);
 
-websiteMetadataMessenger.onMessage("fetchWebsiteMetadata", async () => {
-  const data = await fetchWebsiteMetadata(document);
+siteProfileMessenger.onMessage("fetchSiteProfile", async () => {
+  const data = await fetchSiteProfile(document);
   return data;
 });

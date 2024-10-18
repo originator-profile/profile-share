@@ -1,4 +1,4 @@
-import { FromSchema } from "json-schema-to-ts";
+import { FromSchema, JSONSchema } from "json-schema-to-ts";
 
 const Logo = {
   title: "Logo",
@@ -20,7 +20,7 @@ const Logo = {
     required: ["url", "isMain"],
     additionalProperties: false,
   },
-} as const;
+} as const satisfies JSONSchema;
 
 type Logo = FromSchema<typeof Logo>;
 

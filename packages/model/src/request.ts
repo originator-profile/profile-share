@@ -1,4 +1,4 @@
-import { FromSchema } from "json-schema-to-ts";
+import { FromSchema, JSONSchema } from "json-schema-to-ts";
 import ReviewComment from "./review-comment";
 
 const Request = {
@@ -40,7 +40,7 @@ const Request = {
   },
   required: ["group", "status", "reviewComments", "createdAt", "updatedAt"],
   additionalProperties: false,
-} as const;
+} as const satisfies JSONSchema;
 
 type Request = FromSchema<typeof Request>;
 
