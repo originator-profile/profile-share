@@ -20,6 +20,7 @@ function extractor(
 
 /**
  * 対象の要素とその子孫にあたる文字列の抽出
+ * @deprecated
  * @pageUrl 抽出対象の URL
  * @param locator 対象とする要素を特定する関数
  * @param item 署名を除いた dp クレームの item プロパティの visibleText 型あるいは text 型あるいは html 型オブジェクト

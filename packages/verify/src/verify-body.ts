@@ -5,6 +5,7 @@ import { ProfileBodyVerifyFailed } from "./errors";
 
 /**
  * 対象のテキストの検証
+ * @deprecated
  * @param body 対象のテキスト
  * @param jws Detached Compact JWS
  * @param keys 公開鍵
