@@ -1,8 +1,8 @@
 {
   "name": "@originator-profile/tsconfig",
-  "version": "0.0.13-alpha.0",
+  "version": "0.0.14-alpha.0",
   "private": true,
   "dependencies": {
-    "@tsconfig/recommended": "^1.0.6"
+    "@tsconfig/recommended": "^1.0.7"
   }
 }

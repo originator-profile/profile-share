@@ -13,7 +13,7 @@ function extractor(
 ): Promise<string> {
   if ("evaluate" in locale)
     return locale.evaluate((el, attribute) => {
-      return "ownerSVGElement" in el ? "" : el[attribute] ?? "";
+      return "ownerSVGElement" in el ? "" : (el[attribute] ?? "");
     }, attribute);
   return Promise.resolve(locale[attribute] ?? "");
 }
