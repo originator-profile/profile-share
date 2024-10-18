@@ -4,7 +4,7 @@ import {
   JWSHeaderParameters,
   FlattenedJWSInput,
 } from "jose";
-import { LocalKeys } from "./";
+import { LocalKeys } from "@originator-profile/cryptography";
 
 /**
  * Resolve public key from JWT VC Issuer Metadata Response

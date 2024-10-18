@@ -4,7 +4,7 @@ import Base from "./pages/Base";
 import Org from "./pages/Org";
 import Publ from "./pages/Publ";
 import Prohibition from "./pages/Prohibition";
-import WebsiteMetadata from "./pages/WebsiteMetadata";
+import SiteProfile from "./pages/SiteProfile";
 
 const org: RouteObject = {
   path: routes.org.path,
@@ -19,7 +19,7 @@ const publ: RouteObject = {
       path: "",
       element: (
         <>
-          <WebsiteMetadata />
+          <SiteProfile />
           <Publ />
         </>
       ),

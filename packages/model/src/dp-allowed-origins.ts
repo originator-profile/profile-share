@@ -1,4 +1,4 @@
-import { FromSchema } from "json-schema-to-ts";
+import { FromSchema, JSONSchema } from "json-schema-to-ts";
 
 /** @deprecated */
 const DpAllowedOrigins = {
@@ -10,7 +10,7 @@ const DpAllowedOrigins = {
     description: "利用可能なオリジン",
     type: "string",
   },
-} as const;
+} as const satisfies JSONSchema;
 
 /** @deprecated */
 type DpAllowedOrigins = FromSchema<typeof DpAllowedOrigins>;

@@ -8,7 +8,7 @@ import {
   ProfileTokenVerifyFailed,
   ProfilesResolveFailed,
 } from "./errors";
-import { LocalKeys } from "./keys";
+import { LocalKeys } from "@originator-profile/cryptography";
 import { SignedProfileValidator } from "./decode";
 import { ProfilesVerifier } from "./verify-profiles";
 

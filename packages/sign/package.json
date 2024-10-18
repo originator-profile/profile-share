@@ -9,6 +9,9 @@
   },
   "devDependencies": {
     "@originator-profile/model": "workspace:*",
+    "@originator-profile/op-vc-data-model": "workspace:*",
+    "@originator-profile/jwt-securing-mechanism": "workspace:*",
+    "@originator-profile/cryptography": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
     "date-fns": "^4.1.0",
     "eslint": "^9.12.0",

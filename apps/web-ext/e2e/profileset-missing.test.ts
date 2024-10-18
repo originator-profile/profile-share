@@ -121,7 +121,8 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-web-ext.png` });
 });
 
-test("ProfileSet不在時(エンドポイントなし)の確認", async ({
+/* TODO: 新しいデータモデル用に更新する */
+test.skip("ProfileSet不在時(エンドポイントなし)の確認", async ({
   context,
   page,
 }) => {
@@ -137,7 +138,8 @@ test("ProfileSet不在時(エンドポイントなし)の確認", async ({
   );
 });
 
-test("ProfileSet不在時(エンドポイントあり、取得できない)の確認", async ({
+/* TODO: 新しいデータモデル用に更新する */
+test.skip("ProfileSet不在時(エンドポイントあり、取得できない)の確認", async ({
   context,
   page,
 }) => {

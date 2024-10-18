@@ -9,9 +9,13 @@
     "lint": "eslint --fix ."
   },
   "devDependencies": {
+    "@originator-profile/abstract-model": "workspace:*",
     "@originator-profile/core": "workspace:*",
     "@originator-profile/model": "workspace:*",
     "@originator-profile/sign": "workspace:*",
+    "@originator-profile/jwt-securing-mechanism": "workspace:*",
+    "@originator-profile/op-vc-data-model": "workspace:*",
+    "@originator-profile/cryptography": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
     "@playwright/test": "1.44.1",
     "@types/jsonld": "^1.5.15",

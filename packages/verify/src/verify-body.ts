@@ -1,6 +1,6 @@
 import { decodeProtectedHeader, flattenedVerify } from "jose";
 import { JOSEError } from "jose/errors";
-import { Keys } from "./keys";
+import { Keys } from "@originator-profile/cryptography";
 import { ProfileBodyVerifyFailed } from "./errors";
 
 /**

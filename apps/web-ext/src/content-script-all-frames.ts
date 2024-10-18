@@ -1,26 +1,41 @@
-import { extractBody, fetchProfileSet } from "@originator-profile/verify";
-import "./utils/cors-basic-auth";
+import { fetchCredentials } from "@originator-profile/presentation";
+import {
+  extractBody,
+  // fetchProfileSet,
+} from "@originator-profile/verify";
 import {
   ContentScriptAllFramesMessageRequest,
   ContentScriptAllFramesMessageResponse,
 } from "./types/message";
+
+function stringify(data: unknown): string {
+  return data instanceof Error
+    ? JSON.stringify(data, Object.getOwnPropertyNames(data))
+    : JSON.stringify(data);
+}
 
 async function handleMessageResponse(
   message: ContentScriptAllFramesMessageRequest,
 ): Promise<ContentScriptAllFramesMessageResponse> {
   switch (message.type) {
     case "fetch-profiles": {
-      const data = await fetchProfileSet(document);
+      const data = await fetchCredentials(document);
       return {
         type: "fetch-profiles",
         ok: !(data instanceof Error),
-        data:
-          data instanceof Error
-            ? JSON.stringify(data, Object.getOwnPropertyNames(data))
-            : JSON.stringify(data),
+        data: stringify(data),
         origin: document.location.origin,
       };
     }
+    // case "fetch-profiles": {
+    //   const data = await fetchProfileSet(document);
+    //   return {
+    //     type: "fetch-profiles",
+    //     ok: !(data instanceof Error),
+    //     data: stringify(data),
+    //     origin: document.location.origin,
+    //   };
+    // }
     case "extract-body": {
       const data = await extractBody(
         document.location.href,
@@ -32,10 +47,7 @@ async function handleMessageResponse(
       return {
         type: "extract-body",
         ok: !(data instanceof Error),
-        data:
-          data instanceof Error
-            ? JSON.stringify(data, Object.getOwnPropertyNames(data))
-            : JSON.stringify(data),
+        data: stringify(data),
         url: document.location.href,
       };
     }

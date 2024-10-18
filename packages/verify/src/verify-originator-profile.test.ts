@@ -7,7 +7,7 @@ import {
   OriginatorProfileValidator,
 } from "./decode-originator-profile";
 import { OriginatorProfileVerifier } from "./verify-originator-profile";
-import { LocalKeys } from "./keys";
+import { LocalKeys } from "@originator-profile/cryptography";
 
 const iat = getUnixTime(new Date());
 const exp = getUnixTime(addYears(new Date(), 10));

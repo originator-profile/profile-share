@@ -1,4 +1,4 @@
-import { FromSchema } from "json-schema-to-ts";
+import { FromSchema, JSONSchema } from "json-schema-to-ts";
 
 const Category = {
   title: "情報カテゴリー",
@@ -26,7 +26,7 @@ const Category = {
     },
   },
   required: ["cat"],
-} as const;
+} as const satisfies JSONSchema;
 
 type Category = FromSchema<typeof Category>;
 

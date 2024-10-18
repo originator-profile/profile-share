@@ -1,4 +1,4 @@
-import { FromSchema } from "json-schema-to-ts";
+import { FromSchema, JSONSchema } from "json-schema-to-ts";
 
 const ReviewComment = {
   title: "審査コメント",
@@ -16,7 +16,7 @@ const ReviewComment = {
   },
   required: ["requestFieldName", "comment"],
   additionalProperties: false,
-} as const;
+} as const satisfies JSONSchema;
 
 type ReviewComment = FromSchema<typeof ReviewComment>;
 

@@ -1,4 +1,4 @@
-import { FromSchema } from "json-schema-to-ts";
+import { FromSchema, JSONSchema } from "json-schema-to-ts";
 
 const Jwk = {
   title: "JSON Web Key",
@@ -38,7 +38,7 @@ const Jwk = {
   },
   required: ["kty", "kid"],
   additionalProperties: true,
-} as const;
+} as const satisfies JSONSchema;
 
 type Jwk = FromSchema<typeof Jwk>;
 

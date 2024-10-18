@@ -1,4 +1,4 @@
-import { FromSchema } from "json-schema-to-ts";
+import { FromSchema, JSONSchema } from "json-schema-to-ts";
 import DpVisibleText from "./dp-visible-text";
 import DpText from "./dp-text";
 import DpHtml from "./dp-html";
@@ -9,7 +9,7 @@ import Advertisement from "./advertisement";
 const DpItem = {
   title: "Document Profile Item",
   anyOf: [DpVisibleText, DpText, DpHtml, OgWebsite, Advertisement],
-} as const;
+} as const satisfies JSONSchema;
 
 /** @deprecated */
 type DpItem = FromSchema<typeof DpItem>;
