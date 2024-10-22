@@ -1,5 +1,6 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
 
+/** @deprecated */
 const Logo = {
   title: "Logo",
   type: "array",
@@ -22,6 +23,7 @@ const Logo = {
   },
 } as const satisfies JSONSchema;
 
+/** @deprecated */
 type Logo = FromSchema<typeof Logo>;
 
 export default Logo;

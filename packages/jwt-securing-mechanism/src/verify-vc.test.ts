@@ -1,5 +1,5 @@
 import { generateKey, LocalKeys } from "@originator-profile/cryptography";
-import { OpVc } from "@originator-profile/abstract-model";
+import { OpVc } from "@originator-profile/model";
 import { addYears, subDays, subYears } from "date-fns";
 import { describe, expect, test } from "vitest";
 import { VcDecoder } from "./decode-vc";

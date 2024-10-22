@@ -407,24 +407,6 @@ importers:
         specifier: ^8.3.0
         version: 8.3.0
 
-  packages/abstract-model:
-    devDependencies:
-      '@originator-profile/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-      '@types/jsonld':
-        specifier: ^1.5.14
-        version: 1.5.15
-      eslint:
-        specifier: ^8.56.0
-        version: 8.57.1
-      eslint-config-originator-profile:
-        specifier: workspace:*
-        version: link:../eslint-config
-      json-schema-to-ts:
-        specifier: ^3.1.0
-        version: 3.1.1
-
   packages/auth0: {}
 
   packages/core:
@@ -529,18 +511,12 @@ importers:
 
   packages/jwt-securing-mechanism:
     devDependencies:
-      '@originator-profile/abstract-model':
-        specifier: workspace:*
-        version: link:../abstract-model
       '@originator-profile/cryptography':
         specifier: workspace:*
         version: link:../cryptography
       '@originator-profile/model':
         specifier: workspace:*
         version: link:../model
-      '@originator-profile/op-vc-data-model':
-        specifier: workspace:*
-        version: link:../op-vc-data-model
       '@originator-profile/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -568,9 +544,6 @@ importers:
 
   packages/model:
     devDependencies:
-      '@originator-profile/abstract-model':
-        specifier: workspace:*
-        version: link:../abstract-model
       '@originator-profile/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -598,24 +571,6 @@ importers:
       vitest:
         specifier: ^2.1.2
         version: 2.1.2(@types/node@22.7.4)(happy-dom@15.7.4)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
-
-  packages/op-vc-data-model:
-    devDependencies:
-      '@originator-profile/abstract-model':
-        specifier: workspace:*
-        version: link:../abstract-model
-      '@originator-profile/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-      eslint:
-        specifier: ^8.56.0
-        version: 8.57.1
-      eslint-config-originator-profile:
-        specifier: workspace:*
-        version: link:../eslint-config
-      json-schema-to-ts:
-        specifier: ^3.1.0
-        version: 3.1.1
 
   packages/presentation:
     devDependencies:
@@ -920,9 +875,6 @@ importers:
       '@originator-profile/model':
         specifier: workspace:*
         version: link:../model
-      '@originator-profile/op-vc-data-model':
-        specifier: workspace:*
-        version: link:../op-vc-data-model
       '@originator-profile/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
@@ -1032,9 +984,6 @@ importers:
 
   packages/verify:
     devDependencies:
-      '@originator-profile/abstract-model':
-        specifier: workspace:*
-        version: link:../abstract-model
       '@originator-profile/core':
         specifier: workspace:*
         version: link:../core
@@ -1047,9 +996,6 @@ importers:
       '@originator-profile/model':
         specifier: workspace:*
         version: link:../model
-      '@originator-profile/op-vc-data-model':
-        specifier: workspace:*
-        version: link:../op-vc-data-model
       '@originator-profile/sign':
         specifier: workspace:*
         version: link:../sign

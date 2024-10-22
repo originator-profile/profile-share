@@ -1,5 +1,5 @@
 import { FromSchema } from "json-schema-to-ts";
-import Category from "./category";
+import { Category } from "../category";
 
 /** @deprecated */
 const OgWebsite = {

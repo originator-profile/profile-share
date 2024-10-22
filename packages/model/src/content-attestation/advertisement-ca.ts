@@ -1,12 +1,12 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
-import { AllowedUrl } from "./allowed-url";
-import Category from "./category";
-import { Target } from "./target";
+import { AllowedOrigin } from "../allowed-origin";
+import { AllowedUrl } from "../allowed-url";
+import { Category } from "../category";
 import { ContentAttestation } from "./content-attestation";
 
 const subject = {
   type: "object",
-  additionalProperties: false,
+  additionalProperties: true,
   properties: {
     id: {
       type: "string",
@@ -15,22 +15,15 @@ const subject = {
     },
     type: {
       type: "string",
-      const: "ContentProperties",
+      const: "AdvertisementProperties",
     },
     title: {
       type: "string",
-      description: "コンテンツのタイトル。",
+      description: "広告のタイトル。",
     },
     description: {
       type: "string",
-      description: "コンテンツの説明（プレーンテキスト）。",
-    },
-    source: {
-      title: "一次ソース",
-      type: "string",
-      format: "uri",
-      description:
-        "コンテンツの流通における1次ソース URL がある場合は記載を推奨 (RECOMMENDED)。",
+      description: "広告の説明（プレーンテキスト）。",
     },
     image: {
       type: "object",
@@ -45,30 +38,6 @@ const subject = {
       },
       required: ["id", "digestSRI"],
     },
-    datePublished: {
-      title: "公開日",
-      type: "string",
-    },
-    dateModified: {
-      title: "最終更新日",
-      type: "string",
-    },
-    editor: {
-      // TODO 単一値を許す
-      title: "編集者名",
-      type: "array",
-      items: {
-        type: "string",
-      },
-    },
-    author: {
-      // TODO 単一値を許す
-      title: "著者名",
-      type: "array",
-      items: {
-        type: "string",
-      },
-    },
     category: {
       // TODO 単一値を許す
       type: "array",
@@ -77,10 +46,10 @@ const subject = {
         "IAB カテゴリータクソノミーによる分類の JSON 配列。空配列でもよい (MAY)。",
     },
   },
-  required: ["title", "description"],
+  required: ["id", "title", "description"],
 } as const satisfies JSONSchema;
 
-export const contentCA = {
+const AdvertisementCA = {
   type: "object",
   additionalProperties: true,
   allOf: [
@@ -118,25 +87,36 @@ export const contentCA = {
           ],
         },
         credentialSubject: subject,
-        allowedUrl: AllowedUrl,
-        allowedOrigin: {
-          enum: [],
-        },
-        target: {
-          type: "array",
-          items: Target,
-          minItems: 1,
-        },
       },
-      required: [
-        "@context",
-        "type",
-        "credentialSubject",
-        "allowedUrl",
-        "target",
+      required: ["@context", "type", "credentialSubject"],
+    },
+    {
+      oneOf: [
+        {
+          type: "object",
+          additionalProperties: true,
+          properties: {
+            allowedUrl: AllowedUrl,
+            allowedOrigin: {
+              enum: [],
+            },
+          },
+          required: ["allowedUrl"],
+        },
+        {
+          type: "object",
+          additionalProperties: true,
+          properties: {
+            allowedUrl: {
+              enum: [],
+            },
+            allowedOrigin: AllowedOrigin,
+          },
+          required: ["allowedOrigin"],
+        },
       ],
     },
   ],
 } as const satisfies JSONSchema;
 
-export type ContentCA = FromSchema<typeof contentCA>;
+export type AdvertisementCA = FromSchema<typeof AdvertisementCA>;

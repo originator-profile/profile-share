@@ -1,5 +1,5 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
-import { OpVc } from "@originator-profile/abstract-model";
+import { OpVc } from "./op-vc";
 
 export const subject = {
   title: "Web Media Profile Properties",

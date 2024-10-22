@@ -8,11 +8,9 @@
     "lint": "eslint --fix ."
   },
   "devDependencies": {
-    "@originator-profile/abstract-model": "workspace:*",
     "@originator-profile/cryptography": "workspace:*",
     "@originator-profile/model": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
-    "@originator-profile/op-vc-data-model": "workspace:*",
     "ajv": "^8.14.0",
     "ajv-formats": "^3.0.1",
     "date-fns": "^3.6.0",

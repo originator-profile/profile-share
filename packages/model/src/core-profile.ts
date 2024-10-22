@@ -1,5 +1,5 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
-import Jwks from "./jwks";
+import { Jwks } from "./jwks";
 
 export const CoreProfile = {
   $schema: "https://json-schema.org/draft/2019-09/schema",

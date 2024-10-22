@@ -1,4 +1,4 @@
-import { OpVc } from "@originator-profile/abstract-model";
+import { OpVc } from "@originator-profile/model";
 import { jwtVerify, JWTVerifyResult } from "jose";
 import { JOSEError } from "jose/errors";
 import { Keys } from "@originator-profile/cryptography";

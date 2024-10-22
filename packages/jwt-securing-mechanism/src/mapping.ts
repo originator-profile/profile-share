@@ -1,4 +1,4 @@
-import { OpVc } from "@originator-profile/abstract-model";
+import { OpVc } from "@originator-profile/model";
 import { JWTPayload } from "jose";
 
 export function mapToVcDataModel(jwtPayload: JWTPayload) {

@@ -8,7 +8,6 @@
     "lint": "eslint --fix ."
   },
   "devDependencies": {
-    "@originator-profile/abstract-model": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
     "@types/jsonld": "^1.5.15",
     "ajv": "^8.17.1",

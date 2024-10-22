@@ -9,7 +9,6 @@
   },
   "devDependencies": {
     "@originator-profile/model": "workspace:*",
-    "@originator-profile/op-vc-data-model": "workspace:*",
     "@originator-profile/jwt-securing-mechanism": "workspace:*",
     "@originator-profile/cryptography": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",

@@ -1,5 +1,5 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
-import { CertificationSystem } from "./certification-system";
+import { CertificationSystem } from "./cert-system";
 
 export const CertificateProperties = {
   $schema: "https://json-schema.org/draft/2019-09/schema",
@@ -35,4 +35,4 @@ export const CertificateProperties = {
   required: ["id", "type", "certificationSystem", "description"],
 } as const satisfies JSONSchema;
 
-export type CoreProfile = FromSchema<typeof CertificateProperties>;
+export type CertificateProperties = FromSchema<typeof CertificateProperties>;

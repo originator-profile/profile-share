@@ -1,4 +1,4 @@
-import { OpVc } from "@originator-profile/abstract-model";
+import { OpVc } from "@originator-profile/model";
 import addFormats from "ajv-formats";
 import Ajv from "ajv/dist/2019";
 import { AnySchema } from "ajv";

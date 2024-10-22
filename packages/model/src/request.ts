@@ -1,7 +1,7 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
-import ReviewComment from "./review-comment";
+import { ReviewComment } from "./review-comment";
 
-const Request = {
+export const Request = {
   title: "申請",
   description: "OP 発行申請",
   type: "object",
@@ -42,6 +42,4 @@ const Request = {
   additionalProperties: false,
 } as const satisfies JSONSchema;
 
-type Request = FromSchema<typeof Request>;
-
-export default Request;
+export type Request = FromSchema<typeof Request>;
