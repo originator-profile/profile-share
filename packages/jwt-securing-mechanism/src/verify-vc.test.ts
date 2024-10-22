@@ -3,7 +3,7 @@ import { OpVc } from "@originator-profile/abstract-model";
 import { addYears, subDays, subYears } from "date-fns";
 import { describe, expect, test } from "vitest";
 import { VcDecoder } from "./decode-vc";
-import { signVc } from "./sign";
+import { signVc } from "./sign-vc";
 import { JwtVcVerifier } from "./verify-vc";
 
 const issuedAt = new Date();

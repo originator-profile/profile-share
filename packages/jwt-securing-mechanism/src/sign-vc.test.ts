@@ -8,7 +8,7 @@ import {
 import { addYears, getUnixTime } from "date-fns";
 import { decodeJwt, decodeProtectedHeader } from "jose";
 import { describe, expect, test } from "vitest";
-import { signVc } from "./sign";
+import { signVc } from "./sign-vc";
 
 test("signVc() returns valid Website Profile", async () => {
   const issuedAt = new Date();
