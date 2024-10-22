@@ -1,15 +1,14 @@
 import { FromSchema } from "json-schema-to-ts";
-import BusinessCategory from "./business-category";
+import { BusinessCategory } from "../business-category";
 import Logo from "./logo";
 
 /** @deprecated */
-const OpHolder = {
-  deprecated: true,
-  title: "Originator Profile Holder",
-  description: "資格情報を保有する組織",
+const OpCertifier = {
+  title: "Originator Profile Certifier",
+  description: "資格情報を発行する認証機関",
   type: "object",
   properties: {
-    type: { const: "holder" },
+    type: { const: "certifier" },
     domainName: {
       title: "ドメイン名",
       type: "string",
@@ -102,6 +101,6 @@ const OpHolder = {
 } as const;
 
 /** @deprecated */
-type OpHolder = FromSchema<typeof OpHolder>;
+type OpCertifier = FromSchema<typeof OpCertifier>;
 
-export default OpHolder;
+export default OpCertifier;

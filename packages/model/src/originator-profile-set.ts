@@ -7,7 +7,7 @@ export const OriginatorProfileSetItem = {
   additionalProperties: true,
   properties: {
     core: {
-      title: "Content Attestation",
+      title: "Core Profile",
       type: "string",
     },
     annotations: {

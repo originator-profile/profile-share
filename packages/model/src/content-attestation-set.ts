@@ -36,5 +36,3 @@ export type ContentAttestationSetItem = FromSchema<
   typeof ContentAttestationSetItem
 >;
 export type ContentAttestationSet = FromSchema<typeof ContentAttestationSet>;
-
-export default ContentAttestationSet;

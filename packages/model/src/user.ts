@@ -1,6 +1,6 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
 
-const User = {
+export const User = {
   title: "ユーザー",
   description: "ユーザー",
   type: "object",
@@ -26,6 +26,4 @@ const User = {
   additionalProperties: false,
 } as const satisfies JSONSchema;
 
-type User = FromSchema<typeof User>;
-
-export default User;
+export type User = FromSchema<typeof User>;

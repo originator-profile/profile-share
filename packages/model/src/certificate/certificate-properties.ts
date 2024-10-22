@@ -35,4 +35,4 @@ export const CertificateProperties = {
   required: ["id", "type", "certificationSystem", "description"],
 } as const satisfies JSONSchema;
 
-export type CoreProfile = FromSchema<typeof CertificateProperties>;
+export type CertificateProperties = FromSchema<typeof CertificateProperties>;

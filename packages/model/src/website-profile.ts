@@ -1,4 +1,4 @@
-import { OpVc } from "@originator-profile/abstract-model";
+import { OpVc } from "./op-vc";
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
 
 const subject = {

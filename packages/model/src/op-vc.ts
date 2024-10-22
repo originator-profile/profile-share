@@ -1,14 +1,13 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
-import { Jwks } from "./jwks";
 
-export const CoreProfile = {
+export const OpVc = {
   $schema: "https://json-schema.org/draft/2019-09/schema",
   type: "object",
-  additionalProperties: false,
+  additionalProperties: true,
   properties: {
     "@context": {
       type: "array",
-      additionalItems: false,
+      additionalItems: true,
       minItems: 2,
       items: [
         {
@@ -21,28 +20,21 @@ export const CoreProfile = {
     },
     type: {
       type: "array",
-      additionalItems: false,
+      additionalItems: true,
       minItems: 1,
       items: [{ const: "VerifiableCredential" }],
     },
-    issuer: { type: "string" },
+    issuer: { type: "string", format: "uri" },
     credentialSubject: {
       type: "object",
-      additionalProperties: false,
+      additionalProperties: true,
       properties: {
         id: { type: "string", format: "uri" },
-        type: {
-          const: "CoreProfile",
-        },
-        jwks: {
-          ...Jwks,
-          title: "保有組織の公開鍵の JSON Web Key Set",
-        },
       },
-      required: ["id", "type", "jwks"],
+      required: ["id"],
     },
   },
   required: ["@context", "type", "issuer", "credentialSubject"],
 } as const satisfies JSONSchema;
 
-export type CoreProfile = FromSchema<typeof CoreProfile>;
+export type OpVc = FromSchema<typeof OpVc>;

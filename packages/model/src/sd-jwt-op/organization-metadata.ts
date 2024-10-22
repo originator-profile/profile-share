@@ -1,5 +1,5 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
-import Jwks from "./jwks";
+import { Jwks } from "../jwks";
 import { Organization } from "./organization-metadata/organization";
 
 export const OrganizationMetadata = {

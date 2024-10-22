@@ -1,9 +1,8 @@
-import { OpVc } from "@originator-profile/abstract-model";
+import { OpVc } from "../op-vc";
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
-import { AllowedUrl } from "./allowed-url";
-import { Target } from "./target";
-
-import { AllowedOrigin } from "./allowed-origin";
+import { AllowedUrl } from "../allowed-url";
+import { Target } from "../target";
+import { AllowedOrigin } from "../allowed-origin";
 
 const subject = {
   type: "object",
@@ -18,18 +17,8 @@ const subject = {
       title: "JSON-LD タイプ",
       type: "string",
     },
-    title: {
-      title: "タイトル",
-      type: "string",
-      description: "コンテンツのタイトル。",
-    },
-    description: {
-      title: "説明",
-      type: "string",
-      description: "コンテンツの説明（プレーンテキスト）。",
-    },
   },
-  required: ["id", "type", "title", "description"],
+  required: ["id", "type"],
 } as const satisfies JSONSchema;
 
 export const ContentAttestation = {

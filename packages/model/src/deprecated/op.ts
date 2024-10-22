@@ -1,5 +1,5 @@
 import { FromSchema } from "json-schema-to-ts";
-import Jwks from "./jwks";
+import { Jwks } from "../jwks";
 import OpItem from "./op-item";
 
 /** @deprecated */

@@ -1,5 +1,5 @@
 import { FromSchema } from "json-schema-to-ts";
-import BusinessCategory from "./business-category";
+import { BusinessCategory } from "../business-category";
 import Logo from "./logo";
 
 /** @deprecated */
