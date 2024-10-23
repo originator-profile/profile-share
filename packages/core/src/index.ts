@@ -8,3 +8,4 @@ export * from "./sd-jwt-payload";
 export * from "./account";
 export * from "./date";
 export * from "./typefunc";
+export * from "./safe-stringify";

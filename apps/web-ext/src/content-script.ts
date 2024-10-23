@@ -1,3 +1,4 @@
+import { stringifyWithError } from "@originator-profile/core";
 import {
   fetchWebsiteProfilePair,
   fetchSiteProfile,
@@ -19,12 +20,6 @@ let websiteProfiles: ProfilePayloadWithMetadata[] = [];
 let activeDp: DpPayloadWithMetadata | null = null;
 const overlay = initialize();
 
-function stringify(data: unknown): string {
-  return data instanceof Error
-    ? JSON.stringify(data, Object.getOwnPropertyNames(data))
-    : JSON.stringify(data);
-}
-
 async function handleMessageResponse(
   message: ContentScriptMessageRequest,
 ): Promise<ContentScriptMessageResponse> {
@@ -34,7 +29,7 @@ async function handleMessageResponse(
       return {
         type: "fetch-site-profile",
         ok: !(data instanceof Error),
-        data: stringify(data),
+        data: stringifyWithError(data),
         origin: document.location.origin,
       };
     }
@@ -43,7 +38,7 @@ async function handleMessageResponse(
       return {
         type: "fetch-website-profile-pair",
         ok: !(data instanceof Error),
-        data: stringify(data),
+        data: stringifyWithError(data),
         origin: document.location.origin,
       };
     }
