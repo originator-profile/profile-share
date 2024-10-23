@@ -1,3 +1,4 @@
+import { stringifyWithError } from "@originator-profile/core";
 import { fetchCredentials } from "@originator-profile/presentation";
 import {
   extractBody,
@@ -8,12 +9,6 @@ import {
   ContentScriptAllFramesMessageResponse,
 } from "./types/message";
 
-function stringify(data: unknown): string {
-  return data instanceof Error
-    ? JSON.stringify(data, Object.getOwnPropertyNames(data))
-    : JSON.stringify(data);
-}
-
 async function handleMessageResponse(
   message: ContentScriptAllFramesMessageRequest,
 ): Promise<ContentScriptAllFramesMessageResponse> {
@@ -23,7 +18,7 @@ async function handleMessageResponse(
       return {
         type: "fetch-profiles",
         ok: !(data instanceof Error),
-        data: stringify(data),
+        data: stringifyWithError(data),
         origin: document.location.origin,
       };
     }
@@ -47,7 +42,7 @@ async function handleMessageResponse(
       return {
         type: "extract-body",
         ok: !(data instanceof Error),
-        data: stringify(data),
+        data: stringifyWithError(data),
         url: document.location.href,
       };
     }
