@@ -2,7 +2,6 @@ import { FromSchema, JSONSchema } from "json-schema-to-ts";
 import { CertificationSystem } from "./cert-system";
 
 export const CertificateProperties = {
-  $schema: "https://json-schema.org/draft/2019-09/schema",
   type: "object",
   additionalProperties: false,
   properties: {
