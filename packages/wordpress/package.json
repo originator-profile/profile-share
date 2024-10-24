@@ -7,6 +7,7 @@
     "version": "shx sed -i 's/(?<= Version: *)[^ ]*$/'${npm_package_version}/ profile.php && git add profile.php"
   },
   "devDependencies": {
+    "@originator-profile/cryptography": "workspace:*",
     "@originator-profile/sign": "workspace:*",
     "@originator-profile/verify": "workspace:*",
     "@playwright/test": "1.44.1",

@@ -1,5 +1,5 @@
 import { CompactSign, importJWK } from "jose";
-import { createThumbprint } from "./thumbprint";
+import { createThumbprint } from "@originator-profile/cryptography";
 import { Jwk } from "@originator-profile/model";
 
 /**
