@@ -53,7 +53,6 @@ export const JapaneseExistenceCertificateProperties = {
 } as const satisfies JSONSchema;
 
 export const JapaneseExistenceCertificate = {
-  $schema: "https://json-schema.org/draft/2019-09/schema",
   allOf: [
     OpVc,
     {
