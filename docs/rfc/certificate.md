@@ -86,7 +86,6 @@ Certificate の形式を JSON Schema で示します。
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2019-09/schema",
   "type": "object",
   "$defs": {
     "ProfileAnnotationSubject": {
