@@ -1,5 +1,5 @@
 import { DpLocator, isDp } from "@originator-profile/core";
-import { RemoteKeys } from "@originator-profile/cryptography";
+import { RemoteKeys, LocalKeys } from "@originator-profile/cryptography";
 import { Jwks } from "@originator-profile/model";
 import {
   DocumentProfile,
@@ -12,7 +12,6 @@ import {
 import {
   expandProfilePairs,
   expandProfileSet,
-  LocalKeys,
   ProfileBodyExtractFailed,
   ProfilePair,
   ProfilesVerifier,
