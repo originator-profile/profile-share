@@ -1,12 +1,12 @@
 import {
   JwtVcVerifier,
   signVc,
-  VcDecoder,
-  VcValidator,
+  JwtVcDecoder,
+  JwtVcValidator,
 } from "@originator-profile/jwt-securing-mechanism";
 import { WebsiteProfile } from "@originator-profile/model";
 import { generateKey } from "@originator-profile/sign";
-import { addYears } from "date-fns";
+import { addYears, getUnixTime } from "date-fns";
 import { expect, test } from "vitest";
 import { LocalKeys } from "@originator-profile/cryptography";
 
@@ -36,12 +36,18 @@ const websiteProfile: WebsiteProfile = {
 test("Website Profile の検証に成功", async () => {
   const { publicKey, privateKey } = await generateKey();
   const keys = LocalKeys({ keys: [publicKey] });
-  const validator = VcValidator(WebsiteProfile);
-  const decoder = VcDecoder(validator);
+  const validator = JwtVcValidator(WebsiteProfile);
+  const decoder = JwtVcDecoder(validator);
   const verifier = JwtVcVerifier(keys, "dns:example.com", decoder);
   const jwt = await signVc(websiteProfile, privateKey, { issuedAt, expiredAt });
   const result = await verifier(jwt);
   expect(result).not.toBeInstanceOf(Error);
   // @ts-expect-error assert
-  expect(result.payload).toStrictEqual(websiteProfile);
+  expect(result.payload).toStrictEqual({
+    ...websiteProfile,
+    iss: websiteProfile.issuer,
+    sub: websiteProfile.credentialSubject.id,
+    iat: getUnixTime(issuedAt),
+    exp: getUnixTime(expiredAt),
+  });
 });

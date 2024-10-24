@@ -1,7 +1,10 @@
 import { OpVc } from "@originator-profile/model";
-import { jwtVerify, JWTVerifyResult } from "jose";
+import { jwtVerify } from "jose";
 import { JOSEError } from "jose/errors";
 import { Keys } from "@originator-profile/cryptography";
+import { JwtVcVerificationResult } from "./types";
+import { JwtVcVerifyFailed } from "./errors";
+import { JwtVcDecoder } from "./decode-vc";
 
 // type Decoder<T extends OpVc> = (vc: string) => T | Error;
 // type Validator<T extends OpVc> = (vc: T, cxt: any) => boolean;
@@ -43,30 +46,33 @@ import { Keys } from "@originator-profile/cryptography";
 export function JwtVcVerifier<T extends OpVc>(
   keys: Keys,
   issuer: string,
-  decoder: (vc: string) => T | Error,
+  decoder: JwtVcDecoder<T>,
   /* TODO: originの確認をする */
   /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   origin?: URL["origin"],
-): (jwt: string) => Promise<(JWTVerifyResult & { payload: T }) | Error> {
+) {
   /**
    * JWT VC の検証
    * @param jwt JWT
    * @return 検証結果
    */
-  async function verify(jwt: string) {
+  async function verify(jwt: string): Promise<JwtVcVerificationResult<T>> {
     const decoded = decoder(jwt);
     if (decoded instanceof Error) return decoded;
-    const verified = await jwtVerify(jwt, keys, { issuer }).catch(
+    const verified = await jwtVerify<T>(jwt, keys, { issuer }).catch(
       (e: JOSEError) => e,
     );
-    if (verified instanceof Error) {
-      // TODO: 署名検証失敗時のエラーを定義して
-      return verified;
+    if (verified instanceof JOSEError) {
+      return new JwtVcVerifyFailed("JWT VC Verification Failed", {
+        ...decoded,
+        jwt,
+        error: verified,
+      });
     }
-    return { ...verified, payload: decoded };
+    return { ...verified, payload: decoded.payload, jwt };
   }
 
   return verify;
 }
 
-export type JwtVcVerifier = ReturnType<typeof JwtVcVerifier>;
+export type JwtVcVerifier<T extends OpVc> = ReturnType<typeof JwtVcVerifier<T>>;

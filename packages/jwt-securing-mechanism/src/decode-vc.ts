@@ -5,10 +5,11 @@ import { AnySchema } from "ajv";
 import * as draft7MetaSchema from "ajv/dist/refs/json-schema-draft-07.json";
 import { decodeJwt, JWTPayload } from "jose";
 import { JOSEError } from "jose/errors";
-import { mapToVcDataModel } from "./mapping";
+import { JwtVcDecodeFailed, JwtVcValidateFailed } from "./errors";
+import { JwtVcDecodingResult } from "./types";
 
 /** 復元されたデータモデルの確認のためのバリデーター */
-export function VcValidator(jsonSchema: AnySchema) {
+export function JwtVcValidator(jsonSchema: AnySchema) {
   const ajv = new Ajv();
   addFormats(ajv);
   ajv.addMetaSchema(draft7MetaSchema);
@@ -17,43 +18,41 @@ export function VcValidator(jsonSchema: AnySchema) {
 }
 
 /** 復元されたデータモデルの確認のためのバリデーター */
-export type VcValidator = ReturnType<typeof VcValidator>;
+export type JwtVcValidator = ReturnType<typeof JwtVcValidator>;
 
 /**
  * データモデルの復号器の生成
  * @param validator 復元されたペイロード確認のためのバリデーター (undefined: 無効)
  * @return 復号器
  */
-export function VcDecoder<T extends OpVc>(validator?: VcValidator) {
+export function JwtVcDecoder<T extends OpVc>(validator?: JwtVcValidator) {
   /**
    * データモデルの複号
    * @param jwt JWT
    * @return 複号結果
    */
-  function decode(jwt: string): T | Error {
+  function decode(jwt: string): JwtVcDecodingResult<T> {
     let jwtPayload: JWTPayload;
     try {
       jwtPayload = decodeJwt(jwt);
     } catch (e) {
       const error = e as JOSEError;
-      // TODO: 複号失敗時のエラーを定義して
-      return error;
+      return new JwtVcDecodeFailed("JWT VC Decoding Failed", { jwt, error });
     }
-    /* JWTペイロードからデータモデルを復元する */
-    const vc = mapToVcDataModel(jwtPayload);
+    const vc = jwtPayload as T;
     if (typeof validator === "undefined") {
-      return vc as T;
+      return { payload: vc, jwt };
     }
     if (validator.validateVcPayload(vc)) {
-      return vc as T;
+      return { payload: vc, jwt };
     }
-    // TODO: ペイロード検証失敗時のエラーを定義して
-    return new Error(
+    return new JwtVcValidateFailed(
       validator.ajv.errorsText(validator.validateVcPayload.errors),
+      { payload: vc, jwt },
     );
   }
 
   return decode;
 }
 
-export type VcDecoder = ReturnType<typeof VcDecoder>;
+export type JwtVcDecoder<T extends OpVc> = ReturnType<typeof JwtVcDecoder<T>>;

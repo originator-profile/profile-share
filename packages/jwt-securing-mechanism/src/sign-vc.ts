@@ -2,7 +2,6 @@ import { createThumbprint } from "@originator-profile/cryptography";
 import { OpVc, Jwk } from "@originator-profile/model";
 import { getUnixTime } from "date-fns";
 import { importJWK, SignJWT } from "jose";
-import { mapToJwt } from "./mapping";
 
 /**
  * VC への署名
@@ -19,7 +18,7 @@ export async function signVc<T extends OpVc>(
     expiredAt: Date;
   },
 ): Promise<string> {
-  const payload = mapToJwt(vc);
+  const payload = vc;
   const { alg = "ES256", issuedAt, expiredAt } = options;
   const header = {
     alg,
