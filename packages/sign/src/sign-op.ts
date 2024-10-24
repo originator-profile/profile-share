@@ -1,12 +1,13 @@
 import { getUnixTime } from "date-fns";
 import { importJWK, SignJWT } from "jose";
+import { createThumbprint } from "@originator-profile/cryptography";
 import {
   Jwk,
   JwtOpPayload,
   Op,
   OriginatorProfile,
 } from "@originator-profile/model";
-import { createThumbprint } from "./thumbprint";
+
 /**
  * OP への署名 (SD-JWT VC)
  * @param op OP オブジェクト

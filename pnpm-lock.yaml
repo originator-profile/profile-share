@@ -1053,6 +1053,9 @@ importers:
 
   packages/wordpress:
     devDependencies:
+      '@originator-profile/cryptography':
+        specifier: workspace:*
+        version: link:../cryptography
       '@originator-profile/sign':
         specifier: workspace:*
         version: link:../sign
