@@ -69,6 +69,7 @@
     "@fastify/jwt": "^8.0.1",
     "@fastify/swagger": "^8.15.0",
     "@originator-profile/core": "workspace:*",
+    "@originator-profile/cryptography": "workspace:*",
     "@originator-profile/model": "workspace:*",
     "@originator-profile/registry-db": "workspace:*",
     "@originator-profile/registry-service": "workspace:*",

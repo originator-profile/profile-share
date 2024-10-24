@@ -1,8 +1,9 @@
 import { test, expect } from "vitest";
 import { addYears, getUnixTime } from "date-fns";
+import { generateKey } from "@originator-profile/cryptography";
 import { OriginatorProfile } from "@originator-profile/model";
 import { OriginatorProfileDecoder } from "./decode-originator-profile";
-import { signSdJwtOp, generateKey } from "@originator-profile/sign";
+import { signSdJwtOp } from "@originator-profile/sign";
 
 const iat = getUnixTime(new Date());
 const exp = getUnixTime(addYears(new Date(), 10));

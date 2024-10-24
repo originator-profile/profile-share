@@ -10,6 +10,7 @@
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.665.0",
     "@originator-profile/core": "workspace:*",
+    "@originator-profile/cryptography": "workspace:*",
     "@originator-profile/model": "workspace:*",
     "@originator-profile/registry-db": "workspace:*",
     "@originator-profile/sign": "workspace:*",

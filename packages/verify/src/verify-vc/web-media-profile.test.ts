@@ -1,5 +1,4 @@
 import { WebMediaProfile } from "@originator-profile/model";
-import { generateKey } from "@originator-profile/sign";
 import {
   signVc,
   JwtVcVerifier,
@@ -8,7 +7,7 @@ import {
 } from "@originator-profile/jwt-securing-mechanism";
 import { addYears, getUnixTime } from "date-fns";
 import { describe, expect, test } from "vitest";
-import { LocalKeys } from "@originator-profile/cryptography";
+import { generateKey, LocalKeys } from "@originator-profile/cryptography";
 
 const issuedAt = new Date();
 const expiredAt = addYears(new Date(), 10);
