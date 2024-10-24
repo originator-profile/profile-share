@@ -1,10 +1,10 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
+import { OpVc } from "../op-vc";
 import { CertificationSystem } from "./cert-system";
 
 export const JapaneseExistenceCertificateProperties = {
   $schema: "https://json-schema.org/draft/2019-09/schema",
   type: "object",
-  additionalProperties: false,
   properties: {
     id: { type: "string", title: "subject の OP ID", format: "uri" },
     type: { type: "string", const: "ECJPProperties" },
@@ -55,57 +55,61 @@ export const JapaneseExistenceCertificateProperties = {
 
 export const JapaneseExistenceCertificate = {
   $schema: "https://json-schema.org/draft/2019-09/schema",
-  type: "object",
-  additionalProperties: false,
-  properties: {
-    "@context": {
-      type: "array",
-      additionalItems: false,
-      minItems: 4,
-      items: [
-        {
-          type: "string",
-          const: "https://www.w3.org/ns/credentials/v2",
-        },
-        {
-          type: "string",
-          const: "https://originator-profile.org/ns/credentials/v1",
-        },
-        {
-          type: "string",
-          const: "https://originator-profile.org/ns/cip/v1",
-        },
-        {
-          type: "object",
-          properties: {
-            "@language": {
+  allOf: [
+    OpVc,
+    {
+      type: "object",
+      properties: {
+        "@context": {
+          type: "array",
+          additionalItems: false,
+          minItems: 4,
+          items: [
+            {
               type: "string",
-              title: "言語コード",
+              const: "https://www.w3.org/ns/credentials/v2",
             },
-          },
+            {
+              type: "string",
+              const: "https://originator-profile.org/ns/credentials/v1",
+            },
+            {
+              type: "string",
+              const: "https://originator-profile.org/ns/cip/v1",
+            },
+            {
+              type: "object",
+              properties: {
+                "@language": {
+                  type: "string",
+                  title: "言語コード",
+                },
+              },
+            },
+          ],
         },
-      ],
+        type: {
+          type: "array",
+          additionalItems: false,
+          minItems: 1,
+          items: [{ const: "VerifiableCredential" }, { const: "Certificate" }],
+        },
+        issuer: { type: "string", format: "uri" },
+        credentialSubject: JapaneseExistenceCertificateProperties,
+        validFrom: {
+          type: "string",
+          format: "date-time",
+          title: "有効開始日時",
+        },
+        validUntil: {
+          type: "string",
+          format: "date-time",
+          title: "有効終了日時",
+        },
+      },
+      required: ["@context", "type", "issuer", "credentialSubject"],
     },
-    type: {
-      type: "array",
-      additionalItems: false,
-      minItems: 1,
-      items: [{ const: "VerifiableCredential" }, { const: "Certificate" }],
-    },
-    issuer: { type: "string", format: "uri" },
-    credentialSubject: JapaneseExistenceCertificateProperties,
-    validFrom: {
-      type: "string",
-      format: "date-time",
-      title: "有効開始日時",
-    },
-    validUntil: {
-      type: "string",
-      format: "date-time",
-      title: "有効終了日時",
-    },
-  },
-  required: ["@context", "type", "issuer", "credentialSubject"],
+  ],
 } as const satisfies JSONSchema;
 
 export type JapaneseExistenceCertificate = FromSchema<

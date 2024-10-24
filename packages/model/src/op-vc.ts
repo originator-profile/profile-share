@@ -33,6 +33,13 @@ export const OpVc = {
       },
       required: ["id"],
     },
+    iss: { type: "string" },
+    sub: { type: "string" },
+    iat: { type: "number" },
+    exp: { type: "number" },
+    aud: { type: "string" },
+    jti: { type: "string" },
+    nbf: { type: "number" },
   },
   required: ["@context", "type", "issuer", "credentialSubject"],
 } as const satisfies JSONSchema;

@@ -3,10 +3,10 @@ import { generateKey } from "@originator-profile/sign";
 import {
   signVc,
   JwtVcVerifier,
-  VcDecoder,
-  VcValidator,
+  JwtVcDecoder,
+  JwtVcValidator,
 } from "@originator-profile/jwt-securing-mechanism";
-import { addYears } from "date-fns";
+import { addYears, getUnixTime } from "date-fns";
 import { describe, expect, test } from "vitest";
 import { LocalKeys } from "@originator-profile/cryptography";
 
@@ -58,8 +58,8 @@ describe("WebMediaProfile の検証", () => {
   test("検証に成功", async () => {
     const { publicKey, privateKey } = await generateKey();
     const keys = LocalKeys({ keys: [publicKey] });
-    const validator = VcValidator(WebMediaProfile);
-    const decoder = VcDecoder(validator);
+    const validator = JwtVcValidator(WebMediaProfile);
+    const decoder = JwtVcDecoder(validator);
     const verifier = JwtVcVerifier(keys, "dns:wmp-issuer.example.org", decoder);
     const jwt = await signVc(webMediaProfile, privateKey, {
       issuedAt,
@@ -68,6 +68,12 @@ describe("WebMediaProfile の検証", () => {
     const result = await verifier(jwt);
     expect(result).not.toBeInstanceOf(Error);
     // @ts-expect-error assert
-    expect(result.payload).toStrictEqual(webMediaProfile);
+    expect(result.payload).toStrictEqual({
+      ...webMediaProfile,
+      iss: webMediaProfile.issuer,
+      sub: webMediaProfile.credentialSubject.id,
+      iat: getUnixTime(issuedAt),
+      exp: getUnixTime(expiredAt),
+    });
   });
 });
