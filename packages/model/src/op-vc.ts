@@ -1,7 +1,6 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
 
 export const OpVc = {
-  $schema: "https://json-schema.org/draft/2019-09/schema",
   type: "object",
   additionalProperties: true,
   properties: {
