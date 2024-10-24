@@ -1,13 +1,13 @@
 import { generateKey, LocalKeys } from "@originator-profile/cryptography";
 import {
   JwtVcVerifier,
-  VcDecoder,
-  VcValidator,
+  JwtVcDecoder,
+  JwtVcValidator,
 } from "@originator-profile/jwt-securing-mechanism";
 import { CoreProfile } from "@originator-profile/model";
 import { signCp } from "@originator-profile/sign";
-import { addYears } from "date-fns";
-import { describe, expect, test } from "vitest";
+import { addYears, getUnixTime } from "date-fns";
+import { expect, test } from "vitest";
 
 const VERIFIER_ID = "dns:example.org";
 const issuedAt = new Date();
@@ -36,17 +36,21 @@ const coreProfile: CoreProfile = {
   },
 };
 
-describe("CoreProfile のデコード", () => {
-  test("検証に成功", async () => {
-    const { publicKey, privateKey } = await generateKey();
-    const keys = LocalKeys({ keys: [publicKey] });
-    const validator = VcValidator(CoreProfile);
-    const decoder = VcDecoder(validator);
-    const verifier = JwtVcVerifier(keys, VERIFIER_ID, decoder);
-    const jwt = await signCp(coreProfile, privateKey, { issuedAt, expiredAt });
-    const result = await verifier(jwt);
-    expect(result).not.toBeInstanceOf(Error);
-    // @ts-expect-error assert
-    expect(result.payload).toStrictEqual(coreProfile);
+test("CoreProfile の検証に成功", async () => {
+  const { publicKey, privateKey } = await generateKey();
+  const keys = LocalKeys({ keys: [publicKey] });
+  const validator = JwtVcValidator(CoreProfile);
+  const decoder = JwtVcDecoder(validator);
+  const verifier = JwtVcVerifier(keys, VERIFIER_ID, decoder);
+  const jwt = await signCp(coreProfile, privateKey, { issuedAt, expiredAt });
+  const result = await verifier(jwt);
+  expect(result).not.toBeInstanceOf(Error);
+  // @ts-expect-error assert
+  expect(result.payload).toStrictEqual({
+    ...coreProfile,
+    iss: coreProfile.issuer,
+    sub: coreProfile.credentialSubject.id,
+    iat: getUnixTime(issuedAt),
+    exp: getUnixTime(expiredAt),
   });
 });

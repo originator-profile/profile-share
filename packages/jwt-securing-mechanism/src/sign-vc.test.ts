@@ -4,7 +4,7 @@ import {
   ContentCA,
   WebMediaProfile,
   WebsiteProfile,
-} from "@originator-profile/op-vc-data-model";
+} from "@originator-profile/model";
 import { addYears, getUnixTime } from "date-fns";
 import { decodeJwt, decodeProtectedHeader } from "jose";
 import { describe, expect, test } from "vitest";
