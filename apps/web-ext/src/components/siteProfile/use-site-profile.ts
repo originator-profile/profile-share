@@ -7,8 +7,8 @@ import {
 } from "@originator-profile/model";
 import {
   JwtVcVerifier,
-  VcDecoder,
-  VcValidator,
+  JwtVcDecoder,
+  JwtVcValidator,
 } from "@originator-profile/jwt-securing-mechanism";
 import { JwtVcIssuerKeys } from "@originator-profile/verify";
 import { siteProfileMessenger } from "./events";
@@ -33,11 +33,13 @@ async function fetchVerifiedSiteProfile([, tabId]: [
       : `https://${registry}/.well-known/jwt-vc-issuer`,
   );
   const keys = JwtVcIssuerKeys(jwksEndpoint);
-  const cpDecoder = VcDecoder(VcValidator(CoreProfile));
+  const cpDecoder = JwtVcDecoder(JwtVcValidator(CoreProfile));
   const cpVerifier = JwtVcVerifier(keys, `dns:${registry}`, cpDecoder);
-  const wmpDecoder = VcDecoder(VcValidator(WebMediaProfile));
+  const wmpDecoder = JwtVcDecoder(JwtVcValidator(WebMediaProfile));
   const wmpVerifier = JwtVcVerifier(keys, `dns:${registry}`, wmpDecoder);
-  const wspDecoder = VcDecoder(VcValidator(WebsiteProfile));
+  const wspDecoder = JwtVcDecoder<WebsiteProfile>(
+    JwtVcValidator(WebsiteProfile),
+  );
 
   const originators = await Promise.all(
     result.originators.map(async (originator) => {
@@ -62,8 +64,9 @@ async function fetchVerifiedSiteProfile([, tabId]: [
     }),
   );
   /* TODO: WebsiteProfile を検証する */
-  const credential = wspDecoder(result.credential) as WebsiteProfile;
-  return { originators, credential };
+  const credential = wspDecoder(result.credential);
+  if (credential instanceof Error) throw credential;
+  return { originators, credential: credential.payload };
 }
 
 /**
