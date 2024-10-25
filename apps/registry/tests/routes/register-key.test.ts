@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, expect, test } from "vitest";
-import { generateKey } from "@originator-profile/sign";
+import { generateKey } from "@originator-profile/cryptography";
 import { Server, create } from "../../src/server";
 
 let server: Server;

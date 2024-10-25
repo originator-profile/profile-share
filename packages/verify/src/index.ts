@@ -14,8 +14,3 @@ export * from "./verify-originator-profile";
 export * from "./verify-profiles";
 export * from "./verify-token";
 export * from "./site-profile";
-export {
-  LocalKeys,
-  RemoteKeys,
-  type Keys,
-} from "@originator-profile/cryptography";

@@ -1,12 +1,13 @@
 import { test, expect } from "vitest";
 import { addYears, getUnixTime } from "date-fns";
+import { generateKey } from "@originator-profile/cryptography";
 import { CoreProfile } from "@originator-profile/model";
 import {
   JwtVcDecoder,
   JwtVcValidator,
   JwtVcDecodeFailed,
 } from "@originator-profile/jwt-securing-mechanism";
-import { signCp, generateKey } from "@originator-profile/sign";
+import { signCp } from "@originator-profile/sign";
 
 const issuedAt = new Date();
 const expiredAt = addYears(new Date(), 10);

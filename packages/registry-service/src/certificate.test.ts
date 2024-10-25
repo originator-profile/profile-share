@@ -1,7 +1,7 @@
 import { test, expect, describe, vi } from "vitest";
 import crypto from "node:crypto";
 import { Prisma } from "@prisma/client";
-import { generateKey } from "@originator-profile/sign";
+import { generateKey } from "@originator-profile/cryptography";
 import { decodeSdJwt } from "@originator-profile/verify";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
