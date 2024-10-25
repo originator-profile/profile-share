@@ -1056,9 +1056,6 @@ importers:
       '@originator-profile/cryptography':
         specifier: workspace:*
         version: link:../cryptography
-      '@originator-profile/sign':
-        specifier: workspace:*
-        version: link:../sign
       '@originator-profile/verify':
         specifier: workspace:*
         version: link:../verify
