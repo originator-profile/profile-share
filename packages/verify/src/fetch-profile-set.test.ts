@@ -1,5 +1,6 @@
 import { Op } from "@originator-profile/model";
-import { generateKey, signOp } from "@originator-profile/sign";
+import { generateKey } from "@originator-profile/cryptography";
+import { signOp } from "@originator-profile/sign";
 import { addYears, fromUnixTime, getUnixTime } from "date-fns";
 import { Window } from "happy-dom";
 import { HttpResponse, http } from "msw";

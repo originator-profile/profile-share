@@ -1,10 +1,10 @@
 import { test, expect } from "vitest";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { Op, Dp } from "@originator-profile/model";
-import { signOp, signDp, generateKey } from "@originator-profile/sign";
+import { signOp, signDp } from "@originator-profile/sign";
 import { ProfileTokenVerifyFailed } from "./errors";
 import { TokenDecoder } from "./decode";
-import { LocalKeys } from "@originator-profile/cryptography";
+import { generateKey, LocalKeys } from "@originator-profile/cryptography";
 import { TokenVerifier } from "./verify-token";
 
 test("verify OP Token", async () => {

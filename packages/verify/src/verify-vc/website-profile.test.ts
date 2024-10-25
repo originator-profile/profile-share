@@ -5,10 +5,9 @@ import {
   JwtVcValidator,
 } from "@originator-profile/jwt-securing-mechanism";
 import { WebsiteProfile } from "@originator-profile/model";
-import { generateKey } from "@originator-profile/sign";
 import { addYears, getUnixTime } from "date-fns";
 import { expect, test } from "vitest";
-import { LocalKeys } from "@originator-profile/cryptography";
+import { generateKey, LocalKeys } from "@originator-profile/cryptography";
 
 const issuedAt = new Date();
 const expiredAt = addYears(new Date(), 10);
