@@ -102,7 +102,6 @@ Content Properties の形式を JSON Schema で示します。
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
     "@context": {

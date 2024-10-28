@@ -3,7 +3,6 @@ import { OpVc } from "../op-vc";
 import { CertificateProperties } from "./certificate-properties";
 
 export const Certificate = {
-  $schema: "https://json-schema.org/draft/2019-09/schema",
   type: "object",
   allOf: [
     OpVc,

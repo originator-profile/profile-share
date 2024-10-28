@@ -3,7 +3,6 @@ import { Jwks } from "./jwks";
 import { OpVc } from "./op-vc";
 
 export const CoreProfile = {
-  $schema: "https://json-schema.org/draft/2019-09/schema",
   type: "object",
   additionalProperties: false,
   properties: {

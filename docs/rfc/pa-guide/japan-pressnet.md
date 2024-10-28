@@ -65,7 +65,6 @@ _このセクションは非規範的です。_
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2019-09/schema",
   "type": "object",
   "$defs": {
     "ProfileAnnotationSubject": {
