@@ -3,7 +3,6 @@ import { OpVc } from "../op-vc";
 import { CertificationSystem } from "./cert-system";
 
 export const JapaneseExistenceCertificateProperties = {
-  $schema: "https://json-schema.org/draft/2019-09/schema",
   type: "object",
   properties: {
     id: { type: "string", title: "subject の OP ID", format: "uri" },
@@ -54,7 +53,6 @@ export const JapaneseExistenceCertificateProperties = {
 } as const satisfies JSONSchema;
 
 export const JapaneseExistenceCertificate = {
-  $schema: "https://json-schema.org/draft/2019-09/schema",
   allOf: [
     OpVc,
     {
