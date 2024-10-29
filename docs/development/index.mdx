@@ -29,6 +29,20 @@ CHROME_PATH=/usr/bin/google-chrome pnpm dev
 # => 開発用サーバーとWebブラウザーが起動します (<Ctrl-C>: 終了)
 ```
 
+6. 開発用サーバーとWebブラウザーが起動したら実際にWebページの検証を行う
+   - [広告のデモ](http://localhost:8080/examples/ad.html)にアクセスする
+   - アクセスしたらProfile Web Extensionを起動してページの検証を行う
+   - 広告のデモ以外は
+     - [複数のコンテンツプロファイル](http://localhost:8080/examples/many-dps.html)
+     - [コンテンツプロファイルなし](http://localhost:8080/examples/ad.html)
+     - これらのページがあります
+
+検証の実行方法
+![](assets/op-web-ext.png)
+
+広告のデモで検証が成功した場合の表示
+![](assets/web-ext-enable.png)
+
 あとはそれぞれのソースコードを編集することで開発を行うことができます。自由にカスタマイズしましょう。
 
 import DocCardList from "@theme/DocCardList";
