@@ -1,22 +1,11 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
+import { OpContextHead } from "./context/op-context-head";
 
 export const OpVc = {
   type: "object",
   additionalProperties: true,
   properties: {
-    "@context": {
-      type: "array",
-      additionalItems: true,
-      minItems: 2,
-      items: [
-        {
-          const: "https://www.w3.org/ns/credentials/v2",
-        },
-        {
-          const: "https://originator-profile.org/ns/credentials/v1",
-        },
-      ],
-    },
+    "@context": OpContextHead,
     type: {
       type: "array",
       additionalItems: true,

@@ -1,25 +1,14 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
 import { Jwks } from "./jwks";
 import { OpVc } from "./op-vc";
+import { OpContext } from "./context/op-context";
 
 export const CoreProfile = {
   type: "object",
   additionalProperties: false,
   properties: {
     ...OpVc.properties,
-    "@context": {
-      type: "array",
-      additionalItems: false,
-      minItems: 2,
-      items: [
-        {
-          const: "https://www.w3.org/ns/credentials/v2",
-        },
-        {
-          const: "https://originator-profile.org/ns/credentials/v1",
-        },
-      ],
-    },
+    "@context": OpContext,
     type: {
       type: "array",
       additionalItems: false,

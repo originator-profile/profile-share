@@ -3,6 +3,7 @@ import { AllowedOrigin } from "../allowed-origin";
 import { AllowedUrl } from "../allowed-url";
 import { Category } from "../category";
 import { ContentAttestation } from "./content-attestation";
+import { OpCipContext } from "../context/op-cip-context";
 
 const subject = {
   type: "object",
@@ -58,34 +59,7 @@ const AdvertisementCA = {
       type: "object",
       additionalProperties: true,
       properties: {
-        "@context": {
-          type: "array",
-          additionalItems: false,
-          minItems: 4,
-          items: [
-            {
-              type: "string",
-              const: "https://www.w3.org/ns/credentials/v2",
-            },
-            {
-              type: "string",
-              const: "https://originator-profile.org/ns/credentials/v1",
-            },
-            {
-              type: "string",
-              const: "https://originator-profile.org/ns/cip/v1",
-            },
-            {
-              type: "object",
-              properties: {
-                "@language": {
-                  type: "string",
-                  title: "言語コード",
-                },
-              },
-            },
-          ],
-        },
+        "@context": OpCipContext,
         credentialSubject: subject,
       },
       required: ["@context", "type", "credentialSubject"],
