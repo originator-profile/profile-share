@@ -69,7 +69,7 @@ CA 発行者は、ページの動的な変化によらず `cssSelector` がマ�
 
 ## 検証プロセス
 
-1. `cssSelector` プロパティの CSS セレクターで指定した要素を検索します。
+1. `cssSelector` プロパティの CSS セレクターで指定した要素を検索します。対象の要素は、そのページの `document` のルート要素 (例えば、 HTML 文書の場合は `<html>` 要素) から、`querySelectorAll()` メソッドを使用して検索します。
 2. 対象要素の [descendant text content](https://dom.spec.whatwg.org/#concept-descendant-text-content) を取得します。それは要素の `textContent` 属性の値です。もし仮に `null` が得られた場合は、その対象を空の文字列に変換します。
 3. すべての対象を UTF-8 に符号化します。もし仮に対象が複数存在する場合は、それらの内容を結合します。
 4. その結果と `integrity` プロパティを [SRI セクション 3.3.5](https://www.w3.org/TR/SRI/#does-response-match-metadatalist) に規定されている方法で検証します。

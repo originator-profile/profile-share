@@ -10,10 +10,10 @@
   },
   "devDependencies": {
     "@originator-profile/core": "workspace:*",
+    "@originator-profile/cryptography": "workspace:*",
+    "@originator-profile/jwt-securing-mechanism": "workspace:*",
     "@originator-profile/model": "workspace:*",
     "@originator-profile/sign": "workspace:*",
-    "@originator-profile/jwt-securing-mechanism": "workspace:*",
-    "@originator-profile/cryptography": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
     "@playwright/test": "1.44.1",
     "@types/jsonld": "^1.5.15",
@@ -28,6 +28,8 @@
     "just-typeof": "^3.2.0",
     "msw": "^2.4.9",
     "playwright": "1.44.1",
-    "vitest": "^2.1.2"
+    "vite": "^5.4.8",
+    "vitest": "^2.1.2",
+    "websri": "^0.1.0"
   }
 }
