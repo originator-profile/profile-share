@@ -66,7 +66,7 @@ src 属性に CAS または OPS の URL を記述します。
 
 integrity 属性には URL が参照するリソースのハッシュ値を指定します (MUST)。
 ハッシュ値はサブリソース完全性 (SRI) の検証に使用します。
-ハッシュ値の形式は [SRI セクション 3.5](https://www.w3.org/TR/SRI/#the-integrity-attribute) の integrity-metadata でなければなりません (MUST)。
+ハッシュ値の形式は [SRI セクション 3.5](https://www.w3.org/TR/SRI/#the-integrity-attribute) の integrity-metadata でなければなりません (MUST)。利用可能なハッシュ関数については[ハッシュアルゴリズム](./algorithm.md#hash-algorithm)に準拠してください (MUST)。
 
 #### 例
 

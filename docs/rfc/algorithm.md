@@ -49,7 +49,7 @@ Originator Profile 技術研究組合の開発するアプリケーションで�
 
 :::
 
-## ハッシュアルゴリズム
+## ハッシュアルゴリズム {#hash-algorithm}
 
 OP の仕様に準拠するアプリケーションは、 CA の Target Integrity の `integrity` プロパティの値を生成・検証するとき、および各 VC の `digestSRI` プロパティの値を生成・検証するときに、使用するハッシュアルゴリズムについて次の要件を満たす必要があります (MUST)。
 

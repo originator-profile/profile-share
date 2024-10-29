@@ -22,11 +22,19 @@ Core Profile は OP VC DM 準拠文書でなければなりません (MUST)。�
 
 #### `@context`
 
-[OP VC Data Model](./op-vc-data-model.md) に従ってください (MUST)。
+[OP VC Data Model](./op-vc-data-model.md#context) に従ってください (MUST)。
+
+#### `type`
+
+REQUIRED. 必ず `["VerifiableCredential", "CoreProfile"]` にしてください (MUST)。
 
 #### `credentialSubject.id`
 
 REQUIRED. CP 保有組織の OP ID でなければなりません (MUST)。
+
+#### `credentialSubject.type`
+
+REQUIRED. `Core` でなければなりません (MUST)。
 
 #### `credentialSubject.jwks`
 
@@ -52,11 +60,11 @@ Core Profile の具体例を次に示します。
     "https://www.w3.org/ns/credentials/v2",
     "https://originator-profile.org/ns/credentials/v1"
   ],
-  "type": ["VerifiableCredential"],
+  "type": ["VerifiableCredential", "CoreProfile"],
   "issuer": "dns:example.org",
   "credentialSubject": {
     "id": "dns:example.jp",
-    "type": "CoreProfile",
+    "type": "Core",
     "jwks": {
       "keys": [
         {
@@ -69,53 +77,5 @@ Core Profile の具体例を次に示します。
       ]
     }
   }
-}
-```
-
-### JSON Schema
-
-_このセクションは非規範的です。_
-
-Core Profile の形式を JSON Schema で示します。
-
-```json
-{
-  "type": "object",
-  "additionalProperties": false,
-  "properties": {
-    "@context": {
-      "type": "array",
-      "additionalItems": false,
-      "minItems": 2,
-      "items": [
-        {
-          "const": "https://www.w3.org/ns/credentials/v2"
-        },
-        {
-          "const": "https://originator-profile.org/ns/credentials/v1"
-        }
-      ]
-    },
-    "type": {
-      "type": "array",
-      "additionalItems": false,
-      "minItems": 1,
-      "items": [{ "const": "VerifiableCredential" }]
-    },
-    "issuer": { "type": "string" },
-    "credentialSubject": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "id": { "type": "string" },
-        "jwks": {
-          "type": "object",
-          "title": "JWK Set"
-        }
-      },
-      "required": ["id", "jwks"]
-    }
-  },
-  "required": ["@context", "type", "issuer", "credentialSubject"]
 }
 ```

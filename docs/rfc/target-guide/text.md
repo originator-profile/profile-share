@@ -1,4 +1,4 @@
-# Text Target Implementer's Guide
+# Text Target Implementation Guidelines
 
 ## 概要
 
@@ -18,7 +18,7 @@ Text Target は次のような形式です。
 {
   "type": "TextTargetIntegrity",
   "cssSelector": "<CSS セレクター>",
-  "integrity": "sha256-..."
+  "integrity": "sha256-GtNUUolQVlwIkQU9JknWkwkhfdiVmHr/BOnLFFHC5jI="
 }
 ```
 
@@ -48,7 +48,7 @@ Text Target は次のような形式です。
 ### プロパティ
 
 - `type`: REQUIRED. Target Integrity のタイプです。必ず `TextTargetIntegrity` でなければなりません (MUST)。
-- `integrity`: REQUIRED. [Subresource Integrity (SRI) セクション 3.5](https://www.w3.org/TR/SRI/#the-integrity-attribute) の hash-expression でなければなりません (MUST)。具体例: `sha256-4HLmAAYVRClrk+eCIrI1Rlf5/IKK0+wGoYjRs9vzl7U=`
+- `integrity`: REQUIRED. [`sriString` データ型](../context.md#the-sristring-datatype) でなければなりません (MUST)。使用可能なハッシュ関数については[ハッシュアルゴリズム](../algorithm.md#hash-algorithm)に準拠してください (MUST)。具体例: `sha256-4HLmAAYVRClrk+eCIrI1Rlf5/IKK0+wGoYjRs9vzl7U=`
 - `cssSelector`: REQUIRED. 必ず [CSS セレクター (Selectors Level 3)](https://www.w3.org/TR/cssSelectors-3/) でなければなりません (MUST)。
 
 :::note
@@ -72,7 +72,7 @@ CA 発行者は、ページの動的な変化によらず `cssSelector` がマ�
 1. `cssSelector` プロパティの CSS セレクターで指定した要素を検索します。
 2. 対象要素の [descendant text content](https://dom.spec.whatwg.org/#concept-descendant-text-content) を取得します。それは要素の `textContent` 属性の値です。もし仮に `null` が得られた場合は、その対象を空の文字列に変換します。
 3. すべての対象を UTF-8 に符号化します。もし仮に対象が複数存在する場合は、それらの内容を結合します。
-4. その結果と `integrity` プロパティの Integrity Metadata を [SRI セクション 3.3.5](https://www.w3.org/TR/SRI/#does-response-match-metadatalist) に規定されている方法で検証します
+4. その結果と `integrity` プロパティを [SRI セクション 3.3.5](https://www.w3.org/TR/SRI/#does-response-match-metadatalist) に規定されている方法で検証します。
 
 :::note
 

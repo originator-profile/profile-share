@@ -27,13 +27,13 @@ REQUIRED. 必ず `["VerifiableCredential", "Certificate"]` にしてください
 
 #### `credentialSubject`
 
-- `id`: REQUIRED.
-- `type`: REQUIRED.
-- `certificationSystem`: REQUIRED.
-- `description`: REQUIRED.
-- `image`: OPTIONAL.
-- `certifier`: OPTIONAL.
-- `verifier`: OPTIONAL.
+- `id`: REQUIRED. Certificate を保有する組織の OP ID です。
+- `type`: REQUIRED. 個別の Certificate を定義している文書で指定します。
+- `certificationSystem`: REQUIRED. 認証制度の ID です。
+- `description`: REQUIRED. この証明書に関する説明です。
+- `image`: OPTIONAL. [`image` データ型](./context.md#the-page-datatype) の JSON-LD Node Object でなければなりません (MUST)。
+- `certifier`: OPTIONAL. 認証機関の名前です。
+- `verifier`: OPTIONAL. 検証機関の名前です。
 
 #### `certificationSystem`
 
@@ -75,99 +75,5 @@ Certificate のデータモデルの具体例を次に示します。
     "description": "<認証制度の説明>",
     "ref": "https://certification.example.org/about"
   }
-}
-```
-
-### JSON Schema
-
-_このセクションは非規範的です。_
-
-Certificate の形式を JSON Schema で示します。
-
-```json
-{
-  "type": "object",
-  "$defs": {
-    "ProfileAnnotationSubject": {
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "description": { "type": "string" },
-        "required": ["id"]
-      }
-    },
-    "CertificationSystem": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "title": "認定制度ID",
-          "type": "string"
-        },
-        "name": {
-          "title": "認証制度名",
-          "type": "string"
-        },
-        "description": {
-          "title": "認証制度の説明",
-          "type": "string"
-        },
-        "ref": {
-          "title": "認証制度の詳細URL",
-          "type": "string"
-        },
-        "image": {
-          "title": "認証制度の画像",
-          "type": "object",
-          "properties": {
-            "id": {
-              "title": "URL",
-              "type": "string",
-              "format": "uri"
-            },
-            "digestSRI": {
-              "title": "Integrity Metadata",
-              "description": "One or more hash-expression defined in section 3.5 in the SRI specification: https://www.w3.org/TR/SRI/#the-integrity-attribute",
-              "type": "string"
-            }
-          },
-          "required": ["id"]
-        },
-        "required": ["id", "name"]
-      }
-    }
-  },
-  "type": "object",
-  "properties": {
-    "@context": {
-      "type": "array",
-      "minItems": 3,
-      "items": [
-        {
-          "const": "https://www.w3.org/ns/credentials/v2"
-        },
-        {
-          "const": "https://originator-profile.org/ns/credentials/v1"
-        },
-        {
-          "const": "https://originator-profile.org/ns/cip/v1"
-        }
-      ]
-    },
-    "type": {
-      "type": "array",
-      "minItems": 1,
-      "items": [{ "const": "VerifiableCredential" }]
-    },
-    "issuer": { "type": "string" },
-    "credentialSubject": { "$ref": "#/$defs/ProfileAnnotationSubject" },
-    "certificationSystem": { "$ref": "#/$defs/CertificationSystem" }
-  },
-  "required": [
-    "@context",
-    "type",
-    "issuer",
-    "credentialSubject",
-    "certificationSystem"
-  ]
 }
 ```

@@ -37,7 +37,11 @@ Content Attestation は OP VC DM 準拠文書でなければなりません (MUS
 
 #### `@context`
 
-[OP VC Data Model](./op-vc-data-model.md) に従ってください (MUST)。
+[OP VC Data Model](./op-vc-data-model.md#context) に従ってください (MUST)。
+
+#### `type`
+
+REQUIRED. 必ず `["VerifiableCredential", "ContentAttestation"]` にしてください (MUST)。
 
 #### `credentialSubject.id`
 
@@ -72,29 +76,25 @@ CA の具体例を示します。この CA は https://media.example.com/article
   "@context": [
     "https://www.w3.org/ns/credentials/v2",
     "https://originator-profile.org/ns/credentials/v1",
-    "https://originator-profile.org/ns/cip/v1"
+    "https://originator-profile.org/ns/cip/v1",
+    { "@language": "ja" }
   ],
   "type": ["VerifiableCredential", "ContentAttestation"],
   "issuer": "dns:example.com",
   "credentialSubject": {
     "id": "urn:uuid:78550fa7-f846-4e0f-ad5c-8d34461cb95b",
-    "type": "ContentProperties",
-    "title": "<Webページのタイトル>",
+    "type": "Article",
+    "headline": "<記事のタイトル>",
     "image": {
       "id": "https://media.example.com/image.png",
-      "digestSRI": "sha256-..."
+      "digestSRI": "sha256-OYP9B9EPFBi1vs0dUqOhSbHmtP+ZSTsUv2/OjSzWK0w="
     },
-    "source": "https://media2.example.com/articles/1",
     "description": "<Webページの説明>",
-    "author": "山田花子",
-    "editor": "山田太郎",
+    "author": ["山田花子"],
+    "editor": ["山田太郎"],
     "datePublished": "2023-07-04T19:14:00Z",
     "dateModified": "2023-07-04T19:14:00Z",
-    "category": {
-      "cat": "IAB1",
-      "cattax": 1,
-      "name": "Arts & Entertainment"
-    }
+    "genre": "Arts & Entertainment"
   },
   "allowedUrl": "https://media.example.com/articles/2024-06-30",
   "target": [
@@ -125,10 +125,13 @@ CA の具体例を示します。この CA は https://media.example.com/article
   "issuer": "dns:example.com",
   "credentialSubject": {
     "id": "urn:uuid:78550fa7-f846-4e0f-ad5c-8d34461cb95b",
-    "type": "AdvertisementProperties",
-    "title": "<広告のタイトル>",
+    "type": "OnlineAd",
+    "name": "<広告のタイトル>",
     "description": "<広告の説明>",
-    "image": "https://ad.example.com/image.png"
+    "image": {
+      "id": "https://ad.example.com/image.png",
+      "digestSRI": "sha256-5uQVtkoRdTFbimAz3Wz5GQcuBRLt7tDMD5JRtGFo9/M="
+    }
   },
   "allowedOrigin": "https://ad.example.com",
   "target": {
@@ -154,8 +157,8 @@ CA の具体例を示します。この CA は https://media.example.com/article
 
 Originator Profile 技術研究組合が開発するアプリケーションで使用されるプロパティについては、次の RFC 文書を参照してください。
 
-- [Content Properties Schema](./ca-guide/content-properties.md)
-- [Advertisement Properties Schema](./ca-guide/advertisement-properties.md)
+- [Article Data Model](./ca-guide/article.md)
+- [Online Ad Data Model](./ca-guide/online-ad.md)
 
 :::
 

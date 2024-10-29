@@ -18,40 +18,41 @@ Website Profile は OP VC DM 準拠文書でなければなりません (MUST)�
 
 ### `@context`
 
-REQUIRED. [OP VC Data Model](./op-vc-data-model.md) に従ってください (MUST)。さらに、3つ目の値を `"https://originator-profile.org/ns/cip/v1"` にしなければなりません (MUST)。
+REQUIRED. [OP VC Data Model](./op-vc-data-model.md#context) に従ってください (MUST)。さらに、3つ目の値を `"https://originator-profile.org/ns/cip/v1"` にしなければなりません (MUST)。
 
 ### `type`
 
-REQUIRED. 次の値にしてください (MUST)。`["VerifiableCredential"]`
+REQUIRED. 必ず `["VerifiableCredential", "WebsiteProfile"]` にしてください (MUST)。
+
+### `issuer`
+
+REQUIRED. Web サイト保有組織の OP ID にしてください (MUST)。
 
 ### `credentialSubject`
 
-REQUIRED.
+REQUIRED. 次のプロパティを含む JSON-LD Node Object です。
 
 #### `id`
 
-REQUIRED. Web サイト保有者の [OP ID](./op-id.md) を含めてください。
+REQUIRED. Web サイトの URL を含めてください (MUST)。
 
-#### `type` {#credentialSubject-type}
+#### `type`
 
-REQUIRED. 文字列。`WebsiteProperties` にしてください (MUST)。
+REQUIRED. `WebSite` でなければなりません (MUST)。
 
-#### `title`
+#### `name`
 
-REQUIRED. Web サイトのタイトルです。
+REQUIRED. Web サイトの名称です。
 
 #### `image`
 
-OPTIONAL. Web サイトのサムネイル画像です。次のプロパティを含みます。
-
-- `id`: REQUIRED. サムネイル画像の URL です。
-- `digestSRI`: OPTIONAL. サムネイル画像の integrity metadata です。
+OPTIONAL. Web サイトのサムネイル画像です。 [`image` データ型](./context.md#the-page-datatype) の JSON-LD Node Object でなければなりません (MUST)。
 
 #### `description`
 
 OPTIONAL. Web サイトの説明です。
 
-#### `origin`
+#### `url`
 
 REQUIRED. [Origin](https://www.rfc-editor.org/rfc/rfc6454) を [ASCII Serialization](https://www.rfc-editor.org/rfc/rfc6454#section-6.2) した文字列です。
 
@@ -73,18 +74,18 @@ Website Profile データモデルの非規範的な例を次に示します。
     "https://originator-profile.org/ns/cip/v1",
     { "@language": "ja" }
   ],
-  "type": ["VerifiableCredential"],
+  "type": ["VerifiableCredential", "WebsiteProfile"],
   "issuer": "dns:example.com",
   "credentialSubject": {
-    "id": "dns:example.com",
-    "type": "WebsiteProperties",
-    "title": "<Webサイトのタイトル>",
+    "id": "https://media.example.com",
+    "type": "WebSite",
+    "name": "<Webサイトのタイトル>",
     "description": "<Webサイトの説明>",
     "image": {
       "id": "https://media.example.com/image.png",
       "digestSRI": "sha256-Upwn7gYMuRmJlD1ZivHk876vXHzokXrwXj50VgfnMnY="
     },
-    "origin": "https://media.example.com"
+    "url": "https://media.example.com"
   }
 }
 ```

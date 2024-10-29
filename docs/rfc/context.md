@@ -2,11 +2,56 @@
 sidebar_position: 40
 ---
 
-# JSON-LD Context Definitions Note
+# Contexts, Vocabularies, and Types
 
-_この文書は非規範的です。_
+## Datatypes
 
-## https://originator-profile.org/ns/credentials/v1
+### The `sriString` Datatype
+
+[Verifiable Credentials Data Model v2.0 セクション B.3.1](https://www.w3.org/TR/vc-data-model-2.0/#the-sristring-datatype) の定義に準拠し (MUST)、かつハッシュを2つ以上含まない (MUST NOT) ようにしてください。使用可能なハッシュについては[ハッシュアルゴリズム](./algorithm.md#hash-algorithm)に準拠してください (MUST)。
+
+例:
+
+```
+sha256-GtNUUolQVlwIkQU9JknWkwkhfdiVmHr/BOnLFFHC5jI=
+```
+
+### The `image` Datatype
+
+`image` データ型の値は、 JSON-LD Node Object であり、次のプロパティを含みます。
+
+- `id`: REQUIRED. 画像の URL です。
+- `digestSRI`: RECOMMENDED. 画像の完全性を保証するためのハッシュ値です。 [`sriString` データ型](#the-sristring-datatype) でなければなりません (MUST)。
+
+例:
+
+```json
+{
+  "id": "https://example.com/image.png",
+  "digestSRI": "sha256-OYP9B9EPFBi1vs0dUqOhSbHmtP+ZSTsUv2/OjSzWK0w="
+}
+```
+
+### The `page` Datatype
+
+`page` データ型の値は、 JSON-LD Node Object であり、次のプロパティを含みます。
+
+- `id`: REQUIRED. Web ページの URL です。
+- `name`: REQUIRED. Web ページのタイトルです。
+
+## Contexts
+
+_このセクションは非規範的です。_
+
+:::note
+
+これらのコンテキスト定義は最新の仕様を反映していません。各 VC, プロパティの定義については各仕様文書を参照してください。
+
+:::
+
+### https://originator-profile.org/ns/credentials/v1
+
+_このセクションは非規範的です。_
 
 ```json
 {
@@ -54,8 +99,9 @@ _この文書は非規範的です。_
         }
       }
     },
-    "CoreProfile": {
-      "@id": "https://originator-profile.org/ns/credentials/v1#CoreProfile",
+    "CoreProfile": "https://originator-profile.org/ns/credentials/v1#CoreProfile",
+    "Core": {
+      "@id": "https://originator-profile.org/ns/credentials/v1#Core",
       "@context": {
         "@protected": true,
         "id": "@id",
@@ -67,8 +113,8 @@ _この文書は非規範的です。_
     },
     "ProfileAnnotation": "https://originator-profile.org/ns/credentials/v1#ProfileAnnotation",
     "WebMediaProfile": "https://originator-profile.org/ns/credentials/v1#WebMediaProfile",
-    "WebMediaProperties": {
-      "@id": "https://originator-profile.org/ns/credentials/v1#WebMediaProperties",
+    "WebMediaSubject": {
+      "@id": "https://originator-profile.org/ns/credentials/v1#WebMediaSubject",
       "@context": {
         "@protected": true,
         "id": "@id",
@@ -94,8 +140,8 @@ _この文書は非規範的です。_
       }
     },
     "WebsiteProfile": "https://originator-profile.org/ns/credentials/v1#WebsiteProfile",
-    "WebsiteProperties": {
-      "@id": "https://originator-profile.org/ns/credentials/v1#WebsiteProperties",
+    "Website": {
+      "@id": "https://originator-profile.org/ns/credentials/v1#Website",
       "@context": {
         "@protected": true,
         "id": "@id",
@@ -113,7 +159,9 @@ _この文書は非規範的です。_
 }
 ```
 
-## https://originator-profile.org/ns/cip/v1
+### https://originator-profile.org/ns/cip/v1
+
+_このセクションは非規範的です。_
 
 ```json
 {
@@ -123,8 +171,8 @@ _この文書は非規範的です。_
     "@protected": true,
     "cip": "https://originator-profile.org/ns/cip/v1#",
     "op": "https://originator-profile.org/ns/credentials/v1#",
-    "CertificateProperties": {
-      "@id": "https://originator-profile.org/ns/cip/v1#CertificateProperties",
+    "CertificateSubject": {
+      "@id": "https://originator-profile.org/ns/cip/v1#CertificateSubject",
       "@context": {
         "@protected": true,
         "id": "@id",
@@ -135,14 +183,8 @@ _この文書は非規範的です。_
           "@id": "https://originator-profile.org/ns/cip/v1#certificationSystem",
           "@type": "@id"
         },
-        "verifier": {
-          "@id": "https://originator-profile.org/ns/cip/v1#verifier",
-          "@type": "@id"
-        },
-        "certifier": {
-          "@id": "https://originator-profile.org/ns/cip/v1#certifier",
-          "@type": "@id"
-        }
+        "verifier": "https://schema.org/name",
+        "certifier": "https://schema.org/name"
       }
     },
     "CertificationSystem": {
@@ -159,8 +201,8 @@ _この文書は非規範的です。_
         }
       }
     },
-    "ECJPProperties": {
-      "@id": "https://originator-profile.org/ns/cip/v1#OrganizationProperties",
+    "ECJP": {
+      "@id": "https://originator-profile.org/ns/cip/v1#ECJP",
       "@context": {
         "@protected": true,
         "id": "@id",
@@ -189,8 +231,8 @@ _この文書は非規範的です。_
       }
     },
     "ExistenceCertificateInJapan": "https://originator-profile.org/ns/cip/v1#ExistenceCertificateInJapan",
-    "ContentProperties": {
-      "@id": "https://originator-profile.org/ns/cip/v1#ContentProperties",
+    "WebArticle": {
+      "@id": "https://originator-profile.org/ns/cip/v1#WebArticle",
       "@context": {
         "@protected": true,
         "title": "https://schema.org/title",
@@ -204,8 +246,8 @@ _この文書は非規範的です。_
         "category": "cip:category"
       }
     },
-    "AdvertisementProperties": {
-      "@id": "https://originator-profile.org/ns/cip/v1#AdvertisementProperties",
+    "OnlineAd": {
+      "@id": "https://originator-profile.org/ns/cip/v1#OnlineAd",
       "@context": {
         "@protected": true,
         "id": "@id",

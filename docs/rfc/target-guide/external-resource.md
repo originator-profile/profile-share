@@ -1,4 +1,4 @@
-# External Resource Target Implementer's Guide
+# External Resource Target Implementation Guidelines
 
 ## 概要
 
@@ -34,14 +34,14 @@ External Resource Target の具体例を次に示します。
 ```json
 {
   "type": "ExternalResourceTargetIntegrity",
-  "integrity": "sha-256..."
+  "integrity": "sha256-OYP9B9EPFBi1vs0dUqOhSbHmtP+ZSTsUv2/OjSzWK0w="
 }
 ```
 
 以下のプロパティが定義されます:
 
 - `type`: REQUIRED. 必ず `ExternalResourceTargetIntegrity` でなければなりません (MUST)。
-- `integrity`: REQUIRED. [Subresource Integrity (SRI) セクション 3.5](https://www.w3.org/TR/SRI/#the-integrity-attribute) の hash-expression でなければなりません (MUST)。具体例: `sha256-4HLmAAYVRClrk+eCIrI1Rlf5/IKK0+wGoYjRs9vzl7U=`
+- `integrity`: REQUIRED. [`sriString` データ型](../context.md#the-sristring-datatype) でなければなりません (MUST)。使用可能なハッシュ関数については[ハッシュアルゴリズム](../algorithm.md#hash-algorithm)に準拠してください (MUST)。具体例: `sha256-4HLmAAYVRClrk+eCIrI1Rlf5/IKK0+wGoYjRs9vzl7U=`
 
 ## 設定方法
 
@@ -86,7 +86,7 @@ video 要素を External Resource Target から参照する場合の具体例を
 ```html
 <video
   src="https://cdn.example.com/video.mp4"
-  integrity="sha-256..."
+  integrity="sha256-OYP9B9EPFBi1vs0dUqOhSbHmtP+ZSTsUv2/OjSzWK0w="
   poster="https://cdn.example.com/poster.jpg"
 ></video>
 ```
@@ -100,7 +100,7 @@ video 要素を External Resource Target から参照する場合の具体例を
 
 1. `integrity` プロパティと同じ値を `integrity` HTML 属性に含む要素を検索します。
 2. 要素の `src` 属性の URL に GET リクエストを送り外部リソースを取得します。
-3. その結果と integrity プロパティの Integrity Metadata を [SRI セクション 3.3.5](https://www.w3.org/TR/SRI/#does-response-match-metadatalist) に規定されている方法で検証します
+3. その結果と integrity プロパティを [SRI セクション 3.3.5](https://www.w3.org/TR/SRI/#does-response-match-metadatalist) に規定されている方法で検証します。
 
 ## 要素位置特定方法
 

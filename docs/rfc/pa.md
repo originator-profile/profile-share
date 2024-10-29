@@ -35,6 +35,10 @@ Profile Annotation は OP VC DM 準拠文書でなければなりません (MUST
 
 REQUIRED. [OP VC Data Model](./op-vc-data-model.md) に従ってください (MUST)。
 
+#### `issuer`
+
+REQUIRED. PA 発行者の OP ID です (MUST)。
+
 #### `credentialSubject.id`
 
 REQUIRED. PA 保有組織の OP ID でなければなりません (MUST)。
@@ -46,10 +50,6 @@ OPTIONAL. 文字列でなければなりません (MUST)。
 ## 拡張性 {#extensibility}
 
 PA を拡張したい者は `https://originator-profile.org/ns/credentials/v1#ProfileAnnotation` のコンテキスト定義を基に新しい Credential Type を作成しなければなりません (MUST)。
-
-TODO
-
-署名者は誰でも良い.
 
 ## Appendix
 
@@ -72,46 +72,5 @@ PA の具体例を次に示します。
     "id": "dns:cp-holder.example.com",
     "description": "この文章は PA 保有組織に関する補足情報です。"
   }
-}
-```
-
-### JSON Schema
-
-_このセクションは非規範的です。_
-
-Profile Annotation の形式を JSON Schema で示します。
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "@context": {
-      "type": "array",
-      "minItems": 2,
-      "items": [
-        {
-          "const": "https://www.w3.org/ns/credentials/v2"
-        },
-        {
-          "const": "https://originator-profile.org/ns/credentials/v1"
-        }
-      ]
-    },
-    "type": {
-      "type": "array",
-      "minItems": 1,
-      "items": [{ "const": "VerifiableCredential" }]
-    },
-    "issuer": { "type": "string" },
-    "credentialSubject": {
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "description": { "type": "string" }
-      },
-      "required": ["id"]
-    }
-  },
-  "required": ["@context", "type", "issuer", "credentialSubject"]
 }
 ```

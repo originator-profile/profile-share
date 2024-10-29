@@ -2,7 +2,7 @@
 sidebar_position: 4
 ---
 
-# Web Media Profile Data Model Implementer's Guide
+# Web Media Profile Data Model Implementation Guidelines
 
 ## 用語
 
@@ -20,7 +20,11 @@ Web Media Profile は OP VC DM 準拠文書でなければなりません (MUST)
 
 #### `@context`
 
-[OP VC Data Model](./op-vc-data-model.md) に従ってください (MUST)。
+[OP VC Data Model](./op-vc-data-model.md#context) に従ってください (MUST)。
+
+#### `type`
+
+REQUIRED. 必ず `["VerifiableCredential", "WebMediaProfile"]` にしてください (MUST)。
 
 #### `issuer`
 
@@ -32,26 +36,27 @@ WMP 記載の情報は Core Profile を発行する組織が審査で確認し�
 
 :::
 
-#### `credentialSubject.id`
-
-REQUIRED. WMP 保有組織の OP ID でなければなりません (MUST)。
-
 #### `credentialSubject`
 
 REQUIRED. Web メディアの発信者を表す JSON-LD Node Object です。
 
-- `url`: REQUIRED.
-- `name`: REQUIRED.
-- `logo`: OPTIONAL.
-- `email`: OPTIONAL.
-- `telephone`: OPTIONAL.
-- `contactTitle`: OPTIONAL.
-- `contactUrl`: OPTIONAL.
-- `privacyPolicyTitle`: OPTIONAL.
-- `privacyPolicyUrl`: OPTIONAL.
-- `publishingPrincipleTitle`: OPTIONAL.
-- `publishingPrincipleUrl`: OPTIONAL.
-- `description`: OPTIONAL.
+- `id`: REQUIRED. WMP 保有組織の OP ID でなければなりません (MUST)。
+- `type`: REQUIRED. `OnlineBusiness` でなければなりません (MUST)。
+- `url`: REQUIRED. 組織の公式ページへの URL でなければなりません (MUST)。
+- `name`: REQUIRED. 組織名です。
+- `logo`: OPTIONAL. 組織のロゴ画像です。 [`image` データ型](./context.md#the-page-datatype) の JSON-LD Node Object でなければなりません (MUST)。
+- `email`: OPTIONAL. 組織の代表メールアドレスです。
+- `telephone`: OPTIONAL. 組織の代表電話番号です。
+- `contactPoint`: OPTIONAL. お問い合わせページの情報です。 [`page` データ型](./context.md#the-page-datatype) の JSON-LD Node Object でなければなりません (MUST)。
+- `informationTransmissionPolicy`: OPTIONAL. 情報発信ポリシーページの情報です。 [`page` データ型](./context.md#the-page-datatype) の JSON-LD Node Object でなければなりません (MUST)。
+- `privacyPolicy`: OPTIONAL. プライバシーポリシーページの情報です。 [`page` データ型](./context.md#the-page-datatype) の JSON-LD Node Object でなければなりません (MUST)。
+- `description`: OPTIONAL. 組織に関する説明です。
+
+:::note
+
+`informationTransmissionPolicy` プロパティに含める情報発信ポリシーは [Originator Profile 憲章](https://originator-profile.org/ja-JP/charter/) の第3条1号において OP ID 付与の必須条件とされています。
+
+:::
 
 ## 拡張性
 
@@ -76,137 +81,28 @@ WMP の具体例を次に示します。
   "issuer": "dns:wmp-issuer.example.org",
   "credentialSubject": {
     "id": "dns:wmp-holder.example.jp",
-    "type": "WebMediaProfileProperties",
+    "type": "OnlineBusiness",
     "url": "https://www.wmp-holder.example.jp/",
     "name": "○○メディア (※開発用サンプル)",
     "logo": {
       "id": "https://www.wmp-holder.example.jp/logo.svg",
-      "digestSRI": "sha256-..."
+      "digestSRI": "sha256-OYP9B9EPFBi1vs0dUqOhSbHmtP+ZSTsUv2/OjSzWK0w="
     },
     "email": "contact@wmp-holder.example.jp",
     "telephone": "0000000000",
-    "contactTitle": "お問い合わせ",
-    "contactUrl": "https://wmp-holder.example.jp/contact",
-    "privacyPolicyTitle": "プライバシーポリシー",
-    "privacyPolicyUrl": "https://wmp-holder.example.jp/privacy",
-    "publishingPrincipleTitle": "新聞倫理綱領",
-    "publishingPrincipleUrl": "https://wmp-holder.example.jp/statement",
-    "description": {
-      "type": "PlainTextDescription",
-      "data": "この文章はこの Web メディアに関する補足情報です。"
-    }
+    "contactPoint": {
+      "id": "https://wmp-holder.example.jp/contact",
+      "name": "お問い合わせ"
+    },
+    "informationTransmissionPolicy": {
+      "id": "https://wmp-holder.example.jp/statement",
+      "name": "情報発信ポリシー"
+    },
+    "privacyPolicy": {
+      "id": "https://wmp-holder.example.jp/privacy",
+      "name": "プライバシーポリシー"
+    },
+    "description": "この文章はこの Web メディアに関する補足情報です。"
   }
-}
-```
-
-### JSON Schema
-
-_このセクションは非規範的です。_
-
-WMP のデータモデルを JSON Schema で示します。
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "@context": {
-      "type": "array",
-      "additionalItems": false,
-      "minItems": 2,
-      "items": [
-        {
-          "const": "https://www.w3.org/ns/credentials/v2"
-        },
-        {
-          "const": "https://originator-profile.org/ns/credentials/v1"
-        }
-      ]
-    },
-    "type": {
-      "type": "array",
-      "additionalItems": false,
-      "minItems": 1,
-      "items": [{ "const": "VerifiableCredential" }]
-    },
-    "issuer": { "type": "string" },
-    "credentialSubject": {
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "url": {
-          "title": "Web メディア URL",
-          "type": "string"
-        },
-        "logo": {
-          "title": "ロゴ画像",
-          "type": "object",
-          "properties": {
-            "id": {
-              "title": "URL",
-              "type": "string",
-              "format": "uri"
-            },
-            "digestSRI": {
-              "title": "Integrity Metadata",
-              "description": "One or more hash-expression defined in section 3.5 in the SRI specification: https://www.w3.org/TR/SRI/#the-integrity-attribute",
-              "type": "string"
-            }
-          },
-          "required": ["id"]
-        },
-        "name": {
-          "title": "Web メディア名",
-          "type": "string"
-        },
-        "email": {
-          "title": "メールアドレス",
-          "type": "string"
-        },
-        "telephone": {
-          "title": "電話番号",
-          "type": "string"
-        },
-        "contactTitle": {
-          "title": "連絡先表示名",
-          "type": "string"
-        },
-        "contactUrl": {
-          "title": "連絡先URL",
-          "type": "string"
-        },
-        "privacyPolicyTitle": {
-          "title": "プライバシーポリシー表示名",
-          "type": "string"
-        },
-        "privacyPolicyUrl": {
-          "title": "プライバシーポリシーURL",
-          "type": "string"
-        },
-        "publishingPrincipleTitle": {
-          "title": "編集ガイドライン表示名",
-          "type": "string"
-        },
-        "publishingPrincipleUrl": {
-          "title": "編集ガイドラインURL",
-          "type": "string"
-        },
-        "description": {
-          "title": "Web メディアに関する補足情報",
-          "type": "object",
-          "properties": {
-            "type": {
-              "enum": ["PlainTextDescription"]
-            },
-            "data": {
-              "type": "string"
-            }
-          },
-          "required": ["type", "data"]
-        }
-      },
-      "required": ["url", "name"]
-    }
-  },
-  "required": ["@context", "type", "issuer", "credentialSubject"]
 }
 ```

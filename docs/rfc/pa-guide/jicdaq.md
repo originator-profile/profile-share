@@ -1,4 +1,4 @@
-# JICDAQ Certificate Implementer's Guide
+# JICDAQ Certificate Implementation Guidelines
 
 ## 用語
 
@@ -50,7 +50,7 @@ JICDAQ Certificate の具体例を次に示します。
     "description": "この事業者は、広告主のブランド価値を毀損するような違法、不当なサイト、コンテンツ、アプリケーションへの広告掲載を防ぐ対策を実施しています。第三者機関（日本ABC協会）による検証を経て、本認証を取得しました。",
     "image": {
       "id": "https://example.com/certification-mark.svg",
-      "digestSRI": "sha256-..."
+      "digestSRI": "sha256-OYP9B9EPFBi1vs0dUqOhSbHmtP+ZSTsUv2/OjSzWK0w="
     },
     "certifier": "一般社団法人 デジタル広告品質認証機構",
     "verifier": "日本ABC協会",
@@ -64,147 +64,5 @@ JICDAQ Certificate の具体例を次に示します。
   },
   "validFrom": "2022-03-31T15:00:00Z",
   "validUntil": "2024-03-31T14:59:59Z"
-}
-```
-
-### JSON Schema
-
-_このセクションは非規範的です。_
-
-JICDAQ Certificate の形式を JSON Schema で示します。
-
-```json
-{
-  "type": "object",
-  "$defs": {
-    "ProfileAnnotationSubject": {
-      "type": "object",
-      "properties": {
-        "id": { "type": "string" },
-        "description": { "type": "string" },
-        "required": ["id"]
-      }
-    },
-    "JICDAQ": {
-      "type": "object",
-      "properties": {
-        "description": {
-          "type": "string"
-        },
-        "image": {
-          "title": "認証マークの画像",
-          "type": "object",
-          "properties": {
-            "id": {
-              "title": "URL",
-              "type": "string",
-              "format": "uri"
-            },
-            "digestSRI": {
-              "title": "Integrity Metadata",
-              "description": "One or more hash-expression defined in section 3.5 in the SRI specification: https://www.w3.org/TR/SRI/#the-integrity-attribute",
-              "type": "string"
-            }
-          },
-          "required": ["id"]
-        },
-        "validFrom": {
-          "title": "JICDAQ 認証初回発行日時",
-          "type": "string",
-          "format": "date-time"
-        },
-        "validUntil": {
-          "title": "JICDAQ 認証の失効日時",
-          "type": "string",
-          "format": "date-time"
-        },
-        "certifier": {
-          "title": "認証機関",
-          "type": "string"
-        },
-        "verifier": {
-          "title": "検証機関",
-          "type": "string"
-        }
-      },
-      "required": ["description", "image", "certifier"]
-    },
-    "CertificationSystem": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "title": "認定制度ID",
-          "type": "string"
-        },
-        "name": {
-          "title": "認証制度名",
-          "type": "string"
-        },
-        "description": {
-          "title": "認証制度の説明",
-          "type": "string"
-        },
-        "ref": {
-          "title": "認証制度の詳細URL",
-          "type": "string"
-        },
-        "image": {
-          "title": "認証制度の画像",
-          "type": "object",
-          "properties": {
-            "id": {
-              "title": "URL",
-              "type": "string",
-              "format": "uri"
-            },
-            "digestSRI": {
-              "title": "Integrity Metadata",
-              "description": "One or more hash-expression defined in section 3.5 in the SRI specification: https://www.w3.org/TR/SRI/#the-integrity-attribute",
-              "type": "string"
-            }
-          }
-        },
-        "required": ["id", "name"]
-      }
-    }
-  },
-  "type": "object",
-  "properties": {
-    "@context": {
-      "type": "array",
-      "minItems": 3,
-      "items": [
-        {
-          "const": "https://www.w3.org/ns/credentials/v2"
-        },
-        {
-          "const": "https://originator-profile.org/ns/credentials/v1"
-        },
-        {
-          "const": "https://originator-profile.org/ns/cip/v1"
-        }
-      ]
-    },
-    "type": {
-      "type": "array",
-      "minItems": 1,
-      "items": [{ "const": "VerifiableCredential" }]
-    },
-    "issuer": { "type": "string" },
-    "credentialSubject": {
-      "allOf": [
-        { "$ref": "#/$defs/ProfileAnnotationSubject" },
-        { "$ref": "#/$defs/JICDAQ" }
-      ]
-    },
-    "certificationSystem": { "$ref": "#/$defs/CertificationSystem" }
-  },
-  "required": [
-    "@context",
-    "type",
-    "issuer",
-    "credentialSubject",
-    "certificationSystem"
-  ]
 }
 ```

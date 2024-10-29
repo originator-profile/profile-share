@@ -87,3 +87,7 @@ Target Integrity が特定する DOM 要素。
 ## 認証機関 (Certifier)
 
 認証制度 (Ceritification System) を運用する主体。Certificate の発行者とは限らない。
+
+## JSON-LD Node Object
+
+[JSON-LD 1.1](https://www.w3.org/TR/json-ld11) で定義される [node object](https://www.w3.org/TR/json-ld11/#dfn-node-object) を指します。JSON の Object とほぼ同じ形式です。
