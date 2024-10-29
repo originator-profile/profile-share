@@ -1,5 +1,6 @@
 import { OpVc } from "./op-vc";
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
+import { OpCipContext } from "./context/op-cip-context";
 
 const subject = {
   type: "object",
@@ -52,28 +53,7 @@ export const WebsiteProfile = {
     {
       type: "object",
       properties: {
-        "@context": {
-          type: "array",
-          minItems: 3,
-          items: [
-            {
-              const: "https://www.w3.org/ns/credentials/v2",
-            },
-            {
-              const: "https://originator-profile.org/ns/credentials/v1",
-            },
-            {
-              type: "object",
-              properties: {
-                "@language": {
-                  type: "string",
-                  title: "言語コード",
-                },
-              },
-              required: ["@language"],
-            },
-          ],
-        },
+        "@context": OpCipContext,
         type: {
           type: "array",
           minItems: 1,

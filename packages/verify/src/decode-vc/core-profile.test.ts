@@ -16,6 +16,7 @@ const coreProfile: CoreProfile = {
   "@context": [
     "https://www.w3.org/ns/credentials/v2",
     "https://originator-profile.org/ns/credentials/v1",
+    { "@language": "ja" },
   ],
   issuer: "dns:example.org",
   credentialSubject: {
