@@ -20,7 +20,7 @@ test("signVc() returns valid Website Profile", async () => {
       "https://originator-profile.org/ns/cip/v1",
       { "@language": "ja" },
     ],
-    type: ["VerifiableCredential"],
+    type: ["VerifiableCredential", "WebsiteProfile"],
     issuer: "dns:example.com",
     credentialSubject: {
       id: "dns:example.com",
