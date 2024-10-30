@@ -22,7 +22,7 @@ const webMediaProfile = {
   issuer: "dns:wmp-issuer.example.org",
   credentialSubject: {
     id: "dns:wmp-holder.example.jp",
-    type: "WebMediaProfileProperties",
+    type: "OnlineBusiness",
     url: "https://www.wmp-holder.example.jp/",
     name: "○○メディア (※開発用サンプル)",
     logo: {

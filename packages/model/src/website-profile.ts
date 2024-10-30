@@ -12,7 +12,7 @@ const subject = {
       format: "uri",
     },
     type: {
-      const: "WebsiteProperties",
+      const: "WebSite",
     },
     title: {
       type: "string",
@@ -45,7 +45,7 @@ const subject = {
 } as const satisfies JSONSchema;
 
 export const WebsiteProfile = {
-  title: "Web Media Profile",
+  title: "Website Profile",
   type: "object",
   additionalProperties: true,
   allOf: [
@@ -56,8 +56,11 @@ export const WebsiteProfile = {
         "@context": OpCipContext,
         type: {
           type: "array",
-          minItems: 1,
-          items: [{ const: "VerifiableCredential" }],
+          minItems: 2,
+          items: [
+            { const: "VerifiableCredential" },
+            { const: "WebsiteProfile" },
+          ],
         },
         credentialSubject: subject,
       },

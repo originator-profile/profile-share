@@ -13,7 +13,7 @@ const VERIFIER_ID = "dns:example.org";
 const issuedAt = new Date();
 const expiredAt = addYears(new Date(), 10);
 const coreProfile: CoreProfile = {
-  type: ["VerifiableCredential"],
+  type: ["VerifiableCredential", "CoreProfile"],
   "@context": [
     "https://www.w3.org/ns/credentials/v2",
     "https://originator-profile.org/ns/credentials/v1",
@@ -22,7 +22,7 @@ const coreProfile: CoreProfile = {
   issuer: "dns:example.org",
   credentialSubject: {
     id: "dns:example.com",
-    type: "CoreProfile",
+    type: "Core",
     jwks: {
       keys: [
         {

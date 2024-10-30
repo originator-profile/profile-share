@@ -24,7 +24,7 @@ test("signVc() returns valid Website Profile", async () => {
     issuer: "dns:example.com",
     credentialSubject: {
       id: "dns:example.com",
-      type: "WebsiteProperties",
+      type: "WebSite",
       title: "<Webサイトのタイトル>",
       description: "<Webサイトの説明>",
       image: {
@@ -58,11 +58,11 @@ describe("WMP", () => {
         "https://originator-profile.org/ns/cip/v1",
         { "@language": "ja" },
       ],
-      type: ["VerifiableCredential"],
+      type: ["VerifiableCredential", "WebMediaProfile"],
       issuer: "dns:wmp-issuer.example.org",
       credentialSubject: {
         id: "dns:wmp-holder.example.jp",
-        type: "WebMediaProfileProperties",
+        type: "OnlineBusiness",
         url: "https://www.wmp-holder.example.jp/",
         name: "○○メディア (※開発用サンプル)",
         logo: {

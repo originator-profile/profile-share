@@ -934,12 +934,13 @@ FLAG DESCRIPTIONS
     "https://originator-profile.org/ns/credentials/v1"
     ],
     "type": [
-    "VerifiableCredential"
+    "VerifiableCredential",
+    "CoreProfile"
     ],
     "issuer": "dns:example.org",
     "credentialSubject": {
     "id": "dns:example.jp",
-    "type": "CoreProfile",
+    "type": "Core",
     "jwks": {
     "keys": [
     {
@@ -966,12 +967,13 @@ FLAG DESCRIPTIONS
     }
     ],
     "type": [
-    "VerifiableCredential"
+    "VerifiableCredential",
+    "WebsiteProfile"
     ],
     "issuer": "dns:example.com",
     "credentialSubject": {
     "id": "dns:example.com",
-    "type": "WebsiteProperties",
+    "type": "WebSite",
     "title": "<Webサイトのタイトル>",
     "description": "<Webサイトの説明>",
     "image": {
@@ -1000,7 +1002,7 @@ FLAG DESCRIPTIONS
     "issuer": "dns:wmp-issuer.example.org",
     "credentialSubject": {
     "id": "dns:wmp-holder.example.jp",
-    "type": "WebMediaProfileProperties",
+    "type": "OnlineBusiness",
     "url": "https://www.wmp-holder.example.jp/",
     "name": "○○メディア (※開発用サンプル)",
     "image": {
