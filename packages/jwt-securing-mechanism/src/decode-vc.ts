@@ -1,7 +1,7 @@
 import { OpVc } from "@originator-profile/model";
 import addFormats from "ajv-formats";
 import Ajv from "ajv/dist/2019";
-import { AnySchema } from "ajv";
+import { AnySchema, ValidationError } from "ajv";
 import * as draft7MetaSchema from "ajv/dist/refs/json-schema-draft-07.json";
 import { decodeJwt, JWTPayload } from "jose";
 import { JOSEError } from "jose/errors";
@@ -48,7 +48,11 @@ export function JwtVcDecoder<T extends OpVc>(validator?: JwtVcValidator) {
     }
     return new JwtVcValidateFailed(
       validator.ajv.errorsText(validator.validateVcPayload.errors),
-      { payload: vc, jwt },
+      {
+        payload: vc,
+        jwt,
+        error: new ValidationError(validator.ajv.errors ?? []),
+      },
     );
   }
 

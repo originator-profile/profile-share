@@ -1,5 +1,10 @@
+import { JWTInvalid, JOSEError } from "jose/errors";
+import { ValidationError } from "ajv";
 import { OpVc } from "@originator-profile/model";
-import { JwtVcDecodingResult, JwtVcVerificationResult } from "./types";
+import {
+  JwtVcDecodingResultPayload,
+  JwtVcVerificationResultPayload,
+} from "./types";
 
 export class JwtVcValidateFailed<T extends OpVc> extends Error {
   static get code() {
@@ -7,11 +12,13 @@ export class JwtVcValidateFailed<T extends OpVc> extends Error {
   }
   readonly code = JwtVcValidateFailed.code;
 
-  result: JwtVcDecodingResult<T>;
-
-  constructor(message: string, result: JwtVcDecodingResult<T>) {
+  constructor(
+    message: string,
+    public result: JwtVcDecodingResultPayload<T> & {
+      error: ValidationError;
+    },
+  ) {
     super(message);
-    this.result = result;
   }
 }
 
@@ -21,14 +28,13 @@ export class JwtVcDecodeFailed<T extends OpVc> extends Error {
   }
   readonly code = JwtVcDecodeFailed.code;
 
-  result: Omit<JwtVcDecodingResult<T>, "payload">;
-
   constructor(
     message: string,
-    result: Omit<JwtVcDecodingResult<T>, "payload">,
+    public result: Omit<JwtVcDecodingResultPayload<T>, "payload"> & {
+      error: JWTInvalid;
+    },
   ) {
     super(message);
-    this.result = result;
   }
 }
 
@@ -38,10 +44,10 @@ export class JwtVcVerifyFailed<T extends OpVc> extends Error {
   }
   readonly code = JwtVcVerifyFailed.code;
 
-  result: JwtVcVerificationResult<T>;
-
-  constructor(message: string, result: JwtVcVerificationResult<T>) {
+  constructor(
+    message: string,
+    public result: JwtVcVerificationResultPayload<T> & { error: JOSEError },
+  ) {
     super(message);
-    this.result = result;
   }
 }

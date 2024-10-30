@@ -1,5 +1,4 @@
 import { JWTPayload, JWTVerifyResult } from "jose";
-import { JWTInvalid, JOSEError } from "jose/errors";
 import { OpVc } from "@originator-profile/model";
 import {
   JwtVcDecodeFailed,
@@ -7,19 +6,24 @@ import {
   JwtVcVerifyFailed,
 } from "./errors";
 
+export type JwtVcDecodingResultPayload<T extends OpVc> = {
+  payload: T & JWTPayload;
+  jwt: string;
+};
+
 export type JwtVcDecodingResult<T extends OpVc> =
-  | ({ payload: T & JWTPayload } & {
-      jwt: string;
-      error?: JWTInvalid;
-    })
+  | JwtVcDecodingResultPayload<T>
   | JwtVcDecodeFailed<T>
   | JwtVcValidateFailed<T>;
 
+export type JwtVcVerificationResultPayload<T extends OpVc> = Omit<
+  JWTVerifyResult<T>,
+  "protectedHeader"
+> & {
+  jwt: string;
+};
+
 export type JwtVcVerificationResult<T extends OpVc> =
-  | (Omit<JWTVerifyResult<T>, "protectedHeader"> & {
-      jwt: string;
-      error?: JOSEError;
-    })
-  | JwtVcDecodeFailed<T>
-  | JwtVcValidateFailed<T>
+  | JwtVcVerificationResultPayload<T>
+  | Extract<JwtVcDecodingResult<T>, Error>
   | JwtVcVerifyFailed<T>;
