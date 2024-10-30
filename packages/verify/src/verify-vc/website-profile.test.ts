@@ -12,7 +12,7 @@ import { generateKey, LocalKeys } from "@originator-profile/cryptography";
 const issuedAt = new Date();
 const expiredAt = addYears(new Date(), 10);
 const websiteProfile: WebsiteProfile = {
-  type: ["VerifiableCredential"],
+  type: ["VerifiableCredential", "WebsiteProfile"],
   "@context": [
     "https://www.w3.org/ns/credentials/v2",
     "https://originator-profile.org/ns/credentials/v1",
@@ -22,7 +22,7 @@ const websiteProfile: WebsiteProfile = {
   issuer: "dns:example.com",
   credentialSubject: {
     id: "dns:example.com",
-    type: "WebsiteProperties",
+    type: "WebSite",
     title: "<Webサイトのタイトル>",
     description: "<Webサイトの説明>",
     image: {

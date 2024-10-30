@@ -12,8 +12,8 @@ export const CoreProfile = {
     type: {
       type: "array",
       additionalItems: false,
-      minItems: 1,
-      items: [{ const: "VerifiableCredential" }],
+      minItems: 2,
+      items: [{ const: "VerifiableCredential" }, { const: "CoreProfile" }],
     },
     issuer: { type: "string" },
     credentialSubject: {
@@ -22,7 +22,7 @@ export const CoreProfile = {
       properties: {
         id: { type: "string", format: "uri" },
         type: {
-          const: "CoreProfile",
+          const: "Core",
         },
         jwks: {
           ...Jwks,

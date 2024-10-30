@@ -6,6 +6,7 @@ export const subject = {
   type: "object",
   additionalProperties: true,
   properties: {
+    type: { const: "OnlineBusiness" },
     url: { title: "Web メディア URL", type: "string", format: "uri" },
     name: { title: "Web メディア名", type: "string" },
     image: {
@@ -66,7 +67,7 @@ export const subject = {
       },
     },
   },
-  required: ["url", "name"],
+  required: ["url", "name", "type"],
 } as const satisfies JSONSchema;
 
 export const WebMediaProfile = {
@@ -78,9 +79,18 @@ export const WebMediaProfile = {
     {
       type: "object",
       properties: {
+        type: {
+          type: "array",
+          minItems: 2,
+          items: [
+            { const: "VerifiableCredential" },
+            { const: "WebMediaProfile" },
+          ],
+          additionalItems: false,
+        },
         credentialSubject: subject,
       },
-      required: ["credentialSubject"],
+      required: ["type", "credentialSubject"],
     },
   ],
   required: ["type", "credentialSubject"],
