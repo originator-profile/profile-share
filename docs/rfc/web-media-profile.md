@@ -44,7 +44,7 @@ REQUIRED. Web メディアの発信者を表す JSON-LD Node Object です。
 - `type`: REQUIRED. `OnlineBusiness` でなければなりません (MUST)。
 - `url`: REQUIRED. 組織の公式ページへの URL でなければなりません (MUST)。
 - `name`: REQUIRED. 組織名です。
-- `logo`: OPTIONAL. 組織のロゴ画像です。 [`image` データ型](./context.md#the-page-datatype) の JSON-LD Node Object でなければなりません (MUST)。
+- `logo`: OPTIONAL. 組織のロゴ画像です。 [`image` データ型](./context.md#the-image-datatype) の JSON-LD Node Object でなければなりません (MUST)。
 - `email`: OPTIONAL. 組織の代表メールアドレスです。
 - `telephone`: OPTIONAL. 組織の代表電話番号です。
 - `contactPoint`: OPTIONAL. お問い合わせページの情報です。 [`page` データ型](./context.md#the-page-datatype) の JSON-LD Node Object でなければなりません (MUST)。

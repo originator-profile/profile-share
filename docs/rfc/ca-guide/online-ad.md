@@ -31,7 +31,7 @@ REQUIRED. 必ず `["VerifiableCredential", "ContentAttestation"]` にしてく�
 - `type`: REQUIRED. `OnlineAd` でなければなりません (MUST)。
 - `name`: REQUIRED. 広告のタイトル。
 - `description`: REQUIRED. 広告の説明（プレーンテキスト）。
-- `image`: OPTIONAL. 広告のサムネイル画像。サムネイル画像があるならば指定するべきです (RECOMMENDED)。 [`image` データ型](../context.md#the-page-datatype) の JSON-LD Node Object でなければなりません (MUST)。
+- `image`: OPTIONAL. 広告のサムネイル画像。サムネイル画像があるならば指定するべきです (RECOMMENDED)。 [`image` データ型](../context.md#the-image-datatype) の JSON-LD Node Object でなければなりません (MUST)。
 - `genre`: OPTIONAL. 文字列。
 
 #### `allowedUrl`

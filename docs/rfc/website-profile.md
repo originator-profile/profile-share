@@ -46,7 +46,7 @@ REQUIRED. Web サイトの名称です。
 
 #### `image`
 
-OPTIONAL. Web サイトのサムネイル画像です。 [`image` データ型](./context.md#the-page-datatype) の JSON-LD Node Object でなければなりません (MUST)。
+OPTIONAL. Web サイトのサムネイル画像です。 [`image` データ型](./context.md#the-image-datatype) の JSON-LD Node Object でなければなりません (MUST)。
 
 #### `description`
 
