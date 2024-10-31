@@ -1,9 +1,6 @@
 import { stringifyWithError } from "@originator-profile/core";
 import { fetchCredentials } from "@originator-profile/presentation";
-import {
-  extractBody,
-  // fetchProfileSet,
-} from "@originator-profile/verify";
+import { extractBody } from "@originator-profile/verify";
 import {
   ContentScriptAllFramesMessageRequest,
   ContentScriptAllFramesMessageResponse,
@@ -22,15 +19,6 @@ async function handleMessageResponse(
         origin: document.location.origin,
       };
     }
-    // case "fetch-profiles": {
-    //   const data = await fetchProfileSet(document);
-    //   return {
-    //     type: "fetch-profiles",
-    //     ok: !(data instanceof Error),
-    //     data: stringify(data),
-    //     origin: document.location.origin,
-    //   };
-    // }
     case "extract-body": {
       const data = await extractBody(
         document.location.href,
