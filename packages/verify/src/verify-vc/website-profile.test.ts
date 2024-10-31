@@ -1,13 +1,13 @@
+import { generateKey, LocalKeys } from "@originator-profile/cryptography";
 import {
-  JwtVcVerifier,
-  signVc,
   JwtVcDecoder,
   JwtVcValidator,
+  JwtVcVerifier,
+  signVc,
 } from "@originator-profile/jwt-securing-mechanism";
 import { WebsiteProfile } from "@originator-profile/model";
 import { addYears, getUnixTime } from "date-fns";
 import { expect, test } from "vitest";
-import { generateKey, LocalKeys } from "@originator-profile/cryptography";
 
 const issuedAt = new Date();
 const expiredAt = addYears(new Date(), 10);
@@ -21,15 +21,15 @@ const websiteProfile: WebsiteProfile = {
   ],
   issuer: "dns:example.com",
   credentialSubject: {
-    id: "dns:example.com",
+    id: "https://media.example.com/",
     type: "WebSite",
-    title: "<Webサイトのタイトル>",
+    name: "<Webサイトのタイトル>",
     description: "<Webサイトの説明>",
     image: {
       id: "https://media.example.com/image.png",
       digestSRI: "sha256-Upwn7gYMuRmJlD1ZivHk876vXHzokXrwXj50VgfnMnY=",
     },
-    origin: "https://media.example.com",
+    url: "https://media.example.com",
   },
 };
 

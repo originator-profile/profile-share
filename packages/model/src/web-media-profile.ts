@@ -1,27 +1,16 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
+import { Image } from "./image";
 import { OpVc } from "./op-vc";
 
 const subject = {
   type: "object",
   additionalProperties: true,
   properties: {
-    id: { title: " WMP 保有組織の OP ID", type: "string", format: "uri" },
+    id: { title: "WMP 保有組織の OP ID", type: "string", format: "uri" },
     type: { const: "OnlineBusiness" },
     url: { title: "Web メディア URL", type: "string", format: "uri" },
     name: { title: "Web メディア名", type: "string" },
-    logo: {
-      type: "object",
-      properties: {
-        id: { title: "画像 URL", type: "string", format: "uri" },
-        digestSRI: {
-          title: "Integrity Metadata",
-          description:
-            "[SRI Section 3.5](https://www.w3.org/TR/SRI/#the-integrity-attribute)",
-          type: "string",
-        },
-      },
-      required: ["id", "digestSRI"],
-    },
+    logo: Image,
     email: { title: "メールアドレス", type: "string", format: "email" },
     telephone: { title: "電話番号", type: "string" },
     contactPoint: {
