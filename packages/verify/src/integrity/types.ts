@@ -1,7 +1,6 @@
-export type DigestSriContent = {
-  id: string;
-  digestSRI: string;
-};
+import type { Image } from "@originator-profile/model";
+
+export type DigestSriContent = Image;
 
 export type ContentFetcher = (
   elements: ReadonlyArray<HTMLElement>,

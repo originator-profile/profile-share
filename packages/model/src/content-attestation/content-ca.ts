@@ -1,8 +1,9 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
 import { AllowedUrl } from "../allowed-url";
 import { Category } from "../category";
-import { ContentAttestation } from "./content-attestation";
 import { OpCipContext } from "../context/op-cip-context";
+import { Image } from "../image";
+import { ContentAttestation } from "./content-attestation";
 
 const subject = {
   type: "object",
@@ -32,19 +33,7 @@ const subject = {
       description:
         "コンテンツの流通における1次ソース URL がある場合は記載を推奨 (RECOMMENDED)。",
     },
-    image: {
-      type: "object",
-      title: "画像",
-      properties: {
-        id: { type: "string", format: "uri" },
-        digestSRI: {
-          type: "string",
-          title: "Integrity Metadata",
-          description: "Subresource Integrity (SRI) digest",
-        },
-      },
-      required: ["id", "digestSRI"],
-    },
+    image: Image,
     datePublished: {
       title: "公開日",
       type: "string",

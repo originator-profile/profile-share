@@ -1,4 +1,5 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
+import { Image } from "../image";
 import { CertificationSystem } from "./cert-system";
 
 export const CertificateProperties = {
@@ -8,19 +9,7 @@ export const CertificateProperties = {
     id: { type: "string", title: "subject の OP ID", format: "uri" },
     type: { type: "string", const: "CertificateProperties" },
     description: { type: "string", title: "説明" },
-    image: {
-      type: "object",
-      title: "画像",
-      properties: {
-        id: { type: "string", format: "uri" },
-        digestSRI: {
-          type: "string",
-          title: "Integrity Metadata",
-          description: "Subresource Integrity (SRI) digest",
-        },
-      },
-      required: ["id", "digestSRI"],
-    },
+    image: Image,
     certifier: {
       type: "string",
       title: "認証機関名",

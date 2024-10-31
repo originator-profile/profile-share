@@ -1,6 +1,7 @@
-import { OpVc } from "./op-vc";
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
 import { OpCipContext } from "./context/op-cip-context";
+import { Image } from "./image";
+import { OpVc } from "./op-vc";
 
 const subject = {
   type: "object",
@@ -8,40 +9,34 @@ const subject = {
   properties: {
     id: {
       type: "string",
-      title: "Web サイト保有者の OP ID",
+      title: "Web サイトの URL",
       format: "uri",
     },
     type: {
       const: "WebSite",
     },
-    title: {
+    name: {
       type: "string",
-      description: "コンテンツのタイトル。",
+      title: "Web サイトの名称",
     },
+    image: Image,
     description: {
       type: "string",
-      description: "コンテンツの説明（プレーンテキスト）。",
+      title: "Web サイトの説明",
     },
-    image: {
-      type: "object",
-      title: "画像",
-      properties: {
-        id: { type: "string", format: "uri" },
-        digestSRI: {
-          type: "string",
-          title: "Integrity Metadata",
-          description: "Subresource Integrity (SRI) digest",
-        },
-      },
-      required: ["id", "digestSRI"],
-    },
-    origin: {
-      type: "string",
-      description:
+    url: {
+      title:
         "[Origin](https://www.rfc-editor.org/rfc/rfc6454) を [ASCII Serialization](https://www.rfc-editor.org/rfc/rfc6454#section-6.2) した文字列です。",
+      anyOf: [
+        { type: "string" },
+        {
+          type: "array",
+          items: { type: "string" },
+        },
+      ],
     },
   },
-  required: ["id", "type", "title", "description", "origin"],
+  required: ["id", "type", "name", "url"],
 } as const satisfies JSONSchema;
 
 export const WebsiteProfile = {
