@@ -1,15 +1,15 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
 import { OpVc } from "./op-vc";
 
-export const subject = {
-  title: "Web Media Profile Properties",
+const subject = {
   type: "object",
   additionalProperties: true,
   properties: {
+    id: { title: " WMP 保有組織の OP ID", type: "string", format: "uri" },
     type: { const: "OnlineBusiness" },
     url: { title: "Web メディア URL", type: "string", format: "uri" },
     name: { title: "Web メディア名", type: "string" },
-    image: {
+    logo: {
       type: "object",
       properties: {
         id: { title: "画像 URL", type: "string", format: "uri" },
@@ -20,10 +20,11 @@ export const subject = {
           type: "string",
         },
       },
+      required: ["id", "digestSRI"],
     },
     email: { title: "メールアドレス", type: "string", format: "email" },
     telephone: { title: "電話番号", type: "string" },
-    contactPage: {
+    contactPoint: {
       type: "object",
       properties: {
         type: { const: "WebPage" },
@@ -32,20 +33,7 @@ export const subject = {
       },
       required: ["type", "id", "name"],
     },
-    privacyPolicyPage: {
-      type: "object",
-      properties: {
-        type: { const: "WebPage" },
-        id: {
-          title: "プライバシーポリシーページ URL",
-          type: "string",
-          format: "uri",
-        },
-        name: { title: "プライバシーポリシーページ表示名", type: "string" },
-      },
-      required: ["type", "id", "name"],
-    },
-    publishingPrinciplePage: {
+    informationTransmissionPolicy: {
       type: "object",
       properties: {
         type: { const: "WebPage" },
@@ -58,6 +46,19 @@ export const subject = {
       },
       required: ["type", "id", "name"],
     },
+    privacyPolicy: {
+      type: "object",
+      properties: {
+        type: { const: "WebPage" },
+        id: {
+          title: "プライバシーポリシーページ URL",
+          type: "string",
+          format: "uri",
+        },
+        name: { title: "プライバシーポリシーページ表示名", type: "string" },
+      },
+      required: ["type", "id", "name"],
+    },
     description: {
       type: "object",
       additionalProperties: true,
@@ -67,7 +68,7 @@ export const subject = {
       },
     },
   },
-  required: ["url", "name", "type"],
+  required: ["id", "type", "url", "name"],
 } as const satisfies JSONSchema;
 
 export const WebMediaProfile = {
