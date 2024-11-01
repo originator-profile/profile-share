@@ -72,17 +72,14 @@ describe("WMP", () => {
         email: "contact@wmp-holder.example.jp",
         telephone: "0000000000",
         contactPoint: {
-          type: "WebPage",
           id: "https://wmp-holder.example.jp/contact",
           name: "お問い合わせ",
         },
         privacyPolicy: {
-          type: "WebPage",
           id: "https://wmp-holder.example.jp/privacy",
           name: "プライバシーポリシー",
         },
         informationTransmissionPolicy: {
-          type: "WebPage",
           id: "https://wmp-holder.example.jp/statement",
           name: "新聞倫理綱領",
         },
