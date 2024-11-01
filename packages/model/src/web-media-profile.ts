@@ -16,16 +16,14 @@ const subject = {
     contactPoint: {
       type: "object",
       properties: {
-        type: { const: "WebPage" },
         id: { title: "連絡先ページ URL", type: "string", format: "uri" },
         name: { title: "連絡先ページ表示名", type: "string" },
       },
-      required: ["type", "id", "name"],
+      required: ["id", "name"],
     },
     informationTransmissionPolicy: {
       type: "object",
       properties: {
-        type: { const: "WebPage" },
         id: {
           title: "編集ガイドラインページ URL",
           type: "string",
@@ -33,12 +31,11 @@ const subject = {
         },
         name: { title: "編集ガイドラインページ表示名", type: "string" },
       },
-      required: ["type", "id", "name"],
+      required: ["id", "name"],
     },
     privacyPolicy: {
       type: "object",
       properties: {
-        type: { const: "WebPage" },
         id: {
           title: "プライバシーポリシーページ URL",
           type: "string",
@@ -46,7 +43,7 @@ const subject = {
         },
         name: { title: "プライバシーポリシーページ表示名", type: "string" },
       },
-      required: ["type", "id", "name"],
+      required: ["id", "name"],
     },
     description: {
       type: "object",
