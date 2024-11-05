@@ -14,7 +14,7 @@ export const Image = {
       description: "Subresource Integrity (SRI) digest",
     },
   },
-  required: ["id", "digestSRI"],
+  required: ["id"],
 } as const satisfies JSONSchema;
 
 export type Image = FromSchema<typeof Image>;
