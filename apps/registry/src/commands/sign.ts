@@ -1,24 +1,17 @@
 import { Command, Flags } from "@oclif/core";
-import {
+import type {
   CoreProfile,
+  Image,
   WebMediaProfile,
   WebsiteProfile,
 } from "@originator-profile/model";
-import { calcIntegrity } from "@originator-profile/registry-service/src/utils/integrity";
 import { signVc } from "@originator-profile/sign";
 import { addYears } from "date-fns";
 import fs from "node:fs/promises";
+import { createIntegrityMetadata } from "websri";
 import { expirationDate, opId, privateKey } from "../flags";
 
 type MinVC = CoreProfile | WebMediaProfile | WebsiteProfile;
-type ImageVC = WebMediaProfile | WebsiteProfile;
-
-function hasProperty<T extends object, K extends string>(
-  obj: T,
-  prop: K,
-): obj is T & Record<K, unknown> {
-  return prop in obj;
-}
 
 function isValidVc(vc: unknown): vc is MinVC {
   /* 完全な整合性まではチェックしないが、credentialSubject はあるはず */
@@ -31,53 +24,28 @@ function isValidVc(vc: unknown): vc is MinVC {
   );
 }
 
-function hasImage(vc: MinVC): vc is ImageVC {
-  return hasProperty(vc.credentialSubject, "image");
-}
+async function fetchAndSetDigestSri<
+  T extends Record<string, unknown>,
+  Key extends "logo" | "image",
+>(obj: T, key: Key): Promise<void> {
+  if (key in obj && typeof (obj[key] as Image).digestSRI !== "string") {
+    const res = await fetch((obj[key] as Image).id);
+    const data = await res.arrayBuffer();
+    const meta = await createIntegrityMetadata("sha256", data);
 
-function hasDigestSRI(vc: ImageVC) {
-  const image = vc.credentialSubject.image;
-  return (
-    typeof image === "object" &&
-    hasProperty(image, "id") &&
-    image.id !== undefined &&
-    hasProperty(image, "digestSRI") &&
-    image.digestSRI !== undefined
-  );
+    (obj[key] as Image).digestSRI = meta.toString();
+  }
 }
 
 async function addDigestSri(vc: unknown) {
-  if (!isValidVc(vc)) {
-    throw new Error("Invalid VC");
-  }
+  if (!isValidVc(vc)) throw new Error("Invalid VC");
 
-  /* image がない場合かすでに digestSRI をもっていればそのまま */
-  if (!hasImage(vc) || hasDigestSRI(vc)) {
-    return vc;
-  }
+  const credentialSubject = vc.credentialSubject;
 
-  let id: string;
-  if (typeof vc.credentialSubject.image === "string") {
-    id = vc.credentialSubject.image;
-  } else if (
-    typeof vc.credentialSubject.image === "object" &&
-    hasProperty(vc.credentialSubject.image, "id") &&
-    typeof vc.credentialSubject.image.id === "string"
-  ) {
-    id = vc.credentialSubject.image.id;
-  } else {
-    /* id がみつからない */
-    throw new Error("Invalid image");
-  }
-  const digestSRI = await calcIntegrity(id);
-  return Object.assign(vc, {
-    credentialSubject: {
-      image: {
-        id,
-        digestSRI,
-      },
-    },
-  });
+  await fetchAndSetDigestSri(credentialSubject, "logo");
+  await fetchAndSetDigestSri(credentialSubject, "image");
+
+  return Object.assign(vc, { credentialSubject });
 }
 
 const exampleCoreProfile = {
@@ -115,15 +83,15 @@ const exampleWebsiteProfile = {
   type: ["VerifiableCredential", "WebsiteProfile"],
   issuer: "dns:example.com",
   credentialSubject: {
-    id: "dns:example.com",
+    id: "https://media.example.com/",
     type: "WebSite",
-    title: "<Webサイトのタイトル>",
+    name: "<Webサイトのタイトル>",
     description: "<Webサイトの説明>",
     image: {
       id: "https://media.example.com/image.png",
       digestSRI: "sha256-Upwn7gYMuRmJlD1ZivHk876vXHzokXrwXj50VgfnMnY=",
     },
-    origin: "https://media.example.com",
+    url: "https://media.example.com",
   },
 } satisfies WebsiteProfile;
 
@@ -141,7 +109,7 @@ const exampleWebMediaProfile = {
     type: "OnlineBusiness",
     url: "https://www.wmp-holder.example.jp/",
     name: "○○メディア (※開発用サンプル)",
-    image: {
+    logo: {
       id: "https://www.wmp-holder.example.jp/image.png",
       digestSRI: "sha256-Upwn7gYMuRmJlD1ZivHk876vXHzokXrwXj50VgfnMnY=",
     },

@@ -1,21 +1,20 @@
-import { Prisma } from "@prisma/client";
-import flush from "just-flush";
-import { addYears, fromUnixTime, getUnixTime } from "date-fns";
-import { NotFoundError } from "http-errors-enhanced";
 import {
   Jwk,
-  OrganizationMetadata,
-  OriginatorProfile,
   Op,
-  OpVerifier,
   OpCertifier,
   OpHolder,
+  OpVerifier,
+  OrganizationMetadata,
+  OriginatorProfile,
 } from "@originator-profile/model";
+import { getClient } from "@originator-profile/registry-db";
 import { signOp, signSdJwtOp } from "@originator-profile/sign";
+import { Prisma } from "@prisma/client";
+import { addYears, fromUnixTime, getUnixTime } from "date-fns";
+import { NotFoundError } from "http-errors-enhanced";
+import flush from "just-flush";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
-import { calcIntegrity } from "./utils/integrity";
-import { getClient } from "@originator-profile/registry-db";
 
 type Options = {
   validator: ValidatorService;
@@ -25,20 +24,6 @@ type Options = {
 type CertifierId = string;
 type AccountId = string;
 type OpId = string;
-
-/**
- * URLに .well-known/jwt-vc-issuer を挿入する
- * see https://www.ietf.org/archive/id/draft-ietf-oauth-sd-jwt-vc-04.html#name-jwt-vc-issuer-metadata
- * @param urlString 挿入対象のURL
- * @return .well-known/jwt-vc-issuer 挿入後の文字列
- */
-function insertJwtVcIssuerPath(urlString: string) {
-  const url = new URL(urlString);
-  url.pathname =
-    ".well-known/jwt-vc-issuer" +
-    (url.pathname && url.pathname !== "/" ? url.pathname : "");
-  return url.toString();
-}
 
 export const CertificateService = ({ account, validator }: Options) => ({
   /**
@@ -175,7 +160,8 @@ export const CertificateService = ({ account, validator }: Options) => ({
        */
       "vct#integrity": "sha256-w+4TN1Ad3s6wksEJtaJncFo8+CBg3i31nCuAntyZ70o=",
       iss,
-      "iss#integrity": await calcIntegrity(insertJwtVcIssuerPath(iss)),
+      // https://github.com/originator-profile/profile/issues/1699
+      "iss#integrity": "廃止予定",
       sub: holder.domainName,
       locale: "ja-JP",
       issuer: toAccountModel(issuer),
