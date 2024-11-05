@@ -69,7 +69,7 @@ export function JwtVcVerifier<T extends OpVc>(
         error: verified,
       });
     }
-    return { ...verified, payload: decoded.payload, jwt };
+    return { payload: decoded.payload, jwt };
   }
 
   return verify;

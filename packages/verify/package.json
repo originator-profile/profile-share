@@ -25,6 +25,7 @@
     "happy-dom": "^15.7.4",
     "jose": "^5.9.3",
     "jsonld": "^8.3.2",
+    "just-diff-apply": "^5.5.0",
     "just-typeof": "^3.2.0",
     "msw": "^2.4.9",
     "playwright": "1.44.1",
