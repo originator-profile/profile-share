@@ -1,7 +1,7 @@
 import { generateKey } from "@originator-profile/cryptography";
 import {
   AdvertisementCA,
-  ContentCA,
+  ArticleCA,
   WebMediaProfile,
   WebsiteProfile,
 } from "@originator-profile/model";
@@ -103,10 +103,10 @@ describe("WMP", () => {
   });
 });
 describe("CA", () => {
-  test("Content CA", async () => {
+  test("Advertisement CA", async () => {
     const issuedAt = new Date();
     const expiredAt = addYears(new Date(), 10);
-    const ca: ContentCA = {
+    const ca: AdvertisementCA = {
       "@context": [
         "https://www.w3.org/ns/credentials/v2",
         "https://originator-profile.org/ns/credentials/v1",
@@ -117,36 +117,19 @@ describe("CA", () => {
       issuer: "dns:example.com",
       credentialSubject: {
         id: "urn:uuid:78550fa7-f846-4e0f-ad5c-8d34461cb95b",
-        type: "ContentProperties",
-        title: "<Webページのタイトル>",
+        type: "OnlineAd",
+        title: "<広告のタイトル>",
+        description: "<広告の説明>",
         image: {
-          id: "https://media.example.com/image.png",
-          digestSRI: "sha256-Upwn7gYMuRmJlD1ZivHk876vXHzokXrwXj50VgfnMnY=",
+          id: "https://ad.example.com/static/thumbnail.png",
+          digestSRI: "sha256-...",
         },
-        source: "https://media2.example.com/articles/1",
-        description: "<Webページの説明>",
-        author: ["山田花子"],
-        editor: ["山田太郎"],
-        datePublished: "2023-07-04T19:14:00Z",
-        dateModified: "2023-07-04T19:14:00Z",
-        category: [
-          {
-            cat: "IAB1",
-            cattax: 1,
-            name: "Arts & Entertainment",
-          },
-        ],
       },
-      allowedUrl: ["https://media.example.com/articles/2024-06-30"],
+      allowedOrigin: ["https://ad.example.com"],
       target: [
         {
-          type: "VisibleTextTargetIntegrity",
-          cssSelector: "<CSS セレクター>",
-          integrity: "sha256-GYC9PqfIw0qWahU6OlReQfuurCI5VLJplslVdF7M95U=",
-        },
-        {
           type: "ExternalResourceTargetIntegrity",
-          integrity: "sha256-+M3dMZXeSIwAP8BsIAwxn5ofFWUtaoSoDfB+/J8uXMo=",
+          integrity: "sha256-rLDPDYArkNcCvnq0h4IgR7MVfJIOCCrx4z+w+uywc64=",
         },
       ],
     };
@@ -163,10 +146,10 @@ describe("CA", () => {
     });
   });
 
-  test("Advertisement CA", async () => {
+  test("Article CA", async () => {
     const issuedAt = new Date();
     const expiredAt = addYears(new Date(), 10);
-    const ca: AdvertisementCA = {
+    const ca: ArticleCA = {
       "@context": [
         "https://www.w3.org/ns/credentials/v2",
         "https://originator-profile.org/ns/credentials/v1",
@@ -177,19 +160,29 @@ describe("CA", () => {
       issuer: "dns:example.com",
       credentialSubject: {
         id: "urn:uuid:78550fa7-f846-4e0f-ad5c-8d34461cb95b",
-        type: "AdvertisementProperties",
-        title: "<広告のタイトル>",
-        description: "<広告の説明>",
+        type: "Article",
+        headline: "<Webページのタイトル>",
         image: {
-          id: "https://ad.example.com/static/thumbnail.png",
-          digestSRI: "sha256-...",
+          id: "https://media.example.com/image.png",
+          digestSRI: "sha256-Upwn7gYMuRmJlD1ZivHk876vXHzokXrwXj50VgfnMnY=",
         },
+        description: "<Webページの説明>",
+        author: ["山田花子"],
+        editor: ["山田太郎"],
+        datePublished: "2023-07-04T19:14:00Z",
+        dateModified: "2023-07-04T19:14:00Z",
+        genre: "スポーツ",
       },
-      allowedOrigin: ["https://ad.example.com"],
+      allowedUrl: ["https://media.example.com/articles/2024-06-30"],
       target: [
         {
+          type: "VisibleTextTargetIntegrity",
+          cssSelector: "<CSS セレクター>",
+          integrity: "sha256-GYC9PqfIw0qWahU6OlReQfuurCI5VLJplslVdF7M95U=",
+        },
+        {
           type: "ExternalResourceTargetIntegrity",
-          integrity: "sha256-rLDPDYArkNcCvnq0h4IgR7MVfJIOCCrx4z+w+uywc64=",
+          integrity: "sha256-+M3dMZXeSIwAP8BsIAwxn5ofFWUtaoSoDfB+/J8uXMo=",
         },
       ],
     };

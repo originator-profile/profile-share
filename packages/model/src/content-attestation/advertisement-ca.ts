@@ -17,7 +17,7 @@ const subject = {
     },
     type: {
       type: "string",
-      const: "AdvertisementProperties",
+      const: "OnlineAd",
     },
     title: {
       type: "string",

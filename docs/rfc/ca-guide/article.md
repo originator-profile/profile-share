@@ -6,7 +6,7 @@
 
 - Content Attestation (CA)
 
-## Content のデータモデル
+## Article のデータモデル
 
 [Content Attestation](../ca.md) に従います。
 

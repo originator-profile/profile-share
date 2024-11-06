@@ -70,13 +70,15 @@ export const JapaneseExistenceCertificate = {
         credentialSubject: JapaneseExistenceCertificateProperties,
         validFrom: {
           type: "string",
-          format: "date-time",
           title: "有効開始日時",
+          description:
+            "http://www.w3.org/2001/XMLSchema#dateTime 形式の有効開始日時",
         },
         validUntil: {
           type: "string",
-          format: "date-time",
           title: "有効終了日時",
+          description:
+            "http://www.w3.org/2001/XMLSchema#dateTime 形式の有効終了日時",
         },
       },
       required: ["@context", "type", "issuer", "credentialSubject"],
