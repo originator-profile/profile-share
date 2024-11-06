@@ -8,14 +8,15 @@
     "lint": "eslint --fix ."
   },
   "devDependencies": {
-    "@originator-profile/model": "workspace:*",
-    "@originator-profile/jwt-securing-mechanism": "workspace:*",
     "@originator-profile/cryptography": "workspace:*",
+    "@originator-profile/jwt-securing-mechanism": "workspace:*",
+    "@originator-profile/model": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
     "date-fns": "^4.1.0",
     "eslint": "^9.12.0",
     "eslint-config-originator-profile": "workspace:*",
     "jose": "^5.9.3",
-    "vitest": "^2.1.2"
+    "vitest": "^2.1.2",
+    "websri": "^0.1.0"
   }
 }

@@ -1,14 +1,14 @@
 import { Command, Flags } from "@oclif/core";
+import { signVc } from "@originator-profile/jwt-securing-mechanism";
 import type {
   CoreProfile,
   Image,
   WebMediaProfile,
   WebsiteProfile,
 } from "@originator-profile/model";
-import { signVc } from "@originator-profile/sign";
+import { createDigestSri } from "@originator-profile/sign";
 import { addYears } from "date-fns";
 import fs from "node:fs/promises";
-import { createIntegrityMetadata } from "websri";
 import { expirationDate, opId, privateKey } from "../flags";
 
 type MinVC = CoreProfile | WebMediaProfile | WebsiteProfile;
@@ -29,11 +29,10 @@ async function fetchAndSetDigestSri<
   Key extends "logo" | "image",
 >(obj: T, key: Key): Promise<void> {
   if (key in obj && typeof (obj[key] as Image).digestSRI !== "string") {
-    const res = await fetch((obj[key] as Image).id);
-    const data = await res.arrayBuffer();
-    const meta = await createIntegrityMetadata("sha256", data);
-
-    (obj[key] as Image).digestSRI = meta.toString();
+    Object.assign(
+      obj[key] as Image,
+      await createDigestSri("sha256", obj[key] as Image),
+    );
   }
 }
 
@@ -52,7 +51,6 @@ const exampleCoreProfile = {
   "@context": [
     "https://www.w3.org/ns/credentials/v2",
     "https://originator-profile.org/ns/credentials/v1",
-    { "@language": "ja" },
   ],
   type: ["VerifiableCredential", "CoreProfile"],
   issuer: "dns:example.org",

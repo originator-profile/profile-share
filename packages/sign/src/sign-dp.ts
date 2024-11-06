@@ -5,6 +5,7 @@ import { Dp, Jwk, JwtDpPayload } from "@originator-profile/model";
 
 /**
  * DP への署名
+ * @deprecated
  * @param dp DP オブジェクト
  * @param privateKey プライベート鍵
  * @param alg Algorithm identifier

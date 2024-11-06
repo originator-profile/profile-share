@@ -972,15 +972,15 @@ FLAG DESCRIPTIONS
     ],
     "issuer": "dns:example.com",
     "credentialSubject": {
-    "id": "dns:example.com",
+    "id": "https://media.example.com/",
     "type": "WebSite",
-    "title": "<Webサイトのタイトル>",
+    "name": "<Webサイトのタイトル>",
     "description": "<Webサイトの説明>",
     "image": {
     "id": "https://media.example.com/image.png",
     "digestSRI": "sha256-Upwn7gYMuRmJlD1ZivHk876vXHzokXrwXj50VgfnMnY="
     },
-    "origin": "https://media.example.com"
+    "url": "https://media.example.com"
     }
     }
 
@@ -1005,7 +1005,7 @@ FLAG DESCRIPTIONS
     "type": "OnlineBusiness",
     "url": "https://www.wmp-holder.example.jp/",
     "name": "○○メディア (※開発用サンプル)",
-    "image": {
+    "logo": {
     "id": "https://www.wmp-holder.example.jp/image.png",
     "digestSRI": "sha256-Upwn7gYMuRmJlD1ZivHk876vXHzokXrwXj50VgfnMnY="
     },

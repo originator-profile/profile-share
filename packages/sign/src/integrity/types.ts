@@ -8,6 +8,6 @@ export type ContentFetcher = (
 
 export type ElementSelector = (params: {
   cssSelector?: string;
-  integrity: string;
+  integrity?: string;
   document: Document;
 }) => ReadonlyArray<HTMLElement>;

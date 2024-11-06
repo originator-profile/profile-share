@@ -70,6 +70,7 @@
     "@fastify/swagger": "^8.15.0",
     "@originator-profile/core": "workspace:*",
     "@originator-profile/cryptography": "workspace:*",
+    "@originator-profile/jwt-securing-mechanism": "workspace:*",
     "@originator-profile/model": "workspace:*",
     "@originator-profile/registry-db": "workspace:*",
     "@originator-profile/registry-service": "workspace:*",
@@ -110,8 +111,7 @@
     "tsup": "^8.3.0",
     "typescript": "^5.6.2",
     "uuid": "^10.0.0",
-    "vitest": "^2.1.2",
-    "websri": "^0.1.0"
+    "vitest": "^2.1.2"
   },
   "oclif": {
     "bin": "profile-registry",
