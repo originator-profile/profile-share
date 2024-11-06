@@ -4,6 +4,7 @@ import { Jwk } from "@originator-profile/model";
 
 /**
  * 対象のテキストへの署名
+ * @deprecated
  * @param body 対象のテキスト
  * @param privateKey プライベート鍵
  * @param alg Algorithm identifier

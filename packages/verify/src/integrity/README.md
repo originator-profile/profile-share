@@ -2,8 +2,6 @@
 
 リソースの整合性の検証
 
-[types.ts](./types.ts)
-
 ## verifyIntegrity
 
 Target Integrity の検証

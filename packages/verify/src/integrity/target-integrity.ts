@@ -1,58 +1,15 @@
 import type { Target } from "@originator-profile/model";
+import {
+  fetchExternalResource,
+  fetchHtmlContent,
+  fetchTextContent,
+  fetchVisibleTextContent,
+  selectByCss,
+  selectByIntegrity,
+  type ContentFetcher,
+  type ElementSelector,
+} from "@originator-profile/sign";
 import { createIntegrityMetadata, IntegrityMetadata } from "websri";
-import type { ContentFetcher, ElementSelector } from "./types";
-
-/** element.outerHTML and join("") */
-export const fetchHtmlContent: ContentFetcher = async (elements) => {
-  const text: string = elements
-    .map((element): string => element.outerHTML)
-    .join("");
-
-  return [new Response(text)];
-};
-
-/** element.textContent and join("") */
-export const fetchTextContent: ContentFetcher = async (elements) => {
-  const text: string = elements
-    .map((element): string => element.textContent ?? "")
-    .join("");
-
-  return [new Response(text)];
-};
-
-/** element.innerText and join("") */
-export const fetchVisibleTextContent: ContentFetcher = async (elements) => {
-  const text: string = elements
-    .map((element): string => element.innerText)
-    .join("");
-
-  return [new Response(text)];
-};
-
-/** await fetch(element.src) */
-export const fetchExternalResource: ContentFetcher = async (
-  elements,
-  fetcher = fetch,
-) => {
-  return await Promise.all(
-    elements.map(async (element: unknown) => {
-      return await fetcher((element as { src: string }).src);
-    }),
-  );
-};
-
-export const selectByCss: ElementSelector = (params) => {
-  return Array.from(
-    params.document.querySelectorAll(params.cssSelector as string),
-  );
-};
-
-export const selectByIntegrity: ElementSelector = (params) => {
-  return selectByCss({
-    ...params,
-    cssSelector: `[integrity=${JSON.stringify(String(params.integrity))}]`,
-  });
-};
 
 class IntegrityVerifier {
   constructor(

@@ -1,7 +1,7 @@
+import { DigestSriContent } from "@originator-profile/sign";
 import { expect, test } from "vitest";
 import { createIntegrityMetadata } from "websri";
 import { verifyDigestSri } from "./digest-sri";
-import { DigestSriContent } from "./types";
 
 async function fetcher(): Promise<Response> {
   return new Response("Hello, World!");

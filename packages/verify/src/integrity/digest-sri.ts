@@ -1,5 +1,8 @@
-import { createIntegrityMetadata, IntegrityMetadata } from "websri";
-import type { DigestSriContent } from "./types";
+import {
+  createDigestSri,
+  type DigestSriContent,
+} from "@originator-profile/sign";
+import { IntegrityMetadata } from "websri";
 
 /**
  * `digestSRI` の検証
@@ -22,9 +25,7 @@ export async function verifyDigestSri(
 
   if (!digestSri.alg) return false;
 
-  const res = await fetcher(content.id);
-  const data = await res.arrayBuffer();
-  const meta = await createIntegrityMetadata(digestSri.alg, data);
+  const { digestSRI } = await createDigestSri(digestSri.alg, content, fetcher);
 
-  return meta.match(digestSri);
+  return digestSri.match(digestSRI);
 }
