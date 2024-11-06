@@ -1,14 +1,14 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
 import { Jwks } from "./jwks";
 import { OpVc } from "./op-vc";
-import { OpContext } from "./context/op-context";
+import { CpContext } from "./context/cp-context";
 
 export const CoreProfile = {
   type: "object",
   additionalProperties: false,
   properties: {
     ...OpVc.properties,
-    "@context": OpContext,
+    "@context": CpContext,
     type: {
       type: "array",
       additionalItems: false,
