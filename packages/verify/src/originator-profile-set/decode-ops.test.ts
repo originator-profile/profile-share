@@ -1,21 +1,21 @@
-import { describe, test, expect } from "vitest";
-import { addYears, getUnixTime } from "date-fns";
-import { diffApply } from "just-diff-apply";
 import { generateKey } from "@originator-profile/cryptography";
 import {
-  OriginatorProfileSet,
-  CoreProfile,
+  JwtVcDecodeFailed,
+  signVc,
+} from "@originator-profile/jwt-securing-mechanism";
+import {
   Certificate,
-  WebMediaProfile,
+  CoreProfile,
   OpVc,
+  OriginatorProfileSet,
+  WebMediaProfile,
 } from "@originator-profile/model";
 import { signCp } from "@originator-profile/sign";
-import {
-  signVc,
-  JwtVcDecodeFailed,
-} from "@originator-profile/jwt-securing-mechanism";
+import { addYears, getUnixTime } from "date-fns";
+import { diffApply } from "just-diff-apply";
+import { describe, expect, test } from "vitest";
 import { decodeOps } from "./decode-ops";
-import { OpsInvalid, OpsVerifyFailed, OpInvalid } from "./errors";
+import { OpInvalid, OpsInvalid, OpsVerifyFailed } from "./errors";
 
 const issuedAt = new Date();
 const expiredAt = addYears(new Date(), 10);
@@ -45,9 +45,6 @@ const cp: CoreProfile = {
   "@context": [
     "https://www.w3.org/ns/credentials/v2",
     "https://originator-profile.org/ns/credentials/v1",
-    {
-      "@language": "ja",
-    },
   ],
   type: ["VerifiableCredential", "CoreProfile"],
   issuer: opId.authority,
