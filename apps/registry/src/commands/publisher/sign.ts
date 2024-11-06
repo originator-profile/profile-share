@@ -135,44 +135,49 @@ $ <%= config.bin %> <%= command.id %> \\
       ? new Date(flags["issued-at"])
       : new Date();
     const expiredAt = flags["expired-at"] ?? addYears(new Date(), 1);
-    const dp = {
-      type: "dp",
-      issuer: domainName,
-      subject: input.id ?? crypto.randomUUID(),
-      issuedAt: issuedAt.toISOString(),
-      expiredAt: expiredAt.toISOString(),
-      item: [
-        {
-          type: "website",
-          ...flush({
-            url: input.url,
-            title: input.title,
-            image: input.image,
-            description: input.description,
-            "https://schema.org/author": input.author,
-            category: input.categories?.map((category) => ({
-              cat: category.cat,
-              cattax: category.cattax,
-              name: category.name,
-            })),
-            "https://schema.org/editor": input.editor,
-            "https://schema.org/datePublished": input.datePublished,
-            "https://schema.org/dateModified": input.dateModified,
-          }),
-        },
-        ...(flags["site-profile"]
-          ? []
-          : [
-              {
-                type: input.bodyFormat as "visibleText" | "text" | "html",
-                url: input.url,
-                location: input.location,
-                proof: { jws: proofJws },
-              },
-            ]),
-      ],
-      allowedOrigins,
-    } satisfies Dp;
+
+    const createDp = () => {
+      return {
+        type: "dp",
+        issuer: domainName,
+        subject: input.id ?? crypto.randomUUID(),
+        issuedAt: issuedAt.toISOString(),
+        expiredAt: expiredAt.toISOString(),
+        item: [
+          {
+            type: "website",
+            ...flush({
+              url: input.url,
+              title: input.title,
+              image: input.image,
+              description: input.description,
+              "https://schema.org/author": input.author,
+              category: input.categories?.map((category) => ({
+                cat: category.cat,
+                cattax: category.cattax,
+                name: category.name,
+              })),
+              "https://schema.org/editor": input.editor,
+              "https://schema.org/datePublished": input.datePublished,
+              "https://schema.org/dateModified": input.dateModified,
+            }),
+          },
+          ...(flags["site-profile"]
+            ? []
+            : [
+                {
+                  type: input.bodyFormat as "visibleText" | "text" | "html",
+                  url: input.url,
+                  location: input.location,
+                  proof: { jws: proofJws },
+                },
+              ]),
+        ],
+        allowedOrigins,
+      } satisfies Dp;
+    };
+
+    const dp = createDp();
     const sdp = await signDp(dp, privateKey);
     this.log(sdp);
   }

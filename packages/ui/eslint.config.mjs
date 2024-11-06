@@ -11,11 +11,4 @@ export default [
       ],
     },
   },
-  {
-    // TODO: 暫定的な変更。コンポーネント更新時には警告がでないようにしたうえでerrorに戻す
-    files: ["src/components/CredentialDetail.tsx"],
-    rules: {
-      complexity: ["warn", 10],
-    },
-  },
 ];

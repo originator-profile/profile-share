@@ -160,9 +160,9 @@ function CredentialForm({
     month: "2-digit",
     day: "2-digit",
   } as const;
-  const methods = useForm<FormData>({
-    mode: "onBlur",
-    defaultValues: {
+
+  function getDefaultValues() {
+    return {
       ...data,
       certifier: data?.certifier.id,
       verifier: data?.verifier.id,
@@ -176,7 +176,12 @@ function CredentialForm({
         new Date(data?.issuedAt)
           .toLocaleDateString("ja-JP", localeOptions)
           .replace(/\//g, "-"),
-    },
+    };
+  }
+
+  const methods = useForm<FormData>({
+    mode: "onBlur",
+    defaultValues: getDefaultValues(),
   });
 
   const certificationSystems = useCertificationSystems();
@@ -352,12 +357,19 @@ export default function Credential() {
     user?.accountId ?? null,
   );
   const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
-  const expiredCredentials = account?.credentials?.filter((credential) =>
-    isExpired(credential.expiredAt),
-  );
-  const validCredentials = account?.credentials?.filter(
-    (credential) => !isExpired(credential.expiredAt),
-  );
+
+  const getFilteredCredentials = () => {
+    const expiredCredentials = account?.credentials?.filter((credential) =>
+      isExpired(credential.expiredAt),
+    );
+    const validCredentials = account?.credentials?.filter(
+      (credential) => !isExpired(credential.expiredAt),
+    );
+
+    return { expiredCredentials, validCredentials };
+  };
+
+  const { expiredCredentials, validCredentials } = getFilteredCredentials();
 
   const onSubmit: SubmitHandler<FormData> = async (data: FormData) => {
     if (!account?.id) {
@@ -385,6 +397,35 @@ export default function Credential() {
     const token = await session.getAccessToken();
     await updateCredential(formData, account?.id, credentialId, token);
     mutateAccount();
+  };
+
+  const renderExpiredCredentials = () => {
+    return (
+      <div>
+        {expiredCredentials && expiredCredentials.length > 0 && (
+          <>
+            <div className="flex flex-row items-center gap-4 mb-3">
+              <h3 className="text-xl font-bold">失効</h3>
+              <div className="jumpu-badge text-xs bg-gray-50 border border-gray-300">
+                {expiredCredentials.length}
+              </div>
+            </div>
+            <div className="flex flex-col gap-6">
+              {expiredCredentials.map((credential) => {
+                return (
+                  <CredentialEntry
+                    data={credential}
+                    key={credential.id}
+                    handleDelete={handleDelete}
+                    handleEdit={handleEdit}
+                  />
+                );
+              })}
+            </div>
+          </>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -433,30 +474,7 @@ export default function Credential() {
             })}
         </div>
       </div>
-      <div>
-        {expiredCredentials && expiredCredentials.length > 0 && (
-          <>
-            <div className="flex flex-row items-center gap-4 mb-3">
-              <h3 className="text-xl font-bold">失効</h3>
-              <div className="jumpu-badge text-xs bg-gray-50 border border-gray-300">
-                {expiredCredentials.length}
-              </div>
-            </div>
-            <div className="flex flex-col gap-6">
-              {expiredCredentials.map((credential) => {
-                return (
-                  <CredentialEntry
-                    data={credential}
-                    key={credential.id}
-                    handleDelete={handleDelete}
-                    handleEdit={handleEdit}
-                  />
-                );
-              })}
-            </div>
-          </>
-        )}
-      </div>
+      {renderExpiredCredentials()}
     </div>
   );
 }

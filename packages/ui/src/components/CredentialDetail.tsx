@@ -21,6 +21,24 @@ function CredentialDetail({ className, credential }: Props) {
   const name = data?.name;
   const description = useSanitizedHtml(data?.description);
 
+  const renderDescription = () => {
+    return typeof description === "string" ? (
+      <div
+        className="text-sm text-gray-600 mb-2"
+        dangerouslySetInnerHTML={{ __html: description }}
+      />
+    ) : (
+      <div className="animate-pulse flex flex-col gap-2 mb-2">
+        {range(0, 5).map((i) => (
+          <div
+            key={i}
+            className={twMerge("bg-slate-200 rounded h-3", i === 4 && "w-4/5")}
+          />
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div className={twMerge("jumpu-card p-5 rounded-2xl", className)}>
       <header className="flex items-center gap-4 mb-4">
@@ -40,24 +58,7 @@ function CredentialDetail({ className, credential }: Props) {
           )}
         </div>
       </header>
-      {typeof description === "string" ? (
-        <div
-          className="text-sm text-gray-600 mb-2"
-          dangerouslySetInnerHTML={{ __html: description }}
-        />
-      ) : (
-        <div className="animate-pulse flex flex-col gap-2 mb-2">
-          {range(0, 5).map((i) => (
-            <div
-              key={i}
-              className={twMerge(
-                "bg-slate-200 rounded h-3",
-                i === 4 && "w-4/5",
-              )}
-            />
-          ))}
-        </div>
-      )}
+      {renderDescription()}
       <Table className="mb-2">
         <TableRow
           header={_("CredentialDetail_CredentialName")}

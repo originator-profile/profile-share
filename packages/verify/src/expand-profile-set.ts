@@ -60,7 +60,11 @@ export async function expandProfilePairs(profiles: JsonLdDocument) {
     const opSub = getValue(op, "sub")?.["@value"];
     const opIss = getValue(op, "iss")?.["@value"];
 
-    if (!dpProfile || !dpSub || !opProfile || !opSub || !opIss) {
+    const isInvalidValue = () => {
+      return !dpProfile || !dpSub || !opProfile || !opSub || !opIss;
+    };
+
+    if (isInvalidValue()) {
       return undefined;
     }
 

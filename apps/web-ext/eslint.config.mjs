@@ -44,11 +44,4 @@ export default [
       "canonical/filename-match-exported": "off",
     },
   },
-  {
-    // チェック対象になっていなかったのでエラーになってしまう。対処がおわったら削除して全体設定であるエラーに復帰させる
-    files: ["src/utils/use-profile-set.ts", "src/components/DpMarker.tsx"],
-    rules: {
-      complexity: ["warn", 10],
-    },
-  },
 ];
