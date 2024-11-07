@@ -266,7 +266,7 @@ importers:
         version: 10.0.0
       vitest:
         specifier: ^2.1.2
-        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
+        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
 
   apps/web-ext:
     dependencies:
@@ -348,7 +348,7 @@ importers:
         version: 15.10.0
       happy-dom:
         specifier: ^15.7.4
-        version: 15.10.1
+        version: 15.10.2
       jsonld:
         specifier: ^8.3.2
         version: 8.3.2(web-streams-polyfill@4.0.0)
@@ -390,7 +390,7 @@ importers:
         version: 5.6.2
       vitest:
         specifier: ^2.1.2
-        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
+        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
       web-ext:
         specifier: ^8.3.0
         version: 8.3.0
@@ -428,7 +428,7 @@ importers:
         version: 10.0.0
       vitest:
         specifier: ^2.1.2
-        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
+        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
 
   packages/eslint-config:
     dependencies:
@@ -440,7 +440,7 @@ importers:
         version: 9.6.1
       '@vitest/eslint-plugin':
         specifier: ^1.1.6
-        version: 1.1.6(@typescript-eslint/utils@8.8.0(eslint@9.12.0(jiti@2.3.1))(typescript@5.6.2))(eslint@9.12.0(jiti@2.3.1))(typescript@5.6.2)(vitest@2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1))
+        version: 1.1.6(@typescript-eslint/utils@8.8.0(eslint@9.12.0(jiti@2.3.1))(typescript@5.6.2))(eslint@9.12.0(jiti@2.3.1))(typescript@5.6.2)(vitest@2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1))
       eslint-config-prettier:
         specifier: ^9.1.0
         version: 9.1.0(eslint@9.12.0(jiti@2.3.1))
@@ -497,7 +497,7 @@ importers:
         version: 2.4.9(typescript@5.6.2)
       vitest:
         specifier: ^2.1.2
-        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
+        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
 
   packages/model-docs:
     devDependencies:
@@ -581,10 +581,10 @@ importers:
         version: 10.0.0
       vitest:
         specifier: ^2.1.2
-        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
+        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
       vitest-mock-extended:
         specifier: ^2.0.2
-        version: 2.0.2(typescript@5.6.2)(vitest@2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1))
+        version: 2.0.2(typescript@5.6.2)(vitest@2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1))
 
   packages/registry-service:
     devDependencies:
@@ -668,10 +668,10 @@ importers:
         version: 9.4.0
       vitest:
         specifier: ^2.1.2
-        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
+        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
       vitest-mock-extended:
         specifier: ^2.0.2
-        version: 2.0.2(typescript@5.6.2)(vitest@2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1))
+        version: 2.0.2(typescript@5.6.2)(vitest@2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1))
       yn:
         specifier: ^5.0.0
         version: 5.0.0
@@ -780,7 +780,7 @@ importers:
         version: 5.4.8(@types/node@22.7.4)(terser@5.34.1)
       vitest:
         specifier: ^2.1.2
-        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
+        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
       yup:
         specifier: ^1.4.0
         version: 1.4.0
@@ -807,7 +807,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^2.1.2
-        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
+        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
 
   packages/tailwind-config:
     dependencies:
@@ -892,7 +892,7 @@ importers:
         version: 5.6.2
       vitest:
         specifier: ^2.1.2
-        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
+        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
 
   packages/verify:
     devDependencies:
@@ -931,7 +931,7 @@ importers:
         version: link:../eslint-config
       happy-dom:
         specifier: ^15.7.4
-        version: 15.10.1
+        version: 15.10.2
       jose:
         specifier: ^5.9.3
         version: 5.9.3
@@ -949,7 +949,7 @@ importers:
         version: 1.44.1
       vitest:
         specifier: ^2.1.2
-        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
+        version: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
 
   packages/wordpress:
     devDependencies:
@@ -6783,8 +6783,8 @@ packages:
     engines: {node: '>=0.4.7'}
     hasBin: true
 
-  happy-dom@15.10.1:
-    resolution: {integrity: sha512-FuGnj/qIB4QnBL6fWmD7Wnh6STxevLgOVWB6+nopDGgWG1+t9CXkNB2ldZ+iqwD2UKxD2D0SU8el8A6AX6Q1+g==}
+  happy-dom@15.10.2:
+    resolution: {integrity: sha512-NbA5XrSovenJIIcfixCREX3ZnV7yHP4phhbfuxxf4CPn+LZpz/jIM9EqJ2DrPwgVDSMoAKH3pZwQvkbsSiCrUw==}
     engines: {node: '>=18.0.0'}
 
   has-bigints@1.0.2:
@@ -16475,11 +16475,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/eslint-plugin@1.1.6(@typescript-eslint/utils@8.8.0(eslint@9.12.0(jiti@2.3.1))(typescript@5.6.2))(eslint@9.12.0(jiti@2.3.1))(typescript@5.6.2)(vitest@2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1))':
+  '@vitest/eslint-plugin@1.1.6(@typescript-eslint/utils@8.8.0(eslint@9.12.0(jiti@2.3.1))(typescript@5.6.2))(eslint@9.12.0(jiti@2.3.1))(typescript@5.6.2)(vitest@2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1))':
     dependencies:
       '@typescript-eslint/utils': 8.8.0(eslint@9.12.0(jiti@2.3.1))(typescript@5.6.2)
       eslint: 9.12.0(jiti@2.3.1)
-      vitest: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
+      vitest: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
     optionalDependencies:
       typescript: 5.6.2
 
@@ -19866,7 +19866,7 @@ snapshots:
     optionalDependencies:
       uglify-js: 3.19.3
 
-  happy-dom@15.10.1:
+  happy-dom@15.10.2:
     dependencies:
       entities: 4.5.0
       webidl-conversions: 7.0.0
@@ -25291,13 +25291,13 @@ snapshots:
       fsevents: 2.3.3
       terser: 5.34.1
 
-  vitest-mock-extended@2.0.2(typescript@5.6.2)(vitest@2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)):
+  vitest-mock-extended@2.0.2(typescript@5.6.2)(vitest@2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)):
     dependencies:
       ts-essentials: 10.0.2(typescript@5.6.2)
       typescript: 5.6.2
-      vitest: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
+      vitest: 2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1)
 
-  vitest@2.1.2(@types/node@22.7.4)(happy-dom@15.10.1)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1):
+  vitest@2.1.2(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.4.9(typescript@5.6.2))(terser@5.34.1):
     dependencies:
       '@vitest/expect': 2.1.2
       '@vitest/mocker': 2.1.2(@vitest/spy@2.1.2)(msw@2.4.9(typescript@5.6.2))(vite@5.4.8(@types/node@22.7.4)(terser@5.34.1))
@@ -25320,7 +25320,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 22.7.4
-      happy-dom: 15.10.1
+      happy-dom: 15.10.2
       jsdom: 25.0.1
     transitivePeerDependencies:
       - less
