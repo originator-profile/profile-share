@@ -24,7 +24,7 @@ services:
     volumes:
       - postgres_data_v17:/var/lib/postgresql/data
   mailpit:
-    image: axllent/mailpit:v1.20
+    image: axllent/mailpit:v1.21
     ports:
       - "8025:8025"
       - "${SMTP_PORT:-1025}:1025"
