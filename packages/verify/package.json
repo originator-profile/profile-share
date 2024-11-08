@@ -20,17 +20,17 @@
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "date-fns": "^4.1.0",
-    "eslint": "^9.12.0",
+    "eslint": "^9.14.0",
     "eslint-config-originator-profile": "workspace:*",
-    "happy-dom": "^15.7.4",
-    "jose": "^5.9.3",
+    "happy-dom": "^15.8.3",
+    "jose": "^5.9.6",
     "jsonld": "^8.3.2",
     "just-diff-apply": "^5.5.0",
     "just-typeof": "^3.2.0",
-    "msw": "^2.4.9",
+    "msw": "^2.6.0",
     "playwright": "1.44.1",
-    "vite": "^5.4.8",
-    "vitest": "^2.1.2",
+    "vite": "^5.4.10",
+    "vitest": "^2.1.4",
     "websri": "^0.1.0"
   }
 }
