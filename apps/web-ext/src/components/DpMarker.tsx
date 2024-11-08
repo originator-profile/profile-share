@@ -33,6 +33,26 @@ function Marker({
   const tailHeight = 12;
   const logo = opHolder.logos?.find(({ isMain }) => isMain);
   const isTopOverflow = rect.top < height + border + tailHeight;
+
+  const renderPolygon = () => {
+    return (
+      <svg
+        viewBox={`0 0 ${tailWidth} ${tailHeight}`}
+        width={tailWidth}
+        height={tailHeight}
+        className={clsx(
+          "absolute left-1/2 stroke-transparent -translate-x-1/2",
+          isTopOverflow
+            ? "top-0 -translate-y-full rotate-180"
+            : " bottom-0 translate-y-full",
+          active ? "fill-blue-500" : "fill-white",
+        )}
+      >
+        <polygon points={`0,0 ${tailWidth / 2},${tailHeight} ${tailWidth},0`} />
+      </svg>
+    );
+  };
+
   return (
     <div
       className="absolute"
@@ -61,22 +81,7 @@ function Marker({
           width={width}
           height={height}
         />
-        <svg
-          viewBox={`0 0 ${tailWidth} ${tailHeight}`}
-          width={tailWidth}
-          height={tailHeight}
-          className={clsx(
-            "absolute left-1/2 stroke-transparent -translate-x-1/2",
-            isTopOverflow
-              ? "top-0 -translate-y-full rotate-180"
-              : " bottom-0 translate-y-full",
-            active ? "fill-blue-500" : "fill-white",
-          )}
-        >
-          <polygon
-            points={`0,0 ${tailWidth / 2},${tailHeight} ${tailWidth},0`}
-          />
-        </svg>
+        {renderPolygon()}
       </button>
     </div>
   );

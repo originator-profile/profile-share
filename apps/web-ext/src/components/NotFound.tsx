@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
-import useProfileSet from "../utils/use-profile-set";
+import useProfiles from "../utils/use-profiles";
 import { routes } from "../utils/routes";
 import { _ } from "@originator-profile/ui/src/utils";
 
@@ -17,7 +17,7 @@ const label: { [key in Props["variant"]]: string } = {
 } as const;
 
 function NotFound({ variant }: Props) {
-  const { tabId } = useProfileSet();
+  const { tabId } = useProfiles();
   return (
     <div className="px-4 py-12">
       <ProjectTitle as="header" />

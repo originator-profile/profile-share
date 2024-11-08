@@ -1,5 +1,5 @@
 import { useParams, useSearchParams } from "react-router-dom";
-import useProfileSet from "../utils/use-profile-set";
+import useProfiles from "../utils/use-profiles";
 import { routes } from "../utils/routes";
 import NotFound from "../components/NotFound";
 import Template from "../templates/Publ";
@@ -74,7 +74,7 @@ function Publ() {
     tabId: string;
   }>();
 
-  const { profileSet } = useProfileSet();
+  const { profileSet } = useProfiles();
 
   if (profileSet.isLoading) {
     return <Loading />;
@@ -96,6 +96,7 @@ function Publ() {
   const handleClickDp = (dp: DocumentProfile) => async () => {
     await chrome.tabs.sendMessage(Number(tabId), {
       type: "overlay-profiles",
+      timestamp: Date.now(),
       ...profileSet.serialize(),
       activeDp: dp.serialize(),
     });

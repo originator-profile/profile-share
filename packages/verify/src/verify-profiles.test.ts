@@ -1,14 +1,14 @@
 import { beforeEach, describe, test, expect } from "vitest";
 import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { Op, Dp } from "@originator-profile/model";
-import { signOp, signDp, generateKey } from "@originator-profile/sign";
+import { signOp, signDp } from "@originator-profile/sign";
 import {
   ProfileClaimsValidationFailed,
   ProfilesVerifyFailed,
   ProfileTokenVerifyFailed,
   ProfilesResolveFailed,
 } from "./errors";
-import { LocalKeys } from "./keys";
+import { generateKey, LocalKeys } from "@originator-profile/cryptography";
 import { SignedProfileValidator } from "./decode";
 import { ProfilesVerifier } from "./verify-profiles";
 

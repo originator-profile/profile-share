@@ -1,14 +1,13 @@
-import { Prisma, websites } from "@prisma/client";
-import { ContextDefinition, JsonLdDocument } from "jsonld";
-import { signBody } from "@originator-profile/sign";
 import { Jwk } from "@originator-profile/model";
 import {
   Website,
   WebsiteCreate,
-  WebsiteUpdate,
   WebsiteRepository,
-  getClient,
+  WebsiteUpdate,
 } from "@originator-profile/registry-db";
+import { signBody } from "@originator-profile/sign";
+import { websites } from "@prisma/client";
+import { ContextDefinition, JsonLdDocument } from "jsonld";
 
 type Options = {
   websiteRepository: WebsiteRepository;
@@ -22,25 +21,6 @@ export const WebsiteService = ({ websiteRepository }: Options) => ({
     return await websiteRepository.create(website);
   },
 
-  /**
-   * ウェブページの作成
-   * @param input ウェブページ
-   * @return ウェブページ
-   *
-   * @deprecated 代わりに {@link create} を利用してください。
-   */
-  async createForOldAPI(input: Prisma.websitesCreateInput): Promise<websites> {
-    const prisma = getClient();
-    const { url, ...rest } = input;
-    return await prisma.websites.create({
-      data: {
-        url: websiteRepository.serializeUrl(url),
-        ...rest,
-      },
-      include: { categories: true },
-    });
-  },
-
   /** {@link WebsiteRepository.read} */
   async read({ id }: { id: string }): Promise<websites> {
     return await websiteRepository.read({ id });
@@ -49,35 +29,6 @@ export const WebsiteService = ({ websiteRepository }: Options) => ({
   /** {@link WebsiteRepository.update} */
   async update(website: WebsiteUpdate): Promise<websites> {
     return await websiteRepository.update(website);
-  },
-
-  /**
-   * ウェブページの更新
-   * @param input ウェブページ
-   * @return ウェブページ
-   *
-   * @deprecated 代わりに {@link update} を利用してください。
-   */
-  async updateForOldAPI(
-    input: Prisma.websitesUpdateInput & { id: string },
-  ): Promise<websites> {
-    const prisma = getClient();
-    const { id, url, ...rest } = input;
-    let serialized;
-    if (typeof url === "undefined") {
-      serialized = undefined;
-    } else if (typeof url === "string") {
-      serialized = websiteRepository.serializeUrl(url);
-    } else if (url?.set) {
-      serialized = {
-        set: websiteRepository.serializeUrl(url.set),
-      };
-    }
-    return await prisma.websites.update({
-      where: { id },
-      data: { url: serialized, ...rest },
-      include: { categories: true },
-    });
   },
 
   /** {@link WebsiteRepository.delete} */

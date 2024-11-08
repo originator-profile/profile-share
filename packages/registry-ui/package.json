@@ -30,6 +30,7 @@
     "just-omit": "^2.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-json-view": "^1.21.3",
     "react-use": "^17.5.1",
     "swr": "^2.2.5",
     "vite": "^5.4.10",

@@ -1,10 +1,10 @@
 import { Command, Flags } from "@oclif/core";
-import { Prisma } from "@prisma/client";
-import { Services } from "@originator-profile/registry-service";
-import fs from "node:fs/promises";
-import { operation } from "../../flags";
 import { parseAccountId } from "@originator-profile/core";
+import { Services } from "@originator-profile/registry-service";
+import { Prisma } from "@prisma/client";
+import fs from "node:fs/promises";
 import example from "../../account.example.json";
+import { operation } from "../../flags";
 
 const jsonFormat = {
   id: "<UUID v5 for domain names 形式 OP ID>",

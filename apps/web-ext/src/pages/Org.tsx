@@ -1,5 +1,5 @@
 import { useParams, useSearchParams } from "react-router-dom";
-import useProfileSet from "../utils/use-profile-set";
+import useProfiles from "../utils/use-profiles";
 import NotFound from "../components/NotFound";
 import Template from "../templates/Org";
 import Loading from "../components/Loading";
@@ -13,7 +13,7 @@ function Org(props: Props) {
     orgIssuer: string;
     orgSubject: string;
   }>();
-  const { profileSet } = useProfileSet();
+  const { profileSet } = useProfiles();
 
   if (profileSet.isLoading) {
     return <Loading />;

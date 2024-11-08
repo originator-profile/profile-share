@@ -1,8 +1,8 @@
-import { FastifySchema, FastifyRequest } from "fastify";
-import { FromSchema } from "json-schema-to-ts";
-import { BadRequestError } from "http-errors-enhanced";
-import Params from "./params";
 import { OpHolder } from "@originator-profile/model";
+import { FastifyRequest, FastifySchema } from "fastify";
+import { BadRequestError } from "http-errors-enhanced";
+import { FromSchema } from "json-schema-to-ts";
+import Params from "./params";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { type, logos, ...properties } = OpHolder.properties;
@@ -45,7 +45,7 @@ async function update({
 
   const input = { id, ...body };
 
-  return await server.services.account.updateAccount(input);
+  return await server.services.account.update(input);
 }
 
-export { update, schema };
+export { schema, update };

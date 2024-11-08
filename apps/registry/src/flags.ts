@@ -4,12 +4,23 @@ import { Jwk } from "@originator-profile/model";
 import { importPKCS8, exportJWK } from "jose";
 import fs from "node:fs/promises";
 
+/** @deprecated */
 export const accountId = Flags.custom<string>({
   summary: "会員 ID またはドメイン名",
   description: `\
 UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501) を指定します。`,
   async parse(uuidOrDns: string): Promise<string> {
     return parseAccountId(uuidOrDns);
+  },
+});
+
+export const opId = Flags.custom<string>({
+  summary: "OP ID (ドメイン名)",
+  description: `\
+ドメイン名 (RFC 4501) を指定します。`,
+  async parse(domainName: string): Promise<string> {
+    const id = domainName.toLowerCase();
+    return domainName.startsWith("dns:") ? id : `dns:${id}`;
   },
 });
 

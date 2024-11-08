@@ -1,5 +1,4 @@
 import { FastifyInstance, FastifyRequest, onRouteHookHandler } from "fastify";
-import helmet from "@fastify/helmet";
 import auth0Verify from "fastify-auth0-verify";
 import { ForbiddenError } from "http-errors-enhanced";
 import { ErrorResponse } from "../../error";
@@ -73,17 +72,13 @@ async function autohooks(fastify: FastifyInstance): Promise<void> {
   // @ts-expect-error NOTE: **テスト用** 認証の無効化
   if (fastify.dangerouslyDisabledAuth) return;
 
-  fastify.register(auth0Verify, {
+  await fastify.register(auth0Verify, {
     domain: fastify.config.AUTH0_DOMAIN ?? "oprdev.jp.auth0.com",
     audience: fastify.config.APP_URL ?? "http://localhost:8080/",
   });
-  fastify.after(() => {
-    fastify.addHook("onRequest", fastify.authenticate);
-    fastify.addHook("preHandler", requiredPermissions);
-  });
-  fastify.register(helmet, {
-    hsts: { preload: true },
-  });
+
+  fastify.addHook("onRequest", fastify.authenticate);
+  fastify.addHook("preHandler", requiredPermissions);
   fastify.addHook("onRoute", addErrorResponseSchema);
 }
 

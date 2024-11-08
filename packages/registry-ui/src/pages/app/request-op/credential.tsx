@@ -160,9 +160,9 @@ function CredentialForm({
     month: "2-digit",
     day: "2-digit",
   } as const;
-  const methods = useForm<FormData>({
-    mode: "onBlur",
-    defaultValues: {
+
+  function getDefaultValues() {
+    return {
       ...data,
       certifier: data?.certifier.id,
       verifier: data?.verifier.id,
@@ -176,7 +176,12 @@ function CredentialForm({
         new Date(data?.issuedAt)
           .toLocaleDateString("ja-JP", localeOptions)
           .replace(/\//g, "-"),
-    },
+    };
+  }
+
+  const methods = useForm<FormData>({
+    mode: "onBlur",
+    defaultValues: getDefaultValues(),
   });
 
   const certificationSystems = useCertificationSystems();
@@ -352,12 +357,19 @@ export default function Credential() {
     user?.accountId ?? null,
   );
   const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
-  const expiredCredentials = account?.credentials?.filter((credential) =>
-    isExpired(credential.expiredAt),
-  );
-  const validCredentials = account?.credentials?.filter(
-    (credential) => !isExpired(credential.expiredAt),
-  );
+
+  const getFilteredCredentials = () => {
+    const expiredCredentials = account?.credentials?.filter((credential) =>
+      isExpired(credential.expiredAt),
+    );
+    const validCredentials = account?.credentials?.filter(
+      (credential) => !isExpired(credential.expiredAt),
+    );
+
+    return { expiredCredentials, validCredentials };
+  };
+
+  const { expiredCredentials, validCredentials } = getFilteredCredentials();
 
   const onSubmit: SubmitHandler<FormData> = async (data: FormData) => {
     if (!account?.id) {
@@ -387,51 +399,8 @@ export default function Credential() {
     mutateAccount();
   };
 
-  return (
-    <div className="flex flex-col gap-6 max-w-screen-sm">
-      <h2 className="text-2xl font-bold">資格情報</h2>
-      <p>
-        第三者認証機関の承認を得たら、このページより Originator Profile（OP）
-        事務局にお知らせください。 OP 事務局で確認が取れましたら、
-        <b>
-          {account?.name && `${account.name}様の`}
-          認証情報が更新されます。
-        </b>
-      </p>
-      <div>
-        <div className="flex flex-row items-center gap-4 pt-4 mb-2">
-          <h3 className="text-xl font-bold">登録済み</h3>
-          <div className="jumpu-badge text-xs bg-gray-50 border border-gray-300">
-            {validCredentials && validCredentials.length}
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-6">
-          {showCreateForm ? (
-            <CredentialForm onSubmit={onSubmit} />
-          ) : (
-            <button
-              className="jumpu-outlined-button border-dashed border-gray-300 px-4 py-6 w-full"
-              onClick={() => setShowCreateForm(true)}
-            >
-              新しい資格情報を追加する
-            </button>
-          )}
-
-          {validCredentials &&
-            validCredentials.length > 0 &&
-            validCredentials.map((credential) => {
-              return (
-                <CredentialEntry
-                  data={credential}
-                  key={credential.id}
-                  handleDelete={handleDelete}
-                  handleEdit={handleEdit}
-                />
-              );
-            })}
-        </div>
-      </div>
+  const renderExpiredCredentials = () => {
+    return (
       <div>
         {expiredCredentials && expiredCredentials.length > 0 && (
           <>
@@ -456,6 +425,56 @@ export default function Credential() {
           </>
         )}
       </div>
+    );
+  };
+
+  return (
+    <div className="flex flex-col gap-6 max-w-screen-sm">
+      <h2 className="text-2xl font-bold">資格情報</h2>
+      <p>
+        第三者認証機関の承認を得たら、このページより Originator Profile（OP）
+        事務局にお知らせください。 OP 事務局で確認が取れましたら、
+        <b>
+          {account?.name && `${account.name}様の`}
+          認証情報が更新されます。
+        </b>
+      </p>
+      <div>
+        <div className="flex flex-row items-center gap-4 pt-4 mb-2">
+          <h3 className="text-xl font-bold">登録済み</h3>
+          <div className="jumpu-badge text-xs bg-gray-50 border border-gray-300">
+            {validCredentials && validCredentials.length}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-6">
+          {showCreateForm ? (
+            <CredentialForm onSubmit={onSubmit} />
+          ) : (
+            <button
+              type="button"
+              className="jumpu-outlined-button border-dashed border-gray-300 px-4 py-6 w-full"
+              onClick={() => setShowCreateForm(true)}
+            >
+              新しい資格情報を追加する
+            </button>
+          )}
+
+          {validCredentials &&
+            validCredentials.length > 0 &&
+            validCredentials.map((credential) => {
+              return (
+                <CredentialEntry
+                  data={credential}
+                  key={credential.id}
+                  handleDelete={handleDelete}
+                  handleEdit={handleEdit}
+                />
+              );
+            })}
+        </div>
+      </div>
+      {renderExpiredCredentials()}
     </div>
   );
 }

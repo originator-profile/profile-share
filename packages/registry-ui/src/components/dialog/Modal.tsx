@@ -62,6 +62,7 @@ export function Modal(props: ModalProps) {
       )}
     >
       <button
+        type="button"
         className="absolute top-4 right-4"
         onClick={() => onClose(props.dialogRef.current)}
       >

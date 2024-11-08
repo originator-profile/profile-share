@@ -3,12 +3,16 @@ import { Spinner } from "@originator-profile/ui";
 import { useSession } from "../../utils/session";
 import { useAccount } from "../../utils/account";
 
+function isLoading(sessionLoading: boolean, accountLoading: boolean): boolean {
+  return sessionLoading || accountLoading;
+}
+
 export default function Index() {
   const session = useSession();
   const accountIdOrNull = session.data?.user?.accountId ?? null;
   const account = useAccount(accountIdOrNull);
 
-  if (session.isLoading || account.isLoading) {
+  if (isLoading(session.isLoading, account.isLoading)) {
     return (
       <article className="min-h-[75vh] flex flex-col gap-8 justify-center items-center">
         <Spinner />

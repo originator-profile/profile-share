@@ -24,27 +24,40 @@ export function useStatus() {
     credential?: FlowState | null;
   } = {};
 
-  if (hasDraft) {
-    statusValue.holder = "hasDraft";
-  } else if (account?.name) {
-    statusValue.holder = "registered";
-  } else {
+  const getHolder = () => {
+    if (hasDraft) {
+      return "hasDraft";
+    } else if (account?.name) {
+      return "registered";
+    }
     statusValue.holder = null;
-  }
-  if ((keys?.keys.length ?? 0) > 0) {
-    statusValue["public-key"] = "registered";
-  } else {
-    statusValue["public-key"] = null;
-  }
-  if (logo?.url) {
-    statusValue.logo = "registered";
-  } else {
-    statusValue.logo = null;
-  }
-  if ((validCredentials?.length ?? 0) > 0) {
-    statusValue.credential = "registered";
-  } else {
-    statusValue.credential = null;
-  }
+  };
+
+  statusValue.holder = getHolder();
+
+  const getPublicKey = () => {
+    if ((keys?.keys.length ?? 0) > 0) {
+      return "registered";
+    }
+    return null;
+  };
+  statusValue["public-key"] = getPublicKey();
+
+  const getLogo = () => {
+    if (logo?.url) {
+      return "registered";
+    }
+    return null;
+  };
+  statusValue.logo = getLogo();
+
+  const getCredential = () => {
+    if ((validCredentials?.length ?? 0) > 0) {
+      return "registered";
+    }
+    return null;
+  };
+  statusValue.credential = getCredential();
+
   return statusValue;
 }

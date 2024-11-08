@@ -1,6 +1,6 @@
-import { afterEach, beforeEach, expect, test } from "vitest";
-import { stdout } from "stdout-stderr";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { stdout } from "stdout-stderr";
+import { afterEach, beforeEach, expect, test } from "vitest";
 import { Server, create } from "../../src/server";
 
 let server: Server;
@@ -29,7 +29,7 @@ test("PrismaClientKnownRequestErrorエラーはBadRequestErrorに置き換え", 
 
   await server.ready();
 
-  const res = await server.inject("/.well-known/ps.json");
+  const res = await server.inject("/");
 
   expect(stdout.output).toMatch(`"PrismaClientKnownRequestError message"`);
   expect(res.json()).toEqual({

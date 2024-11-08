@@ -3,7 +3,7 @@ import { websites } from "@prisma/client";
 import crypto from "node:crypto";
 import { decodeJwt } from "jose";
 import { JwtDpPayload } from "@originator-profile/model";
-import { generateKey } from "@originator-profile/sign";
+import { generateKey } from "@originator-profile/cryptography";
 import {
   DpRepository,
   WebsiteRepository,

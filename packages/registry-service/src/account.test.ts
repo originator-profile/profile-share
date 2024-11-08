@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 import Ajv from "ajv";
 import { BadRequestError } from "http-errors-enhanced";
 import { Jwks } from "@originator-profile/model";
-import { generateKey } from "@originator-profile/sign";
+import { generateKey } from "@originator-profile/cryptography";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
 

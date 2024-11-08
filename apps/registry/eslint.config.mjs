@@ -38,11 +38,4 @@ export default [
       ],
     },
   },
-  {
-    // チェック対象になっていなかったのでエラーになってしまう。対処がおわったら削除して全体設定であるエラーに復帰させる
-    files: ["src/commands/publisher/sign.ts", "src/server.ts"],
-    rules: {
-      complexity: ["warn", 10],
-    },
-  },
 ];

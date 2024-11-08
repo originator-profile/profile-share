@@ -2,9 +2,12 @@
 import { fixupPluginRules } from "@eslint/compat";
 import eslint from "@eslint/js";
 import vitest from "@vitest/eslint-plugin";
+// @ts-expect-error types not provided
 import canonicalPlugin from "eslint-plugin-canonical";
 import jsxA11y from "eslint-plugin-jsx-a11y";
+// @ts-expect-error types not provided
 import reactHooks from "eslint-plugin-react-hooks";
+// @ts-expect-error types not provided
 import reactConfig from "eslint-plugin-react/configs/recommended.js";
 import globals from "globals";
 import tseslint from "typescript-eslint";
