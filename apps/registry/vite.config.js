@@ -27,7 +27,9 @@ process.env.VITE_AUTH0_CLIENT_ID = AUTH0_CLIENT_ID ?? VITE_AUTH0_CLIENT_ID;
 
 /** @type import("vite").UserConfig */
 export default defineConfig({
-  base: APP_URL,
+  // NOTE: @fastify/vite@6.0.7 以降パス以外を指定するとproductionでの起動に失敗する
+  // see https://github.com/fastify/fastify-vite/pull/153
+  base: URL.canParse(APP_URL) ? new URL(APP_URL).pathname : APP_URL,
   root: REGISTRY_UI_ROOT,
   plugins: [
     react(),
