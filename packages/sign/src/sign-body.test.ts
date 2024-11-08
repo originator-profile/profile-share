@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
 import { importJWK, flattenedVerify, decodeProtectedHeader } from "jose";
-import { generateKey } from "./generate-key";
+import { generateKey } from "@originator-profile/cryptography";
 import { signBody } from "./sign-body";
 
 test("signBody() returns an object containing verifiable compact JWS", async () => {

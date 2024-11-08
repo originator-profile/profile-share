@@ -1,11 +1,11 @@
-import useProfileSet from "../utils/use-profile-set";
+import useProfiles from "../utils/use-profiles";
 import Loading from "../components/Loading";
 import NotFound from "../components/NotFound";
 import Template from "../templates/Prohibition";
 import Unsupported from "../components/Unsupported";
 
 function Prohibition() {
-  const { tabId, error, profileSet } = useProfileSet();
+  const { tabId, error, profileSet } = useProfiles();
   if (error) {
     return <Unsupported error={error} />;
   }

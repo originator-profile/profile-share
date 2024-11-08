@@ -1,5 +1,5 @@
 import { jwtVerify } from "jose";
-import { JOSEError } from "jose/dist/types/util/errors";
+import { JOSEError } from "jose/errors";
 import {
   fromJwtOpPayload,
   fromJwtDpPayload,
@@ -8,7 +8,7 @@ import {
 } from "@originator-profile/core";
 import { TokenDecoder } from "./decode";
 import { ProfileTokenVerifyFailed } from "./errors";
-import { Keys } from "./keys";
+import { Keys } from "@originator-profile/cryptography";
 import { VerifyTokenResult } from "./types";
 import { verifyOrigin } from "./verify-origin";
 
@@ -19,6 +19,7 @@ import { verifyOrigin } from "./verify-origin";
  * @param decoder 復号器
  * @param origin 対象とするオリジン
  * @return 検証者
+ * @deprecated
  */
 export function TokenVerifier(
   keys: Keys,
@@ -45,6 +46,7 @@ export function TokenVerifier(
     if (verified instanceof Error) {
       return new ProfileTokenVerifyFailed(verified.message, {
         ...decoded,
+        jwt,
         error: verified,
       });
     }

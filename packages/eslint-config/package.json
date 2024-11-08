@@ -16,5 +16,9 @@
     "eslint-plugin-tsc": "^2.0.0",
     "globals": "^15.12.0",
     "typescript-eslint": "8.12.2"
+  },
+  "devDependencies": {
+    "@types/eslint-plugin-jsx-a11y": "^6.9.0",
+    "@types/eslint__js": "^8.42.3"
   }
 }

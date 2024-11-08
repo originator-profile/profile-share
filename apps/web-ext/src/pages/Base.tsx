@@ -2,7 +2,7 @@ import { useTitle, useMount } from "react-use";
 import { Navigate, useSearchParams } from "react-router-dom";
 import { DocumentProfile, ProfileSet } from "@originator-profile/ui";
 import { buildPublUrl } from "../utils/routes";
-import useProfileSet from "../utils/use-profile-set";
+import useProfiles from "../utils/use-profiles";
 import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
 import useVerifyFailureFeedback from "../utils/use-verify-failure-feedback";
@@ -21,6 +21,7 @@ function Redirect({
     if (profiles) {
       chrome.tabs.sendMessage(tabId, {
         type: "overlay-profiles",
+        timestamp: Date.now(),
         ...profiles.serialize(),
         activeDp: dp?.serialize(),
       });
@@ -32,7 +33,7 @@ function Redirect({
 
 function Base() {
   const [queryParams] = useSearchParams();
-  const { tabId, profileSet, error, origin } = useProfileSet();
+  const { tabId, profileSet, error, origin } = useProfiles();
 
   useTitle([_("Base_ContentsInformation"), origin].filter(Boolean).join(" ― "));
 

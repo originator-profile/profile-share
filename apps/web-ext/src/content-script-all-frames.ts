@@ -1,5 +1,6 @@
-import { extractBody, fetchProfileSet } from "@originator-profile/verify";
-import "./utils/cors-basic-auth";
+import { stringifyWithError } from "@originator-profile/core";
+import { fetchCredentials } from "@originator-profile/presentation";
+import { extractBody } from "@originator-profile/verify";
 import {
   ContentScriptAllFramesMessageRequest,
   ContentScriptAllFramesMessageResponse,
@@ -10,14 +11,11 @@ async function handleMessageResponse(
 ): Promise<ContentScriptAllFramesMessageResponse> {
   switch (message.type) {
     case "fetch-profiles": {
-      const data = await fetchProfileSet(document);
+      const data = await fetchCredentials(document);
       return {
         type: "fetch-profiles",
         ok: !(data instanceof Error),
-        data:
-          data instanceof Error
-            ? JSON.stringify(data, Object.getOwnPropertyNames(data))
-            : JSON.stringify(data),
+        data: stringifyWithError(data),
         origin: document.location.origin,
       };
     }
@@ -32,10 +30,7 @@ async function handleMessageResponse(
       return {
         type: "extract-body",
         ok: !(data instanceof Error),
-        data:
-          data instanceof Error
-            ? JSON.stringify(data, Object.getOwnPropertyNames(data))
-            : JSON.stringify(data),
+        data: stringifyWithError(data),
         url: document.location.href,
       };
     }

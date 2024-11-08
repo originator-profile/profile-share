@@ -1,10 +1,11 @@
 import { decodeProtectedHeader, flattenedVerify } from "jose";
-import { JOSEError } from "jose/dist/types/util/errors";
-import { Keys } from "./keys";
+import { JOSEError } from "jose/errors";
+import { Keys } from "@originator-profile/cryptography";
 import { ProfileBodyVerifyFailed } from "./errors";
 
 /**
  * 対象のテキストの検証
+ * @deprecated
  * @param body 対象のテキスト
  * @param jws Detached Compact JWS
  * @param keys 公開鍵

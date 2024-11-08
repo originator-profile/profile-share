@@ -6,7 +6,7 @@ import {
   ProfilesVerifyFailed,
   ProfilesResolveFailed,
 } from "./errors";
-import { Keys, LocalKeys } from "./keys";
+import { Keys, LocalKeys } from "@originator-profile/cryptography";
 import {
   DecodeResult,
   VerifyTokenResult,
@@ -31,7 +31,9 @@ type Token = ReturnType<typeof getToken>;
  * @param validator ペイロード確認のためのバリデーター (null: 無効)
  * @param origin 対象とするオリジン
  * @return 検証者
+ * @deprecated
  */
+
 export function ProfilesVerifier(
   profiles: Profiles,
   registryKeys: Keys,

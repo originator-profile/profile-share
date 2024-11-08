@@ -1,6 +1,6 @@
-import { FromSchema } from "json-schema-to-ts";
+import { FromSchema, JSONSchema } from "json-schema-to-ts";
 
-const Jwk = {
+export const Jwk = {
   title: "JSON Web Key",
   type: "object",
   properties: {
@@ -38,8 +38,6 @@ const Jwk = {
   },
   required: ["kty", "kid"],
   additionalProperties: true,
-} as const;
+} as const satisfies JSONSchema;
 
-type Jwk = FromSchema<typeof Jwk>;
-
-export default Jwk;
+export type Jwk = FromSchema<typeof Jwk>;

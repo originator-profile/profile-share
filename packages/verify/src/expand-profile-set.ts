@@ -60,7 +60,11 @@ export async function expandProfilePairs(profiles: JsonLdDocument) {
     const opSub = getValue(op, "sub")?.["@value"];
     const opIss = getValue(op, "iss")?.["@value"];
 
-    if (!dpProfile || !dpSub || !opProfile || !opSub || !opIss) {
+    const isInvalidValue = () => {
+      return !dpProfile || !dpSub || !opProfile || !opSub || !opIss;
+    };
+
+    if (isInvalidValue()) {
       return undefined;
     }
 
@@ -103,8 +107,12 @@ export async function expandProfilePairs(profiles: JsonLdDocument) {
 /**
  * Profile Set の JSON-LD 表現の Profile Set への展開
  * @param profiles Profile Set の JSON-LD 表現
+ * @deprecated この関数は非推奨です。代わりに fetchWebAssertionSet を使用してください。
  */
 export async function expandProfileSet(profiles: JsonLdDocument) {
+  console.warn(
+    "expandProfileSet は非推奨です。代わりに fetchWebAssertionSet を使用してください。",
+  );
   const expanded = await jsonld.expand(profiles);
   const res: {
     advertisers: string[];

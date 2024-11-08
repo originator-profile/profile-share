@@ -1,15 +1,4 @@
-import { JsonLdDocument, NodeObject } from "jsonld";
-import { ProfilesFetchFailed } from "./errors";
-
-function getEndpoints(doc: Document): string[] {
-  const endpoints = [
-    ...doc.querySelectorAll(
-      `link[rel="alternate"][type="application/ld+json"]`,
-    ),
-  ].map((e) => new URL(e.getAttribute("href") ?? "", doc.location.href).href);
-
-  return endpoints;
-}
+import { NodeObject } from "jsonld";
 
 /**
  * 文書内のapplication/ld+json NodeObjectの取得
@@ -35,45 +24,4 @@ export function getJsonLdNodeObjects(doc: Document = document): NodeObject[] {
     .filter((e) => typeof e !== "undefined") as NodeObject[];
 
   return nodeObj;
-}
-
-/**
- * Profile Set の取得
- * @param doc Document オブジェクト
- */
-export async function fetchProfileSet(
-  doc: Document,
-): Promise<JsonLdDocument | ProfilesFetchFailed> {
-  let profiles = getJsonLdNodeObjects(doc);
-  try {
-    const profileEndpoints = getEndpoints(doc);
-
-    const profileSetFromEndpoints = await Promise.all(
-      profileEndpoints.map(async (endpoint) => {
-        const res = await fetch(endpoint);
-
-        if (!res.ok) {
-          throw new ProfilesFetchFailed("Error_ProfileHTTPError", {
-            cause: {
-              /* Response objectは拡張機能で受け取れていないので message を持ったError風objectを返す */
-              message: String(res.status),
-            },
-          });
-        }
-
-        return await res.json();
-      }),
-    );
-    profiles = profiles.concat(profileSetFromEndpoints);
-  } catch (e) {
-    if (e instanceof Error || e instanceof window.Error) {
-      return new ProfilesFetchFailed("Error_ProfileNotFetched", {
-        cause: e,
-      });
-    } else {
-      throw new Error("Unknown error", { cause: e });
-    }
-  }
-
-  return profiles as JsonLdDocument;
 }

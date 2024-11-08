@@ -29,6 +29,16 @@ const options = /** @type {const} */ ({
       return `<issuer> (default: ${this.default})`;
     },
   },
+  ["registry-url"]: {
+    type: "string",
+    short: "r",
+    default:
+      process.env.PROFILE_REGISTRY_URL ??
+      "https://oprexpt.originator-profile.org/",
+    toString() {
+      return `<registry-url> (default: ${this.default})`;
+    },
+  },
   url: {
     type: "string",
     short: "u",
@@ -88,6 +98,7 @@ if (existsSync(credentialsPath)) {
 const env = {
   MODE: args.values.mode,
   PROFILE_ISSUER: args.values.issuer,
+  PROFILE_REGISTRY_URL: args.values["registry-url"],
   BASIC_AUTH: process.env.BASIC_AUTH === "true",
   BASIC_AUTH_CREDENTIALS: process.env.BASIC_AUTH === "true" ? credentials : [],
 };

@@ -3,7 +3,7 @@ import addFormats from "ajv-formats";
 import { decodeJwt, JWTPayload } from "jose";
 import { JwtOpPayload, JwtDpPayload } from "@originator-profile/model";
 import { isJwtOpPayload, isJwtDpPayload } from "@originator-profile/core";
-import { JOSEError } from "jose/dist/types/util/errors";
+import { JOSEError } from "jose/errors";
 import { ProfileClaimsValidationFailed } from "./errors";
 import { DecodeResult } from "./types";
 
@@ -23,6 +23,7 @@ export type SignedProfileValidator = ReturnType<typeof SignedProfileValidator>;
  * Signed Profile の復号器の生成
  * @param validator ペイロード確認のためのバリデーター (null: 無効)
  * @return 復号器
+ * @deprecated
  */
 export function TokenDecoder(validator: SignedProfileValidator | null) {
   /**
