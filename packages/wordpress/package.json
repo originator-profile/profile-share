@@ -10,7 +10,7 @@
     "@originator-profile/cryptography": "workspace:*",
     "@originator-profile/verify": "workspace:*",
     "@playwright/test": "1.44.1",
-    "@wordpress/e2e-test-utils-playwright": "1.9.0",
+    "@wordpress/e2e-test-utils-playwright": "1.11.0",
     "shx": "^0.3.4"
   }
 }

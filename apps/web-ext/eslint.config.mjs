@@ -33,9 +33,10 @@ export default [
     },
   },
   {
-    files: ["e2e/**/*.test.ts"],
+    files: ["e2e/**/*.ts"],
     rules: {
       "require-atomic-updates": "off",
+      "react-hooks/rules-of-hooks": "off", // NOTE: TestFixture -> use() の検出を回避
     },
   },
   {
