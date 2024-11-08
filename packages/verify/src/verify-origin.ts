@@ -2,6 +2,7 @@ import { JwtDpPayload } from "@originator-profile/model";
 
 /**
  * 対象のオリジンで利用可能な DP Token ペイロードの検証
+ * @deprecated
  * @param origin 対象とするオリジン
  * @param payload DP Token ペイロード
  * @return 検証結果: allowedOrigins プロパティに`*`かオリジンが含まれていれば true、それ以外ならば false

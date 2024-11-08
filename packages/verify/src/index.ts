@@ -11,6 +11,7 @@ export * from "./keys/";
 export * from "./site-profile/";
 export * from "./types";
 export * from "./validate-certification-system";
+export * from "./verify-allowed-origin";
 export * from "./verify-body";
 export * from "./verify-originator-profile";
 export * from "./verify-profiles";
