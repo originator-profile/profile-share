@@ -7,7 +7,10 @@ import {
   OriginatorProfileSetItem,
   SiteProfile,
 } from "@originator-profile/model";
-import { SiteProfileFetchFailed, SiteProfileInvalid } from "./errors";
+import {
+  SiteProfileFetchFailed,
+  SiteProfileFetchInvalid,
+} from "./fetch-errors";
 
 const server = setupServer();
 
@@ -62,7 +65,7 @@ test("複数の Site Profile を提示されたとき無効", async () => {
   window.document.body.innerHTML = `
 <body></body>`;
   const result = await fetchSiteProfile(window.document as unknown as Document);
-  expect(result).toBeInstanceOf(SiteProfileInvalid);
+  expect(result).toBeInstanceOf(SiteProfileFetchInvalid);
 });
 
 test("Site Profile が設置されていないとき Site Profile の取得に失敗", async () => {

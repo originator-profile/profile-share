@@ -1,25 +1,18 @@
 import { useParams } from "react-router-dom";
 import useSWRImmutable from "swr/immutable";
 import {
-  CoreProfile,
-  WebMediaProfile,
-  WebsiteProfile,
-} from "@originator-profile/model";
-import {
-  JwtVcVerifier,
-  JwtVcDecoder,
-  JwtVcValidator,
-} from "@originator-profile/jwt-securing-mechanism";
-import { JwtVcIssuerKeys } from "@originator-profile/verify";
+  JwtVcIssuerKeys,
+  SpVerifier,
+  VerifiedSp,
+} from "@originator-profile/verify";
 import { siteProfileMessenger } from "./events";
-import { VerifiedSiteProfile } from "./types";
 
 const key = "site-profile" as const;
 
 async function fetchVerifiedSiteProfile([, tabId]: [
   _: typeof key,
   tabId: number,
-]): Promise<VerifiedSiteProfile> {
+]): Promise<VerifiedSp> {
   const { ok, result } = await siteProfileMessenger.sendMessage(
     "fetchSiteProfile",
     null,
@@ -33,40 +26,12 @@ async function fetchVerifiedSiteProfile([, tabId]: [
       : `https://${registry}/.well-known/jwt-vc-issuer`,
   );
   const keys = JwtVcIssuerKeys(jwksEndpoint);
-  const cpDecoder = JwtVcDecoder(JwtVcValidator(CoreProfile));
-  const cpVerifier = JwtVcVerifier(keys, `dns:${registry}`, cpDecoder);
-  const wmpDecoder = JwtVcDecoder(JwtVcValidator(WebMediaProfile));
-  const wmpVerifier = JwtVcVerifier(keys, `dns:${registry}`, wmpDecoder);
-  const wspDecoder = JwtVcDecoder<WebsiteProfile>(
-    JwtVcValidator(WebsiteProfile),
-  );
-
-  const originators = await Promise.all(
-    result.originators.map(async (originator) => {
-      const cpVerified = await cpVerifier(originator.core);
-      if (cpVerified instanceof Error) throw cpVerified;
-      const cp = cpVerified.payload as CoreProfile;
-      /* TODO: VC もデコード/検証する */
-      const wmpVerified =
-        originator.media && (await wmpVerifier(originator.media));
-      if (wmpVerified instanceof Error) throw wmpVerified;
-      const wmp = wmpVerified
-        ? (wmpVerified.payload as WebMediaProfile)
-        : undefined;
-      if (wmp && wmp.credentialSubject.id !== cp.credentialSubject.id) {
-        throw new Error("CoreProfile と WebMediaProfile の対象が異なります");
-      }
-      return {
-        core: cp,
-        annotations: [],
-        ...(wmp !== undefined && { media: wmp }),
-      };
-    }),
-  );
-  /* TODO: WebsiteProfile を検証する */
-  const credential = wspDecoder(result.credential);
-  if (credential instanceof Error) throw credential;
-  return { originators, credential: credential.payload };
+  const verifySp = SpVerifier(result, keys, `dns:${registry}`);
+  const verifiedSp = await verifySp();
+  if (verifiedSp instanceof Error) {
+    throw verifiedSp;
+  }
+  return verifiedSp;
 }
 
 /**

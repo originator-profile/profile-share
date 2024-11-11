@@ -1,6 +1,6 @@
 export class SiteProfileFetchFailed extends Error {
   static get code() {
-    return "ERR_WEBSITE_METADATA_FETCH_FAILED" as const;
+    return "ERR_SITE_PROFILE_FETCH_FAILED" as const;
   }
   readonly code = SiteProfileFetchFailed.code;
   readonly ok = false;
@@ -17,11 +17,11 @@ export class SiteProfileFetchFailed extends Error {
   }
 }
 
-export class SiteProfileInvalid extends Error {
+export class SiteProfileFetchInvalid extends Error {
   static get code() {
-    return "ERR_WEBSITE_METADATA_INVALID" as const;
+    return "ERR_SITE_PROFILE_FETCH_INVALID" as const;
   }
-  readonly code = SiteProfileInvalid.code;
+  readonly code = SiteProfileFetchInvalid.code;
   readonly ok = false;
 
   /** バリデーション結果 */
@@ -30,7 +30,7 @@ export class SiteProfileInvalid extends Error {
     payload?: unknown;
   };
 
-  constructor(message: string, result: SiteProfileInvalid["result"]) {
+  constructor(message: string, result: SiteProfileFetchInvalid["result"]) {
     super(message);
     this.result = result;
   }
