@@ -1,4 +1,7 @@
-import { SiteProfileFetchFailed, SiteProfileInvalid } from "./errors";
+import {
+  SiteProfileFetchFailed,
+  SiteProfileFetchInvalid,
+} from "./fetch-errors";
 import { FetchSiteProfileResult } from "./types";
 
 function getSiteProfileUrl(origin: string) {
@@ -18,9 +21,12 @@ export async function fetchSiteProfile(
     if (response.ok) {
       const result = await response.json();
       return Array.isArray(result)
-        ? new SiteProfileInvalid("Site Profile Must be a single Site Profile", {
-            payload: result,
-          })
+        ? new SiteProfileFetchInvalid(
+            "Site Profile Must be a single Site Profile",
+            {
+              payload: result,
+            },
+          )
         : { ok: true, result };
     } else {
       return new SiteProfileFetchFailed(
