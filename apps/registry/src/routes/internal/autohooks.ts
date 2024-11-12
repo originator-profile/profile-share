@@ -4,6 +4,9 @@ import { ForbiddenError } from "http-errors-enhanced";
 import { ErrorResponse } from "../../error";
 
 async function requiredPermissions(request: FastifyRequest) {
+  // `/internal/versions` エンドポイントは権限チェックをスキップ
+  if (request.url.startsWith("/internal/versions")) return;
+
   const user = request.user;
   if (!user.permissions.includes("write:requests")) {
     throw new ForbiddenError("Insufficient permissions");
@@ -77,8 +80,15 @@ async function autohooks(fastify: FastifyInstance): Promise<void> {
     audience: fastify.config.APP_URL ?? "http://localhost:8080/",
   });
 
-  fastify.addHook("onRequest", fastify.authenticate);
+  // 認証フックの追加。ただし `/internal/versions` ではスキップ
+  fastify.addHook("onRequest", async (request, reply) => {
+    if (!request.url.startsWith("/internal/versions")) {
+      await fastify.authenticate(request, reply);
+    }
+  });
+
   fastify.addHook("preHandler", requiredPermissions);
+
   fastify.addHook("onRoute", addErrorResponseSchema);
 }
 
