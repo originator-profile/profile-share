@@ -21,7 +21,7 @@
     "docs:ts": "typedoc",
     "docs:build": "docusaurus build --out-dir pages",
     "docs:preview": "docusaurus start",
-    "start": "pnpm --filter=@originator-profile/registry build:ui && profile-registry start"
+    "start": "pnpm --filter=@originator-profile/registry run --sequential \"/^build:ui$|^start$/\""
   },
   "devDependencies": {
     "@docusaurus/core": "^3.6.0",
