@@ -1,5 +1,5 @@
 import { Command, Flags } from "@oclif/core";
-import { signVc } from "@originator-profile/jwt-securing-mechanism";
+import { signJwtVc } from "@originator-profile/securing-mechanism";
 import type {
   CoreProfile,
   Image,
@@ -189,7 +189,7 @@ $ <%= config.bin %> <%= command.id %> \\
       : new Date();
     const expiredAt = flags["expired-at"] ?? addYears(new Date(), 1);
     const data = (await addDigestSri(input)) as MinVC;
-    const vc = await signVc(data, privateKey, {
+    const vc = await signJwtVc(data, privateKey, {
       issuedAt,
       expiredAt,
     });

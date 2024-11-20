@@ -2,7 +2,7 @@ import { SiteProfile, WebsiteProfile } from "@originator-profile/model";
 import {
   JwtVcDecoder,
   JwtVcVerifier,
-} from "@originator-profile/jwt-securing-mechanism";
+} from "@originator-profile/securing-mechanism";
 import { Keys, LocalKeys } from "@originator-profile/cryptography";
 import { OpsVerifier } from "../originator-profile-set/verify-ops";
 import {
@@ -36,9 +36,9 @@ export function SpVerifier(sp: SiteProfile, keys: Keys, issuer: string) {
         credential: decodedWsp,
       });
     }
-    const wspIssuer = decodedWsp.payload.issuer;
+    const wspIssuer = decodedWsp.doc.issuer;
     const cp = opsVerified.find(
-      (op) => op.core.payload.credentialSubject.id === wspIssuer,
+      (op) => op.core.doc.credentialSubject.id === wspIssuer,
     );
     if (!cp) {
       return new SiteProfileInvalid("Appropriate Core Profile not found", {
@@ -50,9 +50,8 @@ export function SpVerifier(sp: SiteProfile, keys: Keys, issuer: string) {
       });
     }
     const verifyWsp = JwtVcVerifier<WebsiteProfile>(
-      LocalKeys(cp.core.payload.credentialSubject.jwks),
-      cp.core.payload.credentialSubject.id,
-      decodeWsp,
+      LocalKeys(cp.core.doc.credentialSubject.jwks),
+      cp.core.doc.credentialSubject.id,
     );
 
     const credential = await verifyWsp(sp.credential);

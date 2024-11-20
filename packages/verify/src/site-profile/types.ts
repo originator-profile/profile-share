@@ -9,9 +9,10 @@ import {
 } from "./fetch-errors";
 import { SiteProfileInvalid, SiteProfileVerifyFailed } from "./verify-errors";
 import {
+  JwtVcDecodingResult,
   JwtVcVerificationResult,
-  JwtVcVerificationResultPayload,
-} from "@originator-profile/jwt-securing-mechanism";
+  VerifiedJwtVc,
+} from "@originator-profile/securing-mechanism";
 import { CoreProfileNotFound } from "../originator-profile-set/errors";
 
 export type FetchSiteProfileResult =
@@ -27,12 +28,13 @@ export type SpVerificationFailure = {
   originators: OpsVerificationResult;
   credential?:
     | JwtVcVerificationResult<WebsiteProfile>
+    | JwtVcDecodingResult<WebsiteProfile>
     | CoreProfileNotFound<WebsiteProfile>;
 };
 
 export type VerifiedSp = {
   originators: VerifiedOps;
-  credential: JwtVcVerificationResultPayload<WebsiteProfile>;
+  credential: VerifiedJwtVc<WebsiteProfile>;
 };
 
 export type SpVerificationResult =

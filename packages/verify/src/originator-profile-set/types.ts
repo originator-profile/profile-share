@@ -1,9 +1,9 @@
 import {
   JwtVcDecodingResult,
-  JwtVcDecodingResultPayload,
+  UnverifiedJwtVc,
   JwtVcVerificationResult,
-  JwtVcVerificationResultPayload,
-} from "@originator-profile/jwt-securing-mechanism";
+  VerifiedJwtVc,
+} from "@originator-profile/securing-mechanism";
 import {
   CoreProfile,
   Certificate as BasicCertificate,
@@ -28,9 +28,9 @@ export type OpDecodingFailure = {
 };
 /** 復号済み Originator Profile */
 export type DecodedOp = {
-  core: JwtVcDecodingResultPayload<CoreProfile>;
-  annotations?: JwtVcDecodingResultPayload<Certificate>[];
-  media: JwtVcDecodingResultPayload<WebMediaProfile>;
+  core: UnverifiedJwtVc<CoreProfile>;
+  annotations?: UnverifiedJwtVc<Certificate>[];
+  media: UnverifiedJwtVc<WebMediaProfile>;
 };
 /** Originator Profile 復号結果 */
 export type OpDecodingResult = DecodedOp | OpInvalid;
@@ -55,9 +55,9 @@ export type OpVerificationFailure = {
 };
 /** 検証済み Originator Profile */
 export type VerifiedOp = {
-  core: JwtVcVerificationResultPayload<CoreProfile>;
-  annotations?: JwtVcVerificationResultPayload<Certificate>[];
-  media?: JwtVcVerificationResultPayload<WebMediaProfile>;
+  core: VerifiedJwtVc<CoreProfile>;
+  annotations?: VerifiedJwtVc<Certificate>[];
+  media?: VerifiedJwtVc<WebMediaProfile>;
 };
 /** Originator Profile 検証結果 */
 export type OpVerificationResult = VerifiedOp | OpVerifyFailed;

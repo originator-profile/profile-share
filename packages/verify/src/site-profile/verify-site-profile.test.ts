@@ -1,8 +1,9 @@
 import { generateKey, LocalKeys } from "@originator-profile/cryptography";
 import {
-  JwtVcVerifyFailed,
-  signVc,
-} from "@originator-profile/jwt-securing-mechanism";
+  VcVerifyFailed,
+  VerifiedJwtVc,
+  signJwtVc,
+} from "@originator-profile/securing-mechanism";
 import {
   Certificate,
   CoreProfile,
@@ -11,9 +12,10 @@ import {
   SiteProfile,
   WebMediaProfile,
   WebsiteProfile,
+  Jwk,
 } from "@originator-profile/model";
 import { signCp } from "@originator-profile/sign";
-import { addYears, getUnixTime } from "date-fns";
+import { addYears, fromUnixTime, getUnixTime } from "date-fns";
 import { diffApply } from "just-diff-apply";
 import { describe, expect, test } from "vitest";
 import { SiteProfileInvalid, SiteProfileVerifyFailed } from "./verify-errors";
@@ -23,18 +25,22 @@ import {
 } from "../originator-profile-set/errors";
 import { SpVerifier } from "./verify-site-profile";
 
-const issuedAt = new Date();
-const expiredAt = addYears(new Date(), 10);
+const issuedAt = fromUnixTime(getUnixTime(new Date()));
+const expiredAt = addYears(issuedAt, 10);
 const signOptions = { issuedAt, expiredAt };
-const toVerifyResult = (vc: OpVc, jwt: string) => ({
-  payload: {
-    ...vc,
-    iss: vc.issuer,
-    sub: vc.credentialSubject.id,
-    iat: getUnixTime(issuedAt),
-    exp: getUnixTime(expiredAt),
-  },
-  jwt,
+const toVerifyResult = (
+  vc: OpVc,
+  jwt: string,
+  verificationKey: Jwk,
+): VerifiedJwtVc<OpVc> => ({
+  doc: vc,
+  issuedAt,
+  expiredAt,
+  algorithm: "ES256",
+  mediaType: "application/vc+jwt",
+  source: jwt,
+  verificationKey,
+  validated: false,
 });
 const patch = <T extends object>(...args: Parameters<typeof diffApply<T>>) => {
   const [source, diff] = args;
@@ -169,13 +175,15 @@ describe("Site Profileの検証", async () => {
   };
   const holderOp = {
     core: await signCp(holderCp, authority.privateKey, signOptions),
-    annotations: [await signVc(certificate, certifier.privateKey, signOptions)],
-    media: await signVc(wmp, authority.privateKey, signOptions),
+    annotations: [
+      await signJwtVc(certificate, certifier.privateKey, signOptions),
+    ],
+    media: await signJwtVc(wmp, authority.privateKey, signOptions),
   };
   const ops: OriginatorProfileSet = [authorityOp, certifierOp, holderOp];
   const sp: SiteProfile = {
     originators: ops,
-    credential: await signVc(wsp, holder.privateKey, signOptions),
+    credential: await signJwtVc(wsp, holder.privateKey, signOptions),
   };
 
   test("SiteProfileの検証に成功", async () => {
@@ -191,22 +199,36 @@ describe("Site Profileの検証", async () => {
     expect(resultSp).toStrictEqual({
       originators: [
         {
-          core: toVerifyResult(authorityCp, authorityOp.core),
+          core: toVerifyResult(
+            authorityCp,
+            authorityOp.core,
+            authority.publicKey,
+          ),
           annotations: undefined,
           media: undefined,
         },
         {
-          core: toVerifyResult(certifierCp, certifierOp.core),
+          core: toVerifyResult(
+            certifierCp,
+            certifierOp.core,
+            authority.publicKey,
+          ),
           annotations: undefined,
           media: undefined,
         },
         {
-          core: toVerifyResult(holderCp, holderOp.core),
-          annotations: [toVerifyResult(certificate, holderOp.annotations[0])],
-          media: toVerifyResult(wmp, holderOp.media),
+          core: toVerifyResult(holderCp, holderOp.core, authority.publicKey),
+          annotations: [
+            toVerifyResult(
+              certificate,
+              holderOp.annotations[0],
+              certifier.publicKey,
+            ),
+          ],
+          media: toVerifyResult(wmp, holderOp.media, authority.publicKey),
         },
       ],
-      credential: toVerifyResult(wsp, sp.credential),
+      credential: toVerifyResult(wsp, sp.credential, holder.publicKey),
     });
   });
 
@@ -222,7 +244,7 @@ describe("Site Profileの検証", async () => {
     ]);
     const evilSp = {
       originators: evilOps,
-      credential: await signVc(wsp, evil.privateKey, signOptions),
+      credential: await signJwtVc(wsp, evil.privateKey, signOptions),
     };
     const verify = SpVerifier(
       evilSp,
@@ -236,28 +258,28 @@ describe("Site Profileの検証", async () => {
     // @ts-expect-error verify failed Sp
     const { result: resultOp } = resultSp.result.originators;
     expect(resultOp[0]).toStrictEqual({
-      core: toVerifyResult(authorityCp, authorityOp.core),
+      core: toVerifyResult(authorityCp, authorityOp.core, authority.publicKey),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[1]).toStrictEqual({
-      core: toVerifyResult(certifierCp, certifierOp.core),
+      core: toVerifyResult(certifierCp, certifierOp.core, authority.publicKey),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[2]).instanceOf(OpVerifyFailed);
-    expect(resultOp[2].result.core).instanceOf(JwtVcVerifyFailed);
+    expect(resultOp[2].result.core).instanceOf(VcVerifyFailed);
     expect(resultOp[2].result.annotations[0]).toStrictEqual(
-      toVerifyResult(certificate, holderOp.annotations[0]),
+      toVerifyResult(certificate, holderOp.annotations[0], certifier.publicKey),
     );
     expect(resultOp[2].result.media).toStrictEqual(
-      toVerifyResult(wmp, holderOp.media),
+      toVerifyResult(wmp, holderOp.media, authority.publicKey),
     );
   });
 
   test("SiteProfileのうちWSP部分の署名の検証に失敗", async () => {
     const evil = await generateKey();
-    const evilWsp = await signVc(wsp, evil.privateKey, signOptions);
+    const evilWsp = await signJwtVc(wsp, evil.privateKey, signOptions);
     const evilSp = {
       originators: ops,
       credential: evilWsp,
@@ -275,22 +297,36 @@ describe("Site Profileの検証", async () => {
     const { originators: resultOps, credential: resultWsp } = resultSp.result;
     expect(resultOps).toStrictEqual([
       {
-        core: toVerifyResult(authorityCp, authorityOp.core),
+        core: toVerifyResult(
+          authorityCp,
+          authorityOp.core,
+          authority.publicKey,
+        ),
         annotations: undefined,
         media: undefined,
       },
       {
-        core: toVerifyResult(certifierCp, certifierOp.core),
+        core: toVerifyResult(
+          certifierCp,
+          certifierOp.core,
+          authority.publicKey,
+        ),
         annotations: undefined,
         media: undefined,
       },
       {
-        core: toVerifyResult(holderCp, holderOp.core),
-        annotations: [toVerifyResult(certificate, holderOp.annotations[0])],
-        media: toVerifyResult(wmp, holderOp.media),
+        core: toVerifyResult(holderCp, holderOp.core, authority.publicKey),
+        annotations: [
+          toVerifyResult(
+            certificate,
+            holderOp.annotations[0],
+            certifier.publicKey,
+          ),
+        ],
+        media: toVerifyResult(wmp, holderOp.media, authority.publicKey),
       },
     ]);
-    expect(resultWsp).instanceOf(JwtVcVerifyFailed);
+    expect(resultWsp).instanceOf(VcVerifyFailed);
   });
 
   test("WSPのイシュアーと一致する保有者のCPがない", async () => {
@@ -301,7 +337,7 @@ describe("Site Profileの検証", async () => {
         value: opId.invalid,
       },
     ]);
-    const invalidCredential = await signVc(
+    const invalidCredential = await signJwtVc(
       invalidWsp,
       holder.privateKey,
       signOptions,
@@ -324,19 +360,25 @@ describe("Site Profileの検証", async () => {
     // @ts-expect-error invalid Sp
     const { originators: resultOps, credential: resultWsp } = resultSp.result;
     expect(resultOps[0]).toStrictEqual({
-      core: toVerifyResult(authorityCp, authorityOp.core),
+      core: toVerifyResult(authorityCp, authorityOp.core, authority.publicKey),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOps[1]).toStrictEqual({
-      core: toVerifyResult(certifierCp, certifierOp.core),
+      core: toVerifyResult(certifierCp, certifierOp.core, authority.publicKey),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOps[2]).toStrictEqual({
-      core: toVerifyResult(holderCp, holderOp.core),
-      annotations: [toVerifyResult(certificate, holderOp.annotations[0])],
-      media: toVerifyResult(wmp, holderOp.media),
+      core: toVerifyResult(holderCp, holderOp.core, authority.publicKey),
+      annotations: [
+        toVerifyResult(
+          certificate,
+          holderOp.annotations[0],
+          certifier.publicKey,
+        ),
+      ],
+      media: toVerifyResult(wmp, holderOp.media, authority.publicKey),
     });
     expect(resultWsp).instanceOf(CoreProfileNotFound);
   });

@@ -9,7 +9,7 @@ import { importJWK, SignJWT } from "jose";
  * @param privateKey プライベート鍵
  * @return JWT でエンコードされた VC
  */
-export async function signVc<T extends OpVc>(
+export async function signJwtVc<T extends OpVc>(
   vc: T,
   privateKey: Jwk,
   options: {

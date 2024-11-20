@@ -8,9 +8,9 @@ import {
 import { addYears, getUnixTime } from "date-fns";
 import { decodeJwt, decodeProtectedHeader } from "jose";
 import { describe, expect, test } from "vitest";
-import { signVc } from "./sign-vc";
+import { signJwtVc } from "./sign-vc";
 
-test("signVc() returns valid Website Profile", async () => {
+test("signJwtVc() returns valid Website Profile", async () => {
   const issuedAt = new Date();
   const expiredAt = addYears(new Date(), 10);
   const wsp: WebsiteProfile = {
@@ -35,7 +35,7 @@ test("signVc() returns valid Website Profile", async () => {
     },
   };
   const { publicKey, privateKey } = await generateKey();
-  const jwt = await signVc(wsp, privateKey, { issuedAt, expiredAt });
+  const jwt = await signJwtVc(wsp, privateKey, { issuedAt, expiredAt });
   expect(decodeProtectedHeader(jwt).kid).toBe(publicKey.kid);
   const valid = decodeJwt(jwt);
   expect(valid).toStrictEqual({
@@ -90,7 +90,7 @@ describe("WMP", () => {
       },
     };
     const { publicKey, privateKey } = await generateKey();
-    const jwt = await signVc(wmp, privateKey, { issuedAt, expiredAt });
+    const jwt = await signJwtVc(wmp, privateKey, { issuedAt, expiredAt });
     expect(decodeProtectedHeader(jwt).kid).toBe(publicKey.kid);
     const valid = decodeJwt(jwt);
     expect(valid).toStrictEqual({
@@ -134,7 +134,7 @@ describe("CA", () => {
       ],
     };
     const { publicKey, privateKey } = await generateKey();
-    const jwt = await signVc(ca, privateKey, { issuedAt, expiredAt });
+    const jwt = await signJwtVc(ca, privateKey, { issuedAt, expiredAt });
     expect(decodeProtectedHeader(jwt).kid).toBe(publicKey.kid);
     const valid = decodeJwt(jwt);
     expect(valid).toStrictEqual({
@@ -187,7 +187,7 @@ describe("CA", () => {
       ],
     };
     const { publicKey, privateKey } = await generateKey();
-    const jwt = await signVc(ca, privateKey, { issuedAt, expiredAt });
+    const jwt = await signJwtVc(ca, privateKey, { issuedAt, expiredAt });
     expect(decodeProtectedHeader(jwt).kid).toBe(publicKey.kid);
     const valid = decodeJwt(jwt);
     expect(valid).toStrictEqual({

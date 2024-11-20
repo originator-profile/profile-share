@@ -1,8 +1,9 @@
 import { generateKey } from "@originator-profile/cryptography";
 import {
-  JwtVcDecodeFailed,
-  signVc,
-} from "@originator-profile/jwt-securing-mechanism";
+  UnverifiedJwtVc,
+  signJwtVc,
+  VcDecodeFailed,
+} from "@originator-profile/securing-mechanism";
 import {
   Certificate,
   CoreProfile,
@@ -11,24 +12,22 @@ import {
   WebMediaProfile,
 } from "@originator-profile/model";
 import { signCp } from "@originator-profile/sign";
-import { addYears, getUnixTime } from "date-fns";
+import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { diffApply } from "just-diff-apply";
 import { describe, expect, test } from "vitest";
 import { decodeOps } from "./decode-ops";
 import { OpInvalid, OpsInvalid, OpsVerifyFailed } from "./errors";
 
-const issuedAt = new Date();
-const expiredAt = addYears(new Date(), 10);
+const issuedAt = fromUnixTime(getUnixTime(new Date()));
+const expiredAt = addYears(issuedAt, 10);
 const signOptions = { issuedAt, expiredAt };
-const toVerifyResult = (vc: OpVc, jwt: string) => ({
-  payload: {
-    ...vc,
-    iss: vc.issuer,
-    sub: vc.credentialSubject.id,
-    iat: getUnixTime(issuedAt),
-    exp: getUnixTime(expiredAt),
-  },
-  jwt,
+const toDecodeResult = (vc: OpVc, jwt: string): UnverifiedJwtVc<OpVc> => ({
+  doc: vc,
+  issuedAt,
+  expiredAt,
+  algorithm: "ES256",
+  mediaType: "application/vc+jwt",
+  source: jwt,
 });
 const patch = <T extends object>(...args: Parameters<typeof diffApply<T>>) => {
   const [source, diff] = args;
@@ -135,8 +134,10 @@ describe("OPSの復号", async () => {
   };
   const holderOp = {
     core: await signCp(cp, authority.privateKey, signOptions),
-    annotations: [await signVc(certificate, certifier.privateKey, signOptions)],
-    media: await signVc(wmp, authority.privateKey, signOptions),
+    annotations: [
+      await signJwtVc(certificate, certifier.privateKey, signOptions),
+    ],
+    media: await signJwtVc(wmp, authority.privateKey, signOptions),
   };
   const ops: OriginatorProfileSet = [authorityOp, certifierOp, holderOp];
 
@@ -147,19 +148,19 @@ describe("OPSの復号", async () => {
     expect(resultOps).not.instanceOf(OpsVerifyFailed);
     expect(resultOps).toStrictEqual([
       {
-        core: toVerifyResult(authorityCp, authorityOp.core),
+        core: toDecodeResult(authorityCp, authorityOp.core),
         annotations: undefined,
         media: undefined,
       },
       {
-        core: toVerifyResult(certifierCp, certifierOp.core),
+        core: toDecodeResult(certifierCp, certifierOp.core),
         annotations: undefined,
         media: undefined,
       },
       {
-        core: toVerifyResult(cp, holderOp.core),
-        annotations: [toVerifyResult(certificate, holderOp.annotations[0])],
-        media: toVerifyResult(wmp, holderOp.media),
+        core: toDecodeResult(cp, holderOp.core),
+        annotations: [toDecodeResult(certificate, holderOp.annotations[0])],
+        media: toDecodeResult(wmp, holderOp.media),
       },
     ]);
   });
@@ -174,22 +175,22 @@ describe("OPSの復号", async () => {
     // @ts-expect-error invalid Ops
     const { result: resultOp } = resultOps;
     expect(resultOp[0]).toStrictEqual({
-      core: toVerifyResult(authorityCp, authorityOp.core),
+      core: toDecodeResult(authorityCp, authorityOp.core),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[1]).toStrictEqual({
-      core: toVerifyResult(certifierCp, certifierOp.core),
+      core: toDecodeResult(certifierCp, certifierOp.core),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[2]).instanceOf(OpInvalid);
-    expect(resultOp[2].result.core).instanceOf(JwtVcDecodeFailed);
+    expect(resultOp[2].result.core).instanceOf(VcDecodeFailed);
     expect(resultOp[2].result.annotations[0]).toStrictEqual(
-      toVerifyResult(certificate, holderOp.annotations[0]),
+      toDecodeResult(certificate, holderOp.annotations[0]),
     );
     expect(resultOp[2].result.media).toStrictEqual(
-      toVerifyResult(wmp, holderOp.media),
+      toDecodeResult(wmp, holderOp.media),
     );
   });
 
@@ -203,22 +204,22 @@ describe("OPSの復号", async () => {
     // @ts-expect-error invalid Ops
     const { result: resultOp } = resultOps;
     expect(resultOp[0]).toStrictEqual({
-      core: toVerifyResult(authorityCp, authorityOp.core),
+      core: toDecodeResult(authorityCp, authorityOp.core),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[1]).toStrictEqual({
-      core: toVerifyResult(certifierCp, certifierOp.core),
+      core: toDecodeResult(certifierCp, certifierOp.core),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[2]).instanceOf(OpInvalid);
     expect(resultOp[2].result.core).toStrictEqual(
-      toVerifyResult(cp, holderOp.core),
+      toDecodeResult(cp, holderOp.core),
     );
-    expect(resultOp[2].result.annotations[0]).instanceOf(JwtVcDecodeFailed);
+    expect(resultOp[2].result.annotations[0]).instanceOf(VcDecodeFailed);
     expect(resultOp[2].result.media).toStrictEqual(
-      toVerifyResult(wmp, holderOp.media),
+      toDecodeResult(wmp, holderOp.media),
     );
   });
 
@@ -232,22 +233,22 @@ describe("OPSの復号", async () => {
     // @ts-expect-error invalid Ops
     const { result: resultOp } = resultOps;
     expect(resultOp[0]).toStrictEqual({
-      core: toVerifyResult(authorityCp, authorityOp.core),
+      core: toDecodeResult(authorityCp, authorityOp.core),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[1]).toStrictEqual({
-      core: toVerifyResult(certifierCp, certifierOp.core),
+      core: toDecodeResult(certifierCp, certifierOp.core),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[2]).instanceOf(OpInvalid);
     expect(resultOp[2].result.core).toStrictEqual(
-      toVerifyResult(cp, holderOp.core),
+      toDecodeResult(cp, holderOp.core),
     );
     expect(resultOp[2].result.annotations[0]).toStrictEqual(
-      toVerifyResult(certificate, holderOp.annotations[0]),
+      toDecodeResult(certificate, holderOp.annotations[0]),
     );
-    expect(resultOp[2].result.media).instanceOf(JwtVcDecodeFailed);
+    expect(resultOp[2].result.media).instanceOf(VcDecodeFailed);
   });
 });

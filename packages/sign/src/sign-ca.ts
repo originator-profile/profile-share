@@ -1,4 +1,4 @@
-import { signVc } from "@originator-profile/jwt-securing-mechanism";
+import { signJwtVc } from "@originator-profile/securing-mechanism";
 import type { ArticleCA, Jwk, Target } from "@originator-profile/model";
 import type { HashAlgorithm } from "websri";
 import { createDigestSri, createIntegrity } from "./integrity/";
@@ -58,5 +58,5 @@ export async function signCa(
   await fetchAndSetDigestSri(integrityAlg, content);
   await fetchAndSetTargetIntegrity(integrityAlg, content, doc);
 
-  return await signVc(content, privateKey, { alg, issuedAt, expiredAt });
+  return await signJwtVc(content, privateKey, { alg, issuedAt, expiredAt });
 }

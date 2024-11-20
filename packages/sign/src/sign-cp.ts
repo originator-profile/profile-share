@@ -1,5 +1,5 @@
 import { CoreProfile, Jwk } from "@originator-profile/model";
-import { signVc } from "@originator-profile/jwt-securing-mechanism";
+import { signJwtVc } from "@originator-profile/securing-mechanism";
 
 /**
  * CP への署名
@@ -17,5 +17,5 @@ export async function signCp(
     expiredAt: Date;
   },
 ): Promise<string> {
-  return signVc(cp, privateKey, { ...options, alg: "ES256" });
+  return signJwtVc(cp, privateKey, { ...options, alg: "ES256" });
 }
