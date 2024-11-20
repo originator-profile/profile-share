@@ -2,7 +2,6 @@
 /docs/* /:splat
 /registry/operation/ad-profile-pair-issuance/ /registry/operation/ad-profile-pair-installation/
 /registry/assets/erd/ /spec/er/ 301
-/model/* /spec/model/:splat 301
 /registry/wordpress-integration/ /registry/integration/wordpress-integration/ 301
 /registry/website-integration/ /registry/integration/website-integration/ 301
 /registry/document-profile-registry-creation/ /registry/integration/document-profile-registry-creation/ 301

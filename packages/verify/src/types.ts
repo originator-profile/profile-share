@@ -1,4 +1,4 @@
-import { Op, Dp, JwtOpPayload, JwtDpPayload } from "@originator-profile/model";
+import { Op, JwtOpPayload, Dp, JwtDpPayload } from "@originator-profile/model";
 import { JWTVerifyResult, ResolvedKey } from "jose";
 import {
   ProfileClaimsValidationFailed,

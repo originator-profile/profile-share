@@ -10,6 +10,8 @@
   },
   "devDependencies": {
     "@originator-profile/core": "workspace:*",
+    "@originator-profile/cryptography": "workspace:*",
+    "@originator-profile/jwt-securing-mechanism": "workspace:*",
     "@originator-profile/model": "workspace:*",
     "@originator-profile/sign": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
@@ -23,9 +25,13 @@
     "happy-dom": "^15.8.3",
     "jose": "^5.9.6",
     "jsonld": "^8.3.2",
+    "just-diff-apply": "^5.5.0",
     "just-typeof": "^3.2.0",
     "msw": "^2.6.0",
     "playwright": "1.44.1",
-    "vitest": "^2.1.4"
+    "urlpattern-polyfill": "^10.0.0",
+    "vite": "^5.4.10",
+    "vitest": "^2.1.4",
+    "websri": "^0.1.0"
   }
 }

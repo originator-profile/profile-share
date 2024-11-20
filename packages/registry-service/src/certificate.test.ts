@@ -1,10 +1,8 @@
 import { test, expect, describe, vi } from "vitest";
-import { Prisma } from "@prisma/client";
 import crypto from "node:crypto";
-import { decodeJwt } from "jose";
-import { JwtOpPayload } from "@originator-profile/model";
-import { generateKey } from "@originator-profile/sign";
-import { isOpHolder, isOpCredential } from "@originator-profile/core";
+import { Prisma } from "@prisma/client";
+import { generateKey } from "@originator-profile/cryptography";
+import { decodeSdJwt } from "@originator-profile/verify";
 import { AccountService } from "./account";
 import { ValidatorService } from "./validator";
 import { CertificateService } from "./certificate";
@@ -28,8 +26,8 @@ describe("CertificateService", () => {
     expect(data).toBe(true);
   });
 
-  test("signOp() return a valid JWT", async () => {
-    const id = crypto.randomUUID();
+  test("signOriginatorProfile() return a valid SD-JWT", async () => {
+    const issuerId = crypto.randomUUID();
     const accountId = crypto.randomUUID();
     const { publicKey, privateKey } = await generateKey();
     const dummyAccount = {
@@ -59,55 +57,55 @@ describe("CertificateService", () => {
         accountId,
         // @ts-expect-error assert
         certifier: {
-          id,
+          id: issuerId,
           ...dummyAccount,
           domainName: "example.com",
           url: "https://example.",
         },
-        certifierId: id,
+        certifierId: issuerId,
         verifier: {
-          id,
+          id: issuerId,
           ...dummyAccount,
           domainName: "example.com",
           url: "https://example.",
         },
-        verifierId: id,
+        verifierId: issuerId,
         name: "ブランドセーフティ認証",
         image: null,
         issuedAt: new Date(),
         expiredAt: new Date(),
       },
     ]);
-    prisma.accounts.findMany.mockResolvedValue([
-      {
-        id,
+
+    prisma.accounts.findUnique
+      .mockResolvedValueOnce({
+        id: issuerId,
         ...dummyAccount,
         domainName: "example.org",
         url: "https://example.org/",
-      },
-    ]);
-    prisma.accounts.findUnique.mockResolvedValue({
-      id: accountId,
-      ...dummyAccount,
-      domainName: "example.com",
-      url: "https://example.com/",
-    });
+      })
+      .mockResolvedValueOnce({
+        id: accountId,
+        ...dummyAccount,
+        domainName: "example.com",
+        url: "https://example.com/",
+      });
     prisma.keys.findMany.mockResolvedValue([
       { id: publicKey.kid, accountId, jwk: publicKey as Prisma.JsonValue },
     ]);
-    const jwt = await certificate.signOp(id, accountId, privateKey);
-    const valid: JwtOpPayload = decodeJwt(jwt);
+    const sdJwt = await certificate.signOriginatorProfile(
+      issuerId,
+      accountId,
+      privateKey,
+    );
+    const valid = decodeSdJwt(sdJwt);
     expect(valid).toMatchObject({
-      iss: "example.org",
+      iss: "https://example.org/",
       sub: "example.com",
-      "https://originator-profile.org/op": { jwks: { keys: [publicKey] } },
+      jwks: { keys: [publicKey] },
+      holder: { url: "https://example.com/" },
+      issuer: { url: "https://example.org/" },
     });
-    const holder =
-      valid["https://originator-profile.org/op"]?.item.find(isOpHolder);
-    expect(holder?.url).toBe("https://example.com/");
-    expect(holder).not.toHaveProperty("phoneNumber");
-    const credential =
-      valid["https://originator-profile.org/op"]?.item.find(isOpCredential);
-    expect(credential?.name).toBe("ブランドセーフティ認証");
+    expect(valid.holder).not.toHaveProperty("phoneNumber");
   });
 });

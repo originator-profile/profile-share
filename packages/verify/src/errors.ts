@@ -1,6 +1,6 @@
 import { ErrorObject } from "ajv";
 import { JWTPayload } from "jose";
-import { JOSEError } from "jose/dist/types/util/errors";
+import { JOSEError } from "jose/errors";
 import { DecodeResult, VerifyTokenResult } from "./types";
 
 export class ProfileGenericError extends Error {

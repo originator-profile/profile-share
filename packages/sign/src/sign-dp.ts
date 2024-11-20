@@ -1,10 +1,11 @@
 import { importJWK, SignJWT } from "jose";
 import { getUnixTime } from "date-fns";
+import { createThumbprint } from "@originator-profile/cryptography";
 import { Dp, Jwk, JwtDpPayload } from "@originator-profile/model";
-import { createThumbprint } from "./thumbprint";
 
 /**
  * DP への署名
+ * @deprecated
  * @param dp DP オブジェクト
  * @param privateKey プライベート鍵
  * @param alg Algorithm identifier

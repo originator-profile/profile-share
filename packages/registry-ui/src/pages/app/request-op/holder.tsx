@@ -102,6 +102,7 @@ function HolderForm({
           <fieldset className="inline-flex gap-1 ml-auto">
             {/* Enter キーで下書き保存する。*/}
             <button
+              type="button"
               className="hidden"
               onClick={(e) => {
                 e.preventDefault();
@@ -109,6 +110,7 @@ function HolderForm({
               }}
             />
             <button
+              type="button"
               className="jumpu-text-button text-danger"
               onClick={(e) => {
                 e.preventDefault();

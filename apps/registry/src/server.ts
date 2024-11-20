@@ -1,13 +1,13 @@
-import fastify, { FastifyInstance } from "fastify";
-import FastifyVite from "@fastify/vite";
 import autoload from "@fastify/autoload";
 import cors from "@fastify/cors";
 import env from "@fastify/env";
 import helmet from "@fastify/helmet";
-import httpErrorsEnhanced from "fastify-http-errors-enhanced";
+import vite from "@fastify/vite";
 import { Config, Services } from "@originator-profile/registry-service";
+import fastify, { FastifyInstance } from "fastify";
+import httpErrorsEnhanced from "fastify-http-errors-enhanced";
 import { resolve } from "node:path";
-import { swaggerSetup } from "./plugins";
+import { swaggerSetup, versionInfo } from "./plugins";
 
 export type Options = {
   isDev: boolean;
@@ -42,6 +42,7 @@ export async function create(options: Options): Promise<Server> {
   }
 
   await app.register(swaggerSetup, options);
+  await app.register(versionInfo);
 
   await app.register(autoload, {
     dir: options.routes ?? resolve(__dirname, "routes"),
@@ -49,14 +50,20 @@ export async function create(options: Options): Promise<Server> {
     autoHooks: true,
     cascadeHooks: true,
   });
-  app.register(cors, { origin: true, credentials: app.config.BASIC_AUTH });
+
+  await app.register(cors, {
+    origin: true,
+    credentials: app.config.BASIC_AUTH,
+  });
+
   const viteHmr =
     app.config.NODE_ENV === "development"
       ? ["http://localhost:24678", "ws://localhost:24678"]
       : [];
   const staticServer =
     app.config.NODE_ENV === "development" ? ["http://localhost:8081"] : [];
-  app.register(helmet, {
+
+  await app.register(helmet, {
     hsts: { preload: true },
     contentSecurityPolicy: {
       directives: {
@@ -82,15 +89,13 @@ export async function create(options: Options): Promise<Server> {
 
   const REGISTRY_ROOT = resolve(require.main?.path ?? "", "..");
 
-  await app.register(FastifyVite, {
+  await app.register(vite, {
     dev: options.isDev,
     root: REGISTRY_ROOT,
     spa: true,
   });
 
-  app.after(() => {
-    app.decorate("services", Services({ config: app.config }));
-  });
+  app.decorate("services", Services({ config: app.config }));
 
   return app;
 }

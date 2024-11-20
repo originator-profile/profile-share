@@ -1,9 +1,10 @@
 import { CompactSign, importJWK } from "jose";
-import { createThumbprint } from "./thumbprint";
+import { createThumbprint } from "@originator-profile/cryptography";
 import { Jwk } from "@originator-profile/model";
 
 /**
  * 対象のテキストへの署名
+ * @deprecated
  * @param body 対象のテキスト
  * @param privateKey プライベート鍵
  * @param alg Algorithm identifier

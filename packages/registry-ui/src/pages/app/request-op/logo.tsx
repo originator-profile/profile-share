@@ -169,6 +169,7 @@ export default function Logo() {
             )}
             <div className="flex p-10 justify-center">
               <button
+                type="button"
                 className="jumpu-button px-8 bg-[#00AFB4] border-[#00AFB4] font-bold"
                 onClick={onSubmit}
                 disabled={submitButtonDisabled}

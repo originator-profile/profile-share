@@ -5,7 +5,10 @@
   "entryPointStrategy": "packages",
   "entryPoints": [
     "packages/core",
+    "packages/cryptography",
+    "packages/jwt-securing-mechanism",
     "packages/model",
+    "packages/presentation",
     "packages/registry-db",
     "packages/registry-service",
     "packages/sign",

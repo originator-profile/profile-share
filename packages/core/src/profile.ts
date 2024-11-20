@@ -2,6 +2,7 @@ import { Profile, Op, Dp } from "@originator-profile/model";
 
 /**
  * Profile が Op 型であるか否か
+ * @deprecated
  * @param profile
  * @return Op 型であれば true、それ以外ならば false
  */
@@ -11,6 +12,7 @@ export function isOp(profile: Profile): profile is Op {
 
 /**
  * Profile が Dp 型であるか否か
+ * @deprecated
  * @param profile
  * @return Dp 型であれば true、それ以外ならば false
  */

@@ -9,8 +9,9 @@ export class CertIssue extends Command {
   static description = "OP の発行";
   static flags = {
     identity: privateKey({ required: true }),
-    certifier: accountId({
-      summary: "認証機関 ID またはドメイン名",
+    issuer: accountId({
+      summary: "OP 発行機関の ID またはドメイン名",
+      aliases: ["certifier"],
       required: true,
     }),
     holder: accountId({
@@ -25,13 +26,19 @@ export class CertIssue extends Command {
       description:
         "この日時に既に失効している資格情報を含めない。デフォルトは issued-at と同じ日時。",
     }),
+    format: Flags.string({
+      summary: "データ形式",
+      char: "f",
+      options: ["sd-jwt", "jwt"],
+      default: "sd-jwt",
+    }),
   };
 
   async run(): Promise<void> {
     const { flags } = await this.parse(CertIssue);
     const services = Services({ config });
-    const isCertifier = await services.certificate.isCertifier(flags.certifier);
-    if (!isCertifier) this.error("Invalid certifier.");
+    const isCertifier = await services.certificate.isCertifier(flags.issuer);
+    if (!isCertifier) this.error("Invalid issuer.");
     const jwk = flags.identity;
     const issuedAt = flags["issued-at"]
       ? new Date(flags["issued-at"])
@@ -39,17 +46,30 @@ export class CertIssue extends Command {
     const expiredAt = flags["expired-at"] ?? addYears(new Date(), 1);
     const validAt = flags["valid-at"] ? new Date(flags["valid-at"]) : issuedAt;
 
-    const jwt = await services.certificate.signOp(
-      flags.certifier,
-      flags.holder,
-      jwk,
-      { issuedAt, expiredAt, validAt },
-    );
+    if (flags.format === "sd-jwt") {
+      const sdJwt = await services.certificate.signOriginatorProfile(
+        flags.issuer,
+        flags.holder,
+        jwk,
+        { issuedAt, expiredAt, validAt },
+      );
 
-    const opId = await services.certificate.issue(flags.certifier, jwt);
+      this.log(sdJwt);
+    }
 
-    await services.account.publishProfile(flags.holder, opId);
+    if (flags.format === "jwt") {
+      const jwt = await services.certificate.signOp(
+        flags.issuer,
+        flags.holder,
+        jwk,
+        { issuedAt, expiredAt, validAt },
+      );
 
-    this.log("Published.");
+      const opId = await services.certificate.issue(flags.issuer, jwt);
+
+      await services.account.publishProfile(flags.holder, opId);
+
+      this.log("Published.");
+    }
   }
 }
