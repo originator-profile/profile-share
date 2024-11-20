@@ -57,6 +57,7 @@ running command...
 * [`profile-registry admin:create`](#profile-registry-admincreate)
 * [`profile-registry admin:delete`](#profile-registry-admindelete)
 * [`profile-registry advertiser:sign`](#profile-registry-advertisersign)
+* [`profile-registry ca:sign`](#profile-registry-casign)
 * [`profile-registry cert:issue`](#profile-registry-certissue)
 * [`profile-registry db:init`](#profile-registry-dbinit)
 * [`profile-registry db:prisma`](#profile-registry-dbprisma)
@@ -408,6 +409,94 @@ FLAG DESCRIPTIONS
     "title": "広告名",
     "image": "https://example.com/image.png",
     "description": "広告の説明"
+    }
+```
+
+## `profile-registry ca:sign`
+
+Content Attestation の作成
+
+```
+USAGE
+  $ profile-registry ca:sign --url <value> -i <value> --input <filepath> [--issued-at <value>] [--expired-at
+    <value>]
+
+FLAGS
+  -i, --identity=<value>    (required) プライベート鍵のファイルパス
+      --expired-at=<value>  有効期限 (ISO 8601)
+      --input=<filepath>    (required) 入力ファイルのパス (JSON 形式)
+      --issued-at=<value>   発行日時 (ISO 8601)
+      --url=<value>         (required) 取得するウェブページの URL
+
+DESCRIPTION
+  Content Attestation の作成
+
+  標準出力に Content Attestation を出力します。
+
+EXAMPLES
+  $ profile-registry ca:sign \
+      --url https://example.com/ \
+      -i account-key.example.priv.json \
+      --input article-content-attestation.example.json
+
+FLAG DESCRIPTIONS
+  -i, --identity=<value>  プライベート鍵のファイルパス
+
+    プライベート鍵のファイルパスを渡してください。プライベート鍵は JWK 形式か、PEM base64 でエンコードされた PKCS #8
+    形式にしてください。
+
+  --expired-at=<value>  有効期限 (ISO 8601)
+
+    日付のみの場合、その日の 24:00:00.000 より前まで有効、それ以外の場合、期限切れとなる日付・時刻・秒を指定します。
+
+  --input=<filepath>  入力ファイルのパス (JSON 形式)
+
+    Article Content Attestation の例:
+
+    {
+    "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://originator-profile.org/ns/credentials/v1",
+    "https://originator-profile.org/ns/cip/v1",
+    {
+    "@language": "ja"
+    }
+    ],
+    "type": [
+    "VerifiableCredential",
+    "ContentAttestation"
+    ],
+    "issuer": "dns:example.com",
+    "credentialSubject": {
+    "id": "urn:uuid:78550fa7-f846-4e0f-ad5c-8d34461cb95b",
+    "type": "Article",
+    "headline": "<Webページのタイトル>",
+    "image": {
+    "id": "https://media.example.com/image.png"
+    },
+    "description": "<Webページの説明>",
+    "author": [
+    "山田花子"
+    ],
+    "editor": [
+    "山田太郎"
+    ],
+    "datePublished": "2023-07-04T19:14:00Z",
+    "dateModified": "2023-07-04T19:14:00Z",
+    "genre": "Arts & Entertainment"
+    },
+    "allowedUrl": "https://media.example.com/articles/2024-06-30",
+    "target": [
+    {
+    "type": "TextTargetIntegrity",
+    "cssSelector": "<CSS セレクター>",
+    "integrity": "<省略可能>"
+    },
+    {
+    "type": "ExternalResourceTargetIntegrity",
+    "integrity": "sha256-+M3dMZXeSIwAP8BsIAwxn5ofFWUtaoSoDfB+/J8uXMo="
+    }
+    ]
     }
 ```
 
@@ -905,10 +994,10 @@ EXAMPLES
       --id www.example.com \
       --input website-profile.json
 
-      $ profile-registry sign \
-          -i example.priv.json \
-          --id example.org \
-          --input web-media-profile.json
+  $ profile-registry sign \
+      -i example.priv.json \
+      --id example.org \
+      --input web-media-profile.json
 
 FLAG DESCRIPTIONS
   -i, --identity=<value>  プライベート鍵のファイルパス

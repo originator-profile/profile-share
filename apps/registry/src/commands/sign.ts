@@ -170,10 +170,10 @@ $ <%= config.bin %> <%= command.id %> \\
     --id www.example.com \\
     --input website-profile.json`,
     `\
-    $ <%= config.bin %> <%= command.id %> \\
-        -i example.priv.json \\
-        --id example.org \\
-        --input web-media-profile.json`,
+$ <%= config.bin %> <%= command.id %> \\
+    -i example.priv.json \\
+    --id example.org \\
+    --input web-media-profile.json`,
   ];
 
   async run(): Promise<void> {
