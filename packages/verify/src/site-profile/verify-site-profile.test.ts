@@ -323,7 +323,6 @@ describe("Site Profileの検証", async () => {
     expect(resultSp).instanceOf(SiteProfileInvalid);
     // @ts-expect-error invalid Sp
     const { originators: resultOps, credential: resultWsp } = resultSp.result;
-    console.log(JSON.stringify(resultOps, null, 2));
     expect(resultOps[0]).toStrictEqual({
       core: toVerifyResult(authorityCp, authorityOp.core),
       annotations: undefined,
