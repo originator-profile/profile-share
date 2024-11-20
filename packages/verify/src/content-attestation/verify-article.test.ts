@@ -1,29 +1,30 @@
 import { generateKey, LocalKeys } from "@originator-profile/cryptography";
-import {
-  JwtVcDecoder,
-  JwtVcValidator,
-  signVc,
-} from "@originator-profile/jwt-securing-mechanism";
+import { VcValidator, signJwtVc } from "@originator-profile/securing-mechanism";
 import { createIntegrity } from "@originator-profile/sign";
-import { ArticleCA, ContentAttestation } from "@originator-profile/model";
-import { addYears, getUnixTime } from "date-fns";
+import { ArticleCA, Jwk } from "@originator-profile/model";
+import { addYears, fromUnixTime, getUnixTime } from "date-fns";
 import { beforeEach, describe, expect, test } from "vitest";
 import { CaInvalid, CaVerifyFailed } from "./errors";
+import { VerifiedCa } from "./types";
 import { CaVerifier } from "./verify-content-attestation";
 import { diffApply } from "just-diff-apply";
 
-const issuedAt = new Date();
-const expiredAt = addYears(new Date(), 10);
+const issuedAt = fromUnixTime(getUnixTime(new Date()));
+const expiredAt = addYears(issuedAt, 10);
 const signOptions = { issuedAt, expiredAt };
-const toVerifyResult = (article: ArticleCA, jwt: string) => ({
-  payload: {
-    ...article,
-    iss: article.issuer,
-    sub: article.credentialSubject.id,
-    iat: getUnixTime(issuedAt),
-    exp: getUnixTime(expiredAt),
-  },
-  jwt,
+const toVerifyResult = (
+  article: ArticleCA,
+  jwt: string,
+  verificationKey: Jwk,
+): VerifiedCa<ArticleCA> => ({
+  doc: article,
+  issuedAt,
+  expiredAt,
+  algorithm: "ES256",
+  mediaType: "application/vc+jwt",
+  source: jwt,
+  verificationKey,
+  validated: true,
 });
 const patch = <T extends object>(...args: Parameters<typeof diffApply<T>>) => {
   const [source, diff] = args;
@@ -57,7 +58,7 @@ describe("ArticleCAの検証", async () => {
   beforeEach(() => {
     document.body.textContent = "ok";
   });
-  const decoder = JwtVcDecoder<ContentAttestation>();
+  const validator = VcValidator<VerifiedCa<ArticleCA>>(ArticleCA);
   const issuer = await generateKey();
 
   test("ArticleCAの検証に成功", async () => {
@@ -73,7 +74,7 @@ describe("ArticleCAの検証", async () => {
         ],
       },
     ]);
-    const signedArticle = await signVc(
+    const signedArticle = await signJwtVc(
       articleWithTarget,
       issuer.privateKey,
       signOptions,
@@ -84,13 +85,13 @@ describe("ArticleCAの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
-      decoder,
+      validator,
     );
     const result = await verifier();
     expect(result).not.instanceOf(CaInvalid);
     expect(result).not.instanceOf(CaVerifyFailed);
     expect(result).toStrictEqual(
-      toVerifyResult(articleWithTarget, signedArticle),
+      toVerifyResult(articleWithTarget, signedArticle, issuer.publicKey),
     );
   });
 
@@ -100,10 +101,10 @@ describe("ArticleCAの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
-      decoder,
+      validator,
     );
     const result = await verifier();
-    expect(result).instanceOf(CaInvalid);
+    expect(result).instanceOf(CaVerifyFailed);
   });
 
   test("ArticleCAの検証に失敗", async () => {
@@ -119,7 +120,7 @@ describe("ArticleCAの検証", async () => {
         ],
       },
     ]);
-    const signedArticle = await signVc(
+    const signedArticle = await signJwtVc(
       articleWithTarget,
       issuer.privateKey,
       signOptions,
@@ -129,7 +130,7 @@ describe("ArticleCAの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       "evil-issuer.example.org",
       caUrl,
-      decoder,
+      validator,
     );
     const result = await verifier();
     expect(result).instanceOf(CaVerifyFailed);
@@ -148,7 +149,7 @@ describe("ArticleCAの検証", async () => {
         ],
       },
     ]);
-    const signedArticle = await signVc(
+    const signedArticle = await signJwtVc(
       articleWithTarget,
       issuer.privateKey,
       signOptions,
@@ -158,7 +159,7 @@ describe("ArticleCAの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       new URL("https://www.example.org/other"),
-      decoder,
+      validator,
     );
     const result = await verifier();
     expect(result).instanceOf(CaVerifyFailed);
@@ -177,7 +178,7 @@ describe("ArticleCAの検証", async () => {
         ],
       },
     ]);
-    const signedArticle = await signVc(
+    const signedArticle = await signJwtVc(
       articleWithTarget,
       issuer.privateKey,
       signOptions,
@@ -189,7 +190,7 @@ describe("ArticleCAの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
-      decoder,
+      validator,
     );
     const result = await verifier();
     expect(result).not.instanceOf(CaInvalid);
@@ -206,7 +207,7 @@ describe("ArticleCAの検証", async () => {
         value: ["InvalidCredential"],
       },
     ]);
-    const signedInvalidArticle = await signVc(
+    const signedInvalidArticle = await signJwtVc(
       invalidArticle,
       issuer.privateKey,
       signOptions,
@@ -216,7 +217,7 @@ describe("ArticleCAの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
-      JwtVcDecoder<ContentAttestation>(JwtVcValidator(ArticleCA)),
+      validator,
     );
     const result = await verifier();
     expect(result).instanceOf(CaInvalid);
@@ -230,7 +231,7 @@ describe("ArticleCAの検証", async () => {
         value: ["https://example.org"],
       },
     ]);
-    const signedInvalidArticle = await signVc(
+    const signedInvalidArticle = await signJwtVc(
       invalidArticle,
       issuer.privateKey,
       signOptions,
@@ -240,7 +241,7 @@ describe("ArticleCAの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
-      decoder,
+      validator,
     );
     const result = await verifier();
     expect(result).instanceOf(CaInvalid);
@@ -249,7 +250,7 @@ describe("ArticleCAの検証", async () => {
   test("ArticleCAの検証でtargetが空配列", async () => {
     /* 初期値で article.target は空配列 */
     const invalidArticle = article;
-    const signedInvalidArticle = await signVc(
+    const signedInvalidArticle = await signJwtVc(
       invalidArticle,
       issuer.privateKey,
       signOptions,
@@ -259,7 +260,7 @@ describe("ArticleCAの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
-      decoder,
+      validator,
     );
     const result = await verifier();
     expect(result).instanceOf(CaInvalid);

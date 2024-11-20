@@ -1,4 +1,4 @@
-import { signVc } from "@originator-profile/jwt-securing-mechanism";
+import { signJwtVc } from "@originator-profile/securing-mechanism";
 import {
   Certificate,
   JapaneseExistenceCertificate,
@@ -44,7 +44,7 @@ describe("Certificate", () => {
       validUntil: "2024-03-31T14:59:59Z",
     };
     const { publicKey, privateKey } = await generateKey();
-    const jwt = await signVc(jicdaq, privateKey, { issuedAt, expiredAt });
+    const jwt = await signJwtVc(jicdaq, privateKey, { issuedAt, expiredAt });
     expect(decodeProtectedHeader(jwt).kid).toBe(publicKey.kid);
     const valid = decodeJwt(jwt);
     expect(valid).toStrictEqual({
@@ -85,7 +85,10 @@ describe("Certificate", () => {
       validUntil: "2024-03-31T14:59:59Z",
     };
     const { publicKey, privateKey } = await generateKey();
-    const jwt = await signVc(jppressnet, privateKey, { issuedAt, expiredAt });
+    const jwt = await signJwtVc(jppressnet, privateKey, {
+      issuedAt,
+      expiredAt,
+    });
     expect(decodeProtectedHeader(jwt).kid).toBe(publicKey.kid);
     const valid = decodeJwt(jwt);
     expect(valid).toStrictEqual({
@@ -129,7 +132,10 @@ describe("Certificate", () => {
       },
     };
     const { publicKey, privateKey } = await generateKey();
-    const jwt = await signVc(certificate, privateKey, { issuedAt, expiredAt });
+    const jwt = await signJwtVc(certificate, privateKey, {
+      issuedAt,
+      expiredAt,
+    });
     expect(decodeProtectedHeader(jwt).kid).toBe(publicKey.kid);
     const valid = decodeJwt(jwt);
     expect(valid).toStrictEqual({

@@ -1,35 +1,33 @@
 import { Keys } from "@originator-profile/cryptography";
 import {
-  JwtVcDecodeFailed,
-  JwtVcDecoder,
-  JwtVcVerifyFailed,
+  VcValidator,
+  VcVerifyFailed,
   JwtVcVerifier,
-  JwtVcValidateFailed,
-  JwtVcVerificationResultPayload,
-} from "@originator-profile/jwt-securing-mechanism";
+  VcValidateFailed,
+} from "@originator-profile/securing-mechanism";
 import { ContentAttestation } from "@originator-profile/model";
 import { CaInvalid, CaVerifyFailed } from "./errors";
-import { CaVerificationResult } from "./types";
+import { CaVerificationResult, VerifiedCa } from "./types";
 import { verifyAllowedOrigin } from "../verify-allowed-origin";
 import { verifyAllowedUrl } from "../verify-allowed-url";
 import { verifyIntegrity } from "../integrity";
 
-async function checkUrlAndOrigin(
-  result: JwtVcVerificationResultPayload<ContentAttestation>,
+async function checkUrlAndOrigin<T extends ContentAttestation>(
+  result: VerifiedCa<T>,
   url: URL,
 ) {
-  if (result.payload.allowedUrl && result.payload.allowedOrigin) {
+  if (result.doc.allowedUrl && result.doc.allowedOrigin) {
     return new CaInvalid("allowedUrl and allowedOrigin are exclusive", result);
   }
   if (
-    result.payload.allowedUrl &&
-    !(await verifyAllowedUrl(url.toString(), result.payload.allowedUrl))
+    result.doc.allowedUrl &&
+    !(await verifyAllowedUrl(url.toString(), result.doc.allowedUrl))
   ) {
     return new CaVerifyFailed("URL not allowed", result);
   }
   if (
-    result.payload.allowedOrigin &&
-    !verifyAllowedOrigin(url.origin, result.payload.allowedOrigin)
+    result.doc.allowedOrigin &&
+    !verifyAllowedOrigin(url.origin, result.doc.allowedOrigin)
   ) {
     return new CaVerifyFailed("Origin not allowed", result);
   }
@@ -42,37 +40,35 @@ async function checkUrlAndOrigin(
  * @param keys Content Attestation の発行者の検証鍵
  * @param issuer Content Attestation の発行者
  * @param url 検証対象のURL
+ * @param validator バリデーター
  * @returns 検証機
  */
-export function CaVerifier(
+export function CaVerifier<T extends ContentAttestation>(
   ca: string,
   keys: Keys,
   issuer: string,
   url: URL,
-  decoder: JwtVcDecoder<ContentAttestation>,
+  validator?: VcValidator<VerifiedCa<T>>,
 ) {
-  const verifyCa = JwtVcVerifier<ContentAttestation>(keys, issuer, decoder);
-  return async (): Promise<CaVerificationResult> => {
+  const verifyCa = JwtVcVerifier<T>(keys, issuer, validator);
+  return async (): Promise<CaVerificationResult<T>> => {
     const result = await verifyCa(ca);
-    if (
-      result instanceof JwtVcDecodeFailed ||
-      result instanceof JwtVcValidateFailed
-    ) {
-      return new CaInvalid("Content Attestation decode failed", result);
+    if (result instanceof VcValidateFailed) {
+      return new CaInvalid("Content Attestation validate failed", result);
     }
-    if (result instanceof JwtVcVerifyFailed) {
+    if (result instanceof VcVerifyFailed) {
       return new CaVerifyFailed("Content Attestation verify failed", result);
     }
     const urlResult = await checkUrlAndOrigin(result, url);
     if (urlResult instanceof Error) {
       return urlResult;
     }
-    if (urlResult.payload.target) {
-      if (urlResult.payload.target.length === 0) {
+    if (urlResult.doc.target) {
+      if (urlResult.doc.target.length === 0) {
         return new CaInvalid("Target is empty", urlResult);
       }
       const integrityResults = await Promise.all(
-        urlResult.payload.target.map(async (t, index) => ({
+        urlResult.doc.target.map(async (t, index) => ({
           index,
           isValid: await verifyIntegrity(t),
         })),

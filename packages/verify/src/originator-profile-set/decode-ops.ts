@@ -6,8 +6,8 @@ import {
 import {
   JwtVcDecoder,
   JwtVcDecodingResult,
-  JwtVcDecodingResultPayload,
-} from "@originator-profile/jwt-securing-mechanism";
+  UnverifiedJwtVc,
+} from "@originator-profile/securing-mechanism";
 import {
   Certificate,
   DecodedOps,
@@ -19,8 +19,8 @@ import { OpInvalid, OpsInvalid } from "./errors";
 
 const isEveryDecodedPa = (
   annotations: JwtVcDecodingResult<Certificate>[],
-): annotations is JwtVcDecodingResultPayload<Certificate>[] =>
-  annotations.every((annotation) => "payload" in annotation);
+): annotations is UnverifiedJwtVc<Certificate>[] =>
+  annotations.every((annotation) => "doc" in annotation);
 
 const isDecodedOps = (ops: OpDecodingResult[]): ops is DecodedOps =>
   ops.every((op) => !(op instanceof OpInvalid));
@@ -53,7 +53,7 @@ export function decodeOps(ops: OriginatorProfileSet): OpsDecodingResult {
     }
     if (
       media &&
-      core.payload.credentialSubject.id !== media.payload.credentialSubject.id
+      core.doc.credentialSubject.id !== media.doc.credentialSubject.id
     ) {
       return new OpInvalid(
         "Subject mismatch between Core Profile and Web Media Profile",
@@ -64,8 +64,7 @@ export function decodeOps(ops: OriginatorProfileSet): OpsDecodingResult {
       annotations &&
       annotations.some(
         (annotation) =>
-          core.payload.credentialSubject.id !==
-          annotation.payload.credentialSubject.id,
+          core.doc.credentialSubject.id !== annotation.doc.credentialSubject.id,
       )
     ) {
       return new OpInvalid(

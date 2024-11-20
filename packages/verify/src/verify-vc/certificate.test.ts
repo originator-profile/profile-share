@@ -3,24 +3,18 @@ import {
   JapaneseExistenceCertificate,
 } from "@originator-profile/model";
 import {
-  signVc,
+  signJwtVc,
   JwtVcVerifier,
-  JwtVcDecoder,
-  JwtVcValidator,
-} from "@originator-profile/jwt-securing-mechanism";
-import { addYears, getUnixTime } from "date-fns";
+  VcValidator,
+  VerifiedJwtVc,
+} from "@originator-profile/securing-mechanism";
+import { addYears } from "date-fns";
 import { describe, expect, test } from "vitest";
 import { generateKey, LocalKeys } from "@originator-profile/cryptography";
 
 const VERIFIER_ID = "dns:pa-issuer.example.org";
 const issuedAt = new Date();
 const expiredAt = addYears(new Date(), 10);
-const claims = {
-  iss: "dns:pa-issuer.example.org",
-  sub: "dns:pa-holder.example.jp",
-  iat: getUnixTime(issuedAt),
-  exp: getUnixTime(expiredAt),
-};
 const existenceCertificate = {
   "@context": [
     "https://www.w3.org/ns/credentials/v2",
@@ -112,54 +106,47 @@ describe("Certificate", () => {
   test("実在性確認証明書の検証に成功", async () => {
     const { publicKey, privateKey } = await generateKey();
     const keys = LocalKeys({ keys: [publicKey] });
-    const validator = JwtVcValidator(JapaneseExistenceCertificate);
-    const decoder = JwtVcDecoder(validator);
-    const verifier = JwtVcVerifier(keys, VERIFIER_ID, decoder);
-    const jwt = await signVc(existenceCertificate, privateKey, {
+    const validator = VcValidator<VerifiedJwtVc<JapaneseExistenceCertificate>>(
+      JapaneseExistenceCertificate,
+    );
+    const verifier = JwtVcVerifier(keys, VERIFIER_ID, validator);
+    const jwt = await signJwtVc(existenceCertificate, privateKey, {
       issuedAt,
       expiredAt,
     });
     const result = await verifier(jwt);
     expect(result).not.toBeInstanceOf(Error);
     // @ts-expect-error assert
-    expect(result.payload).toStrictEqual({
-      ...existenceCertificate,
-      ...claims,
-    });
+    expect(result.doc).toStrictEqual(existenceCertificate);
   });
 
   test("JICDAQ 証明書の検証に成功", async () => {
     const { publicKey, privateKey } = await generateKey();
     const keys = LocalKeys({ keys: [publicKey] });
-    const validator = JwtVcValidator(Certificate);
-    const decoder = JwtVcDecoder(validator);
-    const verifier = JwtVcVerifier(keys, VERIFIER_ID, decoder);
-    const jwt = await signVc(jicdaqCertificate, privateKey, {
+    const validator = VcValidator<VerifiedJwtVc<Certificate>>(Certificate);
+    const verifier = JwtVcVerifier(keys, VERIFIER_ID, validator);
+    const jwt = await signJwtVc(jicdaqCertificate, privateKey, {
       issuedAt,
       expiredAt,
     });
     const result = await verifier(jwt);
     expect(result).not.toBeInstanceOf(Error);
     // @ts-expect-error assert
-    expect(result.payload).toStrictEqual({ ...jicdaqCertificate, ...claims });
+    expect(result.doc).toStrictEqual(jicdaqCertificate);
   });
 
   test("日本新聞協会所属証明書の検証に成功", async () => {
     const { publicKey, privateKey } = await generateKey();
     const keys = LocalKeys({ keys: [publicKey] });
-    const validator = JwtVcValidator(Certificate);
-    const decoder = JwtVcDecoder(validator);
-    const verifier = JwtVcVerifier(keys, VERIFIER_ID, decoder);
-    const jwt = await signVc(jppressnetCertificate, privateKey, {
+    const validator = VcValidator<VerifiedJwtVc<Certificate>>(Certificate);
+    const verifier = JwtVcVerifier(keys, VERIFIER_ID, validator);
+    const jwt = await signJwtVc(jppressnetCertificate, privateKey, {
       issuedAt,
       expiredAt,
     });
     const result = await verifier(jwt);
     expect(result).not.toBeInstanceOf(Error);
     // @ts-expect-error assert
-    expect(result.payload).toStrictEqual({
-      ...jppressnetCertificate,
-      ...claims,
-    });
+    expect(result.doc).toStrictEqual(jppressnetCertificate);
   });
 });

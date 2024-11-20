@@ -1,22 +1,25 @@
 import {
   JwtVcDecodingResult,
-  JwtVcDecodingResultPayload,
+  UnverifiedJwtVc,
   JwtVcVerificationResult,
-  JwtVcVerificationResultPayload,
-} from "@originator-profile/jwt-securing-mechanism";
+  VerifiedJwtVc,
+} from "@originator-profile/securing-mechanism";
 import { ContentAttestation } from "@originator-profile/model";
 import { CaVerifyFailed, CaInvalid } from "./errors";
 
 /** Content Attestation 復号失敗 */
 export type CaDecodingFailure = JwtVcDecodingResult<ContentAttestation>;
 /** 復号済み Content Attestation */
-export type DecodedCa = JwtVcDecodingResultPayload<ContentAttestation>;
+export type DecodedCa = UnverifiedJwtVc<ContentAttestation>;
 /** Content Attestation 復号結果 */
 export type CaDecodingResult = DecodedCa | CaInvalid;
 
-/** Originator Profile 検証失敗 */
+/** Content Attestation 検証失敗 */
 export type CaVerificationFailure = JwtVcVerificationResult<ContentAttestation>;
 /** 検証済み Content Attestation */
-export type VerifiedCa = JwtVcVerificationResultPayload<ContentAttestation>;
+export type VerifiedCa<T extends ContentAttestation = ContentAttestation> =
+  VerifiedJwtVc<T>;
 /** Content Attestation 検証結果 */
-export type CaVerificationResult = VerifiedCa | CaVerifyFailed;
+export type CaVerificationResult<
+  T extends ContentAttestation = ContentAttestation,
+> = VerifiedCa<T> | CaInvalid | CaVerifyFailed;

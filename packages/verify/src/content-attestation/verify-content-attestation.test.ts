@@ -1,28 +1,29 @@
 import { generateKey, LocalKeys } from "@originator-profile/cryptography";
-import {
-  JwtVcDecoder,
-  JwtVcValidator,
-  signVc,
-} from "@originator-profile/jwt-securing-mechanism";
-import { ContentAttestation } from "@originator-profile/model";
-import { addYears, getUnixTime } from "date-fns";
+import { VcValidator, signJwtVc } from "@originator-profile/securing-mechanism";
+import { ContentAttestation, Jwk } from "@originator-profile/model";
+import { addYears, fromUnixTime, getUnixTime } from "date-fns";
 import { describe, expect, test } from "vitest";
 import { CaInvalid, CaVerifyFailed } from "./errors";
+import { VerifiedCa } from "./types";
 import { CaVerifier } from "./verify-content-attestation";
 import { diffApply } from "just-diff-apply";
 
-const issuedAt = new Date();
-const expiredAt = addYears(new Date(), 10);
+const issuedAt = fromUnixTime(getUnixTime(new Date()));
+const expiredAt = addYears(issuedAt, 10);
 const signOptions = { issuedAt, expiredAt };
-const toVerifyResult = (ca: ContentAttestation, jwt: string) => ({
-  payload: {
-    ...ca,
-    iss: ca.issuer,
-    sub: ca.credentialSubject.id,
-    iat: getUnixTime(issuedAt),
-    exp: getUnixTime(expiredAt),
-  },
-  jwt,
+const toVerifyResult = (
+  ca: ContentAttestation,
+  jwt: string,
+  verificationKey: Jwk,
+): VerifiedCa => ({
+  doc: ca,
+  issuedAt,
+  expiredAt,
+  algorithm: "ES256",
+  mediaType: "application/vc+jwt",
+  source: jwt,
+  verificationKey,
+  validated: true,
 });
 const patch = <T extends object>(...args: Parameters<typeof diffApply<T>>) => {
   const [source, diff] = args;
@@ -47,9 +48,9 @@ const ca: ContentAttestation = {
 };
 
 describe("Content Attestationの検証", async () => {
-  const decoder = JwtVcDecoder<ContentAttestation>();
+  const validator = VcValidator<VerifiedCa>(ContentAttestation);
   const issuer = await generateKey();
-  const signedCa = await signVc(ca, issuer.privateKey, signOptions);
+  const signedCa = await signJwtVc(ca, issuer.privateKey, signOptions);
 
   test("Content Attestationの検証に成功", async () => {
     const verifier = CaVerifier(
@@ -57,12 +58,14 @@ describe("Content Attestationの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
-      decoder,
+      validator,
     );
     const result = await verifier();
     expect(result).not.instanceOf(CaInvalid);
     expect(result).not.instanceOf(CaVerifyFailed);
-    expect(result).toStrictEqual(toVerifyResult(ca, signedCa));
+    expect(result).toStrictEqual(
+      toVerifyResult(ca, signedCa, issuer.publicKey),
+    );
   });
 
   test("Content Attestationの復号に失敗", async () => {
@@ -71,10 +74,10 @@ describe("Content Attestationの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
-      decoder,
+      validator,
     );
     const result = await verifier();
-    expect(result).instanceOf(CaInvalid);
+    expect(result).instanceOf(CaVerifyFailed);
   });
 
   test("Content Attestationの検証に失敗", async () => {
@@ -83,7 +86,7 @@ describe("Content Attestationの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       "evil-issuer.example.org",
       caUrl,
-      decoder,
+      validator,
     );
     const result = await verifier();
     expect(result).instanceOf(CaVerifyFailed);
@@ -97,7 +100,7 @@ describe("Content Attestationの検証", async () => {
         value: ["InvalidCredential"],
       },
     ]);
-    const signedInvalidCa = await signVc(
+    const signedInvalidCa = await signJwtVc(
       invalidCa,
       issuer.privateKey,
       signOptions,
@@ -107,7 +110,7 @@ describe("Content Attestationの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
-      JwtVcDecoder<ContentAttestation>(JwtVcValidator(ContentAttestation)),
+      validator,
     );
     const result = await verifier();
     expect(result).instanceOf(CaInvalid);
@@ -126,7 +129,7 @@ describe("Content Attestationの検証", async () => {
         value: ["https://example.org"],
       },
     ]);
-    const signedInvalidCa = await signVc(
+    const signedInvalidCa = await signJwtVc(
       invalidCa,
       issuer.privateKey,
       signOptions,
@@ -136,7 +139,7 @@ describe("Content Attestationの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
-      decoder,
+      validator,
     );
     const result = await verifier();
     expect(result).instanceOf(CaInvalid);

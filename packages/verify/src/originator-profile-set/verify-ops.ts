@@ -5,11 +5,10 @@ import {
   OpVc,
 } from "@originator-profile/model";
 import {
-  JwtVcDecoder,
-  JwtVcDecodingResultPayload,
+  UnverifiedJwtVc,
   JwtVcVerifier,
   JwtVcVerificationResult,
-} from "@originator-profile/jwt-securing-mechanism";
+} from "@originator-profile/securing-mechanism";
 import {
   Certificate,
   VerifiedOps,
@@ -42,11 +41,7 @@ export function OpsVerifier(
   issuer: string,
 ) {
   const decoded = decodeOps(ops);
-  const verifyCp = JwtVcVerifier<CoreProfile>(
-    keys,
-    issuer,
-    JwtVcDecoder<CoreProfile>(),
-  );
+  const verifyCp = JwtVcVerifier<CoreProfile>(keys, issuer);
 
   /**
    * Originator Profile Set の検証
@@ -62,14 +57,14 @@ export function OpsVerifier(
     >(
       await Promise.all(
         decoded.map(({ core }) =>
-          verifyCp(core.jwt).then(
-            (result) => [core.payload.credentialSubject.id, result] as const,
+          verifyCp(core.source).then(
+            (result) => [core.doc.credentialSubject.id, result] as const,
           ),
         ),
       ),
     );
-    const opVerifier = <T extends OpVc>(vc: JwtVcDecodingResultPayload<T>) => {
-      const cpHolder = vc.payload.issuer;
+    const opVerifier = <T extends OpVc>(vc: UnverifiedJwtVc<T>) => {
+      const cpHolder = vc.doc.issuer;
       const cp = cps.get(cpHolder);
       if (!cp) {
         return async () =>
@@ -79,27 +74,27 @@ export function OpsVerifier(
         return async () =>
           new CoreProfileNotFound(`Invalid Core Profile (${cpHolder})`, vc);
       }
-      const cpKeys = LocalKeys(cp.payload.credentialSubject.jwks);
-      return JwtVcVerifier<T>(cpKeys, cpHolder, JwtVcDecoder<T>());
+      const cpKeys = LocalKeys(cp.doc.credentialSubject.jwks);
+      return JwtVcVerifier<T>(cpKeys, cpHolder);
     };
     const resultOps = await Promise.all(
       decoded.map(async (op): Promise<OpVerificationResult> => {
         const core =
-          cps.get(op.core.payload.credentialSubject.id) ??
+          cps.get(op.core.doc.credentialSubject.id) ??
           new CoreProfileNotFound(
-            `Missing Core Profile (${op.core.payload.credentialSubject.id})`,
+            `Missing Core Profile (${op.core.doc.credentialSubject.id})`,
             op.core,
           );
         const annotations =
           op.annotations &&
           (await Promise.all(
             op.annotations.map((annotation) =>
-              opVerifier<Certificate>(annotation)(annotation.jwt),
+              opVerifier<Certificate>(annotation)(annotation.source),
             ),
           ));
         const media =
           op.media &&
-          (await opVerifier<WebMediaProfile>(op.media)(op.media.jwt));
+          (await opVerifier<WebMediaProfile>(op.media)(op.media.source));
         const resultOp = { core, annotations, media };
         if (core instanceof Error) {
           return new OpVerifyFailed("Core Profile verify failed", resultOp);

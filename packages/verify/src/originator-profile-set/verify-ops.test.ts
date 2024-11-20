@@ -1,17 +1,20 @@
 import { generateKey, LocalKeys } from "@originator-profile/cryptography";
 import {
-  JwtVcVerifyFailed,
-  signVc,
-} from "@originator-profile/jwt-securing-mechanism";
+  VcVerifyFailed,
+  UnverifiedJwtVc,
+  VerifiedJwtVc,
+  signJwtVc,
+} from "@originator-profile/securing-mechanism";
 import {
   Certificate,
   CoreProfile,
   OpVc,
   OriginatorProfileSet,
   WebMediaProfile,
+  Jwk,
 } from "@originator-profile/model";
 import { signCp } from "@originator-profile/sign";
-import { addYears, getUnixTime } from "date-fns";
+import { addYears, getUnixTime, fromUnixTime } from "date-fns";
 import { diffApply } from "just-diff-apply";
 import { describe, expect, test } from "vitest";
 import {
@@ -23,19 +26,26 @@ import {
 } from "./errors";
 import { OpsVerifier } from "./verify-ops";
 
-const issuedAt = new Date();
-const expiredAt = addYears(new Date(), 10);
+const issuedAt = fromUnixTime(getUnixTime(new Date()));
+const expiredAt = addYears(issuedAt, 10);
 const signOptions = { issuedAt, expiredAt };
-const toVerifyResult = (vc: OpVc, jwt: string) => ({
-  payload: {
-    ...vc,
-    iss: vc.issuer,
-    sub: vc.credentialSubject.id,
-    iat: getUnixTime(issuedAt),
-    exp: getUnixTime(expiredAt),
-  },
-  jwt,
-});
+const toVerifyResult = (
+  vc: OpVc,
+  jwt: string,
+  verificationKey?: Jwk,
+): UnverifiedJwtVc<OpVc> | VerifiedJwtVc<OpVc> => {
+  const unverified = {
+    doc: vc,
+    issuedAt,
+    expiredAt,
+    algorithm: "ES256",
+    mediaType: "application/vc+jwt",
+    source: jwt,
+  };
+  if (verificationKey)
+    return { ...unverified, verificationKey, validated: false };
+  return unverified;
+};
 const patch = <T extends object>(...args: Parameters<typeof diffApply<T>>) => {
   const [source, diff] = args;
   const patched = structuredClone(source);
@@ -142,8 +152,10 @@ describe("OPSの検証", async () => {
   };
   const holderOp = {
     core: await signCp(cp, authority.privateKey, signOptions),
-    annotations: [await signVc(certificate, certifier.privateKey, signOptions)],
-    media: await signVc(wmp, authority.privateKey, signOptions),
+    annotations: [
+      await signJwtVc(certificate, certifier.privateKey, signOptions),
+    ],
+    media: await signJwtVc(wmp, authority.privateKey, signOptions),
   };
   const ops: OriginatorProfileSet = [authorityOp, certifierOp, holderOp];
 
@@ -159,19 +171,33 @@ describe("OPSの検証", async () => {
     expect(resultOps).not.instanceOf(OpsVerifyFailed);
     expect(resultOps).toStrictEqual([
       {
-        core: toVerifyResult(authorityCp, authorityOp.core),
+        core: toVerifyResult(
+          authorityCp,
+          authorityOp.core,
+          authority.publicKey,
+        ),
         annotations: undefined,
         media: undefined,
       },
       {
-        core: toVerifyResult(certifierCp, certifierOp.core),
+        core: toVerifyResult(
+          certifierCp,
+          certifierOp.core,
+          authority.publicKey,
+        ),
         annotations: undefined,
         media: undefined,
       },
       {
-        core: toVerifyResult(cp, holderOp.core),
-        annotations: [toVerifyResult(certificate, holderOp.annotations[0])],
-        media: toVerifyResult(wmp, holderOp.media),
+        core: toVerifyResult(cp, holderOp.core, authority.publicKey),
+        annotations: [
+          toVerifyResult(
+            certificate,
+            holderOp.annotations[0],
+            certifier.publicKey,
+          ),
+        ],
+        media: toVerifyResult(wmp, holderOp.media, authority.publicKey),
       },
     ]);
   });
@@ -198,28 +224,28 @@ describe("OPSの検証", async () => {
     // @ts-expect-error verify failed Ops
     const { result: resultOp } = resultOps;
     expect(resultOp[0]).toStrictEqual({
-      core: toVerifyResult(authorityCp, authorityOp.core),
+      core: toVerifyResult(authorityCp, authorityOp.core, authority.publicKey),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[1]).toStrictEqual({
-      core: toVerifyResult(certifierCp, certifierOp.core),
+      core: toVerifyResult(certifierCp, certifierOp.core, authority.publicKey),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[2]).instanceOf(OpVerifyFailed);
-    expect(resultOp[2].result.core).instanceOf(JwtVcVerifyFailed);
+    expect(resultOp[2].result.core).instanceOf(VcVerifyFailed);
     expect(resultOp[2].result.annotations[0]).toStrictEqual(
-      toVerifyResult(certificate, holderOp.annotations[0]),
+      toVerifyResult(certificate, holderOp.annotations[0], certifier.publicKey),
     );
     expect(resultOp[2].result.media).toStrictEqual(
-      toVerifyResult(wmp, holderOp.media),
+      toVerifyResult(wmp, holderOp.media, authority.publicKey),
     );
   });
 
   test("PAの署名の検証に失敗", async () => {
     const evil = await generateKey();
-    const evilPa = await signVc(certificate, evil.privateKey, signOptions);
+    const evilPa = await signJwtVc(certificate, evil.privateKey, signOptions);
     const evilOps: OriginatorProfileSet = patch(ops, [
       {
         op: "add",
@@ -239,31 +265,31 @@ describe("OPSの検証", async () => {
     // @ts-expect-error verify failed Ops
     const { result: resultOp } = resultOps;
     expect(resultOp[0]).toStrictEqual({
-      core: toVerifyResult(authorityCp, authorityOp.core),
+      core: toVerifyResult(authorityCp, authorityOp.core, authority.publicKey),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[1]).toStrictEqual({
-      core: toVerifyResult(certifierCp, certifierOp.core),
+      core: toVerifyResult(certifierCp, certifierOp.core, authority.publicKey),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[2]).instanceOf(OpVerifyFailed);
     expect(resultOp[2].result.core).toStrictEqual(
-      toVerifyResult(cp, holderOp.core),
+      toVerifyResult(cp, holderOp.core, authority.publicKey),
     );
     expect(resultOp[2].result.annotations[0]).toStrictEqual(
-      toVerifyResult(certificate, holderOp.annotations[0]),
+      toVerifyResult(certificate, holderOp.annotations[0], certifier.publicKey),
     );
-    expect(resultOp[2].result.annotations[1]).instanceOf(JwtVcVerifyFailed);
+    expect(resultOp[2].result.annotations[1]).instanceOf(VcVerifyFailed);
     expect(resultOp[2].result.media).toStrictEqual(
-      toVerifyResult(wmp, holderOp.media),
+      toVerifyResult(wmp, holderOp.media, authority.publicKey),
     );
   });
 
   test("WMPの署名の検証に失敗", async () => {
     const evil = await generateKey();
-    const evilWmp = await signVc(wmp, evil.privateKey, signOptions);
+    const evilWmp = await signJwtVc(wmp, evil.privateKey, signOptions);
     const evilOps: OriginatorProfileSet = patch(ops, [
       {
         op: "replace",
@@ -283,23 +309,23 @@ describe("OPSの検証", async () => {
     // @ts-expect-error verify failed Ops
     const { result: resultOp } = resultOps;
     expect(resultOp[0]).toStrictEqual({
-      core: toVerifyResult(authorityCp, authorityOp.core),
+      core: toVerifyResult(authorityCp, authorityOp.core, authority.publicKey),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[1]).toStrictEqual({
-      core: toVerifyResult(certifierCp, certifierOp.core),
+      core: toVerifyResult(certifierCp, certifierOp.core, authority.publicKey),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[2]).instanceOf(OpVerifyFailed);
     expect(resultOp[2].result.core).toStrictEqual(
-      toVerifyResult(cp, holderOp.core),
+      toVerifyResult(cp, holderOp.core, authority.publicKey),
     );
     expect(resultOp[2].result.annotations[0]).toStrictEqual(
-      toVerifyResult(certificate, holderOp.annotations[0]),
+      toVerifyResult(certificate, holderOp.annotations[0], certifier.publicKey),
     );
-    expect(resultOp[2].result.media).instanceOf(JwtVcVerifyFailed);
+    expect(resultOp[2].result.media).instanceOf(VcVerifyFailed);
   });
 
   test("CPの発行者と署名者が不一致", async () => {
@@ -327,27 +353,27 @@ describe("OPSの検証", async () => {
     // @ts-expect-error verify failed Ops
     const { result: resultOp } = resultOps;
     expect(resultOp[0]).toStrictEqual({
-      core: toVerifyResult(authorityCp, authorityOp.core),
+      core: toVerifyResult(authorityCp, authorityOp.core, authority.publicKey),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[1]).toStrictEqual({
-      core: toVerifyResult(certifierCp, certifierOp.core),
+      core: toVerifyResult(certifierCp, certifierOp.core, authority.publicKey),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[2]).instanceOf(OpVerifyFailed);
-    expect(resultOp[2].result.core).instanceOf(JwtVcVerifyFailed);
+    expect(resultOp[2].result.core).instanceOf(VcVerifyFailed);
     expect(resultOp[2].result.annotations[0]).toStrictEqual(
-      toVerifyResult(certificate, holderOp.annotations[0]),
+      toVerifyResult(certificate, holderOp.annotations[0], certifier.publicKey),
     );
     expect(resultOp[2].result.media).toStrictEqual(
-      toVerifyResult(wmp, holderOp.media),
+      toVerifyResult(wmp, holderOp.media, authority.publicKey),
     );
   });
 
   test("CPとWMPの保有者が不一致", async () => {
-    const invalidWmp = await signVc(
+    const invalidWmp = await signJwtVc(
       patch(wmp, [
         {
           op: "replace",
@@ -389,7 +415,7 @@ describe("OPSの検証", async () => {
   });
 
   test("CPとPAの保有者が不一致", async () => {
-    const invalidPa = await signVc(
+    const invalidPa = await signJwtVc(
       patch(certificate, [
         {
           op: "replace",
@@ -442,7 +468,11 @@ describe("OPSの検証", async () => {
     expect(resultOps).not.instanceOf(OpsVerifyFailed);
     expect(resultOps).toStrictEqual([
       {
-        core: toVerifyResult(certifierCp, certifierOp.core),
+        core: toVerifyResult(
+          certifierCp,
+          certifierOp.core,
+          authority.publicKey,
+        ),
         annotations: undefined,
         media: undefined,
       },
@@ -463,17 +493,17 @@ describe("OPSの検証", async () => {
     // @ts-expect-error verify failed Ops
     const { result: resultOp } = resultOps;
     expect(resultOp[0]).toStrictEqual({
-      core: toVerifyResult(authorityCp, authorityOp.core),
+      core: toVerifyResult(authorityCp, authorityOp.core, authority.publicKey),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[1]).instanceOf(OpVerifyFailed);
     expect(resultOp[1].result.core).toStrictEqual(
-      toVerifyResult(cp, holderOp.core),
+      toVerifyResult(cp, holderOp.core, authority.publicKey),
     );
     expect(resultOp[1].result.annotations[0]).instanceOf(CoreProfileNotFound);
     expect(resultOp[1].result.media).toStrictEqual(
-      toVerifyResult(wmp, holderOp.media),
+      toVerifyResult(wmp, holderOp.media, authority.publicKey),
     );
   });
 
@@ -491,16 +521,16 @@ describe("OPSの検証", async () => {
     // @ts-expect-error verify failed Ops
     const { result: resultOp } = resultOps;
     expect(resultOp[0]).toStrictEqual({
-      core: toVerifyResult(certifierCp, certifierOp.core),
+      core: toVerifyResult(certifierCp, certifierOp.core, authority.publicKey),
       annotations: undefined,
       media: undefined,
     });
     expect(resultOp[1]).instanceOf(OpVerifyFailed);
     expect(resultOp[1].result.core).toStrictEqual(
-      toVerifyResult(cp, holderOp.core),
+      toVerifyResult(cp, holderOp.core, authority.publicKey),
     );
     expect(resultOp[1].result.annotations[0]).toStrictEqual(
-      toVerifyResult(certificate, holderOp.annotations[0]),
+      toVerifyResult(certificate, holderOp.annotations[0], certifier.publicKey),
     );
     expect(resultOp[1].result.media).instanceOf(CoreProfileNotFound);
   });

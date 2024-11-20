@@ -1,5 +1,5 @@
 import { OpVc } from "@originator-profile/model";
-import { JwtVcDecodingResultPayload } from "@originator-profile/jwt-securing-mechanism";
+import { UnverifiedJwtVc } from "@originator-profile/securing-mechanism";
 import {
   OpDecodingFailure,
   OpsDecodingFailure,
@@ -67,7 +67,7 @@ export class CoreProfileNotFound<T extends OpVc> extends Error {
 
   constructor(
     message: string,
-    public result: JwtVcDecodingResultPayload<T>,
+    public result: UnverifiedJwtVc<T>,
   ) {
     super(message);
   }

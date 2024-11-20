@@ -1,11 +1,11 @@
 import { WebMediaProfile } from "@originator-profile/model";
 import {
-  signVc,
+  signJwtVc,
   JwtVcVerifier,
-  JwtVcDecoder,
-  JwtVcValidator,
-} from "@originator-profile/jwt-securing-mechanism";
-import { addYears, getUnixTime } from "date-fns";
+  VcValidator,
+  VerifiedJwtVc,
+} from "@originator-profile/securing-mechanism";
+import { addYears } from "date-fns";
 import { describe, expect, test } from "vitest";
 import { generateKey, LocalKeys } from "@originator-profile/cryptography";
 
@@ -54,22 +54,20 @@ describe("WebMediaProfile の検証", () => {
   test("検証に成功", async () => {
     const { publicKey, privateKey } = await generateKey();
     const keys = LocalKeys({ keys: [publicKey] });
-    const validator = JwtVcValidator(WebMediaProfile);
-    const decoder = JwtVcDecoder(validator);
-    const verifier = JwtVcVerifier(keys, "dns:wmp-issuer.example.org", decoder);
-    const jwt = await signVc(webMediaProfile, privateKey, {
+    const validator =
+      VcValidator<VerifiedJwtVc<WebMediaProfile>>(WebMediaProfile);
+    const verifier = JwtVcVerifier(
+      keys,
+      "dns:wmp-issuer.example.org",
+      validator,
+    );
+    const jwt = await signJwtVc(webMediaProfile, privateKey, {
       issuedAt,
       expiredAt,
     });
     const result = await verifier(jwt);
     expect(result).not.toBeInstanceOf(Error);
     // @ts-expect-error assert
-    expect(result.payload).toStrictEqual({
-      ...webMediaProfile,
-      iss: webMediaProfile.issuer,
-      sub: webMediaProfile.credentialSubject.id,
-      iat: getUnixTime(issuedAt),
-      exp: getUnixTime(expiredAt),
-    });
+    expect(result.doc).toStrictEqual(webMediaProfile);
   });
 });

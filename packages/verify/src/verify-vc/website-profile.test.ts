@@ -1,12 +1,12 @@
 import { generateKey, LocalKeys } from "@originator-profile/cryptography";
 import {
-  JwtVcDecoder,
-  JwtVcValidator,
   JwtVcVerifier,
-  signVc,
-} from "@originator-profile/jwt-securing-mechanism";
+  signJwtVc,
+  VcValidator,
+  VerifiedJwtVc,
+} from "@originator-profile/securing-mechanism";
 import { WebsiteProfile } from "@originator-profile/model";
-import { addYears, getUnixTime } from "date-fns";
+import { addYears } from "date-fns";
 import { expect, test } from "vitest";
 
 const issuedAt = new Date();
@@ -36,18 +36,14 @@ const websiteProfile: WebsiteProfile = {
 test("Website Profile の検証に成功", async () => {
   const { publicKey, privateKey } = await generateKey();
   const keys = LocalKeys({ keys: [publicKey] });
-  const validator = JwtVcValidator(WebsiteProfile);
-  const decoder = JwtVcDecoder(validator);
-  const verifier = JwtVcVerifier(keys, "dns:example.com", decoder);
-  const jwt = await signVc(websiteProfile, privateKey, { issuedAt, expiredAt });
+  const validator = VcValidator<VerifiedJwtVc<WebsiteProfile>>(WebsiteProfile);
+  const verifier = JwtVcVerifier(keys, "dns:example.com", validator);
+  const jwt = await signJwtVc(websiteProfile, privateKey, {
+    issuedAt,
+    expiredAt,
+  });
   const result = await verifier(jwt);
   expect(result).not.toBeInstanceOf(Error);
   // @ts-expect-error assert
-  expect(result.payload).toStrictEqual({
-    ...websiteProfile,
-    iss: websiteProfile.issuer,
-    sub: websiteProfile.credentialSubject.id,
-    iat: getUnixTime(issuedAt),
-    exp: getUnixTime(expiredAt),
-  });
+  expect(result.doc).toStrictEqual(websiteProfile);
 });
