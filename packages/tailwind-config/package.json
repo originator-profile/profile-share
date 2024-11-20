@@ -1,6 +1,6 @@
 {
   "name": "tailwind-config-originator-profile",
-  "version": "0.1.0-beta.0",
+  "version": "0.1.0-beta.1",
   "private": true,
   "exports": "./tailwind-config.cjs",
   "dependencies": {
