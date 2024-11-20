@@ -369,7 +369,7 @@ importers:
         version: 15.12.0
       happy-dom:
         specifier: ^15.8.3
-        version: 15.10.2
+        version: 15.11.6
       jsonld:
         specifier: ^8.3.2
         version: 8.3.2(web-streams-polyfill@4.0.0)
@@ -411,7 +411,7 @@ importers:
         version: 5.6.3
       vitest:
         specifier: ^2.1.4
-        version: 2.1.4(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.6.1(@types/node@22.7.4)(typescript@5.6.3))(terser@5.34.1)
+        version: 2.1.4(@types/node@22.7.4)(happy-dom@15.11.6)(jsdom@25.0.1)(msw@2.6.1(@types/node@22.7.4)(typescript@5.6.3))(terser@5.34.1)
       web-ext:
         specifier: ^8.3.0
         version: 8.3.0
@@ -1040,7 +1040,7 @@ importers:
         version: link:../eslint-config
       happy-dom:
         specifier: ^15.8.3
-        version: 15.10.2
+        version: 15.11.6
       jose:
         specifier: ^5.9.6
         version: 5.9.6
@@ -1067,7 +1067,7 @@ importers:
         version: 5.4.10(@types/node@22.7.4)(terser@5.34.1)
       vitest:
         specifier: ^2.1.4
-        version: 2.1.4(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.6.1(@types/node@22.7.4)(typescript@5.6.3))(terser@5.34.1)
+        version: 2.1.4(@types/node@22.7.4)(happy-dom@15.11.6)(jsdom@25.0.1)(msw@2.6.1(@types/node@22.7.4)(typescript@5.6.3))(terser@5.34.1)
       websri:
         specifier: ^0.1.0
         version: 0.1.0
@@ -6796,10 +6796,6 @@ packages:
   happy-dom@14.12.3:
     resolution: {integrity: sha512-vsYlEs3E9gLwA1Hp+w3qzu+RUDFf4VTT8cyKqVICoZ2k7WM++Qyd2LwzyTi5bqMJFiIC/vNpTDYuxdreENRK/g==}
     engines: {node: '>=16.0.0'}
-
-  happy-dom@15.10.2:
-    resolution: {integrity: sha512-NbA5XrSovenJIIcfixCREX3ZnV7yHP4phhbfuxxf4CPn+LZpz/jIM9EqJ2DrPwgVDSMoAKH3pZwQvkbsSiCrUw==}
-    engines: {node: '>=18.0.0'}
 
   happy-dom@15.11.6:
     resolution: {integrity: sha512-elX7iUTu+5+3b2+NGQc0L3eWyq9jKhuJJ4GpOMxxT/c2pg9O3L5H3ty2VECX0XXZgRmmRqXyOK8brA2hDI6LsQ==}
@@ -19958,12 +19954,6 @@ snapshots:
       webidl-conversions: 7.0.0
       whatwg-mimetype: 3.0.0
 
-  happy-dom@15.10.2:
-    dependencies:
-      entities: 4.5.0
-      webidl-conversions: 7.0.0
-      whatwg-mimetype: 3.0.0
-
   happy-dom@15.11.6:
     dependencies:
       entities: 4.5.0
@@ -25524,43 +25514,6 @@ snapshots:
     transitivePeerDependencies:
       - less
       - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-
-  vitest@2.1.4(@types/node@22.7.4)(happy-dom@15.10.2)(jsdom@25.0.1)(msw@2.6.1(@types/node@22.7.4)(typescript@5.6.3))(terser@5.34.1):
-    dependencies:
-      '@vitest/expect': 2.1.4
-      '@vitest/mocker': 2.1.4(msw@2.6.1(@types/node@22.7.4)(typescript@5.6.3))(vite@5.4.10(@types/node@22.7.4)(terser@5.34.1))
-      '@vitest/pretty-format': 2.1.4
-      '@vitest/runner': 2.1.4
-      '@vitest/snapshot': 2.1.4
-      '@vitest/spy': 2.1.4
-      '@vitest/utils': 2.1.4
-      chai: 5.1.2
-      debug: 4.3.7(supports-color@8.1.1)
-      expect-type: 1.1.0
-      magic-string: 0.30.12
-      pathe: 1.1.2
-      std-env: 3.7.0
-      tinybench: 2.9.0
-      tinyexec: 0.3.1
-      tinypool: 1.0.1
-      tinyrainbow: 1.2.0
-      vite: 5.4.10(@types/node@22.7.4)(terser@5.34.1)
-      vite-node: 2.1.4(@types/node@22.7.4)(terser@5.34.1)
-      why-is-node-running: 2.3.0
-    optionalDependencies:
-      '@types/node': 22.7.4
-      happy-dom: 15.10.2
-      jsdom: 25.0.1
-    transitivePeerDependencies:
-      - less
-      - lightningcss
-      - msw
       - sass
       - sass-embedded
       - stylus
