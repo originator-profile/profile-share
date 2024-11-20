@@ -23,7 +23,7 @@ export async function signVc<T extends OpVc>(
   const header = {
     alg,
     kid: privateKey.kid ?? (await createThumbprint(privateKey, alg)),
-    typ: "vc+ld-jwt",
+    typ: "vc+jwt",
     cty: "vc",
   };
 
