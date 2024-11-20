@@ -1,3 +1,4 @@
+export * from "./content-attestation";
 export * from "./decode";
 export * from "./decode-originator-profile";
 export * from "./decode-sd-jwt";

@@ -3,6 +3,7 @@ import { AllowedUrl } from "../allowed-url";
 import { OpCipContext } from "../context/op-cip-context";
 import { Image } from "../image";
 import { ContentAttestation } from "./content-attestation";
+import { Target } from "../target";
 
 const subject = {
   type: "object",
@@ -71,13 +72,27 @@ export const ArticleCA = {
         "@context": OpCipContext,
         credentialSubject: subject,
         allowedUrl: AllowedUrl,
-        allowedOrigin: {
-          enum: [],
+        target: {
+          type: "array",
+          items: Target,
+          minItems: 1,
         },
       },
-      required: ["@context", "type", "credentialSubject", "allowedUrl"],
+      required: [
+        "@context",
+        "type",
+        "credentialSubject",
+        "allowedUrl",
+        "target",
+      ],
     },
   ],
+  not: {
+    properties: {
+      allowedOrigin: {},
+    },
+    required: ["allowedOrigin"],
+  },
 } as const satisfies JSONSchema;
 
 export type ArticleCA = FromSchema<typeof ArticleCA>;

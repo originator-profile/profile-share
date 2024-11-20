@@ -3,7 +3,7 @@ import { describe, test, expect } from "vitest";
 import { verifyAllowedUrl } from "./verify-allowed-url";
 
 describe("verify-allowed-url", () => {
-  test("allowedUrlの配列に対する検証でtrueが返されるか", () => {
+  test("allowedUrlの配列に対する検証でtrueが返されるか", async () => {
     const contentAttestation: ContentAttestation = {
       "@context": [
         "https://www.w3.org/ns/credentials/v2",
@@ -47,11 +47,11 @@ describe("verify-allowed-url", () => {
 
     const url = "https://media.example.com/articles/2024-07-01";
     expect(
-      verifyAllowedUrl(url, contentAttestation.allowedUrl as string[]),
+      await verifyAllowedUrl(url, contentAttestation.allowedUrl as string[]),
     ).toBeTruthy();
   });
 
-  test("allowedUrlの配列に対する検証でfalseが返されるか", () => {
+  test("allowedUrlの配列に対する検証でfalseが返されるか", async () => {
     const contentAttestation: ContentAttestation = {
       "@context": [
         "https://www.w3.org/ns/credentials/v2",
@@ -95,11 +95,11 @@ describe("verify-allowed-url", () => {
 
     const url = "https://media.example.com/articles/9999-99-99";
     expect(
-      verifyAllowedUrl(url, contentAttestation.allowedUrl as string[]),
+      await verifyAllowedUrl(url, contentAttestation.allowedUrl as string[]),
     ).toBeFalsy();
   });
 
-  test("allowedUrlが単一の文字列の検証でtrueが返されるか", () => {
+  test("allowedUrlが単一の文字列の検証でtrueが返されるか", async () => {
     const contentAttestation: ContentAttestation = {
       "@context": [
         "https://www.w3.org/ns/credentials/v2",
@@ -140,11 +140,11 @@ describe("verify-allowed-url", () => {
 
     const url = "https://media.example.com/articles/2024-06-30";
     expect(
-      verifyAllowedUrl(url, contentAttestation.allowedUrl as string),
+      await verifyAllowedUrl(url, contentAttestation.allowedUrl as string),
     ).toBeTruthy();
   });
 
-  test("allowedUrlが単一の文字列の検証でfalseが返されるか", () => {
+  test("allowedUrlが単一の文字列の検証でfalseが返されるか", async () => {
     const contentAttestation: ContentAttestation = {
       "@context": [
         "https://www.w3.org/ns/credentials/v2",
@@ -185,25 +185,31 @@ describe("verify-allowed-url", () => {
 
     const url = "https://media.example.com/articles/9999-99-99";
     expect(
-      verifyAllowedUrl(url, contentAttestation.allowedUrl as string),
+      await verifyAllowedUrl(url, contentAttestation.allowedUrl as string),
     ).toBeFalsy();
   });
 
-  test("URLが空文字で検証をした時にfalseが返されるか", () => {
+  test("URLが空文字で検証をした時にfalseが返されるか", async () => {
     expect(
-      verifyAllowedUrl("", "https://media.example.com/articles/2024-06-29"),
+      await verifyAllowedUrl(
+        "",
+        "https://media.example.com/articles/2024-06-29",
+      ),
     ).toBeFalsy();
   });
 
-  test("AllowedUrlが空文字で検証をした時にfalseが返されるか", () => {
+  test("AllowedUrlが空文字で検証をした時にfalseが返されるか", async () => {
     expect(
-      verifyAllowedUrl("https://media.example.com/articles/2024-06-29", ""),
+      await verifyAllowedUrl(
+        "https://media.example.com/articles/2024-06-29",
+        "",
+      ),
     ).toBeFalsy();
   });
 
-  test("一部一致するURLでfalseが返されるか", () => {
+  test("一部一致するURLでfalseが返されるか", async () => {
     expect(
-      verifyAllowedUrl(
+      await verifyAllowedUrl(
         "https://example.com/articles/2024-06-29",
         "https://media.example.com/articles/2024-06-29",
       ),
@@ -211,9 +217,9 @@ describe("verify-allowed-url", () => {
   });
 
   describe("URL Pattern stringの正規表現が含まれたURLの場合", () => {
-    test("AllowedUrlの末尾パスにワイルドカードを指定をしてtrueが返されるか", () => {
+    test("AllowedUrlの末尾パスにワイルドカードを指定をしてtrueが返されるか", async () => {
       expect(
-        verifyAllowedUrl(
+        await verifyAllowedUrl(
           "https://media.example.com/articles/2024-06-29",
           "https://media.example.com/articles/*",
         ),

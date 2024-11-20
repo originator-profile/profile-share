@@ -34,6 +34,7 @@ export const ContentAttestation = {
         "@context": OpContextHead,
         type: {
           type: "array",
+          items: [{}],
           additionalItems: { const: "ContentAttestation" },
           minItems: 2,
         },
@@ -46,7 +47,7 @@ export const ContentAttestation = {
           minItems: 1,
         },
       },
-      required: ["@context", "type", "credentialSubject", "target"],
+      required: ["@context", "type", "credentialSubject"],
     },
   ],
 } as const satisfies JSONSchema;
