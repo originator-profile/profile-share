@@ -1,13 +1,17 @@
 import {
   CoreProfile,
   WebMediaProfile,
+  Certificate as CertificateSchema,
+  JapaneseExistenceCertificate,
   OriginatorProfileSet,
   OpVc,
 } from "@originator-profile/model";
 import {
   UnverifiedJwtVc,
+  VerifiedJwtVc,
   JwtVcVerifier,
   JwtVcVerificationResult,
+  VcValidator,
 } from "@originator-profile/securing-mechanism";
 import {
   Certificate,
@@ -25,6 +29,69 @@ import {
   OpVerifyFailed,
 } from "./errors";
 
+/** CP の署名検証結果 */
+type CoreProfileMap = Map<
+  CoreProfile["credentialSubject"]["id"],
+  JwtVcVerificationResult<CoreProfile>
+>;
+
+/** OP (CP を除く) 署名検証者 */
+function OpVerifier<T extends OpVc>(
+  cps: CoreProfileMap,
+  vc: UnverifiedJwtVc<T>,
+  validator?: VcValidator<VerifiedJwtVc<T>>,
+): JwtVcVerifier<T> | (() => Promise<CoreProfileNotFound<T>>) {
+  const cpHolder = vc.doc.issuer;
+  const cp = cps.get(cpHolder);
+  if (!cp) {
+    return async () =>
+      new CoreProfileNotFound(`Missing Core Profile (${cpHolder})`, vc);
+  }
+  if (cp instanceof Error) {
+    return async () =>
+      new CoreProfileNotFound(`Invalid Core Profile (${cpHolder})`, vc);
+  }
+  const cpKeys = LocalKeys(cp.doc.credentialSubject.jwks);
+  return JwtVcVerifier<T>(cpKeys, cpHolder, validator);
+}
+
+/** annotations プロパティの署名検証 */
+async function verifyAnnotations(
+  cps: CoreProfileMap,
+  annotations?: UnverifiedJwtVc<Certificate>[],
+  validator?: typeof VcValidator,
+) {
+  if (!annotations) return;
+  return await Promise.all(
+    annotations.map((annotation) => {
+      const verify = OpVerifier<Certificate>(
+        cps,
+        annotation,
+        validator?.({
+          oneOf: [CertificateSchema, JapaneseExistenceCertificate],
+        }),
+      );
+      return verify(annotation.source);
+    }),
+  );
+}
+
+/** media プロパティの署名検証 */
+async function verifyMedia(
+  cps: CoreProfileMap,
+  media?: UnverifiedJwtVc<WebMediaProfile>,
+  validator?: typeof VcValidator,
+) {
+  if (!media) return;
+  const verify = OpVerifier<WebMediaProfile>(
+    cps,
+    media,
+    validator?.(WebMediaProfile),
+  );
+  return await verify(media.source);
+}
+
+/** 検証済み OPS か否か */
 const isVerifiedOps = (ops: OpVerificationResult[]): ops is VerifiedOps =>
   ops.every((op) => !(op instanceof OpVerifyFailed));
 
@@ -33,15 +100,21 @@ const isVerifiedOps = (ops: OpVerificationResult[]): ops is VerifiedOps =>
  * @param ops Originator Profile Set
  * @param keys Core Profile の発行者の検証鍵
  * @param issuer Core Profile の発行者
+ * @param validator バリデーター
  * @returns 検証者
  */
 export function OpsVerifier(
   ops: OriginatorProfileSet,
   keys: Keys,
   issuer: string,
+  validator?: typeof VcValidator,
 ) {
   const decoded = decodeOps(ops);
-  const verifyCp = JwtVcVerifier<CoreProfile>(keys, issuer);
+  const verifyCp = JwtVcVerifier<CoreProfile>(
+    keys,
+    issuer,
+    validator?.(CoreProfile),
+  );
 
   /**
    * Originator Profile Set の検証
@@ -51,10 +124,7 @@ export function OpsVerifier(
     if (decoded instanceof OpsInvalid) {
       return decoded;
     }
-    const cps = new Map<
-      CoreProfile["credentialSubject"]["id"],
-      JwtVcVerificationResult<CoreProfile>
-    >(
+    const cps: CoreProfileMap = new Map(
       await Promise.all(
         decoded.map(({ core }) =>
           verifyCp(core.source).then(
@@ -63,20 +133,6 @@ export function OpsVerifier(
         ),
       ),
     );
-    const opVerifier = <T extends OpVc>(vc: UnverifiedJwtVc<T>) => {
-      const cpHolder = vc.doc.issuer;
-      const cp = cps.get(cpHolder);
-      if (!cp) {
-        return async () =>
-          new CoreProfileNotFound(`Missing Core Profile (${cpHolder})`, vc);
-      }
-      if (cp instanceof Error) {
-        return async () =>
-          new CoreProfileNotFound(`Invalid Core Profile (${cpHolder})`, vc);
-      }
-      const cpKeys = LocalKeys(cp.doc.credentialSubject.jwks);
-      return JwtVcVerifier<T>(cpKeys, cpHolder);
-    };
     const resultOps = await Promise.all(
       decoded.map(async (op): Promise<OpVerificationResult> => {
         const core =
@@ -85,17 +141,14 @@ export function OpsVerifier(
             `Missing Core Profile (${op.core.doc.credentialSubject.id})`,
             op.core,
           );
-        const annotations =
-          op.annotations &&
-          (await Promise.all(
-            op.annotations.map((annotation) =>
-              opVerifier<Certificate>(annotation)(annotation.source),
-            ),
-          ));
-        const media =
-          op.media &&
-          (await opVerifier<WebMediaProfile>(op.media)(op.media.source));
+        const annotations = await verifyAnnotations(
+          cps,
+          op.annotations,
+          validator,
+        );
+        const media = await verifyMedia(cps, op.media, validator);
         const resultOp = { core, annotations, media };
+
         if (core instanceof Error) {
           return new OpVerifyFailed("Core Profile verify failed", resultOp);
         }
