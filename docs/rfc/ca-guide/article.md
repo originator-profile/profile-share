@@ -34,11 +34,11 @@ REQUIRED. 必ず `["VerifiableCredential", "ContentAttestation"]` にしてく�
 - `headline`: REQUIRED. コンテンツのタイトル。
 - `description`: REQUIRED. コンテンツの説明（プレーンテキスト）。
 - `image`: OPTIONAL. コンテンツのサムネイル画像。サムネイル画像がある場合指定するべきです (RECOMMENDED)。 [`image` データ型](../context.md#the-image-datatype) の JSON-LD Node Object でなければなりません (MUST)。
-- `datePublished`: OPTIONAL. 公開日 (ISO 8601)
-- `dateModified`: OPTIONAL. 最終更新日 (ISO 8601)
+- `datePublished`: OPTIONAL. 公開日時 (ISO 8601)
+- `dateModified`: OPTIONAL. 最終更新日時 (ISO 8601)
 - `author`: OPTIONAL. 著者名（文字列）の配列
 - `editor`: OPTIONAL. 編集者名（文字列）の配列
-- `genre`: OPTIONAL. 文字列。
+- `genre`: OPTIONAL. ジャンル（文字列）
 
 #### `allowedUrl`
 

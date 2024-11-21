@@ -967,13 +967,13 @@ VC の作成
 
 ```
 USAGE
-  $ profile-registry sign -i <value> --id <value> --input <filepath> [--issued-at <value>] [--expired-at
+  $ profile-registry sign -i <value> --input <filepath> [--id <value>] [--issued-at <value>] [--expired-at
     <value>]
 
 FLAGS
   -i, --identity=<value>    (required) プライベート鍵のファイルパス
       --expired-at=<value>  有効期限 (ISO 8601)
-      --id=<value>          (required) OP ID (ドメイン名)
+      --id=<value>          OP ID (ドメイン名)
       --input=<filepath>    (required) 入力ファイルのパス (JSON 形式)
       --issued-at=<value>   発行日時 (ISO 8601)
 
@@ -991,13 +991,12 @@ EXAMPLES
 
   $ profile-registry sign \
       -i example.priv.json \
-      --id www.example.com \
-      --input website-profile.json
-
-  $ profile-registry sign \
-      -i example.priv.json \
       --id example.org \
       --input web-media-profile.json
+
+  $ profile-registry sign \
+      -i account-key.example.priv.json \
+      --input website-profile.example.json
 
 FLAG DESCRIPTIONS
   -i, --identity=<value>  プライベート鍵のファイルパス
@@ -1044,35 +1043,6 @@ FLAG DESCRIPTIONS
     }
     }
 
-    ウェブサイトプロファイル (WSP) の例:
-
-    {
-    "@context": [
-    "https://www.w3.org/ns/credentials/v2",
-    "https://originator-profile.org/ns/credentials/v1",
-    "https://originator-profile.org/ns/cip/v1",
-    {
-    "@language": "ja"
-    }
-    ],
-    "type": [
-    "VerifiableCredential",
-    "WebsiteProfile"
-    ],
-    "issuer": "dns:example.com",
-    "credentialSubject": {
-    "id": "https://media.example.com/",
-    "type": "WebSite",
-    "name": "<Webサイトのタイトル>",
-    "description": "<Webサイトの説明>",
-    "image": {
-    "id": "https://media.example.com/image.png",
-    "digestSRI": "sha256-Upwn7gYMuRmJlD1ZivHk876vXHzokXrwXj50VgfnMnY="
-    },
-    "url": "https://media.example.com"
-    }
-    }
-
     ウェブメディアプロファイル (WMP) の例:
 
     {
@@ -1110,6 +1080,35 @@ FLAG DESCRIPTIONS
     "type": "PlainTextDescription",
     "data": "この文章はこの Web メディアに関する補足情報です。"
     }
+    }
+    }
+
+    Website Profile (WSP) の例:
+
+    {
+    "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://originator-profile.org/ns/credentials/v1",
+    "https://originator-profile.org/ns/cip/v1",
+    {
+    "@language": "ja"
+    }
+    ],
+    "type": [
+    "VerifiableCredential",
+    "WebsiteProfile"
+    ],
+    "issuer": "dns:example.com",
+    "credentialSubject": {
+    "id": "https://media.example.com/",
+    "type": "WebSite",
+    "name": "<Webサイトのタイトル>",
+    "description": "<Webサイトの説明>",
+    "image": {
+    "id": "https://media.example.com/image.png",
+    "digestSRI": "sha256-Upwn7gYMuRmJlD1ZivHk876vXHzokXrwXj50VgfnMnY="
+    },
+    "url": "https://media.example.com"
     }
     }
 ```

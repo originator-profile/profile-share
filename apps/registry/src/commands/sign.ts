@@ -1,11 +1,11 @@
 import { Command, Flags } from "@oclif/core";
-import { signJwtVc } from "@originator-profile/securing-mechanism";
 import type {
   CoreProfile,
   Image,
   WebMediaProfile,
   WebsiteProfile,
 } from "@originator-profile/model";
+import { signJwtVc } from "@originator-profile/securing-mechanism";
 import { createDigestSri } from "@originator-profile/sign";
 import { addYears } from "date-fns";
 import fs from "node:fs/promises";
@@ -71,34 +71,14 @@ const exampleCoreProfile = {
   },
 } satisfies CoreProfile;
 
-const exampleWebsiteProfile = {
-  "@context": [
-    "https://www.w3.org/ns/credentials/v2",
-    "https://originator-profile.org/ns/credentials/v1",
-    "https://originator-profile.org/ns/cip/v1",
-    { "@language": "ja" },
-  ],
-  type: ["VerifiableCredential", "WebsiteProfile"],
-  issuer: "dns:example.com",
-  credentialSubject: {
-    id: "https://media.example.com/",
-    type: "WebSite",
-    name: "<Webサイトのタイトル>",
-    description: "<Webサイトの説明>",
-    image: {
-      id: "https://media.example.com/image.png",
-      digestSRI: "sha256-Upwn7gYMuRmJlD1ZivHk876vXHzokXrwXj50VgfnMnY=",
-    },
-    url: "https://media.example.com",
-  },
-} satisfies WebsiteProfile;
-
 const exampleWebMediaProfile = {
   "@context": [
     "https://www.w3.org/ns/credentials/v2",
     "https://originator-profile.org/ns/credentials/v1",
     "https://originator-profile.org/ns/cip/v1",
-    { "@language": "ja" },
+    {
+      "@language": "ja",
+    },
   ],
   type: ["VerifiableCredential", "WebMediaProfile"],
   issuer: "dns:wmp-issuer.example.org",
@@ -126,6 +106,30 @@ const exampleWebMediaProfile = {
   },
 } satisfies WebMediaProfile;
 
+const exampleWebsiteProfile = {
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://originator-profile.org/ns/credentials/v1",
+    "https://originator-profile.org/ns/cip/v1",
+    {
+      "@language": "ja",
+    },
+  ],
+  type: ["VerifiableCredential", "WebsiteProfile"],
+  issuer: "dns:example.com",
+  credentialSubject: {
+    id: "https://media.example.com/",
+    type: "WebSite",
+    name: "<Webサイトのタイトル>",
+    description: "<Webサイトの説明>",
+    image: {
+      id: "https://media.example.com/image.png",
+      digestSRI: "sha256-Upwn7gYMuRmJlD1ZivHk876vXHzokXrwXj50VgfnMnY=",
+    },
+    url: "https://media.example.com",
+  },
+} satisfies WebsiteProfile;
+
 export class VcSign extends Command {
   static summary = "VC の作成";
   static description = `\
@@ -133,9 +137,7 @@ VC に署名します。
 標準出力に VC を出力します。`;
   static flags = {
     identity: privateKey({ required: true }),
-    id: opId({
-      required: true,
-    }),
+    id: opId(),
     input: Flags.string({
       summary: "入力ファイルのパス (JSON 形式)",
       helpValue: "<filepath>",
@@ -144,13 +146,13 @@ VC に署名します。
 
 ${JSON.stringify(exampleCoreProfile, null, "  ")}
 
-ウェブサイトプロファイル (WSP) の例:
-
-${JSON.stringify(exampleWebsiteProfile, null, "  ")}
-
 ウェブメディアプロファイル (WMP) の例:
 
-${JSON.stringify(exampleWebMediaProfile, null, "  ")}`,
+${JSON.stringify(exampleWebMediaProfile, null, "  ")}
+
+Website Profile (WSP) の例:
+
+${JSON.stringify(exampleWebsiteProfile, null, "  ")}`,
       required: true,
     }),
     "issued-at": Flags.string({
@@ -167,32 +169,32 @@ $ <%= config.bin %> <%= command.id %> \\
     `\
 $ <%= config.bin %> <%= command.id %> \\
     -i example.priv.json \\
-    --id www.example.com \\
-    --input website-profile.json`,
-    `\
-$ <%= config.bin %> <%= command.id %> \\
-    -i example.priv.json \\
     --id example.org \\
     --input web-media-profile.json`,
+    `\
+$ <%= config.bin %> <%= command.id %> \\
+    -i account-key.example.priv.json \\
+    --input website-profile.example.json`,
   ];
 
   async run(): Promise<void> {
     const { flags } = await this.parse(VcSign);
-    const opId = flags.id;
     const inputBuffer = await fs.readFile(flags.input);
     const input = JSON.parse(inputBuffer.toString());
-    input.credentialSubject.id = opId;
-    const privateKey = flags.identity;
+    const issuedAt: Date = new Date(flags["issued-at"] ?? Date.now());
+    const expiredAt: Date = flags["expired-at"] ?? addYears(new Date(), 1);
 
-    const issuedAt = flags["issued-at"]
-      ? new Date(flags["issued-at"])
-      : new Date();
-    const expiredAt = flags["expired-at"] ?? addYears(new Date(), 1);
-    const data = (await addDigestSri(input)) as MinVC;
-    const vc = await signJwtVc(data, privateKey, {
+    if (flags.id) {
+      input.credentialSubject.id = flags.id;
+    }
+
+    const data = await addDigestSri(input);
+
+    const vc = await signJwtVc(data, flags.identity, {
       issuedAt,
       expiredAt,
     });
+
     this.log(vc);
   }
 }
