@@ -14,7 +14,7 @@
     "@playwright/test": "^1.44.1",
     "eslint": "^8.56.0",
     "eslint-config-originator-profile": "workspace:*",
-    "happy-dom": "^14.12.0",
+    "happy-dom": "^15.0.0",
     "just-typeof": "^3.2.0",
     "msw": "^2.3.1",
     "playwright": "^1.44.1",
