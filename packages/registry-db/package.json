@@ -12,7 +12,6 @@
     "@originator-profile/model": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
     "@prisma/client": "^5.21.1",
-    "@prisma/generator-helper": "^5.21.1",
     "@types/jsonld": "^1.5.15",
     "@types/uuid": "^10.0.0",
     "date-fns": "^4.1.0",

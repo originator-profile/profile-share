@@ -32,9 +32,6 @@ importers:
       '@mdx-js/react':
         specifier: ^3.1.0
         version: 3.1.0(@types/react@18.3.12)(react@18.3.1)
-      npm-check-updates:
-        specifier: ^17.1.10
-        version: 17.1.10
       npm-run-all2:
         specifier: ^7.0.1
         version: 7.0.1
@@ -598,9 +595,6 @@ importers:
       '@prisma/client':
         specifier: ^5.21.1
         version: 5.22.0(prisma@5.22.0)
-      '@prisma/generator-helper':
-        specifier: ^5.21.1
-        version: 5.22.0
       '@types/jsonld':
         specifier: ^1.5.15
         version: 1.5.15
@@ -981,9 +975,6 @@ importers:
       react:
         specifier: ^18.3.1
         version: 18.3.1
-      react-use:
-        specifier: ^17.5.1
-        version: 17.5.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
@@ -8710,11 +8701,6 @@ packages:
   normalize-url@8.0.1:
     resolution: {integrity: sha512-IO9QvjUMWxPQQhs60oOu10CRkWCiZzSUkzbXGGV9pviYl1fXYcvkzQ5jV9z8Y6un8ARoVRl4EtC6v6jNqbaJ/w==}
     engines: {node: '>=14.16'}
-
-  npm-check-updates@17.1.10:
-    resolution: {integrity: sha512-GnN6KbUzC8BpwsRYJntuumgCiagZ0+xxorvUJM9m06d7AlyK9lm3iFsAsnXF3VAZZzpD5QjZvWBwNze61Vywkw==}
-    engines: {node: ^18.18.0 || >=20.0.0, npm: '>=8.12.1'}
-    hasBin: true
 
   npm-install-checks@6.3.0:
     resolution: {integrity: sha512-W29RiK/xtpCGqn6f3ixfRYGk+zRyr+Ew9F2E20BfXxT5/euLdA/Nm7fO7OeTGuAmTs30cpgInyJ0cYe708YTZw==}
@@ -22300,8 +22286,6 @@ snapshots:
   normalize-url@6.1.0: {}
 
   normalize-url@8.0.1: {}
-
-  npm-check-updates@17.1.10: {}
 
   npm-install-checks@6.3.0:
     dependencies:
