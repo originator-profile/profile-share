@@ -569,8 +569,8 @@ importers:
         specifier: workspace:*
         version: link:../eslint-config
       happy-dom:
-        specifier: ^14.12.0
-        version: 14.12.3
+        specifier: ^15.0.0
+        version: 15.11.6
       just-typeof:
         specifier: ^3.2.0
         version: 3.2.0
@@ -582,7 +582,7 @@ importers:
         version: 1.44.1
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@22.7.4)(happy-dom@14.12.3)(jsdom@25.0.1)(terser@5.34.1)
+        version: 1.6.0(@types/node@22.7.4)(happy-dom@15.11.6)(jsdom@25.0.1)(terser@5.34.1)
 
   packages/registry-db:
     devDependencies:
@@ -6793,10 +6793,6 @@ packages:
     resolution: {integrity: sha512-vafaFqs8MZkRrSX7sFVUdo3ap/eNiLnb4IakshzvP56X5Nr1iGKAIqdX6tMlm6HcNRIkr6AxO5jFEoJzzpT8aQ==}
     engines: {node: '>=0.4.7'}
     hasBin: true
-
-  happy-dom@14.12.3:
-    resolution: {integrity: sha512-vsYlEs3E9gLwA1Hp+w3qzu+RUDFf4VTT8cyKqVICoZ2k7WM++Qyd2LwzyTi5bqMJFiIC/vNpTDYuxdreENRK/g==}
-    engines: {node: '>=16.0.0'}
 
   happy-dom@15.11.6:
     resolution: {integrity: sha512-elX7iUTu+5+3b2+NGQc0L3eWyq9jKhuJJ4GpOMxxT/c2pg9O3L5H3ty2VECX0XXZgRmmRqXyOK8brA2hDI6LsQ==}
@@ -19949,12 +19945,6 @@ snapshots:
     optionalDependencies:
       uglify-js: 3.19.3
 
-  happy-dom@14.12.3:
-    dependencies:
-      entities: 4.5.0
-      webidl-conversions: 7.0.0
-      whatwg-mimetype: 3.0.0
-
   happy-dom@15.11.6:
     dependencies:
       entities: 4.5.0
@@ -25449,42 +25439,6 @@ snapshots:
       ts-essentials: 10.0.2(typescript@5.6.3)
       typescript: 5.6.3
       vitest: 2.1.4(@types/node@22.7.4)(happy-dom@15.11.6)(jsdom@25.0.1)(msw@2.6.1(@types/node@22.7.4)(typescript@5.6.3))(terser@5.34.1)
-
-  vitest@1.6.0(@types/node@22.7.4)(happy-dom@14.12.3)(jsdom@25.0.1)(terser@5.34.1):
-    dependencies:
-      '@vitest/expect': 1.6.0
-      '@vitest/runner': 1.6.0
-      '@vitest/snapshot': 1.6.0
-      '@vitest/spy': 1.6.0
-      '@vitest/utils': 1.6.0
-      acorn-walk: 8.3.4
-      chai: 4.5.0
-      debug: 4.3.7(supports-color@8.1.1)
-      execa: 8.0.1
-      local-pkg: 0.5.0
-      magic-string: 0.30.12
-      pathe: 1.1.2
-      picocolors: 1.1.1
-      std-env: 3.7.0
-      strip-literal: 2.1.0
-      tinybench: 2.9.0
-      tinypool: 0.8.4
-      vite: 5.4.10(@types/node@22.7.4)(terser@5.34.1)
-      vite-node: 1.6.0(@types/node@22.7.4)(terser@5.34.1)
-      why-is-node-running: 2.3.0
-    optionalDependencies:
-      '@types/node': 22.7.4
-      happy-dom: 14.12.3
-      jsdom: 25.0.1
-    transitivePeerDependencies:
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
 
   vitest@1.6.0(@types/node@22.7.4)(happy-dom@15.11.6)(jsdom@25.0.1)(terser@5.34.1):
     dependencies:
