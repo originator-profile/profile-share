@@ -4,7 +4,7 @@
 
 1. Content Attestation (CA) の作成: 記事/コンテンツの作成時に、それに対応する Content Attestation (CA) を作成します。
 2. Content Attestation Set (CAS) の作成: ページ中の CA のリストを含めた CA Set (CAS) を作成します。
-3. CAS への参照の追加: ページ HTML 中に CAS への参照を追加します。この参照は、<script> タグを用いて実現します。
+3. CAS への参照の追加: ページ HTML 中に CAS への参照を追加します。この参照は、\<script\> タグを用いて実現します。
 
 ## CA の作成
 
