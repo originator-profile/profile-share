@@ -49,7 +49,7 @@ Visible Text Target は次のような形式です。
 
 - `type`: REQUIRED. Target Integrity のタイプです。必ず `VisibleTextTargetIntegrity` でなければなりません (MUST)。
 - `integrity`: REQUIRED. [`sriString` データ型](../context.md#the-sristring-datatype) でなければなりません (MUST)。使用可能なハッシュ関数については[ハッシュアルゴリズム](../algorithm.md#hash-algorithm)に準拠してください (MUST)。具体例: `sha256-4HLmAAYVRClrk+eCIrI1Rlf5/IKK0+wGoYjRs9vzl7U=`
-- `cssSelector`: REQUIRED. 必ず [CSS セレクター (Selectors Level 3)](https://www.w3.org/TR/cssSelectors-3/) でなければなりません (MUST)。
+- `cssSelector`: REQUIRED. 必ず [CSS セレクター (Selectors Level 3)](https://www.w3.org/TR/selectors-3/) でなければなりません (MUST)。
 
 ## 検証プロセス
 
