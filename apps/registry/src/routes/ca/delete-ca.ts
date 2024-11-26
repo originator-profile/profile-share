@@ -1,11 +1,11 @@
 import type { FastifyRequest, FastifySchema } from "fastify";
 import type { FromSchema, JSONSchema } from "json-schema-to-ts";
-import description from "./delete-cas.doc.md?raw";
+import description from "./delete-ca.doc.md?raw";
 
 export const method = "DELETE";
-export const url = "";
+export const url = "/:id";
 
-const querystring = {
+const params = {
   type: "object",
   properties: {
     id: {
@@ -15,13 +15,13 @@ const querystring = {
   },
 } as const as JSONSchema;
 
-type Querystring = FromSchema<typeof querystring>;
+type Params = FromSchema<typeof params>;
 
 export const schema = {
-  operationId: "deleteCas",
-  tags: ["cas"],
+  operationId: "deleteCa",
+  tags: ["ca"],
   description,
-  querystring,
+  params,
   response: {
     204: {
       description: `TODO: <https://github.com/originator-profile/profile/issues/1810>`,
@@ -30,7 +30,7 @@ export const schema = {
 } as const satisfies FastifySchema;
 
 export async function handler(
-  _: FastifyRequest<{ Querystring: Querystring }>,
+  _: FastifyRequest<{ Params: Params }>,
 ): Promise<null> {
   // TODO: https://github.com/originator-profile/profile/issues/1810
 

@@ -57,14 +57,14 @@ function OpenApi(
     },
     tags: [
       {
-        name: "cas",
-        description: "Content Attestation Set",
-        "x-displayName": "Content Attestation Set",
+        name: "ca",
+        description: "Content Attestation",
+        "x-displayName": "Content Attestation",
       },
       {
-        name: "ops",
-        description: "Originator Profile Set",
-        "x-displayName": "Originator Profile Set",
+        name: "op",
+        description: "Originator Profile",
+        "x-displayName": "Originator Profile",
       },
       {
         name: "accounts",

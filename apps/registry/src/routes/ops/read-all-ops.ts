@@ -9,9 +9,38 @@ const querystring = {
   type: "object",
   properties: {
     id: {
+      title: "OP IDs",
+      description: `\
+OP ID を指定します。
+
+OP ID の仕様:
+
+- [Originator Profile Identifier (OP ID)](https://docs.originator-profile.org/rfc/op-id/)
+
+以下のいずれかの形式で指定可能です。
+
+### 複数クエリーパラメーターでの指定
+
+個別に \`id=...&id=...&id=...\` 形式で OP ID を指定します。
+
+具体例:
+
+\`\`\`
+GET /ops?id=dns:example.org&id=dns:example.com
+\`\`\`
+
+### JSON 配列形式での指定
+
+OP ID (文字列) を含む JSON 配列形式としてエンコードし、\`id\` クエリーパラメーターに指定します。
+
+具体例:
+
+\`\`\`
+GET /ops?id=[%22dns:example.org%22,%22dns:example.com%22]
+\`\`\`
+`,
       type: "array",
       items: {
-        title: "OP ID",
         type: "string",
       },
     },
@@ -22,7 +51,7 @@ type Querystring = FromSchema<typeof querystring>;
 
 export const schema = {
   operationId: "readAllOps",
-  tags: ["ops"],
+  tags: ["op"],
   querystring,
   response: {
     200: {

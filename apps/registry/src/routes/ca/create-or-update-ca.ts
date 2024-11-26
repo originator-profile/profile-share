@@ -1,7 +1,7 @@
 import { ContentAttestationSet } from "@originator-profile/model";
 import type { FastifyRequest, FastifySchema } from "fastify";
 import type { FromSchema, JSONSchema } from "json-schema-to-ts";
-import description from "./create-or-update-cas.doc.md?raw";
+import description from "./create-or-update-ca.doc.md?raw";
 
 export const method = "POST";
 export const url = "";
@@ -52,8 +52,8 @@ const body = {
 type Body = FromSchema<typeof body>;
 
 export const schema = {
-  operationId: "createOrUpdateCas",
-  tags: ["cas"],
+  operationId: "createOrUpdateCa",
+  tags: ["ca"],
   description,
   body,
   response: {
