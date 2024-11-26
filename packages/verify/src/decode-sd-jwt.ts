@@ -7,5 +7,5 @@ import { decodeJwt } from "jose";
  * **/
 export function decodeSdJwt(sdJwt: string): ReturnType<typeof decodeJwt> {
   const [issuerJwt] = sdJwt.split("~");
-  return decodeJwt(issuerJwt);
+  return decodeJwt(issuerJwt ?? "");
 }

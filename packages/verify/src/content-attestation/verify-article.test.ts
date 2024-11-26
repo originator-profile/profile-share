@@ -32,8 +32,8 @@ const patch = <T extends object>(...args: Parameters<typeof diffApply<T>>) => {
   diffApply(patched, diff);
   return patched;
 };
-const caIssuer = "dns:ca-issuer.example.org" as const;
-const caId = "urn:uuid:78550fa7-f846-4e0f-ad5c-8d34461cb95b" as const;
+const caIssuer = "dns:ca-issuer.example.org";
+const caId = "urn:uuid:78550fa7-f846-4e0f-ad5c-8d34461cb95b";
 const caUrl = new URL("https://www.example.org/articles/example");
 const article: ArticleCA = {
   "@context": [

@@ -104,13 +104,14 @@ export async function createIntegrity<Content extends Target>(
       contentFetcher: fetchExternalResource,
       elementSelector: selectByIntegrity,
     },
-  }[content.type as Content["type"]];
+  }[content.type];
 
   const elements = elementSelector({ ...content, document: doc });
 
   if (elements.length === 0) return null;
 
   const [res] = await contentFetcher(elements);
+  if (!res) return null;
   const data = await res.arrayBuffer();
   const meta = await createIntegrityMetadata(alg, data);
 

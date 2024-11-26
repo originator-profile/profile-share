@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "vitest run",
-    "lint": "eslint --fix ."
+    "lint": "eslint --fix .",
+    "type-check": "tsc --noEmit"
   },
   "devDependencies": {
     "@originator-profile/core": "workspace:*",
@@ -18,6 +19,7 @@
     "just-typeof": "^3.2.0",
     "msw": "^2.3.1",
     "playwright": "^1.44.1",
+    "typescript": "^5.6.3",
     "vitest": "^1.6.0"
   }
 }

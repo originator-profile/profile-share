@@ -24,7 +24,7 @@ export function OriginatorProfileVerifier(
    * @return 検証結果
    */
   async function verify(sdJwt: string) {
-    const [issuerJwt] = sdJwt.split("~");
+    const [issuerJwt] = sdJwt.split("~") as [string];
     const decoded = decoder(issuerJwt);
     if (decoded instanceof Error) return decoded;
     const verified = await jwtVerify(issuerJwt, keys, { issuer }).catch(

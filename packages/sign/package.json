@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "vitest run",
-    "lint": "eslint --fix ."
+    "lint": "eslint --fix .",
+    "type-check": "tsc --noEmit"
   },
   "devDependencies": {
     "@originator-profile/cryptography": "workspace:*",
@@ -17,6 +18,7 @@
     "eslint-config-originator-profile": "workspace:*",
     "jose": "^5.9.6",
     "vitest": "^2.1.4",
+    "typescript": "^5.6.3",
     "websri": "^0.1.0"
   }
 }

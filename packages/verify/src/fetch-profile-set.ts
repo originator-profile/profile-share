@@ -21,7 +21,7 @@ export function getJsonLdNodeObjects(doc: Document = document): NodeObject[] {
         return undefined;
       }
     })
-    .filter((e) => typeof e !== "undefined") as NodeObject[];
+    .filter((e) => typeof e !== "undefined");
 
   return nodeObj;
 }

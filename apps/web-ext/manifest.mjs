@@ -74,6 +74,11 @@ const firefox = {
   },
 };
 
+/**
+ *
+ * @param {object} arg
+ * @param {string} arg.target 拡張機能のランタイム
+ */
 export default function esbuildPluginManifest({ target }) {
   const manifest = {
     chromium,
@@ -83,8 +88,9 @@ export default function esbuildPluginManifest({ target }) {
 
   return {
     name: "plugin:manifest",
+    /** @param build {import("esbuild").PluginBuild} */
     setup(build) {
-      const dist = build.initialOptions.outdir;
+      const dist = build.initialOptions.outdir ?? ".";
       build.onEnd(async () => {
         await writeFile(
           path.join(dist, "manifest.json"),
