@@ -60,7 +60,14 @@ export default tseslint.config(
 
       // Possible Problems
       "@typescript-eslint/no-non-null-assertion": "error",
-      "@typescript-eslint/no-unused-vars": ["error", { caughtErrors: "none" }],
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          caughtErrors: "none",
+          varsIgnorePattern: "^_",
+          argsIgnorePattern: "^_",
+        },
+      ],
       "array-callback-return": "error",
       "no-await-in-loop": "error",
       "no-constructor-return": "error",

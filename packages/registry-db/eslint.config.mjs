@@ -8,13 +8,4 @@ export default [
       "canonical/filename-match-exported": "off",
     },
   },
-  {
-    files: ["src/request.ts"],
-    rules: {
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        { varsIgnorePattern: "^_" },
-      ],
-    },
-  },
 ];

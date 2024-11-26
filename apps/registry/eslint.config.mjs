@@ -29,13 +29,4 @@ export default [
       "no-await-in-loop": "off",
     },
   },
-  {
-    files: ["src/commands/publisher/extract-website.ts"],
-    rules: {
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        { varsIgnorePattern: "^_" },
-      ],
-    },
-  },
 ];

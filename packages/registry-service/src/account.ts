@@ -60,7 +60,7 @@ export const AccountService = ({ validator }: Options) => ({
       const businessCategories = data.businessCategories.map(
         (cat) => cat.businessCategoryValue,
       );
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
       const { businessCategories: _, ...omitBusinessCategories } = data;
       return {
         ...omitBusinessCategories,
