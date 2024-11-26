@@ -1,10 +1,10 @@
-import fp from "fastify-plugin";
-import { FastifyPluginAsync } from "fastify";
 import swagger, { FastifyDynamicSwaggerOptions } from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
-import { Options } from "../server";
 import { Config } from "@originator-profile/registry-service";
+import { FastifyPluginAsync } from "fastify";
+import fp from "fastify-plugin";
 import pkg from "../package.json";
+import { Options } from "../server";
 
 function OpenApi(
   config: Pick<Config, "AUTH0_DOMAIN">,
@@ -57,11 +57,20 @@ function OpenApi(
     },
     tags: [
       {
+        name: "cas",
+        description: "Content Attestation Set",
+        "x-displayName": "Content Attestation Set",
+      },
+      {
+        name: "ops",
+        description: "Originator Profile Set",
+        "x-displayName": "Originator Profile Set",
+      },
+      {
         name: "accounts",
         description: "アカウント",
         "x-displayName": "アカウント",
       },
-
       {
         name: "SDP",
         description: "Signed Document Profile",
