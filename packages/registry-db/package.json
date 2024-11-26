@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "prisma generate",
-    "lint": "eslint --fix ."
+    "lint": "eslint --fix .",
+    "type-check": "tsc --noEmit"
   },
   "devDependencies": {
     "@originator-profile/core": "workspace:*",
@@ -22,6 +23,7 @@
     "prisma": "^5.21.1",
     "prisma-erd-generator": "^1.11.2",
     "uuid": "^11.0.2",
+    "typescript": "^5.6.3",
     "vitest": "^2.1.4",
     "vitest-mock-extended": "^2.0.2"
   }

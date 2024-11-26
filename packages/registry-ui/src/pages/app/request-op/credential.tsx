@@ -204,13 +204,23 @@ function CredentialForm({
           certificationSystems.data?.find((cs) => cs.name === values.name);
 
         if (cs?.certifier) {
-          setValue("certifier", cs.certifier.id);
-          setCertifierOptions([cs.certifier]);
+          // MEMO : 仕様改定前の型なのでローカルキャストして回避します
+          const certifier: { name: string; id: string } = cs.certifier as {
+            name: string;
+            id: string;
+          };
+          setValue("certifier", certifier.id);
+          setCertifierOptions([certifier]);
         }
 
         if (cs?.verifier) {
-          setValue("verifier", cs.verifier.id);
-          setVerifierOptions([cs.verifier]);
+          // MEMO : 仕様改定前の型なのでローカルキャストして回避します
+          const verifier: { name: string; id: string } = cs.verifier as {
+            name: string;
+            id: string;
+          };
+          setValue("verifier", verifier.id);
+          setVerifierOptions([verifier]);
         }
       }
     }

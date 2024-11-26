@@ -2,7 +2,6 @@
   "extends": "@originator-profile/tsconfig/tsconfig.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src",
     "resolveJsonModule": true
   }
 }

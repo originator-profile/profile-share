@@ -441,6 +441,9 @@ importers:
       jose:
         specifier: ^5.9.6
         version: 5.9.6
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
       uuid:
         specifier: ^11.0.2
         version: 11.0.2
@@ -465,6 +468,9 @@ importers:
       jose:
         specifier: ^5.3.0
         version: 5.9.6
+      typescript:
+        specifier: ^5.6.2
+        version: 5.6.3
       vitest:
         specifier: ^1.6.0
         version: 1.6.0(@types/node@22.7.4)(happy-dom@15.11.6)(jsdom@25.0.1)(terser@5.34.1)
@@ -498,9 +504,6 @@ importers:
       eslint-plugin-react-hooks:
         specifier: ^5.0.0
         version: 5.0.0(eslint@9.14.0(jiti@2.3.1))
-      eslint-plugin-tsc:
-        specifier: ^2.0.0
-        version: 2.0.0
       globals:
         specifier: ^15.12.0
         version: 15.12.0
@@ -541,6 +544,9 @@ importers:
       msw:
         specifier: ^2.6.0
         version: 2.6.1(@types/node@22.7.4)(typescript@5.6.3)
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
       vitest:
         specifier: ^2.1.4
         version: 2.1.4(@types/node@22.7.4)(happy-dom@15.11.6)(jsdom@25.0.1)(msw@2.6.1(@types/node@22.7.4)(typescript@5.6.3))(terser@5.34.1)
@@ -577,6 +583,9 @@ importers:
       playwright:
         specifier: ^1.44.1
         version: 1.44.1
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
       vitest:
         specifier: ^1.6.0
         version: 1.6.0(@types/node@22.7.4)(happy-dom@15.11.6)(jsdom@25.0.1)(terser@5.34.1)
@@ -622,6 +631,9 @@ importers:
       prisma-erd-generator:
         specifier: ^1.11.2
         version: 1.11.2(@prisma/client@5.22.0(prisma@5.22.0))(typescript@5.6.3)
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
       uuid:
         specifier: ^11.0.2
         version: 11.0.2
@@ -715,6 +727,9 @@ importers:
       pino:
         specifier: ^9.5.0
         version: 9.5.0
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
       vitest:
         specifier: ^2.1.4
         version: 2.1.4(@types/node@22.7.4)(happy-dom@15.11.6)(jsdom@25.0.1)(msw@2.6.1(@types/node@22.7.4)(typescript@5.6.3))(terser@5.34.1)
@@ -827,6 +842,9 @@ importers:
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
       vite:
         specifier: ^5.4.10
         version: 5.4.10(@types/node@22.7.4)(terser@5.34.1)
@@ -866,6 +884,9 @@ importers:
       jose:
         specifier: ^5.3.0
         version: 5.9.6
+      typescript:
+        specifier: ^5.6.2
+        version: 5.6.3
       vitest:
         specifier: ^1.6.0
         version: 1.6.0(@types/node@22.7.4)(happy-dom@15.11.6)(jsdom@25.0.1)(terser@5.34.1)
@@ -896,6 +917,9 @@ importers:
       jose:
         specifier: ^5.9.6
         version: 5.9.6
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
       vitest:
         specifier: ^2.1.4
         version: 2.1.4(@types/node@22.7.4)(happy-dom@15.11.6)(jsdom@25.0.1)(msw@2.6.1(@types/node@22.7.4)(typescript@5.6.3))(terser@5.34.1)
@@ -1050,6 +1074,9 @@ importers:
       playwright:
         specifier: 1.44.1
         version: 1.44.1
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
       urlpattern-polyfill:
         specifier: ^10.0.0
         version: 10.0.0
@@ -6049,10 +6076,6 @@ packages:
     engines: {node: '>=4'}
     peerDependencies:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7
-
-  eslint-plugin-tsc@2.0.0:
-    resolution: {integrity: sha512-we7n063HSoWDpXjuqgplrYxfWnlVgq7GXteEjxtc/Ve6C0BjGQyoNGjApSVspyru1cckAM9ASwPnSU8Y0OTwTA==}
-    engines: {node: '>=12', npm: '>=6'}
 
   eslint-scope@5.1.1:
     resolution: {integrity: sha512-2NxwbF/hZ0KpepYN0cNbo+FN6XoK7GaHlQhgx/hIZl6Va0bF45RQOOwhLIy8lQDbuCiadSLCBnH2CFYquit5bw==}
@@ -11156,10 +11179,6 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
-
-  typescript-service@2.0.3:
-    resolution: {integrity: sha512-FzRlqRp965UBzGvGwc6rbeko84jLILZrHf++I4cN8usZUB7F8Lh8/WDiCOUvy2l5os+jBWEz4fbYkkj1DhYJcw==}
-    engines: {node: '>=6', npm: '>=3'}
 
   typescript@5.6.3:
     resolution: {integrity: sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==}
@@ -18959,10 +18978,6 @@ snapshots:
       string.prototype.matchall: 4.0.11
       string.prototype.repeat: 1.0.0
 
-  eslint-plugin-tsc@2.0.0:
-    dependencies:
-      typescript-service: 2.0.3
-
   eslint-scope@5.1.1:
     dependencies:
       esrecurse: 4.3.0
@@ -25099,10 +25114,6 @@ snapshots:
     transitivePeerDependencies:
       - eslint
       - supports-color
-
-  typescript-service@2.0.3:
-    dependencies:
-      tslib: 1.14.1
 
   typescript@5.6.3: {}
 

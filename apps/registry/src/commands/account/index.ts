@@ -73,11 +73,7 @@ Prisma.accountsUpdateInput https://docs.originator-profile.org/ts/types/_origina
     });
     const inputBuffer = await fs.readFile(flags.input);
     const input = JSON.parse(inputBuffer.toString());
-    const operation = flags.operation as
-      | "create"
-      | "read"
-      | "update"
-      | "delete";
+    const operation = flags.operation;
     if (typeof input.id === "string") {
       input.id = parseAccountId(input.id);
     }

@@ -17,7 +17,7 @@ export default tseslint.config(
     ignores: ["dist/", "dist-*/", "playwright-report/"],
   },
   eslint.configs.recommended,
-  ...tseslint.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
   jsxA11y.flatConfigs.recommended,
   reactConfig,
   {
@@ -38,6 +38,8 @@ export default tseslint.config(
     files: ["**/*.{js,mjs,cjs,jsx,ts,tsx}"],
     languageOptions: {
       parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
         ecmaFeatures: { jsx: true },
       },
       globals: {
@@ -71,7 +73,24 @@ export default tseslint.config(
       "no-unused-private-class-members": "error",
       "no-use-before-define": "error",
       "require-atomic-updates": "error",
-
+      //==================== recommendedTypeChecked
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/no-unsafe-argument": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "@typescript-eslint/require-await": "off",
+      "@typescript-eslint/restrict-template-expressions": "off",
+      "@typescript-eslint/no-misused-promises": "off",
+      "@typescript-eslint/no-floating-promises": "off",
+      "@typescript-eslint/await-thenable": "off",
+      "@typescript-eslint/unbound-method": "off",
+      "@typescript-eslint/no-implied-eval": "off",
+      "@typescript-eslint/no-base-to-string": "off",
+      "@typescript-eslint/no-unsafe-enum-comparison": "off",
+      "@typescript-eslint/no-redundant-type-constituents": "off",
+      "@typescript-eslint/only-throw-error": "off",
+      //===================================
       // Best Practices
       eqeqeq: "error",
       "no-var": "error",

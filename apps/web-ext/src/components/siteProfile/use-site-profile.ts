@@ -7,7 +7,7 @@ import {
 } from "@originator-profile/verify";
 import { siteProfileMessenger } from "./events";
 
-const key = "site-profile" as const;
+const key = "site-profile";
 
 async function fetchVerifiedSiteProfile([, tabId]: [
   _: typeof key,

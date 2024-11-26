@@ -6,7 +6,8 @@
     "build:prod": "pnpm --filter @originator-profile/registry ui:build",
     "clean": "shx rm -rf dist",
     "test": "vitest run",
-    "lint": "eslint --fix ."
+    "lint": "eslint --fix .",
+    "type-check": "tsc --noEmit"
   },
   "devDependencies": {
     "@auth0/auth0-react": "^2.2.4",
@@ -35,6 +36,7 @@
     "swr": "^2.2.5",
     "vite": "^5.4.10",
     "vitest": "^2.1.4",
+    "typescript": "^5.6.3",
     "yup": "^1.4.0"
   },
   "dependencies": {

@@ -34,10 +34,9 @@ IAB Tech Lab Content Category Taxonomy 1.0の定義ファイル
     const range: number = flags.header - 1;
     const workbook = readFile(input);
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    const fromJson = utils.sheet_to_json(worksheet, { range: range }) as {
-      "IAB Code": string;
-      "IAB Category": string;
-    }[];
+    const fromJson: { "IAB Code": string; "IAB Category": string }[] =
+      utils.sheet_to_json(worksheet, { range: range });
+
     const toJson = fromJson.map<Prisma.categoriesCreateManyInput>((e) => ({
       cat: e["IAB Code"],
       name: e["IAB Category"],

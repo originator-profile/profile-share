@@ -2,7 +2,7 @@ import { arrayToTree } from "performant-array-to-tree";
 import { ProfilePair } from "@originator-profile/verify";
 import { UpdateAdIframeMessage } from "../types/message";
 
-const childrenField = "children" as const;
+const childrenField = "children";
 
 export type AdNode = {
   ad: ProfilePair[];

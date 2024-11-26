@@ -33,9 +33,9 @@ import {
 import { makeAdTree, updateAdIframe } from "../utils/ad-tree";
 import { buildPublUrl } from "./routes";
 
-const PROFILES_KEY = "profiles" as const;
-const WEBSITE_PROFILE_KEY = "website-profile-pair" as const;
-const VERIFIED_BODIES_KEY = "bodies" as const;
+const PROFILES_KEY = "profiles";
+const WEBSITE_PROFILE_KEY = "website-profile-pair";
+const VERIFIED_BODIES_KEY = "bodies";
 const REGISTRY = import.meta.env.PROFILE_ISSUER;
 
 type FetchProfilesResult = {
@@ -421,14 +421,16 @@ function useProfiles() {
   const params = useParams<{ tabId: string }>();
   const tabId = Number(params.tabId);
   // TODO: 自動再検証する場合は取得エンドポイントが変わりうることをUIの振る舞いで考慮して
-  const { data, error } = useSWRImmutable(
-    [PROFILES_KEY, tabId],
-    fetchVerifiedProfiles,
-  );
-  const { data: dataWebsite, error: errorWebsite } = useSWRImmutable(
-    [WEBSITE_PROFILE_KEY, tabId],
-    fetchVerifiedWebsiteProfilePair,
-  );
+  const { data, error } = useSWRImmutable<
+    ProfileSet,
+    Error,
+    [typeof PROFILES_KEY, number]
+  >([PROFILES_KEY, tabId], fetchVerifiedProfiles);
+  const { data: dataWebsite, error: errorWebsite } = useSWRImmutable<
+    { website: Profile[]; origin: string },
+    Error,
+    [typeof WEBSITE_PROFILE_KEY, number]
+  >([WEBSITE_PROFILE_KEY, tabId], fetchVerifiedWebsiteProfilePair);
 
   useEffect(() => {
     if (data && dataWebsite) {
@@ -439,7 +441,11 @@ function useProfiles() {
     }
   }, [data, dataWebsite, errorWebsite]);
 
-  const { data: profileSet, error: errorVerifiedBodies } = useSWRImmutable(
+  const { data: profileSet, error: errorVerifiedBodies } = useSWRImmutable<
+    ProfileSet,
+    Error,
+    [typeof VERIFIED_BODIES_KEY, number, ProfileSet] | null
+  >(
     data && dataWebsite ? [VERIFIED_BODIES_KEY, tabId, data] : null,
     fetchVerifiedBodies,
   );

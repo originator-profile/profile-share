@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "vitest run",
-    "lint": "eslint --fix ."
+    "lint": "eslint --fix .",
+    "type-check": "tsc --noEmit"
   },
   "devDependencies": {
     "@originator-profile/tsconfig": "workspace:*",
@@ -16,6 +17,7 @@
     "json-schema-to-ts": "^3.1.1",
     "jsonld": "^8.3.2",
     "msw": "^2.6.0",
+    "typescript": "^5.6.3",
     "vitest": "^2.1.4"
   }
 }

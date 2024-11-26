@@ -41,14 +41,14 @@ export class ProfileSet {
     this.profiles = profiles;
     const dps = profiles.filter(
       (profile) => profile instanceof DocumentProfile,
-    ) as DocumentProfile[];
+    );
     this.dps = [
       ...dps.filter((profile) => profile.isMain),
       ...dps.filter((profile) => !profile.isMain),
     ];
     this.ops = profiles.filter(
       (profile) => profile instanceof OriginatorProfile,
-    ) as OriginatorProfile[];
+    );
     this.origin = origin;
   }
 

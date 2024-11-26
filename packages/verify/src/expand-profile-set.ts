@@ -91,12 +91,12 @@ export async function expandProfilePairs(profiles: JsonLdDocument) {
   const website = websiteProfilePairs
     .map((node) => getValue(node, "website"))
     .map(extractValues)
-    .filter((node) => typeof node !== "undefined") as ProfilePair[];
+    .filter((node) => typeof node !== "undefined");
 
   const ad = adProfilePairs
     .map((node) => getValue(node, "ad"))
     .map(extractValues)
-    .filter((node) => typeof node !== "undefined") as ProfilePair[];
+    .filter((node) => typeof node !== "undefined");
 
   return {
     website,

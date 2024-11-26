@@ -38,4 +38,7 @@ export default [
       "canonical/filename-match-exported": "off",
     },
   },
+  {
+    ignores: ["src/router.ts"],
+  },
 ];

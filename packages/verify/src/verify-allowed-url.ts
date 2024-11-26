@@ -24,7 +24,6 @@ export async function verifyAllowedUrl(
     if (!value) {
       return false;
     }
-
     const pattern = new URLPattern(value);
     return pattern.test(url);
   });
