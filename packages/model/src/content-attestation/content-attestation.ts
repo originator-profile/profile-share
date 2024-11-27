@@ -1,9 +1,9 @@
-import { OpVc } from "../op-vc";
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
-import { AllowedUrl } from "../allowed-url";
-import { Target } from "../target";
 import { AllowedOrigin } from "../allowed-origin";
+import { AllowedUrl } from "../allowed-url";
 import { OpContextHead } from "../context/op-context-head";
+import { OpVc } from "../op-vc";
+import { Target } from "../target";
 
 const subject = {
   type: "object",
@@ -47,7 +47,7 @@ export const ContentAttestation = {
           minItems: 1,
         },
       },
-      required: ["@context", "type", "credentialSubject"],
+      required: ["@context", "type", "credentialSubject", "target"],
     },
   ],
 } as const satisfies JSONSchema;
