@@ -1,22 +1,15 @@
-import { useTitle, useMount } from "react-use";
-import { Navigate, useSearchParams } from "react-router-dom";
-import { DocumentProfile, ProfileSet } from "@originator-profile/ui";
+import { useTitle } from "react-use";
+import { Navigate } from "react-router-dom";
 import { buildPublUrl } from "../utils/routes";
-import useProfiles from "../utils/use-profiles";
-import NotFound from "../components/NotFound";
-import Unsupported from "../components/Unsupported";
-import useVerifyFailureFeedback from "../utils/use-verify-failure-feedback";
+import { useSiteProfile } from "../components/siteProfile";
+import { VerifiedSp } from "@originator-profile/verify";
 import { _ } from "@originator-profile/ui/src/utils";
+import Unsupported from "../components/Unsupported";
+import NotFound from "../components/NotFound";
 
-function Redirect({
-  dp,
-  tabId,
-  profiles,
-}: {
-  dp?: DocumentProfile;
-  tabId: number;
-  profiles?: ProfileSet;
-}) {
+function Redirect({ tabId }: { tabId: number; siteProfile?: VerifiedSp }) {
+  /* TODO: cas を送る */
+  /*
   useMount(() => {
     if (profiles) {
       chrome.tabs.sendMessage(tabId, {
@@ -27,34 +20,25 @@ function Redirect({
       });
     }
   });
+  */
 
-  return <Navigate to={buildPublUrl(tabId, dp)} />;
+  return <Navigate to={buildPublUrl(tabId, undefined)} />;
 }
 
 function Base() {
-  const [queryParams] = useSearchParams();
-  const { tabId, profileSet, error, origin } = useProfiles();
+  const { tabId, siteProfile, error } = useSiteProfile();
 
   useTitle([_("Base_ContentsInformation"), origin].filter(Boolean).join(" ― "));
 
-  const element = useVerifyFailureFeedback({
-    profiles: profileSet,
-    tabId,
-    queryParams,
-  });
   if (error) {
     return <Unsupported error={error} />;
   }
-  if (element) {
-    return element;
+
+  if (!siteProfile) {
+    return <NotFound variant="website" />;
   }
 
-  const dp = profileSet?.dps[0];
-  if (profileSet.isEmpty()) {
-    return <NotFound variant="dp" />;
-  }
-
-  return <Redirect dp={dp} tabId={tabId} profiles={profileSet} />;
+  return <Redirect tabId={tabId} />;
 }
 
 export default Base;

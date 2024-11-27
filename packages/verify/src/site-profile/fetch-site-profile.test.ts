@@ -77,7 +77,10 @@ test("Site Profile が設置されていないとき Site Profile の取得に�
   const result = await fetchSiteProfile(window.document as unknown as Document);
   expect(result).toBeInstanceOf(SiteProfileFetchFailed);
   // @ts-expect-error result is WebsiteMetadataFetchFailed
-  expect(result.message).toBe(`HTTP ステータスコード 404`);
+  expect(result.message).toBe("Site Profile を取得できませんでした");
+  expect((result as SiteProfileFetchFailed).result.error?.message).toBe(
+    "HTTP ステータスコード 404",
+  );
 });
 
 test("Site Profile の JSON parse に失敗したときエラーが返る", async () => {

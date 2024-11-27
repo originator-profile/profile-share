@@ -29,10 +29,9 @@ export async function fetchSiteProfile(
           )
         : { ok: true, result };
     } else {
-      return new SiteProfileFetchFailed(
-        `HTTP ステータスコード ${response.status}`,
-        {},
-      );
+      return new SiteProfileFetchFailed("Site Profile を取得できませんでした", {
+        error: new Error(`HTTP ステータスコード ${response.status}`),
+      });
     }
   } catch (e) {
     if (e instanceof Error || e instanceof window.Error) {
