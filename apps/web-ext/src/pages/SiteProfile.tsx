@@ -4,9 +4,8 @@ import {
 } from "../components/siteProfile";
 
 export default function SiteProfile() {
-  const siteProfile = useSiteProfile();
+  const { siteProfile } = useSiteProfile();
+  if (!siteProfile) return null;
 
-  if (!siteProfile.data) return null;
-
-  return <Template siteProfile={siteProfile.data} />;
+  return <Template siteProfile={siteProfile} />;
 }

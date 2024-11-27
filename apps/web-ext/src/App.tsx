@@ -30,7 +30,7 @@ const publ: RouteObject = {
 const site: RouteObject = {
   path: routes.site.path,
   element: <Outlet />,
-  children: [{ path: "", element: <Publ /> }, org],
+  children: [{ path: "", element: <SiteProfile /> }, org],
 };
 const prohibition: RouteObject = {
   path: routes.prohibition.path,

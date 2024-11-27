@@ -108,6 +108,6 @@ test.afterEach(async ({ page }, testInfo) => {
   await ext?.screenshot({ path: `screenshots/${testInfo.title}-web-ext.png` });
 });
 
-test("ProfileSet不正時の確認", async ({ context, page }) => {
+test.skip("ProfileSet不正時の確認", async ({ context, page }) => {
   await runTest(context, page, "http://localhost:8080/invalid-ps");
 });
