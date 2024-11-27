@@ -1,12 +1,13 @@
 import { generateKey, LocalKeys } from "@originator-profile/cryptography";
-import { VcValidator, signJwtVc } from "@originator-profile/securing-mechanism";
 import { ContentAttestation, Jwk } from "@originator-profile/model";
+import { signJwtVc, VcValidator } from "@originator-profile/securing-mechanism";
 import { addYears, fromUnixTime, getUnixTime } from "date-fns";
+import { diffApply } from "just-diff-apply";
 import { describe, expect, test } from "vitest";
+import { createIntegrityMetadata } from "websri";
 import { CaInvalid, CaVerifyFailed } from "./errors";
 import { VerifiedCa } from "./types";
 import { CaVerifier } from "./verify-content-attestation";
-import { diffApply } from "just-diff-apply";
 
 const issuedAt = fromUnixTime(getUnixTime(new Date()));
 const expiredAt = addYears(issuedAt, 10);
@@ -34,6 +35,14 @@ const patch = <T extends object>(...args: Parameters<typeof diffApply<T>>) => {
 const caIssuer = "dns:ca-issuer.example.org";
 const caId = "urn:uuid:78550fa7-f846-4e0f-ad5c-8d34461cb95b";
 const caUrl = new URL("https://www.example.org/example");
+
+const integrityMetadata = await createIntegrityMetadata(
+  "sha256",
+  await new Response("ok").arrayBuffer(),
+);
+
+document.body.textContent = "ok";
+
 const ca: ContentAttestation = {
   "@context": [
     "https://www.w3.org/ns/credentials/v2",
@@ -45,6 +54,13 @@ const ca: ContentAttestation = {
     id: caId,
     type: "anCA",
   },
+  target: [
+    {
+      type: "TextTargetIntegrity",
+      cssSelector: "body",
+      integrity: integrityMetadata.toString(),
+    },
+  ],
 };
 
 describe("Content Attestationの検証", async () => {

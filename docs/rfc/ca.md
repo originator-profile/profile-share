@@ -60,7 +60,7 @@ OPTIONAL. この CA によって表明される情報の対象となる [Origin]
 
 #### `target`
 
-OPTIONAL. Target Integrity でなければなりません (MUST)。
+REQUIRED. Target Integrity でなければなりません (MUST)。
 
 Target Integrity はコンテンツの一部の完全性を保証するための仕組みです。
 [Target Integrity Registry](./target-guide/index.mdx)に登録されているものを使用できます。
