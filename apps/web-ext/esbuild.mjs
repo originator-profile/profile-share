@@ -3,6 +3,7 @@ import path from "node:path";
 import util from "node:util";
 import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { execSync } from "node:child_process";
 import chokidar from "chokidar";
 
 const options = /** @type {const} */ ({
@@ -95,12 +96,38 @@ if (existsSync(credentialsPath)) {
     },
   ];
 }
+
+const registryOpsPath = path.join(cwd, "registry-ops.json");
+let registryOps = [];
+if (existsSync(registryOpsPath)) {
+  const file = readFileSync(registryOpsPath, { encoding: "utf8" });
+  registryOps = JSON.parse(file);
+} else if (args.values.mode === "development") {
+  const privKeyPath = path.join(
+    cwd,
+    "../registry/account-key.example.priv.json",
+  );
+  const commandBinaryPath = path.join(cwd, "../registry/bin/run");
+  const cpPath = path.join(cwd, "../registry/cp.example.json");
+  const signedCoreProfile = execSync(
+    `${commandBinaryPath} sign -i ${privKeyPath} --input ${cpPath} --id localhost`,
+  )
+    .toString()
+    .trim();
+  registryOps = [
+    {
+      core: signedCoreProfile,
+    },
+  ];
+}
+
 const env = {
   MODE: args.values.mode,
   PROFILE_ISSUER: args.values.issuer,
   PROFILE_REGISTRY_URL: args.values["registry-url"],
   BASIC_AUTH: process.env.BASIC_AUTH === "true",
   BASIC_AUTH_CREDENTIALS: process.env.BASIC_AUTH === "true" ? credentials : [],
+  REGISTRY_OPS: registryOps,
 };
 
 import { rm } from "node:fs/promises";

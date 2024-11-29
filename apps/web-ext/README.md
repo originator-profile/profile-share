@@ -72,6 +72,20 @@ $ pnpm dev --registry-url=https://oprexpt.originator-profile.org/ --url=https://
 ]
 ```
 
+## Originator ProfileレジストリのOPを同梱する
+
+拡張子機能をビルドする際、`apps/web-ext`に`registry-ops.json` JSON ファイルがあれば、その内容をレジストリのOPとして同梱し、検証に使用します。
+
+```jsonc
+[
+  {
+    "core": "eyJ...",
+    "annotations": ["eyJ..."], // Optional の項目のため含めなくてもよい
+    "media": "eyJ...", // Optional の項目のため含めなくてもよい
+  },
+]
+```
+
 ## npm スクリプト
 
 - `pnpm build`: 拡張機能をビルドしたのち、パッケージングします。

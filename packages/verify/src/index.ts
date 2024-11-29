@@ -17,3 +17,4 @@ export * from "./verify-body";
 export * from "./verify-originator-profile";
 export * from "./verify-profiles";
 export * from "./verify-token";
+export * from "./originator-profile-set";

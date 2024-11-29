@@ -1,8 +1,9 @@
 import { useParams } from "react-router-dom";
 import useSWRImmutable from "swr/immutable";
-import { SpVerifier, VerifiedSp } from "@originator-profile/verify";
+import { OpsInvalid, SpVerifier, VerifiedSp } from "@originator-profile/verify";
 import { siteProfileMessenger } from "./events";
-import { RemoteKeys } from "@originator-profile/cryptography";
+import { getRegistryOps } from "../../utils/get-registry-ops";
+import { LocalKeys } from "@originator-profile/cryptography";
 
 const key = "site-profile";
 
@@ -17,13 +18,17 @@ async function fetchVerifiedSiteProfile([, tabId]: [
   );
   if (!ok) throw result;
   const registry = import.meta.env.PROFILE_ISSUER;
-  const jwksEndpoint = new URL(
-    import.meta.env.MODE === "development" && registry === "localhost"
-      ? `http://localhost:8080/.well-known/jwks.json`
-      : `https://${registry}/.well-known/jwks.json`,
+  const registryOps = getRegistryOps();
+  if (registryOps instanceof OpsInvalid) {
+    throw registryOps;
+  }
+
+  const key = LocalKeys(
+    registryOps.find(
+      (op) => op.core.doc.credentialSubject.id === `dns:${registry}`,
+    )?.core.doc.credentialSubject.jwks ?? { keys: [] },
   );
-  const keys = RemoteKeys(jwksEndpoint);
-  const verifySp = SpVerifier(result, keys, `dns:${registry}`);
+  const verifySp = SpVerifier(result, key, `dns:${registry}`);
   const verifiedSp = await verifySp();
   if (verifiedSp instanceof Error) {
     throw verifiedSp;

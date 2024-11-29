@@ -9,5 +9,10 @@ interface ImportMeta {
       username: string;
       password: string;
     }[];
+    REGISTRY_OPS: {
+      core: string;
+      annotations?: string[];
+      media?: string;
+    }[];
   };
 }
