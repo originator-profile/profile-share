@@ -83,12 +83,14 @@ describe("CertificateService", () => {
         ...dummyAccount,
         domainName: "example.org",
         url: "https://example.org/",
+        signingKey: null,
       })
       .mockResolvedValueOnce({
         id: accountId,
         ...dummyAccount,
         domainName: "example.com",
         url: "https://example.com/",
+        signingKey: null,
       });
     prisma.keys.findMany.mockResolvedValue([
       { id: publicKey.kid, accountId, jwk: publicKey as Prisma.JsonValue },

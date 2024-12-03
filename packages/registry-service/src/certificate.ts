@@ -298,7 +298,7 @@ export const CertificateService = ({ account, validator }: Options) => ({
     const decoded = validator.decodeToken(jwt);
     const issuedAt: Date = fromUnixTime(decoded.payload.iat);
     const expiredAt: Date = fromUnixTime(decoded.payload.exp);
-    const data = await prisma.ops.create({
+    const data = await prisma.oldOps.create({
       data: {
         certifierId: id,
         jwt,

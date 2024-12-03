@@ -219,7 +219,7 @@ export const AccountService = ({ validator }: Options) => ({
     }
     const issuedAt: Date = fromUnixTime(decoded.payload.iat);
     const expiredAt: Date = fromUnixTime(decoded.payload.exp);
-    const op = await prisma.ops.create({
+    const op = await prisma.oldOps.create({
       data: {
         certifierId: uuid,
         jwt,

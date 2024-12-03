@@ -12,8 +12,29 @@ generator erd {
   output   = "../../../docs/spec/er.md"
 }
 
-/// Signed Originator Profile
+/// Originator Profile
 model ops {
+  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  /// 保有組織
+  holder accounts      @relation(fields: [holderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  holderId String @db.Uuid
+  /// OP の値 (JSON)
+  value Json
+}
+
+/// Content Attestation
+model cas {
+  /// CA ID (`urn:uuid:` 接頭辞なし)
+  caId          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  /// 保有組織
+  holder accounts      @relation(fields: [holderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  holderId String @db.Uuid
+  /// CA の値 (JWT)
+  value String
+}
+
+/// Signed Originator Profile
+model oldOps {
   id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   /// 認証機関
   certifier   accounts      @relation(fields: [certifierId], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -99,13 +120,19 @@ model accounts {
   /// ロゴ画像
   logos                          logos[]
   /// Signed Originator Profile 発行履歴
-  issuedOps                      ops[]
+  issuedOps                      oldOps[]
   /// Signed Document Profile 発行履歴
   issuedDps                      dps[]
   /// Signed Originator Profile 公開履歴
   publications                   publications[]
+  /// 保有 Originator Profile
+  ops ops[]
+  /// 保有 Content Attestation
+  cas cas[]
   /// 公開鍵
   keys                           keys[]
+  /// 署名鍵 (JWK)
+  signingKey Json?
   /// ウェブページ
   websites                       websites[]
   /// 広告
@@ -172,7 +199,7 @@ model logos {
 /// 公開
 model publications {
   /// Signed Originator Profile
-  op          ops      @relation(fields: [opId], references: [id], onDelete: Cascade)
+  op          oldOps      @relation(fields: [opId], references: [id], onDelete: Cascade)
   opId        String   @id @db.Uuid
   /// 会員
   account     accounts @relation(fields: [accountId], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -367,7 +394,7 @@ model requests {
   /// 申請履歴
   requestLogs requestLogs[]
   /// Signed Originator Profile
-  op          ops?
+  op          oldOps?
   /// 組織
   group       accounts      @relation(fields: [groupId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   groupId     String        @unique @db.Uuid
