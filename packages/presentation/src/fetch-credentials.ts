@@ -1,4 +1,11 @@
 import { ProfilesFetchFailed } from "./errors";
+import {
+  ContentAttestationSet,
+  OriginatorProfileSet,
+} from "@originator-profile/model";
+
+export type Credentials = [OriginatorProfileSet, ContentAttestationSet];
+export type FetchCredentialsResult = Credentials | Error;
 
 function getEndpoints(doc: Document, mediaType: string): string[] {
   const endpoints = [
@@ -13,10 +20,9 @@ function getEndpoints(doc: Document, mediaType: string): string[] {
  * @param doc Document オブジェクト
  * @param mediaType メディアタイプ
  */
-function getEmbeddedCredentials(
-  doc: Document = document,
-  mediaType: string,
-): unknown[] {
+function getEmbeddedCredentials<
+  T extends OriginatorProfileSet | ContentAttestationSet,
+>(doc: Document = document, mediaType: string): T {
   const elements = [...doc.querySelectorAll(`script[type="${mediaType}"]`)];
   const credentialsArray = elements
     .map((elem) => {
@@ -33,18 +39,17 @@ function getEmbeddedCredentials(
     })
     .filter((e) => typeof e !== "undefined");
 
-  return credentialsArray;
+  return credentialsArray.flat() as T;
 }
 
 /**
  * {mediaType} のデータの取得
  * @param doc Document オブジェクト
  */
-async function fetchCredentialSet(
-  doc: Document,
-  mediaType: string,
-): Promise<unknown[] | ProfilesFetchFailed> {
-  let profiles = getEmbeddedCredentials(doc, mediaType);
+async function fetchCredentialSet<
+  T extends OriginatorProfileSet | ContentAttestationSet,
+>(doc: Document, mediaType: string): Promise<T | ProfilesFetchFailed> {
+  let profiles = getEmbeddedCredentials<T>(doc, mediaType);
   try {
     const profileEndpoints = getEndpoints(doc, mediaType);
 
@@ -59,7 +64,7 @@ async function fetchCredentialSet(
         return await res.json();
       }),
     );
-    profiles = profiles.concat(profileSetFromEndpoints);
+    profiles = profiles.concat(profileSetFromEndpoints.flat()) as T;
   } catch (e) {
     if (e instanceof Error || e instanceof window.Error) {
       return new ProfilesFetchFailed(
@@ -77,17 +82,20 @@ async function fetchCredentialSet(
 }
 
 export const fetchContentAttestationSet = (doc: Document) =>
-  fetchCredentialSet(doc, "application/cas+json");
+  fetchCredentialSet<ContentAttestationSet>(doc, "application/cas+json");
 export const fetchOriginatorProfileSet = (doc: Document) =>
-  fetchCredentialSet(doc, "application/ops+json");
+  fetchCredentialSet<OriginatorProfileSet>(doc, "application/ops+json");
 
-export const fetchCredentials = async (doc: Document) => {
+export const fetchCredentials = async (
+  doc: Document,
+): Promise<FetchCredentialsResult> => {
   const [ops, cas] = await Promise.all([
     fetchOriginatorProfileSet(doc),
     fetchContentAttestationSet(doc),
   ]);
   if (cas instanceof Error || ops instanceof Error) {
-    return ops instanceof Error ? ops : cas;
+    /* opsがErrorじゃない場合はcasがErrorであるが、型推論はそう思ってくれない */
+    return ops instanceof Error ? ops : (cas as Error);
   }
   return [ops, cas];
 };

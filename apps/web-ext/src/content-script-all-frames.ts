@@ -5,20 +5,12 @@ import {
   ContentScriptAllFramesMessageRequest,
   ContentScriptAllFramesMessageResponse,
 } from "./types/message";
+import { credentialsMessenger } from "./components/credentials";
 
 async function handleMessageResponse(
   message: ContentScriptAllFramesMessageRequest,
 ): Promise<ContentScriptAllFramesMessageResponse> {
   switch (message.type) {
-    case "fetch-profiles": {
-      const data = await fetchCredentials(document);
-      return {
-        type: "fetch-profiles",
-        ok: !(data instanceof Error),
-        data: stringifyWithError(data),
-        origin: document.location.origin,
-      };
-    }
     case "extract-body": {
       const data = await extractBody(
         document.location.href,
@@ -46,4 +38,13 @@ chrome.runtime.onMessage.addListener(function (
     (response) => response && sendResponse(response),
   );
   return true;
+});
+
+credentialsMessenger.onMessage("fetchCredentials", async () => {
+  const data = await fetchCredentials(document);
+  return {
+    data,
+    origin: window.origin,
+    url: window.location.href,
+  };
 });

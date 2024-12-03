@@ -1,9 +1,9 @@
-import useProfiles from "../utils/use-profiles";
+import useCredentials from "../components/credentials/use-credentials";
 import { Spinner } from "@originator-profile/ui";
 import { _ } from "@originator-profile/ui/src/utils";
 
 function Loading() {
-  const { origin } = useProfiles();
+  const { origin } = useCredentials();
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <div className="p-2 flex flex-col items-center gap-4">
