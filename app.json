@@ -1,5 +1,5 @@
 {
-  "stack": "container",
+  "stack": "heroku-24",
   "addons": [{ "plan": "heroku-postgresql" }],
   "env": {
     "APP_URL": {
