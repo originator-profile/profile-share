@@ -5,7 +5,7 @@ import {
   OpsVerificationResult,
   OpsVerifier,
 } from "@originator-profile/verify";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { useEvent } from "react-use";
 import useSWRImmutable from "swr/immutable";
 import { credentialsMessenger, FetchCredentialsMessageResult } from "./events";
