@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
 import useCredentials from "../components/credentials/use-credentials";
 import { routes } from "../utils/routes";

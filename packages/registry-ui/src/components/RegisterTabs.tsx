@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import useTabs from "../utils/use-tabs";
 import { useStatus } from "../utils/status";
 

@@ -2,7 +2,7 @@ import logoDark from "@originator-profile/ui/src/assets/logoDark.svg";
 import { Image, Spinner } from "@originator-profile/ui";
 import { Menu } from "@headlessui/react";
 import { Icon } from "@iconify/react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import clsx from "clsx";
 import { useSession } from "../utils/session";
 import { useAccount } from "../utils/account";

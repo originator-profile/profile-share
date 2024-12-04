@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate } from "react-router";
 import { Spinner } from "@originator-profile/ui";
 import { useSession } from "../../utils/session";
 import { useAccount } from "../../utils/account";

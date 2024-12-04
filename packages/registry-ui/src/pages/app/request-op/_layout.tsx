@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link } from "react-router";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import useTabs from "../../../utils/use-tabs";
 import { useSession } from "../../../utils/session";

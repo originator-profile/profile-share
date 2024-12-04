@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link } from "react-router";
 import { DpItemContent } from "@originator-profile/core";
 import { DocumentProfile, Image } from "@originator-profile/ui";
 import placeholderDpThumbnail from "@originator-profile/ui/src/assets/placeholder-dp-thumbnail.png";

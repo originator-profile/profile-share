@@ -19,7 +19,7 @@ import {
 } from "@originator-profile/verify";
 import { NodeObject } from "jsonld";
 import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router";
 import { useEvent } from "react-use";
 import useSWRImmutable from "swr/immutable";
 import {

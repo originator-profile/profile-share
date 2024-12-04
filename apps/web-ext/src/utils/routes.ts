@@ -1,5 +1,5 @@
 import { DocumentProfile, OriginatorProfile } from "@originator-profile/ui";
-import { generatePath } from "react-router-dom";
+import { generatePath } from "react-router";
 import { ParseUrlParams } from "typed-url-params";
 
 export function route<Path extends string>(path: Path) {

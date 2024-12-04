@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 import AppBar from "../../components/AppBar";
 import AppVersion from "../../components/AppVersion";
 import React from "react";

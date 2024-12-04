@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Link, LinkProps } from "react-router-dom";
+import { Link, LinkProps } from "react-router";
 import { OpHolder } from "@originator-profile/model";
 import HolderSummary from "./HolderSummary";
 

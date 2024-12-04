@@ -1,6 +1,6 @@
 import { Fragment } from "react/jsx-runtime";
 import { Icon } from "@iconify/react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { twMerge } from "tailwind-merge";
 import { Spinner, CredentialTable } from "@originator-profile/ui";
 import { useParams } from "../../../../../router";

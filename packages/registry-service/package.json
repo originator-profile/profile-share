@@ -17,7 +17,7 @@
     "@originator-profile/sign": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
     "@originator-profile/verify": "workspace:*",
-    "@prisma/client": "^5.21.1",
+    "@prisma/client": "^6.0.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonld": "^1.5.15",
     "@types/nodemailer": "^6.4.16",

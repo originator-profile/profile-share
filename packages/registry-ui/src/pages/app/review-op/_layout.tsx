@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 
 function Article() {
