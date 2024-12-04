@@ -1,4 +1,4 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router";
 import useProfiles from "../utils/use-profiles";
 import { routes } from "../utils/routes";
 import NotFound from "../components/NotFound";

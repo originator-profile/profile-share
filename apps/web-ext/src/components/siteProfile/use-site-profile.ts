@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import useSWRImmutable from "swr/immutable";
 import { OpsInvalid, SpVerifier, VerifiedSp } from "@originator-profile/verify";
 import { siteProfileMessenger } from "./events";

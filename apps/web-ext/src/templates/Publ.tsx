@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router";
 import { Icon } from "@iconify/react";
 import { OpHolder, OgWebsite } from "@originator-profile/model";
 import { DpItemContent } from "@originator-profile/core";

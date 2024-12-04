@@ -10,8 +10,7 @@ on:
 jobs:
   main:
     if: github.ref == 'refs/heads/main'
-    # NOTE: Ubuntu 24.04 LTS 環境だと Playwright v1.44.1 のセットアップに失敗するため
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     permissions:
       contents: write

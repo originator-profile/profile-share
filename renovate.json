@@ -1,5 +1,5 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended", "config:semverAllMonthly"],
-  "ignoreDeps": ["@headlessui/react", "@playwright/test", "playwright"]
+  "ignoreDeps": ["@headlessui/react"]
 }

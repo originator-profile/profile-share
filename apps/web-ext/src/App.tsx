@@ -1,4 +1,4 @@
-import { RouteObject, Outlet, useRoutes } from "react-router-dom";
+import { RouteObject, Outlet, useRoutes } from "react-router";
 import { routes } from "./utils/routes";
 import Base from "./pages/Base";
 import Org from "./pages/Org";

@@ -1,7 +1,7 @@
 import React from "react";
 import { _, ProfileSet } from "@originator-profile/ui";
 import { routes } from "./routes";
-import { Navigate } from "react-router-dom";
+import { Navigate } from "react-router";
 import Loading from "../components/Loading";
 import Unsupported from "../components/Unsupported";
 

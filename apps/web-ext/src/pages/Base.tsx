@@ -1,5 +1,5 @@
 import { useTitle } from "react-use";
-import { Navigate } from "react-router-dom";
+import { Navigate } from "react-router";
 import { buildPublUrl } from "../utils/routes";
 import { useSiteProfile } from "../components/siteProfile";
 import { VerifiedSp } from "@originator-profile/verify";

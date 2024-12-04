@@ -12,14 +12,14 @@
     "@originator-profile/core": "workspace:*",
     "@originator-profile/model": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
-    "@playwright/test": "^1.44.1",
-    "eslint": "^8.56.0",
+    "@playwright/test": "^1.49.0",
+    "eslint": "^9.0.0",
     "eslint-config-originator-profile": "workspace:*",
     "happy-dom": "^15.0.0",
     "just-typeof": "^3.2.0",
     "msw": "^2.3.1",
-    "playwright": "^1.44.1",
+    "playwright": "^1.49.0",
     "typescript": "^5.6.3",
-    "vitest": "^1.6.0"
+    "vitest": "^2.0.0"
   }
 }
