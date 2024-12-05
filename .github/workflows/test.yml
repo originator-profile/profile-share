@@ -4,6 +4,9 @@ jobs:
   main:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
     # format ステップで新しいコミットを push するために write 権限を与える
     permissions:
       contents: write
