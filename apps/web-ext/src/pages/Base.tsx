@@ -6,7 +6,7 @@ import { VerifiedSp } from "@originator-profile/verify";
 import { _ } from "@originator-profile/ui/src/utils";
 import Unsupported from "../components/Unsupported";
 import NotFound from "../components/NotFound";
-import useCredentials from "../components/credentials/use-credentials";
+import { useCredentials } from "../components/credentials/use-credentials";
 
 function Redirect({ tabId }: { tabId: number; siteProfile?: VerifiedSp }) {
   /* TODO: cas を送る */
