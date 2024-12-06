@@ -1,0 +1,29 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://originator-profile.org/ns/credentials/v1",
+    "https://originator-profile.org/ns/cip/v1",
+    {
+      "@language": "ja"
+    }
+  ],
+  "type": ["VerifiableCredential", "Certificate"],
+  "issuer": "dns:localhost",
+  "credentialSubject": {
+    "issuer": "dns:localhost",
+    "type": "Organization",
+    "addressCountry": "JP",
+    "name": "Originator Profile 技術研究組合 (開発用)",
+    "corporateNumber": "8010005035933",
+    "postalCode": "100-8055",
+    "addressRegion": "東京都",
+    "addressLocality": "千代田区",
+    "streetAddress": "大手町1-7-1"
+  },
+  "certificationSystem": {
+    "id": "urn:uuid:5374a35f-57ce-43fd-84c3-2c9b0163e3df",
+    "type": "CertificationSystem",
+    "name": "法人番号システムWeb-API",
+    "ref": "https://www.houjin-bangou.nta.go.jp/"
+  }
+}

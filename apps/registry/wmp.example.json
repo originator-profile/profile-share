@@ -1,0 +1,29 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://originator-profile.org/ns/credentials/v1",
+    "https://originator-profile.org/ns/cip/v1",
+    {
+      "@language": "ja"
+    }
+  ],
+  "type": ["VerifiableCredential", "WebMediaProfile"],
+  "issuer": "dns:localhost",
+  "credentialSubject": {
+    "id": "dns:localhost",
+    "type": "OnlineBusiness",
+    "url": "https://originator-profile.org/",
+    "name": "Originator Profile 技術研究組合 (開発用)",
+    "logo": {
+      "id": "https://originator-profile.org/favicon.svg"
+    },
+    "contactPoint": {
+      "id": "https://originator-profile.org/ja-JP/contact/",
+      "name": "お問い合わせ"
+    },
+    "privacyPolicy": {
+      "id": "https://originator-profile.org/ja-JP/privacy/",
+      "name": "プライバシーポリシー"
+    }
+  }
+}

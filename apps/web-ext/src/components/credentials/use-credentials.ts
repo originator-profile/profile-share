@@ -1,4 +1,3 @@
-import { RemoteKeys } from "@originator-profile/cryptography";
 import {
   CaVerificationResult,
   CaVerifier,
@@ -9,6 +8,7 @@ import { useParams } from "react-router";
 import { useEvent } from "react-use";
 import useSWRImmutable from "swr/immutable";
 import { credentialsMessenger, FetchCredentialsMessageResult } from "./events";
+import { getRegistryKeys } from "../../utils/get-registry-keys";
 
 const CREDENTIALS_KEY = "credentials";
 const REGISTRY = import.meta.env.PROFILE_ISSUER;
@@ -27,20 +27,6 @@ type FetchVerifiedCredentialsResult = {
   origin: string;
   url: string;
 };
-
-/**
- * OP レジストリの JWKS を取得する
- * @returns レジストリの JWKS
- */
-function getRegistryKeys() {
-  const jwksEndpoint = new URL(
-    import.meta.env.MODE === "development" && REGISTRY === "localhost"
-      ? `http://localhost:8080/.well-known/jwks.json`
-      : `https://${REGISTRY}/.well-known/jwks.json`,
-  );
-
-  return RemoteKeys(jwksEndpoint);
-}
 
 /**
  * タブ内の各フレームでクレデンシャルを取得する。
@@ -133,7 +119,7 @@ async function fetchVerifiedCredentials([, tabId]: [
 ]): Promise<FetchVerifiedCredentialsResult> {
   const { ops, cas, origin, url } = await fetchCredentialsFromTab(tabId);
 
-  const opsVerifier = OpsVerifier(ops, getRegistryKeys(), REGISTRY);
+  const opsVerifier = OpsVerifier(ops, getRegistryKeys(), `dns:${REGISTRY}`);
   const verifiedOps = await opsVerifier();
   const verifiedCas = await Promise.all(
     cas.map(async (ca) => {
@@ -160,7 +146,7 @@ async function fetchVerifiedCredentials([, tabId]: [
 /**
  * Credentials 取得 (要 Base コンポーネント)
  */
-function useCredentials() {
+export function useCredentials() {
   const params = useParams<{ tabId: string }>();
   const tabId = Number(params.tabId);
   // TODO: 自動再検証する場合は取得エンドポイントが変わりうることをUIの振る舞いで考慮して
@@ -195,5 +181,3 @@ function useCredentials() {
     tabId,
   };
 }
-
-export default useCredentials;

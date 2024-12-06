@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
-import useCredentials from "../components/credentials/use-credentials";
+import { useCredentials } from "../components/credentials/use-credentials";
 import { routes } from "../utils/routes";
 import { _ } from "@originator-profile/ui/src/utils";
 

@@ -1,9 +1,8 @@
 import { useParams } from "react-router";
 import useSWRImmutable from "swr/immutable";
-import { OpsInvalid, SpVerifier, VerifiedSp } from "@originator-profile/verify";
+import { SpVerifier, VerifiedSp } from "@originator-profile/verify";
 import { siteProfileMessenger } from "./events";
-import { getRegistryOps } from "../../utils/get-registry-ops";
-import { LocalKeys } from "@originator-profile/cryptography";
+import { getRegistryKeys } from "../../utils/get-registry-keys";
 
 const key = "site-profile";
 
@@ -18,16 +17,7 @@ async function fetchVerifiedSiteProfile([, tabId]: [
   );
   if (!ok) throw result;
   const registry = import.meta.env.PROFILE_ISSUER;
-  const registryOps = getRegistryOps();
-  if (registryOps instanceof OpsInvalid) {
-    throw registryOps;
-  }
-
-  const key = LocalKeys(
-    registryOps.find(
-      (op) => op.core.doc.credentialSubject.id === `dns:${registry}`,
-    )?.core.doc.credentialSubject.jwks ?? { keys: [] },
-  );
+  const key = getRegistryKeys();
   const verifySp = SpVerifier(result, key, `dns:${registry}`);
   const verifiedSp = await verifySp();
   if (verifiedSp instanceof Error) {

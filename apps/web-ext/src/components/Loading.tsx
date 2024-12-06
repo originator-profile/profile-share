@@ -1,4 +1,4 @@
-import useCredentials from "../components/credentials/use-credentials";
+import { useCredentials } from "../components/credentials/use-credentials";
 import { Spinner } from "@originator-profile/ui";
 import { _ } from "@originator-profile/ui/src/utils";
 

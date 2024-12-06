@@ -5,6 +5,7 @@ import Org from "./pages/Org";
 import Publ from "./pages/Publ";
 import Prohibition from "./pages/Prohibition";
 import SiteProfile from "./pages/SiteProfile";
+import Credentials from "./pages/Credentials";
 
 const org: RouteObject = {
   path: routes.org.path,
@@ -30,7 +31,18 @@ const publ: RouteObject = {
 const site: RouteObject = {
   path: routes.site.path,
   element: <Outlet />,
-  children: [{ path: "", element: <SiteProfile /> }, org],
+  children: [
+    {
+      path: "",
+      element: (
+        <>
+          <SiteProfile />
+          <Credentials /> {/* 暫定でここで無理やり表示させる */}
+        </>
+      ),
+    },
+    org,
+  ],
 };
 const prohibition: RouteObject = {
   path: routes.prohibition.path,
