@@ -8,9 +8,9 @@ export const OpVc = {
     "@context": OpContextHead,
     type: {
       type: "array",
-      additionalItems: true,
-      minItems: 1,
-      items: [{ const: "VerifiableCredential" }],
+      contains: {
+        const: "VerifiableCredential",
+      },
     },
     issuer: { type: "string", format: "uri" },
     credentialSubject: {

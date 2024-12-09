@@ -14,23 +14,23 @@ generator erd {
 
 /// Originator Profile
 model ops {
-  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id       String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   /// 保有組織
-  holder accounts      @relation(fields: [holderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  holderId String @db.Uuid
+  holder   accounts @relation(fields: [holderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  holderId String   @db.Uuid
   /// OP の値 (JSON)
-  value Json
+  value    Json
 }
 
 /// Content Attestation
 model cas {
   /// CA ID (`urn:uuid:` 接頭辞なし)
-  caId          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  caId     String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   /// 保有組織
-  holder accounts      @relation(fields: [holderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  holderId String @db.Uuid
+  holder   accounts @relation(fields: [holderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  holderId String   @db.Uuid
   /// CA の値 (JWT)
-  value String
+  value    String
 }
 
 /// Signed Originator Profile
@@ -126,13 +126,13 @@ model accounts {
   /// Signed Originator Profile 公開履歴
   publications                   publications[]
   /// 保有 Originator Profile
-  ops ops[]
+  ops                            ops[]
   /// 保有 Content Attestation
-  cas cas[]
+  cas                            cas[]
   /// 公開鍵
   keys                           keys[]
-  /// 署名鍵 (JWK)
-  signingKey Json?
+  /// 署名鍵 (JWKをUTF-8文字列化し、JWE形式で暗号化した構造)
+  signingKey                     Json?
   /// ウェブページ
   websites                       websites[]
   /// 広告
@@ -199,7 +199,7 @@ model logos {
 /// 公開
 model publications {
   /// Signed Originator Profile
-  op          oldOps      @relation(fields: [opId], references: [id], onDelete: Cascade)
+  op          oldOps   @relation(fields: [opId], references: [id], onDelete: Cascade)
   opId        String   @id @db.Uuid
   /// 会員
   account     accounts @relation(fields: [accountId], references: [id], onUpdate: Cascade, onDelete: Cascade)

@@ -3,9 +3,11 @@ import { JwtDpPayload } from "@originator-profile/model";
 import { parseAccountId } from "@originator-profile/core";
 import { getClient } from "./lib/prisma-client";
 
+/** @deprecated */
 export const DpRepository = () => ({
   /**
    * Signed Document Profile の登録 (ウェブページ)
+   * @deprecated
    * @param decoded Signed Document Profile とデコード結果
    * @return Signed Document Profile
    */
@@ -34,4 +36,5 @@ export const DpRepository = () => ({
   },
 });
 
+/** @deprecated */
 export type DpRepository = ReturnType<typeof DpRepository>;

@@ -1,4 +1,4 @@
-import type { Target } from "@originator-profile/model";
+import type { RawTarget, Target } from "@originator-profile/model";
 import { createIntegrityMetadata, type HashAlgorithm } from "websri";
 import type { ContentFetcher, ElementSelector } from "./types";
 
@@ -56,7 +56,7 @@ export const selectByIntegrity: ElementSelector = (params) => {
 
 /**
  * Target Integrity の作成
- * @see {@link https://next.docs-originator-profile-org.pages.dev/rfc/target-guide/}
+ * @see {@link https://docs.originator-profile.org/rfc/target-guide/}
  * @example
  * ```ts
  * const content = {
@@ -68,12 +68,9 @@ export const selectByIntegrity: ElementSelector = (params) => {
  * console.log(integrity); // sha256-...
  * ```
  */
-export async function createIntegrity<Content extends Target>(
+export async function createIntegrity(
   alg: HashAlgorithm,
-  content: {
-    type: Content["type"];
-    cssSelector?: string;
-  },
+  { content = "", ...target }: RawTarget,
   doc = document,
 ): Promise<Target | null> {
   if (
@@ -82,9 +79,25 @@ export async function createIntegrity<Content extends Target>(
       "VisibleTextTargetIntegrity",
       "HtmlTargetIntegrity",
       "ExternalResourceTargetIntegrity",
-    ].includes(content.type)
+    ].includes(target.type)
   ) {
     return null;
+  }
+
+  if (target.type === "ExternalResourceTargetIntegrity") {
+    const res = URL.canParse(content)
+      ? await fetch(content)
+      : new Response(content);
+
+    const data = await res.arrayBuffer();
+    const meta = await createIntegrityMetadata(alg, data);
+
+    if (!meta.alg) return null;
+
+    return {
+      ...target,
+      integrity: meta.toString(),
+    } as Target;
   }
 
   const { contentFetcher, elementSelector } = {
@@ -100,25 +113,23 @@ export async function createIntegrity<Content extends Target>(
       contentFetcher: fetchVisibleTextContent,
       elementSelector: selectByCss,
     },
-    ExternalResourceTargetIntegrity: {
-      contentFetcher: fetchExternalResource,
-      elementSelector: selectByIntegrity,
-    },
-  }[content.type];
+  }[target.type];
 
-  const elements = elementSelector({ ...content, document: doc });
+  const elements = elementSelector({ ...target, document: doc });
 
   if (elements.length === 0) return null;
 
   const [res] = await contentFetcher(elements);
+
   if (!res) return null;
+
   const data = await res.arrayBuffer();
   const meta = await createIntegrityMetadata(alg, data);
 
   if (!meta.alg) return null;
 
   return {
-    ...content,
+    ...target,
     integrity: meta.toString(),
-  } as Content;
+  } as Target;
 }

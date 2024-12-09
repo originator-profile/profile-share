@@ -1,6 +1,6 @@
 import { Prisma, websites } from "@prisma/client";
-import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { NotFoundError } from "http-errors-enhanced";
+import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { v4 as uuid4, validate } from "uuid";
 import { getClient } from "./lib/prisma-client";
 
@@ -192,6 +192,7 @@ export const WebsiteRepository = () => ({
 
   /**
    * Profile Set の取得
+   * @deprecated
    * @param url ウェブページのURL
    * @param contextDefinition https://www.w3.org/TR/json-ld11/#context-definitions
    * @throws {NotFoundError} ウェブページが見つからない
@@ -249,6 +250,7 @@ export const WebsiteRepository = () => ({
 
   /**
    * 特定のウェブページ ID の Profile Set の取得
+   * @deprecated
    * @param id ウェブページ ID または URL (非推奨)
    * @param contextDefinition https://www.w3.org/TR/json-ld11/#context-definitions
    * @throws {NotFoundError} Profile Set が見つからない

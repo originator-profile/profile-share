@@ -7,19 +7,19 @@ import {
   UserAccountRepository,
   WebsiteRepository,
 } from "@originator-profile/registry-db";
-import Config from "./config";
 import { AccountService } from "./account";
 import { AdminService } from "./admin";
 import { CategoryService } from "./category";
 import { CertificateService } from "./certificate";
-import { ValidatorService } from "./validator";
-import { PublisherService } from "./publisher";
-import { WebsiteService } from "./website";
+import Config from "./config";
 import { CredentialService } from "./credential";
-import { RequestService } from "./request";
 import { LogoService } from "./logo";
+import { PublisherService } from "./publisher";
+import { RequestService } from "./request";
 import { UserAccountService } from "./user-account";
 import { initLogger } from "./utils/logger";
+import { ValidatorService } from "./validator";
+import { WebsiteService } from "./website";
 
 export type { Website } from "./website";
 
@@ -29,7 +29,7 @@ type Options = {
 
 export { Config };
 
-export const Services = (options: Options) => {
+export const Services = (options: Options = { config: {} }) => {
   initLogger(options.config.LOG_QUIET);
   const validator = ValidatorService();
   const account = AccountService({ ...options, validator });

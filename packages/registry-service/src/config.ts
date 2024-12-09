@@ -3,6 +3,9 @@ import { FromSchema } from "json-schema-to-ts";
 const Config = {
   type: "object",
   properties: {
+    JOSE_SECRET: {
+      type: "string",
+    },
     ISSUER_UUID: {
       type: "string",
       default: "",
@@ -49,7 +52,6 @@ const Config = {
       type: "string",
     },
   },
-  required: ["ISSUER_UUID"],
 } as const;
 
 type Config = FromSchema<

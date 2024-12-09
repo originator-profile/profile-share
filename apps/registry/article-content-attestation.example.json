@@ -26,6 +26,7 @@
   "target": [
     {
       "type": "TextTargetIntegrity",
+      "content": "https://example.com/",
       "cssSelector": "h1"
     }
   ]

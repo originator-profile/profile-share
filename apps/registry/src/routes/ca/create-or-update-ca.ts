@@ -1,14 +1,15 @@
-import { ContentAttestationSet } from "@originator-profile/model";
+import {
+  ContentAttestationSet,
+  UnsignedContentAttestation,
+} from "@originator-profile/model";
 import type { FastifyRequest, FastifySchema } from "fastify";
-import type { FromSchema, JSONSchema } from "json-schema-to-ts";
+import type { FromSchema } from "json-schema-to-ts";
 import description from "./create-or-update-ca.doc.md?raw";
 
 export const method = "POST";
 export const url = "";
 
-const body = {
-  type: "object",
-  properties: {},
+const body = Object.assign(UnsignedContentAttestation, {
   examples: [
     {
       "@context": [
@@ -39,15 +40,15 @@ const body = {
       target: [
         {
           type: "<Target Integrityの種別>",
-          content: "<コンテンツ本体 (text/html or Data URL)>",
+          content: "<コンテンツ本体 (text/html or URL)>",
           cssSelector: "<CSS セレクター (optional)>",
         },
       ],
-      issuedAt: "発行日時 (optional)>",
-      expiredAt: "期限切れ日時 (optional)>",
+      issuedAt: "<発行日時 (optional)>",
+      expiredAt: "<期限切れ日時 (optional)>",
     },
   ],
-} as const as JSONSchema;
+});
 
 type Body = FromSchema<typeof body>;
 
@@ -57,15 +58,17 @@ export const schema = {
   description,
   body,
   response: {
-    200: {
-      ...ContentAttestationSet,
-      description: `TODO: <https://github.com/originator-profile/profile/issues/1604>`,
-    },
+    200: ContentAttestationSet,
   },
 } as const satisfies FastifySchema;
 
 export async function handler(
-  _: FastifyRequest<{ Body: Body }>,
+  req: FastifyRequest<{ Body: Body }>,
 ): Promise<ContentAttestationSet> {
-  return []; // TODO: https://github.com/originator-profile/profile/issues/1604
+  const cas = await req.server.services.publisher.createOrUpdate(
+    req.accountId as string,
+    req.body,
+  );
+
+  return cas;
 }

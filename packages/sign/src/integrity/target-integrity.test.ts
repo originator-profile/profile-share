@@ -33,6 +33,42 @@ describe("createIntegrity()", () => {
     });
   });
 
+  it("should return a valid integrity for ExternalResourceTargetIntegrity with valid URL", async () => {
+    const url = "data:text/plain,ok";
+    const integrityMetadata = await createIntegrityMetadata(
+      "sha256",
+      await fetch(url).then((res) => res.arrayBuffer()),
+    );
+
+    expect(
+      await createIntegrity("sha256", {
+        type: "ExternalResourceTargetIntegrity",
+        content: url,
+      }),
+    ).toEqual({
+      type: "ExternalResourceTargetIntegrity",
+      integrity: integrityMetadata.toString(),
+    });
+  });
+
+  it("should return a valid integrity for ExternalResourceTargetIntegrity with inline content", async () => {
+    const content = "ok";
+    const integrityMetadata = await createIntegrityMetadata(
+      "sha256",
+      await new Response(content).arrayBuffer(),
+    );
+
+    expect(
+      await createIntegrity("sha256", {
+        type: "ExternalResourceTargetIntegrity",
+        content,
+      }),
+    ).toEqual({
+      type: "ExternalResourceTargetIntegrity",
+      integrity: integrityMetadata.toString(),
+    });
+  });
+
   it("should return null if type is unsupported", async () => {
     expect(
       await createIntegrity("sha256", {

@@ -91,6 +91,8 @@ async function autohooks(fastify: FastifyInstance): Promise<void> {
         authenticate: { realm: "Profile Registry (Entire Routes)" },
         async validate(username, password, request) {
           if (request.routeOptions.url?.startsWith("/admin/")) return;
+          if (request.routeOptions.url === "/ca") return;
+
           if (
             !(
               username === child.config.BASIC_AUTH_USERNAME &&

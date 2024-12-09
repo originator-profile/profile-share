@@ -27,6 +27,7 @@
     "date-fns": "^4.1.0",
     "eslint": "^9.14.0",
     "eslint-config-originator-profile": "workspace:*",
+    "happy-dom": "^15.11.7",
     "http-errors-enhanced": "^3.0.0",
     "image-size": "^1.1.1",
     "jose": "^5.9.6",
@@ -36,9 +37,9 @@
     "msw": "^2.6.0",
     "nodemailer": "^6.9.16",
     "pino": "^9.5.0",
+    "typescript": "^5.6.3",
     "vitest": "^2.1.4",
     "vitest-mock-extended": "^2.0.2",
-    "typescript": "^5.6.3",
     "yn": "^5.0.0"
   }
 }

@@ -7,7 +7,7 @@ const Item = {
 
 export const AllowedUrl = {
   title: "Allowed URLs",
-  oneOf: [
+  anyOf: [
     Item,
     {
       type: "array",

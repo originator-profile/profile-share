@@ -418,15 +418,13 @@ Content Attestation の作成
 
 ```
 USAGE
-  $ profile-registry ca:sign --url <value> -i <value> --input <filepath> [--issued-at <value>] [--expired-at
-    <value>]
+  $ profile-registry ca:sign -i <value> --input <filepath> [--issued-at <value>] [--expired-at <value>]
 
 FLAGS
   -i, --identity=<value>    (required) プライベート鍵のファイルパス
       --expired-at=<value>  有効期限 (ISO 8601)
       --input=<filepath>    (required) 入力ファイルのパス (JSON 形式)
       --issued-at=<value>   発行日時 (ISO 8601)
-      --url=<value>         (required) 取得するウェブページの URL
 
 DESCRIPTION
   Content Attestation の作成
@@ -435,7 +433,6 @@ DESCRIPTION
 
 EXAMPLES
   $ profile-registry ca:sign \
-      --url https://example.com/ \
       -i account-key.example.priv.json \
       --input article-content-attestation.example.json
 
@@ -488,13 +485,9 @@ FLAG DESCRIPTIONS
     "allowedUrl": "https://media.example.com/articles/2024-06-30",
     "target": [
     {
-    "type": "TextTargetIntegrity",
-    "cssSelector": "<CSS セレクター>",
-    "integrity": "<省略可能>"
-    },
-    {
-    "type": "ExternalResourceTargetIntegrity",
-    "integrity": "sha256-+M3dMZXeSIwAP8BsIAwxn5ofFWUtaoSoDfB+/J8uXMo="
+    "type": "<Target Integrityの種別>",
+    "content": "<コンテンツ本体 (text/html or URL)>",
+    "cssSelector": "<CSS セレクター (optional)>"
     }
     ]
     }
@@ -1133,6 +1126,17 @@ DESCRIPTION
 <!-- prettier-ignore-end -->
 
 ## 環境変数
+
+JOSE_SECRET
+: 署名鍵の暗号化および復号に使用するシークレットキー。
+32 バイトのランダムデータを Base64 URL または Base64形式にエンコードした文字列。
+このキーは署名鍵のセキュリティを確保するために使用され、外部に漏洩しないように注意してください。
+
+生成例:
+
+```sh
+openssl rand -base64 32
+```
 
 DATABASE_URL
 : PostgreSQL 接続 URL (形式: `postgresql://<ホスト名または IP アドレス>[:<ポート>]/<データベース>`)

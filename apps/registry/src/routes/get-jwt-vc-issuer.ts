@@ -39,7 +39,7 @@ export const schema = {
 
 export async function handler(req: FastifyRequest) {
   const keysData = await req.server.services.account.getKeys(
-    req.server.config.ISSUER_UUID,
+    req.server.config.ISSUER_UUID as string,
   );
 
   const issuer = (req.server.config.APP_URL || "http://localhost:8080").replace(

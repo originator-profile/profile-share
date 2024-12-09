@@ -30,6 +30,6 @@ export const schema = {
 
 export async function handler(req: FastifyRequest) {
   return await req.server.services.account.getKeys(
-    req.server.config.ISSUER_UUID,
+    req.server.config.ISSUER_UUID as string,
   );
 }

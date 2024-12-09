@@ -1,21 +1,38 @@
-import flush from "just-flush";
-import { addYears } from "date-fns";
-import { NotFoundError, BadRequestError } from "http-errors-enhanced";
-import { Dp, Jwk } from "@originator-profile/model";
 import {
   findFirstItemWithProof,
   isJwtDpPayload,
+  parseAccountId,
+  parseExpirationDate,
 } from "@originator-profile/core";
 import {
+  ContentAttestationSet,
+  Dp,
+  Jwk,
+  RawTarget,
+  UnsignedContentAttestation,
+} from "@originator-profile/model";
+import {
+  CaRepository,
   DpRepository,
+  OpAccountRepository,
   WebsiteRepository,
   beginTransaction,
   getClient,
 } from "@originator-profile/registry-db";
-import { signDp } from "@originator-profile/sign";
+import { signCa, signDp } from "@originator-profile/sign";
+import { addYears } from "date-fns";
+import { Window } from "happy-dom";
+import {
+  BadRequestError,
+  ForbiddenError,
+  NotFoundError,
+} from "http-errors-enhanced";
+import flush from "just-flush";
+import Config from "./config";
 import { ValidatorService } from "./validator";
 
 type Options = {
+  config: Config;
   validator: ValidatorService;
   dpRepository: DpRepository;
   websiteRepository: WebsiteRepository;
@@ -23,13 +40,113 @@ type Options = {
 
 type AccountId = string;
 
+async function documentProvider({
+  type,
+  content = "",
+}: RawTarget): Promise<Document> {
+  let url: string | undefined;
+  let html: string = "";
+
+  if (URL.canParse(content)) {
+    url = content;
+  } else {
+    html = content;
+  }
+
+  if (type !== "ExternalResourceTargetIntegrity" && url) {
+    html = await fetch(url).then((res) => res.text());
+  }
+
+  const window = new Window({
+    url,
+  });
+
+  window.document.write(html);
+
+  return window.document as unknown as Document;
+}
+
 export const PublisherService = ({
+  config,
   validator,
   dpRepository,
   websiteRepository,
 }: Options) => ({
   /**
+   * Content Attestation への署名
+   * @param uca 未署名 Content Attestation オブジェクト
+   * @param privateKey プライベート鍵
+   * @return Content Attestation
+   */
+  async sign(
+    uca: UnsignedContentAttestation,
+    privateKey: Jwk,
+    {
+      issuedAt: issuedAtDateOrString = new Date(),
+      expiredAt: expiredAtDateOrString = addYears(new Date(), 1),
+    }: {
+      issuedAt?: Date | string;
+      expiredAt?: Date | string;
+    },
+  ): Promise<string> {
+    const issuedAt: Date = new Date(issuedAtDateOrString);
+
+    const expiredAt: Date =
+      typeof expiredAtDateOrString === "string"
+        ? parseExpirationDate(expiredAtDateOrString)
+        : expiredAtDateOrString;
+
+    uca.credentialSubject.id ??= `urn:uuid:${crypto.randomUUID()}`;
+
+    return await signCa(uca, privateKey, {
+      issuedAt,
+      expiredAt,
+      documentProvider,
+    });
+  },
+
+  /**
+   * Content Attestation の登録・更新
+   * @param accountId 会員 ID
+   * @param uca 未署名 Content Attestation オブジェクト
+   * @throws {ForbiddenError} 会員 ID と Content Attestation の発行者が一致しない
+   * @return Content Attestation Set
+   */
+  async createOrUpdate(
+    accountId: AccountId,
+    {
+      issuedAt,
+      expiredAt,
+      ...uca
+    }: {
+      issuedAt?: string;
+      expiredAt?: string;
+    } & UnsignedContentAttestation,
+  ): Promise<ContentAttestationSet> {
+    if (accountId !== parseAccountId(uca.issuer)) {
+      throw new ForbiddenError(
+        "OP Account ID does not match the issuer of the Content Attestation.",
+      );
+    }
+
+    const signingKey = await OpAccountRepository.findOrRegisterSigningKey(
+      accountId,
+      config.JOSE_SECRET as string,
+    );
+
+    const ca = await this.sign(uca, signingKey, {
+      issuedAt,
+      expiredAt,
+    });
+
+    await CaRepository.upsert(ca);
+
+    return [ca];
+  },
+
+  /**
    * DP への署名
+   * @deprecated
    * @param accountId 会員 ID
    * @param id ウェブページ ID
    * @param privateKey プライベート鍵
@@ -112,6 +229,7 @@ export const PublisherService = ({
   },
   /**
    * Signed Document Profile の更新・登録
+   * @deprecated
    * @param accountId 会員 ID
    * @param jwt Signed Document Profile
    * @throws {NotFoundError} 組織情報が見つからない

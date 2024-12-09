@@ -2,6 +2,10 @@
   "stack": "heroku-24",
   "addons": [{ "plan": "heroku-postgresql" }],
   "env": {
+    "JOSE_SECRET": {
+      "description": "署名鍵の暗号化および復号に使用する Base64 URL エンコード形式のシークレットキー (32バイト)。安全な方法で生成してください。",
+      "required": true
+    },
     "APP_URL": {
       "description": "アプリケーションのURL。このURLをAuth0ダッシュボードから認可されたAPI (Auth0 dashboard -> Application -> APIs -> Custom API) として登録することでAPIを利用できるようになります。(形式: `https://<ホスト名>/`)"
     },

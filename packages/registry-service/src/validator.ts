@@ -71,6 +71,7 @@ export function ValidatorService() {
 
     /**
      * DP の確認 (注: 署名の検証は別で行ってください)
+     * @deprecated
      * @param input 対象のオブジェクト
      * @throws {BadRequestError} バリデーション失敗
      * @return 妥当な DP

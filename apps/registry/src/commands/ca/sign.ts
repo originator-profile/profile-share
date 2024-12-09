@@ -1,13 +1,9 @@
 import { Command, Flags } from "@oclif/core";
 import type {
-  ArticleCA,
-  ContentAttestation,
-  Image,
-  Jwk,
+  RawTarget,
+  UnsignedContentAttestation,
 } from "@originator-profile/model";
-import { createDigestSri, signCa } from "@originator-profile/sign";
-import { addYears } from "date-fns";
-import { Window } from "happy-dom";
+import { Services } from "@originator-profile/registry-service";
 import fs from "node:fs/promises";
 import { expirationDate, privateKey } from "../../flags";
 
@@ -39,61 +35,17 @@ const exampleArticleContentAttestation = {
   allowedUrl: "https://media.example.com/articles/2024-06-30",
   target: [
     {
-      type: "TextTargetIntegrity",
-      cssSelector: "<CSS セレクター>",
-      integrity: "<省略可能>",
-    },
-    {
-      type: "ExternalResourceTargetIntegrity",
-      integrity: "sha256-+M3dMZXeSIwAP8BsIAwxn5ofFWUtaoSoDfB+/J8uXMo=",
+      type: "<Target Integrityの種別>" as RawTarget["type"],
+      content: "<コンテンツ本体 (text/html or URL)>",
+      cssSelector: "<CSS セレクター (optional)>",
     },
   ],
-} satisfies ContentAttestation;
-
-async function fetchAndSetDigestSri<T extends Record<string, unknown>>(
-  obj: T,
-): Promise<void> {
-  if ("image" in obj && typeof (obj.image as Image).digestSRI !== "string") {
-    Object.assign(
-      obj.image as Image,
-      await createDigestSri("sha256", obj.image as Image),
-    );
-  }
-}
-
-async function scrapeAndSignCa(
-  url: string,
-  ca: ContentAttestation,
-  opts: {
-    privateKey: Jwk;
-    issuedAt: Date;
-    expiredAt: Date;
-  },
-): Promise<string> {
-  const res = await fetch(url);
-  const html = await res.text();
-
-  const window = new Window({
-    url,
-  });
-
-  window.document.write(html);
-
-  return await signCa(ca as ArticleCA, opts.privateKey, {
-    issuedAt: opts.issuedAt,
-    expiredAt: opts.expiredAt,
-    document: window.document as unknown as Document,
-  });
-}
+} satisfies UnsignedContentAttestation;
 
 export class CaSign extends Command {
   static summary = "Content Attestation の作成";
   static description = "標準出力に Content Attestation を出力します。";
   static flags = {
-    url: Flags.string({
-      summary: "取得するウェブページの URL",
-      required: true,
-    }),
     identity: privateKey({
       required: true,
     }),
@@ -114,7 +66,6 @@ ${JSON.stringify(exampleArticleContentAttestation, null, "  ")}`,
   static examples = [
     `\
 $ <%= config.bin %> <%= command.id %> \\
-    --url https://example.com/ \\
     -i account-key.example.priv.json \\
     --input article-content-attestation.example.json`,
   ];
@@ -122,20 +73,14 @@ $ <%= config.bin %> <%= command.id %> \\
   async run(): Promise<void> {
     const { flags } = await this.parse(CaSign);
     const inputBuffer = await fs.readFile(flags.input);
-    const input: ContentAttestation = JSON.parse(inputBuffer.toString());
-    const issuedAt: Date = new Date(flags["issued-at"] ?? Date.now());
-    const expiredAt: Date = flags["expired-at"] ?? addYears(new Date(), 1);
 
-    Object.assign(input.credentialSubject, {
-      id: input.credentialSubject.id ?? `urn:uuid:${crypto.randomUUID()}`,
-    });
+    const input: UnsignedContentAttestation = JSON.parse(
+      inputBuffer.toString(),
+    );
 
-    await fetchAndSetDigestSri(input.credentialSubject);
-
-    const ca = await scrapeAndSignCa(flags.url, input, {
-      privateKey: flags.identity,
-      issuedAt,
-      expiredAt,
+    const ca = await Services().publisher.sign(input, flags.identity, {
+      issuedAt: flags["issued-at"],
+      expiredAt: flags["expired-at"],
     });
 
     this.log(ca);
