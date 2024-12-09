@@ -46,7 +46,7 @@ class IntegrityVerifier {
 
 /**
  * Target Integrity の検証
- * @see {@link https://next.docs-originator-profile-org.pages.dev/rfc/target-guide/}
+ * @see {@link https://docs.originator-profile.org/rfc/target-guide/}
  * @example
  * ```ts
  * const content = {

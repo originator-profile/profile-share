@@ -3,7 +3,7 @@ import { AllowedOrigin } from "../allowed-origin";
 import { AllowedUrl } from "../allowed-url";
 import { OpContextHead } from "../context/op-context-head";
 import { OpVc } from "../op-vc";
-import { Target } from "../target";
+import { RawTarget } from "../target/raw-target";
 
 const subject = {
   type: "object",
@@ -22,7 +22,7 @@ const subject = {
   required: ["id", "type"],
 } as const satisfies JSONSchema;
 
-export const ContentAttestation = {
+export const UnsignedContentAttestation = {
   type: "object",
   additionalProperties: true,
   allOf: [
@@ -43,7 +43,7 @@ export const ContentAttestation = {
         allowedOrigin: AllowedOrigin,
         target: {
           type: "array",
-          items: Target,
+          items: RawTarget,
           minItems: 1,
         },
       },
@@ -52,4 +52,6 @@ export const ContentAttestation = {
   ],
 } as const satisfies JSONSchema;
 
-export type ContentAttestation = FromSchema<typeof ContentAttestation>;
+export type UnsignedContentAttestation = FromSchema<
+  typeof UnsignedContentAttestation
+>;
