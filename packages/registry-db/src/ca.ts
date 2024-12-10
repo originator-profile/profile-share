@@ -34,3 +34,19 @@ export async function upsert(ca: string): Promise<string> {
 
   return ca;
 }
+
+/**
+ * Content Attestation の削除
+ * @param holderId 会員 ID
+ * @param caId Content Attestation ID
+ */
+export async function destroy(holderId: string, caId: string): Promise<void> {
+  const prisma = getClient();
+
+  await prisma.cas.delete({
+    where: {
+      caId,
+      holderId,
+    },
+  });
+}

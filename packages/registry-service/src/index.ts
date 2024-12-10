@@ -1,5 +1,6 @@
 import {
   AdRepository,
+  CaRepository,
   CertificationSystemRepository,
   CredentialRepository,
   DpRepository,
@@ -68,6 +69,7 @@ export const Services = (options: Options = { config: {} }) => {
     userAccount,
     request,
     adRepository: AdRepository(),
+    caRepository: CaRepository,
     certificationSystemRepository: CertificationSystemRepository(),
   };
 };
