@@ -1,6 +1,8 @@
 import {
+  CaInvalid,
   CaVerificationResult,
   CaVerifier,
+  CoreProfileNotFound,
   OpsVerificationResult,
   OpsVerifier,
 } from "@originator-profile/verify";
@@ -9,6 +11,9 @@ import { useEvent } from "react-use";
 import useSWRImmutable from "swr/immutable";
 import { credentialsMessenger, FetchCredentialsMessageResult } from "./events";
 import { getRegistryKeys } from "../../utils/get-registry-keys";
+import { ContentAttestation } from "@originator-profile/model";
+import { JwtVcDecoder } from "@originator-profile/securing-mechanism/src/jwt/decode-vc";
+import { LocalKeys } from "@originator-profile/cryptography";
 
 const CREDENTIALS_KEY = "credentials";
 const REGISTRY = import.meta.env.PROFILE_ISSUER;
@@ -121,20 +126,41 @@ async function fetchVerifiedCredentials([, tabId]: [
 
   const opsVerifier = OpsVerifier(ops, getRegistryKeys(), `dns:${REGISTRY}`);
   const verifiedOps = await opsVerifier();
-  const verifiedCas = await Promise.all(
-    cas.map(async (ca) => {
-      const main = typeof ca === "object" && ca !== null && "main" in ca;
-      const verify = CaVerifier(
-        main ? ca.attestation : ca,
-        getRegistryKeys(),
-        REGISTRY,
-        new URL(url),
-      );
-      return main
-        ? { main: true, attestation: await verify() }
-        : await verify();
-    }),
-  );
+  const verifiedCas = !(verifiedOps instanceof Error)
+    ? await (async () => {
+        const decodeCa = JwtVcDecoder<ContentAttestation>();
+
+        return await Promise.all(
+          cas.map(async (ca) => {
+            const main = typeof ca === "object" && ca !== null && "main" in ca;
+            const target = main ? ca.attestation : ca;
+            const decodedCa = decodeCa(target);
+            if (decodedCa instanceof Error) {
+              return new CaInvalid("Invalid CA", decodedCa);
+            }
+            const cp = verifiedOps.find(
+              (ops) =>
+                ops.core.doc.credentialSubject.id === decodedCa.doc.issuer,
+            );
+            if (!cp) {
+              return new CoreProfileNotFound(
+                "Appropriate Core Profile not found",
+                decodedCa,
+              );
+            }
+            const verify = CaVerifier(
+              target,
+              LocalKeys(cp.core.doc.credentialSubject.jwks),
+              decodedCa.doc.issuer,
+              new URL(url),
+            );
+            return main
+              ? { main: true, attestation: await verify() }
+              : await verify();
+          }),
+        );
+      })()
+    : [];
   return {
     ops: verifiedOps,
     cas: verifiedCas,
