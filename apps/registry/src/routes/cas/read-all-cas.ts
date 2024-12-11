@@ -38,6 +38,10 @@ CA ID (文字列) を含む JSON 配列形式としてエンコードし、\`id\
 \`\`\`
 GET /cas?id=[%22urn:uuid:e93d88da-0937-4b63-af79-dc93090235c0%22,%22urn:uuid:f6bafc60-a702-4827-b80b-d1118aa579ad%22]
 \`\`\`
+
+### レスポンスに関する注意
+
+レスポンスは全て main プロパティが true の Content Attestation として扱われます。
 `,
       type: "array",
       items: {
@@ -45,7 +49,7 @@ GET /cas?id=[%22urn:uuid:e93d88da-0937-4b63-af79-dc93090235c0%22,%22urn:uuid:f6b
       },
     },
   },
-} as const as JSONSchema;
+} as const satisfies JSONSchema;
 
 type Querystring = FromSchema<typeof querystring>;
 
@@ -56,13 +60,15 @@ export const schema = {
   response: {
     200: {
       ...ContentAttestationSet,
-      description: `TODO: <https://github.com/originator-profile/profile/issues/1605>`,
     },
   },
 } as const satisfies FastifySchema;
 
 export async function handler(
-  _: FastifyRequest<{ Querystring: Querystring }>,
+  req: FastifyRequest<{ Querystring: Querystring }>,
 ): Promise<ContentAttestationSet> {
-  return []; // TODO: https://github.com/originator-profile/profile/issues/1605
+  const cas = await req.server.services.caRepository.getCas(
+    req.query?.id ?? [],
+  );
+  return cas;
 }

@@ -1,5 +1,8 @@
 import { parseAccountId, parseCaId } from "@originator-profile/core";
-import { ContentAttestation } from "@originator-profile/model";
+import {
+  ContentAttestation,
+  ContentAttestationSet,
+} from "@originator-profile/model";
 import { JwtVcDecoder } from "@originator-profile/securing-mechanism";
 import { getClient } from "./lib/prisma-client";
 
@@ -49,4 +52,23 @@ export async function destroy(holderId: string, caId: string): Promise<void> {
       holderId,
     },
   });
+}
+
+/**
+ * Content Attstationの検索
+ * @param caId Content Attstation Id配列
+ * @returns CaIdに一致したContent Attstation Set 一致したデータがない場合空配列
+ */
+export async function getCas(caIds: string[]): Promise<ContentAttestationSet> {
+  const prisma = getClient();
+
+  const foundCaList = await prisma.cas.findMany({
+    where: {
+      caId: {
+        in: caIds,
+      },
+    },
+  });
+
+  return foundCaList.map((ca) => ({ attestation: ca.value, main: true }));
 }
