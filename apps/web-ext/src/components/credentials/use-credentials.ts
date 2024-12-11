@@ -1,117 +1,27 @@
 import {
-  CaInvalid,
-  CaVerificationResult,
-  CaVerifier,
-  CoreProfileNotFound,
-  OpsVerificationResult,
+  OpsInvalid,
   OpsVerifier,
+  OpsVerifyFailed,
+  VerifiedOps,
 } from "@originator-profile/verify";
 import { useParams } from "react-router";
 import { useEvent } from "react-use";
 import useSWRImmutable from "swr/immutable";
-import { credentialsMessenger, FetchCredentialsMessageResult } from "./events";
 import { getRegistryKeys } from "../../utils/get-registry-keys";
-import { ContentAttestation } from "@originator-profile/model";
-import { JwtVcDecoder } from "@originator-profile/securing-mechanism/src/jwt/decode-vc";
-import { LocalKeys } from "@originator-profile/cryptography";
+import { VerifiedCas } from "./types";
+import { fetchTabCredentials } from "./messaging";
+import { verifyCas } from "./cas";
+import { CasVerifyFailed } from "./errors";
 
 const CREDENTIALS_KEY = "credentials";
 const REGISTRY = import.meta.env.PROFILE_ISSUER;
 
-type FetchCredentialsResultWithFrameId = FetchCredentialsMessageResult & {
-  frameId: number;
-  parentFrameId: number;
-};
-
 type FetchVerifiedCredentialsResult = {
-  ops: OpsVerificationResult;
-  cas: (
-    | CaVerificationResult
-    | { main: boolean; attestation: CaVerificationResult }
-  )[];
+  ops: VerifiedOps;
+  cas: VerifiedCas;
   origin: string;
   url: string;
 };
-
-/**
- * タブ内の各フレームでクレデンシャルを取得する。
- * @param frames フレームのリスト
- * @param tabId タブID
- * @returns 結果の配列
- */
-async function fetchCredentials(
-  frames: chrome.webNavigation.GetAllFrameResultDetails[],
-  tabId: number,
-) {
-  const results: PromiseSettledResult<FetchCredentialsResultWithFrameId>[] =
-    await Promise.allSettled(
-      frames.map(async (frame) => {
-        const result = await credentialsMessenger.sendMessage(
-          "fetchCredentials",
-          null,
-          tabId,
-        );
-        if (result instanceof Error) throw result;
-        return {
-          ...result,
-          frameId: frame.frameId,
-          parentFrameId: frame.parentFrameId,
-        };
-      }),
-    );
-
-  const errors = results.filter(
-    (r): r is PromiseRejectedResult => r.status === "rejected",
-  );
-  errors.forEach(({ reason }) => {
-    console.error(reason);
-  });
-
-  const responses = results
-    .filter(
-      (r): r is PromiseFulfilledResult<FetchCredentialsResultWithFrameId> =>
-        r.status === "fulfilled",
-    )
-    .map(({ value }) => value);
-
-  if (responses.length === 0) {
-    const error = errors[0]?.reason;
-    throw Object.assign(new Error(error.message), error);
-  }
-  return responses;
-}
-
-/**
- * タブ内のクレデンシャルを取得する。
- * @param tabId タブID
- * @returns クレデンシャルおよびタブのorigin,url
- */
-async function fetchCredentialsFromTab(tabId: number) {
-  const frames = (await chrome.webNavigation.getAllFrames({ tabId })) ?? [];
-  const responses = await fetchCredentials(frames, tabId);
-
-  const topLevelFrameIndex = frames.findIndex(
-    (frame) => frame.parentFrameId === -1,
-  );
-  //const topLevelFrameId = frames[topLevelFrameIndex]?.frameId;
-  const topLevelResponse = responses[topLevelFrameIndex];
-  if (!topLevelResponse) {
-    throw Error("No response from top level frame");
-  }
-  if (topLevelResponse.data instanceof Error) {
-    throw topLevelResponse.data;
-  }
-  const [ops, cas] = topLevelResponse.data ?? [];
-  const origin = topLevelResponse.origin ?? "";
-  const url = topLevelResponse.url ?? "";
-
-  return {
-    ops,
-    cas,
-    origin,
-    url,
-  };
-}
 
 /**
  * タブ内のクレデンシャルを取得して検証する。
@@ -122,45 +32,20 @@ async function fetchVerifiedCredentials([, tabId]: [
   _: typeof CREDENTIALS_KEY,
   tabId: number,
 ]): Promise<FetchVerifiedCredentialsResult> {
-  const { ops, cas, origin, url } = await fetchCredentialsFromTab(tabId);
+  const { ops, cas, origin, url } = await fetchTabCredentials(tabId);
 
   const opsVerifier = OpsVerifier(ops, getRegistryKeys(), `dns:${REGISTRY}`);
   const verifiedOps = await opsVerifier();
-  const verifiedCas = !(verifiedOps instanceof Error)
-    ? await (async () => {
-        const decodeCa = JwtVcDecoder<ContentAttestation>();
-
-        return await Promise.all(
-          cas.map(async (ca) => {
-            const main = typeof ca === "object" && ca !== null && "main" in ca;
-            const target = main ? ca.attestation : ca;
-            const decodedCa = decodeCa(target);
-            if (decodedCa instanceof Error) {
-              return new CaInvalid("Invalid CA", decodedCa);
-            }
-            const cp = verifiedOps.find(
-              (ops) =>
-                ops.core.doc.credentialSubject.id === decodedCa.doc.issuer,
-            );
-            if (!cp) {
-              return new CoreProfileNotFound(
-                "Appropriate Core Profile not found",
-                decodedCa,
-              );
-            }
-            const verify = CaVerifier(
-              target,
-              LocalKeys(cp.core.doc.credentialSubject.jwks),
-              decodedCa.doc.issuer,
-              new URL(url),
-            );
-            return main
-              ? { main: true, attestation: await verify() }
-              : await verify();
-          }),
-        );
-      })()
-    : [];
+  if (
+    verifiedOps instanceof OpsInvalid ||
+    verifiedOps instanceof OpsVerifyFailed
+  ) {
+    throw verifiedOps;
+  }
+  const verifiedCas = await verifyCas(cas, verifiedOps, url);
+  if (verifiedCas instanceof CasVerifyFailed) {
+    throw verifiedCas;
+  }
   return {
     ops: verifiedOps,
     cas: verifiedCas,
