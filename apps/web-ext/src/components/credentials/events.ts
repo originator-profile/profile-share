@@ -1,14 +1,8 @@
 import { defineExtensionMessaging } from "@webext-core/messaging";
-import { FetchCredentialsResult } from "@originator-profile/presentation";
-
-export type FetchCredentialsMessageResult = {
-  data: FetchCredentialsResult;
-  origin: string;
-  url: string;
-};
+import { FetchCredentialsMessageResponse } from "./types";
 
 type CredentialsProtocolMap = {
-  fetchCredentials(message: null): FetchCredentialsMessageResult;
+  fetchCredentials(message: null): FetchCredentialsMessageResponse;
 };
 
 export const credentialsMessenger =
