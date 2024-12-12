@@ -7,7 +7,7 @@ import { Config, Services } from "@originator-profile/registry-service";
 import fastify, { FastifyInstance } from "fastify";
 import httpErrorsEnhanced from "fastify-http-errors-enhanced";
 import { resolve } from "node:path";
-import { swaggerSetup, versionInfo } from "./plugins";
+import { basicAuth, swaggerSetup, versionInfo } from "./plugins";
 
 export type Options = {
   isDev: boolean;
@@ -41,6 +41,7 @@ export async function create(options: Options): Promise<Server> {
     app.decorate("dangerouslyDisabledAuth", true);
   }
 
+  await app.register(basicAuth);
   await app.register(swaggerSetup, options);
   await app.register(versionInfo);
 

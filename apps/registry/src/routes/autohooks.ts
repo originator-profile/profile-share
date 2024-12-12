@@ -1,4 +1,3 @@
-import basicAuth from "@fastify/basic-auth";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import {
   FastifyError,
@@ -6,11 +5,7 @@ import {
   FastifyRequest,
   onRouteHookHandler,
 } from "fastify";
-import {
-  BadRequestError,
-  NotFoundError,
-  UnauthorizedError,
-} from "http-errors-enhanced";
+import { BadRequestError, NotFoundError } from "http-errors-enhanced";
 import merge from "just-merge";
 import { ErrorResponse } from "../error";
 
@@ -82,30 +77,6 @@ const addErrorResponseSchema: onRouteHookHandler = async (opt) => {
 async function autohooks(fastify: FastifyInstance): Promise<void> {
   fastify.addHook("onRoute", addErrorResponseSchema);
   fastify.setErrorHandler(onPrismaClientKnownRequestError);
-
-  // @ts-expect-error NOTE: **テスト用** 認証の無効化
-  if (fastify.config.BASIC_AUTH && !fastify.dangerouslyDisabledAuth) {
-    // NOTE: カプセル化してデコレータの競合を避ける
-    await fastify.register(async function (child: FastifyInstance) {
-      await child.register(basicAuth, {
-        authenticate: { realm: "Profile Registry (Entire Routes)" },
-        async validate(username, password, request) {
-          if (request.routeOptions.url?.startsWith("/admin/")) return;
-          if (request.routeOptions.url === "/ca") return;
-
-          if (
-            !(
-              username === child.config.BASIC_AUTH_USERNAME &&
-              password === child.config.BASIC_AUTH_PASSWORD
-            )
-          )
-            throw new UnauthorizedError("Invalid password");
-        },
-      });
-
-      fastify.addHook("onRequest", child.basicAuth);
-    });
-  }
 }
 
 export default autohooks;

@@ -1,8 +1,12 @@
-import { FastifyInstance } from "fastify";
+import type { FastifyInstance } from "fastify";
 import * as getJwks from "./get-jwks";
 import * as getJwtVcIssuer from "./get-jwt-vc-issuer";
 
 async function index(fastify: FastifyInstance): Promise<void> {
+  if (fastify.config.BASIC_AUTH) {
+    fastify.addHook("onRequest", fastify.basicAuth);
+  }
+
   fastify.get(
     "/",
     {
