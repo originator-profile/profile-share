@@ -1,6 +1,7 @@
 import { ContentAttestationSet } from "@originator-profile/model";
 import type { FastifyRequest, FastifySchema } from "fastify";
 import type { FromSchema, JSONSchema } from "json-schema-to-ts";
+import { parse as JsonParse } from "secure-json-parse";
 
 export const method = "GET";
 export const url = "";
@@ -49,6 +50,7 @@ GET /cas?id=[%22urn:uuid:e93d88da-0937-4b63-af79-dc93090235c0%22,%22urn:uuid:f6b
       },
     },
   },
+  required: ["id"],
 } as const satisfies JSONSchema;
 
 type Querystring = FromSchema<typeof querystring>;
@@ -58,17 +60,25 @@ export const schema = {
   tags: ["ca"],
   querystring,
   response: {
-    200: {
-      ...ContentAttestationSet,
-    },
+    200: ContentAttestationSet,
   },
 } as const satisfies FastifySchema;
+
+export async function preValidation(
+  req: FastifyRequest<{ Querystring: Querystring }>,
+): Promise<void> {
+  req.query.id = [req.query.id].flat().flatMap((s) => {
+    try {
+      const parsed = JsonParse(s);
+      return Array.isArray(parsed) ? parsed : [s];
+    } catch {
+      return [s];
+    }
+  });
+}
 
 export async function handler(
   req: FastifyRequest<{ Querystring: Querystring }>,
 ): Promise<ContentAttestationSet> {
-  const cas = await req.server.services.caRepository.getCas(
-    req.query?.id ?? [],
-  );
-  return cas;
+  return await req.server.services.caRepository.getCas(req.query.id);
 }

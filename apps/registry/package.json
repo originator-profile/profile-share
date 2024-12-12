@@ -106,6 +106,7 @@
     "msw": "^2.6.0",
     "npm-run-all2": "^7.0.1",
     "oclif": "^4.15.20",
+    "secure-json-parse": "^3.0.1",
     "serve": "^14.2.4",
     "shx": "^0.3.4",
     "stdout-stderr": "^0.1.13",
