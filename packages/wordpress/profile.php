@@ -19,8 +19,5 @@ require_once __DIR__ . '/includes/admin.php';
 require_once __DIR__ . '/includes/issue.php';
 \Profile\Issue\init();
 
-require_once __DIR__ . '/includes/key.php';
-\Profile\Key\init();
-
 require_once __DIR__ . '/includes/post.php';
 \Profile\Post\init();

@@ -1104,12 +1104,6 @@ importers:
 
   packages/wordpress:
     devDependencies:
-      '@originator-profile/cryptography':
-        specifier: workspace:*
-        version: link:../cryptography
-      '@originator-profile/verify':
-        specifier: workspace:*
-        version: link:../verify
       '@playwright/test':
         specifier: ^1.49.0
         version: 1.49.0
@@ -2637,6 +2631,7 @@ packages:
 
   '@fastify/vite@7.0.1':
     resolution: {integrity: sha512-kFmuJa7ltQIcuuii3rmtBqbTORxNwcGSsWOXuLdK0D35Swqbmmdz4o+ir34NNLxKDpb4nU35zfO52iYI9toDkQ==}
+    bundledDependencies: []
 
   '@floating-ui/core@1.6.8':
     resolution: {integrity: sha512-7XJ9cPU+yI2QeLS+FCSlqNFZJq8arvswefkZrYI1yQBbftw6FyrZOxYSh+9S7z7TpeWlRt9zJ5IhM1WIL334jA==}

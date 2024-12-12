@@ -1,37 +1,29 @@
 # WordPress Profile Plugin
 
-WordPress での記事の公開時の Signed Document Profile の発行に役立つプラグイン
+WordPress での記事の公開時の Content Attestation の発行に役立つプラグイン
 
 ## Plugin Installation
 
 1. [Releases](https://github.com/originator-profile/profile-share/releases) > Assets > WordPressプラグインのダウンロード (ファイル名: wordpress-profile-plugin.zip)
 2. [プラグインのアップロード](https://ja.wordpress.org/support/article/plugins-add-new-screen/#%e3%83%97%e3%83%a9%e3%82%b0%e3%82%a4%e3%83%b3%e3%81%ae%e3%82%a2%e3%83%83%e3%83%97%e3%83%ad%e3%83%bc%e3%83%89)
 
-## ディレクトリ構成
-
-{WordPress directory}/wp-content/credentials/
-: 署名用プライベート鍵ファイルの配置場所 (デフォルト)
+## ファイル構成
 
 ### config.php
 
 `includes` ディレクトリの中に置かれている `config.php` ファイルには、このプラグインの設定値が含まれています。
 
-#### PROFILE_PRIVATE_KEY_FILENAME
+#### PROFILE_DEFAULT_CA_SERVER_HOSTNAME
 
-署名に使うプライベート鍵ファイルのパスです。
-もし仮にプライベート鍵が存在しない場合、プラグインを有効化した際に自動的に生成されます。
+Content Attestation サーバーのホスト名の設定の初期値です。
+このホスト名のエンドポイントを介して Content Attestation の登録・更新・取得を行います。
+もし設定画面から設定を変更した場合、この値は参照されません。
 
-#### PROFILE_DEFAULT_PROFILE_REGISTRY_SERVER_HOSTNAME
+#### PROFILE_CA_TARGET_TYPE
 
-DP レジストリサーバーのホスト名の設定の初期値です。
-このホスト名のエンドポイントを介して Signed Document Profile の登録と取得を行います。
-もし設定画面から DP レジストリサーバーのホスト名の設定を変更した場合、この値は参照されません。
+検証する対象の型です。現在、対象の要素の子孫のテキストへの署名を表す `TextTargetIntegrity` のみサポートしています。
 
-#### PROFILE_VERIFICATION_TYPE
-
-検証する対象の型です。現在、対象の要素の子孫のテキストへの署名を表す `text` 型のみサポートしています。
-
-#### PROFILE_VERIFICATION_LOCATION
+#### PROFILE_CA_TARGET_CSS_SELECTOR
 
 検証する対象の要素の場所を特定するための CSS セレクターです。
 このプラグインは、投稿の各ページの内容から子要素の Node: textContent プロパティを結合した結果のテキストを対象として署名を行います。

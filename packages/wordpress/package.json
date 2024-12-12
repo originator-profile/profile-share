@@ -7,8 +7,6 @@
     "version": "shx sed -i 's/(?<= Version: *)[^ ]*$/'${npm_package_version}/ profile.php && git add profile.php"
   },
   "devDependencies": {
-    "@originator-profile/cryptography": "workspace:*",
-    "@originator-profile/verify": "workspace:*",
     "@playwright/test": "^1.49.0",
     "@wordpress/e2e-test-utils-playwright": "1.13.0",
     "shx": "^0.3.4"
