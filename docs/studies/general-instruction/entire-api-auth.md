@@ -14,5 +14,6 @@ OP 拡張機能にはこのための認証情報が含まれています。OP �
 | ------------------------------ | ---------- | ------------------------------------------------------------------ |
 | oprexpt.originator-profile.org | op         | `ed1ca57888e723aa67dbf62e6e52cdd3922fd459402203a0838653b56ef7a9d2` |
 | dprexpt.originator-profile.org | op         | `cbd11cb21e9e34ea8eaa6b07ed127e08c71e2401153f7011f7cb09f304692f78` |
+| oprdev.originator-profile.org  | op         | `67a36cd6b25b923463eb8bf06a7e94a389f6066e791918994f7f9ca1fae1f61d` |
 
 SDP の登録、削除などの API には実験期間中の追加の認証はありません。これらの API アクセスへのアクセスには引き続き OP 発行時に共有しましたアカウント認証情報または[試験用アカウント](./sample-account.md)をお使いください。
