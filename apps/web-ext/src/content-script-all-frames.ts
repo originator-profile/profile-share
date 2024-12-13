@@ -1,6 +1,6 @@
 import { stringifyWithError } from "@originator-profile/core";
 import { fetchCredentials } from "@originator-profile/presentation";
-import { extractBody } from "@originator-profile/verify";
+import { extractBody, verifyIntegrity } from "@originator-profile/verify";
 import {
   ContentScriptAllFramesMessageRequest,
   ContentScriptAllFramesMessageResponse,
@@ -47,4 +47,10 @@ credentialsMessenger.onMessage("fetchCredentials", async () => {
     origin: window.origin,
     url: window.location.href,
   };
+});
+
+credentialsMessenger.onMessage("verifyIntegrity", async ({ data }) => {
+  const [content] = data;
+  const result = await verifyIntegrity(content);
+  return result;
 });

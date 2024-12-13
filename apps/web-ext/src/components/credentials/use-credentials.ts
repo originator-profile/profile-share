@@ -9,7 +9,7 @@ import { useEvent } from "react-use";
 import useSWRImmutable from "swr/immutable";
 import { getRegistryKeys } from "../../utils/get-registry-keys";
 import { VerifiedCas } from "./types";
-import { fetchTabCredentials } from "./messaging";
+import { fetchTabCredentials, FrameIntegrityVerifier } from "./messaging";
 import { verifyCas } from "./cas";
 import { CasVerifyFailed } from "./errors";
 
@@ -32,7 +32,7 @@ async function fetchVerifiedCredentials([, tabId]: [
   _: typeof CREDENTIALS_KEY,
   tabId: number,
 ]): Promise<FetchVerifiedCredentialsResult> {
-  const { ops, cas, origin, url } = await fetchTabCredentials(tabId);
+  const { ops, cas, origin, url, frameId } = await fetchTabCredentials(tabId);
 
   const opsVerifier = OpsVerifier(ops, getRegistryKeys(), `dns:${REGISTRY}`);
   const verifiedOps = await opsVerifier();
@@ -42,7 +42,12 @@ async function fetchVerifiedCredentials([, tabId]: [
   ) {
     throw verifiedOps;
   }
-  const verifiedCas = await verifyCas(cas, verifiedOps, url);
+  const verifiedCas = await verifyCas(
+    cas,
+    verifiedOps,
+    url,
+    FrameIntegrityVerifier(tabId, frameId),
+  );
   if (verifiedCas instanceof CasVerifyFailed) {
     throw verifiedCas;
   }

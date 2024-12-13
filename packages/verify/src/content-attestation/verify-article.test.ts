@@ -8,6 +8,7 @@ import { CaInvalid, CaVerifyFailed } from "./errors";
 import { VerifiedCa } from "./types";
 import { CaVerifier } from "./verify-content-attestation";
 import { diffApply } from "just-diff-apply";
+import { verifyIntegrity } from "../integrity";
 
 const issuedAt = fromUnixTime(getUnixTime(new Date()));
 const expiredAt = addYears(issuedAt, 10);
@@ -85,6 +86,7 @@ describe("ArticleCAの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
+      verifyIntegrity,
       validator,
     );
     const result = await verifier();
@@ -101,6 +103,7 @@ describe("ArticleCAの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
+      verifyIntegrity,
       validator,
     );
     const result = await verifier();
@@ -130,6 +133,7 @@ describe("ArticleCAの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       "evil-issuer.example.org",
       caUrl,
+      verifyIntegrity,
       validator,
     );
     const result = await verifier();
@@ -159,6 +163,7 @@ describe("ArticleCAの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       new URL("https://www.example.org/other"),
+      verifyIntegrity,
       validator,
     );
     const result = await verifier();
@@ -190,6 +195,7 @@ describe("ArticleCAの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
+      verifyIntegrity,
       validator,
     );
     const result = await verifier();
@@ -217,6 +223,7 @@ describe("ArticleCAの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
+      verifyIntegrity,
       validator,
     );
     const result = await verifier();
@@ -241,6 +248,7 @@ describe("ArticleCAの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
+      verifyIntegrity,
       validator,
     );
     const result = await verifier();
@@ -260,6 +268,7 @@ describe("ArticleCAの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
+      verifyIntegrity,
       validator,
     );
     const result = await verifier();

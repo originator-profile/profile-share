@@ -4,6 +4,7 @@ import {
   CaVerifier,
   CoreProfileNotFound,
   VerifiedOps,
+  VerifyIntegrity,
 } from "@originator-profile/verify";
 import {
   ContentAttestationSet,
@@ -22,12 +23,15 @@ const hasMainProperty = <T>(ca: CasItem<T>): ca is Exclude<CasItem<T>, T> =>
  * Content Attestation Set の検証
  * @param cas Content Attestation Set
  * @param verifiedOps 検証済み Originator Profile Set
+ * @param url 検証対象のURL
+ * @param verifyIntegrity Target Integrity の検証器
  * @returns CAS 検証結果
  */
 export async function verifyCas(
   cas: ContentAttestationSet,
   verifiedOps: VerifiedOps,
   url: string,
+  verifyIntegrity: VerifyIntegrity,
 ): Promise<CasVerificationResult> {
   const decodeCa = JwtVcDecoder<ContentAttestation>();
   const resultCas = await Promise.all(
@@ -52,6 +56,7 @@ export async function verifyCas(
         LocalKeys(cp.core.doc.credentialSubject.jwks),
         decodedCa.doc.issuer,
         new URL(url),
+        verifyIntegrity,
       );
       return hasMain
         ? { main: ca.main, attestation: await verify() }

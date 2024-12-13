@@ -10,7 +10,10 @@ import { CaInvalid, CaVerifyFailed } from "./errors";
 import { CaVerificationResult, VerifiedCa } from "./types";
 import { verifyAllowedOrigin } from "../verify-allowed-origin";
 import { verifyAllowedUrl } from "../verify-allowed-url";
-import { verifyIntegrity } from "../integrity";
+import {
+  verifyIntegrity as nativeVerifyIntegrity,
+  VerifyIntegrity,
+} from "../integrity";
 
 async function checkUrlAndOrigin<T extends ContentAttestation>(
   result: VerifiedCa<T>,
@@ -40,6 +43,7 @@ async function checkUrlAndOrigin<T extends ContentAttestation>(
  * @param keys Content Attestation の発行者の検証鍵
  * @param issuer Content Attestation の発行者
  * @param url 検証対象のURL
+ * @param verifyIntegrity Target Integrity の検証器
  * @param validator バリデーター
  * @returns 検証機
  */
@@ -48,6 +52,7 @@ export function CaVerifier<T extends ContentAttestation>(
   keys: Keys,
   issuer: string,
   url: URL,
+  verifyIntegrity: VerifyIntegrity = nativeVerifyIntegrity,
   validator?: VcValidator<VerifiedCa<T>>,
 ) {
   const verifyCa = JwtVcVerifier<T>(keys, issuer, validator);

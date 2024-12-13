@@ -1,3 +1,4 @@
+import { VerifyIntegrity } from "@originator-profile/verify";
 import { credentialsMessenger } from "./events";
 import {
   FetchCredentialsMessageFrameResponse,
@@ -18,10 +19,11 @@ async function fetchAllFramesCredentials(
   const results: PromiseSettledResult<FetchCredentialsMessageFrameResponse>[] =
     await Promise.allSettled(
       frames.map(async (frame) => {
-        const result = await credentialsMessenger.sendMessage(
+        const result = await credentialsMessenger.compatSendMessage(
           "fetchCredentials",
           null,
           tabId,
+          frame.frameId,
         );
         if (result instanceof Error || result.data instanceof Error) {
           throw { result, frame };
@@ -96,3 +98,19 @@ export async function fetchTabCredentials(
     frames: frameCredentials,
   };
 }
+
+/**
+ * フレーム内 Target Integrity 検証器
+ * @param tabId タブID
+ * @param frameId フレームID
+ * @returns フレーム内 Target Integrity 検証器
+ */
+export const FrameIntegrityVerifier =
+  (tabId: number, frameId: number): VerifyIntegrity =>
+  (content) =>
+    credentialsMessenger.compatSendMessage(
+      "verifyIntegrity",
+      [content],
+      tabId,
+      frameId,
+    );
