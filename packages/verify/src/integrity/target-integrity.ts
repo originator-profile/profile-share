@@ -88,3 +88,5 @@ export async function verifyIntegrity(
 
   return await integrityVerifier.verify(content, doc);
 }
+
+export type VerifyIntegrity = typeof verifyIntegrity;

@@ -8,6 +8,7 @@ import { createIntegrityMetadata } from "websri";
 import { CaInvalid, CaVerifyFailed } from "./errors";
 import { VerifiedCa } from "./types";
 import { CaVerifier } from "./verify-content-attestation";
+import { verifyIntegrity } from "../integrity";
 
 const issuedAt = fromUnixTime(getUnixTime(new Date()));
 const expiredAt = addYears(issuedAt, 10);
@@ -74,6 +75,7 @@ describe("Content Attestationの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
+      verifyIntegrity,
       validator,
     );
     const result = await verifier();
@@ -90,6 +92,7 @@ describe("Content Attestationの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
+      verifyIntegrity,
       validator,
     );
     const result = await verifier();
@@ -102,6 +105,7 @@ describe("Content Attestationの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       "evil-issuer.example.org",
       caUrl,
+      verifyIntegrity,
       validator,
     );
     const result = await verifier();
@@ -126,6 +130,7 @@ describe("Content Attestationの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
+      verifyIntegrity,
       validator,
     );
     const result = await verifier();
@@ -155,6 +160,7 @@ describe("Content Attestationの検証", async () => {
       LocalKeys({ keys: [issuer.publicKey] }),
       caIssuer,
       caUrl,
+      verifyIntegrity,
       validator,
     );
     const result = await verifier();

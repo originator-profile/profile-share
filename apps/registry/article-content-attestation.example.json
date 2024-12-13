@@ -8,7 +8,7 @@
     }
   ],
   "type": ["VerifiableCredential", "ContentAttestation"],
-  "issuer": "dns:example.com",
+  "issuer": "dns:localhost",
   "credentialSubject": {
     "type": "Article",
     "headline": "<Webページのタイトル>",
@@ -20,14 +20,15 @@
     "editor": ["山田太郎"],
     "datePublished": "2023-07-04T19:14:00Z",
     "dateModified": "2023-07-04T19:14:00Z",
-    "genre": "Arts & Entertainment"
+    "genre": "Arts & Entertainment",
+    "id": "urn:uuid:5c464165-c579-4fc9-aaff-ca4a65e79947"
   },
-  "allowedUrl": "https://example.com/*",
+  "allowedUrl": "http://localhost:8080/*",
   "target": [
     {
       "type": "TextTargetIntegrity",
-      "content": "https://example.com/",
-      "cssSelector": "h1"
+      "content": "http://localhost:8080/examples/cas-1.html",
+      "cssSelector": "#text-target-integrity"
     }
   ]
 }
