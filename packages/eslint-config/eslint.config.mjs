@@ -87,16 +87,7 @@ export default tseslint.config(
       "@typescript-eslint/no-unsafe-argument": "off",
       "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/require-await": "off",
-      "@typescript-eslint/restrict-template-expressions": "off",
       "@typescript-eslint/no-misused-promises": "off",
-      "@typescript-eslint/no-floating-promises": "off",
-      "@typescript-eslint/await-thenable": "off",
-      "@typescript-eslint/unbound-method": "off",
-      "@typescript-eslint/no-implied-eval": "off",
-      "@typescript-eslint/no-base-to-string": "off",
-      "@typescript-eslint/no-unsafe-enum-comparison": "off",
-      "@typescript-eslint/no-redundant-type-constituents": "off",
-      "@typescript-eslint/only-throw-error": "off",
       //===================================
       // Best Practices
       eqeqeq: "error",

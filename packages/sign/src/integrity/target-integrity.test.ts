@@ -215,7 +215,7 @@ describe("selectByCss()", () => {
     document.documentElement.outerHTML = `<html><head></head><body>ok</body></html>`;
   });
 
-  it("should select elements using CSS selector", async () => {
+  it("should select elements using CSS selector", () => {
     const elements = selectByCss({
       cssSelector: "body",
       integrity: "sha256-xxx",
@@ -226,7 +226,7 @@ describe("selectByCss()", () => {
     expect(elements[0].outerHTML).toBe(`<body>ok</body>`);
   });
 
-  it("should return an empty array if no CSS selector is provided", async () => {
+  it("should return an empty array if no CSS selector is provided", () => {
     const elements = selectByCss({
       integrity: "sha256-xxx",
       document,
@@ -235,7 +235,7 @@ describe("selectByCss()", () => {
     expect(elements).toEqual([]);
   });
 
-  it("should return an empty array if no elements match the CSS selector", async () => {
+  it("should return an empty array if no elements match the CSS selector", () => {
     const elements = selectByCss({
       cssSelector: "non-existent-element",
       integrity: "sha256-xxx",
@@ -253,7 +253,7 @@ describe("selectByIntegrity()", () => {
 `;
   });
 
-  it("should select elements with matching integrity attribute", async () => {
+  it("should select elements with matching integrity attribute", () => {
     const elements = selectByIntegrity({
       integrity: "sha256-xxx",
       document,
@@ -265,7 +265,7 @@ describe("selectByIntegrity()", () => {
     );
   });
 
-  it("should return an empty array if no elements match the integrity", async () => {
+  it("should return an empty array if no elements match the integrity", () => {
     const elements = selectByIntegrity({
       integrity: "sha256-existent-integrity",
       document,

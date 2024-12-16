@@ -59,7 +59,7 @@ const options = /** @type {const} */ ({
             [
               `  --${option[0]}`,
               "short" in option[1] && ` -${option[1].short}`,
-              option[1].type === "string" && `=${option[1]}`,
+              option[1].type === "string" && `=${option[1].toString()}`,
             ]
               .filter(Boolean)
               .join(""),
@@ -194,15 +194,15 @@ if (watch) {
   watcher
     .on("add", (path) => {
       console.log(`File ${path} has been added`);
-      ctx.rebuild();
+      void ctx.rebuild();
     })
     .on("change", (path) => {
       console.log(`File ${path} has been changed`);
-      ctx.rebuild();
+      void ctx.rebuild();
     })
     .on("unlink", (path) => {
       console.log(`File ${path} has been removed`);
-      ctx.rebuild();
+      void ctx.rebuild();
     });
 
   const runner = await webExt.cmd.run({

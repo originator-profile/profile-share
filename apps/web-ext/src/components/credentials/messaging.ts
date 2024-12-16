@@ -26,6 +26,7 @@ async function fetchAllFramesCredentials(
           frame.frameId,
         );
         if (result instanceof Error || result.data instanceof Error) {
+          /* eslint-disable-next-line @typescript-eslint/only-throw-error */
           throw { result, frame };
         }
         return {

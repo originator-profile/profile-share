@@ -36,7 +36,7 @@ test("Core Profile のデコードに成功", async () => {
   expect(decoded.doc).toStrictEqual(coreProfile);
 });
 
-test("無効な形式のJWTのときデコードに失敗", async () => {
+test("無効な形式のJWTのときデコードに失敗", () => {
   const invalidJwt = "invalid.jwt";
   const decoder = JwtVcDecoder();
   const decoded = decoder(invalidJwt);

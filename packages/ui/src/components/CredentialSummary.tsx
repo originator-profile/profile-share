@@ -7,7 +7,7 @@ type Props = {
   className?: string;
   credential: OpCredential;
   certifier?: OpCertifier;
-  onClick(credential: OpCredential): void;
+  onClick: (credential: OpCredential) => void;
 };
 
 function CredentialSummary({

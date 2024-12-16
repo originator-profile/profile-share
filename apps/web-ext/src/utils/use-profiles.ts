@@ -25,8 +25,6 @@ import useSWRImmutable from "swr/immutable";
 import {
   extractBodyRequest,
   extractBodyResponse,
-  fetchProfileSetMessageRequest,
-  fetchProfileSetMessageResponse,
   fetchWebsiteProfilePairMessageResponse,
   PopupMessageRequest,
 } from "../types/message";
@@ -73,10 +71,7 @@ async function fetchProfiles(
     await Promise.allSettled(
       frames.map((frame) =>
         chrome.tabs
-          .sendMessage<
-            fetchProfileSetMessageRequest,
-            fetchProfileSetMessageResponse
-          >(
+          .sendMessage(
             tabId,
             {
               type: "fetch-profiles",
@@ -395,7 +390,7 @@ function useSelectDp(tabId: number) {
     const handleMessageResponse = async (message: PopupMessageRequest) => {
       switch (message.type) {
         case "select-overlay-dp":
-          navigate(
+          await navigate(
             buildPublUrl(
               tabId,
               DocumentProfile.deserialize(

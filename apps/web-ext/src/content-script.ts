@@ -68,7 +68,7 @@ chrome.runtime.onMessage.addListener(function (
   _,
   sendResponse: (response: ContentScriptMessageResponse) => void,
 ): true /* NOTE: Chrome の場合、Promise には非対応 */ {
-  handleMessageResponse(message).then(
+  void handleMessageResponse(message).then(
     (response) => response && sendResponse(response),
   );
   return true;
@@ -92,7 +92,7 @@ function handlePostMessageResponse(event: ContentWindowPostMessageEvent) {
       break;
     case "select-overlay-dp":
       if (event.origin !== window.location.origin) return;
-      chrome.runtime.sendMessage(event.data);
+      void chrome.runtime.sendMessage(event.data);
       break;
     case "update-ad-iframe": {
       if (event.origin !== event.data.sourceOrigin) return;

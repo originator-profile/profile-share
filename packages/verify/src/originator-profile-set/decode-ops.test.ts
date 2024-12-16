@@ -141,7 +141,7 @@ describe("OPSの復号", async () => {
   };
   const ops: OriginatorProfileSet = [authorityOp, certifierOp, holderOp];
 
-  test("OPSの復号に成功", async () => {
+  test("OPSの復号に成功", () => {
     const resultOps = decodeOps(ops);
 
     expect(resultOps).not.instanceOf(OpsInvalid);
@@ -165,7 +165,7 @@ describe("OPSの復号", async () => {
     ]);
   });
 
-  test("CPの復号に失敗", async () => {
+  test("CPの復号に失敗", () => {
     const invalidOps = patch(ops, [
       { op: "replace", path: [2, "core"], value: "invalid" },
     ]);
@@ -194,7 +194,7 @@ describe("OPSの復号", async () => {
     );
   });
 
-  test("PAの復号に失敗", async () => {
+  test("PAの復号に失敗", () => {
     const invalidOps = patch(ops, [
       { op: "replace", path: [2, "annotations", 0], value: "invalid" },
     ]);
@@ -223,7 +223,7 @@ describe("OPSの復号", async () => {
     );
   });
 
-  test("WMPの復号に失敗", async () => {
+  test("WMPの復号に失敗", () => {
     const invalidOps = patch(ops, [
       { op: "replace", path: [2, "media"], value: "invalid" },
     ]);

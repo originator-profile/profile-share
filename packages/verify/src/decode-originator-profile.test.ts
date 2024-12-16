@@ -53,7 +53,7 @@ test("Originator Profile のデコードに成功", async () => {
   expect(decoded).toEqual(originatorProfile);
 });
 
-test("無効な形式のSD-JWTのときデコードに失敗", async () => {
+test("無効な形式のSD-JWTのときデコードに失敗", () => {
   const invalidSdJwt = "invalid.sdJwt";
   const decoder = OriginatorProfileDecoder(null);
   const decoded = decoder(invalidSdJwt);

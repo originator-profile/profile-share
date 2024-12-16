@@ -24,7 +24,7 @@ const anotherDp: Dp = {
 };
 
 describe("ProfileSet class", () => {
-  test("DPs are sorted", async () => {
+  test("DPs are sorted", () => {
     const dps: DocumentProfile[] = [anotherDp, dp].map(
       (p) => new DocumentProfile(dp, dp.subject === p.subject),
     );
@@ -35,7 +35,7 @@ describe("ProfileSet class", () => {
     expect(sorted[1].isMain).toBeFalsy();
   });
 
-  test("new ProfileSet([]) returns empty ProfileSet instance", async () => {
+  test("new ProfileSet([]) returns empty ProfileSet instance", () => {
     const profileSet = new ProfileSet([]);
     expect(profileSet.isEmpty()).toBeTruthy();
     expect(profileSet.hasWebsiteProfiles()).toBeFalsy();

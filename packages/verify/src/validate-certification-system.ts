@@ -42,7 +42,7 @@ export function CertificationSystemValidator() {
         );
       if ("type" in propertySchema && typeof value !== propertySchema.type)
         return new CertificationSystemValidationFailed(
-          `should be contain ${propertySchema.type} value in '${key}' property`,
+          `should be contain ${propertySchema.type as string} value in '${key}' property`,
           { payload },
         );
     }

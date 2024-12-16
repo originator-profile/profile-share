@@ -218,7 +218,7 @@ function Publ(props: Props) {
     const NewlyFilteredDps = props.profiles.listDpsByType(contentType);
     const dp = NewlyFilteredDps[0];
     if (dp) {
-      navigate(buildPublUrl(tabId, dp));
+      void navigate(buildPublUrl(tabId, dp));
     }
   }
 
