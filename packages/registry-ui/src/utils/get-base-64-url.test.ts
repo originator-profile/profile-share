@@ -6,7 +6,7 @@ function decodeBase64URL(base64url: string) {
   return Buffer.from(base64url, "base64url");
 }
 
-test("get base64 URL of png", async () => {
+test("get base64 URL of png", () => {
   const prefix = "data:image/png;base64,";
   const buf = randomBytes(1024);
   const dataURL = prefix + buf.toString("base64");
@@ -20,7 +20,7 @@ test("get base64 URL of png", async () => {
   expect(decodeBase64URL(base64URL)).toEqual(buf);
 });
 
-test("get base64 URL of svg", async () => {
+test("get base64 URL of svg", () => {
   const prefix = "data:image/svg+xml;base64,";
   const buf = randomBytes(1024);
   const dataURL = prefix + buf.toString("base64");

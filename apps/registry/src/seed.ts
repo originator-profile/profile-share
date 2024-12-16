@@ -51,8 +51,7 @@ async function issueOp(
 
   console.log(`Profile: ${jwt}
 Public Key: ${JSON.stringify(publicKey)}
-
-${privateKey}`);
+${JSON.stringify(privateKey)}`);
 }
 
 async function issueDp(
@@ -179,5 +178,4 @@ export async function seed(): Promise<void> {
     );
   }
 }
-
-if (require.main === module) seed();
+if (require.main === module) void seed();

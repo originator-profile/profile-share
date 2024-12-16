@@ -11,9 +11,9 @@ export default function Index() {
       return;
     }
     if (isAuthenticated) {
-      navigate("/app/");
+      void navigate("/app/");
     } else {
-      loginWithRedirect();
+      void loginWithRedirect();
     }
   }, [isLoading, isAuthenticated, loginWithRedirect, navigate]);
   if (isLoading || !isAuthenticated) {

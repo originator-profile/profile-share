@@ -40,7 +40,7 @@ export function Modal(props: ModalProps) {
   useEvent("click", (e) => {
     const dialog = props.dialogRef.current;
     if (e.target !== dialog) return;
-    onClose(dialog);
+    void onClose(dialog);
   });
 
   return (

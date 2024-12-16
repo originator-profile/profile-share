@@ -5,9 +5,7 @@ import { Menu } from "@headlessui/react";
 import { Icon } from "@iconify/react";
 
 /** 入力ファイルを JSON ファイルとしてパース */
-async function parseInputFile(
-  input: HTMLInputElement,
-): Promise<unknown | Error> {
+async function parseInputFile(input: HTMLInputElement): Promise<Jwk | Error> {
   const file = input.files?.[0];
   if (!file) return new Error("File not found");
   const parsed = await file
@@ -31,14 +29,14 @@ export default function PublicKey() {
     const keyField: HTMLInputElement = event.currentTarget.key;
     const jwk = await parseInputFile(keyField);
     if (jwk instanceof Error) return setFileError(jwk);
-    await publicKeys.register.trigger({ jwk: jwk as Jwk });
+    await publicKeys.register.trigger({ jwk });
     if (publicKeys.register.error) return;
 
     keyField.value = "";
   };
-  const handleClickJwk = (jwk: Jwk) => () => {
+  const handleClickJwk = (jwk: Jwk) => async () => {
     reset();
-    publicKeys.destroy.trigger({ kid: jwk.kid });
+    await publicKeys.destroy.trigger({ kid: jwk.kid });
   };
 
   return (

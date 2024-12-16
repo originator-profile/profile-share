@@ -30,7 +30,7 @@ const addErrorResponseSchema: onRouteHookHandler = async (opt) => {
 
   if (!opt.schema?.response) {
     throw new Error(
-      `The property schema.response is missing on ${opt.method} ${opt.path}`,
+      `The property schema.response is missing on ${opt.method.toString()} ${opt.path}`,
     );
   }
 

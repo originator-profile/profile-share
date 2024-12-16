@@ -15,6 +15,7 @@ async function fetchVerifiedSiteProfile([, tabId]: [
     null,
     tabId,
   );
+  /* eslint-disable-next-line @typescript-eslint/only-throw-error */
   if (!ok) throw result;
   const registry = import.meta.env.PROFILE_ISSUER;
   const key = getRegistryKeys();

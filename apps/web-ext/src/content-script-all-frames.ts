@@ -14,6 +14,7 @@ async function handleMessageResponse(
     case "extract-body": {
       const data = await extractBody(
         document.location.href,
+
         async (location) =>
           Array.from(document.querySelectorAll<HTMLElement>(location)),
         JSON.parse(message.dpLocator),
@@ -34,7 +35,7 @@ chrome.runtime.onMessage.addListener(function (
   _,
   sendResponse: (response: ContentScriptAllFramesMessageResponse) => void,
 ): true /* NOTE: Chrome の場合、Promise には非対応 */ {
-  handleMessageResponse(message).then(
+  void handleMessageResponse(message).then(
     (response) => response && sendResponse(response),
   );
   return true;

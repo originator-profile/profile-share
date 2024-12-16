@@ -99,8 +99,8 @@ function ResubmitButton() {
         }}
         confirmationText="再申請をはじめる"
         cancellationText="キャンセル"
-        onConfirm={(message: string) => {
-          latestRequest.create({
+        onConfirm={async (message: string) => {
+          await latestRequest.create({
             requestSummary: message,
           });
         }}
@@ -179,8 +179,8 @@ function RequestRequired(props: RequestRequiredProps) {
         }}
         confirmationText="申請をはじめる"
         cancellationText="キャンセル"
-        onConfirm={(message: string) => {
-          latestRequest.create({
+        onConfirm={async (message: string) => {
+          await latestRequest.create({
             requestSummary: message,
           });
         }}

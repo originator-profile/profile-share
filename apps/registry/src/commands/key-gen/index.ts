@@ -18,7 +18,7 @@ export class KeyGen extends Command {
     const { publicKey, privateKey } = await generateKey();
     const privateKeyFilename = `${flags.output}.priv.json`;
     const publicKeyFilename = `${flags.output}.pub.json`;
-    fs.writeFile(publicKeyFilename, JSON.stringify(publicKey, null, 2));
-    fs.writeFile(privateKeyFilename, JSON.stringify(privateKey, null, 2));
+    await fs.writeFile(publicKeyFilename, JSON.stringify(publicKey, null, 2));
+    await fs.writeFile(privateKeyFilename, JSON.stringify(privateKey, null, 2));
   }
 }

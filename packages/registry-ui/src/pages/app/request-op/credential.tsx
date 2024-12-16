@@ -388,7 +388,7 @@ export default function Credential() {
     const token = await session.getAccessToken();
     await createCredential(data, account?.id, token);
     setShowCreateForm(false);
-    mutateAccount();
+    await mutateAccount();
   };
 
   const handleDelete = async (credentialId: string) => {
@@ -397,7 +397,7 @@ export default function Credential() {
     }
     const token = await session.getAccessToken();
     await deleteCredential(account?.id, credentialId, token);
-    mutateAccount();
+    await mutateAccount();
   };
 
   const handleEdit = async (credentialId: string, formData: FormData) => {
@@ -406,7 +406,7 @@ export default function Credential() {
     }
     const token = await session.getAccessToken();
     await updateCredential(formData, account?.id, credentialId, token);
-    mutateAccount();
+    await mutateAccount();
   };
 
   const renderExpiredCredentials = () => {

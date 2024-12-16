@@ -16,7 +16,7 @@ async function requiredSignUp({ user, server }: FastifyRequest) {
 async function addErrorResponseSchema(opt: RouteOptions) {
   if (!opt.schema?.response) {
     throw new Error(
-      `The property schema.response is missing on ${opt.method} ${opt.url}`,
+      `The property schema.response is missing on ${opt.method.toString()} ${opt.url}`,
     );
   }
 

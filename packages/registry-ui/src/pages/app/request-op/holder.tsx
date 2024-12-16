@@ -56,7 +56,7 @@ function HolderForm({
   // 前回訪問時の下書きがある場合は、その下書きのエラーを表示する。
   useMount(() => {
     if (hasDraft) {
-      trigger(Object.keys(draft) as Array<keyof IFormInput>);
+      void trigger(Object.keys(draft) as Array<keyof IFormInput>);
     }
   });
 
@@ -78,7 +78,7 @@ function HolderForm({
       throw new Error();
     } else {
       // 成功の場合、SWR のキャッシュの revalidate を行う。
-      session.mutate();
+      await session.mutate();
       const data = await mutateAccount();
       reset(data ?? draft);
       clearDraft();

@@ -76,7 +76,12 @@ export default function Logo() {
             reject(new Error());
             return;
           }
-          resolve(getBase64URL(e.target.result.toString()));
+          if (typeof e.target.result === "string") {
+            resolve(getBase64URL(e.target.result.toString()));
+          } else {
+            const decoder = new TextDecoder();
+            resolve(getBase64URL(decoder.decode(e.target.result)));
+          }
         };
         reader.readAsDataURL(file);
       });
@@ -108,8 +113,8 @@ export default function Logo() {
       setShowErrors(true);
       throw new Error();
     }
-    response.json().then((res) => {
-      mutateLogo({ url: res.url });
+    await response.json().then(async (res) => {
+      await mutateLogo({ url: res.url });
     });
   }
 

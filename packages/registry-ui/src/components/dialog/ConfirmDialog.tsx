@@ -44,7 +44,7 @@ export function ConfirmDialog<V extends ConfirmDialogVariant>(
   useEvent("click", (e) => {
     const dialog = props.dialogRef.current;
     if (e.target !== dialog) return;
-    cancellation(dialog);
+    void cancellation(dialog);
   });
 
   const color = {

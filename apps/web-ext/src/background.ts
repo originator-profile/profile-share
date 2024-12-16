@@ -20,8 +20,7 @@ const handleMessageResponse = async (message: BackgroundMessageRequest) => {
 chrome.runtime.onMessage.addListener(handleMessageResponse);
 
 chrome.runtime.onInstalled.addListener(async ({ reason }) => {
-  if (reason !== "install") return;
-
+  if (reason !== chrome.runtime.OnInstalledReason.INSTALL) return;
   const granted = await chrome.permissions.contains({
     origins: ["<all_urls>"],
   });
@@ -45,7 +44,9 @@ export {};
 // NOTE: gh-1583
 if (import.meta.env.MODE === "development") {
   chrome.runtime.onInstalled.addListener(({ reason }) => {
-    if (reason === "install") chrome.tabs.reload();
+    if (reason === chrome.runtime.OnInstalledReason.INSTALL) {
+      void chrome.tabs.reload();
+    }
   });
 }
 

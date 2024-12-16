@@ -33,7 +33,7 @@ export async function create(options: Options): Promise<Server> {
 
   await app.register(env, { schema: Config });
   /* options.quietの値を優先する */
-  await app.after(() => {
+  app.after(() => {
     app.config.LOG_QUIET = options.quiet;
   });
 

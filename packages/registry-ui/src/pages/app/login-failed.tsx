@@ -9,7 +9,12 @@ export default function LoginFailed() {
       <h2>詳細</h2>
       <p>{(session.error as Error).message}</p>
       <p>{(session.error as Error).stack}</p>
-      <p>{String((session.error as Error).cause || "")}</p>
+      <p>
+        {String(
+          /* eslint-disable-next-line @typescript-eslint/no-base-to-string */
+          (session.error as Error).cause || "",
+        )}
+      </p>
     </section>
   ) : null;
 
