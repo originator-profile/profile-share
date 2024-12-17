@@ -65,8 +65,8 @@
   "NotFound_Holder": {
     "message": "所有者"
   },
-  "NotFound_Website": {
-    "message": "ウェブサイト"
+  "NotFound_WebsiteAndPublication": {
+    "message": "ウェブサイトおよび出版物"
   },
   "NotFound_InformationNotFound": {
     "message": "$variant$の情報が\n見つかりませんでした",

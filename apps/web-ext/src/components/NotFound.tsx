@@ -1,11 +1,13 @@
 import { Link } from "react-router";
 import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
-import { useCredentials } from "../components/credentials/use-credentials";
 import { routes } from "../utils/routes";
+import { stringifyWithError } from "@originator-profile/core";
 import { _ } from "@originator-profile/ui/src/utils";
+import { useCredentials } from "./credentials";
 
 type Props = {
-  variant: "profile" | "op" | "dp" | "holder" | "website";
+  variant: "profile" | "op" | "dp" | "holder" | "websiteAndCas";
+  errors?: Error[];
 };
 
 const label: { [key in Props["variant"]]: string } = {
@@ -13,10 +15,10 @@ const label: { [key in Props["variant"]]: string } = {
   op: _("NotFound_Organization"),
   dp: _("NotFound_Publication"),
   holder: _("NotFound_Holder"),
-  website: _("NotFound_Website"),
+  websiteAndCas: _("NotFound_WebsiteAndPublication"),
 } as const;
 
-function NotFound({ variant }: Props) {
+function NotFound({ variant, errors }: Props) {
   const { tabId } = useCredentials();
   return (
     <div className="px-4 py-12">
@@ -40,6 +42,17 @@ function NotFound({ variant }: Props) {
           </Link>
         </p>
       </article>
+      {errors && (
+        <details>
+          {errors.map((error, index) => {
+            return (
+              <pre className="overflow-auto" key={index}>
+                {stringifyWithError(error, 2)}
+              </pre>
+            );
+          })}
+        </details>
+      )}
       <ProjectSummary as="footer" />
     </div>
   );
