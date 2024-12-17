@@ -117,5 +117,5 @@ window.addEventListener("message", handlePostMessageResponse);
 
 siteProfileMessenger.onMessage("fetchSiteProfile", async () => {
   const data = await fetchSiteProfile(document);
-  return data;
+  return stringifyWithError(data);
 });

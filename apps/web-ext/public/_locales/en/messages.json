@@ -65,8 +65,8 @@
   "NotFound_Holder": {
     "message": "holder"
   },
-  "NotFound_Website": {
-    "message": "website"
+  "NotFound_WebsiteAndPublication": {
+    "message": "website and publication"
   },
   "NotFound_InformationNotFound": {
     "message": "Information on this $variant$ is missing",
