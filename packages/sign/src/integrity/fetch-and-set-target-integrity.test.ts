@@ -40,4 +40,25 @@ describe("fetchAndSetTargetIntegrity()", () => {
       fetchAndSetTargetIntegrity("sha256", uca),
     ).rejects.toThrowError(`Failed to create integrity #0.`);
   });
+
+  it("should remove content and keep integrity if integrity is provided", async () => {
+    const uca = {
+      target: [
+        {
+          type: "example",
+          content: "example content",
+          integrity: "existing-integrity",
+        } as unknown as RawTarget,
+      ],
+    };
+
+    await fetchAndSetTargetIntegrity("sha256", uca);
+
+    expect(uca.target).toEqual([
+      {
+        type: "example",
+        integrity: "existing-integrity",
+      },
+    ]);
+  });
 });

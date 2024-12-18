@@ -512,7 +512,9 @@ DESCRIPTION
   未署名 Content Attestation の取得
 
   標準出力に未署名 Content Attestation を出力します。
-  なお、入力ファイルの target[].type に準じて integrity が計算され、content プロパティが削除される点にご注意ください。
+  target[].integrity を省略した場合、type に準じて content から integrity を計算します。
+  一方、target[].integrity が含まれる場合、その値をそのまま使用します。
+  なお、いずれも target[].content プロパティが削除される点にご注意ください。
   これにより入力ファイルの target[] と異なる結果が含まれますが、これは正しい動作です。
 
 EXAMPLES
