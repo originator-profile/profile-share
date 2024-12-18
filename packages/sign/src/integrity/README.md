@@ -30,3 +30,48 @@ const resource = {
 const { digestSRI } = await createDigestSri("sha256", resource);
 console.log(digestSRI); // sha256-...
 ```
+
+## fetchAndSetTargetIntegrity
+
+未署名 Content Attestation への Target Integrity の割り当て
+
+```ts
+const uca = {
+  // ...
+  target: [
+    {
+      type: "<Target Integrityの種別>",
+      cssSelector: "<CSS セレクター>",
+    },
+  ],
+};
+
+await fetchAndSetTargetIntegrity("sha256", uca);
+
+console.log(uca.target);
+// [
+//   {
+//     type: "<Target Integrityの種別>",
+//     cssSelector: "<CSS セレクター>",
+//     integrity: "sha256-..."
+//   }
+// ]
+```
+
+## fetchAndSetDigestSri
+
+オブジェクトへの `digestSRI` の割り当て
+
+```ts
+const resource = {
+  id: "<URL>",
+};
+
+await fetchAndSetDigestSri("sha256", resource);
+
+console.log(resource);
+// {
+//   id: "<URL>",
+//   digestSRI: "sha256-..."
+// }
+```

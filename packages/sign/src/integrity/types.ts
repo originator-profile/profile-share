@@ -1,4 +1,4 @@
-import type { Image } from "@originator-profile/model";
+import type { Image, RawTarget } from "@originator-profile/model";
 
 export type DigestSriContent = Image;
 
@@ -11,3 +11,6 @@ export type ElementSelector = (params: {
   integrity?: string;
   document: Document;
 }) => ReadonlyArray<HTMLElement>;
+
+/** 文脈に応じて Document を提供する関数 */
+export type DocumentProvider = (raw: RawTarget) => Promise<Document>;
