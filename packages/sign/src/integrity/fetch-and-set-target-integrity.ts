@@ -5,6 +5,9 @@ import type { DocumentProvider } from "./types";
 
 /**
  * 未署名 Content Attestation への Target Integrity の割り当て
+ * target[].integrity を省略した場合、type に準じて content から integrity を計算します。
+ * 一方、target[].integrity が含まれる場合、その値をそのまま使用します。
+ * なお、いずれも target[].content プロパティが削除される点にご注意ください。
  * @see {@link https://docs.originator-profile.org/rfc/target-guide/}
  * @example
  * ```ts
@@ -39,6 +42,12 @@ export async function fetchAndSetTargetIntegrity<
 ): Promise<T & { target: ReadonlyArray<Target> }> {
   const target = await Promise.all(
     obj.target.map(async (raw: RawTarget, i) => {
+      if (raw.integrity) {
+        const { content: _, ...target } = raw;
+
+        return target as Target;
+      }
+
       const doc = await documentProvider(raw);
       const target = await createIntegrity(alg, raw, doc);
 
