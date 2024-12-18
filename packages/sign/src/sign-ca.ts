@@ -1,50 +1,14 @@
 import type {
-  ArticleCA,
   Jwk,
-  RawTarget,
-  Target,
   UnsignedContentAttestation,
 } from "@originator-profile/model";
 import { signJwtVc } from "@originator-profile/securing-mechanism";
 import type { HashAlgorithm } from "websri";
-import { createDigestSri, createIntegrity } from "./integrity/";
-
-/** 文脈に応じて Document を提供する関数 */
-export type DocumentProvider = (raw: RawTarget) => Promise<Document>;
-
-async function fetchAndSetDigestSri<T extends ArticleCA>(
-  alg: HashAlgorithm,
-  obj: T,
-): Promise<void> {
-  if (
-    obj.credentialSubject.image &&
-    obj.credentialSubject.image.digestSRI !== "string"
-  ) {
-    Object.assign(
-      obj.credentialSubject.image,
-      await createDigestSri(alg, obj.credentialSubject.image),
-    );
-  }
-}
-
-async function fetchAndSetTargetIntegrity<
-  T extends { target: ReadonlyArray<RawTarget> },
->(
-  alg: HashAlgorithm,
-  obj: T,
-  documentProvider: DocumentProvider,
-): Promise<void> {
-  const target: ReadonlyArray<Target> = await Promise.all(
-    obj.target.map(async (raw: RawTarget) => {
-      const doc = await documentProvider(raw);
-      const target = await createIntegrity(alg, raw, doc);
-
-      return target as Target;
-    }),
-  );
-
-  Object.assign(obj, { target });
-}
+import {
+  type DocumentProvider,
+  fetchAndSetDigestSri,
+  fetchAndSetTargetIntegrity,
+} from "./integrity/";
 
 /**
  * Content Attestation への署名
@@ -69,7 +33,7 @@ export async function signCa(
     documentProvider?: DocumentProvider;
   },
 ): Promise<string> {
-  await fetchAndSetDigestSri(integrityAlg, uca as ArticleCA);
+  await fetchAndSetDigestSri(integrityAlg, uca.credentialSubject.image);
   await fetchAndSetTargetIntegrity(integrityAlg, uca, documentProvider);
 
   return await signJwtVc(uca, privateKey, { alg, issuedAt, expiredAt });

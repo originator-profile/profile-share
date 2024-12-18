@@ -4,12 +4,13 @@ import {
   parseAccountId,
   parseExpirationDate,
 } from "@originator-profile/core";
-import {
+import type {
   ContentAttestationSet,
   Dp,
   Jwk,
   RawTarget,
   UnsignedContentAttestation,
+  WebsiteProfile,
 } from "@originator-profile/model";
 import {
   CaRepository,
@@ -19,8 +20,13 @@ import {
   beginTransaction,
   getClient,
 } from "@originator-profile/registry-db";
-import { signCa, signDp } from "@originator-profile/sign";
-import { addYears } from "date-fns";
+import {
+  fetchAndSetDigestSri,
+  fetchAndSetTargetIntegrity,
+  signCa,
+  signDp,
+} from "@originator-profile/sign";
+import { addYears, getUnixTime } from "date-fns";
 import { Window } from "happy-dom";
 import {
   BadRequestError,
@@ -142,6 +148,77 @@ export const PublisherService = ({
     await CaRepository.upsert(ca);
 
     return [ca];
+  },
+
+  /**
+   * 未署名 Content Attestation の取得
+   * @param uca 未署名 Content Attestation オブジェクト
+   * @return 未署名 Content Attestation オブジェクト
+   */
+  async unsignedCa(
+    uca: UnsignedContentAttestation,
+    {
+      issuedAt: issuedAtDateOrString = new Date(),
+      expiredAt: expiredAtDateOrString = addYears(new Date(), 1),
+    }: {
+      issuedAt?: Date | string;
+      expiredAt?: Date | string;
+    },
+  ): Promise<UnsignedContentAttestation> {
+    const issuedAt: Date = new Date(issuedAtDateOrString);
+
+    const expiredAt: Date =
+      typeof expiredAtDateOrString === "string"
+        ? parseExpirationDate(expiredAtDateOrString)
+        : expiredAtDateOrString;
+
+    uca.credentialSubject.id ??= `urn:uuid:${crypto.randomUUID()}`;
+
+    await fetchAndSetDigestSri("sha256", uca.credentialSubject.image);
+    await fetchAndSetTargetIntegrity("sha256", uca, documentProvider);
+
+    const payload = {
+      iss: uca.issuer,
+      sub: uca.credentialSubject.id,
+      iat: getUnixTime(issuedAt),
+      exp: getUnixTime(expiredAt),
+      ...uca,
+    };
+
+    return payload;
+  },
+
+  /**
+   * 未署名 Website Profile の取得
+   * @param uwp 未署名 Website Profile オブジェクト
+   * @return 未署名 Website Profile オブジェクト
+   */
+  async unsignedWp(
+    uwp: WebsiteProfile,
+    {
+      issuedAt: issuedAtDateOrString = new Date(),
+      expiredAt: expiredAtDateOrString = addYears(new Date(), 1),
+    }: {
+      issuedAt?: Date | string;
+      expiredAt?: Date | string;
+    },
+  ): Promise<WebsiteProfile> {
+    const issuedAt: Date = new Date(issuedAtDateOrString);
+
+    const expiredAt: Date =
+      typeof expiredAtDateOrString === "string"
+        ? parseExpirationDate(expiredAtDateOrString)
+        : expiredAtDateOrString;
+
+    await fetchAndSetDigestSri("sha256", uwp.credentialSubject.image);
+
+    return {
+      iss: uwp.issuer,
+      sub: uwp.credentialSubject.id,
+      iat: getUnixTime(issuedAt),
+      exp: getUnixTime(expiredAt),
+      ...uwp,
+    };
   },
 
   /**

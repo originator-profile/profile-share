@@ -58,6 +58,7 @@ running command...
 * [`profile-registry admin:delete`](#profile-registry-admindelete)
 * [`profile-registry advertiser:sign`](#profile-registry-advertisersign)
 * [`profile-registry ca:sign`](#profile-registry-casign)
+* [`profile-registry ca:unsigned`](#profile-registry-caunsigned)
 * [`profile-registry cert:issue`](#profile-registry-certissue)
 * [`profile-registry db:init`](#profile-registry-dbinit)
 * [`profile-registry db:prisma`](#profile-registry-dbprisma)
@@ -73,6 +74,7 @@ running command...
 * [`profile-registry publisher:website`](#profile-registry-publisherwebsite)
 * [`profile-registry sign`](#profile-registry-sign)
 * [`profile-registry start`](#profile-registry-start)
+* [`profile-registry wp:unsigned`](#profile-registry-wpunsigned)
 
 ## `profile-registry account`
 
@@ -483,6 +485,82 @@ FLAG DESCRIPTIONS
     "genre": "Arts & Entertainment"
     },
     "allowedUrl": "https://media.example.com/articles/2024-06-30",
+    "target": [
+    {
+    "type": "<Target Integrityの種別>",
+    "content": "<コンテンツ本体 (text/html or URL)>",
+    "cssSelector": "<CSS セレクター (optional)>"
+    }
+    ]
+    }
+```
+
+## `profile-registry ca:unsigned`
+
+未署名 Content Attestation の取得
+
+```
+USAGE
+  $ profile-registry ca:unsigned --input <filepath> [--issued-at <value>] [--expired-at <value>]
+
+FLAGS
+  --expired-at=<value>  有効期限 (ISO 8601)
+  --input=<filepath>    (required) 入力ファイルのパス (JSON 形式)
+  --issued-at=<value>   発行日時 (ISO 8601)
+
+DESCRIPTION
+  未署名 Content Attestation の取得
+
+  標準出力に未署名 Content Attestation を出力します。
+  なお、入力ファイルの target[].type に準じて integrity が計算され、content プロパティが削除される点にご注意ください。
+  これにより入力ファイルの target[] と異なる結果が含まれますが、これは正しい動作です。
+
+EXAMPLES
+  $ profile-registry ca:unsigned \
+      --input article-content-attestation.example.json
+
+FLAG DESCRIPTIONS
+  --expired-at=<value>  有効期限 (ISO 8601)
+
+    日付のみの場合、その日の 24:00:00.000 より前まで有効、それ以外の場合、期限切れとなる日付・時刻・秒を指定します。
+
+  --input=<filepath>  入力ファイルのパス (JSON 形式)
+
+    Article Content Attestation の例:
+
+    {
+    "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://originator-profile.org/ns/credentials/v1",
+    "https://originator-profile.org/ns/cip/v1",
+    {
+    "@language": "<言語・地域コード>"
+    }
+    ],
+    "type": [
+    "VerifiableCredential",
+    "ContentAttestation"
+    ],
+    "issuer": "<OP ID>",
+    "credentialSubject": {
+    "id": "<CA ID>",
+    "type": "Article",
+    "headline": "<コンテンツのタイトル>",
+    "description": "<コンテンツの説明>",
+    "image": {
+    "id": "<サムネイル画像URL>"
+    },
+    "datePublished": "<公開日時>",
+    "dateModified": "<最終更新日時>",
+    "author": [
+    "<著者名>"
+    ],
+    "editor": [
+    "<編集者名>"
+    ],
+    "genre": "<ジャンル>"
+    },
+    "allowedUrl": "<CAの使用を許可するWebページのURL Pattern>",
     "target": [
     {
     "type": "<Target Integrityの種別>",
@@ -1121,6 +1199,64 @@ FLAGS
 
 DESCRIPTION
   API サーバーの起動
+```
+
+## `profile-registry wp:unsigned`
+
+未署名 Website Profile の取得
+
+```
+USAGE
+  $ profile-registry wp:unsigned --input <filepath> [--issued-at <value>] [--expired-at <value>]
+
+FLAGS
+  --expired-at=<value>  有効期限 (ISO 8601)
+  --input=<filepath>    (required) 入力ファイルのパス (JSON 形式)
+  --issued-at=<value>   発行日時 (ISO 8601)
+
+DESCRIPTION
+  未署名 Website Profile の取得
+
+  標準出力に未署名 Website Profile を出力します。
+
+EXAMPLES
+  $ profile-registry wp:unsigned \
+      --input website-profile.example.json
+
+FLAG DESCRIPTIONS
+  --expired-at=<value>  有効期限 (ISO 8601)
+
+    日付のみの場合、その日の 24:00:00.000 より前まで有効、それ以外の場合、期限切れとなる日付・時刻・秒を指定します。
+
+  --input=<filepath>  入力ファイルのパス (JSON 形式)
+
+    Website Profile の例:
+
+    {
+    "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://originator-profile.org/ns/credentials/v1",
+    "https://originator-profile.org/ns/cip/v1",
+    {
+    "@language": "<言語・地域コード>"
+    }
+    ],
+    "type": [
+    "VerifiableCredential",
+    "WebsiteProfile"
+    ],
+    "issuer": "<OP ID>",
+    "credentialSubject": {
+    "id": "<Web サイトの URL>",
+    "url": "<Web サイトの URL>",
+    "type": "WebSite",
+    "name": "<Web サイトの名称>",
+    "description": "<Web サイトの説明>",
+    "image": {
+    "id": "<サムネイル画像URL>"
+    }
+    }
+    }
 ```
 <!-- commandsstop -->
 <!-- prettier-ignore-end -->

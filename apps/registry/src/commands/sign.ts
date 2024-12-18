@@ -1,12 +1,11 @@
 import { Command, Flags } from "@oclif/core";
 import type {
   CoreProfile,
-  Image,
   WebMediaProfile,
   WebsiteProfile,
 } from "@originator-profile/model";
 import { signJwtVc } from "@originator-profile/securing-mechanism";
-import { createDigestSri } from "@originator-profile/sign";
+import { fetchAndSetDigestSri } from "@originator-profile/sign";
 import { addYears } from "date-fns";
 import fs from "node:fs/promises";
 import { expirationDate, opId, privateKey } from "../flags";
@@ -24,25 +23,13 @@ function isValidVc(vc: unknown): vc is MinVC {
   );
 }
 
-async function fetchAndSetDigestSri<
-  T extends Record<string, unknown>,
-  Key extends "logo" | "image",
->(obj: T, key: Key): Promise<void> {
-  if (key in obj && typeof (obj[key] as Image).digestSRI !== "string") {
-    Object.assign(
-      obj[key] as Image,
-      await createDigestSri("sha256", obj[key] as Image),
-    );
-  }
-}
-
 async function addDigestSri(vc: unknown) {
   if (!isValidVc(vc)) throw new Error("Invalid VC");
 
-  const credentialSubject = vc.credentialSubject;
+  const credentialSubject: Record<string, unknown> = vc.credentialSubject;
 
-  await fetchAndSetDigestSri(credentialSubject, "logo");
-  await fetchAndSetDigestSri(credentialSubject, "image");
+  await fetchAndSetDigestSri("sha256", credentialSubject.logo);
+  await fetchAndSetDigestSri("sha256", credentialSubject.image);
 
   return Object.assign(vc, { credentialSubject });
 }
