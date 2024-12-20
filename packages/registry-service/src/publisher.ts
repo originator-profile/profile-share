@@ -190,11 +190,11 @@ export const PublisherService = ({
 
   /**
    * 未署名 Website Profile の取得
-   * @param uwp 未署名 Website Profile オブジェクト
+   * @param uwsp 未署名 Website Profile オブジェクト
    * @return 未署名 Website Profile オブジェクト
    */
-  async unsignedWp(
-    uwp: WebsiteProfile,
+  async unsignedWsp(
+    uwsp: WebsiteProfile,
     {
       issuedAt: issuedAtDateOrString = new Date(),
       expiredAt: expiredAtDateOrString = addYears(new Date(), 1),
@@ -210,14 +210,14 @@ export const PublisherService = ({
         ? parseExpirationDate(expiredAtDateOrString)
         : expiredAtDateOrString;
 
-    await fetchAndSetDigestSri("sha256", uwp.credentialSubject.image);
+    await fetchAndSetDigestSri("sha256", uwsp.credentialSubject.image);
 
     return {
-      iss: uwp.issuer,
-      sub: uwp.credentialSubject.id,
+      iss: uwsp.issuer,
+      sub: uwsp.credentialSubject.id,
       iat: getUnixTime(issuedAt),
       exp: getUnixTime(expiredAt),
-      ...uwp,
+      ...uwsp,
     };
   },
 

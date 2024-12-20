@@ -27,7 +27,7 @@ const exampleWebsiteProfile = {
   },
 } satisfies WebsiteProfile;
 
-export class WpUnsigned extends Command {
+export class WspUnsigned extends Command {
   static summary = "未署名 Website Profile の取得";
   static description = "標準出力に未署名 Website Profile を出力します。";
   static flags = {
@@ -52,16 +52,16 @@ $ <%= config.bin %> <%= command.id %> \\
   ];
 
   async run(): Promise<void> {
-    const { flags } = await this.parse(WpUnsigned);
+    const { flags } = await this.parse(WspUnsigned);
     const inputBuffer = await fs.readFile(flags.input);
 
     const input: WebsiteProfile = JSON.parse(inputBuffer.toString());
 
-    const uwp = await Services().publisher.unsignedWp(input, {
+    const uwsp = await Services().publisher.unsignedWsp(input, {
       issuedAt: flags["issued-at"],
       expiredAt: flags["expired-at"],
     });
 
-    this.logJson(uwp);
+    this.logJson(uwsp);
   }
 }

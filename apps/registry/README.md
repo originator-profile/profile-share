@@ -74,7 +74,7 @@ running command...
 * [`profile-registry publisher:website`](#profile-registry-publisherwebsite)
 * [`profile-registry sign`](#profile-registry-sign)
 * [`profile-registry start`](#profile-registry-start)
-* [`profile-registry wp:unsigned`](#profile-registry-wpunsigned)
+* [`profile-registry wsp:unsigned`](#profile-registry-wspunsigned)
 
 ## `profile-registry account`
 
@@ -1203,13 +1203,13 @@ DESCRIPTION
   API サーバーの起動
 ```
 
-## `profile-registry wp:unsigned`
+## `profile-registry wsp:unsigned`
 
 未署名 Website Profile の取得
 
 ```
 USAGE
-  $ profile-registry wp:unsigned --input <filepath> [--issued-at <value>] [--expired-at <value>]
+  $ profile-registry wsp:unsigned --input <filepath> [--issued-at <value>] [--expired-at <value>]
 
 FLAGS
   --expired-at=<value>  有効期限 (ISO 8601)
@@ -1222,7 +1222,7 @@ DESCRIPTION
   標準出力に未署名 Website Profile を出力します。
 
 EXAMPLES
-  $ profile-registry wp:unsigned \
+  $ profile-registry wsp:unsigned \
       --input website-profile.example.json
 
 FLAG DESCRIPTIONS
