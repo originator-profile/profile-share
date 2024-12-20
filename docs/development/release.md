@@ -30,6 +30,7 @@ Step 1
 
 - `BASIC_AUTH` (形式: `true` or `false`)
 - `BASIC_AUTH_CREDENTIALS` (形式: [拡張機能のソースコード](https://github.com/originator-profile/profile-share/blob/main/apps/web-ext) を参照してください)
+- `REGISTRY_OPS`: 詳細は「拡張機能のソースコード」をご確認ください
 
 Step 2
 : バージョンの決定

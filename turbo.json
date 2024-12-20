@@ -29,7 +29,7 @@
       "outputs": []
     },
     "@originator-profile/web-ext#build": {
-      "env": ["PROFILE_ISSUER", "BASIC_AUTH"]
+      "env": ["PROFILE_ISSUER", "BASIC_AUTH", "REGISTRY_OPS"]
     }
   }
 }

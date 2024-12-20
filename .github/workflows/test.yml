@@ -25,6 +25,7 @@ jobs:
         with:
           BASIC_AUTH: ${{ secrets.BASIC_AUTH }}
           BASIC_AUTH_CREDENTIALS: ${{ secrets.BASIC_AUTH_CREDENTIALS }}
+          REGISTRY_OPS: ${{ secrets.REGISTRY_OPS }}
       - name: Test
         uses: "./.github/actions/test"
       - name: End-to-End Test
