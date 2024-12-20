@@ -1,10 +1,10 @@
 // @ts-check
-import path from "node:path";
-import util from "node:util";
-import { existsSync, readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-import { execSync } from "node:child_process";
 import chokidar from "chokidar";
+import { execSync } from "node:child_process";
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import util from "node:util";
 
 const options = /** @type {const} */ ({
   mode: {
@@ -97,11 +97,9 @@ if (existsSync(credentialsPath)) {
   ];
 }
 
-const registryOpsPath = path.join(cwd, "registry-ops.json");
 let registryOps = [];
-if (existsSync(registryOpsPath)) {
-  const file = readFileSync(registryOpsPath, { encoding: "utf8" });
-  registryOps = JSON.parse(file);
+if (process.env.REGISTRY_OPS) {
+  registryOps = JSON.parse(process.env.REGISTRY_OPS);
 } else if (args.values.mode === "development") {
   const privKeyPath = path.join(
     cwd,
@@ -130,11 +128,11 @@ const env = {
   REGISTRY_OPS: registryOps,
 };
 
-import { rm } from "node:fs/promises";
+import esbuild from "esbuild";
 import copy from "esbuild-copy-static-files";
+import { rm } from "node:fs/promises";
 // @ts-expect-error: 型定義がない
 import webExt from "web-ext";
-import esbuild from "esbuild";
 import postcss from "./esbuild.postcss.cjs";
 import manifest from "./manifest.mjs";
 

@@ -8,6 +8,9 @@ inputs:
     description: レジストリ API の Basic 認証情報 (JSON 文字列)
     required: false
     default: ""
+  REGISTRY_OPS:
+    description: Originator Profile Set
+    required: true
 runs:
   using: composite
   steps:
@@ -20,6 +23,7 @@ runs:
       shell: bash
       env:
         BASIC_AUTH: ${{ inputs.BASIC_AUTH }}
+        REGISTRY_OPS: ${{ inputs.REGISTRY_OPS }}
     - uses: actions/upload-artifact@v4
       with:
         name: web-ext

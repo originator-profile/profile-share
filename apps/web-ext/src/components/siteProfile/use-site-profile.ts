@@ -1,12 +1,12 @@
-import { useParams } from "react-router";
-import useSWRImmutable from "swr/immutable";
 import {
   FetchSiteProfileResult,
   SpVerifier,
   VerifiedSp,
 } from "@originator-profile/verify";
-import { siteProfileMessenger } from "./events";
+import { useParams } from "react-router";
+import useSWRImmutable from "swr/immutable";
 import { getRegistryKeys } from "../../utils/get-registry-keys";
+import { siteProfileMessenger } from "./events";
 
 const key = "site-profile";
 
@@ -22,9 +22,21 @@ async function fetchVerifiedSiteProfile([, tabId]: [
   const parsed = JSON.parse(result) as FetchSiteProfileResult;
 
   if (!parsed.ok) throw parsed;
-  const registry = import.meta.env.PROFILE_ISSUER;
+
   const key = getRegistryKeys();
-  const verifySp = SpVerifier(parsed.result, key, `dns:${registry}`);
+
+  const verifySp = SpVerifier(
+    {
+      ...parsed.result,
+      originators: [
+        ...import.meta.env.REGISTRY_OPS,
+        ...parsed.result.originators,
+      ],
+    },
+    key,
+    `dns:${import.meta.env.PROFILE_ISSUER}`,
+  );
+
   const verifiedSp = await verifySp();
   if (verifiedSp instanceof Error) {
     throw verifiedSp;

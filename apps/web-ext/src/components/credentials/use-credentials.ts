@@ -8,13 +8,12 @@ import { useParams } from "react-router";
 import { useEvent } from "react-use";
 import useSWRImmutable from "swr/immutable";
 import { getRegistryKeys } from "../../utils/get-registry-keys";
-import { VerifiedCas } from "./types";
-import { fetchTabCredentials, FrameIntegrityVerifier } from "./messaging";
 import { verifyCas } from "./cas";
 import { CasVerifyFailed } from "./errors";
+import { fetchTabCredentials, FrameIntegrityVerifier } from "./messaging";
+import { VerifiedCas } from "./types";
 
 const CREDENTIALS_KEY = "credentials";
-const REGISTRY = import.meta.env.PROFILE_ISSUER;
 
 type FetchVerifiedCredentialsResult = {
   ops: VerifiedOps;
@@ -34,7 +33,12 @@ async function fetchVerifiedCredentials([, tabId]: [
 ]): Promise<FetchVerifiedCredentialsResult> {
   const { ops, cas, origin, url, frameId } = await fetchTabCredentials(tabId);
 
-  const opsVerifier = OpsVerifier(ops, getRegistryKeys(), `dns:${REGISTRY}`);
+  const opsVerifier = OpsVerifier(
+    [...import.meta.env.REGISTRY_OPS, ...ops],
+    getRegistryKeys(),
+    `dns:${import.meta.env.PROFILE_ISSUER}`,
+  );
+
   const verifiedOps = await opsVerifier();
   if (
     verifiedOps instanceof OpsInvalid ||

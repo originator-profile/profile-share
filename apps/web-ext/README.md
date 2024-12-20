@@ -53,6 +53,7 @@ $ pnpm dev --registry-url=https://oprexpt.originator-profile.org/ --url=https://
 - `BASIC_AUTH`: レジストリ API の Basic 認証 (形式: `true` or `false`)
 - `BASIC_AUTH_USERNAME`: 開発用レジストリ API の Basic 認証のユーザー名
 - `BASIC_AUTH_PASSWORD`: 開発用レジストリ API の Basic 認証のパスワード
+- `REGISTRY_OPS`: 検証に使用する Originator Profile Set
 
 ## 認証情報
 
@@ -64,7 +65,7 @@ $ pnpm dev --registry-url=https://oprexpt.originator-profile.org/ --url=https://
     // Basic 認証の対象とするドメイン
     "domain": "example.com",
     // ユーザー名
-    "username: "alice",
+    "username": "alice",
     // パスワード
     "password" "password"
   },
@@ -74,7 +75,9 @@ $ pnpm dev --registry-url=https://oprexpt.originator-profile.org/ --url=https://
 
 ## Originator ProfileレジストリのOPを同梱する
 
-拡張子機能をビルドする際、`apps/web-ext`に`registry-ops.json` JSON ファイルがあれば、その内容をレジストリのOPとして同梱し、検証に使用します。
+拡張機能をビルドする際、環境変数 `REGISTRY_OPS` があれば、その内容をレジストリのOPとして同梱し、検証に使用します。
+
+形式:
 
 ```jsonc
 [
@@ -84,6 +87,12 @@ $ pnpm dev --registry-url=https://oprexpt.originator-profile.org/ --url=https://
     "media": "eyJ...", // Optional の項目のため含めなくてもよい
   },
 ]
+```
+
+実行例:
+
+```
+$ REGISTRY_OPS=$(cat registry-ops.json) pnpm build
 ```
 
 ## npm スクリプト
