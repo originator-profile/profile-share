@@ -45,6 +45,7 @@ credentialsMessenger.onMessage("fetchCredentials", async () => {
   const data = await fetchCredentials(document);
   return {
     data,
+    error: data instanceof Error ? stringifyWithError(data) : undefined, // エラー型でそのまま返すとプロパティがドロップされて詳細情報が落ちるので文字列にする
     origin: window.origin,
     url: window.location.href,
   };

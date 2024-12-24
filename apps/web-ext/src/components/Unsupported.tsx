@@ -44,7 +44,10 @@ function Unsupported({ error }: Props) {
         <h1 className="whitespace-pre-line text-lg mb-6 text-center">
           {_("Unsupported_ReliabilityInformationReadError")}
         </h1>
-        <p className="whitespace-pre-line text-xs text-gray-700 text-center mb-8">
+        <p
+          className="whitespace-pre-line text-xs text-gray-700 text-center mb-8"
+          data-testid="p-elm-unsupported-message"
+        >
           {_("Unsupported_FollowingCausesConsidered")}
         </p>
         <Messages
