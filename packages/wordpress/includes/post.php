@@ -22,7 +22,7 @@ function init() {
  * @todo <https://docs.originator-profile.org/rfc/link-to-html/#%E5%A4%96%E9%83%A8%E5%8F%82%E7%85%A7> integrity 属性未実装
  */
 function cas_script() {
-	if ( ! \is_single() ) {
+	if ( ! \is_singular() ) {
 		return;
 	}
 
