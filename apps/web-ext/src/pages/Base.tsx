@@ -3,6 +3,7 @@ import { Navigate } from "react-router";
 import { buildPublUrl } from "../utils/routes";
 import { useSiteProfile } from "../components/siteProfile";
 import {
+  ProfilesFetchFailed,
   SiteProfileFetchFailed,
   SiteProfileFetchInvalid,
   VerifiedOps,
@@ -45,8 +46,42 @@ function isLoading({
   cas?: VerifiedCas;
   credentials_error?: Error;
 }) {
-  /* TODO: #1678 CAS未取得時/未エラー時を正しく判断 */
   return (!siteProfile && !sp_error) || (!ops && !cas && !credentials_error);
+}
+
+function isSpFetchError(sp_error?: Error): sp_error is Error {
+  if (!sp_error) {
+    return false;
+  }
+
+  return (
+    "code" in sp_error &&
+    (sp_error.code === SiteProfileFetchFailed.code ||
+      sp_error.code === SiteProfileFetchInvalid.code)
+  );
+}
+
+function isCredentialsFetchError(
+  credentials_error?: Error,
+): credentials_error is Error {
+  if (!credentials_error) {
+    return false;
+  }
+
+  return (
+    "code" in credentials_error &&
+    credentials_error.code === ProfilesFetchFailed.code
+  );
+}
+
+// html組み込みのOPSのFetchError判定用
+function isOpsNotFound(ops?: VerifiedOps): boolean {
+  return ops === undefined || ops.length === 0;
+}
+
+// html組み込みのCASのFetchError判定用
+function isCasNotFound(cas?: VerifiedCas): boolean {
+  return cas === undefined || cas.length === 0;
 }
 
 function Base() {
@@ -57,25 +92,30 @@ function Base() {
   if (isLoading({ siteProfile, sp_error, ops, cas, credentials_error })) {
     return <Loading />;
   }
-  /* instanceof Error|SiteProfileFetchFailed|SiteProfileFetchInvalid では判定できない */
-  /* TODO: #1678 SiteProfile/CASの両方が取得できていない場合に NotFound, 検証エラーとは異なることに注意 */
-  if (
-    sp_error &&
-    "code" in sp_error &&
-    (sp_error.code === SiteProfileFetchFailed.code ||
-      sp_error.code === SiteProfileFetchInvalid.code)
-  ) {
+
+  if (!isSpFetchError(sp_error)) {
+    return <Redirect tabId={tabId} />;
+  }
+
+  // opsとcasはhtml内埋め込みも外部リンクもない場合はFetch Errorにならないためopsとcasの存在で判定を行う
+  if (!isOpsNotFound(ops) && !isCasNotFound(cas)) {
+    return <Redirect tabId={tabId} />;
+  }
+
+  if (isCredentialsFetchError(credentials_error)) {
+    return (
+      <NotFound
+        variant="websiteAndCas"
+        errors={[sp_error, credentials_error]}
+      />
+    );
+  }
+
+  if (isOpsNotFound(ops) && isCasNotFound(cas)) {
     return <NotFound variant="websiteAndCas" errors={[sp_error]} />;
   }
 
-  if (sp_error) {
-    return <Unsupported error={sp_error} />;
-  }
-  if (credentials_error) {
-    return <Unsupported error={credentials_error} />;
-  }
-
-  return <Redirect tabId={tabId} />;
+  return <Unsupported error={sp_error} />;
 }
 
 export default Base;

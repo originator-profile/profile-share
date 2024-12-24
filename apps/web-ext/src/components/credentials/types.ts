@@ -15,6 +15,7 @@ export type CasProps = { cas: VerifiedCas };
 export type DocumentLocation = { origin: string; url: string };
 export type FetchCredentialsMessageResponse = {
   data: FetchCredentialsResult;
+  error?: string;
 } & DocumentLocation;
 export type FrameResponse<T> = T & { frameId: number; parentFrameId: number };
 export type FetchCredentialsMessageFrameResponse = FrameResponse<

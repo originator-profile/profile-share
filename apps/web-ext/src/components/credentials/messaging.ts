@@ -29,6 +29,11 @@ async function fetchAllFramesCredentials(
           /* eslint-disable-next-line @typescript-eslint/only-throw-error */
           throw { result, frame };
         }
+        if (typeof result.error === "string") {
+          const errorInfo = JSON.parse(result.error);
+          throw errorInfo;
+        }
+
         return {
           data: result.data,
           url: result.url,
