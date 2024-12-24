@@ -9,6 +9,7 @@ sidebar_position: 0
 - [開発ガイド](development/)
 - [OP/DP レジストリ](registry/)
 - [OP 拡張機能](web-ext/)
-- [メディア側実証実験 (202307)](studies/media-study-202307/)
-- [広告連携実証実験 (202311)](studies/ad-study-202311/)
+- 過去の実証実験案内
+  - [メディア側実証実験 (202307)](studies/past-studies/media-study-202307/)
+  - [広告連携実証実験 (202311)](studies/past-studies/ad-study-202311/)
 - [用語集](terminology/)

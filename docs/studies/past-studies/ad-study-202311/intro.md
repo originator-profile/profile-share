@@ -12,7 +12,7 @@ sidebar_position: 1
 
 ## システム構成概要
 
-本実証実験では[先の実験](/studies/media-study-202307/)を通じて OP 対応試験を進めているメディアの CMS と RTB 取引に於ける OP 利用に対応するよう拡張実装を段階的に進める DSP/SSP とを組み合わせる実証実験を行います。
+本実証実験では[先の実験](/studies/past-studies/media-study-202307/)を通じて OP 対応試験を進めているメディアの CMS と RTB 取引に於ける OP 利用に対応するよう拡張実装を段階的に進める DSP/SSP とを組み合わせる実証実験を行います。
 
 全体のシステム構成の概念図としては当初コンセプト図の通り、メディアの記事と同様に広告に対しても [Advertisement Profile (AP)](/terminology/advertisement-profile.md) を付与すると共に Ad Network での RTB 取引内に OP 情報を含めて実施する形です。
 

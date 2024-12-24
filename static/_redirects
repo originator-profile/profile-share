@@ -12,3 +12,5 @@
 /registry/operation/auth0-role-assigning/ /registry/request-op/auth0-role-assigning/ 301
 /media-study-202307/* /studies/media-study-202307/:splat 301
 /ad-study-202311/* /studies/ad-study-202311/:splat 301
+/studies/media-study-202307/* /studies/past-studies/media-study-202307/:splat 301
+/studies/ad-study-202311/* /studies/past-studies/ad-study-202311/:splat 301

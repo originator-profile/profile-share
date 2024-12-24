@@ -1,5 +1,5 @@
 ---
-sidebar_position: 990
+sidebar_position: 11
 ---
 
 # リンクと用語集
