@@ -1,8 +1,7 @@
-import { Link } from "react-router";
-import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
-import { routes } from "../utils/routes";
 import { stringifyWithError } from "@originator-profile/core";
-import { _ } from "@originator-profile/ui/src/utils";
+import { ProjectSummary, ProjectTitle, _ } from "@originator-profile/ui";
+import { Link } from "react-router";
+import { routes } from "../utils/routes";
 import { useCredentials } from "./credentials";
 
 type Props = {

@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: "e2e",
   webServer: {
     url: "http://localhost:3000",
-    command: "vite --port 3000 playwright",
+    command: "vite --config vite.config.js --port 3000 playwright",
     reuseExistingServer: !process.env.CI,
   },
   workers: process.env.CI ? 1 : undefined,

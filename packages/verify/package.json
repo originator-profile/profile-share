@@ -1,34 +1,55 @@
 {
   "name": "@originator-profile/verify",
   "version": "0.1.1-alpha.0",
-  "private": true,
-  "main": "src/index.ts",
+  "private": false,
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "exports": {
+    "typescript": {
+      "default": "./src/index.ts"
+    },
+    "require": {
+      "types": "./dist/index.d.cts",
+      "default": "./dist/index.cjs"
+    },
+    "import": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "vitest run",
     "e2e": "playwright test",
     "lint": "eslint --fix .",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "prepublishOnly": "pkgroll --clean-dist"
   },
-  "devDependencies": {
+  "dependencies": {
     "@originator-profile/core": "workspace:*",
     "@originator-profile/cryptography": "workspace:*",
     "@originator-profile/model": "workspace:*",
     "@originator-profile/securing-mechanism": "workspace:*",
     "@originator-profile/sign": "workspace:*",
-    "@originator-profile/tsconfig": "workspace:*",
-    "@playwright/test": "^1.49.0",
     "@types/jsonld": "^1.5.15",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
+    "jose": "^5.9.6",
+    "jsonld": "^8.3.2"
+  },
+  "devDependencies": {
+    "@originator-profile/tsconfig": "workspace:*",
+    "@playwright/test": "^1.49.0",
     "date-fns": "^4.1.0",
     "eslint": "^9.14.0",
     "eslint-config-originator-profile": "workspace:*",
     "happy-dom": "^15.8.3",
-    "jose": "^5.9.6",
-    "jsonld": "^8.3.2",
     "just-diff-apply": "^5.5.0",
     "just-typeof": "^3.2.0",
     "msw": "^2.6.0",
+    "pkgroll": "^2.6.0",
     "playwright": "^1.49.0",
     "typescript": "^5.6.3",
     "urlpattern-polyfill": "^10.0.0",

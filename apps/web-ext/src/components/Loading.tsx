@@ -1,6 +1,5 @@
+import { Spinner, _ } from "@originator-profile/ui";
 import { useCredentials } from "../components/credentials/use-credentials";
-import { Spinner } from "@originator-profile/ui";
-import { _ } from "@originator-profile/ui/src/utils";
 
 function Loading() {
   const { origin } = useCredentials();

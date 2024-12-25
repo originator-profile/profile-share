@@ -1,20 +1,21 @@
-import { useState } from "react";
-import clsx from "clsx";
 import { Icon } from "@iconify/react";
-import { OpCredential, OpHolder, OgWebsite } from "@originator-profile/model";
+import { OgWebsite, OpCredential, OpHolder } from "@originator-profile/model";
 import {
-  HolderTable,
-  Description,
-  TechTable,
-  CredentialSummary,
   CredentialDetail,
+  CredentialSummary,
+  Description,
+  HolderTable,
   Modal,
   OriginatorProfile,
   Role,
+  TechTable,
+  _,
+  useModal,
 } from "@originator-profile/ui";
-import { _, useModal } from "@originator-profile/ui/src/utils";
-import HolderSummary from "../components/HolderSummary";
+import clsx from "clsx";
+import { useState } from "react";
 import BackHeader from "../components/BackHeader";
+import HolderSummary from "../components/HolderSummary";
 import ReliabilityGuide from "../components/ReliabilityGuide";
 
 function ExternalLink(props: React.ComponentProps<"a">) {

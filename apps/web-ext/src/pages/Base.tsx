@@ -1,7 +1,4 @@
-import { useTitle } from "react-use";
-import { Navigate } from "react-router";
-import { buildPublUrl } from "../utils/routes";
-import { useSiteProfile } from "../components/siteProfile";
+import { _ } from "@originator-profile/ui";
 import {
   ProfilesFetchFailed,
   SiteProfileFetchFailed,
@@ -9,11 +6,14 @@ import {
   VerifiedOps,
   VerifiedSp,
 } from "@originator-profile/verify";
-import { _ } from "@originator-profile/ui/src/utils";
-import Unsupported from "../components/Unsupported";
-import NotFound from "../components/NotFound";
-import { useCredentials, VerifiedCas } from "../components/credentials";
+import { Navigate } from "react-router";
+import { useTitle } from "react-use";
 import Loading from "../components/Loading";
+import NotFound from "../components/NotFound";
+import Unsupported from "../components/Unsupported";
+import { VerifiedCas, useCredentials } from "../components/credentials";
+import { useSiteProfile } from "../components/siteProfile";
+import { buildPublUrl } from "../utils/routes";
 
 function Redirect({ tabId }: { tabId: number; siteProfile?: VerifiedSp }) {
   /* TODO: cas を送る */

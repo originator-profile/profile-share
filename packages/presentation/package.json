@@ -1,16 +1,35 @@
 {
   "name": "@originator-profile/presentation",
   "version": "0.1.1-alpha.0",
-  "private": true,
-  "main": "src/index.ts",
+  "private": false,
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "exports": {
+    "typescript": {
+      "default": "./src/index.ts"
+    },
+    "require": {
+      "types": "./dist/index.d.cts",
+      "default": "./dist/index.cjs"
+    },
+    "import": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "vitest run",
     "lint": "eslint --fix .",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "prepublishOnly": "pkgroll --clean-dist"
+  },
+  "dependencies": {
+    "@originator-profile/model": "workspace:*"
   },
   "devDependencies": {
-    "@originator-profile/core": "workspace:*",
-    "@originator-profile/model": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
     "@playwright/test": "^1.49.0",
     "eslint": "^9.0.0",
@@ -18,6 +37,7 @@
     "happy-dom": "^15.0.0",
     "just-typeof": "^3.2.0",
     "msw": "^2.3.1",
+    "pkgroll": "^2.6.0",
     "playwright": "^1.49.0",
     "typescript": "^5.6.3",
     "vitest": "^2.0.0"

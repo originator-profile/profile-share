@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import { useParams, Link } from "react-router";
-import { DpItemContent } from "@originator-profile/core";
 import { DocumentProfile, Image } from "@originator-profile/ui";
 import placeholderDpThumbnail from "@originator-profile/ui/src/assets/placeholder-dp-thumbnail.png";
 import { buildPublUrl } from "../utils/routes";
@@ -22,8 +21,7 @@ function DpSelector({ filteredDps, handleClickDp }: Props) {
     <ul>
       {filteredDps.map((dp) => {
         const active = dp.is({ issuer, subject });
-        const content = (dp.findOgWebsiteItem() ??
-          dp.findAdvertisementItem()) as DpItemContent | undefined;
+        const content = dp.findOgWebsiteItem() ?? dp.findAdvertisementItem();
         return (
           <li key={dp.getReactKey()}>
             <Link

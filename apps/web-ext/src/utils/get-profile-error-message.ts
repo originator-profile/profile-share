@@ -1,4 +1,4 @@
-import { _ } from "@originator-profile/ui/src/utils";
+import { _ } from "@originator-profile/ui";
 
 export function getProfileErrorMessage(error: Error) {
   console.log(JSON.stringify(error));

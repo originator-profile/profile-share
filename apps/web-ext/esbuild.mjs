@@ -151,6 +151,7 @@ const buildOptions = {
   bundle: true,
   minify: args.values.mode === "production",
   sourcemap: args.values.mode === "development",
+  conditions: ["browser", "typescript"],
   define: {
     "import.meta.env": JSON.stringify(env),
   },

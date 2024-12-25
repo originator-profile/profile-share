@@ -1,9 +1,8 @@
 import { Icon } from "@iconify/react";
 import { OpHolder } from "@originator-profile/model";
-import { Image } from "@originator-profile/ui";
-import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
+import { Image, _ } from "@originator-profile/ui";
 import logomarkUrl from "@originator-profile/ui/src/assets/logomark.svg";
-import { _ } from "@originator-profile/ui/src/utils";
+import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
 
 type Props = {
   holder: OpHolder;

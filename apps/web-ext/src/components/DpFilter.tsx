@@ -1,8 +1,8 @@
-import { Fragment } from "react";
-import { Icon } from "@iconify/react";
 import { Menu, Transition } from "@headlessui/react";
+import { Icon } from "@iconify/react";
+import { _ } from "@originator-profile/ui";
 import clsx from "clsx";
-import { _ } from "@originator-profile/ui/src/utils";
+import { Fragment } from "react";
 
 type ContentType = "all" | "main" | "other" | "advertisement";
 

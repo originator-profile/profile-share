@@ -5,6 +5,7 @@
     "jsx": "react-jsx",
     "module": "esnext",
     "moduleResolution": "bundler",
+    "customConditions": ["typescript"],
     "target": "esnext",
     "allowJs": true
   }

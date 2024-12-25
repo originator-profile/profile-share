@@ -1,15 +1,19 @@
-import { ProjectTitle, ProjectSummary } from "@originator-profile/ui";
+import {
+  ProjectSummary,
+  ProjectTitle,
+  _,
+  useSanitizedHtml,
+} from "@originator-profile/ui";
+import {
+  ProfileGenericError,
+  ProfilesVerifyFailed,
+} from "@originator-profile/verify";
+import figTraceabilityUrl from "../assets/fig-traceability.png";
 import figUser1Url from "../assets/fig-user-1.svg";
 import figUser2Url from "../assets/fig-user-2.svg";
 import figUser3Url from "../assets/fig-user-3.svg";
 import figUser4Url from "../assets/fig-user-4.svg";
 import figUser5Url from "../assets/fig-user-5.svg";
-import figTraceabilityUrl from "../assets/fig-traceability.png";
-import {
-  ProfileGenericError,
-  ProfilesVerifyFailed,
-} from "@originator-profile/verify";
-import { _, useSanitizedHtml } from "@originator-profile/ui/src/utils";
 import { getProfileErrorMessage } from "../utils/get-profile-error-message";
 
 function Messages({ className, error }: { className?: string; error: Error }) {

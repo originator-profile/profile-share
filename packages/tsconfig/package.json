@@ -2,6 +2,7 @@
   "name": "@originator-profile/tsconfig",
   "version": "0.1.1-alpha.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@tsconfig/recommended": "^1.0.8"
   }
