@@ -20,7 +20,7 @@ function useVerifyFailureFeedback({
 
   if (profiles.isEmpty()) {
     return React.createElement(Unsupported, {
-      error: new Error(_("Error_ProfileNotFound")),
+      errors: [new Error(_("Error_ProfileNotFound"))],
     });
   }
 
@@ -39,7 +39,7 @@ function useVerifyFailureFeedback({
   }
 
   if (!hasProfileTokenVerifyFailed && errors[0]) {
-    return React.createElement(Unsupported, { error: errors[0] });
+    return React.createElement(Unsupported, { errors });
   }
 
   return null;

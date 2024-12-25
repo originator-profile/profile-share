@@ -1,19 +1,21 @@
-import { _ } from "@originator-profile/ui";
+import { useTitle } from "react-use";
+import { Navigate } from "react-router";
+import { buildPublUrl, routes } from "../utils/routes";
+import { useSiteProfile } from "../components/siteProfile";
 import {
   ProfilesFetchFailed,
   SiteProfileFetchFailed,
   SiteProfileFetchInvalid,
+  SiteProfileInvalid,
+  SiteProfileVerifyFailed,
   VerifiedOps,
   VerifiedSp,
 } from "@originator-profile/verify";
-import { Navigate } from "react-router";
-import { useTitle } from "react-use";
-import Loading from "../components/Loading";
-import NotFound from "../components/NotFound";
 import Unsupported from "../components/Unsupported";
-import { VerifiedCas, useCredentials } from "../components/credentials";
-import { useSiteProfile } from "../components/siteProfile";
-import { buildPublUrl } from "../utils/routes";
+import NotFound from "../components/NotFound";
+import { _ } from "@originator-profile/ui";
+import { useCredentials, VerifiedCas } from "../components/credentials";
+import Loading from "../components/Loading";
 
 function Redirect({ tabId }: { tabId: number; siteProfile?: VerifiedSp }) {
   /* TODO: cas を送る */
@@ -31,6 +33,14 @@ function Redirect({ tabId }: { tabId: number; siteProfile?: VerifiedSp }) {
   */
 
   return <Navigate to={buildPublUrl(tabId, undefined)} />;
+}
+
+function Prohibition({ tabId }: { tabId: number }) {
+  const path = [
+    routes.base.build({ tabId: String(tabId) }),
+    routes.prohibition.build({}),
+  ].join("/");
+  return <Navigate to={path} />;
 }
 
 function isLoading({
@@ -84,6 +94,27 @@ function isCasNotFound(cas?: VerifiedCas): boolean {
   return cas === undefined || cas.length === 0;
 }
 
+function isSpVerifyError(sp_error?: Error): sp_error is Error {
+  if (!sp_error) {
+    return false;
+  }
+
+  return (
+    "code" in sp_error &&
+    (sp_error.code === SiteProfileVerifyFailed.code ||
+      sp_error.code === SiteProfileInvalid.code)
+  );
+}
+
+function isInvalid(
+  ops?: VerifiedOps,
+  cas?: VerifiedCas,
+  sp_error?: Error,
+): sp_error is Error {
+  // opsとcasはhtml内埋め込みも外部リンクもない場合はFetch Errorにならないためopsとcasの存在で判定を行う
+  return isSpFetchError(sp_error) && (isOpsNotFound(ops) || isCasNotFound(cas));
+}
+
 function Base() {
   const { tabId, siteProfile, error: sp_error } = useSiteProfile();
   const { ops, cas, error: credentials_error } = useCredentials();
@@ -93,12 +124,12 @@ function Base() {
     return <Loading />;
   }
 
-  if (!isSpFetchError(sp_error)) {
-    return <Redirect tabId={tabId} />;
+  /* TODO: CASの検証エラーの場合を加える */
+  if (isSpVerifyError(sp_error)) {
+    return <Prohibition tabId={tabId} />;
   }
 
-  // opsとcasはhtml内埋め込みも外部リンクもない場合はFetch Errorにならないためopsとcasの存在で判定を行う
-  if (!isOpsNotFound(ops) && !isCasNotFound(cas)) {
+  if (!isInvalid(ops, cas, sp_error)) {
     return <Redirect tabId={tabId} />;
   }
 
@@ -115,7 +146,11 @@ function Base() {
     return <NotFound variant="websiteAndCas" errors={[sp_error]} />;
   }
 
-  return <Unsupported error={sp_error} />;
+  return (
+    <Unsupported
+      errors={credentials_error ? [sp_error, credentials_error] : [sp_error]}
+    />
+  );
 }
 
 export default Base;

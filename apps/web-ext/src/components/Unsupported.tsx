@@ -4,20 +4,29 @@ import {
   _,
   useSanitizedHtml,
 } from "@originator-profile/ui";
-import {
-  ProfileGenericError,
-  ProfilesVerifyFailed,
-} from "@originator-profile/verify";
-import figTraceabilityUrl from "../assets/fig-traceability.png";
 import figUser1Url from "../assets/fig-user-1.svg";
 import figUser2Url from "../assets/fig-user-2.svg";
 import figUser3Url from "../assets/fig-user-3.svg";
 import figUser4Url from "../assets/fig-user-4.svg";
 import figUser5Url from "../assets/fig-user-5.svg";
-import { getProfileErrorMessage } from "../utils/get-profile-error-message";
+import figTraceabilityUrl from "../assets/fig-traceability.png";
+import { SiteProfileVerifyFailed } from "@originator-profile/verify";
+import { stringifyWithError } from "@originator-profile/core";
+import { CasVerifyFailed } from "./credentials";
 
-function Messages({ className, error }: { className?: string; error: Error }) {
-  if (error instanceof ProfilesVerifyFailed) {
+function Messages({
+  className,
+  errors,
+}: {
+  className?: string;
+  errors: Error[];
+}) {
+  if (
+    errors.some(
+      (e) =>
+        e instanceof SiteProfileVerifyFailed || e instanceof CasVerifyFailed,
+    )
+  ) {
     return (
       <ul className={className}>
         <li>{_("Unsupported_NonconformingDescription")}</li>
@@ -35,10 +44,10 @@ function Messages({ className, error }: { className?: string; error: Error }) {
 }
 
 type Props = {
-  error: Error;
+  errors: Error[];
 };
 
-function Unsupported({ error }: Props) {
+function Unsupported({ errors }: Props) {
   const disclaimerHtml =
     useSanitizedHtml(_("Unsupported_OPDisclaimer_HTML")) ?? "";
   return (
@@ -56,26 +65,17 @@ function Unsupported({ error }: Props) {
         </p>
         <Messages
           className="list-disc pl-8 text-sm mb-12 max-w-sm mx-auto"
-          error={error}
+          errors={errors}
         />
         <details className="text-gray-700 pl-4 mb-12">
           <summary>{_("Unsupported_ErrorDetails")}</summary>
-          <dl>
-            <dt>
-              {_("Unsupported_Message")}
-              <span aria-hidden>:</span>
-            </dt>
-            <dd>{getProfileErrorMessage(error)}</dd>
-            {error instanceof ProfileGenericError && (
-              <>
-                <dt>
-                  {_("Unsupported_ErrorCode")}
-                  <span aria-hidden>:</span>
-                </dt>
-                <dd>{error.code}</dd>
-              </>
-            )}
-          </dl>
+          {errors.map((error, index) => {
+            return (
+              <pre className="overflow-auto" key={index}>
+                {stringifyWithError(error, 2)}
+              </pre>
+            );
+          })}
         </details>
         <p className="whitespace-pre-line text-xs text-gray-700 text-center leading-5">
           {_("Unsupported_ReliabilityInformationContactStatement")}
