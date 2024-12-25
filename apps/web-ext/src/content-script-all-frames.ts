@@ -1,11 +1,12 @@
 import { stringifyWithError } from "@originator-profile/core";
 import { fetchCredentials } from "@originator-profile/presentation";
 import { extractBody, verifyIntegrity } from "@originator-profile/verify";
+import { credentialsMessenger } from "./components/credentials";
 import {
   ContentScriptAllFramesMessageRequest,
   ContentScriptAllFramesMessageResponse,
 } from "./types/message";
-import { credentialsMessenger } from "./components/credentials";
+import "./utils/cors-basic-auth";
 
 async function handleMessageResponse(
   message: ContentScriptAllFramesMessageRequest,
