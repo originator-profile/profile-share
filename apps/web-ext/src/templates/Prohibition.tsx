@@ -1,12 +1,13 @@
-import {
-  ProjectTitle,
-  ProjectSummary,
-  DocumentProfile,
-} from "@originator-profile/ui";
 import { Icon } from "@iconify/react";
+import {
+  DocumentProfile,
+  ProjectSummary,
+  ProjectTitle,
+  _,
+  useSanitizedHtml,
+} from "@originator-profile/ui";
 import { Link } from "react-router";
 import { buildPublUrl } from "../utils/routes";
-import { _, useSanitizedHtml } from "@originator-profile/ui/src/utils";
 
 type ProhibitionProps = {
   dp: DocumentProfile;

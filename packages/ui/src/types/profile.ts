@@ -1,16 +1,23 @@
-import { Op as OpModel, Dp as DpModel } from "@originator-profile/model";
-import * as errors from "@originator-profile/verify/src/errors";
+import { Dp as DpModel, Op as OpModel } from "@originator-profile/model";
+import {
+  ProfileBodyExtractFailed,
+  ProfileBodyVerifyFailed,
+  ProfileClaimsValidationFailed,
+  ProfileTokenVerifyFailed,
+  ProfilesResolveFailed,
+  ProfilesVerifyFailed,
+} from "@originator-profile/verify";
 import { Role } from "./role";
 
 export type ProfileError =
-  | errors.ProfileClaimsValidationFailed
-  | errors.ProfileTokenVerifyFailed
-  | errors.ProfilesResolveFailed
-  | errors.ProfilesVerifyFailed;
+  | ProfileClaimsValidationFailed
+  | ProfileTokenVerifyFailed
+  | ProfilesResolveFailed
+  | ProfilesVerifyFailed;
 
 export type ProfileBodyError =
-  | errors.ProfileBodyExtractFailed
-  | errors.ProfileBodyVerifyFailed;
+  | ProfileBodyExtractFailed
+  | ProfileBodyVerifyFailed;
 
 /** @deprecated */
 export type Op = OpModel & { error?: ProfileError };

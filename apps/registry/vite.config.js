@@ -1,6 +1,6 @@
 import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { defineConfig } from "vite";
+import { defineConfig, defaultClientConditions } from "vite";
 import react from "@vitejs/plugin-react";
 import generouted from "@generouted/react-router/plugin";
 
@@ -31,6 +31,9 @@ export default defineConfig({
   // see https://github.com/fastify/fastify-vite/pull/153
   base: URL.canParse(APP_URL) ? new URL(APP_URL).pathname : APP_URL,
   root: REGISTRY_UI_ROOT,
+  resolve: {
+    conditions: [...defaultClientConditions, "typescript"],
+  },
   plugins: [
     react(),
     generouted({

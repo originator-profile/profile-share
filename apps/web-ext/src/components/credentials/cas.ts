@@ -11,7 +11,7 @@ import {
   ContentAttestation,
 } from "@originator-profile/model";
 import { LocalKeys } from "@originator-profile/cryptography";
-import { JwtVcDecoder } from "@originator-profile/securing-mechanism/src/jwt/decode-vc";
+import { JwtVcDecoder } from "@originator-profile/securing-mechanism";
 import { CasVerificationResult, VerifiedCas, CasItem } from "./types";
 import { CasVerifyFailed } from "./errors";
 

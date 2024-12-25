@@ -1,7 +1,6 @@
-import clsx from "clsx";
-import { Modal, useModal } from "@originator-profile/ui";
 import { Icon } from "@iconify/react";
-import { _ } from "@originator-profile/ui/src/utils";
+import { Modal, _, useModal } from "@originator-profile/ui";
+import clsx from "clsx";
 
 type Props = {
   className?: string;

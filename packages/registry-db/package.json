@@ -2,7 +2,24 @@
   "name": "@originator-profile/registry-db",
   "version": "0.1.1-alpha.0",
   "private": true,
-  "main": "src/index.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "typescript": {
+        "default": "./src/index.ts"
+      }
+    },
+    "./src/lib/prisma-client.ts": {
+      "typescript": {
+        "default": "./src/lib/prisma-client.ts"
+      }
+    },
+    "./src/lib/__mocks__/prisma-client": {
+      "typescript": {
+        "default": "./src/lib/__mocks__/prisma-client.ts"
+      }
+    }
+  },
   "scripts": {
     "build": "prisma generate",
     "lint": "eslint --fix .",

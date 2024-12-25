@@ -3,6 +3,7 @@
   "description": "Profile Registry API",
   "version": "0.1.1-alpha.0",
   "private": false,
+  "type": "commonjs",
   "bin": {
     "profile-registry": "bin/run"
   },
@@ -122,10 +123,5 @@
     "plugins": [
       "@oclif/plugin-help"
     ]
-  },
-  "tsup": {
-    "loader": {
-      ".md": "text"
-    }
   }
 }

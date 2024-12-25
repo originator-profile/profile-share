@@ -1,19 +1,40 @@
 {
   "name": "@originator-profile/cryptography",
   "version": "0.1.1-alpha.0",
-  "private": true,
-  "main": "src/index.ts",
+  "private": false,
+  "type": "module",
+  "main": "./dist/index.mjs",
+  "exports": {
+    "typescript": {
+      "default": "./src/index.ts"
+    },
+    "require": {
+      "types": "./dist/index.d.cts",
+      "default": "./dist/index.cjs"
+    },
+    "import": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "vitest run",
     "lint": "eslint --fix .",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "prepublishOnly": "pkgroll --clean-dist"
+  },
+  "dependencies": {
+    "@originator-profile/model": "workspace:*",
+    "jose": "^5.3.0"
   },
   "devDependencies": {
-    "@originator-profile/model": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
     "eslint": "^9.0.0",
     "eslint-config-originator-profile": "workspace:*",
-    "jose": "^5.3.0",
+    "pkgroll": "^2.6.0",
     "typescript": "^5.6.2",
     "vitest": "^2.0.0"
   }

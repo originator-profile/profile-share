@@ -1,27 +1,27 @@
-import { useState } from "react";
-import { useParams, useNavigate } from "react-router";
 import { Icon } from "@iconify/react";
-import { OpHolder, OgWebsite } from "@originator-profile/model";
 import { DpItemContent } from "@originator-profile/core";
+import { OgWebsite, OpHolder } from "@originator-profile/model";
 import {
+  Description,
+  DocumentProfile,
   Image,
+  Modal,
+  OriginatorProfile,
+  ProfileSet,
   TechInfo,
   WebsiteMainTable,
-  Modal,
-  Description,
-  ProfileSet,
-  OriginatorProfile,
-  DocumentProfile,
+  _,
   useModal,
 } from "@originator-profile/ui";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
-import HolderSummaryCard from "../components/HolderSummaryCard";
-import DpSelector from "../components/DpSelector";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import DpFilter from "../components/DpFilter";
+import DpSelector from "../components/DpSelector";
+import HolderSummaryCard from "../components/HolderSummaryCard";
 import ReliabilityGuide from "../components/ReliabilityGuide";
 import { BidResponse } from "../components/rtb";
 import { buildPublUrl } from "../utils/routes";
-import { _ } from "@originator-profile/ui/src/utils";
 
 type Props = {
   profiles: ProfileSet;

@@ -24,6 +24,9 @@ export default defineConfig(({ mode }) => {
     },
   } satisfies Record<string, UserConfig["test"]>;
   const config: UserConfig = {
+    resolve: {
+      conditions: ["typescript"],
+    },
     test: tests[mode as "test" | "e2e"],
   };
   return config;
