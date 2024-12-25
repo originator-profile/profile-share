@@ -1,7 +1,6 @@
 import { _ } from "@originator-profile/ui";
 
 export function getProfileErrorMessage(error: Error) {
-  console.log(JSON.stringify(error));
   return (
     _(
       error.message,

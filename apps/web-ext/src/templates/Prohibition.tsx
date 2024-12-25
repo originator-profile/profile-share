@@ -1,20 +1,15 @@
-import { Icon } from "@iconify/react";
 import {
-  DocumentProfile,
-  ProjectSummary,
-  ProjectTitle,
   _,
+  ProjectTitle,
+  ProjectSummary,
   useSanitizedHtml,
 } from "@originator-profile/ui";
+import { Icon } from "@iconify/react";
 import { Link } from "react-router";
 import { buildPublUrl } from "../utils/routes";
+import { stringifyWithError } from "@originator-profile/core";
 
-type ProhibitionProps = {
-  dp: DocumentProfile;
-  tabId: number;
-};
-
-function WarningDetails({ dp, tabId }: ProhibitionProps) {
+function WarningDetails({ tabId }: { tabId: number }) {
   return (
     <div className="pt-3">
       <p className="whitespace-pre-line">{_("Prohibition_DetailStatement")}</p>
@@ -27,7 +22,7 @@ function WarningDetails({ dp, tabId }: ProhibitionProps) {
       </p>
       <Link
         className="block text-gray-500 pb-3 pt-3"
-        to={buildPublUrl(tabId, dp)}
+        to={buildPublUrl(tabId, undefined)}
       >
         {_("Prohibition_DetailProceed")}
       </Link>
@@ -35,7 +30,12 @@ function WarningDetails({ dp, tabId }: ProhibitionProps) {
   );
 }
 
-function Prohibition({ dp, tabId }: ProhibitionProps) {
+type ProhibitionProps = {
+  errors: Error[];
+  tabId: number;
+};
+
+function Prohibition({ errors, tabId }: ProhibitionProps) {
   const prohibitionStatement =
     useSanitizedHtml(_("Prohibition_Statement_HTML")) ?? "";
   return (
@@ -57,13 +57,21 @@ function Prohibition({ dp, tabId }: ProhibitionProps) {
       <article className="mb-12 max-w-sm mx-auto">
         <p
           className="text-sm tracking-normal text-left font-normal"
+          data-testid="p-elm-prohibition-message"
           dangerouslySetInnerHTML={{
             __html: prohibitionStatement,
           }}
         />
         <details className="text-gray-700 pt-3">
           <summary>{_("Prohibition_StatementDetail")}</summary>
-          <WarningDetails dp={dp} tabId={tabId} />
+          {errors.map((error, index) => {
+            return (
+              <pre className="overflow-auto" key={index}>
+                {stringifyWithError(error, 2)}
+              </pre>
+            );
+          })}
+          <WarningDetails tabId={tabId} />
         </details>
         <div className="pt-3">
           <ProjectSummary as="footer" />
