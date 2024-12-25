@@ -14,7 +14,11 @@ import {
 import Unsupported from "../components/Unsupported";
 import NotFound from "../components/NotFound";
 import { _ } from "@originator-profile/ui";
-import { useCredentials, VerifiedCas } from "../components/credentials";
+import {
+  CasVerifyFailed,
+  useCredentials,
+  VerifiedCas,
+} from "../components/credentials";
 import Loading from "../components/Loading";
 
 function Redirect({ tabId }: { tabId: number; siteProfile?: VerifiedSp }) {
@@ -106,6 +110,17 @@ function isSpVerifyError(sp_error?: Error): sp_error is Error {
   );
 }
 
+function isCredentialsVerifyError(credentials_error?: Error) {
+  if (!credentials_error) {
+    return false;
+  }
+
+  return (
+    "code" in credentials_error &&
+    credentials_error.code === CasVerifyFailed.code
+  );
+}
+
 function isInvalid(
   ops?: VerifiedOps,
   cas?: VerifiedCas,
@@ -124,8 +139,10 @@ function Base() {
     return <Loading />;
   }
 
-  /* TODO: CASの検証エラーの場合を加える */
-  if (isSpVerifyError(sp_error)) {
+  if (
+    isSpVerifyError(sp_error) ||
+    isCredentialsVerifyError(credentials_error)
+  ) {
     return <Prohibition tabId={tabId} />;
   }
 
