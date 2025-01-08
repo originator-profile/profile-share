@@ -7,6 +7,11 @@ const test = base.extend({
         status: 404,
       }),
     );
+    await page.route("http://localhost:8080/examples/ops.json", async (route) =>
+      route.fulfill({
+        status: 404,
+      }),
+    );
     await page.route(
       "http://localhost:8080/.well-known/sp.json",
       async (route) =>
@@ -18,9 +23,7 @@ const test = base.extend({
   },
 });
 
-// TODO: https://github.com/originator-profile/profile/pull/1867#discussion_r1895569108
-// site profileとCAS/OPSの取得によるエラーが変わるので後でテストの整理をする
-test.skip("Site Profile と Content Attstation Setが取得できない場合", async ({
+test("Site Profile と OPS/CAS が取得できない場合", async ({
   context,
   page,
 }) => {
