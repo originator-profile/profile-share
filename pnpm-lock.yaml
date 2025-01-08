@@ -379,9 +379,6 @@ importers:
       npm-run-all2:
         specifier: 7.0.1
         version: 7.0.1
-      performant-array-to-tree:
-        specifier: ^1.11.0
-        version: 1.11.0
       postcss:
         specifier: ^8.4.47
         version: 8.4.49
@@ -394,6 +391,9 @@ importers:
       react-use:
         specifier: ^17.5.1
         version: 17.5.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      simple-tree-utils:
+        specifier: ^1.0.2
+        version: 1.0.2
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
@@ -9466,9 +9466,6 @@ packages:
   performance-now@2.1.0:
     resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==}
 
-  performant-array-to-tree@1.11.0:
-    resolution: {integrity: sha512-YwCqIDvnaebXaKuKQhI5yJD6ryDc3FxvoeX/5ougXTKDUWb7s5S2BuBgIyftCa4sBe1+ZU5Kmi4RJy+pjjjrpw==}
-
   periscopic@3.1.0:
     resolution: {integrity: sha512-vKiQ8RRtkl9P+r/+oefh25C3fhybptkHKCZSPlcXiJux2tJF55GnEj3BVn4A5gKfq9NWWXXrxkHBwVPUfH0opw==}
 
@@ -10728,6 +10725,9 @@ packages:
   signal-exit@4.1.0:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
+
+  simple-tree-utils@1.0.2:
+    resolution: {integrity: sha512-iM+uAmBA6PpZLND8hRKUjuSjbCOg9NUH97cNjhwELxcvQtM0l5myaal+Xtkyup7dKi34Hi2ci+siX/cW+5DTbA==}
 
   simple-websocket@9.1.0:
     resolution: {integrity: sha512-8MJPnjRN6A8UCp1I+H/dSFyjwJhp6wta4hsVRhjf8w9qBHRzxYt14RaOcjvQnhD1N4yKOddEjflwMnQM4VtXjQ==}
@@ -23241,8 +23241,6 @@ snapshots:
 
   performance-now@2.1.0: {}
 
-  performant-array-to-tree@1.11.0: {}
-
   periscopic@3.1.0:
     dependencies:
       '@types/estree': 1.0.6
@@ -24743,6 +24741,8 @@ snapshots:
   signal-exit@3.0.7: {}
 
   signal-exit@4.1.0: {}
+
+  simple-tree-utils@1.0.2: {}
 
   simple-websocket@9.1.0:
     dependencies:

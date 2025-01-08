@@ -1,4 +1,4 @@
-import { arrayToTree } from "performant-array-to-tree";
+import { TreeUtils } from "simple-tree-utils";
 import { ProfilePair } from "@originator-profile/verify";
 import { UpdateAdIframeMessage } from "../types/message";
 
@@ -17,13 +17,11 @@ export type AdTree = {
 
 /** 広告プロファイルが設置されたフレームの木構造を得る */
 export function makeAdTree(ads: AdNode[]): AdTree | undefined {
-  const [adTree] = arrayToTree(ads, {
-    id: "frameId",
-    parentId: "parentFrameId",
-    rootParentIds: { "-1": true },
-    childrenField,
-    dataField: null,
-  });
+  const [adTree] = new TreeUtils({
+    idProp: "frameId",
+    parentIdProp: "parentFrameId",
+  }).list2Tree(ads, -1);
+
   if (!adTree) return;
   return adTree as AdTree;
 }
