@@ -212,7 +212,9 @@ describe("fetchExternalResource()", () => {
 
 describe("selectByCss()", () => {
   beforeEach(() => {
-    document.documentElement.outerHTML = `<html><head></head><body>ok</body></html>`;
+    document.open();
+    document.write(`<html><head></head><body>ok</body></html>`);
+    document.close();
   });
 
   it("should select elements using CSS selector", () => {
