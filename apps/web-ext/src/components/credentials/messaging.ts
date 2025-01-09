@@ -1,10 +1,21 @@
 import { VerifyIntegrity } from "@originator-profile/verify";
+import { FetchCredentialsMessagingFailed } from "./errors";
 import { credentialsMessenger } from "./events";
 import {
-  FetchCredentialsMessageFrameResponse,
   FrameCredentials,
+  FrameResponse,
   TabCredentials,
+  FetchCredentialsMessageResult,
 } from "./types";
+
+const createError = <T>(
+  result: FetchCredentialsMessageResult<T>,
+): Error | undefined => {
+  if (result.ok) return undefined;
+  return new Error("Fetch credentials failed", {
+    cause: JSON.parse(result.error),
+  });
+};
 
 /**
  * タブ内の各フレームでクレデンシャルを取得する。
@@ -15,31 +26,40 @@ import {
 async function fetchAllFramesCredentials(
   frames: chrome.webNavigation.GetAllFrameResultDetails[],
   tabId: number,
-): Promise<FetchCredentialsMessageFrameResponse[]> {
-  const results: PromiseSettledResult<FetchCredentialsMessageFrameResponse>[] =
+): Promise<FrameCredentials[]> {
+  const results: PromiseSettledResult<FrameCredentials>[] =
     await Promise.allSettled(
-      frames.map(async (frame) => {
+      frames.map(async (frame): Promise<FrameCredentials> => {
+        const frameResponse: FrameResponse = {
+          frameId: frame.frameId,
+          parentFrameId: frame.parentFrameId,
+        };
         const result = await credentialsMessenger.compatSendMessage(
           "fetchCredentials",
           null,
           tabId,
           frame.frameId,
         );
-        if (result instanceof Error || result.data instanceof Error) {
-          /* eslint-disable-next-line @typescript-eslint/only-throw-error */
-          throw { result, frame };
-        }
-        if (typeof result.error === "string") {
-          const errorInfo = JSON.parse(result.error);
-          throw errorInfo;
+        if (result instanceof Error) {
+          throw new FetchCredentialsMessagingFailed(
+            "Fetch frame credentials error occured",
+            {
+              error: result,
+              ...frameResponse,
+            },
+          );
         }
 
         return {
-          data: result.data,
+          ops: result.ops.ok ? result.ops.data : [],
+          cas: result.cas.ok ? result.cas.data : [],
+          error: {
+            ops: createError(result.ops),
+            cas: createError(result.cas),
+          },
           url: result.url,
           origin: result.origin,
-          frameId: frame.frameId,
-          parentFrameId: frame.parentFrameId,
+          ...frameResponse,
         };
       }),
     );
@@ -53,7 +73,7 @@ async function fetchAllFramesCredentials(
 
   const responses = results
     .filter(
-      (r): r is PromiseFulfilledResult<FetchCredentialsMessageFrameResponse> =>
+      (r): r is PromiseFulfilledResult<FrameCredentials> =>
         r.status === "fulfilled",
     )
     .map(({ value }) => value);
@@ -74,16 +94,7 @@ export async function fetchTabCredentials(
   tabId: number,
 ): Promise<TabCredentials> {
   const frames = (await chrome.webNavigation.getAllFrames({ tabId })) ?? [];
-  const responses = await fetchAllFramesCredentials(frames, tabId);
-  const frameCredentials: FrameCredentials[] = responses.map((response) => {
-    const { data, ...rest } = response;
-    const [ops, cas] = data;
-    return {
-      ops,
-      cas,
-      ...rest,
-    };
-  });
+  const frameCredentials = await fetchAllFramesCredentials(frames, tabId);
 
   const topLevelFrameIndex = frames.findIndex(
     (frame) => frame.parentFrameId === -1,

@@ -1,7 +1,14 @@
 import { stringifyWithError } from "@originator-profile/core";
-import { fetchCredentials } from "@originator-profile/presentation";
+import {
+  fetchCredentials,
+  FetchCredentialSetResult,
+} from "@originator-profile/presentation";
 import { extractBody, verifyIntegrity } from "@originator-profile/verify";
-import { credentialsMessenger } from "./components/credentials";
+import {
+  credentialsMessenger,
+  FetchCredentialsMessageResult,
+  FrameLocation,
+} from "./components/credentials";
 import {
   ContentScriptAllFramesMessageRequest,
   ContentScriptAllFramesMessageResponse,
@@ -42,13 +49,32 @@ chrome.runtime.onMessage.addListener(function (
   return true;
 });
 
-credentialsMessenger.onMessage("fetchCredentials", async () => {
-  const data = await fetchCredentials(document);
+const toFetchCredentialsMessageResult = <T>(
+  result: FetchCredentialSetResult<T>,
+): FetchCredentialsMessageResult<T> => {
+  const ok = !(result instanceof Error);
+  if (!ok) {
+    return {
+      ok,
+      error: stringifyWithError(result),
+    };
+  }
   return {
-    data,
-    error: data instanceof Error ? stringifyWithError(data) : undefined, // エラー型でそのまま返すとプロパティがドロップされて詳細情報が落ちるので文字列にする
+    ok,
+    data: result,
+  };
+};
+
+credentialsMessenger.onMessage("fetchCredentials", async () => {
+  const { ops, cas } = await fetchCredentials(document);
+  const frameLocation: FrameLocation = {
     origin: window.origin,
     url: window.location.href,
+  };
+  return {
+    ops: toFetchCredentialsMessageResult(ops),
+    cas: toFetchCredentialsMessageResult(cas),
+    ...frameLocation,
   };
 });
 
