@@ -29,5 +29,5 @@ test("Site Profile と OPS/CAS が取得できない場合", async ({
 }) => {
   await page.goto("http://localhost:8080/examples/cas-2.html");
   const ext = await popup(context);
-  await expect(ext?.getByTestId("p-elm-notfound-message")).toBeVisible();
+  await expect(ext?.getByTestId("p-elm-unsupported-message")).toBeVisible();
 });
