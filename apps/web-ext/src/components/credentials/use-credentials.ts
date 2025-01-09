@@ -3,6 +3,7 @@ import {
   OpsVerifier,
   OpsVerifyFailed,
   VerifiedOps,
+  VerifiedSp,
 } from "@originator-profile/verify";
 import { useParams } from "react-router";
 import { useEvent } from "react-use";
@@ -10,7 +11,7 @@ import useSWRImmutable from "swr/immutable";
 import { getRegistryKeys } from "../../utils/get-registry-keys";
 import { verifyCas } from "./cas";
 import { CasVerifyFailed } from "./errors";
-import { fetchTabCredentials, FrameIntegrityVerifier } from "./messaging";
+import { FrameIntegrityVerifier, fetchTabCredentials } from "./messaging";
 import { VerifiedCas } from "./types";
 
 const CREDENTIALS_KEY = "credentials";
@@ -27,11 +28,13 @@ type FetchVerifiedCredentialsResult = {
  * @param tabId タブID
  * @returns 検証済みクレデンシャルおよびタブのorigin,url
  */
-async function fetchVerifiedCredentials([, tabId]: [
+async function fetchVerifiedCredentials([, tabId, sp]: [
   _: typeof CREDENTIALS_KEY,
   tabId: number,
+  sp?: VerifiedSp,
 ]): Promise<FetchVerifiedCredentialsResult> {
   const { ops, cas, origin, url, frameId } = await fetchTabCredentials(tabId);
+  const verifiedSiteOps = sp?.originators ?? [];
 
   const opsVerifier = OpsVerifier(
     [...import.meta.env.REGISTRY_OPS, ...ops],
@@ -48,7 +51,7 @@ async function fetchVerifiedCredentials([, tabId]: [
   }
   const verifiedCas = await verifyCas(
     cas,
-    verifiedOps,
+    [verifiedOps, verifiedSiteOps].flat(),
     url,
     FrameIntegrityVerifier(tabId, frameId),
   );
@@ -66,15 +69,15 @@ async function fetchVerifiedCredentials([, tabId]: [
 /**
  * Credentials 取得 (要 Base コンポーネント)
  */
-export function useCredentials() {
+export function useCredentials(sp?: VerifiedSp) {
   const params = useParams<{ tabId: string }>();
   const tabId = Number(params.tabId);
   // TODO: 自動再検証する場合は取得エンドポイントが変わりうることをUIの振る舞いで考慮して
   const { data: credentials, error } = useSWRImmutable<
     FetchVerifiedCredentialsResult,
     Error,
-    [typeof CREDENTIALS_KEY, number]
-  >([CREDENTIALS_KEY, tabId], fetchVerifiedCredentials);
+    [typeof CREDENTIALS_KEY, number, VerifiedSp?]
+  >([CREDENTIALS_KEY, tabId, sp], fetchVerifiedCredentials);
   const { ops, cas, origin } = credentials ?? {};
 
   /* TODO: タブ内からCAのtargetを検索して検証する, 以下は旧ProfileSet時代のコードをコメントアウトしたもの */

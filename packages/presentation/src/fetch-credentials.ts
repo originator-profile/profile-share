@@ -4,8 +4,11 @@ import {
   OriginatorProfileSet,
 } from "@originator-profile/model";
 
-export type Credentials = [OriginatorProfileSet, ContentAttestationSet];
-export type FetchCredentialsResult = Credentials | Error;
+export type FetchCredentialSetResult<T> = T | ProfilesFetchFailed;
+export type FetchCredentialsResult = {
+  ops: FetchCredentialSetResult<OriginatorProfileSet>;
+  cas: FetchCredentialSetResult<ContentAttestationSet>;
+};
 
 function getEndpoints(doc: Document, mediaType: string): string[] {
   const endpoints = [
@@ -48,7 +51,7 @@ function getEmbeddedCredentials<
  */
 async function fetchCredentialSet<
   T extends OriginatorProfileSet | ContentAttestationSet,
->(doc: Document, mediaType: string): Promise<T | ProfilesFetchFailed> {
+>(doc: Document, mediaType: string): Promise<FetchCredentialSetResult<T>> {
   let profiles = getEmbeddedCredentials<T>(doc, mediaType);
   try {
     const profileEndpoints = getEndpoints(doc, mediaType);
@@ -93,9 +96,8 @@ export const fetchCredentials = async (
     fetchOriginatorProfileSet(doc),
     fetchContentAttestationSet(doc),
   ]);
-  if (cas instanceof Error || ops instanceof Error) {
-    /* opsがErrorじゃない場合はcasがErrorであるが、型推論はそう思ってくれない */
-    return ops instanceof Error ? ops : (cas as Error);
-  }
-  return [ops, cas];
+  return {
+    ops,
+    cas,
+  };
 };
