@@ -3,7 +3,7 @@ import logoUrl from "../assets/logo.svg";
 import { _ } from "../utils";
 
 type Props = {
-  as?: keyof JSX.IntrinsicElements;
+  as?: keyof React.JSX.IntrinsicElements;
   className?: string;
 };
 

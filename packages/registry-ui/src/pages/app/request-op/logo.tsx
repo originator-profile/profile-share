@@ -1,14 +1,14 @@
+import clsx from "clsx";
 import {
   type ChangeEvent,
   type MouseEvent,
+  useEffect,
   useRef,
   useState,
-  useEffect,
 } from "react";
-import { useSession } from "../../../utils/session";
 import { useAccount, useAccountLogo } from "../../../utils/account";
 import getBase64URL from "../../../utils/get-base-64-url";
-import clsx from "clsx";
+import { useSession } from "../../../utils/session";
 
 export default function Logo() {
   const session = useSession();
@@ -44,7 +44,7 @@ export default function Logo() {
         if (!imagePreviewRef.current) {
           return;
         }
-        setPreviewContent(e.target.result?.toString() ?? "");
+        setPreviewContent(e.target.result as string);
         setShowPreview(true);
       };
       setSubmitButtonDisabled(false);

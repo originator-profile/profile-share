@@ -1,12 +1,12 @@
 import {
-  ProfileGenericError,
-  ProfilesVerifier,
+  JwtVcIssuerKeys,
   OriginatorProfileDecoder,
   OriginatorProfileVerifier,
-  JwtVcIssuerKeys,
-  VerifyResults,
-  VerifyResult,
   ProfileClaimsValidationFailed,
+  ProfileGenericError,
+  ProfilesVerifier,
+  VerifyResult,
+  VerifyResults,
 } from "@originator-profile/verify";
 import { Fragment, useState, type ChangeEvent, type FormEvent } from "react";
 import ReactJson from "react-json-view";
@@ -225,9 +225,9 @@ export default function Debugger() {
     const formData = new FormData(e.currentTarget);
     const debugTarget =
       (formData.get("debugTarget") as DebugTargetValue) ?? "SD-JWT OP";
-    const registry = String(formData.get("registry"));
-    const endpoint = transformEndpoint(String(formData.get("endpoint")));
-    const directInput = String(formData.get("directInput"));
+    const registry = formData.get("registry") as string;
+    const endpoint = transformEndpoint(formData.get("endpoint") as string);
+    const directInput = formData.get("directInput") as string;
 
     saveInitialValues({ debugTarget, registry, endpoint });
 

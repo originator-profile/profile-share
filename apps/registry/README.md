@@ -961,10 +961,12 @@ DESCRIPTION
 
   一度発行した SDP を更新したいときには、-o update オプションをつけて実行してください。
   この際、発行した SDP の id を --input に指定する JSON ファイルに含める必要があります。
+  categories フィールドを指定した場合、既存のカテゴリーは全て新しい値に置き換えられます。
 
   {
   "id": "0eb206ec-7b09-47cb-b879-abbb83f387a0",
-  "author": "山田 一郎"
+  "author": "山田 一郎",
+  "categories": [{"cat": "IAB1", "cattax": 1, "name": "News"}, {"cat": "IAB1-1"}]
   }
 
   上のような JSON ファイルを用意し、コマンドを実行します。
@@ -1015,6 +1017,7 @@ FLAG DESCRIPTIONS
 
     ファイル名。ファイルには次のようなフォーマットの JSON を入れてください。空白行より上が必須プロパティです。
     imageプロパティの画像リソースは拡張機能Webページから参照されます。埋め込み可能なようCORS許可しておいてください。
+    categories フィールドを更新時に指定すると、既存のカテゴリーは全て新しい値に置き換えられます。
 
     {
     "id": "ef9d78e0-d81a-4e39-b7a0-27e15405edc7",
@@ -1030,7 +1033,11 @@ FLAG DESCRIPTIONS
     "editor": "山田花子",
     "datePublished": "2023-07-04T19:14:00Z",
     "dateModified": "2023-07-04T19:14:00Z",
-    "categories": [{"cat": "IAB1"}, {"cat": "IAB1-1"}]
+    "categories": [
+    {"cat": "IAB1", "cattax": 1, "name": "News"},
+    {"cat": "IAB1-1"}
+    ],
+    "allowedOrigins": ["https://example.com"]
     }
 ```
 

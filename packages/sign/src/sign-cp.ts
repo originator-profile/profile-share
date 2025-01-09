@@ -5,7 +5,6 @@ import { signJwtVc } from "@originator-profile/securing-mechanism";
  * CP への署名
  * @param cp CoreProfile オブジェクト
  * @param privateKey プライベート鍵
- * @param alg Algorithm identifier
  * @return JWT でエンコードされた CP
  */
 export async function signCp(
@@ -17,5 +16,5 @@ export async function signCp(
     expiredAt: Date;
   },
 ): Promise<string> {
-  return signJwtVc(cp, privateKey, { ...options, alg: "ES256" });
+  return signJwtVc(cp, privateKey, options);
 }

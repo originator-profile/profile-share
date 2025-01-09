@@ -4,7 +4,7 @@ export type ConfirmDialogVariant = "alert" | "prompt";
 
 export type ConfirmDialogProps<Variant extends ConfirmDialogVariant> = {
   variant: Variant;
-  dialogRef: RefObject<HTMLDialogElement>;
+  dialogRef: RefObject<HTMLDialogElement | null>;
   title: string;
   description?: string;
   /** メッセージ入力欄 (デフォルト非表示) */
@@ -23,7 +23,7 @@ export type AlertDialogProps = Omit<ConfirmDialogProps<"alert">, "variant">;
 export type PromptDialogProps = Omit<ConfirmDialogProps<"prompt">, "variant">;
 
 export type ModalProps = {
-  dialogRef: RefObject<HTMLDialogElement>;
+  dialogRef: RefObject<HTMLDialogElement | null>;
   title: string;
   description: string;
 };

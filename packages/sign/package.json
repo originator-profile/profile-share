@@ -40,6 +40,6 @@
     "pkgroll": "^2.6.0",
     "typescript": "^5.6.3",
     "vitest": "^2.1.4",
-    "websri": "^0.1.0"
+    "websri": "^1.0.0"
   }
 }

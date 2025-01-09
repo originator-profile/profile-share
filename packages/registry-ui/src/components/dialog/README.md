@@ -7,7 +7,7 @@
 ```ts
 export type ConfirmDialogProps<Variant extends ConfirmDialogVariant> = {
   variant: Variant;
-  dialogRef: RefObject<HTMLDialogElement>;
+  dialogRef: RefObject<HTMLDialogElement | null>;
   title: string;
   description?: string;
   /** メッセージ入力欄 (デフォルト非表示) */
