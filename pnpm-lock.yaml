@@ -392,8 +392,8 @@ importers:
         specifier: ^17.5.1
         version: 17.5.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       simple-tree-utils:
-        specifier: ^1.0.2
-        version: 1.0.2
+        specifier: ^2.1.0
+        version: 2.1.0
       swr:
         specifier: ^2.2.5
         version: 2.2.5(react@19.0.0)
@@ -10785,8 +10785,8 @@ packages:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
 
-  simple-tree-utils@1.0.2:
-    resolution: {integrity: sha512-iM+uAmBA6PpZLND8hRKUjuSjbCOg9NUH97cNjhwELxcvQtM0l5myaal+Xtkyup7dKi34Hi2ci+siX/cW+5DTbA==}
+  simple-tree-utils@2.1.0:
+    resolution: {integrity: sha512-O2nSSkm/a7pJfcMlbVojjGDLM2VqlLnb4ZJW6XHOy8r3k2E66tEAhUytH3tRr6aomwYNo3SGidvTue2dSXp+SQ==}
 
   simple-websocket@9.1.0:
     resolution: {integrity: sha512-8MJPnjRN6A8UCp1I+H/dSFyjwJhp6wta4hsVRhjf8w9qBHRzxYt14RaOcjvQnhD1N4yKOddEjflwMnQM4VtXjQ==}
@@ -24926,7 +24926,7 @@ snapshots:
 
   signal-exit@4.1.0: {}
 
-  simple-tree-utils@1.0.2: {}
+  simple-tree-utils@2.1.0: {}
 
   simple-websocket@9.1.0:
     dependencies:
