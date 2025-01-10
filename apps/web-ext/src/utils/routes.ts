@@ -1,4 +1,4 @@
-import { DocumentProfile, OriginatorProfile } from "@originator-profile/ui";
+import { ContentAttestation, CoreProfile } from "@originator-profile/model";
 import { generatePath } from "react-router";
 import { ParseUrlParams } from "typed-url-params";
 
@@ -34,16 +34,20 @@ function urlParamsRoute<Path extends string, T>(
 
 function getOrgParams({
   contentType,
-  op,
+  cp,
 }: {
   contentType: string;
-  op: OriginatorProfile;
+  cp: CoreProfile;
 }) {
-  return { contentType, orgIssuer: op.issuer, orgSubject: op.subject };
+  return {
+    contentType,
+    orgIssuer: cp.issuer,
+    orgSubject: cp.credentialSubject.id,
+  };
 }
 
-function getPublParams(dp: DocumentProfile) {
-  return { issuer: dp.issuer, subject: dp.subject };
+function getPublParams(ca: ContentAttestation) {
+  return { issuer: ca.issuer, subject: ca.credentialSubject.id };
 }
 
 export const routes = {
@@ -56,10 +60,10 @@ export const routes = {
 
 export function buildPublUrl(
   tabId: number | string | undefined,
-  dp: DocumentProfile | undefined,
+  ca?: ContentAttestation,
 ) {
   return [
     routes.base.build({ tabId: String(tabId) }),
-    dp ? routes.publ.build(routes.publ.getParams(dp)) : routes.site.build({}),
+    ca ? routes.publ.build(routes.publ.getParams(ca)) : routes.site.build({}),
   ].join("/");
 }

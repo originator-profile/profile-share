@@ -3,33 +3,32 @@ import { Icon } from "@iconify/react";
 import { _ } from "@originator-profile/ui";
 import clsx from "clsx";
 import { Fragment } from "react";
-
-type ContentType = "all" | "main" | "other" | "advertisement";
+import { listCas } from "./credentials";
 
 type Props = {
-  contentType: ContentType;
-  setContentType: (contentType: ContentType) => void;
+  caListType: Parameters<typeof listCas>[1];
+  setCaListType: (contentType: Parameters<typeof listCas>[1]) => void;
 };
 
 type MenuItemProps = {
-  contentType: ContentType;
+  caListType: Parameters<typeof listCas>[1];
   title: string;
   selected: boolean;
-  setContentType: (contentType: ContentType) => void;
+  setCaListType: (contentType: Parameters<typeof listCas>[1]) => void;
 };
 
 function MenuItem({
-  contentType,
+  caListType,
   title,
   selected,
-  setContentType,
+  setCaListType,
 }: MenuItemProps) {
   return (
     <Menu.Item
       as="button"
       className="h-8 w-full flex items-center text-xs"
-      key={contentType}
-      onClick={() => setContentType(contentType)}
+      key={caListType}
+      onClick={() => setCaListType(caListType)}
       disabled={selected}
     >
       {({ active }) => (
@@ -50,7 +49,7 @@ function MenuItem({
   );
 }
 
-function DpFilter({ contentType, setContentType }: Props) {
+function CaFilter({ caListType, setCaListType }: Props) {
   return (
     <Menu>
       {({ open }) => (
@@ -73,28 +72,28 @@ function DpFilter({ contentType, setContentType }: Props) {
               className="rounded-lg absolute ml-2 py-2 w-36 bg-white shadow-lg z-20"
             >
               <MenuItem
-                contentType="all"
-                title={_("DpFilter_All")}
-                selected={contentType === "all"}
-                setContentType={setContentType}
+                caListType="All"
+                title={_("CaFilter_All")}
+                selected={caListType === "All"}
+                setCaListType={setCaListType}
               />
               <MenuItem
-                contentType="main"
-                title={_("DpFilter_MainContent")}
-                selected={contentType === "main"}
-                setContentType={setContentType}
+                caListType="Main"
+                title={_("CaFilter_MainContent")}
+                selected={caListType === "Main"}
+                setCaListType={setCaListType}
               />
               <MenuItem
-                contentType="other"
-                title={_("DpFilter_Other")}
-                selected={contentType === "other"}
-                setContentType={setContentType}
+                caListType="Other"
+                title={_("CaFilter_Other")}
+                selected={caListType === "Other"}
+                setCaListType={setCaListType}
               />
               <MenuItem
-                contentType="advertisement"
-                title={_("DpFilter_Advertisements")}
-                selected={contentType === "advertisement"}
-                setContentType={setContentType}
+                caListType="OnlineAd"
+                title={_("CaFilter_Advertisements")}
+                selected={caListType === "OnlineAd"}
+                setCaListType={setCaListType}
               />
             </Menu.Items>
           </Transition>
@@ -103,4 +102,4 @@ function DpFilter({ contentType, setContentType }: Props) {
     </Menu>
   );
 }
-export default DpFilter;
+export default CaFilter;

@@ -12,6 +12,7 @@ type Credential = Omit<OpCredential, "type" | "certifier" | "verifier"> & {
   verifier: { id: string; name: string };
 };
 
+/* @deprecated */
 function CredentialTable({
   data,
   className,

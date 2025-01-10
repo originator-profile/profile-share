@@ -1,13 +1,13 @@
+import { AdvertisementCA } from "@originator-profile/model";
+import clsx from "clsx";
 import useSWR from "swr";
 import { messages } from "./messages";
 import { findAdvertiser } from "./scripting";
-import clsx from "clsx";
-import { DocumentProfile } from "@originator-profile/ui";
 
 type BidResponseProps = {
   className?: string;
   tabId: number;
-  dp: DocumentProfile;
+  advertisement: AdvertisementCA;
 };
 
 /** 広告取引記載情報検証結果 */
@@ -16,7 +16,7 @@ export function BidResponse(props: BidResponseProps) {
     {
       key: "bidresponse",
       tabId: props.tabId,
-      frameIds: props.dp.frameIds ?? [],
+      frameIds: [], // TODO: 新モデルに対応して
     },
     findAdvertiser,
   );
@@ -27,7 +27,7 @@ export function BidResponse(props: BidResponseProps) {
         ? "loading"
         : res.data.id === undefined
           ? "missing"
-          : res.data.id === props.dp.issuer
+          : res.data.id === props.advertisement.issuer
             ? "match"
             : "mismatch"
     ];

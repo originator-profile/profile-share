@@ -1,19 +1,46 @@
+import { useParams, useSearchParams } from "react-router";
+import Loading from "../components/Loading";
 import {
   Credentials as Template,
+  getContentType,
   useCredentials,
 } from "../components/credentials";
-import { useSiteProfile } from "../components/siteProfile";
+import { routes } from "../utils/routes";
 
 export default function Credentials() {
-  const { siteProfile } = useSiteProfile();
-  const {
-    origin: _origin,
-    ops: _ops,
-    cas,
-    error: _error,
-    tabId: _tabId,
-  } = useCredentials(siteProfile);
-  if (!cas) return null;
-
-  return <Template cas={cas} />;
+  const [queryParams] = useSearchParams();
+  const { issuer = "", subject = "" } = useParams<{
+    issuer?: string;
+    subject?: string;
+  }>();
+  const { ops, cas, isLoading } = useCredentials();
+  if (isLoading) return <Loading />;
+  if (!(ops && cas)) return null;
+  const ca = cas.find(
+    (ca) =>
+      ca.attestation.doc.issuer === issuer &&
+      ca.attestation.doc.credentialSubject.id === subject,
+  );
+  if (!ca) return null;
+  const op = ops.find(
+    (op) => op.media?.doc.credentialSubject.id === ca.attestation.doc.issuer,
+  );
+  if (!op?.media) return null;
+  return (
+    <Template
+      ca={ca}
+      cas={cas}
+      ops={ops}
+      orgPath={{
+        pathname: routes.org.build(
+          routes.org.getParams({
+            contentType: getContentType(ca),
+            cp: op.core.doc,
+          }),
+        ),
+        search: queryParams.toString(),
+      }}
+      wmp={op.media.doc}
+    />
+  );
 }

@@ -13,6 +13,7 @@ import { verifyCas } from "./cas";
 import { CasVerifyFailed } from "./errors";
 import { FrameIntegrityVerifier, fetchTabCredentials } from "./messaging";
 import { VerifiedCas } from "./types";
+import { useSiteProfile } from "../siteProfile";
 
 const CREDENTIALS_KEY = "credentials";
 
@@ -49,9 +50,10 @@ async function fetchVerifiedCredentials([, tabId, sp]: [
   ) {
     throw verifiedOps;
   }
+  verifiedOps.push(...verifiedSiteOps);
   const verifiedCas = await verifyCas(
     cas,
-    [verifiedOps, verifiedSiteOps].flat(),
+    verifiedOps,
     url,
     FrameIntegrityVerifier(tabId, frameId),
   );
@@ -69,15 +71,20 @@ async function fetchVerifiedCredentials([, tabId, sp]: [
 /**
  * Credentials 取得 (要 Base コンポーネント)
  */
-export function useCredentials(sp?: VerifiedSp) {
+export function useCredentials() {
   const params = useParams<{ tabId: string }>();
   const tabId = Number(params.tabId);
+  const { siteProfile } = useSiteProfile();
   // TODO: 自動再検証する場合は取得エンドポイントが変わりうることをUIの振る舞いで考慮して
-  const { data: credentials, error } = useSWRImmutable<
+  const {
+    data: credentials,
+    error,
+    isLoading,
+  } = useSWRImmutable<
     FetchVerifiedCredentialsResult,
     Error,
     [typeof CREDENTIALS_KEY, number, VerifiedSp?]
-  >([CREDENTIALS_KEY, tabId, sp], fetchVerifiedCredentials);
+  >([CREDENTIALS_KEY, tabId, siteProfile], fetchVerifiedCredentials);
   const { ops, cas, origin } = credentials ?? {};
 
   /* TODO: タブ内からCAのtargetを検索して検証する, 以下は旧ProfileSet時代のコードをコメントアウトしたもの */
@@ -97,10 +104,11 @@ export function useCredentials(sp?: VerifiedSp) {
   });
 
   return {
-    origin,
-    ops,
     cas,
     error,
+    isLoading,
+    ops,
+    origin,
     tabId,
   };
 }

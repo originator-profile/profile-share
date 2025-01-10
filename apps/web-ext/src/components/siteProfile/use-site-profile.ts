@@ -50,7 +50,7 @@ async function fetchVerifiedSiteProfile([, tabId]: [
 export function useSiteProfile() {
   const params = useParams<{ tabId: string }>();
   const tabId = Number(params.tabId);
-  const { data, error } = useSWRImmutable<
+  const { data, error, isLoading } = useSWRImmutable<
     VerifiedSp,
     Error,
     [typeof key, number]
@@ -59,8 +59,9 @@ export function useSiteProfile() {
     shouldRetryOnError: false,
   });
   return {
-    siteProfile: data,
     error,
+    isLoading,
+    siteProfile: data,
     tabId,
   };
 }

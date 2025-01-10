@@ -1,20 +1,19 @@
 import { Icon } from "@iconify/react";
-import { OpHolder } from "@originator-profile/model";
+import { WebMediaProfile } from "@originator-profile/model";
 import { Image, _ } from "@originator-profile/ui";
 import logomarkUrl from "@originator-profile/ui/src/assets/logomark.svg";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
 
 type Props = {
-  holder: OpHolder;
+  wmp: WebMediaProfile;
 };
 
-function HolderSummary({ holder }: Props) {
-  const logo = holder.logos?.find(({ isMain }) => isMain);
+function WebMediaProfileSummary({ wmp }: Props) {
   return (
     <div className="flex items-center gap-2">
       <Image
         className="flex-shrink-0 border box-content rounded border-gray-200"
-        src={logo?.url}
+        src={wmp.credentialSubject.logo?.id}
         placeholderSrc={placeholderLogoMainUrl}
         alt=""
         width={52}
@@ -22,7 +21,7 @@ function HolderSummary({ holder }: Props) {
       />
       <div className="flex flex-col">
         <div className="flex flex-row">
-          <p className="text-base font-bold">{holder.name}</p>
+          <p className="text-base font-bold">{wmp.credentialSubject.name}</p>
           <img
             className="ml-1"
             src={logomarkUrl}
@@ -32,19 +31,19 @@ function HolderSummary({ holder }: Props) {
           />
         </div>
         <div className="flex flex-row">
-          {holder.publishingPrincipleUrl && (
+          {wmp.credentialSubject.informationTransmissionPolicy && (
             <div className="bg-gray-100 rounded-full px-1 py-1 mx-1 my-1">
               <p className="inline-flex items-center align-middle text-xs text-gray-600 px-1">
                 <Icon className="inline mr-1" icon="gg:check-o" />
-                {_("HolderSummary_EditorialGuidelines")}
+                {_("WebMediaProfileSummary_EditorialGuidelines")}
               </p>
             </div>
           )}
-          {holder.privacyPolicyUrl && (
+          {wmp.credentialSubject.privacyPolicy && (
             <div className="bg-gray-100 rounded-full px-1 py-1 mx-1 my-1">
               <p className="inline-flex items-center align-middle text-xs text-gray-600 px-1">
                 <Icon className="inline mr-1" icon="gg:check-o" />
-                {_("HolderSummary_PrivacyPolicy")}
+                {_("WebMediaProfileSummary_PrivacyPolicy")}
               </p>
             </div>
           )}
@@ -54,4 +53,4 @@ function HolderSummary({ holder }: Props) {
   );
 }
 
-export default HolderSummary;
+export default WebMediaProfileSummary;
