@@ -3,16 +3,14 @@ import { Navigate } from "react-router";
 import { buildPublUrl, routes } from "../utils/routes";
 import { useSiteProfile } from "../components/siteProfile";
 import {
-  ProfilesFetchFailed,
   SiteProfileFetchFailed,
-  SiteProfileFetchInvalid,
   SiteProfileInvalid,
   SiteProfileVerifyFailed,
   VerifiedOps,
   VerifiedSp,
+  OpsVerifyFailed,
 } from "@originator-profile/verify";
 import Unsupported from "../components/Unsupported";
-import NotFound from "../components/NotFound";
 import { _ } from "@originator-profile/ui";
 import {
   CasVerifyFailed,
@@ -21,22 +19,23 @@ import {
 } from "../components/credentials";
 import Loading from "../components/Loading";
 
-function Redirect({ tabId }: { tabId: number; siteProfile?: VerifiedSp }) {
-  /* TODO: cas を送る */
+function Redirect({ tabId, cas }: { tabId: number; cas?: VerifiedCas }) {
+  /* TODO: オーバーレイ表示を新モデルに対応して
   /*
   useMount(() => {
-    if (profiles) {
-      chrome.tabs.sendMessage(tabId, {
+    if (cas) {
+      chrome.tabs.sendMessage(Number(tabId), {
         type: "overlay-profiles",
         timestamp: Date.now(),
-        ...profiles.serialize(),
-        activeDp: dp?.serialize(),
+        cas: JSON.stringify(cas),
+        activeCa: ca ? JSON.stringify(ca) : undefined,
       });
     }
   });
   */
+  const [ca] = cas ?? [];
 
-  return <Navigate to={buildPublUrl(tabId, undefined)} />;
+  return <Navigate to={buildPublUrl(tabId, ca?.attestation.doc)} />;
 }
 
 function Prohibition({ tabId }: { tabId: number }) {
@@ -63,42 +62,7 @@ function isLoading({
   return (!siteProfile && !sp_error) || (!ops && !cas && !credentials_error);
 }
 
-function isSpFetchError(sp_error?: Error): sp_error is Error {
-  if (!sp_error) {
-    return false;
-  }
-
-  return (
-    "code" in sp_error &&
-    (sp_error.code === SiteProfileFetchFailed.code ||
-      sp_error.code === SiteProfileFetchInvalid.code)
-  );
-}
-
-function isCredentialsFetchError(
-  credentials_error?: Error,
-): credentials_error is Error {
-  if (!credentials_error) {
-    return false;
-  }
-
-  return (
-    "code" in credentials_error &&
-    credentials_error.code === ProfilesFetchFailed.code
-  );
-}
-
-// html組み込みのOPSのFetchError判定用
-function isOpsNotFound(ops?: VerifiedOps): boolean {
-  return ops === undefined || ops.length === 0;
-}
-
-// html組み込みのCASのFetchError判定用
-function isCasNotFound(cas?: VerifiedCas): boolean {
-  return cas === undefined || cas.length === 0;
-}
-
-function isSpVerifyError(sp_error?: Error): sp_error is Error {
+function isSpVerifyError(sp_error?: Error) {
   if (!sp_error) {
     return false;
   }
@@ -117,17 +81,9 @@ function isCredentialsVerifyError(credentials_error?: Error) {
 
   return (
     "code" in credentials_error &&
-    credentials_error.code === CasVerifyFailed.code
+    (credentials_error.code === OpsVerifyFailed.code ||
+      credentials_error.code === CasVerifyFailed.code)
   );
-}
-
-function isInvalid(
-  ops?: VerifiedOps,
-  cas?: VerifiedCas,
-  sp_error?: Error,
-): sp_error is Error {
-  // opsとcasはhtml内埋め込みも外部リンクもない場合はFetch Errorにならないためopsとcasの存在で判定を行う
-  return isSpFetchError(sp_error) && (isOpsNotFound(ops) || isCasNotFound(cas));
 }
 
 function Base() {
@@ -146,28 +102,27 @@ function Base() {
     return <Prohibition tabId={tabId} />;
   }
 
-  if (!isInvalid(ops, cas, sp_error)) {
-    return <Redirect tabId={tabId} />;
+  // NOTE: SP と CAS のいずれかが閲覧可能なら表示する
+  if (siteProfile || (cas && cas.length > 0)) {
+    return <Redirect tabId={tabId} cas={cas} />;
   }
 
-  if (isCredentialsFetchError(credentials_error)) {
-    return (
-      <NotFound
-        variant="websiteAndCas"
-        errors={[sp_error, credentials_error]}
-      />
-    );
-  }
-
-  if (isOpsNotFound(ops) && isCasNotFound(cas)) {
-    return <NotFound variant="websiteAndCas" errors={[sp_error]} />;
-  }
-
-  return (
-    <Unsupported
-      errors={credentials_error ? [sp_error, credentials_error] : [sp_error]}
-    />
+  const errors = [sp_error, credentials_error].filter(
+    (
+      error,
+    ): error is
+      | SiteProfileInvalid
+      | SiteProfileFetchFailed
+      | OpsVerifyFailed
+      | CasVerifyFailed => {
+      if (!error) {
+        return false;
+      }
+      // NOTE: デシリアライズされたが Error インスタンスでないエラーが得られうる
+      return error instanceof Error || "code" in error;
+    },
   );
+  return <Unsupported errors={errors} />;
 }
 
 export default Base;

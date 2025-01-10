@@ -1,22 +1,25 @@
 import { Icon } from "@iconify/react";
-import { OgWebsite, OpCredential, OpHolder } from "@originator-profile/model";
 import {
-  CredentialDetail,
-  CredentialSummary,
+  CoreProfile,
+  WebMediaProfile,
+  WebsiteProfile,
+} from "@originator-profile/model";
+import { VerifiedVc } from "@originator-profile/securing-mechanism";
+import {
+  CertificateDetail,
+  CertificateSummary,
   Description,
-  HolderTable,
   Modal,
-  OriginatorProfile,
-  Role,
-  TechTable,
+  WebMediaProfileTable,
   _,
   useModal,
 } from "@originator-profile/ui";
+import { Certificate } from "@originator-profile/verify";
 import clsx from "clsx";
 import { useState } from "react";
 import BackHeader from "../components/BackHeader";
-import HolderSummary from "../components/HolderSummary";
 import ReliabilityGuide from "../components/ReliabilityGuide";
+import WebMediaProfileSummary from "../components/WebMediaProfileSummary";
 
 function ExternalLink(props: React.ComponentProps<"a">) {
   return (
@@ -38,29 +41,32 @@ function ExternalLink(props: React.ComponentProps<"a">) {
   );
 }
 
-function ReliabilityInfo(props: { op: OriginatorProfile; holder: OpHolder }) {
-  const credentials = props.op.listCredentialItems();
-  const credentialModal = useModal<OpCredential>();
+function ReliabilityInfo(props: {
+  wmp: WebMediaProfile;
+  certificates: VerifiedVc<Certificate>[];
+}) {
+  const certificateModal = useModal<VerifiedVc<Certificate>>();
   return (
     <div className="space-y-4">
-      {props.holder.publishingPrincipleUrl && (
+      {props.wmp.credentialSubject.informationTransmissionPolicy && (
         <section>
           <h2 className="whitespace-pre-line text-xs text-gray-600 mb-3">
             {_("Org_EditorialGuidelines")}
           </h2>
-          <ExternalLink href={props.holder.publishingPrincipleUrl}>
-            {props.holder.publishingPrincipleTitle ??
-              props.holder.publishingPrincipleUrl}
+          <ExternalLink
+            href={props.wmp.credentialSubject.informationTransmissionPolicy.id}
+          >
+            {props.wmp.credentialSubject.informationTransmissionPolicy.name}
           </ExternalLink>
         </section>
       )}
-      {props.holder.privacyPolicyUrl && (
+      {props.wmp.credentialSubject.privacyPolicy && (
         <section>
           <h2 className="whitespace-pre-line text-xs text-gray-600 mb-3">
             {_("Org_PrivacyPolicy")}
           </h2>
-          <ExternalLink href={props.holder.privacyPolicyUrl}>
-            {props.holder.privacyPolicyTitle ?? props.holder.privacyPolicyUrl}
+          <ExternalLink href={props.wmp.credentialSubject.privacyPolicy.id}>
+            {props.wmp.credentialSubject.privacyPolicy.name}
           </ExternalLink>
         </section>
       )}
@@ -69,23 +75,22 @@ function ReliabilityInfo(props: { op: OriginatorProfile; holder: OpHolder }) {
           {_("Org_CredentialInformation")}
         </h2>
         <ul className="space-y-2">
-          {credentials.map((credential, index) => (
+          {props.certificates.map((certificate, index) => (
             <li key={index}>
-              <CredentialSummary
+              <CertificateSummary
                 className="w-full"
-                credential={credential}
-                certifier={props.op.findCertifier(credential.certifier)}
-                onClick={credentialModal.onOpen}
+                certificate={certificate}
+                onClick={certificateModal.onOpen}
               />
             </li>
           ))}
         </ul>
       </section>
-      <Modal open={credentialModal.open} onClose={credentialModal.onClose}>
-        {credentialModal.value && (
-          <CredentialDetail
+      <Modal open={certificateModal.open} onClose={certificateModal.onClose}>
+        {certificateModal.value && (
+          <CertificateDetail
             className="rounded-b-none"
-            credential={credentialModal.value}
+            certificate={certificateModal.value}
           />
         )}
       </Modal>
@@ -93,30 +98,24 @@ function ReliabilityInfo(props: { op: OriginatorProfile; holder: OpHolder }) {
   );
 }
 
-function OrgInfo(props: { op: OriginatorProfile; holder: OpHolder }) {
+function OrgInfo(props: {
+  verifiedCp: VerifiedVc<CoreProfile>;
+  wmp: WebMediaProfile;
+}) {
   return (
     <div className="space-y-4">
-      {props.holder.description && (
-        <Description description={props.holder.description} onlyBody />
+      {props.wmp.credentialSubject.description && (
+        <Description
+          description={props.wmp.credentialSubject.description.data ?? ""}
+          onlyBody
+        />
       )}
       <section>
         <h2 className="whitespace-pre-line text-xs text-gray-600 mb-3">
           {_("Org_OrganizationInformation")}
         </h2>
         <div className="jumpu-card p-4">
-          <HolderTable holder={props.holder} />
-        </div>
-      </section>
-      <section>
-        <h2 className="whitespace-pre-line text-xs text-gray-600 mb-3">
-          {_("Org_TechnicalInformation")}
-        </h2>
-        <div className="jumpu-card p-4">
-          <TechTable
-            className="p-4"
-            profile={props.op}
-            issuer={props.op.findCertifier(props.op.issuer)?.name}
-          />
+          <WebMediaProfileTable wmp={props.wmp} />
         </div>
       </section>
     </div>
@@ -171,42 +170,47 @@ function useTabs(tabs: Tabs) {
 }
 
 type Props = {
-  contentType: string;
-  site?: OgWebsite;
-  op: OriginatorProfile;
-  holder: OpHolder;
-  roles: Role[];
-  paths: {
-    back: {
-      pathname: string;
-      search: string;
-    };
+  backPath: {
+    pathname: string;
+    search: string;
   };
+  certificates: VerifiedVc<Certificate>[];
+  contentType: string;
+  verifiedCp: VerifiedVc<CoreProfile>;
+  wmp: WebMediaProfile;
+  wsp?: WebsiteProfile;
 };
 
-function Org({ contentType, site, op, holder, paths }: Props) {
+function Org({
+  backPath,
+  certificates,
+  contentType,
+  verifiedCp,
+  wmp,
+  wsp,
+}: Props) {
   const tabs = [
     {
       id: "reliability",
       name: _("Org_ReliabilityInformation"),
-      panel: <ReliabilityInfo op={op} holder={holder} />,
+      panel: <ReliabilityInfo certificates={certificates} wmp={wmp} />,
     },
     {
       id: "org",
       name: _("Org_OrganizationInformation"),
-      panel: <OrgInfo op={op} holder={holder} />,
+      panel: <OrgInfo verifiedCp={verifiedCp} wmp={wmp} />,
     },
   ] as const satisfies Tabs;
   const { activeTab, ...handlers } = useTabs(tabs);
   return (
     <article className="bg-gray-50 flex flex-col min-h-dvh">
-      <BackHeader className="sticky top-0 z-10" to={paths.back}>
-        <h1 className="text-sm">{site?.title}</h1>
+      <BackHeader className="sticky top-0 z-10" to={backPath}>
+        {wsp && <h1 className="text-sm">{wsp?.credentialSubject.name}</h1>}
       </BackHeader>
       <div className="bg-white px-4 border-b border-gray-200">
         <ReliabilityGuide className="pt-4 pb-2" contentType={contentType} />
         <div data-testid="ps-json-holder" className="flex justify-center pb-4">
-          <HolderSummary holder={holder} />
+          <WebMediaProfileSummary wmp={wmp} />
         </div>
         <div role="tablist" className="grid grid-cols-2 gap-0.5 py-3">
           {tabs.map((tab) => (

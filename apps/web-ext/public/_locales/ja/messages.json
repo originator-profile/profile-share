@@ -1,14 +1,14 @@
 {
-  "DpFilter_All": {
+  "CaFilter_All": {
     "message": "すべて"
   },
-  "DpFilter_MainContent": {
+  "CaFilter_MainContent": {
     "message": "メインコンテンツ"
   },
-  "DpFilter_Other": {
+  "CaFilter_Other": {
     "message": "その他コンテンツ"
   },
-  "DpFilter_Advertisements": {
+  "CaFilter_Advertisements": {
     "message": "広告"
   },
   "ContentType_MainContent": {
@@ -29,10 +29,10 @@
   "ContentType_Site": {
     "message": "ウェブサイト"
   },
-  "HolderSummary_EditorialGuidelines": {
+  "WebMediaProfileSummary_EditorialGuidelines": {
     "message": "編集ガイドライン"
   },
-  "HolderSummary_PrivacyPolicy": {
+  "WebMediaProfileSummary_PrivacyPolicy": {
     "message": "プライバシーポリシー"
   },
   "Loading_RetrievingAndValidatingProfile": {
@@ -52,42 +52,6 @@
         "example": "https://example.com"
       }
     }
-  },
-  "NotFound_OrganizationOrPublication": {
-    "message": "組織あるいは出版物"
-  },
-  "NotFound_Organization": {
-    "message": "組織"
-  },
-  "NotFound_Publication": {
-    "message": "出版物"
-  },
-  "NotFound_Holder": {
-    "message": "所有者"
-  },
-  "NotFound_WebsiteAndPublication": {
-    "message": "ウェブサイトおよび出版物"
-  },
-  "NotFound_InformationNotFound": {
-    "message": "$variant$の情報が\n見つかりませんでした",
-    "placeholders": {
-      "variant": {
-        "content": "$1",
-        "example": "出版物"
-      }
-    }
-  },
-  "NotFound_PageMightBeMoved": {
-    "message": "ページの移動によって$variant$の情報が\n失われた可能性があります",
-    "placeholders": {
-      "variant": {
-        "content": "$1",
-        "example": "出版物"
-      }
-    }
-  },
-  "NotFound_ViewOtherPublications": {
-    "message": "他の出版物をみる"
   },
   "ReliabilityGuide_HasReliabilityInformation": {
     "message": "$subject$には信頼性情報があります",
@@ -209,16 +173,13 @@
   "Org_OrganizationInformation": {
     "message": "組織情報"
   },
-  "Org_TechnicalInformation": {
-    "message": "技術情報"
-  },
   "Org_ReliabilityInformation": {
     "message": "信頼性情報"
   },
-  "PublMain_TechnicalInformation": {
+  "Credentials_TechnicalInformation": {
     "message": "技術情報"
   },
-  "PublSite_TechnicalInformation": {
+  "SiteProfile_TechnicalInformation": {
     "message": "技術情報"
   },
   "Prohibition_DetailStatement": {
@@ -254,34 +215,34 @@
   "Error_WebsiteProfilePairNotFound": {
     "message": "website Profile Pairを取得できませんでした"
   },
-  "CredentialDetail_CredentialName": {
+  "CertificateDetail_CredentialName": {
     "message": "証明書名"
   },
-  "CredentialDetail_Certifier": {
+  "CertificateDetail_Certifier": {
     "message": "認証機関"
   },
-  "CredentialDetail_Verifier": {
+  "CertificateDetail_Verifier": {
     "message": "検証機関"
   },
-  "CredentialDetail_IssuedAt": {
+  "CertificateDetail_IssuedAt": {
     "message": "発行日"
   },
-  "CredentialDetail_ExpiredAt": {
+  "CertificateDetail_ExpiredAt": {
     "message": "有効期限"
   },
-  "CredentialDetail_Details": {
+  "CertificateDetail_Details": {
     "message": "くわしくはこちら"
   },
   "Description_Description": {
     "message": "説明"
   },
-  "HolderTable_Holder": {
+  "WebMediaProfileTable_Holder": {
     "message": "所有者"
   },
-  "HolderTable_Address": {
+  "WebMediaProfileTable_Address": {
     "message": "所在地"
   },
-  "HolderTable_AddressData": {
+  "WebMediaProfileTable_AddressData": {
     "message": "〒$postal_code$ $region$$locality$$street_address$",
     "placeholders": {
       "postal_code": {
@@ -302,25 +263,25 @@
       }
     }
   },
-  "HolderTable_URL": {
+  "WebMediaProfileTable_URL": {
     "message": "URL"
   },
-  "HolderTable_PhoneNum": {
+  "WebMediaProfileTable_PhoneNum": {
     "message": "電話番号"
   },
-  "HolderTable_Email": {
+  "WebMediaProfileTable_Email": {
     "message": "メールアドレス"
   },
-  "HolderTable_CorpNum": {
+  "WebMediaProfileTable_CorpNum": {
     "message": "法人番号"
   },
-  "HolderTable_Contact": {
+  "WebMediaProfileTable_Contact": {
     "message": "問い合わせ"
   },
-  "HolderTable_PrivacyPolicy": {
+  "WebMediaProfileTable_PrivacyPolicy": {
     "message": "プライバシーポリシー"
   },
-  "HolderTable_Principle": {
+  "WebMediaProfileTable_Principle": {
     "message": "編集ガイドライン"
   },
   "ProjectSummary_Statement_1": {
@@ -341,50 +302,20 @@
   "TechInfo_TechInfo": {
     "message": "技術情報"
   },
-  "TechTable_VerificationResult": {
-    "message": "検証結果"
-  },
-  "TechTable_VerificationError": {
-    "message": "検証エラー"
-  },
-  "TechTable_Subject": {
-    "message": "識別子"
-  },
-  "TechTable_Issuer": {
-    "message": "発行者"
-  },
-  "TechTable_OPRegistry": {
-    "message": "OP レジストリ"
-  },
-  "TechTable_OPSubject": {
-    "message": "OP 識別子"
-  },
-  "TechTable_IssuedAt": {
-    "message": "発行日"
-  },
-  "TechTable_ExpiredAt": {
-    "message": "有効期限"
-  },
-  "WebsiteMainTable_PublishDate": {
+  "ArticleTable_PublishDate": {
     "message": "公開日"
   },
-  "WebsiteMainTable_LastModified": {
+  "ArticleTable_LastModified": {
     "message": "最終更新日"
   },
-  "WebsiteMainTable_EditorInChief": {
+  "ArticleTable_EditorInChief": {
     "message": "編集責任者"
   },
-  "WebsiteMainTable_Author": {
+  "ArticleTable_Author": {
     "message": "記事執筆者"
   },
-  "WebsiteMainTable_Category": {
+  "ArticleTable_Category": {
     "message": "ジャンル"
-  },
-  "WebsiteSubTable_URL": {
-    "message": "URL"
-  },
-  "WebsiteSubTable_Category": {
-    "message": "カテゴリー"
   },
   "Profile_Failed": {
     "message": "失敗"

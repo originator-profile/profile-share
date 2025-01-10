@@ -1,18 +1,34 @@
 import {
+  AdvertisementCA,
+  ArticleCA,
   ContentAttestationSet,
   OriginatorProfileSet,
+  WebMediaProfile,
 } from "@originator-profile/model";
-import { CaVerificationResult, VerifiedCa } from "@originator-profile/verify";
+import {
+  CaVerificationResult,
+  VerifiedCa,
+  VerifiedOps,
+} from "@originator-profile/verify";
 import { CasVerifyFailed } from "./errors";
 
 export type CasItem<T> = T | { main: boolean; attestation: T };
-export type VerifiedCas = CasItem<VerifiedCa>[];
-export type CasVerificationFailure = CasItem<CaVerificationResult>[];
+export type VerifiedCas = Exclude<CasItem<VerifiedCa>, VerifiedCa>[];
+export type CasVerificationFailure = Exclude<
+  CasItem<CaVerificationResult>,
+  CaVerificationResult
+>[];
 export type CasVerificationResult = VerifiedCas | CasVerifyFailed;
-export type CasProps = { cas: VerifiedCas };
-
+/** 表示に対応している CA */
+export type SupportedCa = ArticleCA | AdvertisementCA;
+export type CredentialsProps = {
+  ca: VerifiedCas[number];
+  cas: VerifiedCas;
+  ops: VerifiedOps;
+  orgPath: { pathname: string; search: string };
+  wmp: WebMediaProfile;
+};
 export type FrameLocation = { origin: string; url: string };
-
 export type FetchCredentialsMessageResult<T> =
   | {
       ok: true;
@@ -23,7 +39,6 @@ export type FetchCredentialsMessageResult<T> =
       /** シリアライズした Error クラスインスタンスの中身  */
       error: string;
     };
-
 export type FetchCredentialsMessageResponse = FrameLocation & {
   ops: FetchCredentialsMessageResult<OriginatorProfileSet>;
   cas: FetchCredentialsMessageResult<ContentAttestationSet>;

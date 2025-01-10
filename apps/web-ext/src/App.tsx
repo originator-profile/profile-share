@@ -2,7 +2,6 @@ import { RouteObject, Outlet, useRoutes } from "react-router";
 import { routes } from "./utils/routes";
 import Base from "./pages/Base";
 import Org from "./pages/Org";
-import Publ from "./pages/Publ";
 import Prohibition from "./pages/Prohibition";
 import SiteProfile from "./pages/SiteProfile";
 import Credentials from "./pages/Credentials";
@@ -21,7 +20,7 @@ const publ: RouteObject = {
       element: (
         <>
           <SiteProfile />
-          <Publ />
+          <Credentials />
         </>
       ),
     },
@@ -37,7 +36,6 @@ const site: RouteObject = {
       element: (
         <>
           <SiteProfile />
-          <Credentials /> {/* 暫定でここで無理やり表示させる */}
         </>
       ),
     },

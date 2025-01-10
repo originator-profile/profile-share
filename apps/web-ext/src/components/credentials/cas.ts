@@ -1,19 +1,24 @@
+import { LocalKeys } from "@originator-profile/cryptography";
+import {
+  ContentAttestation,
+  ContentAttestationSet,
+} from "@originator-profile/model";
+import { JwtVcDecoder } from "@originator-profile/securing-mechanism";
 import {
   CaInvalid,
-  CaVerifyFailed,
   CaVerifier,
+  CaVerifyFailed,
   CoreProfileNotFound,
   VerifiedOps,
   VerifyIntegrity,
 } from "@originator-profile/verify";
-import {
-  ContentAttestationSet,
-  ContentAttestation,
-} from "@originator-profile/model";
-import { LocalKeys } from "@originator-profile/cryptography";
-import { JwtVcDecoder } from "@originator-profile/securing-mechanism";
-import { CasVerificationResult, VerifiedCas, CasItem } from "./types";
 import { CasVerifyFailed } from "./errors";
+import {
+  CasItem,
+  CasVerificationResult,
+  SupportedCa,
+  VerifiedCas,
+} from "./types";
 
 /** main プロパティの有無 */
 const hasMainProperty = <T>(ca: CasItem<T>): ca is Exclude<CasItem<T>, T> =>
@@ -38,18 +43,22 @@ export async function verifyCas(
     cas.map(async (ca) => {
       const hasMain = hasMainProperty(ca);
       const target = hasMain ? ca.attestation : ca;
+      const main = hasMain && ca.main;
       const decodedCa = decodeCa(target);
       if (decodedCa instanceof Error) {
-        return new CaInvalid("Invalid CA", decodedCa);
+        return { main, attestation: new CaInvalid("Invalid CA", decodedCa) };
       }
       const cp = verifiedOps.find(
         (ops) => ops.core.doc.credentialSubject.id === decodedCa.doc.issuer,
       );
       if (!cp) {
-        return new CoreProfileNotFound(
-          "Appropriate Core Profile not found",
-          decodedCa,
-        );
+        return {
+          main,
+          attestation: new CoreProfileNotFound(
+            "Appropriate Core Profile not found",
+            decodedCa,
+          ),
+        };
       }
       const verify = CaVerifier(
         target,
@@ -58,17 +67,14 @@ export async function verifyCas(
         new URL(url),
         verifyIntegrity,
       );
-      return hasMain
-        ? { main: ca.main, attestation: await verify() }
-        : await verify();
+      return { main: hasMain && ca.main, attestation: await verify() };
     }),
   );
   if (
     resultCas.some((ca) => {
-      const hasMain = hasMainProperty(ca);
-      const resultCa = hasMain ? ca.attestation : ca;
       return (
-        resultCa instanceof CaInvalid || resultCa instanceof CaVerifyFailed
+        ca.attestation instanceof CaInvalid ||
+        ca.attestation instanceof CaVerifyFailed
       );
     })
   ) {
@@ -78,4 +84,42 @@ export async function verifyCas(
     );
   }
   return resultCas as VerifiedCas;
+}
+
+/** CAS の列挙 */
+export function listCas(
+  cas: VerifiedCas,
+  type: "Article" | "OnlineAd" | "Main" | "Other" | "All",
+): SupportedCa[] {
+  let filtered: VerifiedCas;
+  switch (type) {
+    case "Article":
+    case "OnlineAd": {
+      filtered = cas.filter((ca) => {
+        return ca.attestation.doc.credentialSubject.type === type;
+      });
+      break;
+    }
+    case "Main": {
+      filtered = cas.filter((ca) => {
+        const hasMain = hasMainProperty(ca);
+        return hasMain && ca.main;
+      });
+      break;
+    }
+    case "Other": {
+      filtered = cas.filter((ca) => {
+        return (
+          !ca.main && ca.attestation.doc.credentialSubject.type === "Article"
+        );
+      });
+      break;
+    }
+    case "All":
+    default: {
+      filtered = cas;
+      break;
+    }
+  }
+  return filtered.map((ca) => ca.attestation.doc as SupportedCa);
 }

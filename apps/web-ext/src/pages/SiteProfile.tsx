@@ -1,11 +1,36 @@
+import { useSearchParams } from "react-router";
+import Loading from "../components/Loading";
 import {
-  useSiteProfile,
   SiteProfile as Template,
+  useSiteProfile,
 } from "../components/siteProfile";
+import { routes } from "../utils/routes";
 
 export default function SiteProfile() {
-  const { siteProfile } = useSiteProfile();
+  const [queryParams] = useSearchParams();
+  const { siteProfile, isLoading } = useSiteProfile();
+  if (isLoading) return <Loading />;
   if (!siteProfile) return null;
-
-  return <Template siteProfile={siteProfile} />;
+  const op = siteProfile.originators.find(
+    (originator) =>
+      originator.media?.doc.credentialSubject.id ===
+      siteProfile.credential.doc.issuer,
+  );
+  if (!op?.media) return null;
+  return (
+    <Template
+      siteProfile={siteProfile}
+      orgPath={{
+        pathname: routes.org.build(
+          routes.org.getParams({
+            contentType: "ContentType_Site",
+            cp: op.core.doc,
+          }),
+        ),
+        search: queryParams.toString(),
+      }}
+      wmp={op.media.doc}
+      wsp={siteProfile.credential.doc}
+    />
+  );
 }

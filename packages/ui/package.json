@@ -21,6 +21,7 @@
     "@iconify/react": "^5.0.2",
     "@originator-profile/core": "workspace:*",
     "@originator-profile/model": "workspace:*",
+    "@originator-profile/securing-mechanism": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
     "@originator-profile/verify": "workspace:*",
     "@types/chrome": "^0.0.289",

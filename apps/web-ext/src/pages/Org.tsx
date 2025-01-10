@@ -1,8 +1,8 @@
 import { useParams, useSearchParams } from "react-router";
-import useProfiles from "../utils/use-profiles";
-import NotFound from "../components/NotFound";
-import Template from "../templates/Org";
 import Loading from "../components/Loading";
+import { useCredentials } from "../components/credentials";
+import { useSiteProfile } from "../components/siteProfile";
+import Template from "../templates/Org";
 
 type Props = { back: string };
 
@@ -13,41 +13,27 @@ function Org(props: Props) {
     orgIssuer: string;
     orgSubject: string;
   }>();
-  const { profileSet } = useProfiles();
-
-  if (profileSet.isLoading) {
-    return <Loading />;
-  }
-
-  const op =
-    orgSubject && orgIssuer
-      ? profileSet.getOp(orgSubject, orgIssuer) ||
-        profileSet.getWebsiteOp(orgSubject, orgIssuer)
-      : null;
-
-  if (!op) {
-    return <NotFound variant="op" />;
-  }
-  const holder = op.findHolderItem();
-  if (!holder) {
-    return <NotFound variant="holder" />;
-  }
-  const roles = op.roles;
-  const site = profileSet.getWebsiteProfilePair()?.dp.findOgWebsiteItem();
-  const paths = {
-    back: {
-      pathname: props.back,
-      search: queryParams.toString(),
-    },
+  const { siteProfile } = useSiteProfile();
+  const { ops, isLoading } = useCredentials();
+  if (isLoading) return <Loading />;
+  const op = ops?.find(
+    (op) =>
+      op.media?.doc.issuer === orgIssuer &&
+      op.media?.doc.credentialSubject.id === orgSubject,
+  );
+  if (!op?.media) return null;
+  const backPath = {
+    pathname: props.back,
+    search: queryParams.toString(),
   };
   return (
     <Template
-      paths={paths}
+      backPath={backPath}
       contentType={contentType ?? "ContentType_Document"}
-      site={site}
-      op={op}
-      holder={holder}
-      roles={roles}
+      certificates={op.annotations ?? []}
+      wsp={siteProfile?.credential.doc}
+      wmp={op.media.doc}
+      verifiedCp={op.core}
     />
   );
 }

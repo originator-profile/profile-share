@@ -1,14 +1,14 @@
 {
-  "DpFilter_All": {
+  "CaFilter_All": {
     "message": "All"
   },
-  "DpFilter_MainContent": {
+  "CaFilter_MainContent": {
     "message": "Main Content"
   },
-  "DpFilter_Other": {
+  "CaFilter_Other": {
     "message": "Other"
   },
-  "DpFilter_Advertisements": {
+  "CaFilter_Advertisements": {
     "message": "Advertisements"
   },
   "ContentType_MainContent": {
@@ -29,10 +29,10 @@
   "ContentType_Site": {
     "message": "Website"
   },
-  "HolderSummary_EditorialGuidelines": {
+  "WebMediaProfileSummary_EditorialGuidelines": {
     "message": "Editorial Guidelines"
   },
-  "HolderSummary_PrivacyPolicy": {
+  "WebMediaProfileSummary_PrivacyPolicy": {
     "message": "Privacy Policy"
   },
   "Loading_RetrievingAndValidatingProfile": {
@@ -52,42 +52,6 @@
         "example": "https://example.com"
       }
     }
-  },
-  "NotFound_OrganizationOrPublication": {
-    "message": "organization or publication"
-  },
-  "NotFound_Organization": {
-    "message": "organization"
-  },
-  "NotFound_Publication": {
-    "message": "publication"
-  },
-  "NotFound_Holder": {
-    "message": "holder"
-  },
-  "NotFound_WebsiteAndPublication": {
-    "message": "website and publication"
-  },
-  "NotFound_InformationNotFound": {
-    "message": "Information on this $variant$ is missing",
-    "placeholders": {
-      "variant": {
-        "content": "$1",
-        "example": "publication"
-      }
-    }
-  },
-  "NotFound_PageMightBeMoved": {
-    "message": "Information for $variant$ may have been lost due to page relocation",
-    "placeholders": {
-      "variant": {
-        "content": "$1",
-        "example": "publication"
-      }
-    }
-  },
-  "NotFound_ViewOtherPublications": {
-    "message": "View other publications"
   },
   "ReliabilityGuide_HasReliabilityInformation": {
     "message": "$subject$ has reliability information",
@@ -209,16 +173,13 @@
   "Org_OrganizationInformation": {
     "message": "Organization Information"
   },
-  "Org_TechnicalInformation": {
-    "message": "Technical Information"
-  },
   "Org_ReliabilityInformation": {
     "message": "Reliability Information"
   },
-  "PublMain_TechnicalInformation": {
+  "Credentials_TechnicalInformation": {
     "message": "Technical Information"
   },
-  "PublSite_TechnicalInformation": {
+  "SiteProfile_TechnicalInformation": {
     "message": "Technical Information"
   },
   "Prohibition_DetailStatement": {
@@ -251,34 +212,34 @@
   "Error_ProfileNotFound": {
     "message": "Profile not found"
   },
-  "CredentialDetail_CredentialName": {
+  "CertificateDetail_CredentialName": {
     "message": "Certificate Name"
   },
-  "CredentialDetail_Certifier": {
+  "CertificateDetail_Certifier": {
     "message": "Certifier"
   },
-  "CredentialDetail_Verifier": {
+  "CertificateDetail_Verifier": {
     "message": "Verifier"
   },
-  "CredentialDetail_IssuedAt": {
+  "CertificateDetail_IssuedAt": {
     "message": "Issue Date"
   },
-  "CredentialDetail_ExpiredAt": {
+  "CertificateDetail_ExpiredAt": {
     "message": "Expiration Date"
   },
-  "CredentialDetail_Details": {
+  "CertificateDetail_Details": {
     "message": "For more details"
   },
   "Description_Description": {
     "message": "Description"
   },
-  "HolderTable_Holder": {
+  "WebMediaProfileTable_Holder": {
     "message": "Holder"
   },
-  "HolderTable_Address": {
+  "WebMediaProfileTable_Address": {
     "message": "Address"
   },
-  "HolderTable_AddressData": {
+  "WebMediaProfileTable_AddressData": {
     "message": "$street_address$, $locality$, $region$, $postal_code$",
     "placeholders": {
       "postal_code": {
@@ -299,25 +260,25 @@
       }
     }
   },
-  "HolderTable_URL": {
+  "WebMediaProfileTable_URL": {
     "message": "URL"
   },
-  "HolderTable_PhoneNum": {
+  "WebMediaProfileTable_PhoneNum": {
     "message": "Phone Number"
   },
-  "HolderTable_Email": {
+  "WebMediaProfileTable_Email": {
     "message": "Email Address"
   },
-  "HolderTable_CorpNum": {
+  "WebMediaProfileTable_CorpNum": {
     "message": "Corporate Number"
   },
-  "HolderTable_Contact": {
+  "WebMediaProfileTable_Contact": {
     "message": "Contact"
   },
-  "HolderTable_PrivacyPolicy": {
+  "WebMediaProfileTable_PrivacyPolicy": {
     "message": "Privacy Policy"
   },
-  "HolderTable_Principle": {
+  "WebMediaProfileTable_Principle": {
     "message": "Editorial Guidelines"
   },
   "ProjectSummary_Statement_1": {
@@ -338,50 +299,20 @@
   "TechInfo_TechInfo": {
     "message": "Technical Information"
   },
-  "TechTable_VerificationResult": {
-    "message": "Verification Result"
-  },
-  "TechTable_VerificationError": {
-    "message": "Verification Error"
-  },
-  "TechTable_Subject": {
-    "message": "Subject"
-  },
-  "TechTable_Issuer": {
-    "message": "Issuer"
-  },
-  "TechTable_OPRegistry": {
-    "message": "OP Registry"
-  },
-  "TechTable_OPSubject": {
-    "message": "OP Subject"
-  },
-  "TechTable_IssuedAt": {
-    "message": "Issue Date"
-  },
-  "TechTable_ExpiredAt": {
-    "message": "Expiration Date"
-  },
-  "WebsiteMainTable_PublishDate": {
+  "ArticleTable_PublishDate": {
     "message": "Publish Date"
   },
-  "WebsiteMainTable_LastModified": {
+  "ArticleTable_LastModified": {
     "message": "Last Modified"
   },
-  "WebsiteMainTable_EditorInChief": {
+  "ArticleTable_EditorInChief": {
     "message": "Editor-in-Chief"
   },
-  "WebsiteMainTable_Author": {
+  "ArticleTable_Author": {
     "message": "Article Author"
   },
-  "WebsiteMainTable_Category": {
+  "ArticleTable_Category": {
     "message": "Genre"
-  },
-  "WebsiteSubTable_URL": {
-    "message": "URL"
-  },
-  "WebsiteSubTable_Category": {
-    "message": "Category"
   },
   "Profile_Failed": {
     "message": "Failed"
