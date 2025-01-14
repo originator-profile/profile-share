@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-originator-profile",
-  "version": "0.1.2-alpha.0",
+  "version": "0.1.2",
   "private": true,
   "type": "module",
   "main": "./eslint.config.mjs",

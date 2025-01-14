@@ -1,7 +1,7 @@
 {
   "name": "@originator-profile/web-ext",
   "description": "Profile Web Extension",
-  "version": "0.1.2-alpha.0",
+  "version": "0.1.2",
   "private": true,
   "type": "commonjs",
   "bugs": {
@@ -43,11 +43,11 @@
     "jsonld": "^8.3.2",
     "just-extend": "^6.2.0",
     "npm-run-all2": "7.0.2",
-    "simple-tree-utils": "^2.1.0",
     "postcss": "^8.4.47",
     "postcss-load-config": "^6.0.1",
     "react-router": "^7.0.0",
     "react-use": "^17.5.1",
+    "simple-tree-utils": "^2.1.0",
     "swr": "^2.2.5",
     "tailwind-config-originator-profile": "workspace:*",
     "tailwindcss": "^3.4.14",
