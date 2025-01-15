@@ -27,7 +27,7 @@ export async function fetchSiteProfile(
               payload: result,
             },
           )
-        : { ok: true, result };
+        : { ok: true, result, origin: doc.location.origin };
     } else {
       return new SiteProfileFetchFailed("Site Profile を取得できませんでした", {
         error: new Error(`HTTP ステータスコード ${response.status}`),

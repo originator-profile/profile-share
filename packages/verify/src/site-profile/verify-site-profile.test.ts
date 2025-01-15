@@ -126,7 +126,7 @@ const wsp: WebsiteProfile = {
     type: "WebSite",
     name: "Example Website",
     description: "Example Website Description",
-    url: "https://op-holder.example.org/",
+    url: "https://op-holder.example.org",
   },
 };
 
@@ -191,6 +191,7 @@ describe("Site Profileの検証", async () => {
       sp,
       LocalKeys({ keys: [authority.publicKey] }),
       opId.authority,
+      "https://op-holder.example.org",
     );
     const resultSp = await verify();
 
@@ -250,6 +251,7 @@ describe("Site Profileの検証", async () => {
       evilSp,
       LocalKeys({ keys: [authority.publicKey] }),
       opId.authority,
+      "https://op-holder.example.org",
     );
     const resultSp = await verify();
 
@@ -288,6 +290,7 @@ describe("Site Profileの検証", async () => {
       evilSp,
       LocalKeys({ keys: [authority.publicKey] }),
       opId.authority,
+      "https://op-holder.example.org",
     );
     const resultSp = await verify();
 
@@ -353,6 +356,7 @@ describe("Site Profileの検証", async () => {
       invalidSp,
       LocalKeys({ keys: [authority.publicKey] }),
       opId.authority,
+      "https://op-holder.example.org",
     );
     const resultSp = await verify();
 
@@ -381,5 +385,107 @@ describe("Site Profileの検証", async () => {
       media: toVerifyResult(wmp, holderOp.media, authority.publicKey),
     });
     expect(resultWsp).instanceOf(CoreProfileNotFound);
+  });
+
+  test("WSPのURLとオリジンが一致しない時に検証に失敗するか", async () => {
+    const verify = SpVerifier(
+      sp,
+      LocalKeys({ keys: [authority.publicKey] }),
+      opId.authority,
+      "https://localhost",
+    );
+    const resultSp = await verify();
+    expect(resultSp).instanceOf(SiteProfileVerifyFailed);
+  });
+
+  test("WSPのURLがnullの時に検証に失敗するか", async () => {
+    const wspWithNullCredentialSubjectUrl: WebsiteProfile = {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://originator-profile.org/ns/credentials/v1",
+        "https://originator-profile.org/ns/cip/v1",
+        {
+          "@language": "ja",
+        },
+      ],
+      type: ["VerifiableCredential", "WebsiteProfile"],
+      issuer: opId.holder,
+      credentialSubject: {
+        id: opId.holder,
+        type: "WebSite",
+        name: "Example Website",
+        description: "Example Website Description",
+        url: "null",
+      },
+    };
+
+    const evilSp: SiteProfile = {
+      originators: ops,
+      credential: await signJwtVc(
+        wspWithNullCredentialSubjectUrl,
+        holder.privateKey,
+        signOptions,
+      ),
+    };
+
+    const verify = SpVerifier(
+      evilSp,
+      LocalKeys({ keys: [authority.publicKey] }),
+      opId.authority,
+      "https://localhost",
+    );
+    const resultSp = await verify();
+    expect(resultSp).instanceOf(SiteProfileVerifyFailed);
+  });
+
+  test("オリジンがnullの時に検証に失敗するか", async () => {
+    const verify = SpVerifier(
+      sp,
+      LocalKeys({ keys: [authority.publicKey] }),
+      opId.authority,
+      "null",
+    );
+    const resultSp = await verify();
+    expect(resultSp).instanceOf(SiteProfileVerifyFailed);
+  });
+
+  test("WSPのURLとオリジンが共にnullの時に検証に失敗するか", async () => {
+    const wspWithNullCredentialSubjectUrl: WebsiteProfile = {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://originator-profile.org/ns/credentials/v1",
+        "https://originator-profile.org/ns/cip/v1",
+        {
+          "@language": "ja",
+        },
+      ],
+      type: ["VerifiableCredential", "WebsiteProfile"],
+      issuer: opId.holder,
+      credentialSubject: {
+        id: opId.holder,
+        type: "WebSite",
+        name: "Example Website",
+        description: "Example Website Description",
+        url: "null",
+      },
+    };
+
+    const evilSp: SiteProfile = {
+      originators: ops,
+      credential: await signJwtVc(
+        wspWithNullCredentialSubjectUrl,
+        holder.privateKey,
+        signOptions,
+      ),
+    };
+
+    const verify = SpVerifier(
+      evilSp,
+      LocalKeys({ keys: [authority.publicKey] }),
+      opId.authority,
+      "null",
+    );
+    const resultSp = await verify();
+    expect(resultSp).instanceOf(SiteProfileVerifyFailed);
   });
 });

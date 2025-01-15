@@ -2,6 +2,7 @@ import { FromSchema, JSONSchema } from "json-schema-to-ts";
 import { OpCipContext } from "./context/op-cip-context";
 import { Image } from "./image";
 import { OpVc } from "./op-vc";
+import { AllowedOrigin } from "./allowed-origin";
 
 const subject = {
   type: "object",
@@ -24,17 +25,7 @@ const subject = {
       type: "string",
       title: "Web サイトの説明",
     },
-    url: {
-      title:
-        "[Origin](https://www.rfc-editor.org/rfc/rfc6454) を [ASCII Serialization](https://www.rfc-editor.org/rfc/rfc6454#section-6.2) した文字列です。",
-      anyOf: [
-        { type: "string" },
-        {
-          type: "array",
-          items: { type: "string" },
-        },
-      ],
-    },
+    url: AllowedOrigin,
   },
   required: ["id", "type", "name", "url"],
 } as const satisfies JSONSchema;

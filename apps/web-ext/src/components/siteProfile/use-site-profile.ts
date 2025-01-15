@@ -35,6 +35,7 @@ async function fetchVerifiedSiteProfile([, tabId]: [
     },
     key,
     `dns:${import.meta.env.PROFILE_ISSUER}`,
+    parsed.origin,
   );
 
   const verifiedSp = await verifySp();

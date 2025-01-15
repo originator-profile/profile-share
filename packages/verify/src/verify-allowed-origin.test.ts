@@ -155,4 +155,11 @@ describe("verify-allowed-origin", () => {
       verifyAllowedOrigin("https://example.co", "https://example.com"),
     ).toBeFalsy();
   });
+
+  test('"null"オリジンを与えた時にfalseが返されるか', () => {
+    expect(verifyAllowedOrigin("null", "https://example.com")).toBeFalsy();
+    expect(verifyAllowedOrigin("https://example.com", "null")).toBeFalsy();
+    expect(verifyAllowedOrigin("https://example.com", ["null"])).toBeFalsy();
+    expect(verifyAllowedOrigin("null", "null")).toBeFalsy();
+  });
 });

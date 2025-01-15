@@ -49,7 +49,11 @@ test("Ssite Profile のあるサイトで Site Profile が得られる", async (
   window.document.body.innerHTML = `
 <body></body>`;
   const result = await fetchSiteProfile(window.document as unknown as Document);
-  expect(result).toEqual({ ok: true, result: siteProfile });
+  expect(result).toEqual({
+    ok: true,
+    result: siteProfile,
+    origin: "https://example.com",
+  });
 });
 
 test("複数の Site Profile を提示されたとき無効", async () => {

@@ -10,5 +10,10 @@ export function verifyAllowedOrigin(
   origin: URL["origin"],
   allowedOrigins: AllowedOrigin,
 ): boolean {
+  // "null" という文字列のオリジンは即座に false を返す
+  if (origin === "null") {
+    return false;
+  }
+
   return [allowedOrigins].flat().includes(origin);
 }

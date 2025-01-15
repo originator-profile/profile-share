@@ -12,8 +12,14 @@ import {
 } from "../originator-profile-set/errors";
 import { SpVerificationResult } from "./types";
 import { SiteProfileInvalid, SiteProfileVerifyFailed } from "./verify-errors";
+import { verifyAllowedOrigin } from "../verify-allowed-origin";
 
-export function SpVerifier(sp: SiteProfile, keys: Keys, issuer: string) {
+export function SpVerifier(
+  sp: SiteProfile,
+  keys: Keys,
+  issuer: string,
+  origin: URL["origin"],
+) {
   async function verify(): Promise<SpVerificationResult> {
     const verifyOps = OpsVerifier(sp.originators, keys, issuer);
     const opsVerified = await verifyOps();
@@ -61,7 +67,14 @@ export function SpVerifier(sp: SiteProfile, keys: Keys, issuer: string) {
         credential,
       });
     }
-    /* TODO: WebsiteProfile の url を検証する */
+
+    if (!verifyAllowedOrigin(origin, decodedWsp.doc.credentialSubject.url)) {
+      return new SiteProfileVerifyFailed("Origin not allowed", {
+        originators: opsVerified,
+        credential,
+      });
+    }
+
     return { originators: opsVerified, credential };
   }
   return verify;

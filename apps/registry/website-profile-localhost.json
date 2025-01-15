@@ -10,8 +10,8 @@
   "type": ["VerifiableCredential", "WebsiteProfile"],
   "issuer": "dns:localhost",
   "credentialSubject": {
-    "id": "dns:localhost:",
-    "url": "http://localhost:8080/app/debugger",
+    "id": "http://localhost:8080",
+    "url": "http://localhost:8080",
     "type": "WebSite",
     "name": "<Webサイトのタイトル>",
     "description": "<Webサイトの説明>"
