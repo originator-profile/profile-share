@@ -30,7 +30,7 @@ REQUIRED. 必ず `["VerifiableCredential", "Certificate"]` にしてください
 - `id`: REQUIRED. Certificate を保有する組織の OP ID です。
 - `type`: REQUIRED. 個別の Certificate を定義している文書で指定します。
 - `certificationSystem`: REQUIRED. 認証制度の ID です。
-- `description`: REQUIRED. この証明書に関する説明です。
+- `description`: OPTIONAL. この証明書に関する説明です。
 - `image`: OPTIONAL. [`image` データ型](./context.md#the-image-datatype) の JSON-LD Node Object でなければなりません (MUST)。
 - `certifier`: OPTIONAL. 認証機関の名前です。
 - `verifier`: OPTIONAL. 検証機関の名前です。
@@ -42,7 +42,7 @@ REQUIRED. 認証制度を表す JSON-LD Node Object です。次のプロパテ�
 - `id`: REQUIRED. 認証制度の ID を URI 形式で指定してください。
 - `type`: REQUIRED. `CertificationSystem` でなければなりません (MUST)。
 - `name`: REQUIRED.　認証制度の名前です。
-- `description`: REQUIRED. 認証制度の説明です。
+- `description`: OPTIONAL. 認証制度の説明です。
 - `ref`: RECOMMENDED. 認証制度の詳細を知るための人が読むためのページの URL です。
 
 ## Appendix

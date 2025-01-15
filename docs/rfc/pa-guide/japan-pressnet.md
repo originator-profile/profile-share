@@ -37,10 +37,18 @@ REQUIRED. 証明書発行組織の OP ID です。
 - `id`: REQUIRED. 証明書保有組織の OP ID です。
 - `type`: REQUIRED. `CertificateProperties` にしてください。
 - `certificationSystem`: REQUIRED. 認証制度の ID です。
+- `description`: OPTIONAL. この証明書に関する説明です。
+- その他のプロパティは [Certificate](../certificate.md) を参照してください。
 
 #### `certificationSystem`
 
-REQUIRED. 認証制度を表す JSON-LD Node Object です。次の値にしてください。
+REQUIRED. 認証制度を表す JSON-LD Node Object です。
+
+- `id`: REQUIRED. 認証制度の ID を URI 形式で指定してください。
+- `type`: REQUIRED. `CertificationSystem` でなければなりません (MUST)。
+- `name`: REQUIRED.　認証制度の名前です。
+- `description`: OPTIONAL. 認証制度の説明です。
+- その他のプロパティは [Certificate](../certificate.md) を参照してください。
 
 ```json
 {
