@@ -19,6 +19,7 @@ export type FetchSiteProfileResult =
   | {
       ok: true;
       result: SiteProfile;
+      origin: URL["origin"];
     }
   | SiteProfileFetchFailed
   | SiteProfileFetchInvalid;
