@@ -1,5 +1,5 @@
 *.log
-.docusaurus
+.astro
 .env
 .phpunit.result.cache
 .turbo
@@ -14,9 +14,5 @@ vendor
 /apps/web-ext/dist*
 /apps/web-ext/screenshots
 /apps/web-ext/web-ext-artifacts*
-/docs/spec/assets/openapi.json
-/docs/spec/er.md
-/docs/spec/model/assets/*
-/pages
-/static/api
-/static/ts
+/public/api
+/public/ts

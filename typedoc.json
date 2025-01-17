@@ -1,7 +1,7 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "readme": "src/ts.md",
-  "out": "static/ts",
+  "out": "public/ts",
   "entryPointStrategy": "packages",
   "entryPoints": [
     "packages/core",

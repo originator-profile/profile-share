@@ -1,6 +1,6 @@
-<!-- https://docs.originator-profile.org/ts/ -->
+<!-- https://reference.originator-profile.org/ts/ -->
 
-[ドキュメント](/)
+[ドキュメント](https://docs.originator-profile.org/)
 
 # TSDoc
 
