@@ -8,6 +8,18 @@ async function importURLPatternPolyfill() {
 }
 
 /**
+ * URLのエンコード部分を正規化する
+ * ライブラリによって取得時にエンコード部分が小文字になるため、大文字にします
+ * @param url 正規化対象URL文字列
+ * @returns 正規化した結果
+ */
+function ReplaceEncode(url: string): string {
+  return url.replace(/(%[0-9a-f]{2}?)+/g, function (match) {
+    return match.toUpperCase();
+  });
+}
+
+/**
  * 対象のURLがAllowedUrlの中に含まれているか検証する
  * @param url ウェブページのURL
  * @param allowedUrl 情報の対象となるURL
@@ -24,7 +36,7 @@ export async function verifyAllowedUrl(
     if (!value) {
       return false;
     }
-    const pattern = new URLPattern(value);
-    return pattern.test(url);
+    const pattern = new URLPattern(ReplaceEncode(value));
+    return pattern.test(ReplaceEncode(url));
   });
 }

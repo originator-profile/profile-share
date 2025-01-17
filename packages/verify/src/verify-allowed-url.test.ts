@@ -226,4 +226,21 @@ describe("verify-allowed-url", () => {
       ).toBeTruthy();
     });
   });
+
+  test("エンコード部分のケースインセンシティブ検証", async () => {
+    expect(
+      await verifyAllowedUrl(
+        "https://example.com/2023/04/06/%e4%b8%8d%e5%85%b7%e5%90%88535/",
+        "https://example.com/2023/04/06/%E4%B8%8D%E5%85%B7%E5%90%88535/",
+      ),
+    ).toBeTruthy();
+  });
+  test("エンコード部分以外のケースセンシティブ検証", async () => {
+    expect(
+      await verifyAllowedUrl(
+        "https://example.com/maps/",
+        "https://example.com/MAPS/",
+      ),
+    ).toBeFalsy();
+  });
 });

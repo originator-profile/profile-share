@@ -183,6 +183,12 @@ CA の検証者は次のことを検証することができます。
 1. CA が参照するウェブページの URL を取得します。
 2. CA に `allowedUrl` プロパティの配列の要素それぞれと 1. で得た URL がマッチするか確認します。アルゴリズムは[URL Pattern の `test(input, baseURL)`メソッド](https://urlpattern.spec.whatwg.org/#dom-urlpattern-test)を使います。
 
+:::note
+
+パーセントエンコードは[RFC 3986 Section 2.1](https://www.rfc-editor.org/rfc/rfc3986#section-2.1)に沿って大文字に正規化してから比較を行います
+
+:::
+
 ### `allowedOrigin` の検証 {#allowed-origin-validation}
 
 検証者は次の手順に従って `allowedOrigin` プロパティを検証できます (OPTIONAL)。
