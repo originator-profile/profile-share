@@ -24,7 +24,7 @@ export const CertificationSystem = {
       format: "uri",
     },
   },
-  required: ["id", "type", "name", "description"],
+  required: ["id", "type", "name"],
 } as const satisfies JSONSchema;
 
 export type CertificationSystem = FromSchema<typeof CertificationSystem>;
