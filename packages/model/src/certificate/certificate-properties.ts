@@ -20,7 +20,7 @@ export const CertificateProperties = {
     },
     certificationSystem: CertificationSystem,
   },
-  required: ["id", "type", "certificationSystem", "description"],
+  required: ["id", "type", "certificationSystem"],
 } as const satisfies JSONSchema;
 
 export type CertificateProperties = FromSchema<typeof CertificateProperties>;
