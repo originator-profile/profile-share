@@ -7,6 +7,7 @@ import {
   RequestRepository,
   UserAccountRepository,
   WebsiteRepository,
+  WspRepository,
 } from "@originator-profile/registry-db";
 import { AccountService } from "./account";
 import { AdminService } from "./admin";
@@ -71,6 +72,7 @@ export const Services = (options: Options = { config: {} }) => {
     adRepository: AdRepository(),
     caRepository: CaRepository,
     certificationSystemRepository: CertificationSystemRepository(),
+    wspRepository: WspRepository,
   };
 };
 

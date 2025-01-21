@@ -67,6 +67,11 @@ function OpenApi(
         "x-displayName": "Originator Profile",
       },
       {
+        name: "sp",
+        description: "Site Profile",
+        "x-displayName": "Site Profile",
+      },
+      {
         name: "accounts",
         description: "アカウント",
         "x-displayName": "アカウント",

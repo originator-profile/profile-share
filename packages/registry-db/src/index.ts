@@ -11,3 +11,4 @@ export * from "./website";
 
 export * as CaRepository from "./ca";
 export * as OpAccountRepository from "./op-account";
+export * as WspRepository from "./wsp";

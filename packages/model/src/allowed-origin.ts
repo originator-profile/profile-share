@@ -7,7 +7,7 @@ const Item = {
 
 export const AllowedOrigin = {
   title: "Allowed Origin",
-  oneOf: [
+  anyOf: [
     Item,
     {
       type: "array",

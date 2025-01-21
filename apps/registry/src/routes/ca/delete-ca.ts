@@ -1,5 +1,5 @@
 import { parseCaId } from "@originator-profile/core";
-import type { FastifyRequest, FastifySchema } from "fastify";
+import type { FastifyReply, FastifyRequest, FastifySchema } from "fastify";
 import type { FromSchema, JSONSchema } from "json-schema-to-ts";
 import description from "./delete-ca.doc.md?raw";
 
@@ -38,9 +38,12 @@ export async function preValidation(
 
 export async function handler(
   req: FastifyRequest<{ Params: Params }>,
+  reply: FastifyReply,
 ): Promise<void> {
   await req.server.services.caRepository.destroy(
     req.accountId as string,
     req.params.id,
   );
+
+  reply.status(204);
 }

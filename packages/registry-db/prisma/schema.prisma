@@ -28,6 +28,18 @@ model cas {
   value    String
 }
 
+/// Website Profile
+model wsps {
+  id       String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  /// Web サイトの URL
+  url      String   @unique
+  /// 保有組織
+  holder   accounts @relation(fields: [holderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  holderId String   @db.Uuid
+  /// Website Profile (JWT)
+  value    String
+}
+
 /// Signed Originator Profile
 model oldOps {
   id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -124,6 +136,8 @@ model accounts {
   ops                            ops[]
   /// 保有 Content Attestation
   cas                            cas[]
+  /// 保有 Content Attestation
+  wsps                           wsps[]
   /// 公開鍵
   keys                           keys[]
   /// 署名鍵 (JWKをUTF-8文字列化し、JWE形式で暗号化した構造)
