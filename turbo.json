@@ -25,7 +25,7 @@
       "outputs": []
     },
     "type-check": {
-      "dependsOn": [],
+      "dependsOn": ["@originator-profile/registry-db#build"],
       "outputs": []
     },
     "@originator-profile/web-ext#build": {
