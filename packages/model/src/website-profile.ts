@@ -1,8 +1,8 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
+import { AllowedOrigin } from "./allowed-origin";
 import { OpCipContext } from "./context/op-cip-context";
 import { Image } from "./image";
 import { OpVc } from "./op-vc";
-import { AllowedOrigin } from "./allowed-origin";
 
 const subject = {
   type: "object",
