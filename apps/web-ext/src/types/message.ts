@@ -4,21 +4,6 @@ import {
 } from "@originator-profile/ui";
 import { ProfilePair } from "@originator-profile/verify";
 
-export type fetchWebsiteProfilePairMessageRequest = {
-  type: "fetch-website-profile-pair";
-  /** エポックミリ秒 */
-  timestamp: number;
-};
-export type fetchWebsiteProfilePairMessageResponse = {
-  type: "fetch-website-profile-pair";
-  /** JsonLdDocument の場合 true、ProfilesFetchFailed の場合 false */
-  ok: boolean;
-  /** JSON 文字列 (JsonLdDocument または ProfilesFetchFailed) */
-  data: string;
-  /** 閲覧しているコンテンツの URL の origin 文字列 */
-  origin: string;
-};
-
 export type FetchSiteProfileMessageRequest = {
   type: "fetch-site-profile";
   /** エポックミリ秒 */
@@ -78,12 +63,10 @@ export type SelectOverlayDpMessageRequest = {
   dp: DpPayloadWithMetadata;
 };
 export type ContentScriptMessageRequest =
-  | fetchWebsiteProfilePairMessageRequest
   | OverlayProfilesMessageRequest
   | CloseWindowMessageRequest
   | FetchSiteProfileMessageRequest;
 export type ContentScriptMessageResponse =
-  | fetchWebsiteProfilePairMessageResponse
   | OverlayProfilesMessageResponse
   | CloseWindowMessageResponse
   | FetchSiteProfileMessageResponse;

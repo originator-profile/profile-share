@@ -1,16 +1,13 @@
-import { setupServer } from "msw/node";
-import { HttpResponse, http } from "msw";
-import { beforeAll, afterEach, afterAll, test, expect } from "vitest";
-import { Window } from "happy-dom";
-import { fetchSiteProfile } from "./fetch-site-profile";
 import {
   OriginatorProfileSetItem,
   SiteProfile,
 } from "@originator-profile/model";
-import {
-  SiteProfileFetchFailed,
-  SiteProfileFetchInvalid,
-} from "./fetch-errors";
+import { Window } from "happy-dom";
+import { HttpResponse, http } from "msw";
+import { setupServer } from "msw/node";
+import { afterAll, afterEach, beforeAll, expect, test } from "vitest";
+import { SiteProfileFetchFailed, SiteProfileFetchInvalid } from "./errors";
+import { fetchSiteProfile } from "./fetch-site-profile";
 
 const server = setupServer();
 
@@ -81,9 +78,9 @@ test("Site Profile が設置されていないとき Site Profile の取得に�
   const result = await fetchSiteProfile(window.document as unknown as Document);
   expect(result).toBeInstanceOf(SiteProfileFetchFailed);
   // @ts-expect-error result is WebsiteMetadataFetchFailed
-  expect(result.message).toBe("Site Profile を取得できませんでした");
+  expect(result.message).toBe("Site Profile fetch failed");
   expect((result as SiteProfileFetchFailed).result.error?.message).toBe(
-    "HTTP ステータスコード 404",
+    "HTTP status code 404",
   );
 });
 
@@ -99,5 +96,5 @@ test("Site Profile の JSON parse に失敗したときエラーが返る", asyn
   const result = await fetchSiteProfile(window.document as unknown as Document);
   expect(result).toBeInstanceOf(SiteProfileFetchFailed);
   // @ts-expect-error result is WebsiteMetadataFetchFailed
-  expect(result.message).toContain(`Site Profile を取得できませんでした:`);
+  expect(result.message).toContain(`Site Profile fetch failed:`);
 });

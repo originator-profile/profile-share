@@ -1,23 +1,23 @@
-import { useTitle } from "react-use";
-import { Navigate } from "react-router";
-import { buildPublUrl, routes } from "../utils/routes";
-import { useSiteProfile } from "../components/siteProfile";
+import { SiteProfileFetchFailed } from "@originator-profile/presentation";
+import { _ } from "@originator-profile/ui";
 import {
-  SiteProfileFetchFailed,
+  OpsVerifyFailed,
   SiteProfileInvalid,
   SiteProfileVerifyFailed,
   VerifiedOps,
   VerifiedSp,
-  OpsVerifyFailed,
 } from "@originator-profile/verify";
+import { Navigate } from "react-router";
+import { useTitle } from "react-use";
+import Loading from "../components/Loading";
 import Unsupported from "../components/Unsupported";
-import { _ } from "@originator-profile/ui";
 import {
   CasVerifyFailed,
-  useCredentials,
   VerifiedCas,
+  useCredentials,
 } from "../components/credentials";
-import Loading from "../components/Loading";
+import { useSiteProfile } from "../components/siteProfile";
+import { buildPublUrl, routes } from "../utils/routes";
 
 function Redirect({ tabId, cas }: { tabId: number; cas?: VerifiedCas }) {
   /* TODO: オーバーレイ表示を新モデルに対応して

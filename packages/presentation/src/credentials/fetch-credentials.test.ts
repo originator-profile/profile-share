@@ -10,7 +10,7 @@ import {
   expect,
   test,
 } from "vitest";
-import { ProfilesFetchFailed } from "./errors";
+import { CredentialsFetchFailed } from "./errors";
 import { fetchOriginatorProfileSet } from "./fetch-credentials";
 
 const server = setupServer();
@@ -62,11 +62,9 @@ describe("Originator Profile Set", () => {
     const result = await fetchOriginatorProfileSet(
       window.document as unknown as Document,
     );
-    expect(result).toBeInstanceOf(ProfilesFetchFailed);
-    // @ts-expect-error result is ProfilesFetchFailed
-    expect(result.message).toBe(
-      `プロファイルを取得できませんでした:\nInvalid URL`,
-    );
+    expect(result).toBeInstanceOf(CredentialsFetchFailed);
+    // @ts-expect-error result is CredentialsFetchFailed
+    expect(result.message).toBe(`Credentials fetch failed:\nInvalid URL`);
   });
 
   test("取得先に Originator Profile Set が存在しないとき取得に失敗", async () => {
@@ -87,10 +85,10 @@ describe("Originator Profile Set", () => {
     const result = await fetchOriginatorProfileSet(
       window.document as unknown as Document,
     );
-    expect(result).toBeInstanceOf(ProfilesFetchFailed);
-    // @ts-expect-error result is ProfilesFetchFailed
+    expect(result).toBeInstanceOf(CredentialsFetchFailed);
+    // @ts-expect-error result is CredentialsFetchFailed
     expect(result.message).toBe(
-      `プロファイルを取得できませんでした:\nHTTP ステータスコード 404`,
+      `Credentials fetch failed:\nHTTP status code 404`,
     );
   });
 });
@@ -135,7 +133,7 @@ describe("<script> 要素が2つ以上存在するとき", () => {
     const result = await fetchOriginatorProfileSet(
       window.document as unknown as Document,
     );
-    expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
+    expect(result).not.toBeInstanceOf(CredentialsFetchFailed);
     expect(result).toMatchSnapshot();
   });
 });
@@ -173,7 +171,7 @@ describe("<script>要素から Originator Profile Set を取得する", () => {
     const result = await fetchOriginatorProfileSet(
       window.document as unknown as Document,
     );
-    expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
+    expect(result).not.toBeInstanceOf(CredentialsFetchFailed);
     expect(result).toMatchSnapshot();
   });
 
@@ -187,7 +185,7 @@ describe("<script>要素から Originator Profile Set を取得する", () => {
     const result = await fetchOriginatorProfileSet(
       window.document as unknown as Document,
     );
-    expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
+    expect(result).not.toBeInstanceOf(CredentialsFetchFailed);
     expect(result).toMatchSnapshot();
   });
 
@@ -202,7 +200,7 @@ describe("<script>要素から Originator Profile Set を取得する", () => {
     const result = await fetchOriginatorProfileSet(
       window.document as unknown as Document,
     );
-    expect(result).not.toBeInstanceOf(ProfilesFetchFailed);
+    expect(result).not.toBeInstanceOf(CredentialsFetchFailed);
     expect(result).toMatchSnapshot();
   });
 });

@@ -1,7 +1,4 @@
-import {
-  SiteProfileFetchFailed,
-  SiteProfileFetchInvalid,
-} from "./fetch-errors";
+import { SiteProfileFetchFailed, SiteProfileFetchInvalid } from "./errors";
 import { FetchSiteProfileResult } from "./types";
 
 function getSiteProfileUrl(origin: string) {
@@ -29,14 +26,14 @@ export async function fetchSiteProfile(
           )
         : { ok: true, result, origin: doc.location.origin };
     } else {
-      return new SiteProfileFetchFailed("Site Profile を取得できませんでした", {
-        error: new Error(`HTTP ステータスコード ${response.status}`),
+      return new SiteProfileFetchFailed("Site Profile fetch failed", {
+        error: new Error(`HTTP status code ${response.status}`),
       });
     }
   } catch (e) {
     if (e instanceof Error || e instanceof window.Error) {
       return new SiteProfileFetchFailed(
-        `Site Profile を取得できませんでした:\n${e.message}`,
+        `Site Profile fetch failed:\n${e.message}`,
         { error: e },
       );
     } else {

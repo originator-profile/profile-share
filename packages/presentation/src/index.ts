@@ -1,3 +1,2 @@
-export * from "./errors";
-export * from "./fetch-credentials";
-export * from "./fetch-site-profile";
+export * from "./credentials";
+export * from "./siteProfile";
