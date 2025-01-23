@@ -1,19 +1,16 @@
 import { stringifyWithError } from "@originator-profile/core";
+import { fetchSiteProfile } from "@originator-profile/presentation";
 import {
-  fetchWebsiteProfilePair,
-  fetchSiteProfile,
-} from "@originator-profile/verify";
-import {
-  ProfilePayloadWithMetadata,
   DpPayloadWithMetadata,
+  ProfilePayloadWithMetadata,
 } from "@originator-profile/ui";
+import { siteProfileMessenger } from "./components/siteProfile";
 import {
   ContentScriptMessageRequest,
   ContentScriptMessageResponse,
   ContentWindowPostMessageEvent,
 } from "./types/message";
-import { initialize, activate, deactivate } from "./utils/iframe";
-import { siteProfileMessenger } from "./components/siteProfile";
+import { activate, deactivate, initialize } from "./utils/iframe";
 
 let profiles: ProfilePayloadWithMetadata[] = [];
 let websiteProfiles: ProfilePayloadWithMetadata[] = [];
@@ -28,15 +25,6 @@ async function handleMessageResponse(
       const data = await fetchSiteProfile(document);
       return {
         type: "fetch-site-profile",
-        ok: !(data instanceof Error),
-        data: stringifyWithError(data),
-        origin: document.location.origin,
-      };
-    }
-    case "fetch-website-profile-pair": {
-      const data = await fetchWebsiteProfilePair(document);
-      return {
-        type: "fetch-website-profile-pair",
         ok: !(data instanceof Error),
         data: stringifyWithError(data),
         origin: document.location.origin,

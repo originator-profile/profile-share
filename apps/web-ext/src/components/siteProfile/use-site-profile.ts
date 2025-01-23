@@ -1,8 +1,5 @@
-import {
-  FetchSiteProfileResult,
-  SpVerifier,
-  VerifiedSp,
-} from "@originator-profile/verify";
+import { FetchSiteProfileResult } from "@originator-profile/presentation";
+import { SpVerifier, VerifiedSp } from "@originator-profile/verify";
 import { useParams } from "react-router";
 import useSWRImmutable from "swr/immutable";
 import { getRegistryKeys } from "../../utils/get-registry-keys";

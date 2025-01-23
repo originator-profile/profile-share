@@ -209,9 +209,6 @@
   "Prohibition_StatementDetail": {
     "message": "Learn more about why this message is displayed..."
   },
-  "Error_ProfileNotFound": {
-    "message": "Profile not found"
-  },
   "CertificateDetail_CredentialName": {
     "message": "Certificate Name"
   },
@@ -319,30 +316,5 @@
   },
   "Profile_Succeeded": {
     "message": "Succeeded"
-  },
-  "Error_ProfileHTTPError": {
-    "message": "HTTP Status Code $status$",
-    "placeholders": {
-      "status": {
-        "content": "$1",
-        "example": "404"
-      }
-    }
-  },
-  "Error_ProfileNotFetched": {
-    "message": "Could not fetch profile:\n$cause$",
-    "placeholders": {
-      "cause": {
-        "content": "$1"
-      }
-    }
-  },
-  "Error_WebsiteProfilePairNotFetched": {
-    "message": "Could not fetch website Profile Pair:\n$cause$",
-    "placeholders": {
-      "cause": {
-        "content": "$1"
-      }
-    }
   }
 }

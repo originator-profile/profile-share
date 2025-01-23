@@ -1,14 +1,9 @@
-import { ProfilesFetchFailed } from "./errors";
 import {
   ContentAttestationSet,
   OriginatorProfileSet,
 } from "@originator-profile/model";
-
-export type FetchCredentialSetResult<T> = T | ProfilesFetchFailed;
-export type FetchCredentialsResult = {
-  ops: FetchCredentialSetResult<OriginatorProfileSet>;
-  cas: FetchCredentialSetResult<ContentAttestationSet>;
-};
+import { CredentialsFetchFailed } from "./errors";
+import { FetchCredentialSetResult, FetchCredentialsResult } from "./types";
 
 function getEndpoints(doc: Document, mediaType: string): string[] {
   const endpoints = [
@@ -61,7 +56,7 @@ async function fetchCredentialSet<
         const res = await fetch(endpoint);
 
         if (!res.ok) {
-          throw new ProfilesFetchFailed(`HTTP ステータスコード ${res.status}`);
+          throw new CredentialsFetchFailed(`HTTP status code ${res.status}`);
         }
 
         return await res.json();
@@ -70,8 +65,8 @@ async function fetchCredentialSet<
     profiles = profiles.concat(profileSetFromEndpoints.flat()) as T;
   } catch (e) {
     if (e instanceof Error || e instanceof window.Error) {
-      return new ProfilesFetchFailed(
-        `プロファイルを取得できませんでした:\n${e.message}`,
+      return new CredentialsFetchFailed(
+        `Credentials fetch failed:\n${e.message}`,
         {
           cause: e,
         },

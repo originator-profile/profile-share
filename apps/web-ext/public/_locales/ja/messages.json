@@ -209,12 +209,6 @@
   "Prohibition_StatementDetail": {
     "message": "このメッセージが表示される理由についてもっと詳しく..."
   },
-  "Error_ProfileNotFound": {
-    "message": "プロファイルが見つかりませんでした"
-  },
-  "Error_WebsiteProfilePairNotFound": {
-    "message": "website Profile Pairを取得できませんでした"
-  },
   "CertificateDetail_CredentialName": {
     "message": "証明書名"
   },
@@ -322,30 +316,5 @@
   },
   "Profile_Succeeded": {
     "message": "成功"
-  },
-  "Error_ProfileHTTPError": {
-    "message": "HTTP ステータスコード $status$",
-    "placeholders": {
-      "status": {
-        "content": "$1",
-        "example": "404"
-      }
-    }
-  },
-  "Error_ProfileNotFetched": {
-    "message": "プロファイルを取得できませんでした:\n$cause$",
-    "placeholders": {
-      "cause": {
-        "content": "$1"
-      }
-    }
-  },
-  "Error_WebsiteProfilePairNotFetched": {
-    "message": "website Profile Pairを取得できませんでした:\n$cause$",
-    "placeholders": {
-      "cause": {
-        "content": "$1"
-      }
-    }
   }
 }
