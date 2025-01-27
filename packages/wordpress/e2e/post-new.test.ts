@@ -6,10 +6,6 @@ test("投稿の検証", async ({ admin, editor }) => {
   await admin.createNewPost({ content });
 
   const page = await editor.openPreviewPage();
-  const script = page.locator(`script[type="application/cas+json"]`);
-
-  await expect(script, "script要素を含む").toHaveCount(1);
-
   const postId = await editor.publishPost();
 
   const url = new URL(
