@@ -23,7 +23,7 @@ const body = Object.assign(UnsignedContentAttestation, {
       type: ["VerifiableCredential", "ContentAttestation"],
       issuer: "<OP ID>",
       credentialSubject: {
-        id: "<CA ID>",
+        id: "<CA ID (登録時省略可・更新時必須)>",
         type: "Article",
         headline: "<コンテンツのタイトル>",
         description: "<コンテンツの説明>",
@@ -61,6 +61,12 @@ export const schema = {
     200: ContentAttestationSet,
   },
 } as const satisfies FastifySchema;
+
+export async function preValidation(
+  req: FastifyRequest<{ Body: Body }>,
+): Promise<void> {
+  req.body.credentialSubject.id ??= `urn:uuid:${crypto.randomUUID()}`;
+}
 
 export async function handler(
   req: FastifyRequest<{ Body: Body }>,
