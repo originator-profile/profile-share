@@ -13,7 +13,6 @@ final class Uca {
 	 * 未署名 Content Attestation
 	 *
 	 * @param string  $issuer CA 発行者
-	 * @param string  $subject CA ID
 	 * @param string  $url 投稿のパーマリンクURL
 	 * @param string  $locale ロケール
 	 * @param string  $html HTML
@@ -26,7 +25,6 @@ final class Uca {
 	 */
 	public function __construct(
 		public string $issuer,
-		public string $subject,
 		public string $url,
 		public string $locale,
 		public string $html,
@@ -57,7 +55,6 @@ final class Uca {
 			'type'              => array( 'VerifiableCredential', 'ContentAttestation' ),
 			'issuer'            => $this->issuer,
 			'credentialSubject' => array(
-				'id'            => $this->subject,
 				'type'          => 'Article',
 				'headline'      => $this->headline,
 				'image'         => $this->image ? array( 'id' => $this->image ) : null,

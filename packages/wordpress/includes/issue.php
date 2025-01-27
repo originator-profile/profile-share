@@ -3,8 +3,6 @@
 
 namespace Profile\Issue;
 
-use Ramsey\Uuid\Uuid;
-
 require_once __DIR__ . '/class-uca.php';
 use Profile\Uca\Uca;
 
@@ -46,6 +44,7 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 	}
 
 	$uca_list = create_uca_list( $post, $issuer_id );
+	$post_cas = array();
 
 	foreach ( $uca_list as $page => $uca ) {
 		++$page;
@@ -60,8 +59,12 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 			}
 		}
 
-		issue_ca( $uca, $endpoint, $admin_secret );
+		$cas = issue_ca( $uca, $endpoint, $admin_secret );
+		$cas = is_array( $cas ) ? $cas : array();
+		array_push( $post_cas, $cas );
 	}
+
+	\update_post_meta( $post->ID, '_profile_post_cas', $post_cas );
 }
 
 /**
@@ -119,12 +122,10 @@ function create_uca_list( \WP_Post $post, string $issuer_id ): array {
 			}
 		}
 
-		$uuid   = 'urn:uuid:' . Uuid::uuid5( Uuid::NAMESPACE_URL, $uri );
 		$locale = \str_replace( '_', '-', \get_locale() );
 
 		$uca = new Uca(
 			issuer: $issuer_id,
-			subject: $uuid,
 			url: $permalink,
 			locale: $locale,
 			html: $html,
