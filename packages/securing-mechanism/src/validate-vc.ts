@@ -1,9 +1,9 @@
 import addFormats from "ajv-formats";
-import Ajv from "ajv/dist/2019";
+import Ajv from "ajv/dist/2019.js";
 import { AnySchema, ValidationError } from "ajv";
 import { UnverifiedVc, VcValidationResult, VcValidationFailure } from "./types";
 import { VcValidateFailed } from "./errors";
-import * as draft7MetaSchema from "ajv/dist/refs/json-schema-draft-07.json";
+import * as draft7MetaSchema from "ajv/dist/refs/json-schema-draft-07.json" with { type: "json" };
 
 /** データモデルへの適合性確認のためのバリデーター */
 export function VcValidator<V extends UnverifiedVc>(jsonSchema: AnySchema) {

@@ -3,7 +3,7 @@
   "description": "Profile Web Extension",
   "version": "0.1.3-alpha.0",
   "private": true,
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/originator-profile/profile/issues"
   },
@@ -69,7 +69,7 @@
     "dev": "dotenv -e ../registry/.env.development.auth node esbuild.mjs -- --mode=development --issuer=localhost --registry-url=http://localhost:8080/",
     "dev:firefox": "dotenv -e ../registry/.env.development.auth node esbuild.mjs -- --mode=development --issuer=localhost --registry-url=http://localhost:8080/ -t firefox-desktop",
     "lint": "eslint --fix .",
-    "e2e": "LC_ALL=ja_JP.UTF-8 dotenv -e ../registry/.env.development playwright test",
+    "e2e": "NODE_OPTIONS='--conditions=typescript' LC_ALL=ja_JP.UTF-8 dotenv -e ../registry/.env.development playwright test",
     "test": "vitest run",
     "type-check": "tsc --noEmit"
   }
