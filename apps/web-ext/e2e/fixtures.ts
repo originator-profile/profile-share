@@ -1,8 +1,13 @@
 import { test as base, type BrowserContext, Page } from "@playwright/test";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import util from "node:util";
 
 const sleep = util.promisify(setTimeout);
+
+// moduleだと __dirname が使えないので代わりを用意
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export const test = base.extend<{
   context: BrowserContext;
