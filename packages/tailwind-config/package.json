@@ -1,6 +1,6 @@
 {
   "name": "tailwind-config-originator-profile",
-  "version": "0.1.3-alpha.0",
+  "version": "0.1.3",
   "private": true,
   "type": "commonjs",
   "main": "./tailwind-config.cjs",
