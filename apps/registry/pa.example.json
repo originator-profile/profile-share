@@ -10,7 +10,7 @@
   "type": ["VerifiableCredential", "Certificate"],
   "issuer": "dns:localhost",
   "credentialSubject": {
-    "issuer": "dns:localhost",
+    "id": "dns:localhost",
     "type": "Organization",
     "addressCountry": "JP",
     "name": "Originator Profile 技術研究組合 (開発用)",
