@@ -21,15 +21,6 @@ async function handleMessageResponse(
   message: ContentScriptMessageRequest,
 ): Promise<ContentScriptMessageResponse> {
   switch (message.type) {
-    case "fetch-site-profile": {
-      const data = await fetchSiteProfile(document);
-      return {
-        type: "fetch-site-profile",
-        ok: !(data instanceof Error),
-        data: stringifyWithError(data),
-        origin: document.location.origin,
-      };
-    }
     case "overlay-profiles":
       activate(overlay);
       profiles = message.profiles;
