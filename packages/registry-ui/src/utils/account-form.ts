@@ -138,7 +138,7 @@ export const formValidationSchema: Yup.ObjectSchema<IFormInput> = Yup.object({
     .url("不正な URL です。")
     .required("このフィールドを入力してください。"),
   contactTitle: Yup.string().optional(),
-  contactUrl: Yup.string().trim().url("不正な URL です。").optional(),
+  contactUrl: Yup.string().trim().optional(), // NOTE: Yup.url() は mailto: や tel: などの URL スキームを許容しないので使用しない
   publishingPrincipleTitle: Yup.string().optional(),
   publishingPrincipleUrl: Yup.string()
     .trim()
