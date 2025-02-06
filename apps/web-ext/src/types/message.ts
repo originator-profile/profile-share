@@ -4,26 +4,6 @@ import {
 } from "@originator-profile/ui";
 import { ProfilePair } from "@originator-profile/verify";
 
-export type extractBodyRequest = {
-  type: "extract-body";
-  /** エポックミリ秒 */
-  timestamp: number;
-  /** 署名対象テキストを指定する JSON 文字列 (DpLocator 型) */
-  dpLocator: string;
-  /** Dp が広告か否か (boolean) */
-  isAdvertisement: boolean;
-};
-
-export type extractBodyResponse = {
-  type: "extract-body";
-  /** 署名対象テキストの場合 true、ProfileBodyExtractFailed の場合 false */
-  ok: boolean;
-  /** JSON 文字列（署名対象の文字列 または ProfileBodyExtractFailed） */
-  data: string;
-  /** iframe の URL 文字列 */
-  url: string;
-};
-
 export type OverlayProfilesMessageRequest = {
   type: "overlay-profiles";
   /** エポックミリ秒 */
@@ -53,8 +33,6 @@ export type ContentScriptMessageRequest =
 export type ContentScriptMessageResponse =
   | OverlayProfilesMessageResponse
   | CloseWindowMessageResponse;
-export type ContentScriptAllFramesMessageRequest = extractBodyRequest;
-export type ContentScriptAllFramesMessageResponse = extractBodyResponse;
 export type BackgroundMessageRequest = SelectOverlayDpMessageRequest;
 export type PopupMessageRequest = SelectOverlayDpMessageRequest;
 export type EnterOverlayMessageRequest = {

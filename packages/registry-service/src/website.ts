@@ -1,11 +1,9 @@
-import { Jwk } from "@originator-profile/model";
 import {
   Website,
   WebsiteCreate,
   WebsiteRepository,
   WebsiteUpdate,
 } from "@originator-profile/registry-db";
-import { signBody } from "@originator-profile/sign";
 import { websites } from "@prisma/client";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 
@@ -40,17 +38,6 @@ export const WebsiteService = ({ websiteRepository }: Options) => ({
     accountId: string;
   }): Promise<websites> {
     return await websiteRepository.delete({ id, accountId });
-  },
-
-  /**
-   * 対象のテキストへの署名
-   * @param privateKey プライベート鍵
-   * @param body 対象のテキスト
-   * @return Detached Compact JWS
-   * @deprecated See {@link signBody}
-   */
-  async signBody(privateKey: Jwk, body: string): Promise<string> {
-    return await signBody(body, privateKey);
   },
 
   /** {@link WebsiteRepository.getProfileSet} */
