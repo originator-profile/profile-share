@@ -31,7 +31,7 @@ model cas {
 /// Website Profile
 model wsps {
   id       String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  /// Web サイトの URL
+  /// Web サイトのオリジン (形式: https://<ホスト名>)
   url      String   @unique
   /// 保有組織
   holder   accounts @relation(fields: [holderId], references: [id], onUpdate: Cascade, onDelete: Cascade)

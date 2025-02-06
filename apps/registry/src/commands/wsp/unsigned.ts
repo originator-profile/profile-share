@@ -16,8 +16,8 @@ const exampleWebsiteProfile = {
   type: ["VerifiableCredential", "WebsiteProfile"],
   issuer: "<OP ID>",
   credentialSubject: {
-    id: "<Web サイトの URL>",
-    url: "<Web サイトの URL>",
+    id: "<Web サイトのオリジン (形式: https://<ホスト名>)>",
+    url: "<Web サイトのオリジン (形式: https://<ホスト名>)>",
     type: "WebSite",
     name: "<Web サイトの名称>",
     description: "<Web サイトの説明>",

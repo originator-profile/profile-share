@@ -10,7 +10,7 @@ const subject = {
   properties: {
     id: {
       type: "string",
-      title: "Web サイトの URL",
+      title: "Web サイトのオリジン (形式: https://<ホスト名>)",
       format: "uri",
     },
     type: {
