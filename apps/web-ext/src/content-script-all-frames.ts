@@ -3,51 +3,13 @@ import {
   fetchCredentials,
   FetchCredentialSetResult,
 } from "@originator-profile/presentation";
-import { extractBody, verifyIntegrity } from "@originator-profile/verify";
+import { verifyIntegrity } from "@originator-profile/verify";
 import {
   credentialsMessenger,
   FetchCredentialsMessageResult,
   FrameLocation,
 } from "./components/credentials";
-import {
-  ContentScriptAllFramesMessageRequest,
-  ContentScriptAllFramesMessageResponse,
-} from "./types/message";
 import "./utils/cors-basic-auth";
-
-async function handleMessageResponse(
-  message: ContentScriptAllFramesMessageRequest,
-): Promise<ContentScriptAllFramesMessageResponse> {
-  switch (message.type) {
-    case "extract-body": {
-      const data = await extractBody(
-        document.location.href,
-
-        async (location) =>
-          Array.from(document.querySelectorAll<HTMLElement>(location)),
-        JSON.parse(message.dpLocator),
-        !message.isAdvertisement,
-      );
-      return {
-        type: "extract-body",
-        ok: !(data instanceof Error),
-        data: stringifyWithError(data),
-        url: document.location.href,
-      };
-    }
-  }
-}
-
-chrome.runtime.onMessage.addListener(function (
-  message: ContentScriptAllFramesMessageRequest,
-  _,
-  sendResponse: (response: ContentScriptAllFramesMessageResponse) => void,
-): true /* NOTE: Chrome の場合、Promise には非対応 */ {
-  void handleMessageResponse(message).then(
-    (response) => response && sendResponse(response),
-  );
-  return true;
-});
 
 const toFetchCredentialsMessageResult = <T>(
   result: FetchCredentialSetResult<T>,
