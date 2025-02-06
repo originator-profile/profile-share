@@ -1,6 +1,6 @@
 # Profile Web Extension
 
-Web ブラウザーで Originator Profile と Document Profile の閲覧と検証を行うアプリです。
+Web ブラウザーで Originator Profile と Content Attestation の閲覧と検証を行うアプリです。
 
 ## 使い方
 
