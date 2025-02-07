@@ -74,6 +74,7 @@ export async function verifyCas(
     resultCas.some((ca) => {
       return (
         ca.attestation instanceof CaInvalid ||
+        ca.attestation instanceof CoreProfileNotFound ||
         ca.attestation instanceof CaVerifyFailed
       );
     })
