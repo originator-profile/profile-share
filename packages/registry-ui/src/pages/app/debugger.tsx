@@ -1,5 +1,4 @@
 import {
-  JwtVcIssuerKeys,
   OriginatorProfileDecoder,
   OriginatorProfileVerifier,
   ProfileClaimsValidationFailed,
@@ -8,6 +7,7 @@ import {
   VerifyResult,
   VerifyResults,
 } from "@originator-profile/verify";
+import { RemoteKeys } from "@originator-profile/cryptography";
 import { Fragment, useState, type ChangeEvent, type FormEvent } from "react";
 import ReactJson from "react-json-view";
 import {
@@ -239,12 +239,12 @@ export default function Debugger() {
       import.meta.env.DEV && registry === "localhost"
         ? "http://localhost:8080/"
         : `https://${registry}/`;
-    const jwtVcIssuerMetadata = new URL(`${issuer}.well-known/jwt-vc-issuer`);
-    const issuerKey = JwtVcIssuerKeys(jwtVcIssuerMetadata);
+    const jwksEndPoint = new URL(`${issuer}.well-known/jwks.json`);
+    const issuerKey = RemoteKeys(jwksEndPoint);
 
     setValues((values) => ({
       ...values,
-      ["JWT VC Issuer Metadata Endpoint"]: jwtVcIssuerMetadata.href,
+      ["JWKS Endpoint"]: jwksEndPoint.href,
     }));
 
     switch (debugTarget) {

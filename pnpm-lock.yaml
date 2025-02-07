@@ -770,6 +770,9 @@ importers:
       '@originator-profile/core':
         specifier: workspace:*
         version: link:../core
+      '@originator-profile/cryptography':
+        specifier: workspace:*
+        version: link:../cryptography
       '@originator-profile/model':
         specifier: workspace:*
         version: link:../model

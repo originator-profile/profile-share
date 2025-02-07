@@ -6,7 +6,6 @@ export * from "./errors";
 export * from "./expand-profile-set";
 export * from "./fetch-profile-set";
 export * from "./integrity/";
-export * from "./keys/";
 export * from "./site-profile/";
 export * from "./types";
 export * from "./validate-certification-system";

@@ -25,6 +25,7 @@
     "@originator-profile/tsconfig": "workspace:*",
     "@originator-profile/ui": "workspace:*",
     "@originator-profile/verify": "workspace:*",
+    "@originator-profile/cryptography": "workspace:*",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "clsx": "^2.1.1",

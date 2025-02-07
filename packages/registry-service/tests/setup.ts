@@ -7,10 +7,6 @@ const endpoints = [
   http.get("https://originator-profile.org/context.jsonld", () => {
     return HttpResponse.json(context);
   }),
-  http.get("https://example.org/.well-known/jwt-vc-issuer", () => {
-    // 中身はダミー
-    return HttpResponse.json({});
-  }),
   http.get("https://example.com/integrity-target-text", () => {
     const binaryData = Buffer.from("Hello, world!\r\n", "utf-8");
     return HttpResponse.arrayBuffer(binaryData, {
