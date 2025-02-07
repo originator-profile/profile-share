@@ -1,6 +1,6 @@
 # Profile Registry
 
-Originator Profile と Document Profile の管理を行うシステムです。
+Originator Profile (OP) と Content Attestation (CA) の管理を行うシステムです。
 
 - [Deployment](#deployment)
 - [Dependencies](#dependencies)
@@ -13,8 +13,8 @@ Originator Profile と Document Profile の管理を行うシステムです。
 
 ### 公式デプロイ
 
-- OP レジストリサーバー: [oprexpt.originator-profile.org](https://oprexpt.originator-profile.org/)
-- DP レジストリサーバー: [dprexpt.originator-profile.org](https://dprexpt.originator-profile.org/)
+- OP サーバー (仮称): [oprexpt.originator-profile.org](https://oprexpt.originator-profile.org/)
+- CA サーバー: [dprexpt.originator-profile.org](https://dprexpt.originator-profile.org/)
 - 試験運用版: [oprdev.originator-profile.org](https://oprdev.originator-profile.org/) (本リポジトリの `main` ブランチへのコミットごとにデプロイされています)
 
 不具合の報告・脆弱性の報告は [GitHub Issues](https://github.com/originator-profile/profile/issues) にてお寄せください。
