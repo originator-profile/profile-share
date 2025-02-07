@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { formatDatetoYYYYmd } from "@originator-profile/core";
+import { formatLocaleDate } from "@originator-profile/core";
 import { VerifiedVc } from "@originator-profile/securing-mechanism";
 import { Certificate } from "@originator-profile/verify";
 import { twMerge } from "tailwind-merge";
@@ -40,13 +40,13 @@ function CertificateTable({ certificate }: Omit<Props, "className">) {
       {certificate.issuedAt && (
         <TableRow
           header={_("CertificateDetail_IssuedAt")}
-          data={formatDatetoYYYYmd(certificate.issuedAt)}
+          data={formatLocaleDate(certificate.issuedAt)}
         />
       )}
       {certificate.expiredAt && (
         <TableRow
           header={_("CertificateDetail_ExpiredAt")}
-          data={formatDatetoYYYYmd(certificate.expiredAt)}
+          data={formatLocaleDate(certificate.expiredAt)}
         />
       )}
     </Table>

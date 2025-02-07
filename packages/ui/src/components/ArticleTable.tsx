@@ -1,9 +1,9 @@
-import { formatDatetoYYYYmd } from "@originator-profile/core";
-import { twMerge } from "tailwind-merge";
+import { formatLocaleDate } from "@originator-profile/core";
 import { ArticleCA } from "@originator-profile/model";
+import { twMerge } from "tailwind-merge";
+import { _ } from "../utils";
 import Table from "./Table";
 import TableRow from "./TableRow";
-import { _ } from "../utils";
 
 type Props = {
   className?: string;
@@ -21,7 +21,7 @@ function ArticleTable({ className, article }: Props) {
       {article.credentialSubject.datePublished && (
         <TableRow
           header={_("ArticleTable_PublishDate")}
-          data={formatDatetoYYYYmd(
+          data={formatLocaleDate(
             new Date(article.credentialSubject.datePublished),
           )}
         />
@@ -29,7 +29,7 @@ function ArticleTable({ className, article }: Props) {
       {article.credentialSubject.dateModified && (
         <TableRow
           header={_("ArticleTable_LastModified")}
-          data={formatDatetoYYYYmd(
+          data={formatLocaleDate(
             new Date(article.credentialSubject.dateModified),
           )}
         />

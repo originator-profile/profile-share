@@ -94,12 +94,12 @@ export function parseIssuanceDate(input: string): Date {
 }
 
 /**
- * 日付をYYYY/m/d形式の文字列にフォーマットします。
- * @param date フォーマットする日付
- * @returns フォーマットされた日付文字列
+ * 日付をデフォルトロケールの長い形式の文字列に変換
+ * @param date 日付
+ * @returns デフォルトロケールの長い形式の文字列
  */
-export function formatDatetoYYYYmd(date: Date): string {
-  return date.toLocaleDateString("ja-JP", {
+export function formatLocaleDate(date: Date): string {
+  return date.toLocaleDateString(undefined, {
     year: "numeric",
     month: "long",
     day: "numeric",

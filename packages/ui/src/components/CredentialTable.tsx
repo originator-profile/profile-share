@@ -1,10 +1,10 @@
-import { twMerge } from "tailwind-merge";
-import { OpCredential } from "@originator-profile/model";
 import {
   expirationDateTimeLocaleFrom,
-  formatDatetoYYYYmd,
+  formatLocaleDate,
   isExpired,
 } from "@originator-profile/core";
+import { OpCredential } from "@originator-profile/model";
+import { twMerge } from "tailwind-merge";
 import { Table, TableRow } from "./";
 
 type Credential = Omit<OpCredential, "type" | "certifier" | "verifier"> & {
@@ -28,12 +28,12 @@ function CredentialTable({
       <TableRow
         className="[&_td]:text-gray-700"
         header="認定書発行日"
-        data={formatDatetoYYYYmd(new Date(data.issuedAt))}
+        data={formatLocaleDate(new Date(data.issuedAt))}
       />
       <TableRow
         className={twMerge(isExpired(data.expiredAt) && "[&_td]:text-danger")}
         header="有効期限"
-        data={expirationDateTimeLocaleFrom(data.expiredAt, "ja-JP", {
+        data={expirationDateTimeLocaleFrom(data.expiredAt, undefined, {
           year: "numeric",
           month: "long",
           day: "numeric",

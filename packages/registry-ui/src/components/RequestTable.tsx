@@ -1,4 +1,4 @@
-import { formatDatetoYYYYmd } from "@originator-profile/core";
+import { formatLocaleDate } from "@originator-profile/core";
 import { Request } from "../utils/request";
 
 type LatestRequestListProps = {
@@ -38,7 +38,7 @@ function RequestTableRow({ org, orgId, comment, date }: RequestTableRowProps) {
           className="block pl-4 py-2"
           href={`/app/review-op/accounts/${orgId}/`}
         >
-          {formatDatetoYYYYmd(date)}
+          {formatLocaleDate(date)}
         </a>
       </td>
     </tr>

@@ -1,15 +1,15 @@
-import { Fragment } from "react/jsx-runtime";
 import { Icon } from "@iconify/react";
+import { formatLocaleDate } from "@originator-profile/core";
+import { CredentialTable, Spinner } from "@originator-profile/ui";
 import { Link } from "react-router";
+import { Fragment } from "react/jsx-runtime";
 import { twMerge } from "tailwind-merge";
-import { Spinner, CredentialTable } from "@originator-profile/ui";
 import { useParams } from "../../../../../router";
-import { Account, useLatestRequest } from "../../../../../utils/request";
 import { useAccountLogo } from "../../../../../utils/account";
 import { NAMES } from "../../../../../utils/account-form";
 import { useCredentials } from "../../../../../utils/credential";
+import { Account, useLatestRequest } from "../../../../../utils/request";
 import { useUserAccount } from "../../../../../utils/user-account";
-import { formatDatetoYYYYmd } from "@originator-profile/core";
 
 interface BreadCrumbProps {
   accountName: string;
@@ -63,7 +63,7 @@ function GroupHeader(props: { accountName: string; createdAt: string }) {
     <section>
       <h1 className={"text-lg font-bold leading-7"}>{props.accountName}</h1>
       <p className={"text-xs font-normal text-gray-500"}>
-        申請提出日 {formatDatetoYYYYmd(new Date(props.createdAt))}
+        申請提出日 {formatLocaleDate(new Date(props.createdAt))}
       </p>
     </section>
   );
