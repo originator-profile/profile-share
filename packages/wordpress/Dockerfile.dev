@@ -6,4 +6,4 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php -r "unlink('composer-setup.php');"
 
 ENV SHELL=/bin/bash
-ENV PATH=/var/www/html/wp-content/plugins/profile/vendor/bin:${PATH}
+ENV PATH=/var/www/html/wp-content/plugins/ca-manager/vendor/bin:${PATH}
