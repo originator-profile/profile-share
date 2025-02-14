@@ -31,7 +31,7 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 
 	$admin_secret = \get_option( 'profile_ca_server_admin_secret' );
 	$hostname     = \get_option( 'profile_default_ca_server_hostname', PROFILE_DEFAULT_CA_SERVER_HOSTNAME );
-	$issuer_id    = \get_option( 'profile_ca_issuer_id', 'dns:' . $hostname );
+	$issuer_id    = \get_option( 'profile_ca_issuer_id' );
 	$endpoint     = "https://{$hostname}/ca";
 
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $hostname ) {

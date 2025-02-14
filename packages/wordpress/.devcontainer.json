@@ -1,7 +1,7 @@
 {
   "service": "wordpress",
   "dockerComposeFile": "compose.yml",
-  "workspaceFolder": "/workspaces/profile/packages/wordpress",
+  "workspaceFolder": "/workspaces/ca-manager/packages/wordpress",
   "postCreateCommand": "composer install",
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {}

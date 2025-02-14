@@ -9,4 +9,4 @@ wp core install \
 wp user create "${WORDPRESS_ADMIN_USER}" "${WORDPRESS_ADMIN_USER}@example.com" \
   --role=administrator \
   --user_pass="${WORDPRESS_ADMIN_PASSWORD}"
-wp plugin activate profile
+wp plugin activate ca-manager

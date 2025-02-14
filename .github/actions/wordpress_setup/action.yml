@@ -10,6 +10,6 @@ runs:
       shell: bash
       working-directory: packages/wordpress
     - name: Install WordPress dependencies
-      run: docker compose exec -w /var/www/html/wp-content/plugins/profile wordpress composer install
+      run: docker compose exec -w /var/www/html/wp-content/plugins/ca-manager wordpress composer install
       shell: bash
       working-directory: packages/wordpress
