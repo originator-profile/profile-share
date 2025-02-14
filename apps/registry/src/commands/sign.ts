@@ -80,12 +80,18 @@ const exampleWebMediaProfile = {
     },
     email: "contact@wmp-holder.example.jp",
     telephone: "0000000000",
-    contactTitle: "お問い合わせ",
-    contactUrl: "https://wmp-holder.example.jp/contact",
-    privacyPolicyTitle: "プライバシーポリシー",
-    privacyPolicyUrl: "https://wmp-holder.example.jp/privacy",
-    publishingPrincipleTitle: "新聞倫理綱領",
-    publishingPrincipleUrl: "https://wmp-holder.example.jp/statement",
+    contactPoint: {
+      id: "https://wmp-holder.example.jp/contact",
+      name: "お問い合わせ",
+    },
+    informationTransmissionPolicy: {
+      id: "https://wmp-holder.example.jp/statement",
+      name: "情報発信ポリシー",
+    },
+    privacyPolicy: {
+      id: "https://wmp-holder.example.jp/privacy",
+      name: "プライバシーポリシー",
+    },
     description: {
       type: "PlainTextDescription",
       data: "この文章はこの Web メディアに関する補足情報です。",
