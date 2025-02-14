@@ -24,12 +24,8 @@ const subject = {
     informationTransmissionPolicy: {
       type: "object",
       properties: {
-        id: {
-          title: "編集ガイドラインページ URL",
-          type: "string",
-          format: "uri",
-        },
-        name: { title: "編集ガイドラインページ表示名", type: "string" },
+        id: { title: "情報発信ポリシー URL", type: "string", format: "uri" },
+        name: { title: "情報発信ポリシー表示名", type: "string" },
       },
       required: ["id", "name"],
     },
