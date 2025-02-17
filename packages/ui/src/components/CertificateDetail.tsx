@@ -72,7 +72,9 @@ function CertificateDetail({ className, certificate }: Props) {
           <h2 className="text-xs font-bold mb-1.5">
             {certificate.doc.credentialSubject.certificationSystem.name}
           </h2>
-          <p className="text-xs text-gray-600">{certificate.doc.issuer} 発行</p>
+          <p className="text-xs text-gray-600">
+            {_("CertificateDetail_IssuedBy", certificate.doc.issuer)}
+          </p>
         </div>
       </header>
       {"description" in certificate.doc.credentialSubject && (
