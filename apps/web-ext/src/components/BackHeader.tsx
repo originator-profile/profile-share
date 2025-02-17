@@ -1,6 +1,6 @@
-import { Link } from "react-router";
 import { Icon } from "@iconify/react";
-import { Header } from "@originator-profile/ui";
+import { _, Header } from "@originator-profile/ui";
+import { Link } from "react-router";
 
 type Props = Parameters<typeof Link>[0];
 
@@ -18,7 +18,7 @@ function BackHeader({ className, children, ...props }: Props) {
           role="tooltip"
           className="![transform:translate(-50%,_150%)_scale(0)] group-hover:![transform:translate(-50%,_150%)_scale(1)]"
         >
-          戻る
+          {_("BackHeader_Back")}
         </span>
       </Link>
       {children}

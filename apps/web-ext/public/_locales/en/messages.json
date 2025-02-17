@@ -227,6 +227,24 @@
   "CertificateDetail_Details": {
     "message": "For more details"
   },
+  "CertificateDetail_IssuedBy": {
+    "message": "Issued by $ISSUER$",
+    "placeholders": {
+      "issuer": {
+        "content": "$1",
+        "example": "PA Issuer"
+      }
+    }
+  },
+  "CertificateSummary_IssuedBy": {
+    "message": "Issued by $ISSUER$",
+    "placeholders": {
+      "issuer": {
+        "content": "$1",
+        "example": "PA Issuer"
+      }
+    }
+  },
   "Description_Description": {
     "message": "Description"
   },
@@ -316,5 +334,8 @@
   },
   "Profile_Succeeded": {
     "message": "Succeeded"
+  },
+  "BackHeader_Back": {
+    "message": "Back"
   }
 }

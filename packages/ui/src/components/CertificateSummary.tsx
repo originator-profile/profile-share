@@ -3,6 +3,7 @@ import { Certificate } from "@originator-profile/verify";
 import { twMerge } from "tailwind-merge";
 import placeholderLogoMainUrl from "../assets/placeholder-logo-main.png";
 import Image from "../components/Image";
+import { _ } from "../utils/get-message";
 
 type Props = {
   className?: string;
@@ -36,11 +37,13 @@ function CertificateSummary({ className, certificate, onClick }: Props) {
           {certificate.doc.credentialSubject.certificationSystem.name}
         </span>
         <span className="text-xs text-gray-600">
-          {certificate.doc.credentialSubject.type === "CertificateProperties"
-            ? (certificate.doc.credentialSubject.certifier ??
-              certificate.doc.issuer)
-            : certificate.doc.issuer}{" "}
-          発行
+          {_(
+            "CertificateSummary_IssuedBy",
+            certificate.doc.credentialSubject.type === "CertificateProperties"
+              ? (certificate.doc.credentialSubject.certifier ??
+                  certificate.doc.issuer)
+              : certificate.doc.issuer,
+          )}
         </span>
       </span>
     </button>

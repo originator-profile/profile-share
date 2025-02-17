@@ -227,6 +227,24 @@
   "CertificateDetail_Details": {
     "message": "くわしくはこちら"
   },
+  "CertificateDetail_IssuedBy": {
+    "message": "$ISSUER$ 発行",
+    "placeholders": {
+      "issuer": {
+        "content": "$1",
+        "example": "PA 発行者"
+      }
+    }
+  },
+  "CertificateSummary_IssuedBy": {
+    "message": "$ISSUER$ 発行",
+    "placeholders": {
+      "issuer": {
+        "content": "$1",
+        "example": "PA 発行者"
+      }
+    }
+  },
   "Description_Description": {
     "message": "説明"
   },
@@ -316,5 +334,8 @@
   },
   "Profile_Succeeded": {
     "message": "成功"
+  },
+  "BackHeader_Back": {
+    "message": "戻る"
   }
 }
