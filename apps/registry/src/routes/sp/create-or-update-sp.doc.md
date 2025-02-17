@@ -40,3 +40,11 @@ curl -X POST https://dprexpt.originator-profile.org/sp \
   }
 }
 ```
+
+### 発行日時
+
+[ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) 形式で指定します。指定しない場合、リクエスト時点の日時が発行日時だとみなされます。
+
+### 期限切れ日時
+
+[ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) 形式で指定します。指定しない場合、発行日時の 1 年後が期限切れ日時だとみなされます。
