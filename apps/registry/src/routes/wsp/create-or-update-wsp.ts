@@ -1,12 +1,34 @@
 import { WebsiteProfile } from "@originator-profile/model";
 import type { FastifyRequest, FastifySchema } from "fastify";
-import type { FromSchema } from "json-schema-to-ts";
+import type { FromSchema, JSONSchema } from "json-schema-to-ts";
 import description from "./create-or-update-wsp.doc.md?raw";
 
 export const method = "POST";
 export const url = "";
 
-const body = Object.assign(WebsiteProfile, {
+const body = {
+  title: "Website Profile Request",
+  type: "object",
+  additionalProperties: true,
+  allOf: [
+    WebsiteProfile,
+    {
+      type: "object",
+      additionalProperties: true,
+      properties: {
+        issuedAt: {
+          type: "string",
+          format: "date-time",
+          title: "発行日時 (ISO 8601)",
+        },
+        expiredAt: {
+          type: "string",
+          format: "date-time",
+          title: "期限切れ日時 (ISO 8601)",
+        },
+      },
+    },
+  ],
   examples: [
     {
       "@context": [
@@ -29,11 +51,11 @@ const body = Object.assign(WebsiteProfile, {
           id: "<サムネイル画像URL>",
         },
       },
-      issuedAt: "<発行日時 (optional)>",
-      expiredAt: "<期限切れ日時 (optional)>",
+      issuedAt: "<発行日時 (例: 2006-01-02T15:04:05Z)>",
+      expiredAt: "<期限切れ日時 (例: 2006-01-02T15:04:05Z)>",
     },
   ],
-});
+} as const satisfies JSONSchema;
 
 type Body = FromSchema<typeof body>;
 

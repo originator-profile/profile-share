@@ -41,6 +41,10 @@ curl -X POST https://dprexpt.originator-profile.org/sp \
 }
 ```
 
+### Originator Profile Set (OPS)
+
+リクエストボディに `originators` プロパティを含め、必ず Originator Profile Set (OPS) を含める必要があります (MUST)。
+
 ### 発行日時
 
 [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) 形式で指定します。指定しない場合、リクエスト時点の日時が発行日時だとみなされます。
