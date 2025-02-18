@@ -1,0 +1,21 @@
+name: promote-to-heroku-prod
+on:
+  workflow_dispatch:
+  workflow_run:
+    branches:
+      - main
+    workflows:
+      - release
+    types:
+      - completed
+jobs:
+  main:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Promote to Heroku Production
+        run: npx heroku pipelines:promote --app=oprdev
+        env:
+          # NOTE: heroku authorizations:create にて作成可能
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
