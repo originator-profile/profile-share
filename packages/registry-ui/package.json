@@ -1,6 +1,6 @@
 {
   "name": "@originator-profile/registry-ui",
-  "version": "0.1.4-alpha.0",
+  "version": "0.1.4",
   "private": true,
   "type": "module",
   "exports": {
@@ -21,11 +21,11 @@
     "@hookform/resolvers": "^3.9.1",
     "@iconify/react": "^5.0.2",
     "@originator-profile/core": "workspace:*",
+    "@originator-profile/cryptography": "workspace:*",
     "@originator-profile/model": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
     "@originator-profile/ui": "workspace:*",
     "@originator-profile/verify": "workspace:*",
-    "@originator-profile/cryptography": "workspace:*",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "clsx": "^2.1.1",
