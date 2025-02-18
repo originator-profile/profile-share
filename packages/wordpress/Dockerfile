@@ -8,10 +8,10 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends zip \
   && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /var/www/html/wp-content/plugins/wordpress-profile-plugin
+WORKDIR /var/www/html/wp-content/plugins/ca-manager
 COPY . .
 RUN composer install --no-dev \
-  && zip -r /wordpress-profile-plugin.zip .
+  && zip -r /wordpress-ca-manager.zip .
 
 FROM scratch as artifact
-COPY --from=builder /wordpress-profile-plugin.zip .
+COPY --from=builder /wordpress-ca-manager.zip .
