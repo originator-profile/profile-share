@@ -20,7 +20,7 @@ WordPress での記事の公開時の Content Attestation (CA) の発行に役�
 ![](./assets/ca-manager-installation.webp)
 
 1. プラグインのダウンロード:
-   「[Releases](https://github.com/originator-profile/profile-share/releases)」にアクセスし、AssetsセクションからWordPressプラグイン（wordpress-profile-plugin.zip）を取得
+   「[Releases](https://github.com/originator-profile/profile-share/releases)」にアクセスし、AssetsセクションからWordPressプラグイン（wordpress-ca-manager.zip）を取得
 2. プラグインのアップロード:
    WordPress公式サイト「[プラグイン新規追加画面](https://ja.wordpress.org/support/article/plugins-add-new-screen/)」にある「プラグインをアップロード」の節を参照
 3. プラグインの有効化
