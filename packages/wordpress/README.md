@@ -272,4 +272,4 @@ WORDPRESS_DB_ROOT_PASSWORD
 $ docker build --output=dist .
 ```
 
-デプロイするには「[リリース方法](https://docs.originator-profile.org/release/)」を参照してください。
+デプロイするには「[リリース方法](https://docs.originator-profile.org/development/release/)」を参照してください。
