@@ -1,7 +1,6 @@
 # Originator Profile プロジェクト
 
-メディア・広告に関わる法人・個人の透明性に関する認定機関の報告結果を検証可能な方法で一般市民に提示することを目的としたプロジェクトです。
+Originator Profile 技術は、特定のコンテンツの善悪の価値判断を提供するものではなく、暗号的に検証可能な手段を提供することで、誰もが信頼性を評価できるようになることを目指しています。
 
 - [ドキュメント](https://docs.originator-profile.org/)
-- [仕様](https://docs.originator-profile.org/spec/)
 - [開発ガイド](https://docs.originator-profile.org/development/)
