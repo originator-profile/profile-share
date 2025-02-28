@@ -10,7 +10,8 @@ import {
   useModal,
 } from "@originator-profile/ui";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
-import { VerifiedOps } from "@originator-profile/verify";
+import { VerifiedCas, VerifiedOps } from "@originator-profile/verify";
+import flush from "just-flush";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { buildPublUrl } from "../../utils/routes";
@@ -18,10 +19,11 @@ import CaFilter from "../CaFilter";
 import CaSelector from "../CaSelector";
 import ReliabilityGuide from "../ReliabilityGuide";
 import WebMediaProfileSummaryCard from "../WebMediaProfileSummaryCard";
+import { overlayExtensionMessenger } from "../overlay/extension-events";
 import { BidResponse } from "../rtb";
 import { listCas } from "./cas";
 import { getContentType } from "./get-content-type";
-import { CredentialsProps, SupportedCa, VerifiedCas } from "./types";
+import { CredentialsProps, SupportedVerifiedCa } from "./types";
 
 export function Credentials(props: CredentialsProps) {
   const [caListType, setCaListType] =
@@ -41,35 +43,33 @@ export function Credentials(props: CredentialsProps) {
   function onFilterUpdate(caListType: Parameters<typeof listCas>[1]) {
     setCaListType(caListType);
     const newlyFilteredCas = listCas(props.cas, caListType);
-    const ca = newlyFilteredCas[0];
+    const [ca] = newlyFilteredCas;
     if (ca) {
-      void navigate(buildPublUrl(tabId, ca));
+      void navigate(buildPublUrl(tabId, ca.attestation.doc));
     }
   }
 
-  /* TODO: オーバーレイ表示を新モデルに対応して
-  const handleClickCa = (ca: SupportedCa) => {
-    chrome.tabs.sendMessage(Number(tabId), {
-      type: "overlay-profiles",
-      timestamp: Date.now(),
-      cas: JSON.stringify(props.cas),
-      activeCa: JSON.stringify(ca),
-    });
+  const handleClickCa = async (ca: SupportedVerifiedCa) => {
+    void overlayExtensionMessenger.sendMessage(
+      "enter",
+      {
+        cas: props.cas,
+        activeCa: ca,
+        wmps: flush(props.ops.map((op) => op.media?.doc)),
+      },
+      Number(tabId),
+    );
   };
-   */
 
   const contentType = getContentType(props.ca);
-  const ca = props.ca.attestation.doc as SupportedCa;
+  const ca = props.ca.attestation.doc;
 
   return (
     <div data-testid="cas" className="flex">
       <div className="flex flex-col border-r border-gray-200">
         <CaFilter caListType={caListType} setCaListType={onFilterUpdate} />
         <nav className="flex-shrink-0 w-16 overflow-y-auto bg-white sticky top-0 z-10 border-t border-gray-200">
-          <CaSelector
-            filteredCas={filteredCas}
-            // onClickCa={handleClickCa}
-          />
+          <CaSelector filteredCas={filteredCas} onClickCa={handleClickCa} />
         </nav>
       </div>
       <main className="flex-1">

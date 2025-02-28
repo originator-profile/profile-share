@@ -1,102 +1,100 @@
-import { useState, Fragment } from "react";
-import { useMount, useEvent } from "react-use";
-import { Dialog, Transition } from "@headlessui/react";
-import { IFramePostMessageEvent } from "../types/message";
-import DpMap from "../components/DpMap";
-import DpArea from "../components/DpArea";
-import { ProfileSet, DocumentProfile } from "@originator-profile/ui";
+import { WebMediaProfile } from "@originator-profile/model";
+import { useEffect, useState, useRef } from "react";
+import { useMount } from "react-use";
+import {
+  SupportedVerifiedCa,
+  SupportedVerifiedCas,
+} from "../components/credentials";
+import {
+  CasMap,
+  ContentsArea,
+  overlayWindowMessenger,
+} from "../components/overlay";
+
+function Panel(props: { children?: React.ReactNode }) {
+  const handleClick = (e: React.MouseEvent) => {
+    if (e.target !== e.currentTarget) e.stopPropagation();
+  };
+  return (
+    <div role="presentation" onClick={handleClick}>
+      {props.children}
+    </div>
+  );
+}
 
 function App() {
-  const [isOpen, setIsOpen] = useState(true);
-  const [profiles, setProfiles] = useState<ProfileSet>(new ProfileSet([]));
-  const [activeDp, setActiveDp] = useState<DocumentProfile | null>(null);
+  const [cas, setCas] = useState<SupportedVerifiedCas>([]);
+  const [activeCa, setActiveCa] = useState<SupportedVerifiedCa | null>(null);
+  const [wmps, setWmps] = useState<WebMediaProfile[]>([]);
+  const dialog = useRef<HTMLDialogElement>(null);
 
-  function closeModal() {
-    setIsOpen(false);
-  }
+  const handleClose = () => dialog.current?.close();
+  const handleOpen = () => dialog.current?.show();
+  const handleKeyDown = (e: React.KeyboardEvent) =>
+    e.key === "Escape" && handleClose();
 
-  function handleMessage(event: IFramePostMessageEvent) {
-    if (event.origin !== window.parent.location.origin) return;
-    let profileSet, dp, websiteProfiles;
-    switch (event.data.type) {
-      case "enter-overlay":
-        profileSet = ProfileSet.deserialize(
-          event.data.profiles,
-          websiteProfiles,
-        );
-
-        dp =
-          event.data.activeDp &&
-          DocumentProfile.deserialize(
-            event.data.activeDp.profile,
-            event.data.activeDp.metadata,
-          );
-        setProfiles(profileSet);
-        setActiveDp(dp);
-        break;
-      case "leave-overlay":
-        closeModal();
-        break;
-    }
+  function handleTransitionEnd() {
+    if (dialog.current?.open) return;
+    overlayWindowMessenger.sendMessage("leave", null, window.parent);
   }
 
   useMount(() => {
-    window.parent.postMessage({ type: "enter-overlay" });
+    overlayWindowMessenger.sendMessage(
+      "enter",
+      { cas, activeCa, wmps },
+      window.parent,
+    );
   });
-  useEvent("message", handleMessage);
 
-  function handleLeave() {
-    window.parent.postMessage({ type: "leave-overlay" });
-  }
-
-  async function handleClickDp(dp: DocumentProfile) {
-    setActiveDp(dp);
-    window.parent.postMessage({
-      type: "select-overlay-dp",
-      dp: dp.serialize(),
+  useEffect(() => {
+    overlayWindowMessenger.onMessage("enter", ({ data }) => {
+      setCas(data.cas);
+      setActiveCa(data.activeCa);
+      setWmps(data.wmps);
+      handleOpen();
     });
+
+    overlayWindowMessenger.onMessage("leave", () => {
+      handleClose();
+    });
+    return () => {
+      overlayWindowMessenger.removeAllListeners();
+    };
+  });
+
+  async function handleClickCa(ca: SupportedVerifiedCa) {
+    setActiveCa(ca);
+    overlayWindowMessenger.sendMessage(
+      "select",
+      { activeCa: ca },
+      window.parent,
+    );
   }
 
+  // NOTE: dialog ロールが非対話的要素とみなされる
+  // see https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/issues/932
+  /* eslint jsx-a11y/no-noninteractive-element-interactions: "off" */
   return (
-    // gh-907: Dialog内では `<details><summary /></details>` がうまく動作しない可能性があるので注意
-    <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={closeModal}>
-        <Transition.Child
-          as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-          afterLeave={handleLeave}
-        >
-          <DpArea dps={profiles.dps} />
-        </Transition.Child>
-
-        <div className="fixed inset-0 overflow-y-auto">
-          <div>
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
-              <Dialog.Panel>
-                <DpMap
-                  profiles={profiles}
-                  activeDp={activeDp}
-                  onClickDp={handleClickDp}
-                />
-              </Dialog.Panel>
-            </Transition.Child>
-          </div>
-        </div>
-      </Dialog>
-    </Transition>
+    <dialog
+      className="block w-screen h-screen bg-transparent transition-opacity duration-300 ease-in-out opacity-0 open:opacity-100 z-[calc(infinity)]"
+      onClick={handleClose}
+      onKeyDown={handleKeyDown}
+      onTransitionEnd={handleTransitionEnd}
+      ref={dialog}
+    >
+      <ContentsArea
+        className="absolute top-0 left-0"
+        contents={cas.flatMap((ca) => ca.attestation.doc.target)}
+      />
+      <Panel>
+        <CasMap
+          cas={cas}
+          activeCa={activeCa}
+          onClickCa={handleClickCa}
+          wmps={wmps}
+        />
+      </Panel>
+    </dialog>
   );
 }
 

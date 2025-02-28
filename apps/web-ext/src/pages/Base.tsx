@@ -1,39 +1,51 @@
 import { SiteProfileFetchFailed } from "@originator-profile/presentation";
 import { _ } from "@originator-profile/ui";
 import {
+  CasVerifyFailed,
   OpsVerifyFailed,
   SiteProfileInvalid,
   SiteProfileVerifyFailed,
+  VerifiedCas,
   VerifiedOps,
   VerifiedSp,
 } from "@originator-profile/verify";
+import flush from "just-flush";
+import { useCallback } from "react";
 import { Navigate } from "react-router";
-import { useTitle } from "react-use";
+import { useMount, useTitle } from "react-use";
 import Loading from "../components/Loading";
 import Unsupported from "../components/Unsupported";
 import {
-  CasVerifyFailed,
-  VerifiedCas,
+  SupportedVerifiedCas,
   useCredentials,
 } from "../components/credentials";
+import { overlayExtensionMessenger } from "../components/overlay/extension-events";
 import { useSiteProfile } from "../components/siteProfile";
 import { buildPublUrl, routes } from "../utils/routes";
 
-function Redirect({ tabId, cas }: { tabId: number; cas?: VerifiedCas }) {
-  /* TODO: オーバーレイ表示を新モデルに対応して
-  /*
+function Redirect({
+  tabId,
+  ops,
+  cas,
+}: {
+  tabId: number;
+  ops?: VerifiedOps;
+  cas?: SupportedVerifiedCas;
+}) {
+  const [ca] = cas ?? [];
   useMount(() => {
     if (cas) {
-      chrome.tabs.sendMessage(Number(tabId), {
-        type: "overlay-profiles",
-        timestamp: Date.now(),
-        cas: JSON.stringify(cas),
-        activeCa: ca ? JSON.stringify(ca) : undefined,
-      });
+      void overlayExtensionMessenger.sendMessage(
+        "enter",
+        {
+          cas,
+          activeCa: ca ?? null,
+          wmps: flush(ops?.map((op) => op.media?.doc) ?? []),
+        },
+        tabId,
+      );
     }
   });
-  */
-  const [ca] = cas ?? [];
 
   return <Navigate to={buildPublUrl(tabId, ca?.attestation.doc)} />;
 }
@@ -90,6 +102,13 @@ function Base() {
   const { tabId, siteProfile, error: sp_error } = useSiteProfile();
   const { ops, cas, error: credentials_error } = useCredentials();
   useTitle([_("Base_ContentsInformation"), origin].filter(Boolean).join(" ― "));
+  window.addEventListener(
+    "pagehide",
+    useCallback(
+      () => void overlayExtensionMessenger.sendMessage("leave", null, tabId),
+      [tabId],
+    ),
+  );
 
   if (isLoading({ siteProfile, sp_error, ops, cas, credentials_error })) {
     return <Loading />;
@@ -104,7 +123,7 @@ function Base() {
 
   // NOTE: SP と CAS のいずれかが閲覧可能なら表示する
   if (siteProfile || (cas && cas.length > 0)) {
-    return <Redirect tabId={tabId} cas={cas} />;
+    return <Redirect tabId={tabId} ops={ops} cas={cas} />;
   }
 
   const errors = [sp_error, credentials_error].filter(

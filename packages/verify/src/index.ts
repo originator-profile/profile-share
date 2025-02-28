@@ -1,4 +1,5 @@
 export * from "./content-attestation";
+export * from "./content-attestation-set";
 export * from "./decode";
 export * from "./decode-originator-profile";
 export * from "./decode-sd-jwt";
@@ -6,6 +7,7 @@ export * from "./errors";
 export * from "./expand-profile-set";
 export * from "./fetch-profile-set";
 export * from "./integrity/";
+export * from "./originator-profile-set";
 export * from "./site-profile/";
 export * from "./types";
 export * from "./validate-certification-system";
@@ -13,4 +15,3 @@ export * from "./verify-allowed-origin";
 export * from "./verify-originator-profile";
 export * from "./verify-profiles";
 export * from "./verify-token";
-export * from "./originator-profile-set";

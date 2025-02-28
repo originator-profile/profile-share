@@ -1,38 +1,24 @@
-import { useEffect } from "react";
-import clsx from "clsx";
-import { OpHolder } from "@originator-profile/model";
-import { DpItemContent } from "@originator-profile/core";
-import {
-  Image,
-  DocumentProfile,
-  OriginatorProfile,
-} from "@originator-profile/ui";
+import { WebMediaProfile } from "@originator-profile/model";
+import { Image } from "@originator-profile/ui";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
-import useElements from "../utils/use-elements";
-import useRect from "../utils/use-rect";
+import clsx from "clsx";
+import { useEffect } from "react";
+import { SupportedVerifiedCa } from "../credentials";
+import useElements from "./use-elements";
+import useRect from "./use-rect";
 
-function Marker({
-  result,
-  rect,
-  dpTitle,
-  opHolder,
-  active,
-  onClick,
-}: {
-  result: { body?: string; bodyError?: string };
+function Marker(props: {
   rect: ResizeObserverEntry["contentRect"];
-  dpTitle: DpItemContent;
-  opHolder: OpHolder;
   active: boolean;
   onClick: () => void;
+  wmp?: WebMediaProfile;
 }) {
   const width = 54;
   const height = 54;
   const border = 4;
   const tailWidth = 30;
   const tailHeight = 12;
-  const logo = opHolder.logos?.find(({ isMain }) => isMain);
-  const isTopOverflow = rect.top < height + border + tailHeight;
+  const isTopOverflow = props.rect.top < height + border + tailHeight;
 
   const renderPolygon = () => {
     return (
@@ -44,8 +30,8 @@ function Marker({
           "absolute left-1/2 stroke-transparent -translate-x-1/2",
           isTopOverflow
             ? "top-0 -translate-y-full rotate-180"
-            : " bottom-0 translate-y-full",
-          active ? "fill-blue-500" : "fill-white",
+            : "bottom-0 translate-y-full",
+          props.active ? "fill-blue-500" : "fill-white",
         )}
       >
         <polygon points={`0,0 ${tailWidth / 2},${tailHeight} ${tailWidth},0`} />
@@ -58,26 +44,24 @@ function Marker({
       className="absolute"
       style={{
         top: isTopOverflow
-          ? rect.top - border + tailHeight
-          : rect.top - (height + border + tailHeight),
-        left: rect.left - (width + border * 2) / 2,
+          ? props.rect.top - border + tailHeight
+          : props.rect.top - (height + border + tailHeight),
+        left: props.rect.left - (width + border * 2) / 2,
       }}
     >
       <button
         className={clsx(
           "relative rounded",
-          active ? "bg-blue-500" : "bg-white",
+          props.active ? "bg-blue-500" : "bg-white",
         )}
-        title={`${opHolder.name} ${dpTitle.title} ${
-          result && (result.bodyError ? result.bodyError : (result.body ?? ""))
-        }`}
-        onClick={onClick}
+        title={props.wmp?.credentialSubject.name}
+        onClick={props.onClick}
       >
         <Image
           className="border box-content rounded border-gray-100 bg-white m-1"
-          src={logo?.url}
+          src={props.wmp?.credentialSubject.logo?.id}
           placeholderSrc={placeholderLogoMainUrl}
-          alt={opHolder.name ?? ""}
+          alt={props.wmp?.credentialSubject.name ?? ""}
           width={width}
           height={height}
         />
@@ -112,38 +96,30 @@ function Rect({
 }
 
 type Props = {
-  dp: DocumentProfile;
-  op: OriginatorProfile;
+  ca: SupportedVerifiedCa;
+  wmp?: WebMediaProfile;
   active: boolean;
-  onClickDp: (dp: DocumentProfile) => void;
+  onClickCa: (ca: SupportedVerifiedCa) => void;
 };
 
-function DpMarker({ dp, op, active, onClickDp }: Props) {
-  const { elements } = useElements(dp);
-  const ogWebsite = dp.findOgWebsiteItem();
-  const advertisement = dp.findAdvertisementItem();
-  const dpTitle = ogWebsite || advertisement;
-  if (!dpTitle) return null;
-  const handleClick = () => onClickDp(dp);
-  const opHolder = op.findHolderItem();
-  if (!opHolder) return null;
+export function CaMarker(props: Props) {
+  const { elements } = useElements(props.ca.attestation.doc.target);
+  const handleClick = () => props.onClickCa(props.ca);
   return (
     <>
       {elements.map((element, index) => (
         <Rect
           key={index}
           element={element}
-          active={active}
+          active={props.active}
           scroll={index === 0}
         >
           {({ rect }) => (
             <Marker
-              result={{ body: dp.getBody(), bodyError: dp.getBodyError() }}
               rect={rect}
-              dpTitle={dpTitle}
-              opHolder={opHolder}
-              active={active}
+              active={props.active}
               onClick={handleClick}
+              wmp={props.wmp}
             />
           )}
         </Rect>
@@ -151,5 +127,3 @@ function DpMarker({ dp, op, active, onClickDp }: Props) {
     </>
   );
 }
-
-export default DpMarker;

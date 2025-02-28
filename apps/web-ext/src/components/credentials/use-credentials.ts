@@ -1,25 +1,24 @@
 import {
+  CasVerifyFailed,
   OpsInvalid,
   OpsVerifier,
   OpsVerifyFailed,
   VerifiedOps,
   VerifiedSp,
+  verifyCas,
 } from "@originator-profile/verify";
 import { useParams } from "react-router";
-import { useEvent } from "react-use";
 import useSWRImmutable from "swr/immutable";
 import { getRegistryKeys } from "../../utils/get-registry-keys";
-import { verifyCas } from "./cas";
-import { CasVerifyFailed } from "./errors";
-import { FrameIntegrityVerifier, fetchTabCredentials } from "./messaging";
-import { VerifiedCas } from "./types";
 import { useSiteProfile } from "../siteProfile";
+import { FrameIntegrityVerifier, fetchTabCredentials } from "./messaging";
+import { SupportedCa, SupportedVerifiedCas } from "./types";
 
 const CREDENTIALS_KEY = "credentials";
 
 type FetchVerifiedCredentialsResult = {
   ops: VerifiedOps;
-  cas: VerifiedCas;
+  cas: SupportedVerifiedCas;
   origin: string;
   url: string;
 };
@@ -51,7 +50,7 @@ async function fetchVerifiedCredentials([, tabId, sp]: [
     throw verifiedOps;
   }
   verifiedOps.push(...verifiedSiteOps);
-  const verifiedCas = await verifyCas(
+  const verifiedCas = await verifyCas<SupportedCa>(
     cas,
     verifiedOps,
     url,
@@ -86,22 +85,6 @@ export function useCredentials() {
     [typeof CREDENTIALS_KEY, number, VerifiedSp?]
   >([CREDENTIALS_KEY, tabId, siteProfile], fetchVerifiedCredentials);
   const { ops, cas, origin } = credentials ?? {};
-
-  /* TODO: タブ内からCAのtargetを検索して検証する, 以下は旧ProfileSet時代のコードをコメントアウトしたもの */
-  /*
-  const { data: profileSet, error: errorVerifiedBodies } = useSWRImmutable<
-    ProfileSet,
-    Error,
-    [typeof VERIFIED_BODIES_KEY, number, ProfileSet] | null
-  >(
-    data ? [VERIFIED_BODIES_KEY, tabId, data] : null,
-    fetchVerifiedBodies,
-  );
-  */
-
-  useEvent("unload", async function () {
-    await chrome.tabs.sendMessage(tabId, { type: "close-window" });
-  });
 
   return {
     cas,
