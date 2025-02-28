@@ -15,6 +15,7 @@ use function Profile\Url\add_page_query;
 /** 投稿への署名処理の初期化 */
 function init() {
 	\add_action( 'transition_post_status', '\Profile\Issue\sign_post', 10, 3 );
+	\add_filter( 'wp_generate_attachment_metadata', '\Profile\Issue\update_attachment_integrity_metadata', 10, 2 );
 }
 
 /**
@@ -29,7 +30,10 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 		return;
 	}
 
-	update_attachment_integrity_metadata( $new_status, $old_status, $post );
+	foreach ( \get_attached_media( 'image', $post->ID ) as $attachment ) {
+		$metadata = \wp_get_attachment_metadata( $attachment->ID );
+		update_attachment_integrity_metadata( $metadata, $attachment->ID );
+	}
 
 	$admin_secret = \get_option( 'profile_ca_server_admin_secret' );
 	$hostname     = \get_option( 'profile_default_ca_server_hostname', PROFILE_DEFAULT_CA_SERVER_HOSTNAME );
@@ -72,34 +76,29 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 /**
  * 添付ファイルの整合性メタデータの更新
  *
- * @param string   $new_status New post status.
- * @param string   $old_status Old post status.
- * @param \WP_Post $post Post object.
+ * @param array $metadata Attachment metadata.
+ * @param int   $attachment_id Attachment ID.
+ * @return array Attachment metadata.
  */
-function update_attachment_integrity_metadata( string $new_status, string $old_status, \WP_Post $post ) {
-	if ( 'publish' !== $new_status ) {
-		return;
-	}
+function update_attachment_integrity_metadata( array $metadata, int $attachment_id ): array {
+	$original_file = WP_CONTENT_DIR . "/uploads/{$metadata['file']}";
+	$integrity     = array();
 
-	foreach ( \get_attached_media( 'image', $post->ID ) as $attachment ) {
-		$meta          = \wp_get_attachment_metadata( $attachment->ID );
-		$original_file = WP_CONTENT_DIR . "/uploads/{$meta['file']}";
-		$integrity     = array();
+	// 'full' は画像のオリジナルサイズ
+	$integrity['full'] = create_integrity( $original_file );
 
-		// 'full' は画像のオリジナルサイズ
-		$integrity['full'] = create_integrity( $original_file );
-
-		foreach ( $meta['sizes'] as $size => $data ) {
-			if ( ! isset( $data['file'] ) ) {
-				continue;
-			}
-
-			$file               = \dirname( $original_file ) . "/{$data['file']}";
-			$integrity[ $size ] = create_integrity( $file );
+	foreach ( $metadata['sizes'] as $size => $data ) {
+		if ( ! isset( $data['file'] ) ) {
+			continue;
 		}
 
-		\update_post_meta( $attachment->ID, '_profile_attachment_integrity', $integrity );
+		$file               = \dirname( $original_file ) . "/{$data['file']}";
+		$integrity[ $size ] = create_integrity( $file );
 	}
+
+	\update_post_meta( $attachment_id, '_profile_attachment_integrity', $integrity );
+
+	return $metadata;
 }
 
 /**
