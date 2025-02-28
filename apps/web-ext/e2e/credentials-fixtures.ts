@@ -1,0 +1,98 @@
+import { Jwk, UnsignedContentAttestation } from "@originator-profile/model";
+import { signJwtVc } from "@originator-profile/securing-mechanism";
+import { test as base, Page } from "@playwright/test";
+import { addYears } from "date-fns";
+import {
+  generateCoreProfileData,
+  generateUnsignedContentAttestation,
+} from "./data";
+import { signCa } from "../../../packages/sign/src/sign-ca";
+import { Window } from "happy-dom";
+
+type TestFixtures = {
+  validCredentials: (
+    key: { publicKey: Jwk; privateKey: Jwk },
+    contents: string,
+  ) => Promise<void>;
+  missingCredentials: void;
+};
+
+const casEndpoint: string = "http://localhost:8080/examples/cas.json";
+const opsEndpoint: string = "http://localhost:8080/examples/ops.json";
+
+export const test = base.extend<TestFixtures>({
+  validCredentials: async ({ page }: { page: Page }, use) => {
+    await use(
+      async (key: { publicKey: Jwk; privateKey: Jwk }, contents: string) => {
+        const { publicKey, privateKey } = key;
+        const issuedAt: Date = new Date(Date.now());
+        const expiredAt: Date = addYears(new Date(), 1);
+        const unsignedContentAttestation: UnsignedContentAttestation =
+          generateUnsignedContentAttestation(contents);
+        const contentAttestation = await signCa(
+          unsignedContentAttestation,
+          privateKey,
+          {
+            issuedAt,
+            expiredAt,
+            documentProvider: async () => {
+              const window = new Window();
+              window.document.write(contents);
+              return window.document as unknown as Document;
+            },
+          },
+        );
+
+        const signedCoreProfile = await signJwtVc(
+          generateCoreProfileData(publicKey),
+          privateKey,
+          {
+            issuedAt,
+            expiredAt,
+          },
+        );
+
+        await page.route(casEndpoint, async (route) =>
+          route.fulfill({
+            body: JSON.stringify([
+              {
+                attestation: contentAttestation,
+                main: true,
+              },
+            ]),
+            contentType: "application/json",
+          }),
+        );
+
+        await page.route(opsEndpoint, async (route) =>
+          route.fulfill({
+            body: JSON.stringify({
+              core: signedCoreProfile,
+            }),
+            contentType: "application/json",
+          }),
+        );
+      },
+    );
+
+    await page.unroute(casEndpoint);
+    await page.unroute(opsEndpoint);
+  },
+  missingCredentials: async ({ page }: { page: Page }, use) => {
+    await page.route(casEndpoint, async (route) =>
+      route.fulfill({
+        status: 404,
+      }),
+    );
+    await page.route(opsEndpoint, async (route) =>
+      route.fulfill({
+        status: 404,
+      }),
+    );
+
+    await use(undefined);
+
+    await page.unroute(casEndpoint);
+    await page.unroute(opsEndpoint);
+  },
+});
