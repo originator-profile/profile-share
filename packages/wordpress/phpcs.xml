@@ -19,6 +19,9 @@
   <rule ref="Squiz.Commenting.FunctionComment.ParamCommentFullStop">
     <exclude-pattern>includes</exclude-pattern>
   </rule>
+  <rule ref="Squiz.Commenting.InlineComment.InvalidEndChar">
+    <exclude-pattern>includes</exclude-pattern>
+  </rule>
   <rule ref="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents">
     <exclude-pattern>tests</exclude-pattern>
   </rule>

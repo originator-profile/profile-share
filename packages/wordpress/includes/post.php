@@ -6,12 +6,11 @@ namespace Profile\Post;
 /** 投稿閲覧画面の初期化 */
 function init() {
 	\add_action( 'wp_head', '\Profile\Post\cas_script' );
+	\add_filter( 'render_block_core/image', '\Profile\Post\block_image', 10, 2 );
 }
 
 /**
  * Script要素
- *
- * @todo <https://docs.originator-profile.org/rfc/link-to-html/#%E5%A4%96%E9%83%A8%E5%8F%82%E7%85%A7> integrity 属性未実装
  */
 function cas_script() {
 	if ( ! \is_singular() ) {
@@ -28,4 +27,27 @@ function cas_script() {
 	}
 
 	echo '<script type="application/cas+json">' . \wp_json_encode( $cas ) . '</script>' . PHP_EOL;
+}
+
+/**
+ * 画像要素
+
+ * @param string $content ブロックコンテンツ
+ * @param array  $block   ブロック
+ * @return string ブロックコンテンツ
+ */
+function block_image( string $content, array $block ): string {
+	$id = $block['attrs']['id'] ?? null;
+
+	if ( ! $id ) {
+		return $content;
+	}
+
+	$integrity = \get_post_meta( $id, '_profile_attachment_integrity', true );
+
+	if ( ! $integrity ) {
+		return $content;
+	}
+
+	return \str_replace( '<img ', '<img integrity="' . \esc_attr( $integrity ) . '" ', $content );
 }

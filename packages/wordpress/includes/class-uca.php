@@ -16,6 +16,7 @@ final class Uca {
 	 * @param string  $url 投稿のパーマリンクURL
 	 * @param string  $locale ロケール
 	 * @param string  $html HTML
+	 * @param array   $external_resources 外部リソース
 	 * @param ?string $headline (optional) タイトル
 	 * @param ?string $image (optional) 画像URL
 	 * @param ?string $description (optional) 説明
@@ -28,6 +29,7 @@ final class Uca {
 		public string $url,
 		public string $locale,
 		public string $html,
+		public array $external_resources,
 		public ?string $headline = null,
 		public ?string $image = null,
 		public ?string $description = null,
@@ -64,12 +66,21 @@ final class Uca {
 				'dateModified'  => $this->date_modified,
 			),
 			'allowedUrl'        => $this->url,
-			'target'            => array(
+			'target'            => array_merge(
 				array(
-					'type'        => PROFILE_CA_TARGET_TYPE,
-					'content'     => $this->html,
-					'cssSelector' => PROFILE_CA_TARGET_CSS_SELECTOR,
+					array(
+						'type'        => PROFILE_CA_TARGET_TYPE,
+						'content'     => $this->html,
+						'cssSelector' => PROFILE_CA_TARGET_CSS_SELECTOR,
+					),
 				),
+				array_map(
+					fn( $integrity ) => array(
+						'type'      => 'ExternalResourceTargetIntegrity',
+						'integrity' => $integrity,
+					),
+					$this->external_resources,
+				)
 			),
 		);
 

@@ -29,6 +29,8 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 		return;
 	}
 
+	update_attachment_integrity_metadata( $new_status, $old_status, $post );
+
 	$admin_secret = \get_option( 'profile_ca_server_admin_secret' );
 	$hostname     = \get_option( 'profile_default_ca_server_hostname', PROFILE_DEFAULT_CA_SERVER_HOSTNAME );
 	$issuer_id    = \get_option( 'profile_ca_issuer_id' );
@@ -68,6 +70,40 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 }
 
 /**
+ * 添付ファイルの整合性メタデータの更新
+ *
+ * @param string   $new_status New post status.
+ * @param string   $old_status Old post status.
+ * @param \WP_Post $post Post object.
+ */
+function update_attachment_integrity_metadata( string $new_status, string $old_status, \WP_Post $post ) {
+	if ( 'publish' !== $new_status ) {
+		return;
+	}
+
+	foreach ( \get_attached_media( 'image', $post->ID ) as $attachment ) {
+		$meta = \wp_get_attachment_metadata( $attachment->ID );
+		$file = WP_CONTENT_DIR . "/uploads/{$meta['file']}";
+
+		// TODO: ソース画像「大」以外のサイズには未対応
+		// https://github.com/originator-profile/profile/issues/1982
+		$large = $meta['sizes']['large']['file'];
+
+		if ( $large ) {
+			$file = \dirname( $file ) . "/{$large}";
+		}
+
+		$alg  = 'sha256';
+		$hash = \hash_file( $alg, $file, true );
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+		$val       = \base64_encode( $hash );
+		$integrity = "{$alg}-{$val}";
+
+		\update_post_meta( $attachment->ID, '_profile_attachment_integrity', $integrity );
+	}
+}
+
+/**
  * 未署名 Content Attestation の一覧の作成
  *
  * @param \WP_Post $post Post object.
@@ -95,8 +131,9 @@ function create_uca_list( \WP_Post $post, string $issuer_id ): array {
 	foreach ( $pages as $page => $content ) {
 		++$page;
 
-		$content = \apply_filters( 'the_content', $content );
-		$html    = content_to_html( $content );
+		$content            = \apply_filters( 'the_content', $content );
+		$html               = content_to_html( $content );
+		$external_resources = external_resources_from_html( $html, '//*[contains(@class, "wp-block-image")]//img[@integrity]' );
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -129,6 +166,7 @@ function create_uca_list( \WP_Post $post, string $issuer_id ): array {
 			url: $permalink,
 			locale: $locale,
 			html: $html,
+			external_resources: $external_resources,
 			headline: $post->post_title,
 			image: \has_post_thumbnail( $post ) ? \get_the_post_thumbnail_url( $post ) : null,
 			description: \has_excerpt( $post ) ? \get_the_excerpt( $post ) : null,
@@ -157,6 +195,31 @@ function content_to_html( string $content ): string {
 <body class="wp-block-post-content">{$content}</body>
 </html>
 EOD;
+}
+
+/**
+ * HTMLから外部リソースのIntegrityを取得
+ *
+ * @param string $html HTML
+ * @param string $xpath_query XPathクエリ
+ * @return array<string> 外部リソースのIntegrity一覧
+ */
+function external_resources_from_html( string $html, string $xpath_query ): array {
+	$document = new \DOMDocument();
+	$document->loadHTML( $html );
+	$xpath     = new \DOMXpath( $document );
+	$elements  = $xpath->query( $xpath_query );
+	$resources = array();
+
+	if ( $elements ) {
+		foreach ( $elements as $element ) {
+			if ( $element->attributes['integrity']->value ) {
+				array_push( $resources, $element->attributes['integrity']->value );
+			}
+		}
+	}
+
+	return $resources;
 }
 
 /**
