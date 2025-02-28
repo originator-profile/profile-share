@@ -1,6 +1,6 @@
 import { TreeUtils } from "simple-tree-utils";
 import { ProfilePair } from "@originator-profile/verify";
-import { UpdateAdIframeMessage } from "../types/message";
+import { UpdateAdIframeMessage } from "./types";
 
 const childrenField = "children";
 

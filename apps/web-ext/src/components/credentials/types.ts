@@ -5,25 +5,15 @@ import {
   OriginatorProfileSet,
   WebMediaProfile,
 } from "@originator-profile/model";
-import {
-  CaVerificationResult,
-  VerifiedCa,
-  VerifiedOps,
-} from "@originator-profile/verify";
-import { CasVerifyFailed } from "./errors";
+import { VerifiedCas, VerifiedOps } from "@originator-profile/verify";
 
-export type CasItem<T> = T | { main: boolean; attestation: T };
-export type VerifiedCas = Exclude<CasItem<VerifiedCa>, VerifiedCa>[];
-export type CasVerificationFailure = Exclude<
-  CasItem<CaVerificationResult>,
-  CaVerificationResult
->[];
-export type CasVerificationResult = VerifiedCas | CasVerifyFailed;
 /** 表示に対応している CA */
 export type SupportedCa = ArticleCA | AdvertisementCA;
+export type SupportedVerifiedCas = VerifiedCas<SupportedCa>;
+export type SupportedVerifiedCa = SupportedVerifiedCas[number];
 export type CredentialsProps = {
-  ca: VerifiedCas[number];
-  cas: VerifiedCas;
+  ca: SupportedVerifiedCa;
+  cas: SupportedVerifiedCas;
   ops: VerifiedOps;
   orgPath: { pathname: string; search: string };
   wmp: WebMediaProfile;

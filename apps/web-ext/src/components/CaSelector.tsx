@@ -1,13 +1,13 @@
-import { AdvertisementCA, ArticleCA } from "@originator-profile/model";
 import { Image } from "@originator-profile/ui";
 import placeholderDpThumbnail from "@originator-profile/ui/src/assets/placeholder-dp-thumbnail.png";
 import clsx from "clsx";
 import { Link, useParams } from "react-router";
 import { buildPublUrl } from "../utils/routes";
+import { SupportedVerifiedCa, SupportedVerifiedCas } from "./credentials";
 
 type Props = {
-  filteredCas: (ArticleCA | AdvertisementCA)[];
-  onClickCa?: (ca: ArticleCA | AdvertisementCA) => void;
+  filteredCas: SupportedVerifiedCas;
+  onClickCa?: (ca: SupportedVerifiedCa) => void;
 };
 
 function CaSelector({ filteredCas, onClickCa }: Props) {
@@ -22,12 +22,15 @@ function CaSelector({ filteredCas, onClickCa }: Props) {
     <ul>
       {filteredCas.map((ca) => {
         const active =
-          ca.issuer === issuer && ca.credentialSubject.id === subject;
+          ca.attestation.doc.issuer === issuer &&
+          ca.attestation.doc.credentialSubject.id === subject;
         return (
-          <li key={`${ca.issuer}${ca.credentialSubject.id}`}>
+          <li
+            key={`${ca.attestation.doc.issuer}${ca.attestation.doc.credentialSubject.id}`}
+          >
             <Link
               className="flex justify-center items-center h-16 relative"
-              to={buildPublUrl(tabId, ca)}
+              to={buildPublUrl(tabId, ca.attestation.doc)}
               onClick={() => onClickCa?.(ca)}
             >
               <div className="inline-block">
@@ -36,12 +39,12 @@ function CaSelector({ filteredCas, onClickCa }: Props) {
                     "bg-gray-200 rounded-lg transition duration-300 ease-in-out hover:ring-2 hover:ring-gray-500 hover:ring-offset-2",
                     { ["ring-2 ring-gray-500 ring-offset-2"]: active },
                   )}
-                  src={ca.credentialSubject.image?.id}
+                  src={ca.attestation.doc.credentialSubject.image?.id}
                   placeholderSrc={placeholderDpThumbnail}
                   alt={
-                    ca.credentialSubject.type === "Article"
-                      ? ca.credentialSubject.headline
-                      : ca.credentialSubject.title
+                    ca.attestation.doc.credentialSubject.type === "Article"
+                      ? ca.attestation.doc.credentialSubject.headline
+                      : ca.attestation.doc.credentialSubject.title
                   }
                   width={44}
                   height={44}

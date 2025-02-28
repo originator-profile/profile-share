@@ -42,8 +42,8 @@ const base = {
   host_permissions: ["<all_urls>"],
   permissions: [
     "activeTab",
-    "webNavigation",
     "scripting",
+    "webNavigation",
     "webRequest",
     "webRequestAuthProvider",
   ],

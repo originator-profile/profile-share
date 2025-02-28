@@ -1,6 +1,6 @@
-import { VerifiedCas } from "./types";
+import { SupportedVerifiedCa } from "./types";
 
-export const getContentType = (ca: VerifiedCas[number]): string => {
+export const getContentType = (ca: SupportedVerifiedCa): string => {
   if (ca.main) return "ContentType_MainContent";
   if (ca.attestation.doc.credentialSubject.type === "Article")
     return "ContentType_Article";

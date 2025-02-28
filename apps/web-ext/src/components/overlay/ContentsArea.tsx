@@ -1,8 +1,8 @@
-import { forwardRef, useId } from "react";
+import { Target } from "@originator-profile/model";
+import { useId } from "react";
 import { useWindowSize } from "react-use";
-import useElements from "../utils/use-elements";
-import useRect from "../utils/use-rect";
-import { DocumentProfile } from "@originator-profile/ui";
+import useElements from "./use-elements";
+import useRect from "./use-rect";
 
 function Rect({
   element,
@@ -28,20 +28,16 @@ function Rect({
 
 type Props = {
   className?: string;
-  dps: DocumentProfile[];
+  contents: Target[];
 };
 
-export default forwardRef<SVGSVGElement, Props>(function DpArea(
-  { className, dps }: Props,
-  ref,
-) {
+export function ContentsArea(props: Props) {
   const { width, height } = useWindowSize();
-  const { elements } = useElements(dps);
+  const { elements } = useElements(props.contents);
   const id = useId();
   return (
     <svg
-      className={className}
-      ref={ref}
+      className={props.className}
       viewBox={`0 0 ${width} ${height}`}
       width={width}
       height={height}
@@ -72,4 +68,4 @@ export default forwardRef<SVGSVGElement, Props>(function DpArea(
       ))}
     </svg>
   );
-});
+}

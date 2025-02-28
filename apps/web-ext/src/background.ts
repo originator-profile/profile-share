@@ -1,4 +1,3 @@
-import { BackgroundMessageRequest } from "./types/message";
 import "./utils/cors-basic-auth";
 
 const windowSize = {
@@ -10,14 +9,6 @@ chrome.action.onClicked.addListener(async function (tab) {
   const url = `${chrome.runtime.getURL("index.html")}#/tab/${tab.id}`;
   await chrome.windows.create({ url, type: "popup", ...windowSize });
 });
-
-const handleMessageResponse = async (message: BackgroundMessageRequest) => {
-  switch (message.type) {
-    case "select-overlay-dp":
-      await chrome.runtime.sendMessage(message);
-  }
-};
-chrome.runtime.onMessage.addListener(handleMessageResponse);
 
 chrome.runtime.onInstalled.addListener(async ({ reason }) => {
   if (reason !== chrome.runtime.OnInstalledReason.INSTALL) return;

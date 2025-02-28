@@ -10,9 +10,11 @@ import figUser3Url from "../assets/fig-user-3.svg";
 import figUser4Url from "../assets/fig-user-4.svg";
 import figUser5Url from "../assets/fig-user-5.svg";
 import figTraceabilityUrl from "../assets/fig-traceability.png";
-import { SiteProfileVerifyFailed } from "@originator-profile/verify";
+import {
+  CasVerifyFailed,
+  SiteProfileVerifyFailed,
+} from "@originator-profile/verify";
 import { stringifyWithError } from "@originator-profile/core";
-import { CasVerifyFailed } from "./credentials";
 
 function Messages({
   className,

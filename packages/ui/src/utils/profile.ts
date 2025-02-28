@@ -31,6 +31,7 @@ import { _ } from "./get-message";
 
 /**
  * プロファイルの基底クラス。
+ * @deprecated
  */
 export abstract class Profile {
   protected readonly payload: ProfilePayload;
@@ -133,6 +134,7 @@ export abstract class Profile {
 
 /**
  * Document Profile クラス
+ * @deprecated
  */
 export class DocumentProfile extends Profile {
   /** デコード、検証済みの DP のペイロード */
@@ -334,6 +336,7 @@ export class DocumentProfile extends Profile {
 
 /**
  * Originator Profile クラス
+ * @deprecated
  */
 export class OriginatorProfile extends Profile {
   /** デコード、検証済みの DP のペイロード */

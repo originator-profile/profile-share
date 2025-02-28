@@ -44,6 +44,26 @@ class IntegrityVerifier {
   }
 }
 
+/** Target Integrity のコンテンツ取得・要素位置特定アルゴリズム */
+export const TargetIntegrityAlgorithm = {
+  HtmlTargetIntegrity: {
+    contentFetcher: fetchHtmlContent,
+    elementSelector: selectByCss,
+  },
+  TextTargetIntegrity: {
+    contentFetcher: fetchTextContent,
+    elementSelector: selectByCss,
+  },
+  VisibleTextTargetIntegrity: {
+    contentFetcher: fetchVisibleTextContent,
+    elementSelector: selectByCss,
+  },
+  ExternalResourceTargetIntegrity: {
+    contentFetcher: fetchExternalResource,
+    elementSelector: selectByIntegrity,
+  },
+};
+
 /**
  * Target Integrity の検証
  * @see {@link https://docs.originator-profile.org/rfc/target-guide/}
@@ -62,24 +82,8 @@ export async function verifyIntegrity(
   content: Target,
   doc = document,
 ): Promise<boolean> {
-  const { contentFetcher, elementSelector } = {
-    HtmlTargetIntegrity: {
-      contentFetcher: fetchHtmlContent,
-      elementSelector: selectByCss,
-    },
-    TextTargetIntegrity: {
-      contentFetcher: fetchTextContent,
-      elementSelector: selectByCss,
-    },
-    VisibleTextTargetIntegrity: {
-      contentFetcher: fetchVisibleTextContent,
-      elementSelector: selectByCss,
-    },
-    ExternalResourceTargetIntegrity: {
-      contentFetcher: fetchExternalResource,
-      elementSelector: selectByIntegrity,
-    },
-  }[content.type];
+  const { contentFetcher, elementSelector } =
+    TargetIntegrityAlgorithm[content.type];
 
   const integrityVerifier = new IntegrityVerifier(
     contentFetcher,
