@@ -37,13 +37,15 @@ function cas_script() {
  * @return string ブロックコンテンツ
  */
 function block_image( string $content, array $block ): string {
-	$id = $block['attrs']['id'] ?? null;
+	$id   = $block['attrs']['id'] ?? null;
+	$size = $block['attrs']['sizeSlug'] ?? null;
 
 	if ( ! $id ) {
 		return $content;
 	}
 
 	$integrity = \get_post_meta( $id, '_profile_attachment_integrity', true );
+	$integrity = is_array( $integrity ) ? $integrity[ $size ] : null;
 
 	if ( ! $integrity ) {
 		return $content;
