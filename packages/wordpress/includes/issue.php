@@ -82,25 +82,38 @@ function update_attachment_integrity_metadata( string $new_status, string $old_s
 	}
 
 	foreach ( \get_attached_media( 'image', $post->ID ) as $attachment ) {
-		$meta = \wp_get_attachment_metadata( $attachment->ID );
-		$file = WP_CONTENT_DIR . "/uploads/{$meta['file']}";
+		$meta          = \wp_get_attachment_metadata( $attachment->ID );
+		$original_file = WP_CONTENT_DIR . "/uploads/{$meta['file']}";
+		$integrity     = array();
 
-		// TODO: ソース画像「大」以外のサイズには未対応
-		// https://github.com/originator-profile/profile/issues/1982
-		$large = $meta['sizes']['large']['file'];
+		// 'full' は画像のオリジナルサイズ
+		$integrity['full'] = create_integrity( $original_file );
 
-		if ( $large ) {
-			$file = \dirname( $file ) . "/{$large}";
+		foreach ( $meta['sizes'] as $size => $data ) {
+			if ( ! isset( $data['file'] ) ) {
+				continue;
+			}
+
+			$file               = \dirname( $original_file ) . "/{$data['file']}";
+			$integrity[ $size ] = create_integrity( $file );
 		}
-
-		$alg  = 'sha256';
-		$hash = \hash_file( $alg, $file, true );
-		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-		$val       = \base64_encode( $hash );
-		$integrity = "{$alg}-{$val}";
 
 		\update_post_meta( $attachment->ID, '_profile_attachment_integrity', $integrity );
 	}
+}
+
+/**
+ * Integrity の計算
+ *
+ * @param string $file ファイルパス
+ * @return string Integrity Metadata
+ */
+function create_integrity( string $file ): string {
+	$alg  = 'sha256';
+	$hash = \hash_file( $alg, $file, true );
+	// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+	$val = \base64_encode( $hash );
+	return "{$alg}-{$val}";
 }
 
 /**
