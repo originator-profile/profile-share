@@ -11,7 +11,7 @@ import {
   CoreProfileNotFound,
   VerifiedOps,
   VerifyIntegrity,
-} from "@originator-profile/verify";
+} from "../";
 import { CasVerifyFailed } from "./errors";
 import { normalizeCasItem } from "./normalize-cas-item";
 import { CasVerificationResult, VerifiedCas } from "./types";
