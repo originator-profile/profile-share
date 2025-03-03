@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/lerna-lite/lerna-lite/main/packages/cli/schemas/lerna-schema.json",
-  "version": "0.1.5-alpha.0",
+  "version": "0.1.5",
   "packages": [
     ".",
     "apps/*",
