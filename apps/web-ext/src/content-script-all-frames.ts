@@ -1,4 +1,4 @@
-import { stringifyWithError } from "@originator-profile/core";
+import { serializeIfError } from "@originator-profile/core";
 import {
   fetchCredentials,
   FetchCredentialSetResult,
@@ -8,23 +8,17 @@ import {
   credentialsMessenger,
   FetchCredentialsMessageResult,
   FrameLocation,
+  VerifyFailed,
 } from "./components/credentials";
 import "./utils/cors-basic-auth";
 
 const toFetchCredentialsMessageResult = <T>(
   result: FetchCredentialSetResult<T>,
-): FetchCredentialsMessageResult<T> => {
-  const ok = !(result instanceof Error);
-  if (!ok) {
-    return {
-      ok,
-      error: stringifyWithError(result),
-    };
-  }
-  return {
-    ok,
-    data: result,
-  };
+): FetchCredentialsMessageResult<T, VerifyFailed> => {
+  return serializeIfError(result) as FetchCredentialsMessageResult<
+    T,
+    VerifyFailed
+  >;
 };
 
 credentialsMessenger.onMessage("fetchCredentials", async () => {

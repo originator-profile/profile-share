@@ -19,20 +19,15 @@ export type CredentialsProps = {
   wmp: WebMediaProfile;
 };
 export type FrameLocation = { origin: string; url: string };
-export type FetchCredentialsMessageResult<T> =
-  | {
-      ok: true;
-      data: T;
-    }
-  | {
-      ok: false;
-      /** シリアライズした Error クラスインスタンスの中身  */
-      error: string;
-    };
+export type FetchCredentialsMessageResult<T, E> = T | E;
+
+export type VerifyFailed = string;
+
 export type FetchCredentialsMessageResponse = FrameLocation & {
-  ops: FetchCredentialsMessageResult<OriginatorProfileSet>;
-  cas: FetchCredentialsMessageResult<ContentAttestationSet>;
+  ops: FetchCredentialsMessageResult<OriginatorProfileSet, VerifyFailed>;
+  cas: FetchCredentialsMessageResult<ContentAttestationSet, VerifyFailed>;
 };
+
 export type FrameResponse<T = unknown> = T & {
   frameId: number;
   parentFrameId: number;
@@ -41,12 +36,6 @@ export type FrameCredentials = FrameResponse<
   {
     ops: OriginatorProfileSet;
     cas: ContentAttestationSet;
-    error: {
-      /** OPS 取得失敗 (失敗時 OPS は未設置とみなします) */
-      ops?: Error;
-      /** CAS 取得失敗 (失敗時 CAS は未設置とみなします) */
-      cas?: Error;
-    };
   } & FrameLocation
 >;
 export type TabCredentials = FrameCredentials & { frames: FrameCredentials[] };

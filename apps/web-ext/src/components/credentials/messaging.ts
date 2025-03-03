@@ -1,21 +1,8 @@
 import { VerifyIntegrity } from "@originator-profile/verify";
 import { FetchCredentialsMessagingFailed } from "./errors";
 import { credentialsMessenger } from "./events";
-import {
-  FrameCredentials,
-  FrameResponse,
-  TabCredentials,
-  FetchCredentialsMessageResult,
-} from "./types";
-
-const createError = <T>(
-  result: FetchCredentialsMessageResult<T>,
-): Error | undefined => {
-  if (result.ok) return undefined;
-  return new Error("Fetch credentials failed", {
-    cause: JSON.parse(result.error),
-  });
-};
+import { FrameCredentials, FrameResponse, TabCredentials } from "./types";
+import { deserializeIfError } from "@originator-profile/core";
 
 /**
  * タブ内の各フレームでクレデンシャルを取得する。
@@ -50,13 +37,12 @@ async function fetchAllFramesCredentials(
           );
         }
 
+        const opsResult = deserializeIfError(result.ops);
+        const casResult = deserializeIfError(result.cas);
+
         return {
-          ops: result.ops.ok ? result.ops.data : [],
-          cas: result.cas.ok ? result.cas.data : [],
-          error: {
-            ops: createError(result.ops),
-            cas: createError(result.cas),
-          },
+          ops: opsResult instanceof Error ? [] : opsResult,
+          cas: casResult instanceof Error ? [] : casResult,
           url: result.url,
           origin: result.origin,
           ...frameResponse,
