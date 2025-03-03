@@ -103,27 +103,24 @@ type Props = {
 };
 
 export function CaMarker(props: Props) {
-  const { elements } = useElements(props.ca.attestation.doc.target);
+  const {
+    elements: [element],
+  } = useElements(props.ca.attestation.doc.target);
+  if (!element) return null;
   const handleClick = () => props.onClickCa(props.ca);
   return (
     <>
-      {elements.map((element, index) => (
-        <Rect
-          key={index}
-          element={element}
-          active={props.active}
-          scroll={index === 0}
-        >
-          {({ rect }) => (
-            <Marker
-              rect={rect}
-              active={props.active}
-              onClick={handleClick}
-              wmp={props.wmp}
-            />
-          )}
-        </Rect>
-      ))}
+      <Rect element={element} active={props.active} scroll>
+        {({ rect }) => (
+          <Marker
+            rect={rect}
+            active={props.active}
+            onClick={handleClick}
+            wmp={props.wmp}
+          />
+        )}
+      </Rect>
+      ))
     </>
   );
 }
