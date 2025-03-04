@@ -1,5 +1,5 @@
 import { Jwk } from "@originator-profile/model";
-import { generateKeyPair, exportJWK } from "jose";
+import { exportJWK, generateKeyPair } from "jose";
 import { createThumbprint } from "./thumbprint";
 
 /**
@@ -10,7 +10,9 @@ import { createThumbprint } from "./thumbprint";
 export async function generateKey(
   alg = "ES256",
 ): Promise<{ publicKey: Jwk; privateKey: Jwk }> {
-  const { publicKey, privateKey } = await generateKeyPair(alg);
+  const { publicKey, privateKey } = await generateKeyPair(alg, {
+    extractable: true,
+  });
   const [publicJwk, privateJwk] = await Promise.all([
     exportJWK(publicKey),
     exportJWK(privateKey),
@@ -22,10 +24,12 @@ export async function generateKey(
   return {
     publicKey: {
       kid,
+      kty: publicJwk.kty,
       ...publicJwk,
     },
     privateKey: {
       kid,
+      kty: privateJwk.kty,
       ...privateJwk,
     },
   };

@@ -1,8 +1,10 @@
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  resolve: {
-    conditions: ["typescript"],
+  ssr: {
+    resolve: {
+      conditions: ["typescript"],
+    },
   },
   test: {
     dir: "src",

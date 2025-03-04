@@ -151,7 +151,7 @@ export class DocumentProfile extends Profile {
   public readonly containTopLevelFrame: boolean = false;
 
   /** iframe から得られた DP のページ上での位置を特定するために仕様する属性の名前 */
-  static readonly DATASET_ATTRIBUTE = "data-document-profile-subjects" as const;
+  static readonly DATASET_ATTRIBUTE = "data-document-profile-subjects";
 
   /**
    * コンストラクタ

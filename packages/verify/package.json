@@ -36,25 +36,25 @@
     "@types/jsonld": "^1.5.15",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
-    "jose": "^5.9.6",
-    "jsonld": "^8.3.2"
+    "jose": "^6.0.8",
+    "jsonld": "^8.3.3"
   },
   "devDependencies": {
     "@originator-profile/tsconfig": "workspace:*",
-    "@playwright/test": "^1.49.0",
+    "@playwright/test": "^1.50.1",
     "date-fns": "^4.1.0",
-    "eslint": "^9.14.0",
+    "eslint": "^9.21.0",
     "eslint-config-originator-profile": "workspace:*",
-    "happy-dom": "^16.0.0",
+    "happy-dom": "^17.1.8",
     "just-diff-apply": "^5.5.0",
     "just-typeof": "^3.2.0",
-    "msw": "^2.6.0",
-    "pkgroll": "^2.6.0",
-    "playwright": "^1.49.0",
-    "typescript": "^5.6.3",
+    "msw": "^2.7.3",
+    "pkgroll": "^2.11.2",
+    "playwright": "^1.50.1",
+    "typescript": "^5.8.2",
     "urlpattern-polyfill": "^10.0.0",
-    "vite": "^6.0.0",
-    "vitest": "^2.1.4",
-    "websri": "^1.0.0"
+    "vite": "^6.2.0",
+    "vitest": "^3.0.7",
+    "websri": "^1.0.1"
   }
 }

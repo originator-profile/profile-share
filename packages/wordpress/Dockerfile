@@ -1,4 +1,4 @@
-FROM wordpress:6.7.1-php8.2 as builder
+FROM wordpress:6.7.2-php8.3 AS builder
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
   && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
@@ -13,5 +13,5 @@ COPY . .
 RUN composer install --no-dev \
   && zip -r /wordpress-ca-manager.zip .
 
-FROM scratch as artifact
+FROM scratch AS artifact
 COPY --from=builder /wordpress-ca-manager.zip .
