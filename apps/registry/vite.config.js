@@ -1,8 +1,9 @@
-import { join, dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-import { defineConfig, defaultClientConditions } from "vite";
-import react from "@vitejs/plugin-react";
+// @ts-check
 import generouted from "@generouted/react-router/plugin";
+import react from "@vitejs/plugin-react";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { defaultClientConditions, defineConfig } from "vite";
 
 const REGISTRY_UI_ROOT = resolve(
   join(
@@ -12,7 +13,7 @@ const REGISTRY_UI_ROOT = resolve(
 );
 
 const {
-  APP_URL,
+  APP_URL = "",
   AUTH0_DOMAIN,
   AUTH0_CLIENT_ID,
   VITE_AUTH0_AUDIENCE,
@@ -25,7 +26,6 @@ process.env.VITE_AUTH0_DOMAIN = AUTH0_DOMAIN ?? VITE_AUTH0_DOMAIN;
 process.env.VITE_AUTH0_AUDIENCE = APP_URL ?? VITE_AUTH0_AUDIENCE;
 process.env.VITE_AUTH0_CLIENT_ID = AUTH0_CLIENT_ID ?? VITE_AUTH0_CLIENT_ID;
 
-/** @type import("vite").UserConfig */
 export default defineConfig({
   // NOTE: @fastify/vite@6.0.7 以降パス以外を指定するとproductionでの起動に失敗する
   // see https://github.com/fastify/fastify-vite/pull/153

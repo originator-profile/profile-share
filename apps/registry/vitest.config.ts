@@ -1,4 +1,4 @@
-import { UserConfig, defineConfig } from "vitest/config";
+import { ViteUserConfig, defineConfig } from "vitest/config";
 
 export default defineConfig(({ mode }) => {
   const tests = {
@@ -22,10 +22,12 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-  } satisfies Record<string, UserConfig["test"]>;
-  const config: UserConfig = {
-    resolve: {
-      conditions: ["typescript"],
+  } satisfies Record<string, ViteUserConfig["test"]>;
+  const config: ViteUserConfig = {
+    ssr: {
+      resolve: {
+        conditions: ["typescript"],
+      },
     },
     test: tests[mode as "test" | "e2e"],
   };

@@ -15,7 +15,7 @@ services:
       AUTH0_CLIENT_ID: ${AUTH0_CLIENT_ID}
     ports: ["8080:8080"]
   db:
-    image: postgres:17.2-alpine
+    image: postgres:17.4-alpine
     healthcheck:
       test: pg_isready -U postgres
     environment:
@@ -24,7 +24,7 @@ services:
     volumes:
       - postgres_data_v17:/var/lib/postgresql/data
   mailpit:
-    image: axllent/mailpit:v1.21
+    image: axllent/mailpit:v1.23
     ports:
       - "8025:8025"
       - "${SMTP_PORT:-1025}:1025"

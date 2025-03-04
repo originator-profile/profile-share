@@ -1,4 +1,4 @@
-import { test, expect } from "vitest";
+import { expect, test } from "vitest";
 
 test("SwaggerUIの提供しているリソースにアクセスできる", async () => {
   const res = await fetch(
@@ -6,5 +6,5 @@ test("SwaggerUIの提供しているリソースにアクセスできる", async
   );
 
   expect(res.ok).toBe(true);
-  expect(res.headers.get("content-type")).toBe("text/css; charset=UTF-8");
+  expect(res.headers.get("content-type")?.split(";")[0]).toBe("text/css");
 });

@@ -25,17 +25,17 @@
     "start": "pnpm --filter=@originator-profile/registry run --sequential \"/^build:ui$|^start$/\""
   },
   "devDependencies": {
-    "@lerna-lite/cli": "^3.10.0",
-    "@lerna-lite/version": "^3.10.0",
-    "astro": "^5.1.7",
-    "npm-run-all2": "^7.0.1",
-    "prettier": "^3.3.3",
-    "start-server-and-test": "^2.0.8",
-    "turbo": "2.3.3",
-    "typedoc": "^0.27.0"
+    "@lerna-lite/cli": "^3.12.1",
+    "@lerna-lite/version": "^3.12.2",
+    "astro": "^5.4.1",
+    "npm-run-all2": "^7.0.2",
+    "prettier": "^3.5.3",
+    "start-server-and-test": "^2.0.10",
+    "turbo": "2.4.4",
+    "typedoc": "^0.27.9"
   },
   "engines": {
     "node": "^20.18.0 || ^22.2.0"
   },
-  "packageManager": "pnpm@9.15.3"
+  "packageManager": "pnpm@10.5.2"
 }

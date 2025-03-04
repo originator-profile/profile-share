@@ -8,16 +8,10 @@ const endpoints = [
     return HttpResponse.json(context);
   }),
   http.get("https://example.com/integrity-target-text", () => {
-    const binaryData = Buffer.from("Hello, world!\r\n", "utf-8");
-    return HttpResponse.arrayBuffer(binaryData, {
-      headers: { "Content-Type": "text/plain" },
-    });
+    return new HttpResponse("Hello, world!\r\n");
   }),
   http.get("https://example.com/integrity-target-json", () => {
-    const binaryData = Buffer.from("{}", "utf-8");
-    return HttpResponse.arrayBuffer(binaryData, {
-      headers: { "Content-Type": "application/json" },
-    });
+    return HttpResponse.json({});
   }),
   http.get("https://example.com/not-found", () => {
     return new HttpResponse(null, { status: 404 });

@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 import { createIntegrityMetadata } from "websri";
 
 // see playwright/index.ts
-let verifyIntegrity: (content: Target) => Promise<boolean>;
+declare const verifyIntegrity: (content: Target) => Promise<boolean>;
 
 test("verifyIntegrity() should verify HtmlTargetIntegrity", async function ({
   page,
