@@ -1,6 +1,6 @@
 {
   "name": "@originator-profile/verify",
-  "version": "0.1.6",
+  "version": "0.1.7-alpha.0",
   "private": false,
   "type": "module",
   "main": "./dist/index.mjs",
