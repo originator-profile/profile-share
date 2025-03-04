@@ -120,7 +120,6 @@ export function CaMarker(props: Props) {
           />
         )}
       </Rect>
-      ))
     </>
   );
 }
