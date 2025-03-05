@@ -40,6 +40,21 @@ model wsps {
   value    String
 }
 
+/// Web Media Profile
+model wmps {
+  /// 発行者
+  issuer   accounts @relation("issuedWmps", fields: [issuerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  issuerId String   @db.Uuid
+  /// 保有組織
+  holder   accounts @relation(fields: [holderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  holderId String   @db.Uuid
+  /// Web メディアの URL
+  url      String
+  /// Web Media Profile (JWT)
+  value    String
+
+  @@id([issuerId, holderId])
+}
 /// Signed Originator Profile
 model oldOps {
   id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -138,6 +153,10 @@ model accounts {
   cas                            cas[]
   /// 保有 Content Attestation
   wsps                           wsps[]
+  /// Web Media Profile 発行履歴
+  issuedWmps                     wmps[]                      @relation("issuedWmps")
+  /// 保有 Web Media Profile
+  wmps                           wmps[]
   /// 公開鍵
   keys                           keys[]
   /// 署名鍵 (JWKをUTF-8文字列化し、JWE形式で暗号化した構造)
