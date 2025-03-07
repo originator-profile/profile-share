@@ -12,7 +12,6 @@ export function DebugTargetSelectField(props: DebugTargetSelectFieldProps) {
         defaultValue={props.defaultValue}
       >
         <option value="SD-JWT OP">SD-JWT OP</option>
-        <option value="Profile Set">Profile Set</option>
       </select>
     </FormRow>
   );

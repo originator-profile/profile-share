@@ -1,10 +1,8 @@
 import util from "node:util";
-import fs from "node:fs/promises";
 import { isHttpError } from "http-errors-enhanced";
 import { PrismaClient } from "@prisma/client";
 import { Services } from "@originator-profile/registry-service";
 import exampleAccount from "./account.example.json";
-import { Jwk } from "@originator-profile/model";
 import { addYears } from "date-fns/addYears";
 import { parseAccountId } from "@originator-profile/core";
 import { prisma } from "@originator-profile/registry-db";
@@ -21,29 +19,6 @@ export async function waitForDb(prisma: PrismaClient): Promise<void> {
       await sleep(1_000);
     }
   }
-}
-
-async function issueOp(
-  services: Services,
-  issuerUuid: string,
-  publicKey: Jwk,
-  privateKey: Jwk,
-) {
-  await services.account.registerKey(issuerUuid, publicKey);
-
-  const jwt = await services.certificate.signOp(
-    issuerUuid,
-    issuerUuid,
-    privateKey,
-  );
-
-  const opId = await services.certificate.issue(issuerUuid, jwt);
-
-  await services.account.publishProfile(issuerUuid, opId);
-
-  console.log(`Profile: ${jwt}
-Public Key: ${JSON.stringify(publicKey)}
-${JSON.stringify(privateKey)}`);
 }
 
 export async function seed(): Promise<void> {
@@ -78,17 +53,5 @@ export async function seed(): Promise<void> {
     );
   }
   console.log(`UUID: ${issuerUuid}`);
-
-  const accountKeys = await services.account.getKeys(issuerUuid);
-  if (accountKeys.keys.length === 0) {
-    const jwk = await fs
-      .readFile("./account-key.example.pub.json")
-      .then((buffer) => JSON.parse(buffer.toString()));
-    const privateKeyText = await fs
-      .readFile("./account-key.example.priv.json")
-      .then((buffer) => buffer.toString());
-    const privateKey: Jwk = JSON.parse(privateKeyText);
-    await issueOp(services, issuerUuid, jwk, privateKey);
-  }
 }
 if (require.main === module) void seed();

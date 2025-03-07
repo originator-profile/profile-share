@@ -29,7 +29,7 @@ export class CertIssue extends Command {
     format: Flags.string({
       summary: "データ形式",
       char: "f",
-      options: ["sd-jwt", "jwt"],
+      options: ["sd-jwt"],
       default: "sd-jwt",
     }),
   };
@@ -55,21 +55,6 @@ export class CertIssue extends Command {
       );
 
       this.log(sdJwt);
-    }
-
-    if (flags.format === "jwt") {
-      const jwt = await services.certificate.signOp(
-        flags.issuer,
-        flags.holder,
-        jwk,
-        { issuedAt, expiredAt, validAt },
-      );
-
-      const opId = await services.certificate.issue(flags.issuer, jwt);
-
-      await services.account.publishProfile(flags.holder, opId);
-
-      this.log("Published.");
     }
   }
 }

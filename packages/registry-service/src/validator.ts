@@ -1,7 +1,7 @@
 import Ajv, { Schema } from "ajv";
 import addFormats from "ajv-formats";
 import { BadRequestError } from "http-errors-enhanced";
-import { Op, Dp, Jwk, OriginatorProfile } from "@originator-profile/model";
+import { Jwk, OriginatorProfile } from "@originator-profile/model";
 import {
   ProfileClaimsValidationFailed,
   SignedProfileValidator,
@@ -53,30 +53,12 @@ export function ValidatorService() {
       createValidator<OriginatorProfile>(OriginatorProfile),
 
     /**
-     * OP の確認 (注: 署名の検証は別で行ってください)
-     * @deprecated
-     * @param input 対象のオブジェクト
-     * @throws {BadRequestError} バリデーション失敗
-     * @return 妥当な OP
-     */
-    opValidate: createValidator<Op>(Op),
-
-    /**
      * JWK の確認 (注: 署名の検証は別で行ってください)
      * @param input 対象のオブジェクト
      * @throws {BadRequestError} バリデーション失敗
      * @return 妥当な JWK
      */
     jwkValidate: createValidator<Jwk>(Jwk),
-
-    /**
-     * DP の確認 (注: 署名の検証は別で行ってください)
-     * @deprecated
-     * @param input 対象のオブジェクト
-     * @throws {BadRequestError} バリデーション失敗
-     * @return 妥当な DP
-     */
-    dpValidate: createValidator<Dp>(Dp),
 
     /**
      * Profile の Token の復号

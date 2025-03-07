@@ -7,7 +7,7 @@ Profile Set などの検証処理を実行し、結果を閲覧するための I
 ```ts
 export type PresentationTypeValue = "url" | "direct";
 
-export type DebugTargetValue = "SD-JWT OP" | "Profile Set";
+export type DebugTargetValue = "SD-JWT OP";
 ```
 
 ## DebugTargetSelectField

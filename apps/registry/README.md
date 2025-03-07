@@ -67,7 +67,6 @@ running command...
 * [`profile-registry openapi-gen [OUTPUT]`](#profile-registry-openapi-gen-output)
 * [`profile-registry publisher:category`](#profile-registry-publishercategory)
 * [`profile-registry publisher:extract-category [OUTPUT]`](#profile-registry-publisherextract-category-output)
-* [`profile-registry publisher:profile-set`](#profile-registry-publisherprofile-set)
 * [`profile-registry sign`](#profile-registry-sign)
 * [`profile-registry start`](#profile-registry-start)
 * [`profile-registry wsp:unsigned`](#profile-registry-wspunsigned)
@@ -487,11 +486,11 @@ OP の発行
 ```
 USAGE
   $ profile-registry cert:issue -i <value> --issuer <value> --holder <value> [--issued-at <value>] [--expired-at
-    <value>] [--valid-at <value>] [-f sd-jwt|jwt]
+    <value>] [--valid-at <value>] [-f sd-jwt]
 
 FLAGS
   -f, --format=<option>     [default: sd-jwt] データ形式
-                            <options: sd-jwt|jwt>
+                            <options: sd-jwt>
   -i, --identity=<value>    (required) プライベート鍵のファイルパス
       --expired-at=<value>  有効期限 (ISO 8601)
       --holder=<value>      (required) 所有者となる会員 ID またはドメイン名
@@ -666,22 +665,6 @@ FLAG DESCRIPTIONS
     IAB Tech Lab Content Category Taxonomy 1.0の定義ファイル
     詳しくは当該ファイル https://iabtechlab.com/wp-content/uploads/2023/03/Content-Taxonomy-1.0-1.xlsx
     を参照してください
-```
-
-## `profile-registry publisher:profile-set`
-
-Profile Set の生成
-
-```
-USAGE
-  $ profile-registry publisher:profile-set --url <value> [-o <value>]
-
-FLAGS
-  -o, --output=<value>  [default: -] 出力先ファイル ("-": 標準出力)
-      --url=<value>     (required) ウェブページのURL
-
-DESCRIPTION
-  Profile Set の生成
 ```
 
 ## `profile-registry sign`

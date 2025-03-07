@@ -1,12 +1,9 @@
 import {
-  AdRepository,
   CaRepository,
   CertificationSystemRepository,
   CredentialRepository,
-  DpRepository,
   RequestRepository,
   UserAccountRepository,
-  WebsiteRepository,
   WspRepository,
 } from "@originator-profile/registry-db";
 import { AccountService } from "./account";
@@ -21,9 +18,6 @@ import { RequestService } from "./request";
 import { UserAccountService } from "./user-account";
 import { initLogger } from "./utils/logger";
 import { ValidatorService } from "./validator";
-import { WebsiteService } from "./website";
-
-export type { Website } from "./website";
 
 type Options = {
   config: Config;
@@ -38,16 +32,10 @@ export const Services = (options: Options = { config: {} }) => {
   const admin = AdminService();
   const category = CategoryService();
   const certificate = CertificateService({ ...options, account, validator });
-  const dpRepository = DpRepository();
-  const websiteRepository = WebsiteRepository();
   const publisher = PublisherService({
     ...options,
-    validator,
-    dpRepository,
-    websiteRepository,
   });
   const logo = LogoService({ ...options });
-  const website = WebsiteService({ ...options, websiteRepository });
   const credentialRepository = CredentialRepository();
   const credential = CredentialService({ credentialRepository, certificate });
   const userAccountRepository = UserAccountRepository();
@@ -64,12 +52,10 @@ export const Services = (options: Options = { config: {} }) => {
     category,
     certificate,
     publisher,
-    website,
     credential,
     logo,
     userAccount,
     request,
-    adRepository: AdRepository(),
     caRepository: CaRepository,
     certificationSystemRepository: CertificationSystemRepository(),
     wspRepository: WspRepository,

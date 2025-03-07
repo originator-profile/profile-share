@@ -3,7 +3,6 @@ import {
   OriginatorProfileVerifier,
   ProfileClaimsValidationFailed,
   ProfileGenericError,
-  ProfilesVerifier,
   VerifyResult,
   VerifyResults,
 } from "@originator-profile/verify";
@@ -19,7 +18,6 @@ import {
   PresentationTypeValue,
   RegistryInputField,
   ResultText,
-  expand,
 } from "../../components/debugger";
 
 type InitialValues = {
@@ -254,20 +252,6 @@ export default function Debugger() {
           issuer,
           OriginatorProfileDecoder(null),
         )(String(source));
-        setResult(result);
-        break;
-      }
-      case "Profile Set": {
-        const expanded = await expand(source);
-        setValues((values) => ({ ...values, expanded }));
-        if (expanded instanceof Error) return;
-        const result = await ProfilesVerifier(
-          expanded,
-          issuerKey,
-          registry,
-          null,
-          document.location.origin,
-        )();
         setResult(result);
         break;
       }
