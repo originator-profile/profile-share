@@ -2,16 +2,9 @@ import Ajv, { Schema } from "ajv";
 import addFormats from "ajv-formats";
 import { BadRequestError } from "http-errors-enhanced";
 import { Jwk, OriginatorProfile } from "@originator-profile/model";
-import {
-  ProfileClaimsValidationFailed,
-  SignedProfileValidator,
-  TokenDecoder,
-} from "@originator-profile/verify";
 
 export function ValidatorService() {
   const ajv = addFormats(new Ajv({ removeAdditional: true }));
-  const signedProfileValidator = SignedProfileValidator();
-  const decodeToken = TokenDecoder(signedProfileValidator);
 
   /**
    * バリデーターの生成
@@ -59,24 +52,6 @@ export function ValidatorService() {
      * @return 妥当な JWK
      */
     jwkValidate: createValidator<Jwk>(Jwk),
-
-    /**
-     * Profile の Token の復号
-     * @param jwt JWT
-     * @throws {BadRequestError} バリデーション失敗
-     * @return 復号結果
-     */
-    decodeToken(jwt: string) {
-      const decoded = decodeToken(jwt);
-
-      if (decoded instanceof ProfileClaimsValidationFailed) {
-        throw new BadRequestError(
-          `ProfileClaimsValidationFailed: ${decoded.message}`,
-        );
-      }
-
-      return decoded;
-    },
   };
 }
 

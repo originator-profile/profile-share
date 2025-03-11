@@ -13,7 +13,7 @@ import {
 import { fetchAndSetDigestSri, signSdJwtOp } from "@originator-profile/sign";
 import { signJwtVc } from "../../securing-mechanism/src/jwt";
 import { Prisma } from "@prisma/client";
-import { addYears, fromUnixTime, getUnixTime } from "date-fns";
+import { addYears, getUnixTime } from "date-fns";
 import {
   BadRequestError,
   ForbiddenError,
@@ -33,7 +33,6 @@ type Options = {
 
 type CertifierId = string;
 type AccountId = string;
-type OpId = string;
 
 export const CertificateService = ({
   account,
@@ -189,30 +188,6 @@ export const CertificateService = ({
     const jwt: string = await signSdJwtOp(valid, privateKey);
     return jwt;
   },
-  /**
-   * OP の発行
-   * @param id 認証機関 ID
-   * @param jwt JWT でエンコードされた OP
-   * @throws {BadRequestError} バリデーション失敗
-   * @return ops.id
-   */
-  async issue(id: CertifierId, jwt: string): Promise<OpId> {
-    const prisma = getClient();
-    const decoded = validator.decodeToken(jwt);
-    const issuedAt: Date = fromUnixTime(decoded.payload.iat);
-    const expiredAt: Date = fromUnixTime(decoded.payload.exp);
-    const data = await prisma.oldOps.create({
-      data: {
-        certifierId: id,
-        jwt,
-        issuedAt,
-        expiredAt,
-      },
-    });
-
-    return data.id;
-  },
-
   /**
    * 保有者IDを検証する
    * @param holderId 保有者ID

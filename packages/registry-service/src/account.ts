@@ -1,8 +1,6 @@
-import { isJwtOpPayload } from "@originator-profile/core";
 import { Jwk, Jwks, type OpHolder } from "@originator-profile/model";
 import { beginTransaction, getClient } from "@originator-profile/registry-db";
 import { Prisma, accounts } from "@prisma/client";
-import { fromUnixTime } from "date-fns";
 import { BadRequestError, NotFoundError } from "http-errors-enhanced";
 import { ContextDefinition, JsonLdDocument } from "jsonld";
 import { ValidatorService } from "./validator";
@@ -196,41 +194,6 @@ export const AccountService = ({ validator }: Options) => ({
       where: { accountId: id, id: kid },
     });
     return kid;
-  },
-  /**
-   * Signed Originator Profile の登録 (Document Profile Registry 用)
-   * @param id 会員 ID
-   * @param jwt Signed Originator Profile
-   * @throws {BadRequestError} バリデーション失敗/ドメイン名が一致しない
-   * @return Signed Originator Profile
-   */
-  async registerOp(id: AccountId, jwt: string): Promise<string> {
-    const prisma = getClient();
-    const account = await this.read({ id });
-    const uuid = account.id;
-    const decoded = validator.decodeToken(jwt);
-    if (!isJwtOpPayload(decoded.payload)) {
-      throw new BadRequestError("It is not Originator Profile.");
-    }
-    if (decoded.payload.sub !== account.domainName) {
-      throw new BadRequestError(
-        "It is not Signed Originator Profile for the account.",
-      );
-    }
-    const issuedAt: Date = fromUnixTime(decoded.payload.iat);
-    const expiredAt: Date = fromUnixTime(decoded.payload.exp);
-    const op = await prisma.oldOps.create({
-      data: {
-        certifierId: uuid,
-        jwt,
-        issuedAt,
-        expiredAt,
-      },
-    });
-
-    await this.publishProfile(uuid, op.id);
-
-    return jwt;
   },
   /**
    * OP の公開

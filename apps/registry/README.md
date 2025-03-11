@@ -52,7 +52,6 @@ running command...
 * [`profile-registry account`](#profile-registry-account)
 * [`profile-registry account:register-credential`](#profile-registry-accountregister-credential)
 * [`profile-registry account:register-key`](#profile-registry-accountregister-key)
-* [`profile-registry account:register-op`](#profile-registry-accountregister-op)
 * [`profile-registry account:show-credential`](#profile-registry-accountshow-credential)
 * [`profile-registry admin:create`](#profile-registry-admincreate)
 * [`profile-registry admin:delete`](#profile-registry-admindelete)
@@ -229,32 +228,6 @@ FLAG DESCRIPTIONS
   --id=<value>  会員 ID またはドメイン名
 
     UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501) を指定します。
-```
-
-## `profile-registry account:register-op`
-
-Signed Originator Profile の登録 (Document Profile Registry 用)
-
-```
-USAGE
-  $ profile-registry account:register-op --id <value> --op <value>
-
-FLAGS
-  --id=<value>  (required) 会員 ID またはドメイン名
-  --op=<value>  (required) Signed Originator Profile ファイル
-
-DESCRIPTION
-  Signed Originator Profile の登録 (Document Profile Registry 用)
-
-FLAG DESCRIPTIONS
-  --id=<value>  会員 ID またはドメイン名
-
-    UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501) を指定します。
-
-  --op=<value>  Signed Originator Profile ファイル
-
-    Originator Profile レジストリから受け取った Signed Originator Profile ファイルを指定します。
-    JWT の含まれないファイルは無効です。また JWT の Subject クレームは会員自身のドメイン名と一致しなければなりません。
 ```
 
 ## `profile-registry account:show-credential`
