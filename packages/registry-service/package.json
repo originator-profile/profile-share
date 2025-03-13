@@ -24,6 +24,7 @@
     "@originator-profile/verify": "workspace:*",
     "@prisma/client": "^6.4.1",
     "@types/bcryptjs": "^2.4.6",
+    "@types/jsdom": "^21.1.7",
     "@types/jsonld": "^1.5.15",
     "@types/nodemailer": "^6.4.17",
     "ajv": "^8.17.1",
@@ -32,7 +33,6 @@
     "date-fns": "^4.1.0",
     "eslint": "^9.21.0",
     "eslint-config-originator-profile": "workspace:*",
-    "happy-dom": "^17.1.8",
     "http-errors-enhanced": "^3.0.2",
     "image-size": "^2.0.0",
     "jose": "^6.0.8",
@@ -46,5 +46,8 @@
     "vitest": "^3.0.7",
     "vitest-mock-extended": "^3.0.1",
     "yn": "^5.0.0"
+  },
+  "peerDependencies": {
+    "jsdom": "^26.0.0"
   }
 }

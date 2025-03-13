@@ -18,8 +18,8 @@ import {
   signCa,
 } from "@originator-profile/sign";
 import { addYears, getUnixTime } from "date-fns";
-import { Window } from "happy-dom";
 import { ForbiddenError } from "http-errors-enhanced";
+import { JSDOM } from "jsdom";
 import { signJwtVc } from "../../securing-mechanism/src/jwt";
 import Config from "./config";
 
@@ -29,7 +29,7 @@ type Options = {
 
 type AccountId = string;
 
-async function documentProvider({
+export async function documentProvider({
   type,
   content = "",
 }: RawTarget): Promise<Document> {
@@ -46,13 +46,11 @@ async function documentProvider({
     html = await fetch(url).then((res) => res.text());
   }
 
-  const window = new Window({
+  const dom = new JSDOM(html, {
     url,
   });
 
-  window.document.write(html);
-
-  return window.document as unknown as Document;
+  return dom.window.document;
 }
 
 export const PublisherService = ({ config }: Options) => ({

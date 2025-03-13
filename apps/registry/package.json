@@ -49,6 +49,7 @@
     "dotenv": "^16.4.7",
     "dotenv-expand": "^12.0.1",
     "fastify-auth0-verify": "^3.0.0",
+    "jsdom": "^26.0.0",
     "jsonld": "^8.3.3",
     "playwright": "^1.50.1",
     "prisma": "^6.4.1",
