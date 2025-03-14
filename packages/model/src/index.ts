@@ -11,7 +11,6 @@ export * from "./jwks";
 export * from "./op-vc";
 export * from "./originator-profile-set";
 export * from "./request";
-export * from "./sd-jwt-op";
 export * from "./site-profile";
 export * from "./target/";
 export * from "./user";

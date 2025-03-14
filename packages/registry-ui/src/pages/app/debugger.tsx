@@ -1,12 +1,9 @@
 import {
-  OriginatorProfileDecoder,
-  OriginatorProfileVerifier,
   ProfileClaimsValidationFailed,
   ProfileGenericError,
   VerifyResult,
   VerifyResults,
 } from "@originator-profile/verify";
-import { RemoteKeys } from "@originator-profile/cryptography";
 import { Fragment, useState, type ChangeEvent, type FormEvent } from "react";
 import ReactJson from "react-json-view";
 import {
@@ -27,16 +24,12 @@ type InitialValues = {
   source?: unknown;
 };
 
-type VerifyResultOriginatorProfile = Awaited<
-  ReturnType<OriginatorProfileVerifier>
->;
-
 function loadInitialValues(): InitialValues {
   try {
     return JSON.parse(window.atob(document.location.hash.slice(1)));
   } catch {
     return {
-      debugTarget: "SD-JWT OP",
+      debugTarget: "NO TEST",
       registry: document.location.hostname,
       endpoint: `${document.location.origin}/website/ef9d78e0-d81a-4e39-b7a0-27e15405edc7/profiles`,
     };
@@ -147,11 +140,7 @@ function VerificationResultDetail({
   }
 }
 
-function Result({
-  value,
-}: {
-  value: VerifyResults | VerifyResultOriginatorProfile;
-}) {
+function Result({ value }: { value: VerifyResults }) {
   if (!Array.isArray(value))
     return <ResultText>{JSON.stringify(value, null, "  ")}</ResultText>;
   return (
@@ -171,9 +160,7 @@ function Result({
 
 export default function Debugger() {
   const [values, setValues] = useState<Record<string, unknown>>({});
-  const [result, setResult] = useState<
-    VerifyResults | VerifyResultOriginatorProfile | null
-  >(null);
+  const [result, setResult] = useState<VerifyResults | null>(null);
   const [presentationType, setPresentationType] =
     useState<PresentationTypeValue>(
       "source" in initialValues ? "direct" : "url",
@@ -221,8 +208,7 @@ export default function Debugger() {
     setResult(null);
 
     const formData = new FormData(e.currentTarget);
-    const debugTarget =
-      (formData.get("debugTarget") as DebugTargetValue) ?? "SD-JWT OP";
+    const debugTarget = formData.get("debugTarget") as DebugTargetValue;
     const registry = formData.get("registry") as string;
     const endpoint = transformEndpoint(formData.get("endpoint") as string);
     const directInput = formData.get("directInput") as string;
@@ -238,7 +224,6 @@ export default function Debugger() {
         ? "http://localhost:8080/"
         : `https://${registry}/`;
     const jwksEndPoint = new URL(`${issuer}.well-known/jwks.json`);
-    const issuerKey = RemoteKeys(jwksEndPoint);
 
     setValues((values) => ({
       ...values,
@@ -246,13 +231,8 @@ export default function Debugger() {
     }));
 
     switch (debugTarget) {
-      case "SD-JWT OP": {
-        const result = await OriginatorProfileVerifier(
-          issuerKey,
-          issuer,
-          OriginatorProfileDecoder(null),
-        )(String(source));
-        setResult(result);
+      default: {
+        console.log("サポートされていないターゲットです");
         break;
       }
     }

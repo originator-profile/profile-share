@@ -7,7 +7,7 @@ Profile Set などの検証処理を実行し、結果を閲覧するための I
 ```ts
 export type PresentationTypeValue = "url" | "direct";
 
-export type DebugTargetValue = "SD-JWT OP";
+export type DebugTargetValue = "デバッグターゲット";
 ```
 
 ## DebugTargetSelectField
@@ -15,7 +15,7 @@ export type DebugTargetValue = "SD-JWT OP";
 デバッグする対象を選択するための選択項目
 
 ```tsx
-const debugTarget: DebugTargetValue = "SD-JWT OP";
+const debugTarget: DebugTargetValue = "デバッグターゲット";
 
 <DebugTargetSelectField
   value={debugTarget}

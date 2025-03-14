@@ -8,5 +8,4 @@ export * from "./op";
 export * from "./op-item";
 export * from "./profile";
 export * from "./safe-stringify";
-export * from "./sd-jwt-payload";
 export * from "./typefunc";

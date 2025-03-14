@@ -57,7 +57,6 @@ running command...
 * [`profile-registry admin:delete`](#profile-registry-admindelete)
 * [`profile-registry ca:sign`](#profile-registry-casign)
 * [`profile-registry ca:unsigned`](#profile-registry-caunsigned)
-* [`profile-registry cert:issue`](#profile-registry-certissue)
 * [`profile-registry db:init`](#profile-registry-dbinit)
 * [`profile-registry db:prisma`](#profile-registry-dbprisma)
 * [`profile-registry db:seed`](#profile-registry-dbseed)
@@ -450,47 +449,6 @@ FLAG DESCRIPTIONS
     }
     ]
     }
-```
-
-## `profile-registry cert:issue`
-
-OP の発行
-
-```
-USAGE
-  $ profile-registry cert:issue -i <value> --issuer <value> --holder <value> [--issued-at <value>] [--expired-at
-    <value>] [--valid-at <value>] [-f sd-jwt]
-
-FLAGS
-  -f, --format=<option>     [default: sd-jwt] データ形式
-                            <options: sd-jwt>
-  -i, --identity=<value>    (required) プライベート鍵のファイルパス
-      --expired-at=<value>  有効期限 (ISO 8601)
-      --holder=<value>      (required) 所有者となる会員 ID またはドメイン名
-      --issued-at=<value>   発行日時 (ISO 8601)
-      --issuer=<value>      (required) OP 発行機関の ID またはドメイン名
-      --valid-at=<value>    この日時に既に失効している資格情報を含めない。デフォルトは issued-at と同じ日時。
-
-DESCRIPTION
-  OP の発行
-
-FLAG DESCRIPTIONS
-  -i, --identity=<value>  プライベート鍵のファイルパス
-
-    プライベート鍵のファイルパスを渡してください。プライベート鍵は JWK 形式か、PEM base64 でエンコードされた PKCS #8
-    形式にしてください。
-
-  --expired-at=<value>  有効期限 (ISO 8601)
-
-    日付のみの場合、その日の 24:00:00.000 より前まで有効、それ以外の場合、期限切れとなる日付・時刻・秒を指定します。
-
-  --holder=<value>  所有者となる会員 ID またはドメイン名
-
-    UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501) を指定します。
-
-  --issuer=<value>  OP 発行機関の ID またはドメイン名
-
-    UUID 文字列表現 (RFC 9562) またはドメイン名 (RFC 4501) を指定します。
 ```
 
 ## `profile-registry db:init`

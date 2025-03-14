@@ -1,4 +1,4 @@
-export type DebugTargetValue = "SD-JWT OP";
+export type DebugTargetValue = "NO TEST";
 
 export type DebugTargetSelectFieldProps = {
   /** 選択値 */
