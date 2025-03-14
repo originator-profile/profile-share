@@ -1,7 +1,7 @@
 import { Flags } from "@oclif/core";
 import { parseAccountId, parseExpirationDate } from "@originator-profile/core";
 import { Jwk } from "@originator-profile/model";
-import { importPKCS8, exportJWK } from "jose";
+import { exportJWK, importPKCS8 } from "jose";
 import fs from "node:fs/promises";
 
 /** @deprecated */
@@ -46,7 +46,10 @@ export const privateKey = Flags.custom({
     const buffer = await fs.readFile(filepath);
     const fileContent = buffer.toString();
     try {
-      const key = await importPKCS8(fileContent, "ES256");
+      const key = await importPKCS8(fileContent, "ES256", {
+        extractable: true,
+      });
+
       const jwk = await exportJWK(key);
       return jwk as Jwk;
     } catch (e: unknown) {
