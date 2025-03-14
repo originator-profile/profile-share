@@ -13,7 +13,9 @@ export async function createThumbprint(
 ): Promise<string> {
   const jwk: JWK =
     typeof jwkOrPkcs8 === "string"
-      ? await importPKCS8(jwkOrPkcs8, alg).then(exportJWK)
+      ? await importPKCS8(jwkOrPkcs8, alg, {
+          extractable: true,
+        }).then(exportJWK)
       : jwkOrPkcs8;
 
   const thumbprint = await calculateJwkThumbprint(jwk, "sha256");
