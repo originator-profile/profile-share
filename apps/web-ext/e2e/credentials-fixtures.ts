@@ -15,6 +15,8 @@ type TestFixtures = {
     contents: string,
   ) => Promise<void>;
   missingCredentials: void;
+  validCas: (key: { privateKey: Jwk }, contents: string) => Promise<void>;
+  missingOps: void;
 };
 
 const casEndpoint: string = "http://localhost:8080/examples/cas.json";
@@ -93,6 +95,53 @@ export const test = base.extend<TestFixtures>({
     await use(undefined);
 
     await page.unroute(casEndpoint);
+    await page.unroute(opsEndpoint);
+  },
+  validCas: async ({ page }: { page: Page }, use) => {
+    await use(async (key: { privateKey: Jwk }, contents: string) => {
+      const { privateKey } = key;
+      const issuedAt: Date = new Date(Date.now());
+      const expiredAt: Date = addYears(new Date(), 1);
+      const unsignedContentAttestation: UnsignedContentAttestation =
+        generateUnsignedContentAttestation(contents);
+      const contentAttestation = await signCa(
+        unsignedContentAttestation,
+        privateKey,
+        {
+          issuedAt,
+          expiredAt,
+          documentProvider: async () => {
+            const window = new Window();
+            window.document.write(contents);
+            return window.document as unknown as Document;
+          },
+        },
+      );
+
+      await page.route(casEndpoint, async (route) =>
+        route.fulfill({
+          body: JSON.stringify([
+            {
+              attestation: contentAttestation,
+              main: true,
+            },
+          ]),
+          contentType: "application/json",
+        }),
+      );
+    });
+
+    await page.unroute(casEndpoint);
+  },
+  missingOps: async ({ page }: { page: Page }, use) => {
+    await page.route(opsEndpoint, async (route) =>
+      route.fulfill({
+        status: 404,
+      }),
+    );
+
+    await use(undefined);
+
     await page.unroute(opsEndpoint);
   },
 });
