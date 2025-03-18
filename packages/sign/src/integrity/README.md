@@ -58,6 +58,10 @@ console.log(uca.target);
 // ]
 ```
 
+### IntegrityCalculationError
+
+Integrityの計算に失敗 (例: 検証対象が存在しない) エラー
+
 ## fetchAndSetDigestSri
 
 オブジェクトへの `digestSRI` の割り当て

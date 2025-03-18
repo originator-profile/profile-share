@@ -1,6 +1,9 @@
 import { RawTarget } from "@originator-profile/model";
 import { describe, expect, it } from "vitest";
-import { fetchAndSetTargetIntegrity } from "./fetch-and-set-target-integrity";
+import {
+  fetchAndSetTargetIntegrity,
+  IntegrityCalculationError,
+} from "./fetch-and-set-target-integrity";
 
 describe("fetchAndSetTargetIntegrity()", () => {
   it("should update the target array with integrity", async () => {
@@ -26,7 +29,7 @@ describe("fetchAndSetTargetIntegrity()", () => {
     ]);
   });
 
-  it("should throw an error if createIntegrity() returns null", async () => {
+  it("should throw an IntegrityCalculationError if createIntegrity() returns null", async () => {
     const uca = {
       target: [
         {
@@ -38,7 +41,9 @@ describe("fetchAndSetTargetIntegrity()", () => {
 
     await expect(
       fetchAndSetTargetIntegrity("sha256", uca),
-    ).rejects.toThrowError(`Failed to create integrity #0.`);
+    ).rejects.toThrowError(
+      new IntegrityCalculationError(`Failed to create integrity #0.`),
+    );
   });
 
   it("should remove content and keep integrity if integrity is provided", async () => {
