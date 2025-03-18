@@ -3,12 +3,16 @@ import type { HashAlgorithm } from "websri";
 import { createIntegrity } from "./target-integrity";
 import type { DocumentProvider } from "./types";
 
+/** Integrityの計算に失敗 (例: 検証対象が存在しない) エラー */
+export class IntegrityCalculationError extends Error {}
+
 /**
  * 未署名 Content Attestation への Target Integrity の割り当て
  * target[].integrity を省略した場合、type に準じて content から integrity を計算します。
  * 一方、target[].integrity が含まれる場合、その値をそのまま使用します。
  * なお、いずれも target[].content プロパティが削除される点にご注意ください。
  * @see {@link https://docs.originator-profile.org/rfc/target-guide/}
+ * @throws {IntegrityCalculationError} Integrityの計算に失敗 (例: 検証対象が存在しない)
  * @example
  * ```ts
  * const uca = {
@@ -52,7 +56,9 @@ export async function fetchAndSetTargetIntegrity<
       const target = await createIntegrity(alg, raw, doc);
 
       if (!target) {
-        throw new Error(`Failed to create integrity #${i}.`);
+        throw new IntegrityCalculationError(
+          `Failed to create integrity #${i}.`,
+        );
       }
 
       return target;

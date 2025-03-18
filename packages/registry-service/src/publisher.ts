@@ -18,7 +18,7 @@ import {
   signCa,
 } from "@originator-profile/sign";
 import { addYears, getUnixTime } from "date-fns";
-import { ForbiddenError } from "http-errors-enhanced";
+import { BadRequestError, ForbiddenError } from "http-errors-enhanced";
 import { JSDOM } from "jsdom";
 import { signJwtVc } from "../../securing-mechanism/src/jwt";
 import Config from "./config";
@@ -129,6 +129,7 @@ export const PublisherService = ({ config }: Options) => ({
   /**
    * 未署名 Content Attestation の取得
    * @param uca 未署名 Content Attestation オブジェクト
+   * @throws {BadRequestError} 検証対象のコンテンツが存在しない/コンテンツにアクセスできない/Integrityの計算に失敗
    * @return 未署名 Content Attestation オブジェクト
    */
   async unsignedCa(
@@ -150,8 +151,12 @@ export const PublisherService = ({ config }: Options) => ({
 
     uca.credentialSubject.id ??= `urn:uuid:${crypto.randomUUID()}`;
 
-    await fetchAndSetDigestSri("sha256", uca.credentialSubject.image);
-    await fetchAndSetTargetIntegrity("sha256", uca, documentProvider);
+    try {
+      await fetchAndSetDigestSri("sha256", uca.credentialSubject.image);
+      await fetchAndSetTargetIntegrity("sha256", uca, documentProvider);
+    } catch (e) {
+      throw new BadRequestError((e as Error).message);
+    }
 
     const payload = {
       iss: uca.issuer,
