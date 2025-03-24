@@ -8,5 +8,6 @@ export default defineConfig({
   },
   test: {
     dir: "src",
+    passWithNoTests: true,
   },
 });
