@@ -16,7 +16,20 @@ curl -X POST https://dprexpt.originator-profile.org/ca \
 
 プロパティの詳細については [Content Attestation of Article Type Implementation Guidelines](https://docs.originator-profile.org/rfc/ca-guide/article/) と [Content Attestation of Online Ad Type Implementation Guidelines](https://docs.originator-profile.org/rfc/ca-guide/online-ad/) をご確認ください。
 
-### `digestSRI` の計算
+### `digestSRI`
+
+リクエストボディの `image.digestSRI` には、画像の [Subresource Integrity (SRI)](https://www.w3.org/TR/SRI/) ハッシュ値を指定します。
+
+```json
+{
+  "image": {
+    "id": "https://example.com/image.webp",
+    "digestSRI": "sha256-xxx"
+  }
+}
+```
+
+#### `digestSRI` の省略
 
 リクエストボディの `image.digestSRI` が省略された場合、`id` プロパティをもとに `digestSRI` が計算されます。
 
@@ -41,11 +54,43 @@ curl -X POST https://dprexpt.originator-profile.org/ca \
 }
 ```
 
-### `integrity` の計算
+### `integrity`
+
+リクエストボディの `target[].integrity` には、コンテンツの [Subresource Integrity (SRI)](https://www.w3.org/TR/SRI/) ハッシュ値を指定します。
+
+例えば検証対象のコンテンツがHTML要素の場合、以下の選択肢があります:
+
+- `type` に準じたテキストのハッシュ値を事前に計算し `integrity` に指定
+- CSS セレクター (`cssSelector` プロパティ) に一致する要素が存在する<ruby>整形式<rt>well-formed</rt></ruby> HTML を指定
+  - HTML 文書全体を `content` プロパティに指定
+  - アクセス可能な文書のURLを `content` プロパティに指定
+
+例:
+
+```json
+{
+  "target": [
+    {
+      "type": "HtmlTargetIntegrity",
+      "cssSelector": "<CSS セレクター>",
+      "integrity": "sha256-GtNUUolQVlwIkQU9JknWkwkhfdiVmHr/BOnLFFHC5jI="
+    },
+    {
+      "type": "ExternalResourceTargetIntegrity",
+      "integrity": "sha256-6o+sfGX7WJsNU1YPUlH3T56bJDR43Laz6nm142RJyNk="
+    }
+  ]
+}
+```
+
+#### `integrity` の省略
 
 リクエストボディの `target[].integrity` が省略された場合、`type` に準じて `content` をもとに `integrity` が計算されます。
 
-HTML コンテンツの場合:
+`content` プロパティはいくつかの形式に対応しています:
+
+- HTML … HTML 文書全体を `content` プロパティに指定
+- URL … アクセス可能な文書のURL (`https:` や `data:` など含む) を `content` プロパティに指定
 
 例:
 
@@ -75,7 +120,7 @@ HTML コンテンツの場合:
 }
 ```
 
-`cssSelector` プロパティの内容に準じて計算します。
+`cssSelector` プロパティの内容に準じて計算します (`integrity` が省略された場合)。
 
 非公開コンテンツの場合:
 
@@ -92,7 +137,20 @@ HTML コンテンツの場合:
 }
 ```
 
-`data:` URL をデコードして得られるバイト列をもとに計算します。
+↓
+
+```json
+{
+  "target": [
+    {
+      "type": "ExternalResourceTargetIntegrity",
+      "integrity": "sha256-jZtLeUr/xdr06voS4MYpSrMaru0zCIYUVna9a4Mui5g="
+    }
+  ]
+}
+```
+
+`data:` URL をデコードして得られるバイト列をもとに計算します (`integrity` が省略された場合)。
 
 公開済みコンテンツの場合:
 
@@ -109,7 +167,20 @@ HTML コンテンツの場合:
 }
 ```
 
-fetch API での HTTP GET リクエストによってアクセスして得られるバイト列をもとに計算します。
+↓
+
+```json
+{
+  "target": [
+    {
+      "type": "ExternalResourceTargetIntegrity",
+      "integrity": "sha256-6o+sfGX7WJsNU1YPUlH3T56bJDR43Laz6nm142RJyNk="
+    }
+  ]
+}
+```
+
+fetch API での HTTP GET リクエストによってアクセスして得られるバイト列をもとに計算します (`integrity` が省略された場合)。
 
 ### 発行日時
 
