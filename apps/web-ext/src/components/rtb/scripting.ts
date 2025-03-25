@@ -1,6 +1,4 @@
-import { getJsonLdNodeObjects } from "@originator-profile/verify";
-import { NodeObject } from "jsonld";
-import { getAdvertiser } from "./bidresponse";
+import { getAdvertiser, getBidResponses } from "./bidresponse";
 import { Advertiser, BidResponse } from "./types";
 
 type FrameList = {
@@ -9,17 +7,17 @@ type FrameList = {
 };
 
 /**
- * 自身フレームのapplication/ld+json NodeObjectの取得
+ * 自身フレームのBidResponseの取得
  * @remarks
  * MV3 chrome.scripting API 必須
  */
-async function findNodeObjects(frames: FrameList): Promise<NodeObject[]> {
+async function findBidResponses(frames: FrameList): Promise<BidResponse[]> {
   const res = await chrome.scripting.executeScript({
     target: {
       tabId: frames.tabId,
       frameIds: frames.frameIds,
     },
-    func: getJsonLdNodeObjects,
+    func: getBidResponses,
   });
 
   return res.flatMap((res) => res?.result ?? []);
@@ -54,10 +52,8 @@ export async function findAdvertiser({
     };
   }
 
-  const nodeObj: NodeObject[] = await findNodeObjects({ tabId, frameIds });
-  const adv = nodeObj
-    .map((obj: NodeObject) => getAdvertiser(obj as BidResponse))
-    .find((adv) => adv);
+  const bids: BidResponse[] = await findBidResponses({ tabId, frameIds });
+  const adv = bids.map((obj) => getAdvertiser(obj)).find((adv) => adv);
 
   if (adv) {
     return adv;

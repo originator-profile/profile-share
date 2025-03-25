@@ -20,3 +20,33 @@ export function getAdvertiser(data: BidResponse): Advertiser | null {
     return null;
   }
 }
+
+/**
+ * 文書内の BidResponse データの取得
+ * @param doc Document オブジェクト
+ * @return BidResponseの配列
+ */
+export function getBidResponses(doc: Document = document) {
+  const elements = [
+    ...doc.querySelectorAll(`script[type="application/ld+json"]`),
+  ];
+  const credentialsArray = elements
+    .map((elem) => {
+      const text = elem.textContent;
+      if (typeof text !== "string") {
+        return undefined;
+      }
+      try {
+        const json = JSON.parse(text);
+        if (json.bidresponse.bid.op === undefined) {
+          return undefined;
+        }
+        return json;
+      } catch (e: unknown) {
+        return undefined;
+      }
+    })
+    .filter((e) => typeof e !== "undefined");
+
+  return credentialsArray.flat() as BidResponse[];
+}

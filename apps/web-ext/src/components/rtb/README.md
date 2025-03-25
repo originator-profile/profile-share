@@ -51,7 +51,7 @@ export type BidResponse = {
 Reactコンポーネント:
 
 ```tsx
-<BidResponse tabId={tabId} dp={dp} />
+<BidResponse tabId={tabId} advertisement={ca} />
 ```
 
 > **Note**\

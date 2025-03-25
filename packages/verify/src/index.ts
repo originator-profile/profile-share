@@ -1,7 +1,6 @@
 export * from "./content-attestation";
 export * from "./content-attestation-set";
 export * from "./errors";
-export * from "./fetch-profile-set";
 export * from "./integrity/";
 export * from "./originator-profile-set";
 export * from "./site-profile/";
