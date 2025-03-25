@@ -4,8 +4,6 @@
 namespace Profile\Uca;
 
 require_once __DIR__ . '/config.php';
-use const Profile\Config\PROFILE_CA_TARGET_TYPE;
-use const Profile\Config\PROFILE_CA_TARGET_CSS_SELECTOR;
 
 /** 未署名 Content Attestation */
 final class Uca {
@@ -16,6 +14,8 @@ final class Uca {
 	 * @param string  $url 投稿のパーマリンクURL
 	 * @param string  $locale ロケール
 	 * @param string  $html HTML
+	 * @param string  $target_type 検証対象の種別
+	 * @param string  $target_css_selector 検証する対象の要素 CSS セレクター
 	 * @param array   $external_resources 外部リソース
 	 * @param ?string $headline (optional) タイトル
 	 * @param ?string $image (optional) 画像URL
@@ -29,6 +29,8 @@ final class Uca {
 		public string $url,
 		public string $locale,
 		public string $html,
+		public string $target_type,
+		public string $target_css_selector,
 		public array $external_resources,
 		public ?string $headline = null,
 		public ?string $image = null,
@@ -69,9 +71,9 @@ final class Uca {
 			'target'            => array_merge(
 				array(
 					array(
-						'type'        => PROFILE_CA_TARGET_TYPE,
+						'type'        => $this->target_type,
 						'content'     => $this->html,
-						'cssSelector' => PROFILE_CA_TARGET_CSS_SELECTOR,
+						'cssSelector' => $this->target_css_selector,
 					),
 				),
 				array_map(
