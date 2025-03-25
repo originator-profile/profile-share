@@ -41,6 +41,7 @@ export function ContentsArea(props: Props) {
       viewBox={`0 0 ${width} ${height}`}
       width={width}
       height={height}
+      data-testid="content-highlight"
     >
       <defs>
         <mask id={id}>
