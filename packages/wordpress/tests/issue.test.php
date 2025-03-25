@@ -3,6 +3,10 @@ use PHPUnit\Framework\TestCase;
 
 const WP_CONTENT_DIR = '/tmp';
 
+
+require_once __DIR__ . '/../includes/config.php';
+use const Profile\Config\PROFILE_DEFAULT_CA_TARGET_HTML;
+
 require_once __DIR__ . '/../includes/issue.php';
 use function Profile\Issue\content_to_html;
 
@@ -15,7 +19,7 @@ final class Issue extends TestCase {
 <p>本文2</p>
 EOD;
 
-		$text = content_to_html( $content );
+		$text = content_to_html( $content, PROFILE_DEFAULT_CA_TARGET_HTML );
 		$this->assertSame(
 			<<<'EOD'
 <!DOCTYPE html>

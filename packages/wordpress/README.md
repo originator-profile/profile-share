@@ -13,7 +13,7 @@ WordPress での記事の公開時の Content Attestation (CA) の発行に役�
 
 ## デモ
 
-プラグインインストール済みの試験用環境 [wppdev.herokuapp.com](https://wppdev.herokuapp.com) にて運用しています。
+プラグインインストール済みの試験用環境 [op.cms.am](https://op.cms.am) にて運用しています。
 
 ## プラグインのインストール
 
@@ -59,9 +59,43 @@ dprexpt.originator-profile.org
 cfbff0d1-9375-5685-968c-48ce8b15ae17:GVWoXikZIqzdxzB3CieDHL-FefBT31IfpjdbtAJtBcU
 ```
 
+**検証対象の種別**
+
+例:
+
+```
+TextTargetIntegrity
+```
+
+**検証対象要素CSSセレクター**
+
+例:
+
+```
+.wp-block-post-content>*:not(.post-nav-links)
+```
+
+**検証対象要素の存在するHTML**
+
+例:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body class="wp-block-post-content">
+    %CONTENT%
+  </body>
+</html>
+```
+
+`%CONTENT%` は `apply_filters()` 適用後の WordPress 投稿内容に置換され、リクエストコンテンツ `target[0].content` プロパティとしてCAサーバーに送信されます。
+
 設定は WordPress 管理画面の「設定 > CA Manager」から行います。
 これらの設定が完了しないと Content Attestation の発行機能は正しく動作しません。
-正しく設定が反映されると、それ以降の投稿は自動的にCAサーバーに送信されます。
+正しく設定が反映されると、それ以降に更新した投稿と新規投稿は自動的にCAサーバーに送信されます。
 
 ### `/.well-known/sp.json` の配置
 
@@ -165,14 +199,17 @@ Content Attestation サーバーのホスト名の設定の初期値です。
 このホスト名のエンドポイントを介して Content Attestation の登録・更新・取得を行います。
 もし設定画面から設定を変更した場合、この値は参照されません。
 
-#### PROFILE_CA_TARGET_TYPE
+#### PROFILE_DEFAULT_CA_TARGET_TYPE
 
-検証する対象の型です。現在、対象の要素の子孫のテキストへの署名を表す `TextTargetIntegrity` のみサポートしています。
+検証対象の種別の初期値です。
 
-#### PROFILE_CA_TARGET_CSS_SELECTOR
+#### PROFILE_DEFAULT_CA_TARGET_CSS_SELECTOR
 
-検証する対象の要素の場所を特定するための CSS セレクターです。
-このプラグインは、投稿の各ページの内容から子要素の Node: textContent プロパティを結合した結果のテキストを対象として署名を行います。
+検証対象要素 CSS セレクターの初期値です。
+
+#### PROFILE_DEFAULT_CA_TARGET_HTML
+
+検証対象要素の存在する HTML の初期値です。
 
 ## 開発ガイド
 

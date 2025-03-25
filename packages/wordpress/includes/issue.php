@@ -8,6 +8,9 @@ use Profile\Uca\Uca;
 
 require_once __DIR__ . '/config.php';
 use const Profile\Config\PROFILE_DEFAULT_CA_SERVER_HOSTNAME;
+use const Profile\Config\PROFILE_DEFAULT_CA_TARGET_TYPE;
+use const Profile\Config\PROFILE_DEFAULT_CA_TARGET_CSS_SELECTOR;
+use const Profile\Config\PROFILE_DEFAULT_CA_TARGET_HTML;
 
 require_once __DIR__ . '/url.php';
 use function Profile\Url\add_page_query;
@@ -36,7 +39,7 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 	}
 
 	$admin_secret = \get_option( 'profile_ca_server_admin_secret' );
-	$hostname     = \get_option( 'profile_default_ca_server_hostname', PROFILE_DEFAULT_CA_SERVER_HOSTNAME );
+	$hostname     = \get_option( 'profile_ca_server_hostname', PROFILE_DEFAULT_CA_SERVER_HOSTNAME );
 	$issuer_id    = \get_option( 'profile_ca_issuer_id' );
 	$endpoint     = "https://{$hostname}/ca";
 
@@ -144,7 +147,7 @@ function create_uca_list( \WP_Post $post, string $issuer_id ): array {
 		++$page;
 
 		$content            = \apply_filters( 'the_content', $content );
-		$html               = content_to_html( $content );
+		$html               = content_to_html( $content, \get_option( 'profile_ca_target_html', PROFILE_DEFAULT_CA_TARGET_HTML ) );
 		$external_resources = external_resources_from_html( $html, '//*[contains(@class, "wp-block-image")]//img[@integrity]' );
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
@@ -178,6 +181,8 @@ function create_uca_list( \WP_Post $post, string $issuer_id ): array {
 			url: $permalink,
 			locale: $locale,
 			html: $html,
+			target_type: \get_option( 'profile_ca_target_type', PROFILE_DEFAULT_CA_TARGET_TYPE ),
+			target_css_selector: \get_option( 'profile_ca_target_css_selector', PROFILE_DEFAULT_CA_TARGET_CSS_SELECTOR ),
 			external_resources: $external_resources,
 			headline: $post->post_title,
 			image: \has_post_thumbnail( $post ) ? \get_the_post_thumbnail_url( $post ) : null,
@@ -194,19 +199,14 @@ function create_uca_list( \WP_Post $post, string $issuer_id ): array {
 }
 
 /**
- * ページの内容からHTMLへの変換
+ * WordPress post contentからHTMLへの変換
  *
- * @param string $content ページの内容
+ * @param string $content WordPress post content
+ * @param string $template テンプレート (%CONTENT% を置換)
  * @return string HTML
  */
-function content_to_html( string $content ): string {
-	return <<<EOD
-<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"></head>
-<body class="wp-block-post-content">{$content}</body>
-</html>
-EOD;
+function content_to_html( string $content, string $template ): string {
+	return \str_replace( '%CONTENT%', $content, $template );
 }
 
 /**
