@@ -1,4 +1,4 @@
-import { getJsonLdNodeObjects } from "@originator-profile/verify";
+import { getBidResponses } from "./bidresponse";
 import { expect, test } from "vitest";
 import { Window } from "happy-dom";
 
@@ -6,7 +6,7 @@ test("getJsonLdNodeObjects()はchrome.scripting ScriptInjectionで使用して�
   /* eslint-disable-next-line @typescript-eslint/no-implied-eval */
   const func = new Function(
     "document",
-    `${getJsonLdNodeObjects.toString()}\ngetJsonLdNodeObjects(document);`,
+    `${getBidResponses.toString()}\ngetBidResponses(document);`,
   );
   const window = new Window();
   expect(() => func(window.document)).not.toThrowError();
