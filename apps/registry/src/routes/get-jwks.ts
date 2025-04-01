@@ -6,8 +6,8 @@ export const url = "/.well-known/jwks.json";
 
 export const schema = {
   operationId: "getJwks",
-  tags: ["registry"],
-  summary: "OP レジストリ JWKS 取得",
+  tags: ["keys"],
+  summary: "JWKS Endpoint",
   response: {
     200: {
       ...Jwks,

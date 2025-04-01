@@ -12,14 +12,24 @@ function OpenApi(
 ): FastifyDynamicSwaggerOptions["openapi"] {
   const tagsInternalOnly = [
     {
+      name: "accounts",
+      description: "アカウント",
+      "x-displayName": "アカウント",
+    },
+    {
+      name: "certification-systems",
+      description: "認証制度",
+      "x-displayName": "認証制度",
+    },
+    {
       name: "user-accounts",
       description: "ユーザーアカウント",
       "x-displayName": "ユーザーアカウント",
     },
     {
       name: "credentials",
-      description: "資格情報",
-      "x-displayName": "資格情報",
+      description: "Profile Annotation",
+      "x-displayName": "Profile Annotation",
     },
     {
       name: "requests",
@@ -72,44 +82,14 @@ function OpenApi(
         "x-displayName": "Site Profile",
       },
       {
-        name: "accounts",
-        description: "アカウント",
-        "x-displayName": "アカウント",
-      },
-      {
-        name: "SDP",
-        description: "Signed Document Profile",
-        "x-displayName": "Signed Document Profile",
-      },
-      {
-        name: "profiles",
-        description: "Profile Sets/Pairs",
-        "x-displayName": "Profile Sets/Pairs",
-      },
-      {
-        name: "registry",
-        description: "レジストリ",
-        "x-displayName": "レジストリ",
+        name: "wmp",
+        description: "Web Media Profile",
+        "x-displayName": "Web Media Profile",
       },
       {
         name: "keys",
-        description: "公開鍵",
-        "x-displayName": "公開鍵",
-      },
-      {
-        name: "certification-systems",
-        description: "認証制度",
-        "x-displayName": "認証制度",
-      },
-      {
-        name: "SOP",
-        description: "Signed Originator Profile",
-        "x-displayName": "Signed Originator Profile",
-      },
-      {
-        name: "websites",
-        description: "ウェブページ",
-        "x-displayName": "ウェブページ",
+        description: "Public Key",
+        "x-displayName": "Public Key",
       },
       ...(hideInternalDocs ? [] : tagsInternalOnly),
     ],

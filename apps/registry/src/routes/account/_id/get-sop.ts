@@ -1,4 +1,4 @@
-import { FastifySchema, FastifyRequest, FastifyReply } from "fastify";
+import { FastifyReply, FastifyRequest, FastifySchema } from "fastify";
 import Params from "./params";
 
 export const method = "GET";
@@ -7,6 +7,7 @@ export const url = "/sop";
 export const schema = {
   operationId: "account.getSignedOriginatorProfile",
   tags: ["SOP"],
+  deprecated: true,
   params: Params,
   produces: ["application/jwt"],
   response: {
