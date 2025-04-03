@@ -118,12 +118,13 @@ describe("CA", () => {
       credentialSubject: {
         id: "urn:uuid:78550fa7-f846-4e0f-ad5c-8d34461cb95b",
         type: "OnlineAd",
-        title: "<広告のタイトル>",
+        name: "<広告のタイトル>",
         description: "<広告の説明>",
         image: {
           id: "https://ad.example.com/static/thumbnail.png",
           digestSRI: "sha256-...",
         },
+        genre: "Arts & Entertainment",
       },
       allowedOrigin: ["https://ad.example.com"],
       target: [

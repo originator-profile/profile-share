@@ -129,7 +129,7 @@ export function Credentials(props: CredentialsProps) {
                 <p className="text-sm text-gray-900 font-bold">
                   {ca.credentialSubject.type === "Article"
                     ? ca.credentialSubject.headline
-                    : ca.credentialSubject.title}
+                    : ca.credentialSubject.name}
                 </p>
               </div>
             </div>
