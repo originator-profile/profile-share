@@ -1,7 +1,6 @@
 import { FromSchema, JSONSchema } from "json-schema-to-ts";
 import { AllowedOrigin } from "../allowed-origin";
 import { AllowedUrl } from "../allowed-url";
-import { Category } from "../category";
 import { OpCipContext } from "../context/op-cip-context";
 import { Image } from "../image";
 import { ContentAttestation } from "./content-attestation";
@@ -19,7 +18,7 @@ const subject = {
       type: "string",
       const: "OnlineAd",
     },
-    title: {
+    name: {
       type: "string",
       description: "広告のタイトル。",
     },
@@ -28,15 +27,12 @@ const subject = {
       description: "広告の説明（プレーンテキスト）。",
     },
     image: Image,
-    category: {
-      // TODO 単一値を許す
-      type: "array",
-      items: Category,
-      description:
-        "IAB カテゴリータクソノミーによる分類の JSON 配列。空配列でもよい (MAY)。",
+    genre: {
+      title: "ジャンル",
+      type: "string",
     },
   },
-  required: ["id", "title", "description"],
+  required: ["id", "type", "name", "description"],
 } as const satisfies JSONSchema;
 
 const AdvertisementCA = {

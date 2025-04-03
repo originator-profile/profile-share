@@ -41,11 +41,16 @@ function CaSelector({ filteredCas, onClickCa }: Props) {
                   )}
                   src={ca.attestation.doc.credentialSubject.image?.id}
                   placeholderSrc={placeholderDpThumbnail}
-                  alt={
-                    ca.attestation.doc.credentialSubject.type === "Article"
-                      ? ca.attestation.doc.credentialSubject.headline
-                      : ca.attestation.doc.credentialSubject.title
-                  }
+                  alt={(() => {
+                    const subject = ca.attestation.doc.credentialSubject;
+                    if (subject.type === "Article") {
+                      return subject.headline;
+                    }
+                    if (subject.type === "OnlineAd") {
+                      return subject.name;
+                    }
+                    return "";
+                  })()}
                   width={44}
                   height={44}
                   cover
