@@ -5,6 +5,8 @@ import { addYears } from "date-fns";
 import {
   generateCoreProfileData,
   generateUnsignedContentAttestation,
+  generateCertificateData,
+  generateWebMediaProfileData,
 } from "./data";
 import { signCa } from "../../../packages/sign/src/sign-ca";
 import { Window } from "happy-dom";
@@ -53,6 +55,22 @@ export const test = base.extend<TestFixtures>({
             expiredAt,
           },
         );
+        const annotations = await signJwtVc(
+          generateCertificateData(),
+          privateKey,
+          {
+            issuedAt,
+            expiredAt,
+          },
+        );
+        const signedMediaProfile = await signJwtVc(
+          generateWebMediaProfileData(),
+          privateKey,
+          {
+            issuedAt,
+            expiredAt,
+          },
+        );
 
         await page.route(casEndpoint, async (route) =>
           route.fulfill({
@@ -70,6 +88,8 @@ export const test = base.extend<TestFixtures>({
           route.fulfill({
             body: JSON.stringify({
               core: signedCoreProfile,
+              annotations: [annotations],
+              media: signedMediaProfile,
             }),
             contentType: "application/json",
           }),
