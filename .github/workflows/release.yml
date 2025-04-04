@@ -29,7 +29,6 @@ jobs:
       - name: Build
         uses: "./.github/actions/build"
         with:
-          BASIC_AUTH: ${{ secrets.BASIC_AUTH }}
           BASIC_AUTH_CREDENTIALS: ${{ secrets.BASIC_AUTH_CREDENTIALS }}
           REGISTRY_OPS: ${{ secrets.REGISTRY_OPS }}
       - name: Build for WordPress plugin
