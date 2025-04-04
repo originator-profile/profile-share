@@ -23,7 +23,7 @@
     "@originator-profile/ui": "workspace:*",
     "@originator-profile/verify": "workspace:*",
     "@playwright/test": "^1.50.1",
-    "@types/chrome": "^0.0.307",
+    "@types/chrome": "^0.0.313",
     "@types/esbuild-copy-static-files": "^0.1.4",
     "@types/jsonld": "^1.5.15",
     "@types/react": "^19.0.10",

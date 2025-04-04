@@ -18,9 +18,8 @@ export const test = base.extend<{
       `../dist-${browser.browserType().name()}`,
     );
     const context = await browser.browserType().launchPersistentContext("", {
-      headless: false,
+      channel: "chromium",
       args: [
-        `--headless=new`,
         `--disable-extensions-except=${extensionPath}`,
         `--load-extension=${extensionPath}`,
       ],

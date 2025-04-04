@@ -6,7 +6,7 @@
   "main": "./tailwind-config.cjs",
   "exports": "./tailwind-config.cjs",
   "dependencies": {
-    "@jumpu-ui/tailwindcss": "1.0.1-alpha.6",
+    "@jumpu-ui/tailwindcss": "1.0.1",
     "@tailwindcss/typography": "^0.5.16"
   },
   "devDependencies": {
