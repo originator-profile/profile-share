@@ -9,4 +9,5 @@ export default defineNuxtConfig({
   devServer: {
     port: 4000,
   },
+  telemetry: false,
 });
