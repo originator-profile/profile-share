@@ -42,7 +42,9 @@ describe("fetchAndSetTargetIntegrity()", () => {
     await expect(
       fetchAndSetTargetIntegrity("sha256", uca),
     ).rejects.toThrowError(
-      new IntegrityCalculationError(`Failed to create integrity #0.`),
+      new IntegrityCalculationError(
+        `Failed to create integrity for element target[0].`,
+      ),
     );
   });
 

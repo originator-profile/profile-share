@@ -85,7 +85,7 @@ export function CaVerifier<T extends ContentAttestation>(
 
       if (failedIndices.length > 0) {
         return new CaVerifyFailed(
-          `Target integrity verification failed for element(s): ${failedIndices.join(", ")}`,
+          `Content Attestation Target integrity verification failed for element(s): ${failedIndices.map((i) => `target[${i}]`).join(", ")}`,
           urlResult,
         );
       }
