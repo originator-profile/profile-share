@@ -57,7 +57,7 @@ export async function fetchAndSetTargetIntegrity<
 
       if (!target) {
         throw new IntegrityCalculationError(
-          `Failed to create integrity #${i}.`,
+          `Failed to create integrity for element target[${i}].`,
         );
       }
 

@@ -202,7 +202,7 @@ describe("ArticleCAの検証", async () => {
     expect(result).not.instanceOf(CaInvalid);
     expect(result).instanceOf(CaVerifyFailed);
     /* 0番目の要素が失敗 */
-    expect((result as Error).message).toContain(": 0");
+    expect((result as Error).message).toContain(": target[0]");
   });
 
   test("ArticleCAの検証でスキーマにあっていない", async () => {
