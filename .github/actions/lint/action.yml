@@ -5,3 +5,14 @@ runs:
   steps:
     - run: pnpm lint
       shell: bash
+    - name: setup git config
+      run: |
+        git config user.name "bot"
+        git config user.email "bot@originator-profile.org"
+      shell: bash
+    - name: Commit
+      run: |-
+        if git commit -am 'bot: lint [skip ci]'; then
+          git push origin HEAD:"${{ github.ref }}"
+        fi
+      shell: bash
