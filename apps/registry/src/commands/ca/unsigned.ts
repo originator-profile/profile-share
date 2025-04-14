@@ -25,6 +25,7 @@ const exampleArticleContentAttestation = {
     description: "<コンテンツの説明>",
     image: {
       id: "<サムネイル画像URL>",
+      content: "<コンテンツ (data:// 形式URL)>",
     },
     datePublished: "<公開日時>",
     dateModified: "<最終更新日時>",

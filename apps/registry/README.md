@@ -349,7 +349,8 @@ FLAG DESCRIPTIONS
     "type": "Article",
     "headline": "<Webページのタイトル>",
     "image": {
-    "id": "https://media.example.com/image.png"
+    "id": "<サムネイル画像URL>",
+    "content": "<コンテンツ (data:// 形式URL)>"
     },
     "description": "<Webページの説明>",
     "author": [
@@ -428,7 +429,8 @@ FLAG DESCRIPTIONS
     "headline": "<コンテンツのタイトル>",
     "description": "<コンテンツの説明>",
     "image": {
-    "id": "<サムネイル画像URL>"
+    "id": "<サムネイル画像URL>",
+    "content": "<コンテンツ (data:// 形式URL)>"
     },
     "datePublished": "<公開日時>",
     "dateModified": "<最終更新日時>",
@@ -825,7 +827,8 @@ FLAG DESCRIPTIONS
     "name": "<Web サイトの名称>",
     "description": "<Web サイトの説明>",
     "image": {
-    "id": "<サムネイル画像URL>"
+    "id": "<サムネイル画像URL>",
+    "content": "<コンテンツ (data:// 形式URL)>"
     }
     }
     }

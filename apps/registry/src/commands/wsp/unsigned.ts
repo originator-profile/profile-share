@@ -23,6 +23,7 @@ const exampleWebsiteProfile = {
     description: "<Web サイトの説明>",
     image: {
       id: "<サムネイル画像URL>",
+      content: "<コンテンツ (data:// 形式URL)>",
     },
   },
 } satisfies WebsiteProfile;

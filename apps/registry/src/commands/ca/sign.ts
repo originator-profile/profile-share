@@ -23,7 +23,8 @@ const exampleArticleContentAttestation = {
     type: "Article",
     headline: "<Webページのタイトル>",
     image: {
-      id: "https://media.example.com/image.png",
+      id: "<サムネイル画像URL>",
+      content: "<コンテンツ (data:// 形式URL)>",
     },
     description: "<Webページの説明>",
     author: ["山田花子"],

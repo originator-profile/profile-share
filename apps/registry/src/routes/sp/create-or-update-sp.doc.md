@@ -16,9 +16,51 @@ curl -X POST https://dprexpt.originator-profile.org/sp \
 
 プロパティの詳細については [Website Profile (WSP) Data Model](https://docs.originator-profile.org/rfc/website-profile/) と [Site Profile (SP)](https://docs.originator-profile.org/rfc/site-profile/) をご確認ください。
 
-### `digestSRI` の計算
+### `digestSRI`
 
-リクエストボディの `image.digestSRI` が省略された場合、`id` プロパティをもとに `digestSRI` が計算されます。
+リクエストボディの `image.digestSRI` には、画像の [Subresource Integrity (SRI)](https://www.w3.org/TR/SRI/) ハッシュ値を指定します。
+
+```json
+{
+  "image": {
+    "id": "https://example.com/image.webp",
+    "digestSRI": "sha256-6o+sfGX7WJsNU1YPUlH3T56bJDR43Laz6nm142RJyNk="
+  }
+}
+```
+
+#### `digestSRI` の省略
+
+リクエストボディの `image.digestSRI` が省略された場合、`content` にアクセスし `digestSRI` を計算します。
+`content` プロパティが存在しない場合、`id` にアクセスし `digestSRI` 計算します。
+
+非公開コンテンツの場合:
+
+例:
+
+```json
+{
+  "image": {
+    "id": "https://example.com/image.svg",
+    "content": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjwvc3ZnPg=="
+  }
+}
+```
+
+↓
+
+```json
+{
+  "image": {
+    "id": "https://example.com/image.svg",
+    "digestSRI": "sha256-jZtLeUr/xdr06voS4MYpSrMaru0zCIYUVna9a4Mui5g="
+  }
+}
+```
+
+`data:` URL をデコードして得られるバイト列をもとに計算します (`integrity` が省略された場合)。
+
+公開済みコンテンツの場合:
 
 例:
 
@@ -36,10 +78,12 @@ curl -X POST https://dprexpt.originator-profile.org/sp \
 {
   "image": {
     "id": "https://example.com/image.webp",
-    "digestSRI": "sha256-xxx"
+    "digestSRI": "sha256-6o+sfGX7WJsNU1YPUlH3T56bJDR43Laz6nm142RJyNk="
   }
 }
 ```
+
+fetch API での HTTP GET リクエストによってアクセスして得られるバイト列をもとに計算します (`integrity` が省略された場合)。
 
 ### Originator Profile Set (OPS)
 

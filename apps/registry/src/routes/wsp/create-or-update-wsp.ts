@@ -49,6 +49,7 @@ const body = {
         description: "<Web サイトの説明>",
         image: {
           id: "<サムネイル画像URL>",
+          content: "<コンテンツ (data:// 形式URL)>",
         },
       },
       issuedAt: "<発行日時 (例: 2006-01-02T15:04:05Z)>",
