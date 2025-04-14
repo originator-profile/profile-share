@@ -19,6 +19,7 @@ export function SpVerifier(
   keys: Keys,
   issuer: string,
   origin: URL["origin"],
+  verifyOrigin = true,
 ) {
   async function verify(): Promise<SpVerificationResult> {
     const verifyOps = OpsVerifier(sp.originators, keys, issuer);
@@ -68,11 +69,13 @@ export function SpVerifier(
       });
     }
 
-    if (!verifyAllowedOrigin(origin, decodedWsp.doc.credentialSubject.url)) {
-      return new SiteProfileVerifyFailed("Origin not allowed", {
-        originators: opsVerified,
-        credential,
-      });
+    if (verifyOrigin) {
+      if (!verifyAllowedOrigin(origin, decodedWsp.doc.credentialSubject.url)) {
+        return new SiteProfileVerifyFailed("Origin not allowed", {
+          originators: opsVerified,
+          credential,
+        });
+      }
     }
 
     return { originators: opsVerified, credential };
