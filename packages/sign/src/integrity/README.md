@@ -66,9 +66,14 @@ Integrityの計算に失敗 (例: 検証対象が存在しない) エラー
 
 オブジェクトへの `digestSRI` の割り当て
 
+`digestSRI` を省略した場合、`content` にアクセスし `digestSRI` を計算します。
+なお、`content` プロパティは削除されます。
+`content` プロパティが存在しない場合、`id` にアクセスし `digestSRI` 計算します。
+
 ```ts
 const resource = {
   id: "<URL>",
+  content: "<コンテンツ (URL)>", // 省略可能
 };
 
 await fetchAndSetDigestSri("sha256", resource);
