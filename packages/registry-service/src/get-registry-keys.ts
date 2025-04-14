@@ -1,14 +1,17 @@
 import { Keys, LocalKeys } from "@originator-profile/cryptography";
-import { OriginatorProfileSet } from "@originator-profile/model";
 import { decodeOps, OpsInvalid } from "@originator-profile/verify";
 
-const REGISTRY_OPS: OriginatorProfileSet = import.meta.env.REGISTRY_OPS;
+const { REGISTRY_OPS = "", PROFILE_ISSUER } = process.env;
 /**
  * OP レジストリの OPS を取得する
  * @returns レジストリのOPS復号結果
  */
 function getRegistryOps(): ReturnType<typeof decodeOps> {
-  return decodeOps(REGISTRY_OPS);
+  try {
+    return decodeOps(JSON.parse(REGISTRY_OPS));
+  } catch {
+    return new OpsInvalid("Invalid Registry OPS", []);
+  }
 }
 
 /**
@@ -16,7 +19,6 @@ function getRegistryOps(): ReturnType<typeof decodeOps> {
  * @returns レジストリの JWKS
  */
 export function getRegistryKeys(): Keys {
-  const registry = import.meta.env.PROFILE_ISSUER;
   const registryOps = getRegistryOps();
   if (registryOps instanceof OpsInvalid) {
     throw registryOps;
@@ -24,7 +26,7 @@ export function getRegistryKeys(): Keys {
 
   return LocalKeys(
     registryOps.find(
-      (op) => op.core.doc.credentialSubject.id === `dns:${registry}`,
+      (op) => op.core.doc.credentialSubject.id === `dns:${PROFILE_ISSUER}`,
     )?.core.doc.credentialSubject.jwks ?? { keys: [] },
   );
 }

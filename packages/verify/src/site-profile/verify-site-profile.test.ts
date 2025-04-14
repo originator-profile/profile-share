@@ -233,6 +233,54 @@ describe("Site Profileの検証", async () => {
     });
   });
 
+  test("SiteProfileの検証に成功(origin部分は検証しない)", async () => {
+    const verify = SpVerifier(
+      sp,
+      LocalKeys({ keys: [authority.publicKey] }),
+      opId.authority,
+      "https://not-exisiting.example.org",
+      false,
+    );
+    const resultSp = await verify();
+
+    expect(resultSp).not.instanceOf(SiteProfileInvalid);
+    expect(resultSp).not.instanceOf(SiteProfileVerifyFailed);
+    expect(resultSp).toStrictEqual({
+      originators: [
+        {
+          core: toVerifyResult(
+            authorityCp,
+            authorityOp.core,
+            authority.publicKey,
+          ),
+          annotations: undefined,
+          media: undefined,
+        },
+        {
+          core: toVerifyResult(
+            certifierCp,
+            certifierOp.core,
+            authority.publicKey,
+          ),
+          annotations: undefined,
+          media: undefined,
+        },
+        {
+          core: toVerifyResult(holderCp, holderOp.core, authority.publicKey),
+          annotations: [
+            toVerifyResult(
+              certificate,
+              holderOp.annotations[0],
+              certifier.publicKey,
+            ),
+          ],
+          media: toVerifyResult(wmp, holderOp.media, authority.publicKey),
+        },
+      ],
+      credential: toVerifyResult(wsp, sp.credential, holder.publicKey),
+    });
+  });
+
   test("SiteProfileののうちOPS部分の署名の検証に失敗", async () => {
     const evil = await generateKey();
     const evilCp = await signCp(cp, evil.privateKey, signOptions);

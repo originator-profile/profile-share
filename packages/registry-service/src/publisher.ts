@@ -17,10 +17,12 @@ import {
   fetchAndSetTargetIntegrity,
   signCa,
 } from "@originator-profile/sign";
+import { SpVerifier } from "@originator-profile/verify";
 import { addYears, getUnixTime } from "date-fns";
 import { BadRequestError, ForbiddenError } from "http-errors-enhanced";
 import { JSDOM } from "jsdom";
 import { signJwtVc } from "../../securing-mechanism/src/jwt";
+import { getRegistryKeys } from "./get-registry-keys";
 import Config from "./config";
 
 type Options = {
@@ -28,6 +30,8 @@ type Options = {
 };
 
 type AccountId = string;
+
+const { REGISTRY_OPS = "", PROFILE_ISSUER } = process.env;
 
 export async function documentProvider({
   type,
@@ -252,6 +256,7 @@ export const PublisherService = ({ config }: Options) => ({
 
   /**
    * Site Profile の登録・更新
+   * OPSに会員に対応する適切な公開鍵を含んだ状態で呼ぶ必要がある
    * @param accountId 会員 ID
    * @param uwsp 未署名 Website Profile オブジェクト
    * @return Site Profile
@@ -269,10 +274,30 @@ export const PublisherService = ({ config }: Options) => ({
   ): Promise<SiteProfile> {
     const wsp = await this.createOrUpdateWsp(accountId, uwsp);
 
-    return {
+    const sp = {
       originators,
       credential: wsp,
     };
+    const key = getRegistryKeys();
+    const registryOps = REGISTRY_OPS
+      ? (JSON.parse(REGISTRY_OPS) as SiteProfile["originators"])
+      : [];
+
+    const verifySp = SpVerifier(
+      {
+        originators: [...registryOps, ...originators],
+        credential: wsp,
+      },
+      key,
+      `dns:${PROFILE_ISSUER}`,
+      "",
+      false,
+    );
+    const verifiedSp = await verifySp();
+    if (verifiedSp instanceof Error) {
+      throw new BadRequestError(verifiedSp.message);
+    }
+    return sp;
   },
 });
 

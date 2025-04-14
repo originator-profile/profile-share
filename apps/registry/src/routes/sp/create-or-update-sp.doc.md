@@ -88,6 +88,7 @@ fetch API での HTTP GET リクエストによってアクセスして得られ
 ### Originator Profile Set (OPS)
 
 リクエストボディに `originators` プロパティを含め、必ず Originator Profile Set (OPS) を含める必要があります (MUST)。
+OPS には呼び出しアカウントの公開鍵を含む必要があります。適切な公開鍵が含まれない場合、この API は失敗します。
 
 ### 発行日時
 

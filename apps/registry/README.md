@@ -913,3 +913,9 @@ BASIC_AUTH_USERNAME
 
 BASIC_AUTH_PASSWORD
 : すべてのレジストリ API への Basic 認証のパスワード
+
+PROFILE_ISSUER
+: Core Profileのイシュアー
+
+REGISTRY_OPS
+: Core Profileのイシュアーの公開鍵を含むOPS
