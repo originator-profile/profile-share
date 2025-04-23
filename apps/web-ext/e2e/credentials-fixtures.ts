@@ -1,4 +1,8 @@
-import { Jwk, UnsignedContentAttestation } from "@originator-profile/model";
+import {
+  ContentAttestationSet,
+  Jwk,
+  UnsignedContentAttestation,
+} from "@originator-profile/model";
 import { signJwtVc } from "@originator-profile/securing-mechanism";
 import { test as base, Page } from "@playwright/test";
 import { addYears } from "date-fns";
@@ -18,6 +22,8 @@ type TestFixtures = {
   ) => Promise<void>;
   missingCredentials: void;
   validCas: (key: { privateKey: Jwk }, contents: string) => Promise<void>;
+  validOps: (key: { publicKey: Jwk; privateKey: Jwk }) => Promise<void>;
+  invalidCas: void;
   missingOps: void;
 };
 
@@ -153,6 +159,50 @@ export const test = base.extend<TestFixtures>({
 
     await page.unroute(casEndpoint);
   },
+  validOps: async ({ page }: { page: Page }, use) => {
+    await use(async (key: { publicKey: Jwk; privateKey: Jwk }) => {
+      const { publicKey, privateKey } = key;
+      const issuedAt: Date = new Date(Date.now());
+      const expiredAt: Date = addYears(new Date(), 1);
+      const signedCoreProfile = await signJwtVc(
+        generateCoreProfileData(publicKey),
+        privateKey,
+        {
+          issuedAt,
+          expiredAt,
+        },
+      );
+      const annotations = await signJwtVc(
+        generateCertificateData(),
+        privateKey,
+        {
+          issuedAt,
+          expiredAt,
+        },
+      );
+      const signedMediaProfile = await signJwtVc(
+        generateWebMediaProfileData(),
+        privateKey,
+        {
+          issuedAt,
+          expiredAt,
+        },
+      );
+
+      await page.route(opsEndpoint, async (route) =>
+        route.fulfill({
+          body: JSON.stringify({
+            core: signedCoreProfile,
+            annotations: [annotations],
+            media: signedMediaProfile,
+          }),
+          contentType: "application/json",
+        }),
+      );
+
+      await page.unroute(opsEndpoint);
+    });
+  },
   missingOps: async ({ page }: { page: Page }, use) => {
     await page.route(opsEndpoint, async (route) =>
       route.fulfill({
@@ -163,5 +213,23 @@ export const test = base.extend<TestFixtures>({
     await use(undefined);
 
     await page.unroute(opsEndpoint);
+  },
+  invalidCas: async ({ page }: { page: Page }, use) => {
+    const cas: ContentAttestationSet = [
+      {
+        attestation: "",
+        main: true,
+      },
+    ];
+    await page.route(casEndpoint, async (route) =>
+      route.fulfill({
+        body: JSON.stringify(cas),
+        contentType: "application/json",
+      }),
+    );
+
+    await use(undefined);
+
+    await page.unroute(casEndpoint);
   },
 });
