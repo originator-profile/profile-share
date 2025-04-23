@@ -1,34 +1,43 @@
-// TODO:
-// 名前等に違和感があるので
-// https://github.com/originator-profile/profile/issues/1925
-// このタスク対応でテストの見直しをしたほうが良さそう
 import { expect, popup, test as base } from "./fixtures";
-import { ContentAttestationSet } from "@originator-profile/model";
+import { test as siteProfileTest } from "./site-profile-fixtures";
+import { test as staticHtmlTest } from "./static-html-fixtures";
+import { test as credentialsTest } from "./credentials-fixtures";
+import path from "node:path";
+import fs from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import { mergeTests } from "@playwright/test";
 
-const test = base.extend({
-  page: async ({ page }, use) => {
-    /* Verify失敗するContent Attestation Set */
-    const cas: ContentAttestationSet = [
-      {
-        attestation: "",
-        main: true,
-      },
-    ];
-    await page.route("http://localhost:8080/examples/cas.json", async (route) =>
-      route.fulfill({
-        body: JSON.stringify(cas),
-        contentType: "application/json",
-      }),
-    );
-    await use(page);
-  },
-});
+const test = mergeTests(
+  base,
+  siteProfileTest,
+  staticHtmlTest,
+  credentialsTest,
+).extend({});
 
-test("Content Attestation Set の検証に失敗した場合", async ({
+const cwd = path.dirname(fileURLToPath(new URL(import.meta.url)));
+const privKeyPath = path.join(
+  cwd,
+  "../../registry/account-key.example.priv.json",
+);
+const privKeyBuffer = await fs.readFile(privKeyPath);
+const privateKey = JSON.parse(privKeyBuffer.toString());
+
+const pubKeyPath = path.join(
+  cwd,
+  "../../registry/account-key.example.pub.json",
+);
+const pubKeyBuffer = await fs.readFile(pubKeyPath);
+const publicKey = JSON.parse(pubKeyBuffer.toString());
+test("CASの検証に失敗した場合に閲覧禁止が表示されるか", async ({
   context,
   page,
+  missingSiteProfile: _missingSiteProfile,
+  invalidCas: _invalidCas,
+  validOps,
+  credentialsPage,
 }) => {
-  await page.goto("http://localhost:8080/examples/cas-2.html");
+  await validOps({ publicKey, privateKey });
+  await page.goto(credentialsPage.endpoint);
   const ext = await popup(context);
   await expect(ext?.getByTestId("p-elm-prohibition-message")).toBeVisible();
 });
