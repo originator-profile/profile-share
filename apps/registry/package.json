@@ -53,8 +53,7 @@
     "jsonld": "^8.3.3",
     "playwright": "^1.50.1",
     "prisma": "^6.4.1",
-    "vite": "^6.2.0",
-    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+    "vite": "^6.2.0"
   },
   "devDependencies": {
     "@fastify/autoload": "^6.1.0",

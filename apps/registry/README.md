@@ -63,8 +63,6 @@ running command...
 * [`profile-registry help [COMMAND]`](#profile-registry-help-command)
 * [`profile-registry key-gen`](#profile-registry-key-gen)
 * [`profile-registry openapi-gen [OUTPUT]`](#profile-registry-openapi-gen-output)
-* [`profile-registry publisher:category`](#profile-registry-publishercategory)
-* [`profile-registry publisher:extract-category [OUTPUT]`](#profile-registry-publisherextract-category-output)
 * [`profile-registry sign`](#profile-registry-sign)
 * [`profile-registry start`](#profile-registry-start)
 * [`profile-registry wsp:unsigned`](#profile-registry-wspunsigned)
@@ -543,61 +541,6 @@ ARGUMENTS
 
 DESCRIPTION
   OpenAPI ドキュメント生成
-```
-
-## `profile-registry publisher:category`
-
-カテゴリーの作成・表示・削除
-
-```
-USAGE
-  $ profile-registry publisher:category (--glob-input <value> | --input <value>) -o createMany
-
-FLAGS
-  -o, --operation=<option>  (required) 操作
-                            <options: createMany>
-      --glob-input=<value>  (required) [default: **/category.json] JSON files match with glob pattern
-      --input=<value>       JSON file
-
-DESCRIPTION
-  カテゴリーの作成・表示・削除
-
-FLAG DESCRIPTIONS
-  --input=<value>  JSON file
-
-    Prisma.Enumerable<Prisma.categoriesCreateManyInput>
-    詳細はTSDocを参照してください。
-    https://docs.originator-profile.org/ts/modules/_originator_profile_registry_db.default.Prisma
-```
-
-## `profile-registry publisher:extract-category [OUTPUT]`
-
-カテゴリー情報の抽出 ("publisher:category -o createMany"用)
-
-```
-USAGE
-  $ profile-registry publisher:extract-category [OUTPUT] --input <value> [--header <value>]
-
-ARGUMENTS
-  OUTPUT  [default: category.json] 出力先ファイル ("-": 標準出力)
-
-FLAGS
-  --header=<value>  [default: 2] Header position
-  --input=<value>   (required) Excel file
-
-DESCRIPTION
-  カテゴリー情報の抽出 ("publisher:category -o createMany"用)
-
-FLAG DESCRIPTIONS
-  --header=<value>  Header position
-
-    Excelファイル中のヘッダーの行番号
-
-  --input=<value>  Excel file
-
-    IAB Tech Lab Content Category Taxonomy 1.0の定義ファイル
-    詳しくは当該ファイル https://iabtechlab.com/wp-content/uploads/2023/03/Content-Taxonomy-1.0-1.xlsx
-    を参照してください
 ```
 
 ## `profile-registry sign`
