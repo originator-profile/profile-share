@@ -16,15 +16,18 @@ const {
   APP_URL = "",
   AUTH0_DOMAIN,
   AUTH0_CLIENT_ID,
+  REGISTRY_OPS,
   VITE_AUTH0_AUDIENCE,
   VITE_AUTH0_DOMAIN,
   VITE_AUTH0_CLIENT_ID,
+  VITE_REGISTRY_OPS,
 } = process.env;
 
 // See also packages/registry-ui/README.md
 process.env.VITE_AUTH0_DOMAIN = AUTH0_DOMAIN ?? VITE_AUTH0_DOMAIN;
 process.env.VITE_AUTH0_AUDIENCE = APP_URL ?? VITE_AUTH0_AUDIENCE;
 process.env.VITE_AUTH0_CLIENT_ID = AUTH0_CLIENT_ID ?? VITE_AUTH0_CLIENT_ID;
+process.env.VITE_REGISTRY_OPS = REGISTRY_OPS ?? VITE_REGISTRY_OPS;
 
 export default defineConfig({
   // NOTE: @fastify/vite@6.0.7 以降パス以外を指定するとproductionでの起動に失敗する

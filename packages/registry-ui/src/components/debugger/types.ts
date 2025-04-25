@@ -1,59 +1,32 @@
-export type DebugTargetValue = "NO TEST";
+/** 提示形式 */
+export type PresentationType = "embedded" | "external";
 
-export type DebugTargetSelectFieldProps = {
-  /** 選択値 */
-  value?: string;
-  /** コントロール名 */
-  name: string;
-  /** Change イベント */
-  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
-  /** 初期値 */
-  defaultValue?: string;
+/** テキスト出力 */
+export type TextOutput = {
+  type: "text";
+  title: string;
+  src: string;
 };
 
-export type DirectInputFieldProps = {
-  /** 非表示フラグ (デフォルト: false) */
-  hidden?: boolean;
-  /** 識別子 */
-  id: string;
-  /** コントロール名 */
-  name: string;
-  /** JSON 文字列化される初期値 */
-  defaultValue?: unknown;
+/** JSON 出力 */
+export type JsonOutput = {
+  type: "json";
+  title: string;
+  src: object;
 };
 
-export type EndpointInputFieldProps = {
-  /** 非表示フラグ (デフォルト: false) */
-  hidden?: boolean;
-  /** 識別子 **/
-  id: string;
-  /** コントロール名 */
-  name: string;
-  /** 初期値 */
-  defaultValue?: string;
-};
+export type Output = TextOutput | JsonOutput;
 
-export type PresentationTypeValue = "url" | "direct";
+export type Outputs = Output[];
 
-export type PresentationTypeInputFieldProps = {
-  /** 入力値 */
-  value: PresentationTypeValue;
-  /** コントロール名 */
-  name: string;
-  /** Change イベント */
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
-};
+export type DetailItemProps = Output & { className?: string };
 
-export type RegistryInputFieldProps = {
-  /** 識別子 **/
-  id: string;
-  /** コントロール名 */
-  name: string;
-  /** 初期値 */
-  defaultValue?: string;
-};
-
-export type ResultTextProps = {
-  /** 子要素 */
-  children: React.ReactNode;
-};
+export type DebugResult<T> =
+  | {
+      ok: true;
+      result: T;
+    }
+  | {
+      ok: false;
+      output: Output;
+    };

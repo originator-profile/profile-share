@@ -19,3 +19,6 @@ VITE_AUTH0_AUDIENCE
 
 VITE_AUTH0_CLIENT_ID
 : Auth0 Client ID (Auth0 dashboard -> Application -> Settings -> Client ID)
+
+VITE_REGISTRY_OPS
+: Core Profileのイシュアーの公開鍵を含むOPS
