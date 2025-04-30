@@ -3,6 +3,14 @@ run-name: "${{ inputs.version }}"
 on:
   workflow_dispatch:
     inputs:
+      release_type:
+        description: "Release type"
+        default: beta
+        required: true
+        type: choice
+        options:
+          - release
+          - beta
       version:
         description: 'Increment "major", "minor", "patch", "prerelease" or "pre*" version; or specify version'
         default: prerelease
@@ -33,11 +41,12 @@ jobs:
           REGISTRY_OPS: ${{ secrets.REGISTRY_OPS }}
       - name: Build for WordPress plugin
         uses: "./.github/actions/wordpress_build"
-      - name: Publish Packages
+      - if: github.event.inputs.release_type == 'release'
+        name: Publish Packages
         run: pnpm publish --access restricted --recursive
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - if: github.event.inputs.version != 'prerelease'
-        name: Prerelease
+      - if: github.event.inputs.release_type == 'release' && github.event.inputs.version != 'prerelease'
+        name: Next Release
         run: |
-          pnpm exec lerna version --force-publish --yes prerelease
+          pnpm exec lerna version --force-publish --preid=beta --yes preminor
