@@ -24,6 +24,7 @@ type TestFixtures = {
   validCas: (key: { privateKey: Jwk }, contents: string) => Promise<void>;
   validOps: (key: { publicKey: Jwk; privateKey: Jwk }) => Promise<void>;
   invalidCas: void;
+  missingCas: void;
   missingOps: void;
 };
 
@@ -203,17 +204,6 @@ export const test = base.extend<TestFixtures>({
       await page.unroute(opsEndpoint);
     });
   },
-  missingOps: async ({ page }: { page: Page }, use) => {
-    await page.route(opsEndpoint, async (route) =>
-      route.fulfill({
-        status: 404,
-      }),
-    );
-
-    await use(undefined);
-
-    await page.unroute(opsEndpoint);
-  },
   invalidCas: async ({ page }: { page: Page }, use) => {
     const cas: ContentAttestationSet = [
       {
@@ -231,5 +221,27 @@ export const test = base.extend<TestFixtures>({
     await use(undefined);
 
     await page.unroute(casEndpoint);
+  },
+  missingCas: async ({ page }: { page: Page }, use) => {
+    await page.route(casEndpoint, async (route) =>
+      route.fulfill({
+        status: 404,
+      }),
+    );
+
+    await use(undefined);
+
+    await page.unroute(casEndpoint);
+  },
+  missingOps: async ({ page }: { page: Page }, use) => {
+    await page.route(opsEndpoint, async (route) =>
+      route.fulfill({
+        status: 404,
+      }),
+    );
+
+    await use(undefined);
+
+    await page.unroute(opsEndpoint);
   },
 });
