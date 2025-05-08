@@ -1,7 +1,11 @@
-import { SiteProfileFetchFailed } from "@originator-profile/presentation";
+import {
+  SiteProfileFetchFailed,
+  SiteProfileFetchInvalid,
+} from "@originator-profile/presentation";
 import { _ } from "@originator-profile/ui";
 import {
   CasVerifyFailed,
+  OpsInvalid,
   OpsVerifyFailed,
   SiteProfileInvalid,
   SiteProfileVerifyFailed,
@@ -16,6 +20,7 @@ import { useMount, useTitle } from "react-use";
 import Loading from "../components/Loading";
 import Unsupported from "../components/Unsupported";
 import {
+  FetchCredentialsMessagingFailed,
   SupportedVerifiedCas,
   useCredentials,
 } from "../components/credentials";
@@ -130,10 +135,10 @@ function Base() {
     (
       error,
     ): error is
-      | SiteProfileInvalid
       | SiteProfileFetchFailed
-      | OpsVerifyFailed
-      | CasVerifyFailed => {
+      | SiteProfileFetchInvalid
+      | OpsInvalid
+      | FetchCredentialsMessagingFailed => {
       if (!error) {
         return false;
       }
