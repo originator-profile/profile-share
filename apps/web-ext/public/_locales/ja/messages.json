@@ -80,14 +80,17 @@
   "ReliabilityGuide_VerifiedOrganizationStatement": {
     "message": "この組織の実在性と組織が保有する証明書は OP レジストリ運用者によって確認済みです。組織の信頼性の判断に資するものとして組織の基本情報と証明書を閲覧することができます。"
   },
-  "Unsupported_NonconformingDescription": {
-    "message": "信頼性情報あるいは流通経路が仕様どおりに記述されていません"
+  "Unsupported_ERR_SITE_PROFILE_FETCH_FAILED": {
+    "message": "サイトのコンテンツ発信者の信憑性、信頼性に関するデータが取得できませんでした。ネットワーク通信環境を確認し、再度拡張機能をご利用ください。"
   },
-  "Unsupported_MissingReliability": {
-    "message": "組織の信頼性情報が含まれていません"
+  "Unsupported_ERR_SITE_PROFILE_FETCH_INVALID": {
+    "message": "サイトのコンテンツ発信者の信憑性、信頼性に関するデータの形式が無効です。サイト管理者にお問い合わせください。"
   },
-  "Unsupported_MissingDistributionChannel": {
-    "message": "出版物の流通経路が含まれていません"
+  "Unsupported_ERR_ORIGINATOR_PROFILE_SET_INVALID": {
+    "message": "コンテンツ発信者の信憑性、信頼性に関するデータの形式が無効です。サイト管理者にお問い合わせください。"
+  },
+  "Unsupported_ERR_FETCH_CREDENTIALS_MESSAGING_FAILED": {
+    "message": "サイトのコンテンツの信憑性、信頼性に関するデータが取得できませんでした。ネットワーク通信環境を確認し、再度拡張機能をご利用ください。"
   },
   "Unsupported_NoReliabilityInformationYet": {
     "message": "組織の信頼性情報と出版物の流通経路がまだありません"

@@ -10,10 +10,6 @@ import figUser3Url from "../assets/fig-user-3.svg";
 import figUser4Url from "../assets/fig-user-4.svg";
 import figUser5Url from "../assets/fig-user-5.svg";
 import figTraceabilityUrl from "../assets/fig-traceability.png";
-import {
-  CasVerifyFailed,
-  SiteProfileVerifyFailed,
-} from "@originator-profile/verify";
 import { stringifyWithError } from "@originator-profile/core";
 
 function Messages({
@@ -23,24 +19,20 @@ function Messages({
   className?: string;
   errors: Error[];
 }) {
-  if (
-    errors.some(
-      (e) =>
-        e instanceof SiteProfileVerifyFailed || e instanceof CasVerifyFailed,
-    )
-  ) {
-    return (
-      <ul className={className}>
-        <li>{_("Unsupported_NonconformingDescription")}</li>
-        <li>{_("Unsupported_MissingReliability")}</li>
-        <li>{_("Unsupported_MissingDistributionChannel")}</li>
-      </ul>
-    );
-  }
+  const errorWithCode = errors.filter((error) => "code" in error);
+  const hasOtherErrors = errors.length !== errorWithCode.length;
+
   return (
     <ul className={className}>
-      <li>{_("Unsupported_NoReliabilityInformationYet")}</li>
-      <li>{_("Unsupported_ReliabilityInformationRetrievalFailed")}</li>
+      {errorWithCode.map((error, index) => (
+        <li key={index}>{_(`Unsupported_${error.code as string}`)}</li>
+      ))}
+      {hasOtherErrors && (
+        <>
+          <li>{_("Unsupported_NoReliabilityInformationYet")}</li>
+          <li>{_("Unsupported_ReliabilityInformationRetrievalFailed")}</li>
+        </>
+      )}
     </ul>
   );
 }
