@@ -1,4 +1,4 @@
-FROM wordpress:6.7.2-php8.3 AS builder
+FROM wordpress:6.8.0-php8.3 AS builder
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
   && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \

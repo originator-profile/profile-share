@@ -34,13 +34,13 @@
     "@originator-profile/tsconfig": "workspace:*",
     "@types/jsonld": "^1.5.15",
     "ajv": "^8.17.1",
-    "eslint": "^9.21.0",
+    "eslint": "^9.25.1",
     "eslint-config-originator-profile": "workspace:*",
     "json-schema-to-ts": "^3.1.1",
     "jsonld": "^8.3.3",
-    "msw": "^2.7.3",
-    "pkgroll": "^2.11.2",
-    "typescript": "^5.8.2",
-    "vitest": "^3.0.7"
+    "msw": "^2.7.5",
+    "pkgroll": "^2.12.2",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.2"
   }
 }
