@@ -31,19 +31,19 @@
     "@originator-profile/model": "workspace:*",
     "@originator-profile/securing-mechanism": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
-    "@prisma/client": "^6.4.1",
+    "@prisma/client": "^6.7.0",
     "@types/jsonld": "^1.5.15",
     "@types/uuid": "^10.0.0",
     "date-fns": "^4.1.0",
-    "eslint": "^9.21.0",
+    "eslint": "^9.25.1",
     "eslint-config-originator-profile": "workspace:*",
     "http-errors-enhanced": "^3.0.2",
-    "jose": "^6.0.8",
+    "jose": "^6.0.10",
     "jsonld": "^8.3.3",
-    "prisma": "^6.4.1",
-    "typescript": "^5.8.2",
+    "prisma": "^6.7.0",
+    "typescript": "^5.8.3",
     "uuid": "^11.1.0",
-    "vitest": "^3.0.7",
-    "vitest-mock-extended": "^3.0.1"
+    "vitest": "^3.1.2",
+    "vitest-mock-extended": "^3.1.0"
   }
 }

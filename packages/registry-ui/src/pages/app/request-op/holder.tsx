@@ -1,25 +1,25 @@
-import { useCallback, useMemo } from "react";
-import { useMount } from "react-use";
-import clsx from "clsx";
-import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useSession } from "../../../utils/session";
+import clsx from "clsx";
+import { useCallback, useMemo } from "react";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import { useMount } from "react-use";
+import AccountFormField from "../../../components/AccountFormField";
+import FormRow from "../../../components/FormRow";
+import PageFieldSet from "../../../components/PageFieldSet";
 import {
   OpAccountWithCredentials,
   updateAccount,
   useAccount,
 } from "../../../utils/account";
-import { useAccountDraft } from "../../../utils/draft";
 import {
-  prefectures,
   IFormInput,
   formValidationSchema,
+  prefectures,
   stripEmpty,
 } from "../../../utils/account-form";
-import FormRow from "../../../components/FormRow";
-import PageFieldSet from "../../../components/PageFieldSet";
-import AccountFormField from "../../../components/AccountFormField";
+import { useAccountDraft } from "../../../utils/draft";
+import { useSession } from "../../../utils/session";
 
 type HolderFormProps = {
   accountId: string;
@@ -41,7 +41,7 @@ function HolderForm({
   const methods = useForm<IFormInput>({
     mode: "onBlur",
     defaultValues: hasDraft ? draft : account,
-    resolver: yupResolver<IFormInput>(formValidationSchema),
+    resolver: yupResolver(formValidationSchema),
   });
 
   const {

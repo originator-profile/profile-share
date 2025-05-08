@@ -10,4 +10,10 @@ export default defineNuxtConfig({
     port: 4000,
   },
   telemetry: false,
+
+  // NOTE: unenv@2.0.0-rc.15 + cloudflare の組み合わせで問題あり
+  // Cloudflare Workers でのビルドエラーを回避するために node-server プリセットを使用
+  nitro: {
+    preset: "node-server",
+  },
 });

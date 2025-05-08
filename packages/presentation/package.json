@@ -31,15 +31,15 @@
   },
   "devDependencies": {
     "@originator-profile/tsconfig": "workspace:*",
-    "@playwright/test": "^1.50.1",
-    "eslint": "^9.21.0",
+    "@playwright/test": "^1.52.0",
+    "eslint": "^9.25.1",
     "eslint-config-originator-profile": "workspace:*",
-    "happy-dom": "^17.1.8",
+    "happy-dom": "^17.4.6",
     "just-typeof": "^3.2.0",
-    "msw": "^2.7.3",
-    "pkgroll": "^2.11.2",
-    "playwright": "^1.50.1",
-    "typescript": "^5.8.2",
-    "vitest": "^3.0.7"
+    "msw": "^2.7.5",
+    "pkgroll": "^2.12.2",
+    "playwright": "^1.52.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.2"
   }
 }

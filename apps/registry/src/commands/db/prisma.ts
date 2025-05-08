@@ -6,7 +6,7 @@ export class DbPrisma extends Command {
 see: https://www.prisma.io/docs/reference/api-reference/command-reference`;
 
   async run(): Promise<void> {
-    const proc = spawn(require.resolve("prisma"), this.argv);
+    const proc = spawn("npx", ["prisma", ...this.argv]);
     let err = "";
     proc.stderr.on("data", (data: Buffer) => (err += data.toString()));
     proc.stdout.on("data", (data: Buffer) => this.log(data.toString()));

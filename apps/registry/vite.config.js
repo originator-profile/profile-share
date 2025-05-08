@@ -1,4 +1,6 @@
 // @ts-check
+// @ts-expect-error Missing Type Declarations for @fastify/vite/plugin. See https://github.com/fastify/fastify-vite/issues/268 for tracking.
+import fastify from "@fastify/vite/plugin";
 import generouted from "@generouted/react-router/plugin";
 import react from "@vitejs/plugin-react";
 import { dirname, join, resolve } from "node:path";
@@ -38,6 +40,7 @@ export default defineConfig({
     conditions: [...defaultClientConditions, "typescript"],
   },
   plugins: [
+    fastify({ spa: true }),
     react(),
     generouted({
       source: {
