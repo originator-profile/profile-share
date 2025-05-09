@@ -15,7 +15,7 @@ const REGISTRY_UI_ROOT = resolve(
 );
 
 const {
-  APP_URL = "",
+  APP_URL = "/",
   AUTH0_DOMAIN,
   AUTH0_CLIENT_ID,
   REGISTRY_OPS,

@@ -89,10 +89,15 @@ export async function create(options: Options): Promise<Server> {
   });
 
   const REGISTRY_ROOT = resolve(require.main?.path ?? "", "..");
+  const REGISTRY_UI_DIST = resolve(
+    REGISTRY_ROOT,
+    "../../packages/registry-ui/dist",
+  );
 
   await app.register(vite, {
     dev: options.isDev,
     root: REGISTRY_ROOT,
+    distDir: REGISTRY_UI_DIST,
     spa: true,
   });
 
