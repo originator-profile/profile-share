@@ -55,6 +55,20 @@ model wmps {
 
   @@id([issuerId, holderId])
 }
+
+/// Profile Annotation
+model pas {
+  /// 発行者
+  issuer   accounts @relation("issuedPas", fields: [issuerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  issuerId String   @db.Uuid
+  /// 保有組織
+  holder   accounts @relation(fields: [holderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  holderId String   @db.Uuid
+  /// Profile Annotation (JWT)
+  value    String
+
+  @@id([issuerId, holderId])
+}
 /// Signed Originator Profile
 model oldOps {
   id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -157,6 +171,10 @@ model accounts {
   issuedWmps                     wmps[]                      @relation("issuedWmps")
   /// 保有 Web Media Profile
   wmps                           wmps[]
+  /// Profile Annotation 発行履歴
+  issuedPas                      pas[]                       @relation("issuedPas")
+  /// 保有 Profile Annotation
+  pas                            pas[]
   /// 公開鍵
   keys                           keys[]
   /// 署名鍵 (JWKをUTF-8文字列化し、JWE形式で暗号化した構造)

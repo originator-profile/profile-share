@@ -1,8 +1,9 @@
 import { parseAccountId, parseExpirationDate } from "@originator-profile/core";
-import { WebMediaProfile } from "@originator-profile/model";
+import { Certificate, WebMediaProfile } from "@originator-profile/model";
 import {
   getClient,
   OpAccountRepository,
+  PaRepository,
   WmpRepository,
 } from "@originator-profile/registry-db";
 import { fetchAndSetDigestSri } from "@originator-profile/sign";
@@ -143,6 +144,87 @@ export const CertificateService = ({ config }: Options) => ({
       ) {
         throw new NotFoundError(
           "The issuer or holder specified in the Web Media Profile does not exist in the system.",
+        );
+      }
+
+      throw error;
+    }
+  },
+
+  /**
+   * Profile Annotation の登録・更新
+   * @param accountId 会員 ID
+   * @param upa 未署名 Profile Annotation オブジェクト
+   * @throws {ForbiddenError} 会員 ID と Profile Annotation の発行者が一致しない
+   * @throws {BadRequestError} 必須フィールドがない場合
+   * @return Profile Annotation
+   */
+  async createOrUpdatePa(
+    accountId: string,
+    {
+      issuedAt: issuedAtDateOrString = new Date(),
+      expiredAt: expiredAtDateOrString = addYears(new Date(), 1),
+      ...upa
+    }: {
+      issuedAt?: Date | string;
+      expiredAt?: Date | string;
+    } & Certificate,
+  ): Promise<string> {
+    // 発行者の検証
+    if (accountId !== parseAccountId(upa.issuer)) {
+      throw new ForbiddenError(
+        "OP Account ID does not match the issuer of the Profile Annotation.",
+      );
+    }
+
+    // 必須フィールドの検証
+    if (!upa.credentialSubject.id) {
+      throw new BadRequestError(
+        "Profile Annotation must have credentialSubject.id",
+      );
+    }
+
+    // 保有者の検証
+    const holderId = parseAccountId(upa.credentialSubject.id);
+    await this.validateHolder(holderId);
+
+    // 署名キーの取得
+    const signingKey = await OpAccountRepository.findOrRegisterSigningKey(
+      accountId,
+      config.JOSE_SECRET as string,
+    );
+
+    // 日付の正規化
+    const issuedAt = new Date(issuedAtDateOrString);
+    const expiredAt =
+      typeof expiredAtDateOrString === "string"
+        ? parseExpirationDate(expiredAtDateOrString)
+        : expiredAtDateOrString;
+
+    // JWT署名とデータベース保存
+    const pa = await signJwtVc(upa, signingKey, { issuedAt, expiredAt });
+    await this.savePa(pa);
+
+    return pa;
+  },
+
+  /**
+   * Profile Annotation をデータベースに保存する
+   * @param pa 署名済み Profile Annotation
+   * @throws {NotFoundError} 発行者または保有者が存在しない場合
+   */
+  async savePa(pa: string): Promise<void> {
+    try {
+      await PaRepository.upsert(pa);
+    } catch (error) {
+      if (!(error instanceof Error)) throw error;
+
+      if (
+        error.message.includes("Foreign key constraint violated") ||
+        error.message.includes("P2003")
+      ) {
+        throw new NotFoundError(
+          "The issuer or holder specified in the Profile Annotation does not exist in the system.",
         );
       }
 

@@ -10,3 +10,4 @@ export * as CaRepository from "./ca";
 export * as OpAccountRepository from "./op-account";
 export * as WspRepository from "./wsp";
 export * as WmpRepository from "./wmp";
+export * as PaRepository from "./pa";
