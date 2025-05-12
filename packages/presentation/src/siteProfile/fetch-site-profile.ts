@@ -24,7 +24,7 @@ export async function fetchSiteProfile(
               payload: result,
             },
           )
-        : { ok: true, result, origin: doc.location.origin };
+        : { result, origin: doc.location.origin };
     } else {
       return new SiteProfileFetchFailed("Site Profile fetch failed", {
         error: new Error(`HTTP status code ${response.status}`),
