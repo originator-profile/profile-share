@@ -1,4 +1,4 @@
-import { stringifyWithError } from "@originator-profile/core";
+import { serializeIfError } from "@originator-profile/core";
 import { fetchSiteProfile } from "@originator-profile/presentation";
 import {
   Overlay,
@@ -7,6 +7,7 @@ import {
 } from "./components/overlay";
 import { overlayExtensionMessenger } from "./components/overlay/extension-events";
 import { siteProfileMessenger } from "./components/siteProfile";
+import { FetchSiteProfileMessageResult } from "./components/siteProfile/types";
 
 const overlay = new Overlay();
 let enter: Parameters<OverlayProtocolMap["enter"]>[0] = {
@@ -39,5 +40,5 @@ overlayWindowMessenger.onMessage("select", ({ data }) => {
 
 siteProfileMessenger.onMessage("fetchSiteProfile", async () => {
   const data = await fetchSiteProfile(document);
-  return stringifyWithError(data);
+  return serializeIfError(data) as FetchSiteProfileMessageResult;
 });

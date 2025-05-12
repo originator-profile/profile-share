@@ -47,7 +47,6 @@ test("Ssite Profile のあるサイトで Site Profile が得られる", async (
 <body></body>`;
   const result = await fetchSiteProfile(window.document as unknown as Document);
   expect(result).toEqual({
-    ok: true,
     result: siteProfile,
     origin: "https://example.com",
   });

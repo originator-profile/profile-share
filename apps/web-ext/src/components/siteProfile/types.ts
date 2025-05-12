@@ -1,4 +1,5 @@
 import { WebMediaProfile, WebsiteProfile } from "@originator-profile/model";
+import { FetchSiteProfileSuccess } from "@originator-profile/presentation";
 import { VerifiedSp } from "@originator-profile/verify";
 
 export type SiteProfileProps = {
@@ -7,3 +8,8 @@ export type SiteProfileProps = {
   wmp: WebMediaProfile;
   wsp: WebsiteProfile;
 };
+
+export type SerializedFetchSiteProfileFailed = string;
+export type FetchSiteProfileMessageResult =
+  | FetchSiteProfileSuccess
+  | SerializedFetchSiteProfileFailed;

@@ -1,9 +1,9 @@
-import { FetchSiteProfileResult } from "@originator-profile/presentation";
 import { SpVerifier, VerifiedSp } from "@originator-profile/verify";
 import { useParams } from "react-router";
 import useSWRImmutable from "swr/immutable";
 import { getRegistryKeys } from "../../utils/get-registry-keys";
 import { siteProfileMessenger } from "./events";
+import { deserializeIfError } from "@originator-profile/core";
 
 const key = "site-profile";
 
@@ -16,9 +16,15 @@ async function fetchVerifiedSiteProfile([, tabId]: [
     null,
     tabId,
   );
-  const parsed = JSON.parse(result) as FetchSiteProfileResult;
 
-  if (!parsed.ok) throw parsed;
+  // コンテントスクリプトからError型を返してもError型として取り扱ってくれない
+  // そのためエラーだった場合エラー型に復元してくれるシリアライズ処理を行っているため
+  // deserializeIfErrorにてエラー型として復元してやる
+  const parsed = deserializeIfError(result);
+
+  if (parsed instanceof Error) {
+    throw parsed;
+  }
 
   const key = getRegistryKeys();
 
