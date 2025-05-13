@@ -4,27 +4,29 @@ import fastGlob from "fast-glob";
 import { JSDOM } from "jsdom";
 import crypto from "crypto";
 
-export default async function findHtmlFiles(dir) {
-  const list = await fastGlob(["**/*.html"], { cwd: dir });
+export default async function findHtmlFiles({ docsPath, origin }) {
+  const list = await fastGlob(["**/*.html"], { cwd: docsPath });
   const results = [];
 
   for (let i = 0; i < list.length; i++) {
     const file = list[i];
-    const fullPath = path.join(dir, file);
-    const cas = fullPath
+    const localFullPath = path.join(docsPath, file);
+    const cas = localFullPath
       .replace("index.html", "")
-      .replace(dir, "")
+      .replace(docsPath, "")
       .replace(/\//g, ".")
       .replace(/\.$/, "");
 
-    const metaData = await extractInfoFromHtml(fullPath, dir);
+    const metaData = await extractInfoFromHtml(localFullPath, docsPath, origin);
 
-    results.push({ cas, path: fullPath, ...metaData });
+    results.push({ cas, path: localFullPath, ...metaData });
   }
   return results;
 }
 
-async function extractInfoFromHtml(filepath, dir) {
+async function extractInfoFromHtml(filepath, docsPath, origin) {
+  //console.log(`filepath: ${filepath}, docsPath: ${docsPath}`);
+
   try {
     const htmlContent = fs.readFileSync(filepath, "utf8");
     const lang = filepath.indexOf("ja") !== -1 ? "ja" : "en";
@@ -65,7 +67,6 @@ async function extractInfoFromHtml(filepath, dir) {
     };
     const createdAt = datePublished();
     const updatedAt = dateUpdated();
-    console.log(createdAt);
 
     // targetにHTMLを取得して設定
 
@@ -87,27 +88,7 @@ async function extractInfoFromHtml(filepath, dir) {
         )
       : null;
 
-    const images = document.querySelectorAll(".target-integrity");
-    const imageHashes = await Promise.all(
-      Array.from(images).map(async (img) => {
-        const imagePath = path.join(dir, img.getAttribute("src"));
-
-        try {
-          const imageBuffer = await fs.promises.readFile(imagePath);
-          const hash = crypto.createHash("sha256");
-          hash.update(imageBuffer);
-          const val = hash.digest("base64");
-
-          return {
-            type: "ExternalResourceTargetIntegrity",
-            integrity: `sha256-${val}`,
-          };
-        } catch (error) {
-          console.error(`画像の読み込みに失敗しました: ${imagePath}`, error);
-          return null;
-        }
-      }),
-    );
+    const imageHashes = await fetchAndParse({ filepath, docsPath, origin });
 
     const primaryTarget = {
       type: "TextTargetIntegrity",
@@ -127,5 +108,45 @@ async function extractInfoFromHtml(filepath, dir) {
   } catch (error) {
     console.error("エラーが発生しました:", error);
     return {};
+  }
+}
+
+async function fetchAndParse({ filepath, docsPath, origin }) {
+  try {
+    // URLを構築
+
+    const url = new URL(
+      filepath.replace(docsPath, "").replace("index.html", ""),
+      origin,
+    ).toString();
+
+    // HTMLを取得
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}, URL: ${url}`);
+    }
+    const html = await response.text();
+
+    // JSDOMでパース
+    const dom = new JSDOM(html, {
+      url: url, // 相対パスを解決するために必要
+      referrer: origin,
+      contentType: "text/html",
+    });
+
+    const { document } = dom.window;
+
+    const elementsArray = Array.from(
+      document.querySelectorAll(".target-integrity"),
+    ).map((element) => {
+      const src = element.getAttribute("src");
+      const integrity = element.getAttribute("integrity");
+      return { type: "ExternalResourceTargetIntegrity", integrity };
+    });
+
+    return elementsArray;
+  } catch (error) {
+    console.error("HTMLの取得とパースに失敗しました:", error);
+    throw error;
   }
 }
