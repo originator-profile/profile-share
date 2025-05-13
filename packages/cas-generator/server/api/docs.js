@@ -26,7 +26,7 @@ export default defineEventHandler(async () => {
     ? WEBROOT_PATH
     : `${WEBROOT_PATH}/`;
   const vcSourcesPath = VC_OUTPUT_PATH;
-  const htmlFiles = await findHtmlFiles(docsPath);
+  const htmlFiles = await findHtmlFiles({ docsPath, origin });
   console.log(htmlFiles.length + "件のHTMLファイルが見つかりました");
 
   // CAの情報を定義する
