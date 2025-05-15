@@ -11,6 +11,15 @@ export default defineNuxtConfig({
   },
   telemetry: false,
 
+  // サーバーサイドで環境変数を使用するための設定
+  runtimeConfig: {
+    // サーバーサイドでのみ利用可能な環境変数
+    WEBROOT_PATH: process.env.WEBROOT_PATH,
+    VC_OUTPUT_PATH: process.env.VC_OUTPUT_PATH,
+    CAS_OUTPUT_PATH: process.env.CAS_OUTPUT_PATH,
+    PRIVATE_KEY_PATH: process.env.PRIVATE_KEY_PATH,
+  },
+
   // NOTE: unenv@2.0.0-rc.15 + cloudflare の組み合わせで問題あり
   // Cloudflare Workers でのビルドエラーを回避するために node-server プリセットを使用
   nitro: {
