@@ -33,7 +33,6 @@
     "@originator-profile/tsconfig": "workspace:*",
     "@prisma/client": "^6.7.0",
     "@types/jsonld": "^1.5.15",
-    "@types/uuid": "^10.0.0",
     "date-fns": "^4.1.0",
     "eslint": "^9.25.1",
     "eslint-config-originator-profile": "workspace:*",
