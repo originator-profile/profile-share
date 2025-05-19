@@ -41,9 +41,6 @@ importers:
       '@fastify/vite':
         specifier: ^8.1.2
         version: 8.1.2(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)
-      '@generouted/react-router':
-        specifier: ^1.20.0
-        version: 1.20.0(react-router@7.5.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(vite@6.3.4(@types/node@22.15.3)(jiti@2.4.2)(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1))
       '@oclif/core':
         specifier: ^4.3.0
         version: 4.3.0
@@ -53,9 +50,6 @@ importers:
       '@prisma/client':
         specifier: ^6.7.0
         version: 6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3)
-      '@vitejs/plugin-react':
-        specifier: ^4.4.1
-        version: 4.4.1(vite@6.3.4(@types/node@22.15.3)(jiti@2.4.2)(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1))
       dotenv:
         specifier: ^16.5.0
         version: 16.5.0
@@ -77,9 +71,6 @@ importers:
       prisma:
         specifier: ^6.7.0
         version: 6.7.0(typescript@5.8.3)
-      vite:
-        specifier: ^6.3.4
-        version: 6.3.4(@types/node@22.15.3)(jiti@2.4.2)(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1)
     devDependencies:
       '@fastify/autoload':
         specifier: ^6.3.0
@@ -177,9 +168,6 @@ importers:
       fastify-plugin:
         specifier: ^5.0.1
         version: 5.0.1
-      globals:
-        specifier: ^16.0.0
-        version: 16.0.0
       globby:
         specifier: ^14.1.0
         version: 14.1.0
@@ -192,9 +180,6 @@ importers:
       json-schema-to-ts:
         specifier: ^3.1.1
         version: 3.1.1
-      just-extend:
-        specifier: ^6.2.0
-        version: 6.2.0
       just-merge:
         specifier: ^3.2.0
         version: 3.2.0
@@ -222,9 +207,6 @@ importers:
       stdout-stderr:
         specifier: ^0.1.13
         version: 0.1.13
-      tailwind-config-originator-profile:
-        specifier: workspace:*
-        version: link:../../packages/tailwind-config
       tsup:
         specifier: ^8.4.0
         version: 8.4.0(jiti@2.4.2)(postcss@8.5.3)(typescript@5.8.3)(yaml@2.7.1)
@@ -767,34 +749,6 @@ importers:
         version: 5.0.0
 
   packages/registry-ui:
-    dependencies:
-      '@generouted/react-router':
-        specifier: ^1.20.0
-        version: 1.20.0(react-router@7.5.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(vite@6.3.4(@types/node@22.15.3)(jiti@2.4.2)(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1))
-      '@hookform/error-message':
-        specifier: ^2.0.1
-        version: 2.0.1(react-dom@19.1.0(react@19.1.0))(react-hook-form@7.56.1(react@19.1.0))(react@19.1.0)
-      autoprefixer:
-        specifier: ^10.4.21
-        version: 10.4.21(postcss@8.5.3)
-      postcss:
-        specifier: ^8.5.3
-        version: 8.5.3
-      react-hook-form:
-        specifier: ^7.56.1
-        version: 7.56.1(react@19.1.0)
-      react-router:
-        specifier: ^7.5.3
-        version: 7.5.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      tailwind-config-originator-profile:
-        specifier: workspace:*
-        version: link:../tailwind-config
-      tailwind-merge:
-        specifier: ^3.2.0
-        version: 3.2.0
-      tailwindcss:
-        specifier: ^3.4.17
-        version: 3.4.17
     devDependencies:
       '@auth0/auth0-react':
         specifier: ^2.3.0
@@ -805,9 +759,18 @@ importers:
       '@conform-to/yup':
         specifier: ^1.4.0
         version: 1.4.0(yup@1.6.1)
+      '@fastify/vite':
+        specifier: ^8.1.2
+        version: 8.1.2(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)
+      '@generouted/react-router':
+        specifier: ^1.20.0
+        version: 1.20.0(react-router@7.5.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(vite@6.3.4(@types/node@22.15.3)(jiti@2.4.2)(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1))
       '@headlessui/react':
         specifier: 2.2.2
         version: 2.2.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@hookform/error-message':
+        specifier: ^2.0.1
+        version: 2.0.1(react-dom@19.1.0(react@19.1.0))(react-hook-form@7.56.1(react@19.1.0))(react@19.1.0)
       '@hookform/resolvers':
         specifier: ^5.0.1
         version: 5.0.1(react-hook-form@7.56.1(react@19.1.0))
@@ -841,6 +804,12 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.3
         version: 19.1.3(@types/react@19.1.2)
+      '@vitejs/plugin-react':
+        specifier: ^4.4.1
+        version: 4.4.1(vite@6.3.4(@types/node@22.15.3)(jiti@2.4.2)(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1))
+      autoprefixer:
+        specifier: ^10.4.21
+        version: 10.4.21(postcss@8.5.3)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -868,18 +837,36 @@ importers:
       just-omit:
         specifier: ^2.2.0
         version: 2.2.0
+      postcss:
+        specifier: ^8.5.3
+        version: 8.5.3
       react:
         specifier: ^19.1.0
         version: 19.1.0
       react-dom:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
+      react-hook-form:
+        specifier: ^7.56.1
+        version: 7.56.1(react@19.1.0)
+      react-router:
+        specifier: ^7.5.3
+        version: 7.5.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react-use:
         specifier: ^17.6.0
         version: 17.6.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       swr:
         specifier: ^2.3.3
         version: 2.3.3(react@19.1.0)
+      tailwind-config-originator-profile:
+        specifier: workspace:*
+        version: link:../tailwind-config
+      tailwind-merge:
+        specifier: ^3.2.0
+        version: 3.2.0
+      tailwindcss:
+        specifier: ^3.4.17
+        version: 3.4.17
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -11049,8 +11036,8 @@ packages:
     resolution: {integrity: sha512-d7KLgL1LD3U3fgnvWEY1cQXoO/q6EQ1BSz48Sa149V/5zVTAbgmZIpyI8TRi6U9/JNyeYLlTKsEMPtLC27RFUg==}
     engines: {node: ^18.17.0 || >=20.5.0}
 
-  valtio@2.1.4:
-    resolution: {integrity: sha512-O6U79SacltN5E5XOwLNixrGSAc4+TNkQw8AWSqjcpvvRjvFbfMvdbFW98g/VgxKoT8v9kb8WQkD8lvf+Dcme8w==}
+  valtio@2.1.5:
+    resolution: {integrity: sha512-vsh1Ixu5mT0pJFZm+Jspvhga5GzHUTYv0/+Th203pLfh3/wbHwxhu/Z2OkZDXIgHfjnjBns7SN9HNcbDvPmaGw==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
       '@types/react': '>=18.0.0'
@@ -12817,7 +12804,7 @@ snapshots:
       '@fastify/forwarded': 3.0.0
       ipaddr.js: 2.2.0
 
-  '@fastify/react@1.1.0(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1)':
+  '@fastify/react@1.1.0(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)':
     dependencies:
       '@fastify/vite': 8.1.2(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)
       '@unhead/react': 2.0.8(react@19.1.0)
@@ -12832,7 +12819,7 @@ snapshots:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       react-router: 7.5.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      valtio: 2.1.4(@types/react@19.1.2)(react@19.1.0)
+      valtio: 2.1.5(@types/react@19.1.2)(react@19.1.0)
       youch: 3.3.4
     transitivePeerDependencies:
       - '@kitajs/ts-html-plugin'
@@ -12849,6 +12836,7 @@ snapshots:
       - sugarss
       - terser
       - tsx
+      - typescript
       - yaml
     optional: true
 
@@ -12900,8 +12888,8 @@ snapshots:
       klaw: 4.1.0
     optionalDependencies:
       '@fastify/htmx': 0.4.0(@kitajs/ts-html-plugin@4.1.1)(rollup@4.40.1)
-      '@fastify/react': 1.1.0(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1)
-      '@fastify/vue': 1.1.1(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)
+      '@fastify/react': 1.1.0(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)
+      '@fastify/vue': 1.1.1(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(fastify@5.3.2)(jiti@2.4.2)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)
       vite: 6.3.4(@types/node@22.15.3)(jiti@2.4.2)(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1)
     transitivePeerDependencies:
       - '@kitajs/ts-html-plugin'
@@ -12920,7 +12908,7 @@ snapshots:
       - typescript
       - yaml
 
-  '@fastify/vue@1.1.1(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)':
+  '@fastify/vue@1.1.1(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(fastify@5.3.2)(jiti@2.4.2)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)':
     dependencies:
       '@fastify/vite': 8.1.2(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)
       '@unhead/vue': 2.0.8(vue@3.5.13(typescript@5.8.3))
@@ -12937,7 +12925,6 @@ snapshots:
     transitivePeerDependencies:
       - '@kitajs/ts-html-plugin'
       - '@types/node'
-      - '@types/react'
       - fastify
       - jiti
       - less
@@ -23818,7 +23805,7 @@ snapshots:
 
   validate-npm-package-name@6.0.0: {}
 
-  valtio@2.1.4(@types/react@19.1.2)(react@19.1.0):
+  valtio@2.1.5(@types/react@19.1.2)(react@19.1.0):
     dependencies:
       proxy-compare: 3.0.1
     optionalDependencies:

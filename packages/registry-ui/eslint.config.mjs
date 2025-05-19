@@ -4,7 +4,19 @@ import globals from "globals";
 export default [
   ...originatorProfile,
   {
-    files: ["postcss.config.cjs"],
+    files: ["tailwind.config.cjs"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+    rules: {
+      "@typescript-eslint/no-var-required": "off",
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
+  {
+    files: ["postcss.config.cjs", "vite.config.js"],
     languageOptions: {
       globals: {
         ...globals.node,

@@ -3,16 +3,11 @@
 import fastify from "@fastify/vite/plugin";
 import generouted from "@generouted/react-router/plugin";
 import react from "@vitejs/plugin-react";
-import { dirname, join, resolve } from "node:path";
+import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defaultClientConditions, defineConfig } from "vite";
 
-const REGISTRY_UI_ROOT = resolve(
-  join(
-    dirname(fileURLToPath(new URL(import.meta.url))),
-    "../../packages/registry-ui",
-  ),
-);
+const REGISTRY_UI_ROOT = dirname(fileURLToPath(new URL(import.meta.url)));
 
 const {
   APP_URL = "/",
@@ -25,7 +20,6 @@ const {
   VITE_REGISTRY_OPS,
 } = process.env;
 
-// See also packages/registry-ui/README.md
 process.env.VITE_AUTH0_DOMAIN = AUTH0_DOMAIN ?? VITE_AUTH0_DOMAIN;
 process.env.VITE_AUTH0_AUDIENCE = APP_URL ?? VITE_AUTH0_AUDIENCE;
 process.env.VITE_AUTH0_CLIENT_ID = AUTH0_CLIENT_ID ?? VITE_AUTH0_CLIENT_ID;

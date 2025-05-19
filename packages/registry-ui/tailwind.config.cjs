@@ -8,7 +8,7 @@ module.exports = extend(config, {
     `${path.dirname(
       require.resolve("@originator-profile/ui"),
     )}/components/*.tsx`,
-    "../../packages/registry-ui/index.html",
-    "../../packages/registry-ui/src/{components,pages}/**/*.tsx",
+    `${__dirname}/index.html`,
+    `${__dirname}/src/**/*.tsx`,
   ],
 });
