@@ -32,7 +32,6 @@
   "devDependencies": {
     "@js-temporal/polyfill": "^0.5.1",
     "@originator-profile/tsconfig": "workspace:*",
-    "@types/uuid": "^10.0.0",
     "date-fns": "^4.1.0",
     "eslint": "^9.25.1",
     "eslint-config-originator-profile": "workspace:*",
