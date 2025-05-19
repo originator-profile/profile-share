@@ -20,6 +20,10 @@ type TestFixtures = {
     key: { publicKey: Jwk; privateKey: Jwk },
     contents: string,
   ) => Promise<void>;
+  signMultipleKeysForCredentials: (
+    key: { cpSignKey: Jwk; cpJwks: Jwk; caSignKey: Jwk },
+    contents: string,
+  ) => Promise<void>;
   missingCredentials: void;
   validCas: (key: { privateKey: Jwk }, contents: string) => Promise<void>;
   validOps: (key: { publicKey: Jwk; privateKey: Jwk }) => Promise<void>;
@@ -73,6 +77,84 @@ export const test = base.extend<TestFixtures>({
         const signedMediaProfile = await signJwtVc(
           generateWebMediaProfileData(),
           privateKey,
+          {
+            issuedAt,
+            expiredAt,
+          },
+        );
+
+        await page.route(casEndpoint, async (route) =>
+          route.fulfill({
+            body: JSON.stringify([
+              {
+                attestation: contentAttestation,
+                main: true,
+              },
+            ]),
+            contentType: "application/json",
+          }),
+        );
+
+        await page.route(opsEndpoint, async (route) =>
+          route.fulfill({
+            body: JSON.stringify({
+              core: signedCoreProfile,
+              annotations: [annotations],
+              media: signedMediaProfile,
+            }),
+            contentType: "application/json",
+          }),
+        );
+      },
+    );
+
+    await page.unroute(casEndpoint);
+    await page.unroute(opsEndpoint);
+  },
+  signMultipleKeysForCredentials: async ({ page }: { page: Page }, use) => {
+    await use(
+      async (
+        key: { cpSignKey: Jwk; cpJwks: Jwk; caSignKey: Jwk },
+        contents: string,
+      ) => {
+        const { cpSignKey, cpJwks, caSignKey } = key;
+        const issuedAt: Date = new Date(Date.now());
+        const expiredAt: Date = addYears(new Date(), 1);
+        const unsignedContentAttestation: UnsignedContentAttestation =
+          generateUnsignedContentAttestation(contents);
+        const contentAttestation = await signCa(
+          unsignedContentAttestation,
+          caSignKey,
+          {
+            issuedAt,
+            expiredAt,
+            documentProvider: async () => {
+              const window = new Window();
+              window.document.write(contents);
+              return window.document as unknown as Document;
+            },
+          },
+        );
+
+        const signedCoreProfile = await signJwtVc(
+          generateCoreProfileData(cpJwks),
+          cpSignKey,
+          {
+            issuedAt,
+            expiredAt,
+          },
+        );
+        const annotations = await signJwtVc(
+          generateCertificateData(),
+          caSignKey,
+          {
+            issuedAt,
+            expiredAt,
+          },
+        );
+        const signedMediaProfile = await signJwtVc(
+          generateWebMediaProfileData(),
+          cpSignKey,
           {
             issuedAt,
             expiredAt,
