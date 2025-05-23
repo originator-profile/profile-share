@@ -26,16 +26,12 @@
     "type-check": "tsc --noEmit",
     "prepublishOnly": "pkgroll --clean-dist"
   },
-  "dependencies": {
-    "@originator-profile/model": "workspace:*"
-  },
   "devDependencies": {
     "@js-temporal/polyfill": "^0.5.1",
     "@originator-profile/tsconfig": "workspace:*",
     "date-fns": "^4.1.0",
     "eslint": "^9.25.1",
     "eslint-config-originator-profile": "workspace:*",
-    "jose": "^6.0.10",
     "pkgroll": "^2.12.2",
     "serialize-error": "^12.0.0",
     "typescript": "^5.8.3",

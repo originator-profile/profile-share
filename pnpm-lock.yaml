@@ -102,9 +102,6 @@ importers:
       '@originator-profile/registry-service':
         specifier: workspace:*
         version: link:../../packages/registry-service
-      '@originator-profile/registry-ui':
-        specifier: workspace:*
-        version: link:../../packages/registry-ui
       '@originator-profile/securing-mechanism':
         specifier: workspace:*
         version: link:../../packages/securing-mechanism
@@ -114,12 +111,6 @@ importers:
       '@originator-profile/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
-      '@originator-profile/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
-      '@originator-profile/verify':
-        specifier: workspace:*
-        version: link:../../packages/verify
       '@redocly/cli':
         specifier: ^1.34.2
         version: 1.34.2(ajv@8.17.1)(encoding@0.1.13)
@@ -189,9 +180,6 @@ importers:
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
-      uuid:
-        specifier: ^11.1.0
-        version: 11.1.0
       vitest:
         specifier: ^3.1.2
         version: 3.1.2(@types/debug@4.1.12)(@types/node@22.15.3)(happy-dom@17.4.6)(jiti@2.4.2)(jsdom@26.1.0)(msw@2.7.5(@types/node@22.15.3)(typescript@5.8.3))(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1)
@@ -244,9 +232,6 @@ importers:
       '@types/esbuild-copy-static-files':
         specifier: ^0.1.4
         version: 0.1.4
-      '@types/jsonld':
-        specifier: ^1.5.15
-        version: 1.5.15
       '@types/react':
         specifier: ^19.1.2
         version: 19.1.2
@@ -289,9 +274,6 @@ importers:
       happy-dom:
         specifier: ^17.4.6
         version: 17.4.6
-      jsonld:
-        specifier: ^8.3.3
-        version: 8.3.3(web-streams-polyfill@3.3.3)
       just-extend:
         specifier: ^6.2.0
         version: 6.2.0
@@ -344,7 +326,7 @@ importers:
   packages/auth0: {}
 
   packages/cas-generator:
-    dependencies:
+    devDependencies:
       '@jumpu-ui/tailwindcss':
         specifier: 1.0.1
         version: 1.0.1(tailwindcss@3.4.17)
@@ -354,9 +336,6 @@ importers:
       '@nuxtjs/tailwindcss':
         specifier: 6.14.0
         version: 6.14.0(magicast@0.3.5)
-      '@tailwindcss/line-clamp':
-        specifier: ^0.4.4
-        version: 0.4.4(tailwindcss@3.4.17)
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
@@ -366,22 +345,11 @@ importers:
       nuxt:
         specifier: ^3.17.1
         version: 3.17.1(@netlify/blobs@8.2.0)(@parcel/watcher@2.5.1)(@types/node@22.15.3)(db0@0.3.2)(encoding@0.1.13)(eslint@9.25.1(jiti@2.4.2))(ioredis@5.6.1)(magicast@0.3.5)(meow@13.2.0)(optionator@0.9.4)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(vite@6.3.4(@types/node@22.15.3)(jiti@2.4.2)(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1))(xml2js@0.6.2)(yaml@2.7.1)
-      vue:
-        specifier: latest
-        version: 3.5.13(typescript@5.8.3)
-      vue-router:
-        specifier: latest
-        version: 4.5.1(vue@3.5.13(typescript@5.8.3))
-    devDependencies:
-      sass-embedded:
-        specifier: ^1.87.0
-        version: 1.87.0
+      tailwindcss:
+        specifier: ^3.4.17
+        version: 3.4.17
 
   packages/core:
-    dependencies:
-      '@originator-profile/model':
-        specifier: workspace:*
-        version: link:../model
     devDependencies:
       '@js-temporal/polyfill':
         specifier: ^0.5.1
@@ -398,9 +366,6 @@ importers:
       eslint-config-originator-profile:
         specifier: workspace:*
         version: link:../eslint-config
-      jose:
-        specifier: ^6.0.10
-        version: 6.0.10
       pkgroll:
         specifier: ^2.12.2
         version: 2.12.2(typescript@5.8.3)
@@ -459,15 +424,9 @@ importers:
       '@vitest/eslint-plugin':
         specifier: ^1.1.43
         version: 1.1.43(@typescript-eslint/utils@8.31.1(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3)(vitest@3.1.2(@types/debug@4.1.12)(@types/node@22.15.3)(happy-dom@17.4.6)(jiti@2.4.2)(jsdom@26.1.0)(msw@2.7.5(@types/node@22.15.3)(typescript@5.8.3))(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1))
-      eslint-config-prettier:
-        specifier: ^10.1.2
-        version: 10.1.2(eslint@9.25.1(jiti@2.4.2))
       eslint-plugin-canonical:
         specifier: ^5.1.3
         version: 5.1.3(@typescript-eslint/parser@8.31.1(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3)
-      eslint-plugin-filenames:
-        specifier: ^1.3.2
-        version: 1.3.2(eslint@9.25.1(jiti@2.4.2))
       eslint-plugin-jsx-a11y:
         specifier: ^6.10.2
         version: 6.10.2(eslint@9.25.1(jiti@2.4.2))
@@ -533,9 +492,6 @@ importers:
       '@originator-profile/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
-      '@playwright/test':
-        specifier: ^1.52.0
-        version: 1.52.0
       eslint:
         specifier: ^9.25.1
         version: 9.25.1(jiti@2.4.2)
@@ -545,18 +501,12 @@ importers:
       happy-dom:
         specifier: ^17.4.6
         version: 17.4.6
-      just-typeof:
-        specifier: ^3.2.0
-        version: 3.2.0
       msw:
         specifier: ^2.7.5
         version: 2.7.5(@types/node@22.15.3)(typescript@5.8.3)
       pkgroll:
         specifier: ^2.12.2
         version: 2.12.2(typescript@5.8.3)
-      playwright:
-        specifier: ^1.52.0
-        version: 1.52.0
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
@@ -584,12 +534,6 @@ importers:
       '@prisma/client':
         specifier: ^6.7.0
         version: 6.7.0(prisma@6.7.0(typescript@5.8.3))(typescript@5.8.3)
-      '@types/jsonld':
-        specifier: ^1.5.15
-        version: 1.5.15
-      date-fns:
-        specifier: ^4.1.0
-        version: 4.1.0
       eslint:
         specifier: ^9.25.1
         version: 9.25.1(jiti@2.4.2)
@@ -602,18 +546,12 @@ importers:
       jose:
         specifier: ^6.0.10
         version: 6.0.10
-      jsonld:
-        specifier: ^8.3.3
-        version: 8.3.3(web-streams-polyfill@3.3.3)
       prisma:
         specifier: ^6.7.0
         version: 6.7.0(typescript@5.8.3)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
-      uuid:
-        specifier: ^11.1.0
-        version: 11.1.0
       vitest:
         specifier: ^3.1.2
         version: 3.1.2(@types/debug@4.1.12)(@types/node@22.15.3)(happy-dom@17.4.6)(jiti@2.4.2)(jsdom@26.1.0)(msw@2.7.5(@types/node@22.15.3)(typescript@5.8.3))(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1)
@@ -687,18 +625,12 @@ importers:
       image-size:
         specifier: ^2.0.2
         version: 2.0.2
-      jose:
-        specifier: ^6.0.10
-        version: 6.0.10
       json-schema-to-ts:
         specifier: ^3.1.1
         version: 3.1.1
       jsonld:
         specifier: ^8.3.3
         version: 8.3.3(web-streams-polyfill@3.3.3)
-      just-flush:
-        specifier: ^2.3.0
-        version: 2.3.0
       msw:
         specifier: ^2.7.5
         version: 2.7.5(@types/node@22.15.3)(typescript@5.8.3)
@@ -714,9 +646,6 @@ importers:
       vitest:
         specifier: ^3.1.2
         version: 3.1.2(@types/debug@4.1.12)(@types/node@22.15.3)(happy-dom@17.4.6)(jiti@2.4.2)(jsdom@26.1.0)(msw@2.7.5(@types/node@22.15.3)(typescript@5.8.3))(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1)
-      vitest-mock-extended:
-        specifier: ^3.1.0
-        version: 3.1.0(typescript@5.8.3)(vitest@3.1.2(@types/debug@4.1.12)(@types/node@22.15.3)(happy-dom@17.4.6)(jiti@2.4.2)(jsdom@26.1.0)(msw@2.7.5(@types/node@22.15.3)(typescript@5.8.3))(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1))
       yn:
         specifier: ^5.0.0
         version: 5.0.0
@@ -984,12 +913,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.1.3
         version: 19.1.3(@types/react@19.1.2)
-      change-case:
-        specifier: ^5.4.4
-        version: 5.4.4
-      date-fns:
-        specifier: ^4.1.0
-        version: 4.1.0
       dompurify:
         specifier: ^3.2.5
         version: 3.2.5
@@ -999,9 +922,6 @@ importers:
       eslint-config-originator-profile:
         specifier: workspace:*
         version: link:../eslint-config
-      just-range:
-        specifier: ^4.2.0
-        version: 4.2.0
       react:
         specifier: ^19.1.0
         version: 19.1.0
@@ -1075,9 +995,6 @@ importers:
       just-typeof:
         specifier: ^3.2.0
         version: 3.2.0
-      msw:
-        specifier: ^2.7.5
-        version: 2.7.5(@types/node@22.15.3)(typescript@5.8.3)
       pkgroll:
         specifier: ^2.12.2
         version: 2.12.2(typescript@5.8.3)
@@ -3654,11 +3571,6 @@ packages:
     resolution: {integrity: sha512-+PmQX0PiAYPMeVYe237LJAYvOMYW1j2rH5YROyS3b4CTVJum34HfRvKvAzozHAQG0TnHNdUfY9nCeUyRAs//cw==}
     engines: {node: '>=14.16'}
 
-  '@tailwindcss/line-clamp@0.4.4':
-    resolution: {integrity: sha512-5U6SY5z8N42VtrCrKlsTAA35gy2VSyYtHWCsg1H87NU1SXnEfekTVlrga9fzUDrrHcGi2Lb5KenUWb4lRQT5/g==}
-    peerDependencies:
-      tailwindcss: '>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1'
-
   '@tailwindcss/typography@0.5.16':
     resolution: {integrity: sha512-0wDLwCVF5V3x3b1SGXPCDcdsbDHMBe+lkFzBRaHeLvNi+nrrnZ1lA18u+OTWO8iSWU2GxUOCvlXtDuqftc1oiA==}
     peerDependencies:
@@ -4730,9 +4642,6 @@ packages:
   change-case@4.1.2:
     resolution: {integrity: sha512-bSxY2ws9OtviILG1EiY5K7NNxkqg/JnRnFxLtKQ96JaviiIxi7djMrSd0ECT9AC+lttClmYwKw53BWpOMblo7A==}
 
-  change-case@5.4.4:
-    resolution: {integrity: sha512-HRQyTk2/YPEkt9TnUPbOpr64Uw3KOicFWPVBb+xiHvd6eBx/qPr9xqfBFDT8P2vWsvvz4jbEkfDe71W3VyNu2w==}
-
   character-entities-html4@2.1.0:
     resolution: {integrity: sha512-1v7fgQRj6hnSwFpq1Eu0ynr/CDEw0rXo2B61qXrLNdHZmPKgb7fqS1a2JwF0rISo9q77jDI8VMEHoApn8qDoZA==}
 
@@ -5781,12 +5690,6 @@ packages:
     engines: {node: '>=6.0'}
     hasBin: true
 
-  eslint-config-prettier@10.1.2:
-    resolution: {integrity: sha512-Epgp/EofAUeEpIdZkW60MHKvPyru1ruQJxPL+WIycnaPApuseK0Zpkrh/FwL9oIpQvIhJwV7ptOy0DWUjTlCiA==}
-    hasBin: true
-    peerDependencies:
-      eslint: '>=7.0.0'
-
   eslint-import-resolver-typescript@3.10.1:
     resolution: {integrity: sha512-A1rHYb06zjMGAxdLSkN2fXPBwuSaQ0iO5M/hdyS0Ajj1VBaRp0sPD3dn1FhME3c/JluGFbwSxyCfqdSbtQLAHQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -5824,11 +5727,6 @@ packages:
   eslint-plugin-canonical@5.1.3:
     resolution: {integrity: sha512-+KjRXVuRC0kXd+eL1B/ZCFOd13fRAeg/IxFjPMZ5YHmf7oeNqITYPWB2PyEnhSK7IOFVBtFExeMy+CMEeXxqYQ==}
     engines: {node: '>=18.0.0'}
-
-  eslint-plugin-filenames@1.3.2:
-    resolution: {integrity: sha512-tqxJTiEM5a0JmRCUYQmxw23vtTxrb2+a3Q2mMOPhFxvt7ZQQJmdiuMby9B/vUAuVMghyP7oET+nIf6EO6CBd/w==}
-    peerDependencies:
-      eslint: '*'
 
   eslint-plugin-jsx-a11y@6.10.2:
     resolution: {integrity: sha512-scB3nz4WmG75pV8+3eRUQOHZlNSUhFNq37xnpgRkCCELU3XMvXAxLk1eqWWyE22Ki4Q01Fnsw9BA3cJHDPgn2Q==}
@@ -7312,9 +7210,6 @@ packages:
   just-omit@2.2.0:
     resolution: {integrity: sha512-Js7+HxDOGcB3RhI38Mird/RgyMf3t0DAJFda1QWqqlAKTa36NeSYIufJXxrZUbysFTRcTOFcoMCiFK5FwCoI7Q==}
 
-  just-range@4.2.0:
-    resolution: {integrity: sha512-z2Ip8H2j7a9Vr8rKFi0IZf4IXn2Yuq2lGZFS41GjfPwksoHWTaTx1xIjU6C0HyQ1jBXEoz/FzjS5eyVXeW19tg==}
-
   just-typeof@3.2.0:
     resolution: {integrity: sha512-nOKazfzrQDEGNwXPfWEB64QD+ATZUnpOTJn0xMnCk41p297P9Emt3BlsRyWbu+CErMjopnFTGcYHJnvFX97ZIQ==}
 
@@ -7501,9 +7396,6 @@ packages:
   lodash-es@4.17.21:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
 
-  lodash.camelcase@4.3.0:
-    resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
-
   lodash.castarray@4.4.0:
     resolution: {integrity: sha512-aVx8ztPv7/2ULbArGJ2Y42bG1mEQ5mGjpdvrbJcJFU3TbYybe+QlLS4pst9zV52ymy2in1KpFPiZnAOATxD4+Q==}
 
@@ -7522,26 +7414,17 @@ packages:
   lodash.isplainobject@4.0.6:
     resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
 
-  lodash.kebabcase@4.1.1:
-    resolution: {integrity: sha512-N8XRTIMMqqDgSy4VLKPnJ/+hpGZN+PHQiJnSenYqPaVV/NCqEogTnAdZLQiGKhxX+JCs8waWq2t1XHWKOmlY8g==}
-
   lodash.memoize@4.1.2:
     resolution: {integrity: sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==}
 
   lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
 
-  lodash.snakecase@4.1.1:
-    resolution: {integrity: sha512-QZ1d4xoBHYUeuouhEq3lk3Uq7ldgyFXGBhg04+oRLnIz8o9T65Eh+8YdroUwn846zchkA9yDsDl5CVVaV2nqYw==}
-
   lodash.sortby@4.7.0:
     resolution: {integrity: sha512-HDWXG8isMntAyRF5vZ7xKuEvOhT4AhlRt/3czTSjvGUxjYCBVRQY48ViDHyfYz9VIoBkW4TMGQNapx+l3RUwdA==}
 
   lodash.uniq@4.5.0:
     resolution: {integrity: sha512-xfBaXQd9ryd9dlSDvnvI0lvxfLJlYAZzXomUYzLKtUeOQvOP5piqAWuGtrhWeqaXK9hhoM/iyJc5AV+XfsX3HQ==}
-
-  lodash.upperfirst@4.3.1:
-    resolution: {integrity: sha512-sReKOYJIJf74dhJONhU4e0/shzi1trVbSWDOhKYE5XV2O+H7Sb2Dihwuc7xWxVl+DgFPyTqIN3zMfT9cq5iWDg==}
 
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
@@ -12322,7 +12205,8 @@ snapshots:
       '@babel/helper-string-parser': 7.27.1
       '@babel/helper-validator-identifier': 7.27.1
 
-  '@bufbuild/protobuf@2.2.5': {}
+  '@bufbuild/protobuf@2.2.5':
+    optional: true
 
   '@bundled-es-modules/cookie@2.0.1':
     dependencies:
@@ -15084,10 +14968,6 @@ snapshots:
     dependencies:
       defer-to-connect: 2.0.1
 
-  '@tailwindcss/line-clamp@0.4.4(tailwindcss@3.4.17)':
-    dependencies:
-      tailwindcss: 3.4.17
-
   '@tailwindcss/typography@0.5.16(tailwindcss@3.4.17)':
     dependencies:
       lodash.castarray: 4.4.0
@@ -16265,7 +16145,8 @@ snapshots:
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.24.4)
 
-  buffer-builder@0.2.0: {}
+  buffer-builder@0.2.0:
+    optional: true
 
   buffer-crc32@0.2.13: {}
 
@@ -16437,8 +16318,6 @@ snapshots:
       snake-case: 3.0.4
       tslib: 2.8.1
 
-  change-case@5.4.4: {}
-
   character-entities-html4@2.1.0: {}
 
   character-entities-legacy@3.0.0: {}
@@ -16599,7 +16478,8 @@ snapshots:
 
   colorette@2.0.20: {}
 
-  colorjs.io@0.5.2: {}
+  colorjs.io@0.5.2:
+    optional: true
 
   colorspace@1.1.4:
     dependencies:
@@ -17557,10 +17437,6 @@ snapshots:
     optionalDependencies:
       source-map: 0.6.1
 
-  eslint-config-prettier@10.1.2(eslint@9.25.1(jiti@2.4.2)):
-    dependencies:
-      eslint: 9.25.1(jiti@2.4.2)
-
   eslint-import-resolver-typescript@3.10.1(eslint@9.25.1(jiti@2.4.2)):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
@@ -17610,14 +17486,6 @@ snapshots:
       - eslint-plugin-import-x
       - supports-color
       - typescript
-
-  eslint-plugin-filenames@1.3.2(eslint@9.25.1(jiti@2.4.2)):
-    dependencies:
-      eslint: 9.25.1(jiti@2.4.2)
-      lodash.camelcase: 4.3.0
-      lodash.kebabcase: 4.1.1
-      lodash.snakecase: 4.1.1
-      lodash.upperfirst: 4.3.1
 
   eslint-plugin-jsx-a11y@6.10.2(eslint@9.25.1(jiti@2.4.2)):
     dependencies:
@@ -18801,7 +18669,8 @@ snapshots:
 
   immediate@3.0.6: {}
 
-  immutable@5.1.1: {}
+  immutable@5.1.1:
+    optional: true
 
   import-fresh@3.3.1:
     dependencies:
@@ -19349,8 +19218,6 @@ snapshots:
 
   just-omit@2.2.0: {}
 
-  just-range@4.2.0: {}
-
   just-typeof@3.2.0: {}
 
   jwt-decode@4.0.0: {}
@@ -19595,8 +19462,6 @@ snapshots:
 
   lodash-es@4.17.21: {}
 
-  lodash.camelcase@4.3.0: {}
-
   lodash.castarray@4.4.0: {}
 
   lodash.curry@4.1.1: {}
@@ -19609,19 +19474,13 @@ snapshots:
 
   lodash.isplainobject@4.0.6: {}
 
-  lodash.kebabcase@4.1.1: {}
-
   lodash.memoize@4.1.2: {}
 
   lodash.merge@4.6.2: {}
 
-  lodash.snakecase@4.1.1: {}
-
   lodash.sortby@4.7.0: {}
 
   lodash.uniq@4.5.0: {}
-
-  lodash.upperfirst@4.3.1: {}
 
   lodash@4.17.21: {}
 
@@ -22290,6 +22149,7 @@ snapshots:
       sass-embedded-win32-arm64: 1.87.0
       sass-embedded-win32-ia32: 1.87.0
       sass-embedded-win32-x64: 1.87.0
+    optional: true
 
   sax@1.4.1: {}
 
@@ -23007,8 +22867,10 @@ snapshots:
   sync-child-process@1.0.2:
     dependencies:
       sync-message-port: 1.1.3
+    optional: true
 
-  sync-message-port@1.1.3: {}
+  sync-message-port@1.1.3:
+    optional: true
 
   system-architecture@0.1.0: {}
 
@@ -23766,7 +23628,8 @@ snapshots:
       react: 19.1.0
     optional: true
 
-  varint@6.0.0: {}
+  varint@6.0.0:
+    optional: true
 
   vary@1.1.2: {}
 

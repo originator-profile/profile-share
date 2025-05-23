@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 import JumpuUI from "@jumpu-ui/tailwindcss";
-import lineClamp from "@tailwindcss/line-clamp";
 export default {
   content: ["./src/**/*.{html,js,ts,jsx,md,mdx,vue}"],
   theme: {
@@ -13,5 +12,5 @@ export default {
       },
     },
   },
-  plugins: [...JumpuUI, lineClamp],
+  plugins: [...JumpuUI],
 };

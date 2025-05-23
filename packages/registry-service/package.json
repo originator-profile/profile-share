@@ -34,16 +34,13 @@
     "eslint-config-originator-profile": "workspace:*",
     "http-errors-enhanced": "^3.0.2",
     "image-size": "^2.0.2",
-    "jose": "^6.0.10",
     "json-schema-to-ts": "^3.1.1",
     "jsonld": "^8.3.3",
-    "just-flush": "^2.3.0",
     "msw": "^2.7.5",
     "nodemailer": "^6.10.1",
     "pino": "^9.6.0",
     "typescript": "^5.8.3",
     "vitest": "^3.1.2",
-    "vitest-mock-extended": "^3.1.0",
     "yn": "^5.0.0"
   },
   "peerDependencies": {

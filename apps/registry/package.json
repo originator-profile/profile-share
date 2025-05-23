@@ -63,12 +63,9 @@
     "@originator-profile/model": "workspace:*",
     "@originator-profile/registry-db": "workspace:*",
     "@originator-profile/registry-service": "workspace:*",
-    "@originator-profile/registry-ui": "workspace:*",
     "@originator-profile/securing-mechanism": "workspace:*",
     "@originator-profile/sign": "workspace:*",
     "@originator-profile/tsconfig": "workspace:*",
-    "@originator-profile/ui": "workspace:*",
-    "@originator-profile/verify": "workspace:*",
     "@redocly/cli": "^1.34.2",
     "ajv": "^8.17.1",
     "date-fns": "^4.1.0",
@@ -92,7 +89,6 @@
     "stdout-stderr": "^0.1.13",
     "tsup": "^8.4.0",
     "typescript": "^5.8.3",
-    "uuid": "^11.1.0",
     "vitest": "^3.1.2"
   },
   "oclif": {

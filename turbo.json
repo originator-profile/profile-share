@@ -4,11 +4,12 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [
-        "dist/**",
+        ".nuxt/**",
         "dist-*/**",
-        "web-ext-artifacts/**",
+        "dist/**",
+        "oclif.manifest.json",
         "web-ext-artifacts-*/**",
-        "oclif.manifest.json"
+        "web-ext-artifacts/**"
       ]
     },
     "dev": {
