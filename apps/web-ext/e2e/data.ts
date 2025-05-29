@@ -1,4 +1,4 @@
-import {
+import type {
   Certificate,
   CoreProfile,
   Jwk,
@@ -99,8 +99,9 @@ export function generateWebsiteProfileData(): WebsiteProfile {
 
 export function generateUnsignedContentAttestation(
   content: string,
+  attestationType: "Article" | "OnlineAd" = "Article",
 ): UnsignedContentAttestation {
-  return {
+  const baseAttestation = {
     "@context": [
       "https://www.w3.org/ns/credentials/v2",
       "https://originator-profile.org/ns/credentials/v1",
@@ -111,27 +112,47 @@ export function generateUnsignedContentAttestation(
     ],
     type: ["VerifiableCredential", "ContentAttestation"],
     issuer: "dns:localhost",
-    credentialSubject: {
-      type: "Article",
-      headline: "<Webページのタイトル>",
-      image: {
-        id: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjwvc3ZnPg==",
-      },
-      description: "<Webページの説明>",
-      author: ["山田花子"],
-      editor: ["山田太郎"],
-      datePublished: "2023-07-04T19:14:00Z",
-      dateModified: "2023-07-04T19:14:00Z",
-      genre: "Arts & Entertainment",
-      id: "urn:uuid:5c464165-c579-4fc9-aaff-ca4a65e79947",
-    },
     allowedUrl: "http://localhost:8080/*",
     target: [
       {
-        type: "TextTargetIntegrity",
+        type: "TextTargetIntegrity" as const,
         content,
         cssSelector: "#text-target-integrity",
       },
     ],
+  };
+
+  if (attestationType === "Article") {
+    return {
+      ...baseAttestation,
+      credentialSubject: {
+        type: "Article",
+        headline: "<Webページのタイトル>",
+        image: {
+          id: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjwvc3ZnPg==",
+        },
+        description: "<Webページの説明>",
+        author: ["山田花子"],
+        editor: ["山田太郎"],
+        datePublished: "2023-07-04T19:14:00Z",
+        dateModified: "2023-07-04T19:14:00Z",
+        genre: "Arts & Entertainment",
+        id: "urn:uuid:5c464165-c579-4fc9-aaff-ca4a65e79947",
+      },
+    };
+  }
+
+  return {
+    ...baseAttestation,
+    credentialSubject: {
+      type: "OnlineAd",
+      name: "テスト広告タイトル",
+      image: {
+        id: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjwvc3ZnPg==",
+      },
+      description: "テスト広告の説明文",
+      genre: "Arts & Entertainment",
+      id: "urn:uuid:5c464165-c579-4fc9-aaff-ca4a65e79947",
+    },
   };
 }
