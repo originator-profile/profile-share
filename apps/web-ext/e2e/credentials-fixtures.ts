@@ -25,7 +25,11 @@ type TestFixtures = {
     contents: string,
   ) => Promise<void>;
   missingCredentials: void;
-  validCas: (key: { privateKey: Jwk }, contents: string) => Promise<void>;
+  validCas: (
+    key: { privateKey: Jwk },
+    contents: string,
+    attestationType?: "Article" | "OnlineAd",
+  ) => Promise<void>;
   validOps: (key: { publicKey: Jwk; privateKey: Jwk }) => Promise<void>;
   invalidCas: void;
   missingCas: void;
@@ -207,38 +211,44 @@ export const test = base.extend<TestFixtures>({
     await page.unroute(opsEndpoint);
   },
   validCas: async ({ page }: { page: Page }, use) => {
-    await use(async (key: { privateKey: Jwk }, contents: string) => {
-      const { privateKey } = key;
-      const issuedAt: Date = new Date(Date.now());
-      const expiredAt: Date = addYears(new Date(), 1);
-      const unsignedContentAttestation: UnsignedContentAttestation =
-        generateUnsignedContentAttestation(contents);
-      const contentAttestation = await signCa(
-        unsignedContentAttestation,
-        privateKey,
-        {
-          issuedAt,
-          expiredAt,
-          documentProvider: async () => {
-            const window = new Window();
-            window.document.write(contents);
-            return window.document as unknown as Document;
-          },
-        },
-      );
-
-      await page.route(casEndpoint, async (route) =>
-        route.fulfill({
-          body: JSON.stringify([
-            {
-              attestation: contentAttestation,
-              main: true,
+    await use(
+      async (
+        key: { privateKey: Jwk },
+        contents: string,
+        attestationType: "Article" | "OnlineAd" = "Article",
+      ) => {
+        const { privateKey } = key;
+        const issuedAt: Date = new Date(Date.now());
+        const expiredAt: Date = addYears(new Date(), 1);
+        const unsignedContentAttestation: UnsignedContentAttestation =
+          generateUnsignedContentAttestation(contents, attestationType);
+        const contentAttestation = await signCa(
+          unsignedContentAttestation,
+          privateKey,
+          {
+            issuedAt,
+            expiredAt,
+            documentProvider: async () => {
+              const window = new Window();
+              window.document.write(contents);
+              return window.document as unknown as Document;
             },
-          ]),
-          contentType: "application/json",
-        }),
-      );
-    });
+          },
+        );
+
+        await page.route(casEndpoint, async (route) =>
+          route.fulfill({
+            body: JSON.stringify([
+              {
+                attestation: contentAttestation,
+                main: true,
+              },
+            ]),
+            contentType: "application/json",
+          }),
+        );
+      },
+    );
 
     await page.unroute(casEndpoint);
   },

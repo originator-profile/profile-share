@@ -3,6 +3,7 @@ import { test as base, Page } from "@playwright/test";
 type TestFixtures = {
   credentialsMissingPage: { contents: string; endpoint: string };
   credentialsPage: { contents: string; endpoint: string };
+  onlineAdPage: { contents: string; endpoint: string };
 };
 
 export const test = base.extend<TestFixtures>({
@@ -63,6 +64,45 @@ export const test = base.extend<TestFixtures>({
     );
 
     await use({ contents: validCredentialsHtml, endpoint });
+
+    await page.unroute(endpoint);
+  },
+  onlineAdPage: async ({ page }: { page: Page }, use) => {
+    const endpoint = "http://localhost:8080/examples/online-ad.html";
+    const onlineAdHtml = `
+<!doctype html>
+<html lang="ja" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>OnlineAd Contentテストページ</title>
+</head>
+<body>
+  <script
+    src="http://localhost:8080/examples/ops.json"
+    type="application/ops+json"
+  ></script>
+  <script
+    src="http://localhost:8080/examples/cas.json"
+    type="application/cas+json"
+  ></script>
+  <div id="text-target-integrity">
+    <div class="ad-container">
+      <h3>テスト広告</h3>
+      <p>これはOnlineAd Content Attestationのテスト広告です</p>
+      <a href="https://example.com">詳細を見る</a>
+    </div>
+  </div>
+</body>
+</html>`;
+    await page.route(endpoint, async (route) =>
+      route.fulfill({
+        body: onlineAdHtml,
+        contentType: "text/html",
+      }),
+    );
+
+    await use({ contents: onlineAdHtml, endpoint });
 
     await page.unroute(endpoint);
   },
