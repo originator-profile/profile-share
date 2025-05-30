@@ -37,7 +37,7 @@ export default function PageFieldSet({
 
   return (
     <fieldset className="flex flex-col md:flex-row gap-2 md:gap-4 md:items-center">
-      <div className="text-sm leading-normal flex-shrink-0 w-40 self-start">
+      <div className="text-sm leading-normal shrink-0 w-40 self-start">
         {label}
         {helpText && (
           <FormHelpText className="mx-1" label={label} helpText={helpText} />
@@ -51,7 +51,7 @@ export default function PageFieldSet({
           <input
             id={titleInputId}
             className={clsx("jumpu-input h-12 w-full", {
-              "border-danger !border-2 !text-danger": errors[titleName],
+              "border-danger border-2! text-danger!": errors[titleName],
             })}
             {...register(titleName, { onBlur: onBlur })}
             placeholder={titlePlaceholder}
@@ -72,7 +72,7 @@ export default function PageFieldSet({
             id={urlInputId}
             type="url"
             className={clsx("jumpu-input h-12 w-full", {
-              "border-danger !border-2 !text-danger": errors[urlName],
+              "border-danger border-2! text-danger!": errors[urlName],
             })}
             {...register(urlName, {
               onBlur: onBlur,

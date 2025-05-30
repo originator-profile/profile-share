@@ -1,16 +1,16 @@
 <template>
   <div class="container h-dvh flex flex-col py-4 gap-y-4">
-    <div class="card p-4 shrink-0">
+    <div class="jumpu-card p-4 shrink-0">
       <h2 class="font-bold text-2xl mb-2">Generate Content Attestation Set</h2>
       <div class="flex itmes-center gap-x-4">
         <div class="grow">
           <div class="text-sm flex gap-x-4">
-            <div class="card p-4">
+            <div class="jumpu-card p-4">
               <div class="text-sm">CAS 生成済み</div>
               <span class="text-2xl font-semibold"> {{ body.length }}</span> /
               {{ htmlfiles.length }}
             </div>
-            <div class="card p-4 text-green-700">
+            <div class="jumpu-card p-4 text-green-700">
               <div class="text-sm flex items-center gap-x-1">
                 <Icon name="material-symbols:check-rounded" class="text-xl" />
                 Successed
@@ -21,7 +21,7 @@
               /
               {{ htmlfiles.length }}
             </div>
-            <div class="card p-4 text-amber-600">
+            <div class="jumpu-card p-4 text-amber-600">
               <div class="text-sm flex items-center gap-x-1">
                 <Icon
                   name="mage:exclamation-triangle-fill"
@@ -35,7 +35,7 @@
             <div class="self-end">
               <button
                 @click="setting = !setting"
-                class="text-button inline-flex items-center gap-x-1"
+                class="jumpu-text-button inline-flex items-center gap-x-1"
               >
                 <Icon name="uil:cog" class="text-xl" />
                 Settings
@@ -51,7 +51,7 @@
         <div class="shrink-0">
           <p>
             <button
-              class="button inline-flex items-center gap-x-2"
+              class="jumpu-button inline-flex items-center gap-x-2"
               @click="fetchChatStream(htmlfiles)"
               :disabled="generating"
             >
@@ -71,7 +71,7 @@
     </div>
     <section class="grow shrink overflow-y-auto" ref="scrollSection">
       <table class="w-full relative">
-        <thead class="sticky top-0 bg-white shadow-sm z-10">
+        <thead class="sticky top-0 bg-white shadow-xs z-10">
           <tr class="table-row">
             <th class="w-12">#</th>
             <th>File name</th>
@@ -114,7 +114,7 @@
     </section>
     <div
       v-if="setting"
-      class="card p-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-95"
+      class="jumpu-card p-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-95"
     >
       <h2 class="font-bold text-2xl mb-2">Settings</h2>
 
@@ -130,7 +130,7 @@
       </table>
 
       <button
-        class="icon-button absolute top-4 right-4"
+        class="jumpu-icon-button absolute top-4 right-4"
         @click="setting = false"
       >
         <Icon name="material-symbols:close-rounded" class="text-xl" />

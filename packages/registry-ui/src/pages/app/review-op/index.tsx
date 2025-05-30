@@ -16,16 +16,16 @@ function SwitchPendingStatus({
       <div className="jumpu-toggle-switch w-40 h-16">
         <label
           className={clsx(
-            "!rounded-l-md !rounded-r-none border border-primary-700",
+            "rounded-l-md! rounded-r-none! border border-primary-700",
             pending && "checked",
           )}
           htmlFor="pending"
         >
           <span
             className={clsx(
-              "w-full h-full !rounded-l-md !rounded-r-none px-2.5 py-5 text-center",
+              "w-full h-full rounded-l-md! rounded-r-none! px-2.5 py-5 text-center",
               pending
-                ? "text-white !bg-primary-700"
+                ? "text-white bg-primary-700!"
                 : "text-primary-700 bg-white",
             )}
           >
@@ -45,16 +45,16 @@ function SwitchPendingStatus({
       <div className="jumpu-toggle-switch w-40 h-16">
         <label
           className={clsx(
-            "w-full h-full !rounded-l-none !rounded-r-md border border-primary-700",
+            "w-full h-full rounded-l-none! rounded-r-md! border border-primary-700",
             !pending && "checked",
           )}
           htmlFor="nonpending"
         >
           <span
             className={clsx(
-              "w-full h-full !rounded-l-none !rounded-r-md px-2.5 py-5 text-center",
+              "w-full h-full rounded-l-none! rounded-r-md! px-2.5 py-5 text-center",
               !pending
-                ? "text-white !bg-primary-700"
+                ? "text-white bg-primary-700!"
                 : "text-primary-700 bg-white",
             )}
           >

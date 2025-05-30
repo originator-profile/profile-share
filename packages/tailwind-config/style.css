@@ -1,0 +1,57 @@
+@import "tailwindcss";
+@import "@jumpu-ui/tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-primary-50: #f8fdfd;
+  --color-primary-100: #f1fbfb;
+  --color-primary-200: #e6f8f8;
+  --color-primary-300: #cceff0;
+  --color-primary-400: #99dfe1;
+  --color-primary-500: #66cfd2;
+  --color-primary-600: #00afb4;
+  --color-primary-700: #008488;
+  --color-primary-800: #006d73;
+  --color-primary-900: #00585a;
+  --color-primary-950: #003233;
+  --color-primary: #008488;
+
+  --color-success-extralight: #f7fee7;
+  --color-success-light: #84cc16;
+  --color-success: #65a30d;
+
+  --color-caution-extralight: #fefce8;
+  --color-caution-light: #fde047;
+  --color-caution: #facc15;
+
+  --color-danger-extralight: #fef2f2;
+  --color-danger-light: #f87171;
+  --color-danger: #b80000;
+
+  --color-review: var(--color-orange-700);
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-300);
+  }
+}
+
+/* Dialog element base styles */
+@layer base {
+  dialog {
+    margin: auto;
+  }
+}

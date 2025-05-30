@@ -28,22 +28,22 @@ function RegisterTabs() {
   if (!registerTabsSelected) return null;
 
   return (
-    <div className="jumpu-boxed-tabs mb-6">
-      <h1 className="text-3xl font-bold border-b min-w-[12rem] py-2">登録</h1>
-      <nav role="tablist" className="!justify-end">
+    <div className="jumpu-boxed-tabs mb-6 flex">
+      <h1 className="text-3xl font-bold border-b min-w-48 py-2">登録</h1>
+      <nav role="tablist" className="justify-end!">
         {registerTabs.map((registerTab) => (
           <Link
             key={registerTab.route}
             role="tab"
             aria-selected={isTabSelected(registerTab.route)}
             className={clsx(
-              "min-w-[10rem] text-sm",
+              "min-w-40 text-sm",
               isTabSelected(registerTab.route) && "font-bold",
-              "!flex !justify-between !rounded-t !mr-0 !ml-0.5 !p-4 !border-inherit !border-b-transparent",
+              "flex! justify-between! rounded-t! mr-0! ml-0.5! p-4! border-inherit! border-b-transparent!",
             )}
             to={`./${registerTab.route}/`}
           >
-            <span className="min-w-[3.5rem]">{registerTab.name}</span>
+            <span className="min-w-14">{registerTab.name}</span>
             <Status status={status[registerTab.route]} />
           </Link>
         ))}

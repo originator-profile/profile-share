@@ -111,7 +111,7 @@ function HolderForm({
             />
             <button
               type="button"
-              className="jumpu-text-button text-danger"
+              className="jumpu-text-button not-disabled:text-danger not-disabled:hover:bg-danger-extralight"
               onClick={(e) => {
                 e.preventDefault();
                 clearDraft();
@@ -166,7 +166,7 @@ function HolderForm({
             <select
               id="addressRegionSelect"
               className={clsx("jumpu-select w-48 h-12", {
-                "border-danger !border-2 !text-danger": errors.addressRegion,
+                "border-danger border-2! text-danger!": errors.addressRegion,
               })}
               {...register("addressRegion", {
                 onBlur: saveDraft,

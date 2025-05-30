@@ -29,7 +29,7 @@ function FormRow({
     >
       <div
         className={clsx(
-          "text-sm w-full flex-shrink-0",
+          "text-sm w-full shrink-0",
           wide ? "md:w-40" : "md:w-24",
         )}
       >

@@ -68,7 +68,7 @@ export function Credentials(props: CredentialsProps) {
     <div data-testid="cas" className="flex">
       <div className="flex flex-col border-r border-gray-200">
         <CaFilter caListType={caListType} setCaListType={onFilterUpdate} />
-        <nav className="flex-shrink-0 w-16 overflow-y-auto bg-white sticky top-0 z-10 border-t border-gray-200">
+        <nav className="shrink-0 w-16 overflow-y-auto bg-white sticky top-0 z-10 border-t border-gray-200">
           <CaSelector filteredCas={filteredCas} onClickCa={handleClickCa} />
         </nav>
       </div>
@@ -103,9 +103,9 @@ export function Credentials(props: CredentialsProps) {
               >
                 <Icon className="inline" icon={"fa6-solid:wrench"} />
                 <span
-                  id="whitespace-pre-line tooltip-2"
+                  id="tooltip-2"
                   role="tooltip"
-                  className="whitespace-pre-line ![transform:translate(-50%,_150%)_scale(0)] group-hover:![transform:translate(-50%,_150%)_scale(1)]"
+                  className="[transform:translate(-50%,150%)_scale(0)]! group-hover:[transform:translate(-50%,150%)_scale(1)]!"
                 >
                   {_("Credentials_TechnicalInformation")}
                 </span>
@@ -118,7 +118,7 @@ export function Credentials(props: CredentialsProps) {
             <hr className="mb-3" />
             <div className="flex flex-row gap-3 mb-2">
               <Image
-                className="flex-shrink-0 bg-white rounded-md"
+                className="shrink-0 bg-white rounded-md"
                 src={ca.credentialSubject.image?.id}
                 placeholderSrc={placeholderLogoMainUrl}
                 alt=""

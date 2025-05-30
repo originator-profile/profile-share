@@ -28,8 +28,8 @@ function AccountHeader() {
           </div>
         ) : (
           <div className="animate-pulse w-full flex flex-col gap-1.5 justify-center">
-            <div className="bg-slate-200 rounded min-w-[8rem] w-1/5 h-5" />
-            <div className="bg-slate-200 rounded min-w-[12rem] w-1/3 h-3" />
+            <div className="bg-slate-200 rounded-sm min-w-32 w-1/5 h-5" />
+            <div className="bg-slate-200 rounded-sm min-w-48 w-1/3 h-3" />
           </div>
         )}
       </div>
@@ -46,32 +46,21 @@ function Tabs() {
   const { registerTabsSelected, isTabSelected } = useTabs();
   return (
     <header className="bg-gray-50 border-b">
-      <div className="jumpu-tabs max-w-5xl px-4 mx-auto mb-[-1px]">
-        <nav role="tablist">
-          <Link
-            role="tab"
-            aria-selected={isTabSelected("request-op")}
-            className="gap-2"
-            to="./"
-          >
+      <div className="jumpu-tabs max-w-5xl px-4 mx-auto -mb-px">
+        <nav role="tablist" className="*:gap-2 *:inline-flex *:items-center">
+          <Link role="tab" aria-selected={isTabSelected("request-op")} to="./">
             <Icon icon="iconamoon:home-light" />
             ホーム
           </Link>
           <Link
             role="tab"
             aria-selected={isTabSelected("notifications")}
-            className="gap-2"
             to="./notifications/"
           >
             <Icon icon="bx:envelope" />
             お知らせ
           </Link>
-          <Link
-            role="tab"
-            aria-selected={registerTabsSelected}
-            className="gap-2"
-            to="./holder/"
-          >
+          <Link role="tab" aria-selected={registerTabsSelected} to="./holder/">
             <Icon icon="fa6-solid:list-check" />
             登録
           </Link>

@@ -1,15 +1,18 @@
+import tailwindcss from "@tailwindcss/vite";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
-  modules: ["@nuxtjs/tailwindcss", "@nuxt/icon"],
-  tailwindcss: {
-    cssPath: "~/assets/css/tailwind.css",
-  },
+  modules: ["@nuxt/icon"],
   devServer: {
     port: 4000,
   },
   telemetry: false,
+  vite: {
+    plugins: [tailwindcss()],
+  },
+  css: ["~/assets/css/tailwind.css"],
 
   // サーバーサイドで環境変数を使用するための設定
   runtimeConfig: {

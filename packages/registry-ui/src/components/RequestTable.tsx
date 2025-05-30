@@ -53,7 +53,7 @@ function RequestTable(props: RequestTableProps) {
             <th className="w-[16rem] text-xs text-gray-400 text-start px-4 py-1">
               組織名
             </th>
-            <th className="w-[26rem] text-xs text-gray-400 text-start py-1">
+            <th className="w-104 text-xs text-gray-400 text-start py-1">
               コメント
             </th>
             <th className="text-xs text-gray-400 text-start px-4 py-1">

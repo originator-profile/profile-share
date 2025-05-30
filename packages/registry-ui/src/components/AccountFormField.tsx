@@ -57,7 +57,7 @@ export default function AccountFormField({
         <textarea
           id={htmlFor}
           className={clsx("jumpu-textarea flex-1", textareaClassName, {
-            "border-danger !border-2 !text-danger": errors[name],
+            "border-danger border-2! text-danger!": errors[name],
           })}
           placeholder={placeHolder}
           {...register(name, {
@@ -69,7 +69,7 @@ export default function AccountFormField({
         <input
           id={htmlFor}
           className={clsx("jumpu-input h-12", inputClassName, {
-            "border-danger !border-2 !text-danger": errors[name],
+            "border-danger border-2! text-danger!": errors[name],
           })}
           placeholder={placeHolder}
           {...register(name, {

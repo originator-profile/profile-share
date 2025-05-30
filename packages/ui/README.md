@@ -2,22 +2,11 @@
 
 Originator Profile プロジェクトに一貫性のある見た目を提供するためのパッケージです。
 
-## Prerequisites
+## Usage
 
-TailwindCSS によってスタイルを生成するため、[TailwindCSS をインストール](https://tailwindcss.com/docs/installation)したのち、以下のような設定に更新する必要があります。
+[TailwindCSS をインストール](https://tailwindcss.com/docs/installation)したのち、次のような設定をおこないます。TailwindCSS をインストールする方法の詳細は[公式ドキュメント](https://tailwindcss.com/docs/installation/)を参照してください。
 
-```js
-const path = require("node:path");
-const extend = require("just-extend");
-const config = require("tailwind-config-originator-profile");
-
-/** @type {import('tailwindcss').Config} */
-module.exports = extend(config, {
-  content: [
-    `${path.dirname(
-      require.resolve("@originator-profile/ui"),
-    )}/components/*.tsx`,
-    "./src/**/*.{html,tsx}",
-  ],
-});
+```css
+@import "tailwindcss";
+@import "tailwind-config-originator-profile";
 ```

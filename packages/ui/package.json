@@ -32,8 +32,12 @@
     "eslint-config-originator-profile": "workspace:*",
     "react": "^19.1.0",
     "swr": "^2.3.3",
+    "tailwind-config-originator-profile": "workspace:*",
     "tailwind-merge": "^3.2.0",
     "typescript": "^5.8.3",
     "vitest": "^3.1.2"
+  },
+  "peerDependencies": {
+    "tailwindcss": "^4.1.7"
   }
 }

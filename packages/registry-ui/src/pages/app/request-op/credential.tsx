@@ -89,7 +89,7 @@ function FormField({
         className={clsx(
           "jumpu-input h-12",
           {
-            "border-danger !border-2 !text-danger": errors[name],
+            "border-danger border-2! text-danger!": errors[name],
           },
           inputProps?.className,
         )}
@@ -129,7 +129,7 @@ function FormSelectField({ name, label, children }: FormSelectFieldProps) {
       <select
         id={`${name}Select`}
         className={clsx("jumpu-input h-12", {
-          "border-danger !border-2 !text-danger": errors[name],
+          "border-danger border-2! text-danger!": errors[name],
         })}
         {...register(name, {
           required: "このフィールドを入力してください。",
@@ -299,7 +299,7 @@ function MenuButton({
       <Menu.Button className="flex justify-center items-center w-11 h-11 m-2">
         <Icon icon="mdi:dots-horizontal" className="w-4 h-4" />
       </Menu.Button>
-      <Menu.Items className="absolute right-2 top-9 rounded w-48 bg-white shadow-lg z-10">
+      <Menu.Items className="absolute right-2 top-9 rounded-sm w-48 bg-white shadow-lg z-10">
         <Menu
           as="div"
           className="text-sm text-center py-2 border-b border-gray-200"
@@ -439,7 +439,7 @@ export default function Credential() {
   };
 
   return (
-    <div className="flex flex-col gap-6 max-w-screen-sm">
+    <div className="flex flex-col gap-6 max-w-(--breakpoint-sm)">
       <h2 className="text-2xl font-bold">資格情報</h2>
       <p>
         第三者認証機関の承認を得たら、このページより Originator Profile（OP）

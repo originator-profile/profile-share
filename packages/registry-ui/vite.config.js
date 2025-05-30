@@ -2,6 +2,7 @@
 // @ts-expect-error Missing Type Declarations for @fastify/vite/plugin. See https://github.com/fastify/fastify-vite/issues/268 for tracking.
 import fastify from "@fastify/vite/plugin";
 import generouted from "@generouted/react-router/plugin";
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -35,7 +36,6 @@ export default defineConfig({
   },
   plugins: [
     fastify({ spa: true }),
-    react(),
     generouted({
       source: {
         routes: `${REGISTRY_UI_ROOT}/src/pages/**/[\\w[-]*.{jsx,tsx}`,
@@ -43,5 +43,7 @@ export default defineConfig({
       },
       output: `${REGISTRY_UI_ROOT}/src/router.ts`,
     }),
+    react(),
+    tailwindcss(),
   ],
 });

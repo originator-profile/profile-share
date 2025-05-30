@@ -51,14 +51,14 @@ function Marker(props: {
     >
       <button
         className={clsx(
-          "relative rounded",
+          "relative rounded-sm",
           props.active ? "bg-blue-500" : "bg-white",
         )}
         title={props.wmp?.credentialSubject.name}
         onClick={props.onClick}
       >
         <Image
-          className="border box-content rounded border-gray-100 bg-white m-1"
+          className="border box-content rounded-sm border-gray-100 bg-white m-1"
           src={props.wmp?.credentialSubject.logo?.id}
           placeholderSrc={placeholderLogoMainUrl}
           alt={props.wmp?.credentialSubject.name ?? ""}

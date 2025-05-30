@@ -40,7 +40,7 @@ export default function PublicKey() {
   };
 
   return (
-    <section className="max-w-screen-sm">
+    <section className="max-w-(--breakpoint-sm)">
       <h2 className="text-3xl font-bold mb-8">公開鍵</h2>
       <p className="text-sm mb-8">
         御社で生成したデータの署名/検証に用いる
