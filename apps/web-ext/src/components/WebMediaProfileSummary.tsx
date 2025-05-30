@@ -12,7 +12,7 @@ function WebMediaProfileSummary({ wmp }: Props) {
   return (
     <div className="flex items-center gap-2">
       <Image
-        className="flex-shrink-0 border box-content rounded border-gray-200"
+        className="shrink-0 border box-content rounded-sm border-gray-200"
         src={wmp.credentialSubject.logo?.id}
         placeholderSrc={placeholderLogoMainUrl}
         alt=""

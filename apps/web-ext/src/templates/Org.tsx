@@ -218,7 +218,7 @@ function Org({
               key={tab.id}
               id={`${tab.id}-tab`}
               className={clsx(
-                "text-sm rounded jumpu-button",
+                "text-sm rounded-sm jumpu-button",
                 activeTab !== tab.id && "bg-white text-gray-600",
               )}
               role="tab"

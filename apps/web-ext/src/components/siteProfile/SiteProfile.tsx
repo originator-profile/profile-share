@@ -34,7 +34,7 @@ export function SiteProfile(props: SiteProfileProps) {
           <span
             id="tooltip-1"
             role="tooltip"
-            className="whitespace-pre-line ![transform:translate(-50%,_150%)_scale(0)] group-hover:![transform:translate(-50%,_150%)_scale(1)]"
+            className="[transform:translate(-50%,150%)_scale(0)]! group-hover:[transform:translate(-50%,150%)_scale(1)]!"
           >
             {_("SiteProfile_TechnicalInformation")}
           </span>
@@ -43,7 +43,7 @@ export function SiteProfile(props: SiteProfileProps) {
       <div className="flex flex-col items-center gap-4">
         {props.wsp.credentialSubject.image && (
           <Image
-            className="flex-shrink-0 w-fit"
+            className="shrink-0 w-fit"
             src={props.wsp.credentialSubject.image.id}
             placeholderSrc={placeholderLogoMainUrl}
             alt=""

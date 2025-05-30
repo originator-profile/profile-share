@@ -84,14 +84,14 @@ function Unsupported({ errors }: Props) {
             {_("Unsupported_ChallengeInternetUser")}
           </h2>
           <div className="flex items-center justify-between gap-8 mb-4 md:mb-1">
-            <img className="flex-shrink-0 my-0" src={figUser1Url} alt="" />
-            <p className="whitespace-pre-line text-sky-700 text-lg font-bold p-4 border-2 border-sky-600 rounded-3xl flex-grow">
+            <img className="shrink-0 my-0" src={figUser1Url} alt="" />
+            <p className="whitespace-pre-line text-sky-700 text-lg font-bold p-4 border-2 border-sky-600 rounded-3xl grow">
               {_("Unsupported_ChallengeReliableInformation")}
             </p>
           </div>
           <div className="flex flex-row-reverse items-center justify-between gap-8 mb-4 md:mb-1">
-            <img className="flex-shrink-0 my-0" src={figUser2Url} alt="" />
-            <p className="whitespace-pre-line text-sky-700 text-lg font-bold p-4 border-2 border-sky-600 rounded-3xl flex-grow">
+            <img className="shrink-0 my-0" src={figUser2Url} alt="" />
+            <p className="whitespace-pre-line text-sky-700 text-lg font-bold p-4 border-2 border-sky-600 rounded-3xl grow">
               {_("Unsupported_ChallengeFakeNews")}
             </p>
           </div>
@@ -104,14 +104,14 @@ function Unsupported({ errors }: Props) {
             {_("Unsupported_ChallengeAdAndMedia")}
           </h2>
           <div className="flex items-center justify-between gap-8 mb-4 md:mb-1">
-            <img className="flex-shrink-0 my-0" src={figUser5Url} alt="" />
-            <p className="whitespace-pre-line text-sky-700 text-lg font-bold p-4 border-2 border-sky-600 rounded-3xl flex-grow">
+            <img className="shrink-0 my-0" src={figUser5Url} alt="" />
+            <p className="whitespace-pre-line text-sky-700 text-lg font-bold p-4 border-2 border-sky-600 rounded-3xl grow">
               {_("Unsupported_ChallengeSketchySite")}
             </p>
           </div>
           <div className="flex flex-row-reverse items-center justify-between gap-8 mb-4 md:mb-1">
-            <img className="flex-shrink-0 my-0" src={figUser3Url} alt="" />
-            <p className="whitespace-pre-line text-sky-700 text-lg font-bold p-4 border-2 border-sky-600 rounded-3xl flex-grow">
+            <img className="shrink-0 my-0" src={figUser3Url} alt="" />
+            <p className="whitespace-pre-line text-sky-700 text-lg font-bold p-4 border-2 border-sky-600 rounded-3xl grow">
               {_("Unsupported_ChallengeAdClashWithArticle")}
             </p>
           </div>
@@ -124,8 +124,8 @@ function Unsupported({ errors }: Props) {
             {_("Unsupported_ChallengeHowever")}
           </h2>
           <div className="flex items-center justify-between gap-8 mb-4 md:mb-1">
-            <img className="flex-shrink-0 my-0" src={figUser4Url} alt="" />
-            <p className="whitespace-pre-line text-sky-700 text-lg font-bold p-4 border-2 border-sky-600 rounded-3xl flex-grow">
+            <img className="shrink-0 my-0" src={figUser4Url} alt="" />
+            <p className="whitespace-pre-line text-sky-700 text-lg font-bold p-4 border-2 border-sky-600 rounded-3xl grow">
               {_("Unsupported_ChallengeInformationRegulation")}
             </p>
           </div>
