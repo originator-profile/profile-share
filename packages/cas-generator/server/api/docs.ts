@@ -1,7 +1,7 @@
 import fs from "fs";
 import { execSync } from "child_process";
-import sampleCAInfo from "../utils/sampleCAInfo";
 import findHtmlFiles from "../utils/findHTMLFiles";
+import { createDefaultContentAttestation } from "../domain/contentAttestation";
 
 const origin = "https://originator-profile.org";
 
@@ -57,40 +57,42 @@ export default defineEventHandler(async (event) => {
       imageHashes,
     } = item;
 
-    sampleCAInfo.credentialSubject["headline"] = title;
-    sampleCAInfo.credentialSubject["description"] = description;
-    sampleCAInfo.credentialSubject["datePublished"] = createdAt;
-    sampleCAInfo.credentialSubject["dateModified"] = updatedAt;
-    sampleCAInfo.credentialSubject["author"] = sampleCAInfo.credentialSubject[
-      "editor"
-    ] = lang === "ja" ? [opcipName.ja] : [opcipName.en];
-    sampleCAInfo.credentialSubject["image"]["id"] = ogpImageURL[lang];
-
     const fullPath =
       origin + "/" + item.path.replace(docsPath, "").replace("index.html", "");
-
-    sampleCAInfo.target = [primaryTarget];
-    if (imageHashes) {
-      sampleCAInfo.target.push(...imageHashes);
-    }
-
-    sampleCAInfo.allowedUrl.length = 0;
-    sampleCAInfo.allowedUrl[0] = fullPath;
-    arrowedURLOrigins.forEach((arrowedURLOrigin) => {
-      const fullPath =
+    const allowedUrl = [fullPath];
+    for (const arrowedURLOrigin of arrowedURLOrigins) {
+      const formattedPath =
         arrowedURLOrigin +
         "/" +
         item.path
           .replace(docsPath, "")
           .replace("index.html", "")
           .replace(/\/$/, "(/?)");
-      sampleCAInfo.allowedUrl.push(fullPath);
+      allowedUrl.push(formattedPath);
+    }
+
+    const caInfo = createDefaultContentAttestation({
+      credentialSubject: {
+        type: "Article",
+        headline: title,
+        image: {
+          id: ogpImageURL[lang],
+        },
+        description: description,
+        author: [opcipName[lang]],
+        editor: [opcipName[lang]],
+        datePublished: createdAt,
+        dateModified: updatedAt,
+        genre: "technology",
+      },
+      allowedUrl: allowedUrl,
+      target: [primaryTarget, ...imageHashes],
     });
 
     // ファイルを保存
     const outputFilePath = `${vcSourcesPath}${item.cas}.cas.json`;
     htmlFiles[index].vc_path = outputFilePath;
-    fs.writeFileSync(outputFilePath, JSON.stringify(sampleCAInfo, null, 2));
+    fs.writeFileSync(outputFilePath, JSON.stringify(caInfo, null, 2));
   }
   return htmlFiles;
 });

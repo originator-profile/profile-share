@@ -4,7 +4,7 @@ import { createEventStream } from "h3";
 
 const casPath = process.env.CAS_OUTPUT_PATH;
 
-const execute = (path) => {
+const execute = (path: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     exec(
       `profile-registry ca:sign -i ${process.env.PRIVATE_KEY_PATH} --input ${path}`,
@@ -21,7 +21,7 @@ const execute = (path) => {
   });
 };
 
-const emptyDir = (casPath) => {
+const emptyDir = (casPath: string) => {
   return new Promise((resolve, reject) => {
     exec(`rm -rf ${casPath}*`, { timeout: 10000 }, (err, stdout, stderr) => {
       if (err) {
@@ -35,6 +35,12 @@ const emptyDir = (casPath) => {
 export default defineEventHandler(async (event) => {
   const htmlFiles = await readBody(event);
   const eventStream = createEventStream(event);
+  if (!casPath) {
+    throw createError({
+      statusCode: 500,
+      message: "CAS_OUTPUT_PATHが設定されていません",
+    });
+  }
   // see https://nitro.build/guide/websocket#server-sent-events-sse
   // ファイル生成場所内を空っぽにする
   await emptyDir(casPath);
