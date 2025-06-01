@@ -27,6 +27,7 @@
   "devDependencies": {
     "@lerna-lite/cli": "^4.1.1",
     "@lerna-lite/version": "^4.1.1",
+    "@types/jsdom": "^21.1.7",
     "astro": "^5.7.10",
     "npm-run-all2": "^7.0.2",
     "prettier": "^3.5.3",
