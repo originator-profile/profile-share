@@ -81,7 +81,7 @@
     "json-schema-to-ts": "^3.1.1",
     "just-merge": "^3.2.0",
     "msw": "^2.7.5",
-    "npm-run-all2": "^7.0.2",
+    "npm-run-all2": "^8.0.0",
     "oclif": "^4.17.46",
     "secure-json-parse": "^4.0.0",
     "serve": "^14.2.4",
