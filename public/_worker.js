@@ -22,6 +22,7 @@ const users = new Map(
     tottori: "GuPFSuzFeBWD",
     ishikawa: "CI1hWw1xZEAX",
     kanazawa: "2CM7K82OvNw4",
+    blueprint: "ERBghYB2sS!Z",
   }),
 );
 
