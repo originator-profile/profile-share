@@ -8,7 +8,6 @@ export { default as Image } from "./Image";
 export { default as Modal } from "./Modal";
 export { default as ProjectSummary } from "./ProjectSummary";
 export { default as ProjectTitle } from "./ProjectTitle";
-export { default as Roles } from "./Roles";
 export { default as Spinner } from "./Spinner";
 export { default as Table } from "./Table";
 export { default as TableRow } from "./TableRow";
