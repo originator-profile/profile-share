@@ -7,7 +7,7 @@ import {
 import { Icon } from "@iconify/react";
 import { Link } from "react-router";
 import { buildPublUrl } from "../utils/routes";
-import { stringifyWithError } from "@originator-profile/core";
+import ErrorCheckList from "../components/ErrorCheckList";
 
 function WarningDetails({ tabId }: { tabId: number }) {
   return (
@@ -55,6 +55,7 @@ function Prohibition({ errors, tabId }: ProhibitionProps) {
         </span>
       </h1>
       <article className="mb-12 max-w-sm mx-auto">
+        <ErrorCheckList errors={errors} />
         <p
           className="text-sm tracking-normal text-left font-normal"
           data-testid="p-elm-prohibition-message"
@@ -64,13 +65,6 @@ function Prohibition({ errors, tabId }: ProhibitionProps) {
         />
         <details className="text-gray-700 pt-3">
           <summary>{_("Prohibition_StatementDetail")}</summary>
-          {errors.map((error, index) => {
-            return (
-              <pre className="overflow-auto" key={index}>
-                {stringifyWithError(error, 2)}
-              </pre>
-            );
-          })}
           <WarningDetails tabId={tabId} />
         </details>
         <div className="pt-3">

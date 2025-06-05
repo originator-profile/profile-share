@@ -104,7 +104,7 @@
   "Unsupported_FollowingCausesConsidered": {
     "message": "以下のような原因が考えられます"
   },
-  "Unsupported_ErrorDetails": {
+  "ErrorCheckList_ErrorDetails": {
     "message": "エラーの詳細"
   },
   "Unsupported_Message": {

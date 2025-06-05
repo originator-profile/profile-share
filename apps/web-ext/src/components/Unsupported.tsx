@@ -10,7 +10,7 @@ import figUser3Url from "../assets/fig-user-3.svg";
 import figUser4Url from "../assets/fig-user-4.svg";
 import figUser5Url from "../assets/fig-user-5.svg";
 import figTraceabilityUrl from "../assets/fig-traceability.png";
-import { stringifyWithError } from "@originator-profile/core";
+import ErrorCheckList from "./ErrorCheckList";
 
 function Messages({
   className,
@@ -51,6 +51,7 @@ function Unsupported({ errors }: Props) {
         <h1 className="whitespace-pre-line text-lg mb-6 text-center">
           {_("Unsupported_ReliabilityInformationReadError")}
         </h1>
+        <ErrorCheckList errors={errors} />
         <p
           className="whitespace-pre-line text-xs text-gray-700 text-center mb-8"
           data-testid="p-elm-unsupported-message"
@@ -61,16 +62,6 @@ function Unsupported({ errors }: Props) {
           className="list-disc pl-8 text-sm mb-12 max-w-sm mx-auto"
           errors={errors}
         />
-        <details className="text-gray-700 pl-4 mb-12">
-          <summary>{_("Unsupported_ErrorDetails")}</summary>
-          {errors.map((error, index) => {
-            return (
-              <pre className="overflow-auto" key={index}>
-                {stringifyWithError(error, 2)}
-              </pre>
-            );
-          })}
-        </details>
         <p className="whitespace-pre-line text-xs text-gray-700 text-center leading-5">
           {_("Unsupported_ReliabilityInformationContactStatement")}
         </p>
