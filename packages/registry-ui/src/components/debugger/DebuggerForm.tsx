@@ -207,7 +207,6 @@ export function DebuggerForm(props: Props) {
         name={fields.trustedOpId.name}
         required={fields.trustedOpId.required}
         defaultValue={fields.trustedOpId.initialValue}
-        readOnly
       />
       <TextareaField
         label="Trusted OPS"
@@ -215,7 +214,6 @@ export function DebuggerForm(props: Props) {
         name={fields.trustedOps.name}
         required={fields.trustedOps.required}
         defaultValue={fields.trustedOps.initialValue}
-        readOnly
       />
       <input className="jumpu-button" type="submit" value="Verify" />
     </form>
