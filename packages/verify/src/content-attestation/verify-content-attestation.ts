@@ -11,9 +11,16 @@ import { CaVerificationResult, VerifiedCa } from "./types";
 import { verifyAllowedOrigin } from "../verify-allowed-origin";
 import { verifyAllowedUrl } from "../verify-allowed-url";
 import {
+  IntegrityVerifyResult,
   verifyIntegrity as nativeVerifyIntegrity,
   VerifyIntegrity,
 } from "../integrity";
+
+type IntegrityResult = {
+  index: number;
+  verifyResult: IntegrityVerifyResult;
+  expectedIntegrity: string;
+};
 
 async function checkUrlAndOrigin<T extends ContentAttestation>(
   result: VerifiedCa<T>,
@@ -72,20 +79,33 @@ export function CaVerifier<T extends ContentAttestation>(
       if (urlResult.doc.target.length === 0) {
         return new CaInvalid("Target is empty", urlResult);
       }
-      const integrityResults = await Promise.all(
+      const integrityResults: IntegrityResult[] = await Promise.all(
         urlResult.doc.target.map(async (t, index) => ({
           index,
-          isValid: await verifyIntegrity(t),
+          verifyResult: await verifyIntegrity(t),
+          expectedIntegrity: t.integrity,
         })),
       );
 
       const failedIndices = integrityResults
-        .filter((result) => !result.isValid)
+        .filter((result) => !result.verifyResult.valid)
         .map((result) => result.index);
 
       if (failedIndices.length > 0) {
+        const failedIntegritiesMessage = failedIndices
+          .map((integrityResultIndex) => {
+            const integrityResult = integrityResults[integrityResultIndex];
+            if (integrityResult) {
+              const calculatedIntegrities =
+                integrityResult.verifyResult.failedIntegrities.join();
+              return `target[${integrityResultIndex}] Expected: ${integrityResult.expectedIntegrity}, Calculated: ${calculatedIntegrities}`;
+            }
+            return undefined;
+          })
+          .join(", ");
+
         return new CaVerifyFailed(
-          `Content Attestation Target integrity verification failed for element(s): ${failedIndices.map((i) => `target[${i}]`).join(", ")}`,
+          `Content Attestation Target integrity verification failed for element(s): ${failedIntegritiesMessage}`,
           urlResult,
         );
       }

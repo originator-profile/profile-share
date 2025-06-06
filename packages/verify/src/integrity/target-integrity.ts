@@ -11,6 +11,11 @@ import {
 } from "@originator-profile/sign";
 import { createIntegrityMetadata, IntegrityMetadata } from "websri";
 
+export type IntegrityVerifyResult = {
+  valid: boolean;
+  failedIntegrities: ReadonlyArray<string>;
+};
+
 class IntegrityVerifier {
   constructor(
     private contentFetcher: ContentFetcher,
@@ -20,15 +25,15 @@ class IntegrityVerifier {
   async verify(
     content: { cssSelector?: string; integrity: string },
     document: Document,
-  ): Promise<boolean> {
+  ): Promise<IntegrityVerifyResult> {
     const integrity = new IntegrityMetadata(content.integrity);
     const alg = integrity.alg;
 
-    if (!alg) return false;
+    if (!alg) return { valid: false, failedIntegrities: [] };
 
     const elements = this.elementSelector({ ...content, document });
 
-    if (elements.length === 0) return false;
+    if (elements.length === 0) return { valid: false, failedIntegrities: [] };
 
     const responses = await this.contentFetcher(elements);
 
@@ -40,7 +45,10 @@ class IntegrityVerifier {
       }),
     );
 
-    return meta.every((m) => m.match(integrity));
+    const integrities = meta
+      .filter((m) => !m.match(integrity))
+      .map((m) => m.toString());
+    return { valid: integrities.length === 0, failedIntegrities: integrities };
   }
 }
 
@@ -81,7 +89,7 @@ export const TargetIntegrityAlgorithm = {
 export async function verifyIntegrity(
   content: Target,
   doc = document,
-): Promise<boolean> {
+): Promise<IntegrityVerifyResult> {
   const { contentFetcher, elementSelector } =
     TargetIntegrityAlgorithm[content.type];
 

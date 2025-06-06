@@ -15,7 +15,8 @@ describe("verifyIntegrity()", () => {
       cssSelector: "body",
     });
 
-    expect(await verifyIntegrity(content as Target)).toBe(true);
+    const result = await verifyIntegrity(content as Target);
+    expect(result.valid).toBe(true);
   });
 
   it("should return false if integrity algorithm is unsupported", async () => {
@@ -25,7 +26,8 @@ describe("verifyIntegrity()", () => {
       integrity: "md5-REvLOj/Pg4kpbElGfyfh1g==",
     };
 
-    expect(await verifyIntegrity(content)).toBe(false);
+    const result = await verifyIntegrity(content);
+    expect(result.valid).toBe(false);
   });
 
   it("should return false if no elements are selected", async () => {
@@ -40,6 +42,7 @@ describe("verifyIntegrity()", () => {
       integrity: integrityMetadata.toString(),
     };
 
-    expect(await verifyIntegrity(content)).toBe(false);
+    const result = await verifyIntegrity(content);
+    expect(result.valid).toBe(false);
   });
 });

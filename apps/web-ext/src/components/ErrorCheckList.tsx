@@ -1,6 +1,10 @@
 import { _ } from "@originator-profile/ui";
 import JsonView from "@uiw/react-json-view";
 import {
+  CaInvalid,
+  CasVerificationFailure,
+  CasVerifyFailed,
+  CaVerifyFailed,
   CoreProfileNotFound,
   OpsDecodingFailure,
   OpsInvalid,
@@ -109,6 +113,43 @@ function OriginatorsCheckList({
   );
 }
 
+function ContentAttestationCheckList({
+  errors,
+}: {
+  errors: CasVerificationFailure;
+}) {
+  return (
+    <>
+      {errors
+        .map((error, index) => {
+          return {
+            ...error,
+            index,
+          };
+        })
+        .filter((error) => {
+          const attestation = error.attestation;
+          return (
+            attestation instanceof CaInvalid ||
+            attestation instanceof CaVerifyFailed
+          );
+        })
+        .map((error) => {
+          const attestation = error.attestation as CaInvalid | CaVerifyFailed;
+          return (
+            <>
+              <details key={error.index} className="text-gray-700 mb-5">
+                <summary>Error at element(s): {error.index}</summary>
+                <p className="relative my-4">{`Code : ${attestation.code}`}</p>
+                <p className="relative my-4">{`Message : ${attestation.message}`}</p>
+              </details>
+            </>
+          );
+        })}
+    </>
+  );
+}
+
 function ErrorDetailCheck({ error }: { error: CodedError }) {
   return (
     <ul className="ml-7">
@@ -137,6 +178,9 @@ function ErrorDetailCheck({ error }: { error: CodedError }) {
       )}
       {error instanceof OpsVerifyFailed && (
         <OriginatorsCheckList error={error.result} />
+      )}
+      {error instanceof CasVerifyFailed && (
+        <ContentAttestationCheckList errors={error.result} />
       )}
       <details className="text-gray-700 mb-5">
         <summary>{_("ErrorCheckList_ErrorDetails")}</summary>

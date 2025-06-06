@@ -1,9 +1,12 @@
 import { Target } from "@originator-profile/model";
 import { expect, test } from "@playwright/test";
 import { createIntegrityMetadata } from "websri";
+import { IntegrityVerifyResult } from "../src";
 
 // see playwright/index.ts
-declare const verifyIntegrity: (content: Target) => Promise<boolean>;
+declare const verifyIntegrity: (
+  content: Target,
+) => Promise<IntegrityVerifyResult>;
 
 test("verifyIntegrity() should verify HtmlTargetIntegrity", async function ({
   page,
@@ -28,7 +31,7 @@ test("verifyIntegrity() should verify HtmlTargetIntegrity", async function ({
     content,
   );
 
-  expect(await handle.jsonValue()).toBe(true);
+  expect((await handle.jsonValue()).valid).toBe(true);
 });
 
 test("verifyIntegrity() should verify TextTargetIntegrity", async function ({
@@ -52,7 +55,7 @@ test("verifyIntegrity() should verify TextTargetIntegrity", async function ({
     content,
   );
 
-  expect(await handle.jsonValue()).toBe(true);
+  expect((await handle.jsonValue()).valid).toBe(true);
 });
 
 test("verifyIntegrity() should verify VisibleTextTargetIntegrity", async function ({
@@ -80,7 +83,7 @@ test("verifyIntegrity() should verify VisibleTextTargetIntegrity", async functio
     content,
   );
 
-  expect(await handle.jsonValue()).toBe(true);
+  expect((await handle.jsonValue()).valid).toBe(true);
 });
 
 test("verifyIntegrity() should verify ExternalResourceTargetIntegrity", async function ({
@@ -98,5 +101,5 @@ test("verifyIntegrity() should verify ExternalResourceTargetIntegrity", async fu
     content,
   );
 
-  expect(await handle.jsonValue()).toBe(true);
+  expect((await handle.jsonValue()).valid).toBe(true);
 });
