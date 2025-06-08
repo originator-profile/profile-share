@@ -3,7 +3,10 @@ import {
   ContentAttestation,
   ContentAttestationSet,
 } from "@originator-profile/model";
-import { JwtVcDecoder } from "@originator-profile/securing-mechanism";
+import {
+  JwtVcDecoder,
+  VcValidator,
+} from "@originator-profile/securing-mechanism";
 import {
   CaInvalid,
   CaVerifier,
@@ -22,6 +25,7 @@ import { CasVerificationResult, VerifiedCas } from "./types";
  * @param verifiedOps 検証済み Originator Profile Set
  * @param url 検証対象のURL
  * @param verifyIntegrity Target Integrity の検証器
+ * @param validator バリデーター
  * @returns CAS 検証結果
  *
  * @example
@@ -46,6 +50,7 @@ export async function verifyCas<
   verifiedOps: VerifiedOps,
   url: string,
   verifyIntegrity: VerifyIntegrity,
+  validator?: typeof VcValidator,
 ): Promise<CasVerificationResult<T>> {
   const decodeCa = JwtVcDecoder<ContentAttestation>();
   const resultCas = await Promise.all(
@@ -73,6 +78,7 @@ export async function verifyCas<
         decodedCa.doc.issuer,
         new URL(url),
         verifyIntegrity,
+        validator?.(ContentAttestation),
       );
       return { main, attestation: await verify() };
     }),
