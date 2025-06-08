@@ -1,59 +1,20 @@
 import { generateKey, LocalKeys } from "@originator-profile/cryptography";
-import { VcValidator, signJwtVc } from "@originator-profile/securing-mechanism";
+import { ArticleCA } from "@originator-profile/model";
+import { signJwtVc, VcValidator } from "@originator-profile/securing-mechanism";
 import { createIntegrity } from "@originator-profile/sign";
-import { ArticleCA, Jwk } from "@originator-profile/model";
 import { addYears, fromUnixTime, getUnixTime } from "date-fns";
 import { beforeEach, describe, expect, test } from "vitest";
+import { article, caUrl, opId, patch, VerifyResultFactory } from "../helper";
+import { verifyIntegrity } from "../integrity";
 import { CaInvalid, CaVerifyFailed } from "./errors";
 import { VerifiedCa } from "./types";
 import { CaVerifier } from "./verify-content-attestation";
-import { diffApply } from "just-diff-apply";
-import { verifyIntegrity } from "../integrity";
 
 const issuedAt = fromUnixTime(getUnixTime(new Date()));
 const expiredAt = addYears(issuedAt, 10);
 const signOptions = { issuedAt, expiredAt };
-const toVerifyResult = (
-  article: ArticleCA,
-  jwt: string,
-  verificationKey: Jwk,
-): VerifiedCa<ArticleCA> => ({
-  doc: article,
-  issuedAt,
-  expiredAt,
-  algorithm: "ES256",
-  mediaType: "application/vc+jwt",
-  source: jwt,
-  verificationKey,
-  validated: true,
-});
-const patch = <T extends object>(...args: Parameters<typeof diffApply<T>>) => {
-  const [source, diff] = args;
-  const patched = structuredClone(source);
-  diffApply(patched, diff);
-  return patched;
-};
-const caIssuer = "dns:ca-issuer.example.org";
-const caId = "urn:uuid:78550fa7-f846-4e0f-ad5c-8d34461cb95b";
-const caUrl = new URL("https://www.example.org/articles/example");
-const article: ArticleCA = {
-  "@context": [
-    "https://www.w3.org/ns/credentials/v2",
-    "https://originator-profile.org/ns/credentials/v1",
-    "https://originator-profile.org/ns/cip/v1",
-    { "@language": "ja" },
-  ],
-  type: ["VerifiableCredential", "ContentAttestation"],
-  issuer: caIssuer,
-  target: [],
-  allowedUrl: ["https://www.example.org/articles*"],
-  credentialSubject: {
-    id: caId,
-    type: "Article",
-    headline: "テスト記事",
-    description: "記事の説明",
-  },
-};
+const verifyResult = VerifyResultFactory(issuedAt, expiredAt);
+const caIssuer = opId.originator;
 
 describe("ArticleCAの検証", async () => {
   beforeEach(() => {
@@ -93,7 +54,12 @@ describe("ArticleCAの検証", async () => {
     expect(result).not.instanceOf(CaInvalid);
     expect(result).not.instanceOf(CaVerifyFailed);
     expect(result).toStrictEqual(
-      toVerifyResult(articleWithTarget, signedArticle, issuer.publicKey),
+      verifyResult.create(
+        articleWithTarget,
+        signedArticle,
+        issuer.publicKey,
+        true,
+      ),
     );
   });
 

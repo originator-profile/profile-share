@@ -1,28 +1,40 @@
+import { Keys, LocalKeys } from "@originator-profile/cryptography";
 import { SiteProfile, WebsiteProfile } from "@originator-profile/model";
 import {
   JwtVcDecoder,
   JwtVcVerifier,
+  VcValidator,
 } from "@originator-profile/securing-mechanism";
-import { Keys, LocalKeys } from "@originator-profile/cryptography";
-import { OpsVerifier } from "../originator-profile-set/verify-ops";
 import {
   CoreProfileNotFound,
   OpsInvalid,
   OpsVerifyFailed,
 } from "../originator-profile-set/errors";
+import { OpsVerifier } from "../originator-profile-set/verify-ops";
+import { verifyAllowedOrigin } from "../verify-allowed-origin";
 import { SpVerificationResult } from "./types";
 import { SiteProfileInvalid, SiteProfileVerifyFailed } from "./verify-errors";
-import { verifyAllowedOrigin } from "../verify-allowed-origin";
 
+/**
+ * Site Profile の検証者の作成
+ * @param sp Site Profile
+ * @param keys Core Profile の発行者の検証鍵
+ * @param issuer Core Profile の発行者
+ * @param origin 提示するWebサイトを識別するための RFC 6454 オリジン
+ * @param verifyOrigin WSPが提示されたWebサイトのorigin引数との一致性検証の可否 (デフォルト: 有効)
+ * @param validator バリデーター
+ * @returns 検証者
+ */
 export function SpVerifier(
   sp: SiteProfile,
   keys: Keys,
   issuer: string,
   origin: URL["origin"],
   verifyOrigin = true,
+  validator?: typeof VcValidator,
 ) {
   async function verify(): Promise<SpVerificationResult> {
-    const verifyOps = OpsVerifier(sp.originators, keys, issuer);
+    const verifyOps = OpsVerifier(sp.originators, keys, issuer, validator);
     const opsVerified = await verifyOps();
     if (opsVerified instanceof OpsInvalid) {
       return new SiteProfileInvalid("Originator Profile Set invalid", {
@@ -59,6 +71,7 @@ export function SpVerifier(
     const verifyWsp = JwtVcVerifier<WebsiteProfile>(
       LocalKeys(cp.core.doc.credentialSubject.jwks),
       cp.core.doc.credentialSubject.id,
+      validator?.(WebsiteProfile),
     );
 
     const credential = await verifyWsp(sp.credential);
