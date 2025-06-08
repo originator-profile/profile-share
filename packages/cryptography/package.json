@@ -21,10 +21,10 @@
     "dist"
   ],
   "scripts": {
+    "build": "pkgroll --clean-dist --target=node20",
     "test": "vitest run",
     "lint": "eslint --fix .",
-    "type-check": "tsc --noEmit",
-    "prepublishOnly": "pkgroll --clean-dist"
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@originator-profile/model": "workspace:*",
