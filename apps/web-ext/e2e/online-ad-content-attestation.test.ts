@@ -47,8 +47,12 @@ test("OnlineAd Content Attestation の表示が正しく行われていること
 
   // 拡張機能の表示が正しいことを確認
   await expect(ext.getByTestId("cas")).toBeVisible();
-  await expect(ext.getByText("テスト広告タイトル")).toBeVisible();
-  await expect(ext.getByText("テスト広告の説明文")).toBeVisible();
+  await expect(
+    ext.getByRole("paragraph").getByText("テスト広告タイトル"),
+  ).toBeVisible();
+  await expect(
+    ext.getByText("テスト広告の説明文").filter({ visible: true }),
+  ).toBeVisible();
 
   // オーバーレイ表示の確認
   const highlightFrame = page.frameLocator("iframe");

@@ -8,13 +8,18 @@ import { _ } from "../utils/get-message";
 import Image from "./Image";
 import Table from "./Table";
 import TableRow from "./TableRow";
+import Spinner from "./Spinner";
 
 type Props = {
   className?: string;
-  certificate: VerifiedVc<Certificate>;
+  certificate?: VerifiedVc<Certificate>;
 };
 
-function CertificateTable({ certificate }: Omit<Props, "className">) {
+function CertificateTable({
+  certificate,
+}: {
+  certificate: VerifiedVc<Certificate>;
+}) {
   return (
     <Table>
       <TableRow
@@ -53,9 +58,16 @@ function CertificateTable({ certificate }: Omit<Props, "className">) {
   );
 }
 
-function CertificateDetail({ className, certificate }: Props) {
+function CertificateDetailContent({ certificate }: Props) {
+  if (!certificate)
+    return (
+      <div className="flex flex-col justify-center items-center gap-4 pt-6 pb-4">
+        <Spinner />
+        <p>{_("CertificateDetail_Loading")}</p>
+      </div>
+    );
   return (
-    <div className={twMerge("jumpu-card p-5 rounded-2xl space-y-2", className)}>
+    <>
       <header className="flex items-center gap-4 mb-4">
         <Image
           src={
@@ -107,6 +119,14 @@ function CertificateDetail({ className, certificate }: Props) {
           />
         </a>
       )}
+    </>
+  );
+}
+
+function CertificateDetail({ className, certificate }: Props) {
+  return (
+    <div className={twMerge("jumpu-card p-5 rounded-2xl space-y-2", className)}>
+      <CertificateDetailContent certificate={certificate} />
     </div>
   );
 }

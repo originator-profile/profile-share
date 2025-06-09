@@ -9,10 +9,10 @@ import {
   CertificateDetail,
   CertificateSummary,
   Description,
-  Modal,
+  ModalDialog,
   WebMediaProfileTable,
   _,
-  useModal,
+  useModalDialog,
 } from "@originator-profile/ui";
 import { Certificate } from "@originator-profile/verify";
 import clsx from "clsx";
@@ -45,7 +45,9 @@ function ReliabilityInfo(props: {
   wmp: WebMediaProfile;
   certificates: VerifiedVc<Certificate>[];
 }) {
-  const certificateModal = useModal<VerifiedVc<Certificate>>();
+  const dialog = useModalDialog();
+  const [certificate, setCertificate] =
+    useState<VerifiedVc<Certificate> | null>(props.certificates[0] ?? null);
   return (
     <div className="space-y-4">
       {props.wmp.credentialSubject.informationTransmissionPolicy && (
@@ -80,20 +82,28 @@ function ReliabilityInfo(props: {
               <CertificateSummary
                 className="w-full"
                 certificate={certificate}
-                onClick={certificateModal.onOpen}
+                onClick={() => {
+                  setCertificate(certificate);
+                  dialog.open();
+                }}
               />
             </li>
           ))}
         </ul>
       </section>
-      <Modal open={certificateModal.open} onClose={certificateModal.onClose}>
-        {certificateModal.value && (
-          <CertificateDetail
-            className="rounded-b-none"
-            certificate={certificateModal.value}
-          />
-        )}
-      </Modal>
+      <ModalDialog
+        dialogRef={dialog.ref}
+        onClose={async () => {
+          await dialog.close();
+          setCertificate(null);
+        }}
+        className="group-aria-hidden:translate-y-full translate-y-0 bottom-0 w-full"
+      >
+        <CertificateDetail
+          className="rounded-b-none"
+          certificate={certificate ?? undefined}
+        />
+      </ModalDialog>
     </div>
   );
 }

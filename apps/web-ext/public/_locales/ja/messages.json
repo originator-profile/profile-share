@@ -212,6 +212,9 @@
   "Prohibition_StatementDetail": {
     "message": "このメッセージが表示される理由についてもっと詳しく..."
   },
+  "CertificateDetail_Loading": {
+    "message": "証明書を読み込み中です..."
+  },
   "CertificateDetail_CredentialName": {
     "message": "証明書名"
   },

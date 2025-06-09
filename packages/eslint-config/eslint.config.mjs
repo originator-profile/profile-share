@@ -55,7 +55,7 @@ export default tseslint.config(
       ...vitest.configs.recommended.rules,
       "canonical/filename-match-exported": ["error", { transforms: "kebab" }],
       "react/react-in-jsx-scope": "off",
-
+      "jsx-a11y/no-noninteractive-tabindex": ["error", { roles: ["dialog"] }],
       // Possible Problems
       "@typescript-eslint/no-non-null-assertion": "error",
       "@typescript-eslint/no-unused-vars": [

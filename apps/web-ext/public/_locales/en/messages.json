@@ -212,6 +212,9 @@
   "Prohibition_StatementDetail": {
     "message": "Learn more about why this message is displayed..."
   },
+  "CertificateDetail_Loading": {
+    "message": "Loading Certificate..."
+  },
   "CertificateDetail_CredentialName": {
     "message": "Certificate Name"
   },
