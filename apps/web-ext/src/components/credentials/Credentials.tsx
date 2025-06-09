@@ -4,13 +4,12 @@ import {
   ArticleTable,
   Description,
   Image,
-  Modal,
+  ModalDialog,
   TechInfo,
   _,
-  useModal,
+  useModalDialog,
 } from "@originator-profile/ui";
 import placeholderLogoMainUrl from "@originator-profile/ui/src/assets/placeholder-logo-main.png";
-import { VerifiedCas, VerifiedOps } from "@originator-profile/verify";
 import flush from "just-flush";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
@@ -30,12 +29,7 @@ export function Credentials(props: CredentialsProps) {
     useState<Parameters<typeof listCas>[1]>("Article");
   const { tabId } = useParams<{ tabId: string }>();
 
-  const techInfoModal = useModal<{
-    ops: VerifiedOps;
-    cas: VerifiedCas;
-  }>();
-  const handleClickTechInfo = () =>
-    techInfoModal.onOpen({ ops: props.ops, cas: props.cas });
+  const dialog = useModalDialog();
   const navigate = useNavigate();
 
   const filteredCas = listCas(props.cas, caListType);
@@ -75,17 +69,19 @@ export function Credentials(props: CredentialsProps) {
       <main className="flex-1">
         <div className="bg-gray-100 min-h-screen p-4">
           <div>
-            <Modal open={techInfoModal.open} onClose={techInfoModal.onClose}>
-              {techInfoModal.value && (
-                <TechInfo
-                  className="rounded-b-none max-h-[80svh] overflow-auto"
-                  value={{
-                    ops: techInfoModal.value.ops,
-                    cas: techInfoModal.value.cas,
-                  }}
-                />
-              )}
-            </Modal>
+            <ModalDialog
+              dialogRef={dialog.ref}
+              className="group-aria-hidden:translate-y-full translate-y-0 bottom-0 w-full"
+              onClose={dialog.close}
+            >
+              <TechInfo
+                className="rounded-b-none max-h-[80svh] overflow-auto"
+                value={{
+                  ops: props.ops,
+                  cas: props.cas,
+                }}
+              />
+            </ModalDialog>
             <div className="flex items-center justify-center gap-1 mb-3">
               <p className="whitespace-pre-line jumpu-badge inline-flex items-center gap-1 bg-gray-600 text-xs text-white font-normal border border-gray-300">
                 {contentType === "ContentType_Main" && (
@@ -99,7 +95,7 @@ export function Credentials(props: CredentialsProps) {
               <button
                 className="jumpu-icon-button text-xs rounded-full bg-gray-100 border-gray-200 w-6 h-6 ml-1 group"
                 aria-describedby="tooltip-2"
-                onClick={handleClickTechInfo}
+                onClick={dialog.open}
               >
                 <Icon className="inline" icon={"fa6-solid:wrench"} />
                 <span

@@ -17,7 +17,6 @@
     "type-check": "tsc --noEmit"
   },
   "devDependencies": {
-    "@headlessui/react": "2.2.2",
     "@iconify/react": "^6.0.0",
     "@originator-profile/core": "workspace:*",
     "@originator-profile/model": "workspace:*",

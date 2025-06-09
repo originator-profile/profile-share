@@ -49,9 +49,14 @@
   }
 }
 
-/* Dialog element base styles */
 @layer base {
+  /* Dialog element base styles */
   dialog {
     margin: auto;
+  }
+
+  /* Modal element base styles */
+  html:has([aria-modal][aria-hidden="false"]) {
+    overflow: hidden;
   }
 }

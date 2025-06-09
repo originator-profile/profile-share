@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { Modal, _, useModal } from "@originator-profile/ui";
+import { ModalDialog, _, useModalDialog } from "@originator-profile/ui";
 import clsx from "clsx";
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default function ReliabilityGuide(props: Props) {
-  const reliabilityModal = useModal();
+  const dialog = useModalDialog();
   return (
     <div className={clsx("text-center space-y-1", props.className)}>
       <p className="whitespace-pre-line text-base font-bold text-primary-800">
@@ -21,21 +21,33 @@ export default function ReliabilityGuide(props: Props) {
       </p>
       <button
         className="text-xs text-primary-700 px-3 py-2 inline-flex items-center gap-1 hover:bg-primary-100 rounded-full"
-        onClick={reliabilityModal.onOpen}
+        onClick={dialog.open}
       >
         <Icon className="inline w-3 h-3 mr-1" icon="material-symbols:help" />
         {_("ReliabilityGuide_AboutReliabilityInformation")}
       </button>
-      <Modal open={reliabilityModal.open} onClose={reliabilityModal.onClose}>
-        <section className="jumpu-card p-5 rounded-2xl rounded-b-none space-y-3">
-          <h2 className="whitespace-pre-line text-base font-bold mb-1.5">
-            {_("ReliabilityGuide_AboutReliabilityInformation")}
-          </h2>
-          <p className="whitespace-pre-line text-sm text-gray-600">
-            {_("ReliabilityGuide_VerifiedOrganizationStatement")}
-          </p>
-        </section>
-      </Modal>
+      <ModalDialog
+        dialogRef={dialog.ref}
+        className="group-aria-hidden:translate-y-full translate-y-0 bottom-0 w-full"
+        onClose={dialog.close}
+      >
+        {({ titleId, descriptionId }) => (
+          <section className="jumpu-card p-5 rounded-2xl rounded-b-none space-y-3">
+            <h2
+              id={titleId}
+              className="whitespace-pre-line text-base font-bold mb-1.5"
+            >
+              {_("ReliabilityGuide_AboutReliabilityInformation")}
+            </h2>
+            <p
+              id={descriptionId}
+              className="whitespace-pre-line text-sm text-gray-600"
+            >
+              {_("ReliabilityGuide_VerifiedOrganizationStatement")}
+            </p>
+          </section>
+        )}
+      </ModalDialog>
     </div>
   );
 }
