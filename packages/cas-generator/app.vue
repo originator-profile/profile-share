@@ -2,13 +2,13 @@
   <div class="container h-dvh flex flex-col py-4 gap-y-4">
     <div class="jumpu-card p-4 shrink-0">
       <h2 class="font-bold text-2xl mb-2">Generate Content Attestation Set</h2>
-      <div class="flex itmes-center gap-x-4">
+      <div class="flex items-center gap-x-4">
         <div class="grow">
           <div class="text-sm flex gap-x-4">
             <div class="jumpu-card p-4">
               <div class="text-sm">CAS 生成済み</div>
               <span class="text-2xl font-semibold"> {{ body.length }}</span> /
-              {{ htmlfiles.length }}
+              {{ selectedFiles.length }}
             </div>
             <div class="jumpu-card p-4 text-green-700">
               <div class="text-sm flex items-center gap-x-1">
@@ -19,7 +19,7 @@
                 {{ successed.length }}</span
               >
               /
-              {{ htmlfiles.length }}
+              {{ selectedFiles.length }}
             </div>
             <div class="jumpu-card p-4 text-amber-600">
               <div class="text-sm flex items-center gap-x-1">
@@ -30,7 +30,7 @@
               </div>
               <span class="text-2xl font-semibold"> {{ failed.length }}</span>
               /
-              {{ htmlfiles.length }}
+              {{ selectedFiles.length }}
             </div>
             <div class="self-end">
               <button
@@ -45,19 +45,25 @@
           <progress
             class="w-full h-2"
             max="100"
-            :value="(body.length / htmlfiles.length) * 100"
+            :value="
+              selectedFiles.length > 0
+                ? (body.length / selectedFiles.length) * 100
+                : 0
+            "
           ></progress>
         </div>
         <div class="shrink-0">
           <p>
             <button
               class="jumpu-button inline-flex items-center gap-x-2"
-              @click="fetchChatStream(htmlfiles)"
-              :disabled="generating"
+              @click="fetchChatStream(selectedFiles)"
+              :disabled="generating || selectedFiles.length === 0"
             >
-              <span v-if="!generating">生成を始める</span>
+              <span v-if="!generating"
+                >生成を始める ({{ selectedFiles.length }}件)</span
+              >
               <div class="flex items-center gap-x-2" v-else>
-                <div class="spinner w-4 h-4">
+                <div class="jumpu-spinner w-4 h-4">
                   <svg viewBox="25 25 50 50">
                     <circle cx="50" cy="50" r="20"></circle>
                   </svg>
@@ -73,7 +79,15 @@
       <table class="w-full relative">
         <thead class="sticky top-0 bg-white shadow-xs z-10">
           <tr class="table-row">
-            <th class="w-12">#</th>
+            <th class="w-10">
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  :checked="isAllSelected"
+                  @change="toggleAllSelection"
+                  class="checkbox"
+              /></label>
+            </th>
             <th>File name</th>
             <th>status</th>
             <th>title</th>
@@ -81,21 +95,41 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="table-row" v-for="(file, index) in body" :key="file.cas">
-            <td class="text-right">{{ index }}</td>
+          <tr
+            class="table-row"
+            v-for="(file, index) in htmlfiles"
+            :key="file.cas || index"
+          >
+            <td class="text-center">
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  :checked="selectedFileIds.has(file.cas)"
+                  @change="toggleFileSelection(file.cas)"
+                  class="checkbox"
+                />
+              </label>
+            </td>
             <td class="">
               <div class="line-clamp-2" :title="file.cas">{{ file.cas }}</div>
             </td>
             <td>
               <div class="w-16 text-xl text-center">
-                <span v-if="!file.error" class="text-green-700"
-                  ><Icon
+                <span v-if="!getBodyItemByFile(file)" class="text-gray-400"
+                  >-</span
+                >
+                <span
+                  v-else-if="!getBodyItemByFile(file).error"
+                  class="text-green-700"
+                >
+                  <Icon
                     name="material-symbols:check-rounded"
                     class="text-success"
-                /></span>
-                <span v-else class="text-amber-600"
-                  ><Icon name="mage:exclamation-triangle-fill"
-                /></span>
+                  />
+                </span>
+                <span v-else class="text-amber-600">
+                  <Icon name="mage:exclamation-triangle-fill" />
+                </span>
               </div>
             </td>
             <td>
@@ -144,7 +178,46 @@ const scrollSection = ref(null);
 const body = ref([]);
 const generating = ref(false);
 const setting = ref(false);
+const selectedFileIds = ref(new Set());
+
 const { data: settingItems } = useFetch("/api/settings");
+
+// 選択されたファイルを取得するcomputed
+const selectedFiles = computed(() => {
+  if (!htmlfiles.value) return [];
+  return htmlfiles.value.filter((file) => selectedFileIds.value.has(file.cas));
+});
+
+// 全選択状態をチェックするcomputed
+const isAllSelected = computed(() => {
+  if (!htmlfiles.value || htmlfiles.value.length === 0) return false;
+  return htmlfiles.value.every((file) => selectedFileIds.value.has(file.cas));
+});
+
+// ファイル選択状態をトグルする関数
+function toggleFileSelection(fileId) {
+  if (selectedFileIds.value.has(fileId)) {
+    selectedFileIds.value.delete(fileId);
+  } else {
+    selectedFileIds.value.add(fileId);
+  }
+}
+
+// 全選択/全解除をトグルする関数
+function toggleAllSelection() {
+  if (!htmlfiles.value) return;
+
+  if (isAllSelected.value) {
+    // 全解除
+    selectedFileIds.value.clear();
+  } else {
+    // 全選択
+    htmlfiles.value.forEach((file) => {
+      selectedFileIds.value.add(file.cas);
+    });
+  }
+}
+
 async function fetchChatStream(prompt, callback) {
   generating.value = true;
   const response = await fetch("http://localhost:4000/cas", {
@@ -173,19 +246,15 @@ async function fetchChatStream(prompt, callback) {
 const successed = computed(() => body.value.filter((item) => !item.error));
 const failed = computed(() => body.value.filter((item) => item.error));
 
-onUpdated(() => {
-  if (scrollSection.value) {
-    scrollSection.value.scrollTop = scrollSection.value.scrollHeight;
-  }
-  if (body.value.length === htmlfiles.length - 1) {
-    generating.value = false;
-  }
-});
+function getBodyItemByFile(file) {
+  return body.value.find((item) => item.cas === file.cas);
+}
 
-const { data: htmlfiles, status } = useFetch("/api/docs");
+const { data: htmlfiles, status } = useFetch("/api/htmlFiles/get");
 </script>
 
-<style scoped lang="scss">
+<style scoped>
+@reference "./assets/css/tailwind.css";
 .table-row {
   @apply text-xs font-mono border-b border-gray-100 py-2;
   td,
@@ -197,5 +266,8 @@ thead {
   th {
     @apply text-gray-600 font-normal text-left;
   }
+}
+.checkbox-label {
+  @apply p-2 flex justify-center aspect-square rounded hover:bg-gray-200;
 }
 </style>

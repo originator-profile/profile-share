@@ -1,9 +1,20 @@
 import { exec } from "child_process";
 import fs from "fs";
 import { createEventStream } from "h3";
+import postHTMLFiles from "../utils/postHTMLFiles";
+import {
+  origin,
+  arrowedURLOrigins,
+  opcipName,
+  ogpImageURL,
+} from "../constants";
+import { OpSiteInfo } from "../domain/originatorProfileSite";
 
-const casPath = process.env.CAS_OUTPUT_PATH;
-
+/**
+ * 指定したファイルに対して、profile-registry ca:sign を実行する
+ * @param path
+ * @returns Promise<string>
+ */
 const execute = (path: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     exec(
@@ -21,9 +32,30 @@ const execute = (path: string): Promise<string> => {
   });
 };
 
-const emptyDir = (casPath: string) => {
+/**
+ * 指定したファイルを削除する
+ * @param casPath
+ * @param htmlFiles
+ * @returns Promise<string>
+ */
+const deleteSpecificFiles = (
+  casPath: string,
+  htmlFiles: OpSiteInfo[],
+): Promise<string> => {
   return new Promise((resolve, reject) => {
-    exec(`rm -rf ${casPath}*`, { timeout: 10000 }, (err, stdout, stderr) => {
+    const filesToDelete = htmlFiles.map(
+      (item) => `${casPath}${item.cas}.cas.json`,
+    );
+    const deleteCommands = filesToDelete
+      .map((file) => `rm -f "${file}"`)
+      .join(" && ");
+
+    if (filesToDelete.length === 0) {
+      resolve("");
+      return;
+    }
+
+    exec(deleteCommands, { timeout: 10000 }, (err, stdout, stderr) => {
       if (err) {
         reject(err);
       }
@@ -33,22 +65,39 @@ const emptyDir = (casPath: string) => {
 };
 
 export default defineEventHandler(async (event) => {
-  const htmlFiles = await readBody(event);
-  const eventStream = createEventStream(event);
-  if (!casPath) {
+  const config = useRuntimeConfig(event);
+  const WEBROOT_PATH = config.WEBROOT_PATH;
+  const VC_OUTPUT_PATH = config.VC_OUTPUT_PATH;
+  const CAS_OUTPUT_PATH = config.CAS_OUTPUT_PATH;
+  if (!WEBROOT_PATH || !VC_OUTPUT_PATH || !CAS_OUTPUT_PATH) {
     throw createError({
       statusCode: 500,
-      message: "CAS_OUTPUT_PATHが設定されていません",
+      message: "必要な環境変数が設定されていません",
     });
   }
+
+  const htmlFiles = await readBody(event);
+  const eventStream = createEventStream(event);
+  const vcSourcesPath = VC_OUTPUT_PATH;
+  const casPath = CAS_OUTPUT_PATH;
+
   // see https://nitro.build/guide/websocket#server-sent-events-sse
-  // ファイル生成場所内を空っぽにする
-  await emptyDir(casPath);
+  await deleteSpecificFiles(casPath, htmlFiles);
+
+  await postHTMLFiles({
+    htmlFiles,
+    docsPath: WEBROOT_PATH,
+    origin: origin,
+    vcSourcesPath: vcSourcesPath,
+    arrowedURLOrigins: arrowedURLOrigins,
+    opcipName: opcipName,
+    ogpImageURL: ogpImageURL,
+  });
 
   (async () => {
     for (let i = 0; i < htmlFiles.length; i++) {
       const item = htmlFiles[i];
-      console.log(item.vc_path);
+      console.log("vc_path", item.vc_path);
 
       try {
         const stdout = await execute(item.vc_path);
