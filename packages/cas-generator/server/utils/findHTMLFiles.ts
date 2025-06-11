@@ -15,9 +15,11 @@ import { TargetIntegrity } from "../domain/contentAttestation";
 export default async function findHtmlFiles({
   docsPath,
   origin,
+  vcSourcesPath,
 }: {
   docsPath: string;
   origin: string;
+  vcSourcesPath: string;
 }): Promise<OpSiteInfo[]> {
   const list = await fastGlob(["**/*.html"], { cwd: docsPath });
   const results = [];
@@ -35,6 +37,7 @@ export default async function findHtmlFiles({
       filepath: localFullPath,
       docsPath,
       origin,
+      vcSourcesPath,
     });
     if (!metaData) {
       console.log(`${localFullPath}はメタデータが取得できませんでした`);
@@ -50,11 +53,13 @@ async function extractInfoFromHtml({
   filepath,
   docsPath,
   origin,
+  vcSourcesPath,
 }: {
   filepath: string;
   docsPath: string;
   origin: string;
-}): Promise<Omit<OpSiteInfo, "cas" | "path"> | null> {
+  vcSourcesPath: string;
+}): Promise<OpSiteInfo | null> {
   try {
     const htmlContent = fs.readFileSync(filepath, "utf8");
     const { window } = new JSDOM(htmlContent);
@@ -106,6 +111,11 @@ async function extractInfoFromHtml({
       console.log(`${filepath}は画像ハッシュが取得できませんでした`);
       return null;
     }
+    const cas = filepath
+      .replace("index.html", "")
+      .replace(docsPath, "")
+      .replace(/\//g, ".")
+      .replace(/\.$/, "");
 
     return {
       title,
@@ -115,8 +125,9 @@ async function extractInfoFromHtml({
       lang,
       primaryTarget,
       imageHashes,
-      // ここでは空文字を設定, 後でコントローラーで設定する
-      vc_path: "",
+      cas,
+      path: filepath,
+      vc_path: `${vcSourcesPath}${cas}.cas.json`,
     };
   } catch (error) {
     console.error("エラーが発生しました:", error);
