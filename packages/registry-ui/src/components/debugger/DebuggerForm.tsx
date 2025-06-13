@@ -30,21 +30,16 @@ export function DebuggerForm(props: Props) {
     props.onOutput({ title: "Debug Values", type: "json", src: value });
     const trustedOps = await debugTrustedOps(
       value.trustedOps,
-      value.trustedOpId,
+      value.cpIssuerOpId,
     );
     if (!trustedOps.ok) return props.onOutput(trustedOps.output);
-    const { decodedTrustedOps, trustedKeys } = trustedOps.result;
+    const { decodedTrustedOps, verificationKeys } = trustedOps.result;
     props.onOutput({
       title: "Trusted OPS",
       type: "json",
       src: decodedTrustedOps,
     });
-    props.onOutput({
-      title: "Trusted Keys",
-      type: "json",
-      src: trustedKeys,
-    });
-    const keys = LocalKeys(trustedKeys);
+    const keys = LocalKeys(verificationKeys);
     const verifiedOps: VerifiedOps = [];
     if (value.verifySp === "on") {
       const sp = await debugSiteProfile(
@@ -52,7 +47,7 @@ export function DebuggerForm(props: Props) {
         value.spType,
         trustedOps.result.trustedOps,
         keys,
-        value.trustedOpId,
+        value.cpIssuerOpId,
         value.url,
       );
       if (!sp.ok) return props.onOutput(sp.output);
@@ -68,7 +63,7 @@ export function DebuggerForm(props: Props) {
         value.opsType,
         trustedOps.result.trustedOps,
         keys,
-        value.trustedOpId,
+        value.cpIssuerOpId,
       );
       if (!ops.ok) return props.onOutput(ops.output);
       props.onOutput({
@@ -202,11 +197,11 @@ export function DebuggerForm(props: Props) {
         errors={fields.url.errors}
       />
       <InputField
-        label="Trusted OP ID"
-        id={fields.trustedOpId.id}
-        name={fields.trustedOpId.name}
-        required={fields.trustedOpId.required}
-        defaultValue={fields.trustedOpId.initialValue}
+        label="CP Issuer's OP ID"
+        id={fields.cpIssuerOpId.id}
+        name={fields.cpIssuerOpId.name}
+        required={fields.cpIssuerOpId.required}
+        defaultValue={fields.cpIssuerOpId.initialValue}
       />
       <TextareaField
         label="Trusted OPS"

@@ -11,7 +11,7 @@ function loadInitialValues(): Values {
     return JSON.parse(window.atob(document.location.hash.slice(1)));
   } catch {
     return {
-      trustedOpId: `dns:${document.location.hostname}`,
+      cpIssuerOpId: `dns:${document.location.hostname}`,
       trustedOps: import.meta.env.VITE_REGISTRY_OPS,
       casType: "embedded",
       opsType: "embedded",

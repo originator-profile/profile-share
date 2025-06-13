@@ -13,7 +13,7 @@ export const schema = yup.object({
   opsType: yup.string<PresentationType>().default("embedded"),
   sp: yup.string(),
   spType: yup.string<PresentationType>().default("embedded"),
-  trustedOpId: yup.string().required(),
+  cpIssuerOpId: yup.string().required(),
   trustedOps: yup.string().required(),
   url: yup.string().required(),
   verifyCas: yup.string<"on">(),

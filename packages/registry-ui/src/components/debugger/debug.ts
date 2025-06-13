@@ -71,13 +71,13 @@ function fail(output: Output) {
 export async function debugTrustedOps(
   /** 信頼済み OPS (JSON 文字列) */
   input: string = "",
-  /** 信頼済み OP ID */
-  trustedOpId: string,
+  /** CP 発行者 OP ID */
+  cpIssuerOpId: string,
 ): Promise<
   DebugResult<{
     trustedOps: OriginatorProfileSet;
     decodedTrustedOps: DecodedOps;
-    trustedKeys: Jwks;
+    verificationKeys: Jwks;
   }>
 > {
   const trustedOps = await fetchPresentation<OriginatorProfileSet>(
@@ -97,12 +97,26 @@ export async function debugTrustedOps(
       type: "json",
       src: decodedTrustedOps,
     });
-  const trustedKeys = {
-    keys: decodedTrustedOps
-      .filter((op) => op.core.doc.credentialSubject.id === trustedOpId)
-      .flatMap((op) => op.core.doc.credentialSubject.jwks.keys),
+  const cpIssuerOps = decodedTrustedOps.filter(
+    (op) => op.core.doc.credentialSubject.id === cpIssuerOpId,
+  );
+  if (cpIssuerOps.length === 0)
+    return fail({
+      title: "CP Issuer's OP Not Found",
+      type: "json",
+      src: {
+        message: "No matching CP Issuer's OP from Trusted OPS",
+        cpIssuerOpId,
+        decodedTrustedOps,
+      },
+    });
+  const verificationKeys = {
+    keys: cpIssuerOps.flatMap((op) => op.core.doc.credentialSubject.jwks.keys),
   };
-  return { ok: true, result: { trustedOps, decodedTrustedOps, trustedKeys } };
+  return {
+    ok: true,
+    result: { trustedOps, decodedTrustedOps, verificationKeys },
+  };
 }
 
 /** Site Profile のデバッグ */
@@ -113,10 +127,10 @@ export async function debugSiteProfile(
   presentationType: PresentationType,
   /** 信頼済み OPS */
   trustedOps: OriginatorProfileSet,
-  /** 信頼済み検証鍵 */
-  trustedKeys: Keys,
-  /** 信頼済み OP ID */
-  trustedOpId: string,
+  /** 検証鍵 */
+  verificationKeys: Keys,
+  /** CP 発行者 OP ID */
+  cpIssuerOpId: string,
   /** URL */
   url: string,
 ): Promise<DebugResult<VerifiedSp>> {
@@ -128,8 +142,8 @@ export async function debugSiteProfile(
   const websiteOrigin = new URL(transformEndpoint(url)).origin;
   const spVerifier = SpVerifier(
     { ...sp, originators: [...trustedOps, ...sp.originators] },
-    trustedKeys,
-    trustedOpId,
+    verificationKeys,
+    cpIssuerOpId,
     websiteOrigin,
   );
   const verifiedSp = await spVerifier();
@@ -150,10 +164,10 @@ export async function debugOps(
   presentationType: PresentationType,
   /** 信頼済み OPS */
   trustedOps: OriginatorProfileSet,
-  /** 信頼済み検証鍵 */
-  trustedKeys: Keys,
-  /** 信頼済み OP ID */
-  trustedOpId: string,
+  /** 検証鍵 */
+  verificationKeys: Keys,
+  /** CP 発行者 OP ID */
+  cpIssuerOpId: string,
 ): Promise<DebugResult<VerifiedOps>> {
   const ops = await fetchPresentation<OriginatorProfileSet>(
     presentationType,
@@ -163,8 +177,8 @@ export async function debugOps(
     return fail({ title: "OPS Invalid", type: "json", src: ops });
   const opsVerifier = OpsVerifier(
     [...trustedOps, ...ops],
-    trustedKeys,
-    trustedOpId,
+    verificationKeys,
+    cpIssuerOpId,
   );
   const verifiedOps = await opsVerifier();
   if (verifiedOps instanceof Error)
