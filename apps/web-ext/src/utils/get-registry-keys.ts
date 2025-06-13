@@ -13,18 +13,25 @@ function getRegistryOps(): ReturnType<typeof decodeOps> {
 
 /**
  * OP レジストリの JWKS を取得する
- * @returns レジストリの JWKS
+ * @returns レジストリの Issuer, JWKS のタプル
  */
-export function getRegistryKeys(): Keys {
-  const registry = import.meta.env.PROFILE_ISSUER;
+export function getRegistryKeys(): [
+  issuer: string | string[] /* ← TODO */,
+  Keys,
+] {
   const registryOps = getRegistryOps();
   if (registryOps instanceof OpsInvalid) {
     throw registryOps;
   }
 
-  return LocalKeys(
-    registryOps.find(
-      (op) => op.core.doc.credentialSubject.id === `dns:${registry}`,
-    )?.core.doc.credentialSubject.jwks ?? { keys: [] },
-  );
+  // TODO: トラストアンカーとなる 各 CP issuers ごとでの JWKS の取得方法に変更し安全性を高めるべし
+  // https://github.com/originator-profile/profile/issues/2148
+  return [
+    registryOps.flatMap((op) => op.core.doc.issuer),
+    LocalKeys({
+      keys: registryOps.flatMap(
+        (op) => op.core.doc.credentialSubject.jwks.keys,
+      ),
+    }),
+  ];
 }

@@ -28,7 +28,7 @@ import { SiteProfileInvalid, SiteProfileVerifyFailed } from "./verify-errors";
 export function SpVerifier(
   sp: SiteProfile,
   keys: Keys,
-  issuer: string,
+  issuer: string | string[],
   origin: URL["origin"],
   verifyOrigin = true,
   validator?: typeof VcValidator,

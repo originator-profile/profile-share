@@ -1,15 +1,15 @@
-import { OpVc, Jwk } from "@originator-profile/model";
-import { jwtVerify, exportJWK } from "jose";
-import { JOSEError } from "jose/errors";
 import { Keys } from "@originator-profile/cryptography";
-import {
-  VerifiedJwtVc,
-  JwtVcVerificationResult,
-  JwtVcVerificationFailure,
-} from "./types";
-import { VcVerifyFailed, VcValidateFailed } from "../errors";
-import { toVerifiedJwtVc } from "./map-vc";
+import { Jwk, OpVc } from "@originator-profile/model";
+import { exportJWK, jwtVerify } from "jose";
+import { JOSEError } from "jose/errors";
+import { VcValidateFailed, VcVerifyFailed } from "../errors";
 import { VcValidator } from "../validate-vc";
+import { toVerifiedJwtVc } from "./map-vc";
+import {
+  JwtVcVerificationFailure,
+  JwtVcVerificationResult,
+  VerifiedJwtVc,
+} from "./types";
 
 /**
  * JWT VC の検証者の作成
@@ -20,7 +20,7 @@ import { VcValidator } from "../validate-vc";
  */
 export function JwtVcVerifier<T extends OpVc>(
   keys: Keys,
-  issuer: string,
+  issuer: string | string[],
   validator?: VcValidator<VerifiedJwtVc<T>>,
 ) {
   /**

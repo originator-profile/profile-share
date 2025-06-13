@@ -1,9 +1,9 @@
+import { deserializeIfError } from "@originator-profile/core";
 import { SpVerifier, VerifiedSp } from "@originator-profile/verify";
 import { useParams } from "react-router";
 import useSWRImmutable from "swr/immutable";
 import { getRegistryKeys } from "../../utils/get-registry-keys";
 import { siteProfileMessenger } from "./events";
-import { deserializeIfError } from "@originator-profile/core";
 
 const key = "site-profile";
 
@@ -26,7 +26,7 @@ async function fetchVerifiedSiteProfile([, tabId]: [
     throw parsed;
   }
 
-  const key = getRegistryKeys();
+  const [issuer, key] = getRegistryKeys();
 
   const verifySp = SpVerifier(
     {
@@ -37,7 +37,7 @@ async function fetchVerifiedSiteProfile([, tabId]: [
       ],
     },
     key,
-    `dns:${import.meta.env.PROFILE_ISSUER}`,
+    issuer,
     parsed.origin,
   );
 

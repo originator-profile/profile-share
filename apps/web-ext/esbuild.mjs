@@ -22,24 +22,6 @@ const options = /** @type {const} */ ({
       return `chromium|firefox-desktop|firefox-android (default: ${this.default})`;
     },
   },
-  issuer: {
-    type: "string",
-    short: "i",
-    default: process.env.PROFILE_ISSUER ?? "oprexpt.originator-profile.org",
-    toString() {
-      return `<issuer> (default: ${this.default})`;
-    },
-  },
-  ["registry-url"]: {
-    type: "string",
-    short: "r",
-    default:
-      process.env.PROFILE_REGISTRY_URL ??
-      "https://oprexpt.originator-profile.org/",
-    toString() {
-      return `<registry-url> (default: ${this.default})`;
-    },
-  },
   url: {
     type: "string",
     short: "u",
@@ -90,7 +72,7 @@ if (existsSync(credentialsPath)) {
 } else if (args.values.mode === "development") {
   credentials = [
     {
-      domain: args.values.issuer ?? "",
+      domain: "localhost",
       username: process.env.BASIC_AUTH_USERNAME ?? "",
       password: process.env.BASIC_AUTH_PASSWORD ?? "",
     },
@@ -114,6 +96,11 @@ if (process.env.REGISTRY_OPS) {
     .trim();
   registryOps = [
     {
+      core: "eyJhbGciOiJFUzI1NiIsImtpZCI6IjIwX1hDazM2dFFrUlpsQnhEckhzMVhldHBUZUZYdDRfVlRSbHlEa0YyQWsiLCJ0eXAiOiJ2Yytqd3QiLCJjdHkiOiJ2YyJ9.eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvdjIiLCJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvbnMvY3JlZGVudGlhbHMvdjEiXSwidHlwZSI6WyJWZXJpZmlhYmxlQ3JlZGVudGlhbCIsIkNvcmVQcm9maWxlIl0sImlzc3VlciI6ImRuczpvcHJleHB0Lm9yaWdpbmF0b3ItcHJvZmlsZS5vcmciLCJjcmVkZW50aWFsU3ViamVjdCI6eyJpZCI6ImRuczpvcHJleHB0Lm9yaWdpbmF0b3ItcHJvZmlsZS5vcmciLCJ0eXBlIjoiQ29yZSIsImp3a3MiOnsia2V5cyI6W3sia3R5IjoiRUMiLCJraWQiOiIyMF9YQ2szNnRRa1JabEJ4RHJIczFYZXRwVGVGWHQ0X1ZUUmx5RGtGMkFrIiwieCI6IjNoYV84MTBZcmlNTi1rMzFkanY5SUFlMng3MWV3d0U0WGhyb2xsOGQxNFkiLCJ5IjoiSGh0R09YMnI3U3p6aTlGTDFIQ1l6N2lCckExaE96a25mSDNIb0NwSTFmayIsImNydiI6IlAtMjU2In1dfX0sImlzcyI6ImRuczpvcHJleHB0Lm9yaWdpbmF0b3ItcHJvZmlsZS5vcmciLCJzdWIiOiJkbnM6b3ByZXhwdC5vcmlnaW5hdG9yLXByb2ZpbGUub3JnIiwiaWF0IjoxNzM0NDQ1NDgwLCJleHAiOjE3NjU5ODE0ODB9.xoXG-uPdrMp1_wJ0nxnYr9p4SeQWc_531AGN7-Ke81K0cY3ucdzy0YhVvEhoiicm-yBlAcGHBfFaxJ3sFGnjLg",
+      media:
+        "eyJhbGciOiJFUzI1NiIsImtpZCI6IjIwX1hDazM2dFFrUlpsQnhEckhzMVhldHBUZUZYdDRfVlRSbHlEa0YyQWsiLCJ0eXAiOiJ2Yytqd3QiLCJjdHkiOiJ2YyJ9.eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvbnMvY3JlZGVudGlhbHMvdjIiLCJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvbnMvY3JlZGVudGlhbHMvdjEiLCJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvbnMvY2lwL3YxIix7IkBsYW5ndWFnZSI6ImphLUpQIn1dLCJ0eXBlIjpbIlZlcmlmaWFibGVDcmVkZW50aWFsIiwiV2ViTWVkaWFQcm9maWxlIl0sImlzc3VlciI6ImRuczpvcHJleHB0Lm9yaWdpbmF0b3ItcHJvZmlsZS5vcmciLCJjcmVkZW50aWFsU3ViamVjdCI6eyJpZCI6ImRuczpvcHJleHB0Lm9yaWdpbmF0b3ItcHJvZmlsZS5vcmciLCJ0eXBlIjoiT25saW5lQnVzaW5lc3MiLCJ1cmwiOiJodHRwczovL29yaWdpbmF0b3ItcHJvZmlsZS5vcmcvIiwibmFtZSI6Ik9yaWdpbmF0b3IgUHJvZmlsZSDmioDooZPnoJTnqbbntYTlkIgiLCJsb2dvIjp7ImlkIjoiaHR0cHM6Ly9vcmlnaW5hdG9yLXByb2ZpbGUub3JnL2Zhdmljb24uc3ZnIiwiZGlnZXN0U1JJIjoic2hhMjU2LWI5V1FaL1RxNHRteWUwaXVwd3ZrZlVMT0Fyazg2NnJvQjlLZDZZTXhUSGs9In0sImNvbnRhY3RQb2ludCI6eyJpZCI6Imh0dHBzOi8vb3JpZ2luYXRvci1wcm9maWxlLm9yZy9qYS1KUC9jb250YWN0LyIsIm5hbWUiOiLjgYrllY_jgYTlkIjjgo_jgZsifSwicHJpdmFjeVBvbGljeSI6eyJpZCI6Imh0dHBzOi8vb3JpZ2luYXRvci1wcm9maWxlLm9yZy9qYS1KUC9wcml2YWN5LyIsIm5hbWUiOiLjg5fjg6njgqTjg5Djgrfjg7zjg53jg6rjgrfjg7wifX0sImlzcyI6ImRuczpvcHJleHB0Lm9yaWdpbmF0b3ItcHJvZmlsZS5vcmciLCJzdWIiOiJkbnM6b3ByZXhwdC5vcmlnaW5hdG9yLXByb2ZpbGUub3JnIiwiaWF0IjoxNzM2NDk1NjcwLCJleHAiOjE3NjgwMzE2NzB9.grI9O_N5glwsB_pNA69r9wtPcfGzwHh0hJ8rLSjK9r1pTFdY8vdXEgowoVXaC9ryE68I9SlrButet9fRutSvfg",
+    },
+    {
       core: signedCoreProfile,
     },
   ];
@@ -121,8 +108,6 @@ if (process.env.REGISTRY_OPS) {
 
 const env = {
   MODE: args.values.mode,
-  PROFILE_ISSUER: args.values.issuer,
-  PROFILE_REGISTRY_URL: args.values["registry-url"],
   BASIC_AUTH: process.env.BASIC_AUTH === "true",
   BASIC_AUTH_CREDENTIALS: process.env.BASIC_AUTH === "true" ? credentials : [],
   REGISTRY_OPS: registryOps,
