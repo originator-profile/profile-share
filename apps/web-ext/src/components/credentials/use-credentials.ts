@@ -36,10 +36,11 @@ async function fetchVerifiedCredentials([, tabId, sp]: [
   const { ops, cas, origin, url, frameId } = await fetchTabCredentials(tabId);
   const verifiedSiteOps = sp?.originators ?? [];
 
+  const [issuer, keys] = getRegistryKeys();
   const opsVerifier = OpsVerifier(
     [...import.meta.env.REGISTRY_OPS, ...ops],
-    getRegistryKeys(),
-    `dns:${import.meta.env.PROFILE_ISSUER}`,
+    keys,
+    issuer,
   );
 
   const verifiedOps = await opsVerifier();

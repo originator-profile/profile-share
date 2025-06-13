@@ -1,26 +1,19 @@
+import { Keys, LocalKeys } from "@originator-profile/cryptography";
 import {
-  CoreProfile,
-  WebMediaProfile,
   Certificate as CertificateSchema,
+  CoreProfile,
   JapaneseExistenceCertificate,
-  OriginatorProfileSet,
   OpVc,
+  OriginatorProfileSet,
+  WebMediaProfile,
 } from "@originator-profile/model";
 import {
-  UnverifiedJwtVc,
-  VerifiedJwtVc,
-  JwtVcVerifier,
   JwtVcVerificationResult,
+  JwtVcVerifier,
+  UnverifiedJwtVc,
   VcValidator,
+  VerifiedJwtVc,
 } from "@originator-profile/securing-mechanism";
-import {
-  Certificate,
-  VerifiedOps,
-  OpsVerificationResult,
-  VerifiedOp,
-  OpVerificationResult,
-} from "./types";
-import { Keys, LocalKeys } from "@originator-profile/cryptography";
 import { decodeOps } from "./decode-ops";
 import {
   CoreProfileNotFound,
@@ -28,6 +21,13 @@ import {
   OpsVerifyFailed,
   OpVerifyFailed,
 } from "./errors";
+import {
+  Certificate,
+  OpsVerificationResult,
+  OpVerificationResult,
+  VerifiedOp,
+  VerifiedOps,
+} from "./types";
 
 /** CP の署名検証結果 */
 type CoreProfileMap = Map<
@@ -106,7 +106,7 @@ const isVerifiedOps = (ops: OpVerificationResult[]): ops is VerifiedOps =>
 export function OpsVerifier(
   ops: OriginatorProfileSet,
   keys: Keys,
-  issuer: string,
+  issuer: string | string[],
   validator?: typeof VcValidator,
 ) {
   const decoded = decodeOps(ops);
