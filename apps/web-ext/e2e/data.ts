@@ -7,16 +7,19 @@ import type {
   WebsiteProfile,
 } from "@originator-profile/model";
 
-export function generateCoreProfileData(publicKey: Jwk): CoreProfile {
+export function generateCoreProfileData(
+  publicKey: Jwk,
+  issuer: string = "dns:localhost",
+): CoreProfile {
   return {
     "@context": [
       "https://www.w3.org/ns/credentials/v2",
       "https://originator-profile.org/ns/credentials/v1",
     ],
     type: ["VerifiableCredential", "CoreProfile"],
-    issuer: "dns:localhost",
+    issuer: issuer,
     credentialSubject: {
-      id: "dns:localhost",
+      id: issuer,
       type: "Core",
       jwks: {
         keys: [publicKey],
@@ -25,7 +28,9 @@ export function generateCoreProfileData(publicKey: Jwk): CoreProfile {
   };
 }
 
-export function generateCertificateData(): Certificate {
+export function generateCertificateData(
+  issuer: string = "dns:localhost",
+): Certificate {
   return {
     "@context": [
       "https://www.w3.org/ns/credentials/v2",
@@ -36,9 +41,9 @@ export function generateCertificateData(): Certificate {
       },
     ],
     type: ["VerifiableCredential", "Certificate"],
-    issuer: "dns:localhost",
+    issuer: issuer,
     credentialSubject: {
-      id: "dns:localhost",
+      id: issuer,
       type: "CertificateProperties",
       description: "Example Certificate",
       certificationSystem: {
@@ -51,7 +56,9 @@ export function generateCertificateData(): Certificate {
   };
 }
 
-export function generateWebMediaProfileData(): WebMediaProfile {
+export function generateWebMediaProfileData(
+  issuer: string = "dns:localhost",
+): WebMediaProfile {
   return {
     "@context": [
       "https://www.w3.org/ns/credentials/v2",
@@ -62,9 +69,9 @@ export function generateWebMediaProfileData(): WebMediaProfile {
       },
     ],
     type: ["VerifiableCredential", "WebMediaProfile"],
-    issuer: "dns:localhost",
+    issuer: issuer,
     credentialSubject: {
-      id: "dns:localhost",
+      id: issuer,
       type: "OnlineBusiness",
       name: "Originator Profile 技術研究組合 (開発用)",
       url: "http://localhost:8080",
@@ -72,7 +79,9 @@ export function generateWebMediaProfileData(): WebMediaProfile {
   };
 }
 
-export function generateWebsiteProfileData(): WebsiteProfile {
+export function generateWebsiteProfileData(
+  issuer: string = "dns:op-holder.example.com",
+): WebsiteProfile {
   return {
     "@context": [
       "https://www.w3.org/ns/credentials/v2",
@@ -83,7 +92,7 @@ export function generateWebsiteProfileData(): WebsiteProfile {
       },
     ],
     type: ["VerifiableCredential", "WebsiteProfile"],
-    issuer: "dns:localhost",
+    issuer: issuer,
     credentialSubject: {
       id: "http://localhost:8080",
       url: "http://localhost:8080",
@@ -99,6 +108,7 @@ export function generateWebsiteProfileData(): WebsiteProfile {
 
 export function generateUnsignedContentAttestation(
   content: string,
+  issuer: string = "dns:op-holder.example.com",
   attestationType: "Article" | "OnlineAd" = "Article",
 ): UnsignedContentAttestation {
   const baseAttestation = {
@@ -111,7 +121,7 @@ export function generateUnsignedContentAttestation(
       },
     ],
     type: ["VerifiableCredential", "ContentAttestation"],
-    issuer: "dns:localhost",
+    issuer: issuer,
     allowedUrl: "http://localhost:8080/*",
     target: [
       {

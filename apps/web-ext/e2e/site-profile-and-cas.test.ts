@@ -36,8 +36,12 @@ test("SiteProfile/CASの検証に成功するが、htmlに記載されたOPSの�
   missingOps: _,
   credentialsPage,
 }) => {
-  await validSiteProfile({ privateKey, publicKey });
-  await validCas({ privateKey }, credentialsPage.contents);
+  await validSiteProfile({ privateKey, publicKey }, credentialsPage.issuer);
+  await validCas(
+    { privateKey },
+    credentialsPage.contents,
+    credentialsPage.issuer,
+  );
   await page.goto(credentialsPage.endpoint);
   const ext = await popup(context);
   await expect(ext?.getByTestId("site-profile")).toBeVisible();

@@ -28,7 +28,10 @@ test("Site Profile を取得検証できる", async ({
   validSiteProfile,
   credentialsMissingPage,
 }) => {
-  await validSiteProfile({ privateKey, publicKey });
+  await validSiteProfile(
+    { privateKey, publicKey },
+    credentialsMissingPage.issuer,
+  );
   await page.goto(credentialsMissingPage.endpoint);
   const ext = await popup(context);
   await expect(ext?.getByTestId("site-profile")).toBeVisible();
