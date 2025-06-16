@@ -53,23 +53,26 @@ export default async function postHTMLFiles({
       allowedUrl.push(formattedPath);
     }
 
-    const caInfo = createDefaultContentAttestation({
-      credentialSubject: {
-        type: "Article",
-        headline: title,
-        image: {
-          id: ogpImageURL[lang],
+    const caInfo = createDefaultContentAttestation(
+      {
+        credentialSubject: {
+          type: "Article",
+          headline: title,
+          image: {
+            id: ogpImageURL[lang],
+          },
+          description: description,
+          author: [opcipName[lang]],
+          editor: [opcipName[lang]],
+          datePublished: createdAt,
+          dateModified: updatedAt,
+          genre: "technology",
         },
-        description: description,
-        author: [opcipName[lang]],
-        editor: [opcipName[lang]],
-        datePublished: createdAt,
-        dateModified: updatedAt,
-        genre: "technology",
+        allowedUrl: allowedUrl,
+        target: [primaryTarget, ...imageHashes],
       },
-      allowedUrl: allowedUrl,
-      target: [primaryTarget, ...imageHashes],
-    });
+      lang,
+    );
 
     // ファイルを保存
     const outputFilePath = `${vcSourcesPath}${item.cas}.cas.json`;

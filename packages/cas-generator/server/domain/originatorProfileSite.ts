@@ -1,6 +1,6 @@
 import { TargetIntegrity } from "./contentAttestation";
 
-type Lang = "ja" | "en";
+export type Lang = "ja" | "en";
 
 export type ImageHash = {
   type: TargetIntegrity["type"];

@@ -1,3 +1,5 @@
+import { Lang } from "./originatorProfileSite";
+
 type Image = {
   id: string;
   digestSRI?: string;
@@ -38,13 +40,6 @@ export type ContentAttestationModel = {
   target: TargetIntegrity[];
 };
 
-const defaultContext = [
-  "https://www.w3.org/ns/credentials/v2",
-  "https://originator-profile.org/ns/credentials/v1",
-  "https://originator-profile.org/ns/cip/v1",
-  { "@language": "ja" },
-];
-
 const defaultTypes = ["VerifiableCredential", "ContentAttestation"];
 
 /**
@@ -58,9 +53,15 @@ export const createDefaultContentAttestation = (
     ContentAttestationModel,
     "credentialSubject" | "allowedUrl" | "target"
   >,
+  lang: Lang,
 ): ContentAttestationModel => {
   const defaultCA: ContentAttestationModel = {
-    "@context": defaultContext,
+    "@context": [
+      "https://www.w3.org/ns/credentials/v2",
+      "https://originator-profile.org/ns/credentials/v1",
+      "https://originator-profile.org/ns/cip/v1",
+      { "@language": lang },
+    ],
     type: defaultTypes,
     issuer: "dns:oprexpt.originator-profile.org",
     credentialSubject: override.credentialSubject,
