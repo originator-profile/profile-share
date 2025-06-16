@@ -35,7 +35,11 @@ test("CAS/OPSの取得に成功するがSPの検証に失敗した場合閲覧�
   validCredentials,
   credentialsPage,
 }) => {
-  await validCredentials({ publicKey, privateKey }, credentialsPage.contents);
+  await validCredentials(
+    { publicKey, privateKey },
+    credentialsPage.contents,
+    credentialsPage.issuer,
+  );
   await page.goto(credentialsPage.endpoint);
   const ext = await popup(context);
   await expect(ext?.getByTestId("p-elm-prohibition-message")).toBeVisible();
@@ -49,4 +53,50 @@ test("CAS/OPSの取得に成功するがSPの検証に失敗した場合閲覧�
       "本物そっくりの偽サイトにログインしたり個人情報を登録したり支払いをしてしまい被害に合うケースが多発しています。このページではサイトの運営者情報が確認できませんでした。そのため、このサイトが本物かどうかは充分に注意してください。",
     ),
   ).toHaveCount(1);
+});
+test("CAの署名がその発行者のSPで配布される検証鍵を使って検証できない場合閲覧禁止", async ({
+  context,
+  page,
+  validSiteProfile,
+  missingOps: _,
+  evilCas: evilCas,
+  credentialsPage,
+}) => {
+  await evilCas(credentialsPage.contents, credentialsPage.issuer);
+  await validSiteProfile({ privateKey, publicKey }, credentialsPage.issuer);
+  await page.goto(credentialsPage.endpoint);
+  const ext = await popup(context);
+  await expect(ext?.getByTestId("p-elm-prohibition-message")).toBeVisible();
+});
+test("SPの署名がその発行者のOPで配布される検証鍵を使って検証できない場合閲覧禁止", async ({
+  context,
+  page,
+  evilSiteProfile,
+  missingOps: _,
+  validCas: validCas,
+  credentialsPage,
+}) => {
+  await validCas(
+    { privateKey },
+    credentialsPage.contents,
+    credentialsPage.issuer,
+  );
+  await evilSiteProfile({ publicKey }, credentialsPage.issuer);
+  await page.goto(credentialsPage.endpoint);
+  const ext = await popup(context);
+  await expect(ext?.getByTestId("p-elm-prohibition-message")).toBeVisible();
+});
+test("SPとCAの署名がその発行者のOPまたはSPで配布される検証鍵を使って検証できない場合閲覧禁止", async ({
+  context,
+  page,
+  evilSiteProfile,
+  missingOps: _,
+  evilCas: evilCas,
+  credentialsPage,
+}) => {
+  await evilCas(credentialsPage.contents, credentialsPage.issuer);
+  await evilSiteProfile({ publicKey }, credentialsPage.issuer);
+  await page.goto(credentialsPage.endpoint);
+  const ext = await popup(context);
+  await expect(ext?.getByTestId("p-elm-prohibition-message")).toBeVisible();
 });

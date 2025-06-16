@@ -1,9 +1,13 @@
 import { test as base, Page } from "@playwright/test";
 
 type TestFixtures = {
-  credentialsMissingPage: { contents: string; endpoint: string };
-  credentialsPage: { contents: string; endpoint: string };
-  onlineAdPage: { contents: string; endpoint: string };
+  credentialsMissingPage: {
+    contents: string;
+    endpoint: string;
+    issuer: string;
+  };
+  credentialsPage: { contents: string; endpoint: string; issuer: string };
+  onlineAdPage: { contents: string; endpoint: string; issuer: string };
 };
 
 export const test = base.extend<TestFixtures>({
@@ -30,7 +34,11 @@ export const test = base.extend<TestFixtures>({
       }),
     );
 
-    await use({ contents: credentialsMissingHtml, endpoint });
+    await use({
+      contents: credentialsMissingHtml,
+      endpoint,
+      issuer: "dns:localhost",
+    });
 
     await page.unroute(endpoint);
   },
@@ -63,7 +71,11 @@ export const test = base.extend<TestFixtures>({
       }),
     );
 
-    await use({ contents: validCredentialsHtml, endpoint });
+    await use({
+      contents: validCredentialsHtml,
+      endpoint,
+      issuer: "dns:localhost",
+    });
 
     await page.unroute(endpoint);
   },
@@ -102,7 +114,7 @@ export const test = base.extend<TestFixtures>({
       }),
     );
 
-    await use({ contents: onlineAdHtml, endpoint });
+    await use({ contents: onlineAdHtml, endpoint, issuer: "dns:localhost" });
 
     await page.unroute(endpoint);
   },

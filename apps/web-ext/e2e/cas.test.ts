@@ -36,7 +36,11 @@ test("Content Attestation Set の表示が正常に行えたか", async ({
   credentialsPage,
   validCredentials,
 }) => {
-  await validCredentials({ publicKey, privateKey }, credentialsPage.contents);
+  await validCredentials(
+    { publicKey, privateKey },
+    credentialsPage.contents,
+    credentialsPage.issuer,
+  );
   await page.goto(credentialsPage.endpoint);
   const ext = await popup(context);
   await expect(ext?.getByTestId("cas")).toBeVisible();

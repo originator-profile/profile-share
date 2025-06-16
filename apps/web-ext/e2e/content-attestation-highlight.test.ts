@@ -36,8 +36,8 @@ test("拡張機能画面での認証および対象ページのオーバーレ�
   credentialsPage,
 }) => {
   const key = { privateKey, publicKey };
-  await validSiteProfile(key);
-  await validCredentials(key, credentialsPage.contents);
+  await validSiteProfile(key, credentialsPage.issuer);
+  await validCredentials(key, credentialsPage.contents, credentialsPage.issuer);
   await page.goto(credentialsPage.endpoint);
   const ext = await popup(context);
 
