@@ -33,13 +33,19 @@ async function checkUrlAndOrigin<T extends ContentAttestation>(
     result.doc.allowedUrl &&
     !(await verifyAllowedUrl(url.toString(), result.doc.allowedUrl))
   ) {
-    return new CaVerifyFailed("URL not allowed", result);
+    return new CaVerifyFailed(
+      `URL not allowed. Expected:${Array.isArray(result.doc.allowedUrl) ? result.doc.allowedUrl.join(", ") : result.doc.allowedUrl} Actual:${url}`,
+      result,
+    );
   }
   if (
     result.doc.allowedOrigin &&
     !verifyAllowedOrigin(url.origin, result.doc.allowedOrigin)
   ) {
-    return new CaVerifyFailed("Origin not allowed", result);
+    return new CaVerifyFailed(
+      `Origin not allowed. Expected:${Array.isArray(result.doc.allowedOrigin) ? result.doc.allowedOrigin.join(", ") : result.doc.allowedOrigin} Actual:${url.origin}`,
+      result,
+    );
   }
   return result;
 }
