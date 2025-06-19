@@ -15,6 +15,7 @@ import {
 } from "@originator-profile/verify";
 import { Icon } from "@iconify/react";
 import { stringifyWithError } from "@originator-profile/core";
+import { SupportedCa } from "./credentials";
 
 interface CodedError extends Error {
   code: string;
@@ -113,6 +114,47 @@ function OriginatorsCheckList({
   );
 }
 
+function ContentAttestationErrorDetails({
+  attestation,
+  index,
+}: {
+  attestation: CaInvalid | CaVerifyFailed;
+  index: number;
+}) {
+  let content;
+  if ("doc" in attestation.result) {
+    const ca = attestation.result.doc as SupportedCa;
+    content = (
+      <DisplayCancel
+        label={`CA ${index} ${
+          (ca.credentialSubject.type === "Article"
+            ? ca.credentialSubject.headline
+            : ca.credentialSubject.name) ?? "Unrecognized Content Name"
+        }`}
+      />
+    );
+  } else {
+    content = <DisplayCancel label={`CA ${index} Unrecognized Content`} />;
+  }
+  return (
+    <>
+      {content}
+      <details className="text-gray-700 pl-2 mb-2">
+        <summary>Error at element(s): {index}</summary>
+        <div className="relative my-4">
+          <p>{`Code : ${attestation.code}`}</p>
+          <p>{`Message : ${attestation.message}`}</p>
+          <pre className="overflow-auto">
+            <JsonView
+              value={JSON.parse(stringifyWithError(attestation.result))}
+            />
+          </pre>
+        </div>
+      </details>
+    </>
+  );
+}
+
 function ContentAttestationCheckList({
   errors,
 }: {
@@ -120,32 +162,33 @@ function ContentAttestationCheckList({
 }) {
   return (
     <>
-      {errors
-        .map((error, index) => {
-          return {
-            ...error,
-            index,
-          };
-        })
-        .filter((error) => {
+      {errors.map((error, index) => {
+        if (
+          error.attestation instanceof CaInvalid ||
+          error.attestation instanceof CaVerifyFailed
+        ) {
           const attestation = error.attestation;
           return (
-            attestation instanceof CaInvalid ||
-            attestation instanceof CaVerifyFailed
+            <ContentAttestationErrorDetails
+              attestation={attestation}
+              index={index}
+              key={index}
+            />
           );
-        })
-        .map((error) => {
-          const attestation = error.attestation as CaInvalid | CaVerifyFailed;
+        } else {
+          const ca = error.attestation.doc as SupportedCa;
           return (
-            <>
-              <details key={error.index} className="text-gray-700 mb-5">
-                <summary>Error at element(s): {error.index}</summary>
-                <p className="relative my-4">{`Code : ${attestation.code}`}</p>
-                <p className="relative my-4">{`Message : ${attestation.message}`}</p>
-              </details>
-            </>
+            <DisplayCheck
+              label={`CA ${index} ${
+                (ca.credentialSubject.type === "Article"
+                  ? ca.credentialSubject.headline
+                  : ca.credentialSubject.name) ?? "Unrecognized Content Name"
+              }`}
+              key={index}
+            />
           );
-        })}
+        }
+      })}
     </>
   );
 }
