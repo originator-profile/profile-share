@@ -5,9 +5,8 @@ import { createDefaultContentAttestation } from "../domain/contentAttestation";
 type PostHTMLFilesParams = {
   htmlFiles: OpSiteInfo[];
   docsPath: string;
-  origin: string;
   vcSourcesPath: string;
-  arrowedURLOrigins: string[];
+  allowedURLOrigins: string[];
   opcipName: { ja: string; en: string };
   ogpImageURL: { ja: string; en: string };
 };
@@ -20,9 +19,8 @@ type PostHTMLFilesParams = {
 export default async function postHTMLFiles({
   htmlFiles,
   docsPath,
-  origin,
   vcSourcesPath,
-  arrowedURLOrigins,
+  allowedURLOrigins,
   opcipName,
   ogpImageURL,
 }: PostHTMLFilesParams): Promise<OpSiteInfo[]> {
@@ -39,12 +37,10 @@ export default async function postHTMLFiles({
       imageHashes,
     } = item;
 
-    const fullPath =
-      origin + "/" + item.path.replace(docsPath, "").replace("index.html", "");
-    const allowedUrl = [fullPath];
-    for (const arrowedURLOrigin of arrowedURLOrigins) {
+    const allowedUrl: string[] = [];
+    for (const allowedURLOrigin of allowedURLOrigins) {
       const formattedPath =
-        arrowedURLOrigin +
+        allowedURLOrigin +
         "/" +
         item.path
           .replace(docsPath, "")

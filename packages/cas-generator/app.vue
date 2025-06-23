@@ -34,7 +34,7 @@
             </div>
             <div class="self-end">
               <button
-                @click="setting = !setting"
+                @click="openSettings"
                 class="jumpu-text-button inline-flex items-center gap-x-1"
               >
                 <Icon name="uil:cog" class="text-xl" />
@@ -151,34 +151,73 @@
       class="jumpu-card p-4 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-white bg-opacity-95"
     >
       <h2 class="font-bold text-2xl mb-2">Settings</h2>
+      <div class="mb-4">
+        <h3 class="font-bold text-lg mb-2">Environment Variables</h3>
+        <table class="w-full mb-4">
+          <tr
+            class="table-row"
+            v-for="item in Object.entries(settingItems)"
+            :key="item"
+          >
+            <td class="w-1/2">{{ item[0] }}</td>
+            <td class="w-1/2">{{ item[1] }}</td>
+          </tr>
+        </table>
+        <h3 class="font-bold text-lg mb-2">Allowed URL Origins</h3>
+        <div class="space-y-2">
+          <div
+            v-for="(_, index) in tempAllowedURLOrigins"
+            :key="index"
+            class="flex gap-2"
+          >
+            <input
+              type="text"
+              v-model="tempAllowedURLOrigins[index]"
+              class="jumpu-input flex-1"
+              placeholder="Enter URL origin"
+            />
+            <button
+              class="jumpu-icon-button"
+              @click="tempAllowedURLOrigins.splice(index, 1)"
+            >
+              <Icon name="material-symbols:delete-rounded" class="text-xl" />
+            </button>
+          </div>
+          <button
+            class="jumpu-text-button inline-flex items-center gap-x-1"
+            @click="tempAllowedURLOrigins.push('')"
+          >
+            <Icon name="material-symbols:add-rounded" class="text-xl" />
+            Add URL Origin
+          </button>
+        </div>
+      </div>
 
-      <table class="w-full">
-        <tr
-          class="table-row"
-          v-for="item in Object.entries(settingItems)"
-          :key="item"
-        >
-          <td>{{ item[0] }}</td>
-          <td>{{ item[1] }}</td>
-        </tr>
-      </table>
-
-      <button
-        class="jumpu-icon-button absolute top-4 right-4"
-        @click="setting = false"
-      >
-        <Icon name="material-symbols:close-rounded" class="text-xl" />
-      </button>
+      <div class="flex justify-end gap-2">
+        <button class="jumpu-text-button" @click="cancelSettings">
+          Cancel
+        </button>
+        <button class="jumpu-button" @click="saveAllowedURLOriginss">
+          Save
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { defaultAllowedURLOriginss } from "./server/constants";
+import { useStorage } from "@vueuse/core";
 const scrollSection = ref(null);
 const body = ref([]);
 const generating = ref(false);
 const setting = ref(false);
 const selectedFileIds = ref(new Set());
+const allowedURLOrigins = useStorage(
+  "allowed-url-origins",
+  defaultAllowedURLOriginss,
+);
+const tempAllowedURLOrigins = ref([]);
 
 const { data: settingItems } = useFetch("/api/settings");
 
@@ -225,7 +264,10 @@ async function fetchChatStream(prompt, callback) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(prompt), // このprompt変数を使ってサーバ側でAPI callする
+    body: JSON.stringify({
+      htmlFiles: prompt,
+      allowedURLOrigins: allowedURLOrigins.value,
+    }),
   });
   const reader = response.body.getReader();
   if (!reader) return;
@@ -251,6 +293,24 @@ function getBodyItemByFile(file) {
 }
 
 const { data: htmlfiles, status } = useFetch("/api/htmlFiles/get");
+
+// 設定モーダルを開くときに一時的な設定をコピー
+function openSettings() {
+  tempAllowedURLOrigins.value = [...allowedURLOrigins.value];
+  setting.value = true;
+}
+
+// allowedURLOriginsの設定を保存する関数
+function saveAllowedURLOriginss() {
+  allowedURLOrigins.value = [...tempAllowedURLOrigins.value];
+  setting.value = false;
+}
+
+// 設定をキャンセルする関数
+function cancelSettings() {
+  tempAllowedURLOrigins.value = [...allowedURLOrigins.value];
+  setting.value = false;
+}
 </script>
 
 <style scoped>

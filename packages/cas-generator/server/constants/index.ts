@@ -1,6 +1,7 @@
 export const origin = "https://originator-profile.org";
 
-export const arrowedURLOrigins = [
+export const defaultAllowedURLOriginss = [
+  origin,
   "http://localhost:4321",
   "https://cas-all-contents-date.originator-profile-org.pages.dev",
 ];
