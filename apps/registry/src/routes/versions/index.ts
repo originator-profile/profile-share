@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { FromHandler } from "../../../types";
+import { FromHandler } from "../../types";
 import { get, schema } from "./get";
 
 async function index(fastify: FastifyInstance): Promise<void> {

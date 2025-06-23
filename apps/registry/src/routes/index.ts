@@ -1,5 +1,4 @@
 import type { FastifyInstance } from "fastify";
-import * as getJwks from "./get-jwks";
 
 async function index(fastify: FastifyInstance): Promise<void> {
   if (fastify.config.BASIC_AUTH) {
@@ -31,7 +30,6 @@ async function index(fastify: FastifyInstance): Promise<void> {
     },
     (_, reply) => reply.html(),
   );
-  fastify.route(getJwks);
 }
 
 export default index;

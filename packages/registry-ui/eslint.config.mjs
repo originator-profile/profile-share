@@ -24,17 +24,6 @@ export default [
     },
   },
   {
-    files: ["**/*.{js,jsx,ts,tsx}"],
-    rules: {
-      // TODO: Jumpu UIがナビゲーションタブの実装に対応したら取り除いて
-      // see https://github.com/tuqulore/jumpu-ui/issues/544
-      "jsx-a11y/no-noninteractive-element-to-interactive-role": [
-        "error",
-        { nav: ["tablist"] },
-      ],
-    },
-  },
-  {
     files: ["src/components/*.tsx"],
     rules: {
       "canonical/filename-match-exported": [

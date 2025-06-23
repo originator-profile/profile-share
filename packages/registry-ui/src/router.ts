@@ -7,19 +7,9 @@ export type Path =
   | `/`
   | `/app`
   | `/app/debugger`
-  | `/app/login-failed`
-  | `/app/request-op`
-  | `/app/request-op/credential`
-  | `/app/request-op/holder`
-  | `/app/request-op/logo`
-  | `/app/request-op/notifications`
-  | `/app/request-op/public-key`
-  | `/app/request-op/welcome`
-  | `/app/review-op`
-  | `/app/review-op/accounts/:accountId`
 
 export type Params = {
-  '/app/review-op/accounts/:accountId': { accountId: string }
+  
 }
 
 export type ModalPath = never

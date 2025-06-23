@@ -1,22 +1,5 @@
-import { useEffect } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useNavigate } from "react-router";
+import { Navigate } from "react-router";
 
 export default function Index() {
-  const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isLoading) {
-      return;
-    }
-    if (isAuthenticated) {
-      void navigate("/app/");
-    } else {
-      void loginWithRedirect();
-    }
-  }, [isLoading, isAuthenticated, loginWithRedirect, navigate]);
-  if (isLoading || !isAuthenticated) {
-    return <div>Loading...</div>;
-  }
+  return <Navigate to="./app" />;
 }

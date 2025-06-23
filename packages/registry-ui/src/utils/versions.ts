@@ -14,5 +14,5 @@ export type VersionInfo = {
  * バージョン情報を取得するカスタムフック
  */
 export function useVersionInfo() {
-  return useSWR({ url: "/internal/versions/" }, fetcher<VersionInfo>);
+  return useSWR({ url: "/versions/" }, fetcher<VersionInfo>);
 }

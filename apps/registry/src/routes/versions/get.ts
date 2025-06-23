@@ -1,7 +1,6 @@
 import { FastifySchema, FastifyRequest } from "fastify";
 
 const schema: FastifySchema = {
-  tags: ["internal"],
   description: "アプリケーションのバージョン情報を取得します。",
   security: [{ bearerAuth: [] }],
   response: {
