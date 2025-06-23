@@ -2,12 +2,7 @@ import { exec } from "child_process";
 import fs from "fs";
 import { createEventStream } from "h3";
 import postHTMLFiles from "../utils/postHTMLFiles";
-import {
-  origin,
-  arrowedURLOrigins,
-  opcipName,
-  ogpImageURL,
-} from "../constants";
+import { opcipName, ogpImageURL } from "../constants";
 import { OpSiteInfo } from "../domain/originatorProfileSite";
 
 /**
@@ -76,7 +71,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const htmlFiles = await readBody(event);
+  const { htmlFiles, allowedURLOrigins } = await readBody(event);
   const eventStream = createEventStream(event);
   const vcSourcesPath = VC_OUTPUT_PATH;
   const casPath = CAS_OUTPUT_PATH;
@@ -87,9 +82,8 @@ export default defineEventHandler(async (event) => {
   await postHTMLFiles({
     htmlFiles,
     docsPath: WEBROOT_PATH,
-    origin: origin,
     vcSourcesPath: vcSourcesPath,
-    arrowedURLOrigins: arrowedURLOrigins,
+    allowedURLOrigins: allowedURLOrigins,
     opcipName: opcipName,
     ogpImageURL: ogpImageURL,
   });

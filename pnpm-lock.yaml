@@ -339,6 +339,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.1.7
         version: 4.1.8(vite@6.3.4(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.30.1)(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1))
+      '@vueuse/core':
+        specifier: ^13.3.0
+        version: 13.3.0(vue@3.5.14(typescript@5.8.3))
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
@@ -3822,6 +3825,9 @@ packages:
   '@types/unist@3.0.3':
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
 
+  '@types/web-bluetooth@0.0.21':
+    resolution: {integrity: sha512-oIQLCGWtcFZy2JW77j9k8nHzAOpqMHLQejDA48XXMWH6tjCQHz5RCFz1bzsmROyL6PUm+LLnUiI4BCn221inxA==}
+
   '@types/wrap-ansi@3.0.0':
     resolution: {integrity: sha512-ltIpx+kM7g/MLRZfkbL7EsCEjfzCcScLpkg37eXEtx5kmrAKBkTJwd1GIAjDSL8wTpM6Hzn5YO4pSb91BEwu1g==}
 
@@ -4186,6 +4192,19 @@ packages:
 
   '@vue/shared@3.5.14':
     resolution: {integrity: sha512-oXTwNxVfc9EtP1zzXAlSlgARLXNC84frFYkS0HHz0h3E4WZSP9sywqjqzGCP9Y34M8ipNmd380pVgmMuwELDyQ==}
+
+  '@vueuse/core@13.3.0':
+    resolution: {integrity: sha512-uYRz5oEfebHCoRhK4moXFM3NSCd5vu2XMLOq/Riz5FdqZMy2RvBtazdtL3gEcmDyqkztDe9ZP/zymObMIbiYSg==}
+    peerDependencies:
+      vue: ^3.5.0
+
+  '@vueuse/metadata@13.3.0':
+    resolution: {integrity: sha512-42IzJIOYCKIb0Yjv1JfaKpx8JlCiTmtCWrPxt7Ja6Wzoq0h79+YVXmBV03N966KEmDEESTbp5R/qO3AB5BDnGw==}
+
+  '@vueuse/shared@13.3.0':
+    resolution: {integrity: sha512-L1QKsF0Eg9tiZSFXTgodYnu0Rsa2P0En2LuLrIs/jgrkyiDuJSsPZK+tx+wU0mMsYHUYEjNsuE41uqqkuR8VhA==}
+    peerDependencies:
+      vue: ^3.5.0
 
   '@webext-core/messaging@2.2.0':
     resolution: {integrity: sha512-CRKFSH8ZAp55QpzfseOO/RlW6fAVSGWYNJK1j23khB855Ba9wHu8PB3uuqMVZtfEAwAmsw/2U8HIkony5adFBQ==}
@@ -10277,6 +10296,9 @@ packages:
   third-party-web@0.26.6:
     resolution: {integrity: sha512-GsjP92xycMK8qLTcQCacgzvffYzEqe29wyz3zdKVXlfRD5Kz1NatCTOZEeDaSd6uCZXvGd2CNVtQ89RNIhJWvA==}
 
+  third-party-web@0.27.0:
+    resolution: {integrity: sha512-h0JYX+dO2Zr3abCQpS6/uFjujaOjA1DyDzGQ41+oFn9VW/ARiq9g5ln7qEP9+BTzDpOMyIfsfj4OvfgXAsMUSA==}
+
   thread-stream@2.7.0:
     resolution: {integrity: sha512-qQiRWsU/wvNolI6tbbCKd9iKaTnCXsTwVxhhKM6nctPdujTyztjlbUkUTUymidWcMnZ5pWR0ej4a0tjsW021vw==}
 
@@ -12548,7 +12570,7 @@ snapshots:
   '@eslint/config-array@0.20.0':
     dependencies:
       '@eslint/object-schema': 2.1.6
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -12576,7 +12598,7 @@ snapshots:
   '@eslint/eslintrc@3.3.1':
     dependencies:
       ajv: 6.12.6
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
       espree: 10.3.0
       globals: 14.0.0
       ignore: 5.3.2
@@ -12687,7 +12709,7 @@ snapshots:
       '@fastify/forwarded': 3.0.0
       ipaddr.js: 2.2.0
 
-  '@fastify/react@1.1.0(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(lightningcss@1.30.1)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)':
+  '@fastify/react@1.1.0(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(lightningcss@1.30.1)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1)':
     dependencies:
       '@fastify/vite': 8.1.2(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(lightningcss@1.30.1)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)
       '@unhead/react': 2.0.8(react@19.1.0)
@@ -12719,7 +12741,6 @@ snapshots:
       - sugarss
       - terser
       - tsx
-      - typescript
       - yaml
     optional: true
 
@@ -12771,8 +12792,8 @@ snapshots:
       klaw: 4.1.0
     optionalDependencies:
       '@fastify/htmx': 0.4.0(@kitajs/ts-html-plugin@4.1.1)(rollup@4.40.1)
-      '@fastify/react': 1.1.0(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(lightningcss@1.30.1)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)
-      '@fastify/vue': 1.1.1(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(fastify@5.3.2)(jiti@2.4.2)(lightningcss@1.30.1)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)
+      '@fastify/react': 1.1.0(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(lightningcss@1.30.1)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1)
+      '@fastify/vue': 1.1.1(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(lightningcss@1.30.1)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)
       vite: 6.3.4(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.30.1)(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1)
     transitivePeerDependencies:
       - '@kitajs/ts-html-plugin'
@@ -12791,7 +12812,7 @@ snapshots:
       - typescript
       - yaml
 
-  '@fastify/vue@1.1.1(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(fastify@5.3.2)(jiti@2.4.2)(lightningcss@1.30.1)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)':
+  '@fastify/vue@1.1.1(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(lightningcss@1.30.1)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)':
     dependencies:
       '@fastify/vite': 8.1.2(@kitajs/ts-html-plugin@4.1.1)(@types/node@22.15.3)(@types/react@19.1.2)(fastify@5.3.2)(jiti@2.4.2)(lightningcss@1.30.1)(rollup@4.40.1)(sass-embedded@1.87.0)(terser@5.39.0)(typescript@5.8.3)(yaml@2.7.1)
       '@unhead/vue': 2.0.8(vue@3.5.14(typescript@5.8.3))
@@ -12808,6 +12829,7 @@ snapshots:
     transitivePeerDependencies:
       - '@kitajs/ts-html-plugin'
       - '@types/node'
+      - '@types/react'
       - fastify
       - jiti
       - less
@@ -14216,7 +14238,7 @@ snapshots:
   '@paulirish/trace_engine@0.0.52':
     dependencies:
       legacy-javascript: 0.0.1
-      third-party-web: 0.26.6
+      third-party-web: 0.27.0
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
@@ -15251,6 +15273,8 @@ snapshots:
 
   '@types/unist@3.0.3': {}
 
+  '@types/web-bluetooth@0.0.21': {}
+
   '@types/wrap-ansi@3.0.0': {}
 
   '@types/yauzl@2.10.3':
@@ -15746,6 +15770,19 @@ snapshots:
   '@vue/shared@3.5.13': {}
 
   '@vue/shared@3.5.14': {}
+
+  '@vueuse/core@13.3.0(vue@3.5.14(typescript@5.8.3))':
+    dependencies:
+      '@types/web-bluetooth': 0.0.21
+      '@vueuse/metadata': 13.3.0
+      '@vueuse/shared': 13.3.0(vue@3.5.14(typescript@5.8.3))
+      vue: 3.5.14(typescript@5.8.3)
+
+  '@vueuse/metadata@13.3.0': {}
+
+  '@vueuse/shared@13.3.0(vue@3.5.14(typescript@5.8.3))':
+    dependencies:
+      vue: 3.5.14(typescript@5.8.3)
 
   '@webext-core/messaging@2.2.0':
     dependencies:
@@ -17139,10 +17176,6 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
-  debug@4.4.0:
-    dependencies:
-      ms: 2.1.3
-
   debug@4.4.0(supports-color@8.1.1):
     dependencies:
       ms: 2.1.3
@@ -17819,7 +17852,7 @@ snapshots:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.6
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
       escape-string-regexp: 4.0.0
       eslint-scope: 8.3.0
       eslint-visitor-keys: 4.2.0
@@ -18787,7 +18820,7 @@ snapshots:
   http-proxy-agent@7.0.2:
     dependencies:
       agent-base: 7.1.3
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -18810,7 +18843,7 @@ snapshots:
   https-proxy-agent@7.0.6:
     dependencies:
       agent-base: 7.1.3
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -23035,6 +23068,8 @@ snapshots:
 
   third-party-web@0.26.6: {}
 
+  third-party-web@0.27.0: {}
+
   thread-stream@2.7.0:
     dependencies:
       real-require: 0.2.0
@@ -23724,7 +23759,7 @@ snapshots:
   vite-node@3.1.2(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.30.1)(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1):
     dependencies:
       cac: 6.7.14
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
       es-module-lexer: 1.7.0
       pathe: 2.0.3
       vite: 6.3.4(@types/node@22.15.3)(jiti@2.4.2)(lightningcss@1.30.1)(sass-embedded@1.87.0)(terser@5.39.0)(yaml@2.7.1)
@@ -23824,7 +23859,7 @@ snapshots:
       '@vitest/spy': 3.1.2
       '@vitest/utils': 3.1.2
       chai: 5.2.0
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@8.1.1)
       expect-type: 1.2.1
       magic-string: 0.30.17
       pathe: 2.0.3

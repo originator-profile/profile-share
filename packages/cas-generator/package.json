@@ -10,12 +10,13 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.1.7",
     "@jumpu-ui/tailwindcss": "2.0.0-alpha.3",
     "@nuxt/icon": "1.13.0",
+    "@tailwindcss/vite": "^4.1.7",
     "fast-glob": "^3.3.3",
     "jsdom": "^26.1.0",
     "nuxt": "^3.17.1",
-    "tailwindcss": "^4.1.7"
+    "tailwindcss": "^4.1.7",
+    "@vueuse/core": "^13.3.0"
   }
 }
