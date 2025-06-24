@@ -8,9 +8,16 @@ use Profile\Uca\Uca;
 
 require_once __DIR__ . '/config.php';
 use const Profile\Config\PROFILE_DEFAULT_CA_SERVER_HOSTNAME;
+use const Profile\Config\PROFILE_DEFAULT_CA_SERVER_REQUEST_TIMEOUT;
 use const Profile\Config\PROFILE_DEFAULT_CA_TARGET_TYPE;
 use const Profile\Config\PROFILE_DEFAULT_CA_TARGET_CSS_SELECTOR;
 use const Profile\Config\PROFILE_DEFAULT_CA_TARGET_HTML;
+
+require_once __DIR__ . '/class-casapiauthclient.php';
+use Profile\CasApiAuthClient\CasApiAuthClient;
+
+require_once __DIR__ . '/debug.php';
+use function Profile\Debug\debug;
 
 require_once __DIR__ . '/url.php';
 use function Profile\Url\add_page_query;
@@ -245,20 +252,39 @@ function external_resources_from_html( string $html, string $xpath_query ): arra
 function issue_ca( Uca $uca, string $endpoint, string $admin_secret ): mixed {
 	$args = array(
 		'method'  => 'POST',
+		'timeout' => PROFILE_DEFAULT_CA_SERVER_REQUEST_TIMEOUT,
 		'headers' => array(
-			'authorization' => 'Basic ' . \sodium_bin2base64( $admin_secret, SODIUM_BASE64_VARIANT_ORIGINAL ),
-			'content-type'  => 'application/json',
+			'content-type' => 'application/json',
 		),
 		'body'    => $uca->to_json(),
 	);
 
+	$secret_arr = explode( ':', $admin_secret );
+	$username   = $secret_arr[0] ?? '';
+	switch ( $username ) {
+		case 'OIDC': // OIDCの場合はCA Server認証(OIDC)を行う
+			$api_auth = new CasApiAuthClient();
+			if ( ! $api_auth->init_oidc( $admin_secret ) ) {
+				debug( 'Failed to initialize OIDC client.' );
+				return false;
+			}
+			$args['headers']['authorization'] = 'Bearer ' . $api_auth->getApiToken();
+			break;
+		default: // それ以外の場合は、Basic 認証を使う
+			$args['headers']['authorization'] = 'Basic ' . \sodium_bin2base64( $admin_secret, SODIUM_BASE64_VARIANT_ORIGINAL );
+			break;
+	}
+
 	$res = \wp_remote_request( $endpoint, $args );
 
 	if ( \is_wp_error( $res ) ) {
+		$error_message = $res->get_error_message();
+		debug( 'Failed to request error: ' . $error_message );
 		return false;
 	}
 
 	if ( 200 !== $res['response']['code'] ) {
+		debug( 'HTTP error: ' . $res['response']['code'] );
 		return false;
 	}
 
