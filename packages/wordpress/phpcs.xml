@@ -28,4 +28,7 @@
   <rule ref="WordPress.WP.EnqueuedResources.NonEnqueuedScript">
     <exclude-pattern>includes/post.php</exclude-pattern>
   </rule>
+  <rule ref="WordPress.PHP.DevelopmentFunctions.error_log_error_log">
+    <exclude-pattern>includes/debug.php</exclude-pattern>
+  </rule>
 </ruleset>

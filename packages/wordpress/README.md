@@ -31,6 +31,54 @@ WordPress での記事の公開時の Content Attestation (CA) の発行に役�
 
 ### プラグインの設定
 
+### 利用テーマに追加function
+
+```
+themes/functions.php
+```
+
+### 配置ファイル(WEBサーバ)
+
+```
+/extra/cas-auth.php (pluginディレクトリパスを要確認)
+```
+
+### 固定ページ追加(API認証リダイレクト用)
+
+- 固定ページ作成
+  - タイトル：cas-auth
+  - 公開して page_id をメモ
+- ヘッダー/フッター削除
+  - 外観 > テーマ > カスタマイズ > スタイル > 追加CSS
+  - 以下の追加CSSを貼り付ける
+    ```
+    /* API認証固定ページでヘッダーとフッターを非表示にする */
+        .page-id-[固定ページID] header,
+        .page-id-[固定ページID] footer {
+          display: none;
+        }
+    ```
+- ショートコード配置
+  ```
+  [requireApiAuth]
+  ```
+- パーマリンク(/cas-auth/)
+  - 設定 > パーマリンク
+  - パーマリンク構造：投稿名
+
+## 設定
+
+### (事前)CAサーバ管理画面
+
+- APIアカウント設定
+  - APIアカウントメールアドレス
+  - APIアカウントパスワード
+  - WebサイトURL
+  - クライアントID
+  - クライアントシークレット
+  - リダイレクトURL(https://サイトURL/cas-auth/)
+- WP認証情報の取得
+
 ![](./assets/ca-manager.webp)
 
 プラグイン有効化後、以下の必須項目を入力を行い設定する必要があります。
@@ -198,6 +246,10 @@ Basic 認証以外の認証方式 (例: OAuth、JWT、API キー) を利用す�
 Content Attestation サーバーのホスト名の設定の初期値です。
 このホスト名のエンドポイントを介して Content Attestation の登録・更新・取得を行います。
 もし設定画面から設定を変更した場合、この値は参照されません。
+
+#### PROFILE_DEFAULT_CA_SERVER_REQUEST_TIMEOUT
+
+Content Attestation サーバーのリクエストアウト (秒) の初期値です。
 
 #### PROFILE_DEFAULT_CA_TARGET_TYPE
 
