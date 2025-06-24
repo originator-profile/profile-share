@@ -1,0 +1,35 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [
+        ".nuxt/**",
+        "dist-*/**",
+        "dist/**",
+        "oclif.manifest.json",
+        "web-ext-artifacts-*/**",
+        "web-ext-artifacts/**"
+      ]
+    },
+    "dev": {
+      "cache": false
+    },
+    "e2e": {
+      "cache": false
+    },
+    "test": {
+      "dependsOn": ["build"],
+      "outputs": []
+    },
+    "lint": {
+      "outputs": []
+    },
+    "type-check": {
+      "outputs": []
+    },
+    "@originator-profile/web-ext#build": {
+      "env": ["PROFILE_ISSUER", "BASIC_AUTH", "REGISTRY_OPS"]
+    }
+  }
+}

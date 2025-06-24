@@ -1,0 +1,16 @@
+*.log
+.astro
+.env
+.phpunit.result.cache
+.turbo
+dist
+node_modules
+playwright-report
+test-results
+tmp
+vendor
+/apps/web-ext/credentials.json
+/apps/web-ext/dist*
+/apps/web-ext/screenshots
+/apps/web-ext/web-ext-artifacts*
+/public/ts
