@@ -54,7 +54,7 @@
     "typed-url-params": "^1.0.1",
     "typescript": "^5.8.3",
     "vitest": "^3.1.2",
-    "web-ext": "^8.6.0"
+    "web-ext": "^8.8.0"
   },
   "homepage": "https://docs.originator-profile.org/",
   "keywords": [
