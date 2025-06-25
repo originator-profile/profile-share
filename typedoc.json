@@ -11,6 +11,7 @@
     "packages/securing-mechanism",
     "packages/sign",
     "packages/ui",
+    "packages/vcop",
     "packages/verify"
   ]
 }

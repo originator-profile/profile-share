@@ -5,6 +5,7 @@
 .turbo
 dist
 node_modules
+oclif.manifest.json
 playwright-report
 test-results
 tmp

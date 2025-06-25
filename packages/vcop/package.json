@@ -1,0 +1,49 @@
+{
+  "name": "@originator-profile/vcop",
+  "version": "0.2.0-beta.1",
+  "private": false,
+  "type": "module",
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "bin": "bin/run.js",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "default": "./dist/index.js"
+  },
+  "oclif": {
+    "bin": "vcop",
+    "commands": "dist/commands",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "scripts": {
+    "build": "tsup && oclif manifest && oclif readme",
+    "lint": "eslint --fix .",
+    "type-check": "tsc",
+    "test": "node --experimental-strip-types --no-warnings=ExperimentalWarning --test"
+  },
+  "dependencies": {
+    "@oclif/core": "^4.4.0",
+    "@oclif/plugin-help": "^6.2.29",
+    "@originator-profile/core": "workspace:*",
+    "@originator-profile/cryptography": "workspace:*",
+    "@originator-profile/model": "workspace:*",
+    "@originator-profile/securing-mechanism": "workspace:*",
+    "@originator-profile/sign": "workspace:*",
+    "date-fns": "^4.1.0",
+    "http-errors-enhanced": "^3.0.2",
+    "jose": "^6.0.11",
+    "jsdom": "^26.1.0"
+  },
+  "devDependencies": {
+    "@originator-profile/tsconfig": "workspace:*",
+    "eslint": "^9.25.1",
+    "eslint-config-originator-profile": "workspace:*",
+    "oclif": "^4.20.1",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3"
+  }
+}
