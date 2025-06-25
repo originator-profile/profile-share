@@ -1,15 +1,12 @@
+import Ajv, { AnySchema, ValidationError } from "ajv";
 import addFormats from "ajv-formats";
-import Ajv from "ajv/dist/2019.js";
-import { AnySchema, ValidationError } from "ajv";
-import { UnverifiedVc, VcValidationResult, VcValidationFailure } from "./types";
 import { VcValidateFailed } from "./errors";
-import * as draft7MetaSchema from "ajv/dist/refs/json-schema-draft-07.json" with { type: "json" };
+import { UnverifiedVc, VcValidationFailure, VcValidationResult } from "./types";
 
 /** データモデルへの適合性確認のためのバリデーター */
 export function VcValidator<V extends UnverifiedVc>(jsonSchema: AnySchema) {
   const ajv = new Ajv();
   addFormats(ajv);
-  ajv.addMetaSchema(draft7MetaSchema);
   const validateVcPayload = ajv.compile(jsonSchema);
   /**
    * VC の妥当性確認
