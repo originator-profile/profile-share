@@ -1,4 +1,4 @@
-# vcop - Verifiable Credential for Originator Profile command line tool
+# opvc - Originator Profile Verifiable Credential command line tool
 
 Originator Profile (OP) 仕様に準拠した Verifiable Credential (VC) を作成・管理するためのツールです。
 
@@ -8,10 +8,10 @@ Originator Profile (OP) 仕様に準拠した Verifiable Credential (VC) を作�
 
 ```sh
 git clone https://github.com/originator-profile/profile-share.git
-cd profile-share/packages/vcop
+cd profile-share/packages/opvc
 pnpm install
 npm i -g .
-vcop
+opvc
 ```
 
 ### Using `npx` / `npm`
@@ -31,31 +31,31 @@ npm config set //npm.pkg.github.com/:_authToken YOUR_PERSONAL_ACCESS_TOKEN
 
 ```sh
 # npx
-npx -y @originator-profile/vcop
+npx -y @originator-profile/opvc
 
 # npm
-npm i -g @originator-profile/vcop
-vcop
+npm i -g @originator-profile/opvc
+opvc
 ```
 
 ## Commands
 
 <!-- prettier-ignore-start -->
 <!-- commands -->
-* [`vcop ca:sign`](#vcop-casign)
-* [`vcop ca:unsigned`](#vcop-caunsigned)
-* [`vcop help [COMMAND]`](#vcop-help-command)
-* [`vcop key-gen`](#vcop-key-gen)
-* [`vcop sign`](#vcop-sign)
-* [`vcop wsp:unsigned`](#vcop-wspunsigned)
+* [`opvc ca:sign`](#opvc-casign)
+* [`opvc ca:unsigned`](#opvc-caunsigned)
+* [`opvc help [COMMAND]`](#opvc-help-command)
+* [`opvc key-gen`](#opvc-key-gen)
+* [`opvc sign`](#opvc-sign)
+* [`opvc wsp:unsigned`](#opvc-wspunsigned)
 
-## `vcop ca:sign`
+## `opvc ca:sign`
 
 Content Attestation の作成
 
 ```
 USAGE
-  $ vcop ca:sign -i <value> --input <filepath> [--issued-at <value>] [--expired-at <value>]
+  $ opvc ca:sign -i <value> --input <filepath> [--issued-at <value>] [--expired-at <value>]
 
 FLAGS
   -i, --identity=<value>    (required) プライベート鍵のファイルパス
@@ -69,7 +69,7 @@ DESCRIPTION
   標準出力に Content Attestation を出力します。
 
 EXAMPLES
-  $ vcop ca:sign \
+  $ opvc ca:sign \
       -i account-key.example.priv.json \
       --input article-content-attestation.example.json
 
@@ -131,13 +131,13 @@ FLAG DESCRIPTIONS
     }
 ```
 
-## `vcop ca:unsigned`
+## `opvc ca:unsigned`
 
 未署名 Content Attestation の取得
 
 ```
 USAGE
-  $ vcop ca:unsigned --input <filepath> [--issued-at <value>] [--expired-at <value>]
+  $ opvc ca:unsigned --input <filepath> [--issued-at <value>] [--expired-at <value>]
 
 FLAGS
   --expired-at=<value>  有効期限 (ISO 8601)
@@ -154,7 +154,7 @@ DESCRIPTION
   これにより入力ファイルの target[] と異なる結果が含まれますが、これは正しい動作です。
 
 EXAMPLES
-  $ vcop ca:unsigned \
+  $ opvc ca:unsigned \
       --input article-content-attestation.example.json
 
 FLAG DESCRIPTIONS
@@ -210,13 +210,13 @@ FLAG DESCRIPTIONS
     }
 ```
 
-## `vcop help [COMMAND]`
+## `opvc help [COMMAND]`
 
-Display help for vcop.
+Display help for opvc.
 
 ```
 USAGE
-  $ vcop help [COMMAND...] [-n]
+  $ opvc help [COMMAND...] [-n]
 
 ARGUMENTS
   COMMAND...  Command to show help for.
@@ -225,18 +225,18 @@ FLAGS
   -n, --nested-commands  Include all nested commands in the output.
 
 DESCRIPTION
-  Display help for vcop.
+  Display help for opvc.
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.29/src/commands/help.ts)_
 
-## `vcop key-gen`
+## `opvc key-gen`
 
 鍵ペアの生成
 
 ```
 USAGE
-  $ vcop key-gen -o <value>
+  $ opvc key-gen -o <value>
 
 FLAGS
   -o, --output=<value>  (required) 鍵を保存するファイル名（拡張子除く）。<output>.priv.json と <output>.pub.json
@@ -246,13 +246,13 @@ DESCRIPTION
   鍵ペアの生成
 ```
 
-## `vcop sign`
+## `opvc sign`
 
 VC の作成
 
 ```
 USAGE
-  $ vcop sign -i <value> --input <filepath> [--id <value>] [--issued-at <value>] [--expired-at <value>]
+  $ opvc sign -i <value> --input <filepath> [--id <value>] [--issued-at <value>] [--expired-at <value>]
 
 FLAGS
   -i, --identity=<value>    (required) プライベート鍵のファイルパス
@@ -268,17 +268,17 @@ DESCRIPTION
   標準出力に VC を出力します。
 
 EXAMPLES
-  $ vcop sign \
+  $ opvc sign \
       -i example.priv.json \
       --id example.com \
       --input core-profile.json
 
-  $ vcop sign \
+  $ opvc sign \
       -i example.priv.json \
       --id example.org \
       --input web-media-profile.json
 
-  $ vcop sign \
+  $ opvc sign \
       -i account-key.example.priv.json \
       --input website-profile.example.json
 
@@ -403,13 +403,13 @@ FLAG DESCRIPTIONS
     }
 ```
 
-## `vcop wsp:unsigned`
+## `opvc wsp:unsigned`
 
 未署名 Website Profile の取得
 
 ```
 USAGE
-  $ vcop wsp:unsigned --input <filepath> [--issued-at <value>] [--expired-at <value>]
+  $ opvc wsp:unsigned --input <filepath> [--issued-at <value>] [--expired-at <value>]
 
 FLAGS
   --expired-at=<value>  有効期限 (ISO 8601)
@@ -422,7 +422,7 @@ DESCRIPTION
   標準出力に未署名 Website Profile を出力します。
 
 EXAMPLES
-  $ vcop wsp:unsigned \
+  $ opvc wsp:unsigned \
       --input website-profile.example.json
 
 FLAG DESCRIPTIONS
@@ -468,7 +468,7 @@ FLAG DESCRIPTIONS
 
 ```sh
 git clone https://github.com/originator-profile/profile-share.git
-cd profile-share/packages/vcop
+cd profile-share/packages/opvc
 pnpm install
 bin/dev.ts
 ```

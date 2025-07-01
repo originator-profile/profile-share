@@ -1,5 +1,5 @@
 {
-  "name": "@originator-profile/vcop",
+  "name": "@originator-profile/opvc",
   "version": "0.2.0-beta.2",
   "private": false,
   "type": "module",
@@ -13,7 +13,7 @@
     "default": "./dist/index.js"
   },
   "oclif": {
-    "bin": "vcop",
+    "bin": "opvc",
     "commands": "dist/commands",
     "plugins": [
       "@oclif/plugin-help"
