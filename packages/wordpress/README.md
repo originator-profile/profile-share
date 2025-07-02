@@ -263,6 +263,52 @@ Content Attestation サーバーのリクエストアウト (秒) の初期値�
 
 検証対象要素の存在する HTML の初期値です。
 
+## 既知の問題
+
+### プラグイン・フィルター・テーマによるHTMLの変形
+
+WordPressでは、投稿本文に `<!--nextpage-->` を挿入することでページ分割が可能です。ただし、プラグインやテーマ、あるいはフィルターフックの影響により、これが `<p><!--nextpage--></p>` のように不適切なマークアップで出力される場合があります。このような出力は、意図しない改行や空行の原因となります。
+
+**回避策**: 次のように置換処理を行うことで不適切なマークアップを修正できます。
+
+```php
+// includes/issue.php
+
+/**
+ * 未署名 Content Attestation の一覧の作成
+ *
+ * @param \WP_Post $post Post object.
+ * @param string   $issuer_id CA 発行者 ID
+ * @return list<Uca> 未署名 Content Attestation の一覧
+ */
+function create_uca_list( \WP_Post $post, string $issuer_id ): array {
+	// ... 省略 ...
+
+	// 置換処理を追加
+	$post->post_content = str_replace('<p><!--nextpage--></p>', '<!--nextpage-->', $post->post_content);
+
+	$postdata = \generate_postdata( $post );
+
+	// ... 省略 ...
+}
+```
+
+### Autoptimize プラグインとの競合
+
+[Autoptimize](https://ja.wordpress.org/plugins/autoptimize/)（[Pro版](https://autoptimize.com/pro/)を含む）は、HTMLや画像の最適化（minify）を行うプラグインです。これにより、以下のような問題が発生する可能性があります。
+
+#### 署名対象HTMLとの不整合
+
+Autoptimizeによるminify前のHTMLがCA Serverに送信される場合、実際に表示されるHTMLと一致せず、署名検証が失敗する可能性があります。
+
+**対応方針**: Autoptimizeのminify処理後のHTMLを調整し、それをCA Serverに送信
+
+#### Pro版CDNによる画像URLの変換
+
+Pro版では、画像がCDN経由で変換され、URLが変化する場合があります。これにより署名対象のHTMLと実際の表示内容に差異が生じます。
+
+**対応方針**: CDN変換後の画像URLを取得し、それを反映したHTMLをCA Serverに送信
+
 ## 開発ガイド
 
 開発用 WordPress サーバーを利用して動作を確認できます。
