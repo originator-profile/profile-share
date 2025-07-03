@@ -3,7 +3,7 @@
 [OP CIPサイト](https://originator-profile.org) の各ページや各コンテンツを対象とした CA ファイルを自動生成するジェネレータです。
 管理者のローカル環境での使用を前提とし、 [CA の作成](https://docs.originator-profile.org/studies/general-instruction/cas-setup-guide/#%E5%88%A5%E3%81%AE%E6%96%B9%E6%B3%95-cli-%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95) を自動化することを目的としています。
 
-<img width="800" alt="スクリーンショット" src="https://github.com/user-attachments/assets/0a995f7d-b168-4d76-936e-eda4c8e15298" />
+<img width="986" alt="Screenshot of the CAS Generator interface showing the main dashboard." src="https://github.com/user-attachments/assets/402e588c-9a4a-4c00-b23d-52ba367cd0dd" />
 
 **現時点ではまだ開発途上中です、品質については不充分な点があることをご了承ください**
 
@@ -44,6 +44,19 @@ pnpm install
 # pnpm
 pnpm dev
 ```
+
+## CASを生成するファイルを選択
+
+各コンテンツの左に配置されているチェックボックスを選択して、必要なコンテンツのみ選択することができます。
+すべてのCASを生成したい場合は、一番上のチェックボックスを選択してすべてを選択してください。
+
+<img width="466" alt="image" src="https://github.com/user-attachments/assets/54490d4e-42f9-4e7b-b81b-cdd507d610fe" />
+
+## Allowed URL Origins の設定
+
+<img width="673" alt="image" src="https://github.com/user-attachments/assets/77e942a6-ea4e-4c4b-b638-83f2d9f90afa" />
+
+もしも Allowed URL を追加したい場合、「Settings」から入力してください。
 
 ## CAS ファイルを生成
 
