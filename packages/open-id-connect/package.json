@@ -1,0 +1,43 @@
+{
+  "name": "@originator-profile/open-id-connect",
+  "version": "0.1.0",
+  "description": "OpenID Connect client implementation for Originator Profile",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch --onSuccess \"node dist/server.js\"",
+    "start": "node dist/server.js",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
+    "test": "vitest"
+  },
+  "keywords": [
+    "openid-connect",
+    "authentication",
+    "oauth2",
+    "fastify"
+  ],
+  "dependencies": {
+    "openid-client": "^5.6.5",
+    "fastify": "^4.26.2",
+    "@fastify/jwt": "^8.0.0",
+    "@fastify/cookie": "^9.3.1",
+    "@fastify/cors": "^9.0.1"
+  },
+  "devDependencies": {
+    "@originator-profile/tsconfig": "workspace:*",
+    "eslint-config-originator-profile": "workspace:*",
+    "@types/node": "^20.11.30",
+    "eslint": "^9.25.1",
+    "typescript": "^5.8.3",
+    "vitest": "^2.1.8",
+    "tsup": "^8.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": "^20.18.0 || ^22.2.0"
+  }
+}
