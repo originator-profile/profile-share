@@ -1,5 +1,5 @@
-import { FastifyPluginAsync } from 'fastify';
-import * as client from 'openid-client'
+import { FastifyPluginAsync } from "fastify";
+import * as client from "openid-client";
 
 const authRoutes: FastifyPluginAsync = async (fastify) => {
   // GET /auth/login - ログイン開始（認可URLへリダイレクト）
