@@ -1,4 +1,5 @@
 import { FastifyPluginAsync } from 'fastify';
+import * as client from 'openid-client'
 
 const authRoutes: FastifyPluginAsync = async (fastify) => {
   // GET /auth/login - ログイン開始（認可URLへリダイレクト）
@@ -14,27 +15,6 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
     console.log('GET /auth/callback endpoint called');
 
     // TODO: 認可コード処理とトークン取得を実装
-  });
-
-  // POST /auth/refresh - トークンリフレッシュ
-  fastify.post('/refresh', async (request, reply) => {
-    console.log('POST /auth/refresh endpoint called');
-
-    // TODO: トークンリフレッシュ処理を実装
-  });
-
-  // GET /auth/logout - ログアウト
-  fastify.get('/logout', async (request, reply) => {
-    console.log('GET /auth/logout endpoint called');
-
-    // TODO: ログアウト処理を実装
-  });
-
-  // GET /auth/status - 認証状態確認
-  fastify.get('/status', async (request, reply) => {
-    console.log('GET /auth/status endpoint called');
-
-    // TODO: 認証状態確認処理を実装
   });
 };
 
