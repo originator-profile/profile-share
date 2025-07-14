@@ -1,13 +1,13 @@
-import Fastify from 'fastify';
-import { FastifyInstance } from 'fastify';
+import Fastify from "fastify";
+import { FastifyInstance } from "fastify";
 
 export const createServer = (): FastifyInstance => {
   const fastify = Fastify({
-    logger: true
+    logger: true,
   });
 
   fastify.register(async function (fastify) {
-    await fastify.register(import('./routes/auth'), { prefix: '/auth' });
+    await fastify.register(import("./routes/auth"), { prefix: "/auth" });
   });
 
   return fastify;
@@ -19,10 +19,10 @@ if (require.main === module) {
 
   const start = async () => {
     try {
-      console.log('Starting OpenID Connect server...');
-      await server.listen({ port: 3000, host: '0.0.0.0' });
-      console.log('Server is running on http://localhost:3000');
-      console.log('Login endpoint: http://localhost:3000/auth/login');
+      console.log("Starting OpenID Connect server...");
+      await server.listen({ port: 3000, host: "0.0.0.0" });
+      console.log("Server is running on http://localhost:3000");
+      console.log("Login endpoint: http://localhost:3000/auth/login");
     } catch (err) {
       server.log.error(err);
       process.exit(1);
