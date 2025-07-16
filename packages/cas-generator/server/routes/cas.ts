@@ -2,7 +2,7 @@ import { exec } from "child_process";
 import fs from "fs";
 import { createEventStream } from "h3";
 import postHTMLFiles from "../utils/postHTMLFiles";
-import { opcipName, ogpImageURL } from "../constants";
+import { opcipName, ogpImageURL } from "#shared/constants";
 import { OpSiteInfo } from "../domain/originatorProfileSite";
 
 /**
