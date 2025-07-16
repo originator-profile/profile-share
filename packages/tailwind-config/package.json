@@ -6,7 +6,7 @@
   "main": "./style.css",
   "exports": "./style.css",
   "dependencies": {
-    "@jumpu-ui/tailwindcss": "v2.0.0-alpha.3",
+    "@jumpu-ui/tailwindcss": "2.0.0",
     "@tailwindcss/typography": "^0.5.16"
   },
   "devDependencies": {
