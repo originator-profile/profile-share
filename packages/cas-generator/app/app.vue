@@ -206,7 +206,7 @@
 </template>
 
 <script setup>
-import { defaultAllowedURLOriginss } from "./server/constants";
+import { defaultAllowedURLOriginss } from "#shared/constants";
 import { useStorage } from "@vueuse/core";
 const scrollSection = ref(null);
 const body = ref([]);
