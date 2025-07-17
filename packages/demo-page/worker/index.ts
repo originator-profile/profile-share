@@ -8,7 +8,7 @@ type Lang = (typeof LANGS)[number];
 function detectLangFromRequest(request: Request): Lang | null {
   const referer = request.headers.get("Referer") ?? "";
   const path = new URL(request.url).pathname;
-  const sources = [referer, path];
+  const sources = [path, referer];
 
   for (const src of sources) {
     if (!src) continue;
