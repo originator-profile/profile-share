@@ -7,7 +7,6 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        index: path.resolve(__dirname, "index.html"),
         "ja/index": path.resolve(__dirname, "ja/index.html"),
         "en/index": path.resolve(__dirname, "en/index.html"),
       },
