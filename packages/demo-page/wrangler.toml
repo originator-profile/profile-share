@@ -1,6 +1,7 @@
 name = "demo-exp"
 account_id = "${CF_ACCOUNT_ID}"
 compatibility_date = "2025-07-03"
+main = "./worker/index.ts"
 routes = [
   { pattern = "demo.exp.originator-profile.org", custom_domain = true }
 ]
