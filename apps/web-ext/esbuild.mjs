@@ -1,9 +1,10 @@
+// @ts-check
+
+import chokidar from "chokidar";
 import { execSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import util from "node:util";
-// @ts-check
-import chokidar from "chokidar";
 
 const options = /** @type {const} */ ({
   mode: {
