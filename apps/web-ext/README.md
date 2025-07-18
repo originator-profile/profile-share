@@ -47,11 +47,14 @@ $ pnpm dev --registry-url=https://oprexpt.originator-profile.org/ --url=https://
 - `BASIC_AUTH`: レジストリ API の Basic 認証 (形式: `true` or `false`)
 - `BASIC_AUTH_USERNAME`: 開発用レジストリ API の Basic 認証のユーザー名
 - `BASIC_AUTH_PASSWORD`: 開発用レジストリ API の Basic 認証のパスワード
-- `REGISTRY_OPS`: Core Profile 発行者の Originator Profile Set
+- `BASIC_AUTH_CREDENTIALS`: Basic 認証の認証情報 (形式: JSON)
+- `REGISTRY_OPS`: Core Profile 発行者の Originator Profile Set (環境変数 `CI` が設定されている場合は必須)
 
 ## 認証情報
 
-拡張機能をビルドする際、`credentials.json` JSON ファイルがあれば、その内容に基づいて拡張機能に認証情報を同梱し、Basic 認証に使用します。JSON ファイルは次の形式です。
+拡張機能をビルドする際、環境変数 `BASIC_AUTH_CREDENTIALS` があれば、その内容に基づいて拡張機能に認証情報を同梱し、Basic 認証に使用します。
+
+形式:
 
 ```jsonc
 [
@@ -61,10 +64,16 @@ $ pnpm dev --registry-url=https://oprexpt.originator-profile.org/ --url=https://
     // ユーザー名
     "username": "alice",
     // パスワード
-    "password" "password"
+    "password": "password",
   },
   // ...
 ]
+```
+
+実行例:
+
+```
+$ BASIC_AUTH_CREDENTIALS=$(cat credentials.json) pnpm build
 ```
 
 ## Originator ProfileレジストリのOPを同梱する
