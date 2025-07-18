@@ -50,7 +50,7 @@ jobs:
         run: pnpm publish --access restricted --recursive
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - if: github.event.inputs.release_type == 'release' && github.event.inputs.version != 'prerelease'
+      - if: github.ref == 'refs/heads/main' && github.event.inputs.release_type == 'release' && github.event.inputs.version != 'prerelease'
         name: Next Release
         run: |
           pnpm exec lerna version --force-publish --preid=beta --yes preminor
