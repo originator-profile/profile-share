@@ -4,7 +4,6 @@ inputs:
   BASIC_AUTH:
     description: レジストリ API の Basic 認証
     required: true
-    default: "true"
   BASIC_AUTH_CREDENTIALS:
     description: レジストリ API の Basic 認証情報 (JSON 文字列)
     required: true
