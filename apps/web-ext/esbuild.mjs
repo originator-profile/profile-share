@@ -1,7 +1,7 @@
 // @ts-check
+
 import chokidar from "chokidar";
 import { execSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import util from "node:util";
@@ -63,12 +63,10 @@ const filename = `{name}-${args.values.target}-{version}.zip`;
 const artifactsDir = "web-ext-artifacts";
 const cwd = path.dirname(fileURLToPath(new URL(import.meta.url)));
 const outdir = path.join(cwd, `dist-${args.values.target}`);
-const credentialsPath = path.join(cwd, "credentials.json");
 /** @type {ImportMeta["env"]["BASIC_AUTH_CREDENTIALS"]} */
 let credentials = [];
-if (existsSync(credentialsPath)) {
-  const file = readFileSync(credentialsPath, { encoding: "utf8" });
-  credentials = JSON.parse(file);
+if (process.env.BASIC_AUTH_CREDENTIALS) {
+  credentials = JSON.parse(process.env.BASIC_AUTH_CREDENTIALS);
 } else if (args.values.mode === "development") {
   credentials = [
     {
@@ -112,6 +110,20 @@ const env = {
   BASIC_AUTH_CREDENTIALS: process.env.BASIC_AUTH === "true" ? credentials : [],
   REGISTRY_OPS: registryOps,
 };
+
+if (env.BASIC_AUTH && env.BASIC_AUTH_CREDENTIALS.length === 0) {
+  throw new Error(
+    "BASIC_AUTH is enabled but BASIC_AUTH_CREDENTIALS is not set. Please set BASIC_AUTH_CREDENTIALS environment variable.",
+  );
+}
+
+if (env.REGISTRY_OPS.length === 0) {
+  console.warn(
+    "REGISTRY_OPS is empty. Please set REGISTRY_OPS environment variable.",
+  );
+
+  if (process.env.CI) process.exit(1);
+}
 
 import esbuild from "esbuild";
 import copy from "esbuild-copy-static-files";

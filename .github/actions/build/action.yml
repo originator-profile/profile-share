@@ -7,25 +7,25 @@ inputs:
     default: "true"
   BASIC_AUTH_CREDENTIALS:
     description: レジストリ API の Basic 認証情報 (JSON 文字列)
-    required: false
-    default: ""
+    required: true
   REGISTRY_OPS:
     description: Originator Profile Set
     required: true
+outputs:
+  artifact-url:
+    description: URL of the built artifact
+    value: ${{ steps.upload.outputs.artifact-url }}
 runs:
   using: composite
   steps:
-    - run: echo "${BASIC_AUTH_CREDENTIALS}" > apps/web-ext/credentials.json
-      shell: bash
-      if: ${{ inputs.BASIC_AUTH_CREDENTIALS != '' }}
-      env:
-        BASIC_AUTH_CREDENTIALS: ${{ inputs.BASIC_AUTH_CREDENTIALS }}
     - run: pnpm build
       shell: bash
       env:
         BASIC_AUTH: ${{ inputs.BASIC_AUTH }}
+        BASIC_AUTH_CREDENTIALS: ${{ inputs.BASIC_AUTH_CREDENTIALS }}
         REGISTRY_OPS: ${{ inputs.REGISTRY_OPS }}
-    - uses: actions/upload-artifact@v4
+    - id: upload
+      uses: actions/upload-artifact@v4
       with:
         name: web-ext
         path: apps/web-ext/web-ext-artifacts*
