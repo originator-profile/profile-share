@@ -56,7 +56,16 @@ function profile_settings_section() {
 	?>
 		<p>これらの設定が完了しないと Content Attestation (CA) の発行機能は正しく動作しません。正しく設定が反映されると、それ以降に更新した投稿と新規投稿は自動的にCAサーバーに送信されます。</p>
 		<p>
-			<strong>⚠️ 重要な注意事項：</strong> WordPressの<a href="<?php echo \esc_url( \get_admin_url( null, 'options-permalink.php' ) ); ?>" target="_blank">パーマリンク設定</a>を変更すると、各記事のURLが変更されるため、既に発行済みのCAは無効となります。パーマリンク設定を運用開始後に変更することは避け、もしパーマリンク設定を変更した場合は全ての投稿を再度更新 (編集・保存) してCAを再発行してください。
+			<strong>⚠️ 重要な注意事項：</strong>
+			WordPressの
+			<a
+				href="<?php echo \esc_url( \get_admin_url( null, 'options-permalink.php' ) ); ?>"
+				target="_blank"
+			>
+				パーマリンク設定
+			</a>
+			を変更すると、各記事のURLが変更されるため、既に発行済みのCAは無効となります。
+			パーマリンク設定を運用開始後に変更することは避け、もしパーマリンク設定を変更した場合は全ての投稿を再度更新 (編集・保存) してCAを再発行してください。
 		</p>
 	<?php
 }
