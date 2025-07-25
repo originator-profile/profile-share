@@ -1,4 +1,4 @@
-# CA Manager
+# WordPressプラグイン (CA Manager)
 
 WordPress での記事の公開時の Content Attestation (CA) の発行に役立つプラグインです。
 
@@ -13,7 +13,11 @@ WordPress での記事の公開時の Content Attestation (CA) の発行に役�
 
 ## デモ
 
-プラグインインストール済みの試験用環境 [op.cms.am](https://op.cms.am) にて運用しています。
+プラグインインストール済みの試験用環境を用意しています。
+
+- https://op.cms.am/ (最新のメイン試験環境)
+
+デモサイトの編集権限が必要な方は開発チームに相談してください。
 
 ## プラグインのインストール
 
@@ -192,7 +196,7 @@ HTML中にscript要素を用いてOPを埋め込むことが可能です。
 </script>
 ```
 
-詳細は「[サイトのOP対応](https://docs.originator-profile.org/studies/general-instruction/sp-setup-guide/)」または「[Linking Content Attestation Set and Originator Profile Set to A HTML Document](https://docs.originator-profile.org/rfc/link-to-html/)」をご確認ください。
+詳細は「[サイトのOP対応](https://docs.originator-profile.org/studies/general-instruction/sp-setup-guide/)」または「[Linking Content Attestation Set and Originator Profile Set to A HTML Document](https://docs.originator-profile.org/opb/link-to-html/)」をご確認ください。
 
 ## 処理の流れ
 
