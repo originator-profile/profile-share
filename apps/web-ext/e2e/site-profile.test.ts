@@ -9,17 +9,11 @@ import { mergeTests } from "@playwright/test";
 const test = mergeTests(base, siteProfileTest, staticHtmlTest).extend({});
 
 const cwd = path.dirname(fileURLToPath(new URL(import.meta.url)));
-const privKeyPath = path.join(
-  cwd,
-  "../../registry/account-key.example.priv.json",
-);
+const privKeyPath = path.join(cwd, "./account-key.example.priv.json");
 const privKeyBuffer = await fs.readFile(privKeyPath);
 const privateKey = JSON.parse(privKeyBuffer.toString());
 
-const pubKeyPath = path.join(
-  cwd,
-  "../../registry/account-key.example.pub.json",
-);
+const pubKeyPath = path.join(cwd, "./account-key.example.pub.json");
 const pubKeyBuffer = await fs.readFile(pubKeyPath);
 const publicKey = JSON.parse(pubKeyBuffer.toString());
 test("Site Profile を取得検証できる", async ({

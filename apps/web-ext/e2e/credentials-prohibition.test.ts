@@ -15,17 +15,11 @@ const test = mergeTests(
 ).extend({});
 
 const cwd = path.dirname(fileURLToPath(new URL(import.meta.url)));
-const privKeyPath = path.join(
-  cwd,
-  "../../registry/account-key.example.priv.json",
-);
+const privKeyPath = path.join(cwd, "./account-key.example.priv.json");
 const privKeyBuffer = await fs.readFile(privKeyPath);
 const privateKey = JSON.parse(privKeyBuffer.toString());
 
-const pubKeyPath = path.join(
-  cwd,
-  "../../registry/account-key.example.pub.json",
-);
+const pubKeyPath = path.join(cwd, "./account-key.example.pub.json");
 const pubKeyBuffer = await fs.readFile(pubKeyPath);
 const publicKey = JSON.parse(pubKeyBuffer.toString());
 test("CASの検証に失敗した場合に閲覧禁止が表示されるか", async ({
