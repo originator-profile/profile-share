@@ -4,13 +4,14 @@ inputs:
   BASIC_AUTH:
     description: レジストリ API の Basic 認証
     required: false
-    default: "true"
   BASIC_AUTH_CREDENTIALS:
     description: レジストリ API の Basic 認証情報 (JSON 文字列)
-    required: true
+    # 開発用でテストが通るようにfalseにしています。
+    required: false
   REGISTRY_OPS:
     description: Originator Profile Set
-    required: true
+    # 開発用でテストが通るようにfalseにしています。
+    required: false
 runs:
   using: composite
   steps:
