@@ -1,6 +1,6 @@
 import { expect, popup, test as base } from "./fixtures";
-import privateKey from "./account-key.example.priv.json" assert { type: "json" };
-import publicKey from "./account-key.example.pub.json" assert { type: "json" };
+import privateKey from "./account-key.example.priv.json" with { type: "json" };
+import publicKey from "./account-key.example.pub.json" with { type: "json" };
 import { mergeTests } from "@playwright/test";
 import { test as siteProfileTest } from "./site-profile-fixtures";
 import { test as staticHtmlTest } from "./static-html-fixtures";
