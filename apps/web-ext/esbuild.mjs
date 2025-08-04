@@ -81,12 +81,9 @@ let registryOps = [];
 if (process.env.REGISTRY_OPS) {
   registryOps = JSON.parse(process.env.REGISTRY_OPS);
 } else if (args.values.mode === "development") {
-  const privKeyPath = path.join(
-    cwd,
-    "../registry/account-key.example.priv.json",
-  );
-  const commandBinaryPath = path.join(cwd, "../registry/bin/run");
-  const cpPath = path.join(cwd, "../registry/cp.example.json");
+  const privKeyPath = path.join(cwd, "e2e/account-key.example.priv.json");
+  const commandBinaryPath = path.join(cwd, "../../packages/opvc/bin/dev.ts");
+  const cpPath = path.join(cwd, "./cp.example.json");
   const signedCoreProfile = execSync(
     `${commandBinaryPath} sign -i ${privKeyPath} --input ${cpPath} --id localhost`,
   )

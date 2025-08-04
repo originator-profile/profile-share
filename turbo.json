@@ -13,9 +13,11 @@
       ]
     },
     "dev": {
+      "persistent": true,
       "cache": false
     },
     "e2e": {
+      "persistent": false,
       "cache": false
     },
     "test": {
