@@ -3,6 +3,11 @@
 
 namespace Profile\Post;
 
+if ( ! function_exists( 'WP_Filesystem' ) ) {
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+}
+WP_Filesystem();
+
 /** 投稿閲覧画面の初期化 */
 function init() {
 	\add_action( 'wp_head', '\Profile\Post\cas_script' );
@@ -26,7 +31,27 @@ function cas_script() {
 		return;
 	}
 
-	echo '<script type="application/cas+json">' . \wp_json_encode( $cas ) . '</script>' . PHP_EOL;
+	$embedded_or_external = \get_option( 'profile_ca_embedded_or_external' );
+
+	switch ( $embedded_or_external ) {
+		case 'embedded':
+			echo '<script type="application/cas+json">' . \wp_json_encode( $cas ) . '</script>' . PHP_EOL;
+			break;
+		case 'external':
+			global $wp_filesystem;
+			$dir = 'cas/';
+			if ( ! file_exists( $dir ) ) {
+				$wp_filesystem->mkdir( $dir );
+			}
+			$filename = "{$dir}{$post_id}_cas.json";
+			$wp_filesystem->put_contents( $filename, \wp_json_encode( $cas ), FS_CHMOD_FILE );
+
+			$url      = \home_url();
+			$endpoint = "{$url}/{$filename}";
+
+			echo '<script src="' . \esc_url( $endpoint ) . '" type="application/cas+json"></script>' . PHP_EOL;
+			break;
+	}
 }
 
 /**
