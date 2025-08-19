@@ -153,9 +153,7 @@ TextTargetIntegrity
 
 ```html
 <script type="application/cas+json">
-  [
-    "eyJ..."
-  ]
+  ["eyJ..."]
 </script>
 ```
 
@@ -173,12 +171,11 @@ TextTargetIntegrity
 <script
   src="https://example.com/cas/1_cas.json"
   type="application/cas+json"
->
-</script>
+></script>
 ```
 
 ※ドキュメントルート配下にcasディレクトリが存在しない場合、casディレクトリが作成されます。
-  また、ポストidが同一の場合、静的ファイルは上書きされます。
+また、ポストidが同一の場合、静的ファイルは上書きされます。
 
 確認方法:
 
