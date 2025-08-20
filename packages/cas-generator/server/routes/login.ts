@@ -32,18 +32,13 @@ export default defineEventHandler(async (event) => {
     const codeVerifier = client.randomPKCECodeVerifier();
     const codeChallenge = await client.calculatePKCECodeChallenge(codeVerifier);
 
-    // setCookie(event, 'code_verifier', codeVerifier, {
-    //   httpOnly: true,
-    //   secure: process.env.NODE_ENV === 'production',
-    //   sameSite: 'lax',
-    //   maxAge: 600 // 10 minutes
-    // });
 
     const parameters: Record<string, string> = {
       redirect_uri: REDIRECT_URI,
       scope: 'openid',
       code_challenge: codeChallenge,
       code_challenge_method: 'S256',
+      nonce: client.randomState(),
     };
 
     if (!oauthConfig.serverMetadata().supportsPKCE()) {

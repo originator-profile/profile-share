@@ -22,7 +22,7 @@ export default defineNuxtConfig({
     VC_OUTPUT_PATH: process.env.VC_OUTPUT_PATH,
     CAS_OUTPUT_PATH: process.env.CAS_OUTPUT_PATH,
     PRIVATE_KEY_PATH: process.env.PRIVATE_KEY_PATH,
-    // Authorization　Code Flowに必要な環境変数
+    // 認証サーバーに必要な環境変数
     ISSUER: process.env.ISSUER,
     AUTHORIZATION_ENDPOINT: process.env.AUTHORIZATION_ENDPOINT,
     CLIENT_ID: process.env.CLIENT_ID,
