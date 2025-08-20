@@ -1,16 +1,22 @@
-import * as client from 'openid-client'
-import {Configuration} from 'openid-client';
+import * as client from "openid-client";
+import { Configuration } from "openid-client";
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event);
-  const ISSUER = config.ISSUER
-  const AUTHORIZATION_ENDPOINT = config.AUTHORIZATION_ENDPOINT
-  const CLIENT_ID = config.CLIENT_ID
-  const CLIENT_SECRET = config.CLIENT_SECRET
-  const REDIRECT_URI = config.REDIRECT_URI
+  const ISSUER = config.ISSUER;
+  const AUTHORIZATION_ENDPOINT = config.AUTHORIZATION_ENDPOINT;
+  const CLIENT_ID = config.CLIENT_ID;
+  const CLIENT_SECRET = config.CLIENT_SECRET;
+  const REDIRECT_URI = config.REDIRECT_URI;
 
   // 環境変数が設定されているかチェック
-  if (!ISSUER || !AUTHORIZATION_ENDPOINT || !CLIENT_ID || !CLIENT_SECRET || !REDIRECT_URI){
+  if (
+    !ISSUER ||
+    !AUTHORIZATION_ENDPOINT ||
+    !CLIENT_ID ||
+    !CLIENT_SECRET ||
+    !REDIRECT_URI
+  ) {
     throw createError({
       statusCode: 500,
       message: "必要な環境変数が設定されていません",
@@ -21,13 +27,13 @@ export default defineEventHandler(async (event) => {
     const oauthConfig = new Configuration(
       {
         issuer: ISSUER,
-        authorization_endpoint: AUTHORIZATION_ENDPOINT
+        authorization_endpoint: AUTHORIZATION_ENDPOINT,
       },
       CLIENT_ID,
       {
-        client_secret: CLIENT_SECRET
-      }
-    )
+        client_secret: CLIENT_SECRET,
+      },
+    );
 
     const codeVerifier = client.randomPKCECodeVerifier();
     const codeChallenge = await client.calculatePKCECodeChallenge(codeVerifier);
@@ -35,15 +41,15 @@ export default defineEventHandler(async (event) => {
 
     const parameters: Record<string, string> = {
       redirect_uri: REDIRECT_URI,
-      scope: 'openid',
+      scope: "openid",
       code_challenge: codeChallenge,
-      code_challenge_method: 'S256',
+      code_challenge_method: "S256",
       nonce: client.randomState(),
     };
 
     if (!oauthConfig.serverMetadata().supportsPKCE()) {
-      const state = client.randomState()
-      parameters.state = state
+      const state = client.randomState();
+      parameters.state = state;
     }
 
     const redirectTo = client.buildAuthorizationUrl(oauthConfig, parameters);

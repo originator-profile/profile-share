@@ -27,7 +27,7 @@ export default defineNuxtConfig({
     AUTHORIZATION_ENDPOINT: process.env.AUTHORIZATION_ENDPOINT,
     CLIENT_ID: process.env.CLIENT_ID,
     CLIENT_SECRET: process.env.CLIENT_SECRET,
-    REDIRECT_URI: process.env.REDIRECT_URI
+    REDIRECT_URI: process.env.REDIRECT_URI,
   },
 
   // NOTE: unenv@2.0.0-rc.15 + cloudflare の組み合わせで問題あり
