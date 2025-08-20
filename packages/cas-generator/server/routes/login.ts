@@ -38,7 +38,6 @@ export default defineEventHandler(async (event) => {
     const codeVerifier = client.randomPKCECodeVerifier();
     const codeChallenge = await client.calculatePKCECodeChallenge(codeVerifier);
 
-
     const parameters: Record<string, string> = {
       redirect_uri: REDIRECT_URI,
       scope: "openid",
