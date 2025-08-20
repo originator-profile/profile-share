@@ -44,7 +44,7 @@ export default defineEventHandler(async (event) => {
       scope: "openid",
       code_challenge: codeChallenge,
       code_challenge_method: "S256",
-      nonce: client.randomState(),
+      nonce: client.randomNonce(),
     };
 
     if (!oauthConfig.serverMetadata().supportsPKCE()) {
