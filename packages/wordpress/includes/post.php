@@ -11,6 +11,9 @@ WP_Filesystem();
 require_once __DIR__ . '/debug.php';
 use function Profile\Debug\debug;
 
+require_once __DIR__ . '/config.php';
+use const Profile\Config\PROFILE_DEFAULT_CA_EXTERNAL_DIR;
+
 /** 投稿閲覧画面の初期化 */
 function init() {
 	\add_action( 'wp_head', '\Profile\Post\cas_script' );
@@ -42,7 +45,8 @@ function cas_script() {
 			break;
 		case 'external':
 			global $wp_filesystem;
-			$dir = ABSPATH . 'cas/';
+			$dir_name = PROFILE_DEFAULT_CA_EXTERNAL_DIR;
+			$dir      = ABSPATH . "{$dir_name}/";
 			if ( ! $wp_filesystem->exists( $dir ) ) {
 				if ( ! $wp_filesystem->mkdir( $dir ) ) {
 					debug( "Failed to create directory: {$dir}" );
@@ -50,14 +54,17 @@ function cas_script() {
 				}
 			}
 			$filename     = "{$post_id}_cas.json";
-			$write_result = $wp_filesystem->put_contents( "{$dir}{$filename}", \wp_json_encode( $cas ), FS_CHMOD_FILE );
-			if ( ! $write_result ) {
-				debug( "Failed to write JSON file: {$filename}" );
-				return;
+			$existing_cas = $wp_filesystem->get_contents( "{$dir}{$filename}" );
+			if ( \wp_json_encode( $cas ) !== $existing_cas ) {
+				$write_result = $wp_filesystem->put_contents( "{$dir}{$filename}", \wp_json_encode( $cas ), FS_CHMOD_FILE );
+				if ( ! $write_result ) {
+					debug( "Failed to write JSON file: {$filename}" );
+					return;
+				}
 			}
 
 			$url      = \home_url();
-			$endpoint = "{$url}/cas/{$filename}";
+			$endpoint = "{$url}/{$dir_name}/{$filename}";
 
 			echo '<script src="' . \esc_url( $endpoint ) . '" type="application/cas+json"></script>' . PHP_EOL;
 			break;

@@ -28,7 +28,7 @@ function register_settings() {
 	\register_setting( 'ca-manager', 'profile_ca_target_type', array( 'default' => PROFILE_DEFAULT_CA_TARGET_TYPE ) );
 	\register_setting( 'ca-manager', 'profile_ca_target_css_selector', array( 'default' => PROFILE_DEFAULT_CA_TARGET_CSS_SELECTOR ) );
 	\register_setting( 'ca-manager', 'profile_ca_target_html', array( 'default' => PROFILE_DEFAULT_CA_TARGET_HTML ) );
-	\register_setting( 'ca-manager', 'profile_ca_embedded_or_external' );
+	\register_setting( 'ca-manager', 'profile_ca_embedded_or_external', array( 'default' => 'embedded' ) );
 	\add_settings_section( 'profile_settings', '設定', '\Profile\Admin\profile_settings_section', 'ca-manager' );
 	\add_settings_field( 'profile_ca_issuer_id', 'CA issuer\'s Originator Profile ID', '\Profile\Admin\profile_ca_issuer_id_field', 'ca-manager', 'profile_settings' );
 	\add_settings_field( 'profile_ca_server_hostname', 'CAサーバーホスト名', '\Profile\Admin\profile_ca_server_hostname_field', 'ca-manager', 'profile_settings' );
@@ -164,28 +164,29 @@ function profile_ca_target_html_field() {
 
 /** CA Presentation Type フィールド*/
 function profile_ca_embedded_or_external_field() {
-	echo '<style>
-			.radio-item { margin-right:65px; }
-		</style>'
 	?>
+	<p>
 		<label for="embedded" class="radio-item">
 		<input 
 			type="radio"
 			id="embedded"
 			name="profile_ca_embedded_or_external"
 			value="embedded"
-			<?php echo \esc_attr( \get_option( 'profile_ca_embedded_or_external' ) === 'embedded' ) ? 'checked' : ''; ?>
+			<?php checked( \get_option( 'profile_ca_embedded_or_external' ), 'embedded' ); ?>
 		/>
 		Embedded</label>
+	</p>
+	<p>
 		<label for="external" class="radio-item">
 		<input 
 			type="radio"
 			id="external"
 			name="profile_ca_embedded_or_external"
 			value="external"
-			<?php echo \esc_attr( \get_option( 'profile_ca_embedded_or_external' ) === 'external' ) ? 'checked' : ''; ?>
+			<?php checked( \get_option( 'profile_ca_embedded_or_external' ), 'external' ); ?>
 		/>
 		External</label>
+	</p>
 	<?php
 }
 
