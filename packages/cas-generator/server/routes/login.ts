@@ -27,27 +27,33 @@ export default defineEventHandler(async (event) => {
   console.info("OAuth login route accessed");
 
   try {
-    const oauthConfig = newOauthConfig(ISSUER, AUTHORIZATION_ENDPOINT, TOKEN_ENDPOINT, CLIENT_ID, CLIENT_SECRET);
+    const oauthConfig = newOauthConfig(
+      ISSUER,
+      AUTHORIZATION_ENDPOINT,
+      TOKEN_ENDPOINT,
+      CLIENT_ID,
+      CLIENT_SECRET,
+    );
 
     const codeVerifier = client.randomPKCECodeVerifier();
     const codeChallenge = await client.calculatePKCECodeChallenge(codeVerifier);
     const state = client.randomState();
 
     // codeVerifierとstateをcookieに保存
-    setCookie(event, 'pkce_code_verifier', codeVerifier, {
+    setCookie(event, "pkce_code_verifier", codeVerifier, {
       httpOnly: true,
       secure: false,
-      sameSite: 'lax',
+      sameSite: "lax",
       maxAge: 600,
-      path: '/'
+      path: "/",
     });
 
-    setCookie(event, 'oauth_state', state, {
+    setCookie(event, "oauth_state", state, {
       httpOnly: true,
       secure: false,
-      sameSite: 'lax',
+      sameSite: "lax",
       maxAge: 600,
-      path: '/'
+      path: "/",
     });
 
     const parameters: Record<string, string> = {

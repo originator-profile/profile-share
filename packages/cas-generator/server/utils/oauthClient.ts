@@ -7,15 +7,15 @@ export const newOauthConfig = (
   CLIENT_ID: string,
   CLIENT_SECRET: string,
 ) => {
-const oauthConfig = new Configuration(
-  {
-    issuer: ISSUER,
-    authorization_endpoint: AUTHORIZATION_ENDPOINT,
-    token_endpoint: TOKEN_ENDPOINT,
-  },
-  CLIENT_ID,
-  {
-    client_secret: CLIENT_SECRET,
+  const oauthConfig = new Configuration(
+    {
+      issuer: ISSUER,
+      authorization_endpoint: AUTHORIZATION_ENDPOINT,
+      token_endpoint: TOKEN_ENDPOINT,
+    },
+    CLIENT_ID,
+    {
+      client_secret: CLIENT_SECRET,
     },
   );
 
