@@ -1,10 +1,11 @@
 import * as client from "openid-client";
-import { Configuration } from "openid-client";
+import { newOauthConfig } from "../utils/oauthClient";
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event);
   const ISSUER = config.ISSUER;
   const AUTHORIZATION_ENDPOINT = config.AUTHORIZATION_ENDPOINT;
+  const TOKEN_ENDPOINT = config.TOKEN_ENDPOINT;
   const CLIENT_ID = config.CLIENT_ID;
   const CLIENT_SECRET = config.CLIENT_SECRET;
   const REDIRECT_URI = config.REDIRECT_URI;
@@ -13,6 +14,7 @@ export default defineEventHandler(async (event) => {
   if (
     !ISSUER ||
     !AUTHORIZATION_ENDPOINT ||
+    !TOKEN_ENDPOINT ||
     !CLIENT_ID ||
     !CLIENT_SECRET ||
     !REDIRECT_URI
@@ -23,20 +25,30 @@ export default defineEventHandler(async (event) => {
     });
   }
   console.info("OAuth login route accessed");
+
   try {
-    const oauthConfig = new Configuration(
-      {
-        issuer: ISSUER,
-        authorization_endpoint: AUTHORIZATION_ENDPOINT,
-      },
-      CLIENT_ID,
-      {
-        client_secret: CLIENT_SECRET,
-      },
-    );
+    const oauthConfig = newOauthConfig(ISSUER, AUTHORIZATION_ENDPOINT, TOKEN_ENDPOINT, CLIENT_ID, CLIENT_SECRET);
 
     const codeVerifier = client.randomPKCECodeVerifier();
     const codeChallenge = await client.calculatePKCECodeChallenge(codeVerifier);
+    const state = client.randomState();
+
+    // codeVerifierとstateをcookieに保存
+    setCookie(event, 'pkce_code_verifier', codeVerifier, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+      maxAge: 600,
+      path: '/'
+    });
+
+    setCookie(event, 'oauth_state', state, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+      maxAge: 600,
+      path: '/'
+    });
 
     const parameters: Record<string, string> = {
       redirect_uri: REDIRECT_URI,
@@ -44,15 +56,10 @@ export default defineEventHandler(async (event) => {
       code_challenge: codeChallenge,
       code_challenge_method: "S256",
       nonce: client.randomNonce(),
+      state: state,
     };
 
-    if (!oauthConfig.serverMetadata().supportsPKCE()) {
-      const state = client.randomState();
-      parameters.state = state;
-    }
-
     const redirectTo = client.buildAuthorizationUrl(oauthConfig, parameters);
-    console.log("Redirecting to authorization server:", redirectTo);
 
     return sendRedirect(event, redirectTo.href);
   } catch (error) {

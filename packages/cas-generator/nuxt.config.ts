@@ -25,6 +25,7 @@ export default defineNuxtConfig({
     // 認証サーバーに必要な環境変数
     ISSUER: process.env.ISSUER,
     AUTHORIZATION_ENDPOINT: process.env.AUTHORIZATION_ENDPOINT,
+    TOKEN_ENDPOINT: process.env.TOKEN_ENDPOINT,
     CLIENT_ID: process.env.CLIENT_ID,
     CLIENT_SECRET: process.env.CLIENT_SECRET,
     REDIRECT_URI: process.env.REDIRECT_URI,
