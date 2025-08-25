@@ -29,8 +29,8 @@ export default defineEventHandler(async (event) => {
 
   const query = getQuery(event);
 
-  const codeVerifier = getCookie(event, 'pkce_code_verifier');
-  const expectedState = getCookie(event, 'oauth_state');
+  const codeVerifier = getCookie(event, "pkce_code_verifier");
+  const expectedState = getCookie(event, "oauth_state");
 
   if (!codeVerifier) {
     console.error("codeVerifier not found");
@@ -51,26 +51,39 @@ export default defineEventHandler(async (event) => {
   try {
     const currentUrl = new URL(REDIRECT_URI);
     Object.entries(query).forEach(([key, value]) => {
-      if (typeof value === 'string') {
+      if (typeof value === "string") {
         currentUrl.searchParams.set(key, value);
       }
     });
 
     // TODO: 削除
-    console.log("token parameters:", JSON.stringify({
-      ISSUER,
-      AUTHORIZATION_ENDPOINT,
-      TOKEN_ENDPOINT,
-      CLIENT_ID,
-      CLIENT_SECRET,
-      REDIRECT_URI,
-      currentUrl,
-      codeVerifier,
-      expectedState,
-    }, null, 2));
+    console.log(
+      "token parameters:",
+      JSON.stringify(
+        {
+          ISSUER,
+          AUTHORIZATION_ENDPOINT,
+          TOKEN_ENDPOINT,
+          CLIENT_ID,
+          CLIENT_SECRET,
+          REDIRECT_URI,
+          currentUrl,
+          codeVerifier,
+          expectedState,
+        },
+        null,
+        2,
+      ),
+    );
 
     const tokens = await client.authorizationCodeGrant(
-      newOauthConfig(ISSUER, AUTHORIZATION_ENDPOINT, TOKEN_ENDPOINT, CLIENT_ID, CLIENT_SECRET),
+      newOauthConfig(
+        ISSUER,
+        AUTHORIZATION_ENDPOINT,
+        TOKEN_ENDPOINT,
+        CLIENT_ID,
+        CLIENT_SECRET,
+      ),
       currentUrl,
       {
         pkceCodeVerifier: codeVerifier,
@@ -82,11 +95,11 @@ export default defineEventHandler(async (event) => {
     console.log("tokens:", tokens);
 
     // 使用済みのcookieを削除
-    deleteCookie(event, 'pkce_code_verifier', {
-      path: '/'
+    deleteCookie(event, "pkce_code_verifier", {
+      path: "/",
     });
-    deleteCookie(event, 'oauth_state', {
-      path: '/'
+    deleteCookie(event, "oauth_state", {
+      path: "/",
     });
 
     return tokens;
