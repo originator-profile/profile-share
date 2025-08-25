@@ -172,9 +172,10 @@ function profile_ca_embedded_or_external_field() {
 			id="embedded"
 			name="profile_ca_embedded_or_external"
 			value="embedded"
+			title="CASを直接JSON形式で入力します"
 			<?php checked( \get_option( 'profile_ca_embedded_or_external' ), 'embedded' ); ?>
 		/>
-		Embedded</label>
+		Embedded (直接JSONを入力)</label>
 	</p>
 	<p>
 		<label for="external" class="radio-item">
@@ -183,9 +184,10 @@ function profile_ca_embedded_or_external_field() {
 			id="external"
 			name="profile_ca_embedded_or_external"
 			value="external"
+			title="CASをURLで参照する形式で入力します 選択するとJSONファイルが定数で指定したディレクトリに生成されます"
 			<?php checked( \get_option( 'profile_ca_embedded_or_external' ), 'external' ); ?>
 		/>
-		External</label>
+		External (URLで参照)</label>
 	</p>
 	<?php
 }

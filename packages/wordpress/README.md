@@ -147,6 +147,8 @@ TextTargetIntegrity
 
 **[CA Presentation Type]: CASを埋め込み形式かリンク形式か指定**
 
+デフォルトは Embedded となっています。
+
 - Embedded: CAS を埋め込み形式(Embedded)にして記事を投稿します。
 
 例:
@@ -158,6 +160,12 @@ TextTargetIntegrity
 ```
 
 - External: CAS を静的ファイルとして生成し、リンク形式(External)にして記事を投稿します。
+
+CA Presentaion Type が External 時、静的ファイルを生成するディレクトリとして下記のように定義されています。
+
+```
+const PROFILE_DEFAULT_CA_EXTERNAL_DIR = 'cas';
+```
 
 ドキュメントルートが /var/www/html の場合、以下のパスに静的ファイルが配置されます。
 
@@ -174,8 +182,8 @@ TextTargetIntegrity
 ></script>
 ```
 
-※ドキュメントルート配下にcasディレクトリが存在しない場合、casディレクトリが作成されます。
-また、ポストidが同一の場合、静的ファイルは上書きされます。
+ドキュメントルート配下に cas ディレクトリが存在しない場合、 cas ディレクトリが作成されます。  
+ また、ポストidが同一の場合、静的ファイルは上書きされます。
 
 確認方法:
 
