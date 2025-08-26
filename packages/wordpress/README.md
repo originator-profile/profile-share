@@ -145,6 +145,52 @@ TextTargetIntegrity
 
 `%CONTENT%` は `apply_filters()` 適用後の WordPress 投稿内容に置換され、リクエストコンテンツ `target[0].content` プロパティとしてCAサーバーに送信されます。
 
+**[CA Presentation Type]: CASを埋め込み形式かリンク形式か指定**
+
+デフォルトは Embedded となっています。
+
+- Embedded: CAS を埋め込み形式(Embedded)にして記事を投稿します。
+
+例:
+
+```html
+<script type="application/cas+json">
+  ["eyJ..."]
+</script>
+```
+
+- External: CAS を静的ファイルとして生成し、リンク形式(External)にして記事を投稿します。
+
+CA Presentaion Type が External 時、静的ファイルを生成するディレクトリとして下記のように定義されています。
+
+```
+const PROFILE_DEFAULT_CA_EXTERNAL_DIR = 'cas';
+```
+
+ドキュメントルートが /var/www/html の場合、以下のパスに静的ファイルが配置されます。
+
+```
+/var/www/html/cas/<ポストid>_cas.json
+```
+
+例:
+
+```html
+<script
+  src="https://example.com/cas/1_cas.json"
+  type="application/cas+json"
+></script>
+```
+
+ドキュメントルート配下に cas ディレクトリが存在しない場合、 cas ディレクトリが作成されます。  
+ また、ポストidが同一の場合、静的ファイルは上書きされます。
+
+確認方法:
+
+```
+$ curl -sSf https://example.com/cas/1_cas.json
+```
+
 設定は WordPress 管理画面の「設定 > CA Manager」から行います。
 これらの設定が完了しないと Content Attestation の発行機能は正しく動作しません。
 正しく設定が反映されると、それ以降に更新した投稿と新規投稿は自動的にCAサーバーに送信されます。

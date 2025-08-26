@@ -23,3 +23,6 @@ const PROFILE_DEFAULT_CA_TARGET_HTML = <<<'EOD'
 <body class="wp-block-post-content">%CONTENT%</body>
 </html>
 EOD;
+
+/** CA Presentaion Type が External 時、静的ファイルを生成するディレクトリ */
+const PROFILE_DEFAULT_CA_EXTERNAL_DIR = 'cas';
