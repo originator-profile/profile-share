@@ -505,7 +505,7 @@ describe("Site Profileの検証", async () => {
     expect(resultSp).instanceOf(SiteProfileVerifyFailed);
   });
 
-  test("WSPのURLがnullの時に検証に失敗するか", async () => {
+  test("WSPのallowedOriginがnullの時に検証に失敗するか", async () => {
     const wspWithNullCredentialSubjectUrl: WebsiteProfile = {
       "@context": [
         "https://www.w3.org/ns/credentials/v2",
@@ -522,7 +522,7 @@ describe("Site Profileの検証", async () => {
         type: "WebSite",
         name: "Example Website",
         description: "Example Website Description",
-        url: "null",
+        allowedOrigin: "null",
       },
     };
 
@@ -556,7 +556,7 @@ describe("Site Profileの検証", async () => {
     expect(resultSp).instanceOf(SiteProfileVerifyFailed);
   });
 
-  test("WSPのURLとオリジンが共にnullの時に検証に失敗するか", async () => {
+  test("WSPのallowedOriginとオリジンが共にnullの時に検証に失敗するか", async () => {
     const wspWithNullCredentialSubjectUrl: WebsiteProfile = {
       "@context": [
         "https://www.w3.org/ns/credentials/v2",
@@ -573,7 +573,7 @@ describe("Site Profileの検証", async () => {
         type: "WebSite",
         name: "Example Website",
         description: "Example Website Description",
-        url: "null",
+        allowedOrigin: "null",
       },
     };
 

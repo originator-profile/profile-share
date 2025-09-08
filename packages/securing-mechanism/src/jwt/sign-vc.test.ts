@@ -31,7 +31,7 @@ test("signJwtVc() returns valid Website Profile", async () => {
         id: "https://media.example.com/image.png",
         digestSRI: "sha256-Upwn7gYMuRmJlD1ZivHk876vXHzokXrwXj50VgfnMnY=",
       },
-      url: "https://media.example.com",
+      allowedOrigin: ["https://media.example.com"],
     },
   };
   const { publicKey, privateKey } = await generateKey();
