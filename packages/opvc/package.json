@@ -20,7 +20,7 @@
     ]
   },
   "scripts": {
-    "build": "tsup && oclif manifest && oclif readme",
+    "build": "tsdown && oclif manifest && oclif readme",
     "lint": "eslint --fix .",
     "type-check": "tsc",
     "test": "node --experimental-strip-types --no-warnings=ExperimentalWarning --test"
@@ -40,10 +40,11 @@
   },
   "devDependencies": {
     "@originator-profile/tsconfig": "workspace:*",
+    "@types/node": "^24.3.1",
     "eslint": "^9.25.1",
     "eslint-config-originator-profile": "workspace:*",
     "oclif": "^4.20.1",
-    "tsup": "^8.5.0",
+    "tsdown": "^0.15.0",
     "typescript": "^5.8.3"
   }
 }
