@@ -1,5 +1,9 @@
 import { Keys, LocalKeys } from "@originator-profile/cryptography";
-import { SiteProfile, WebsiteProfile } from "@originator-profile/model";
+import {
+  AllowedOrigin,
+  SiteProfile,
+  WebsiteProfile,
+} from "@originator-profile/model";
 import {
   JwtVcDecoder,
   JwtVcVerifier,
@@ -83,7 +87,12 @@ export function SpVerifier(
     }
 
     if (verifyOrigin) {
-      if (!verifyAllowedOrigin(origin, decodedWsp.doc.credentialSubject.url)) {
+      const allowedOrigin =
+        "allowedOrigin" in decodedWsp.doc.credentialSubject
+          ? (decodedWsp.doc.credentialSubject.allowedOrigin as AllowedOrigin)
+          : decodedWsp.doc.credentialSubject.url; // NOTE: 後方互換性のため 2026-10-01 まで url プロパティを許容
+
+      if (!verifyAllowedOrigin(origin, allowedOrigin)) {
         return new SiteProfileVerifyFailed("Origin not allowed", {
           originators: opsVerified,
           credential,

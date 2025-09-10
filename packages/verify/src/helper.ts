@@ -141,11 +141,11 @@ export const wsp: WebsiteProfile = {
   type: ["VerifiableCredential", "WebsiteProfile"],
   issuer: opId.originator,
   credentialSubject: {
-    id: opId.originator,
+    id: "https://originator.example.org",
     type: "WebSite",
     name: "Example Website",
     description: "Example Website Description",
-    url: "https://originator.example.org",
+    allowedOrigin: ["https://originator.example.org"],
   },
 };
 /** CA ID */

@@ -17,7 +17,6 @@ const exampleWebsiteProfile = {
   issuer: "<OP ID>",
   credentialSubject: {
     id: "<Web サイトのオリジン (形式: https://<ホスト名>)>",
-    url: "<Web サイトのオリジン (形式: https://<ホスト名>)>",
     type: "WebSite",
     name: "<Web サイトの名称>",
     description: "<Web サイトの説明>",
@@ -25,6 +24,7 @@ const exampleWebsiteProfile = {
       id: "<サムネイル画像URL>",
       content: "<コンテンツ (data:// 形式URL)>",
     },
+    allowedOrigin: ["<Web サイトのオリジン (形式: https://<ホスト名>)>"],
   },
 } satisfies WebsiteProfile;
 

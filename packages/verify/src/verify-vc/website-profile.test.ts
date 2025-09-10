@@ -1,11 +1,11 @@
 import { generateKey, LocalKeys } from "@originator-profile/cryptography";
+import { WebsiteProfile } from "@originator-profile/model";
 import {
   JwtVcVerifier,
   signJwtVc,
   VcValidator,
   VerifiedJwtVc,
 } from "@originator-profile/securing-mechanism";
-import { WebsiteProfile } from "@originator-profile/model";
 import { addYears } from "date-fns";
 import { expect, test } from "vitest";
 
@@ -29,7 +29,7 @@ const websiteProfile: WebsiteProfile = {
       id: "https://media.example.com/image.png",
       digestSRI: "sha256-Upwn7gYMuRmJlD1ZivHk876vXHzokXrwXj50VgfnMnY=",
     },
-    url: "https://media.example.com",
+    allowedOrigin: ["https://media.example.com"],
   },
 };
 
