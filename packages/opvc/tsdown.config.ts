@@ -1,8 +1,11 @@
-import { defineConfig } from "tsup";
+import { defineConfig } from "tsdown";
 import typedoc from "./typedoc.json" with { type: "json" };
 
 export default defineConfig({
-  entry: ["src/commands", ...typedoc.entryPoints],
+  entry: [
+    "src/index.ts",
+    "src/commands/**/*.ts"
+  ],
   format: "esm",
   clean: true,
   dts: {
