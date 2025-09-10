@@ -41,14 +41,7 @@ const subject = {
       },
       required: ["id", "name"],
     },
-    description: {
-      type: "object",
-      additionalProperties: true,
-      properties: {
-        type: { const: "PlainTextDescription" },
-        data: { type: "string" },
-      },
-    },
+    description: { title: "組織に関する説明", type: "string" },
   },
   required: ["id", "type", "url", "name"],
 } as const satisfies JSONSchema;
