@@ -1,13 +1,13 @@
+import { generateKey, LocalKeys } from "@originator-profile/cryptography";
 import { WebMediaProfile } from "@originator-profile/model";
 import {
-  signJwtVc,
   JwtVcVerifier,
+  signJwtVc,
   VcValidator,
   VerifiedJwtVc,
 } from "@originator-profile/securing-mechanism";
 import { addYears } from "date-fns";
 import { describe, expect, test } from "vitest";
-import { generateKey, LocalKeys } from "@originator-profile/cryptography";
 
 const issuedAt = new Date();
 const expiredAt = addYears(new Date(), 10);
@@ -43,10 +43,7 @@ const webMediaProfile = {
       id: "https://wmp-holder.example.jp/statement",
       name: "新聞倫理綱領",
     },
-    description: {
-      type: "PlainTextDescription",
-      data: "この文章はこの Web メディアに関する補足情報です。",
-    },
+    description: "この文章はこの Web メディアに関する補足情報です。",
   },
 } as const satisfies WebMediaProfile;
 

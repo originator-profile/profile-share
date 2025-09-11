@@ -83,10 +83,7 @@ describe("WMP", () => {
           id: "https://wmp-holder.example.jp/statement",
           name: "新聞倫理綱領",
         },
-        description: {
-          type: "PlainTextDescription",
-          data: "この文章はこの Web メディアに関する補足情報です。",
-        },
+        description: "この文章はこの Web メディアに関する補足情報です。",
       },
     };
     const { publicKey, privateKey } = await generateKey();

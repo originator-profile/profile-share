@@ -116,7 +116,7 @@ function OrgInfo(props: {
     <div className="space-y-4">
       {props.wmp.credentialSubject.description && (
         <Description
-          description={props.wmp.credentialSubject.description.data ?? ""}
+          description={props.wmp.credentialSubject.description ?? ""}
           onlyBody
         />
       )}

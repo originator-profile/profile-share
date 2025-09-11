@@ -366,10 +366,7 @@ FLAG DESCRIPTIONS
     "id": "https://wmp-holder.example.jp/privacy",
     "name": "プライバシーポリシー"
     },
-    "description": {
-    "type": "PlainTextDescription",
-    "data": "この文章はこの Web メディアに関する補足情報です。"
-    }
+    "description": "この文章はこの Web メディアに関する補足情報です。"
     }
     }
 
