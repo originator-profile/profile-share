@@ -1,8 +1,7 @@
-import { Menu, Transition } from "@headlessui/react";
 import { Icon } from "@iconify/react";
 import { _ } from "@originator-profile/ui";
 import clsx from "clsx";
-import { Fragment } from "react";
+import { MenuButton, Menu, MenuItem, useMenuButton } from "./Menu";
 import { listCas } from "./credentials";
 
 type Props = {
@@ -10,96 +9,85 @@ type Props = {
   setCaListType: (contentType: Parameters<typeof listCas>[1]) => void;
 };
 
-type MenuItemProps = {
-  caListType: Parameters<typeof listCas>[1];
+type FilterOption = {
+  value: Parameters<typeof listCas>[1];
   title: string;
-  selected: boolean;
-  setCaListType: (contentType: Parameters<typeof listCas>[1]) => void;
 };
 
-function MenuItem({
-  caListType,
-  title,
-  selected,
-  setCaListType,
-}: MenuItemProps) {
+const FILTER_OPTIONS: FilterOption[] = [
+  { value: "All", title: _("CaFilter_All") },
+  { value: "Main", title: _("CaFilter_MainContent") },
+  { value: "Other", title: _("CaFilter_Other") },
+  { value: "OnlineAd", title: _("CaFilter_Advertisements") },
+];
+
+function CaFilter({ caListType, setCaListType }: Props) {
+  const {
+    isOpen,
+    activeIndex,
+    isKeyboardNavigation,
+    buttonRef,
+    menuRef,
+    setItemRef,
+    buttonProps,
+    menuProps,
+    toggleMenu,
+    handleButtonKeyDown,
+    handleMenuKeyDown,
+    handleItemMouseEnter,
+  } = useMenuButton({
+    items: FILTER_OPTIONS.map(option => option.value),
+    onItemSelect: (value) => setCaListType(value as Parameters<typeof listCas>[1]),
+  });
+
   return (
-    <Menu.Item
-      as="button"
-      className="h-8 w-full flex items-center text-xs"
-      key={caListType}
-      onClick={() => setCaListType(caListType)}
-      disabled={selected}
-    >
-      {({ active }) => (
-        <>
-          {selected && (
-            <Icon className="mx-2 absolute" icon="fa6-solid:check" />
-          )}
-          <p
-            className={clsx("ml-8", {
-              ["font-bold"]: active,
-            })}
-          >
-            {title}
-          </p>
-        </>
-      )}
-    </Menu.Item>
+    <div className="relative">
+      <MenuButton
+        ref={buttonRef}
+        className="flex w-16 h-10 items-center justify-center text-2xl"
+        onClick={toggleMenu}
+        onKeyDown={handleButtonKeyDown}
+        {...buttonProps}
+      >
+        <Icon icon="ion:filter" />
+      </MenuButton>
+      
+      <Menu
+        ref={menuRef}
+        isOpen={isOpen}
+        hasKeyboardFocus={isKeyboardNavigation && activeIndex !== -1}
+        className="rounded-lg absolute ml-2 py-2 w-36 bg-white shadow-lg z-20"
+        {...menuProps}
+      >
+        {FILTER_OPTIONS.map((option, index) => {
+          const isSelected = caListType === option.value;
+          const isActive = activeIndex === index;
+          return (
+            <MenuItem
+              key={option.value}
+              ref={setItemRef(index)}
+              value={option.value}
+              selected={isSelected}
+              active={isActive}
+              onClick={() => setCaListType(option.value)}
+              onKeyDown={(e) => handleMenuKeyDown(e, option.value)}
+              onMouseEnter={() => handleItemMouseEnter(index)}
+              className={clsx("h-8 text-xs", {
+                "cursor-default": isSelected,
+              })}
+            >
+              <div className="flex items-center w-full">
+                {isSelected && (
+                  <Icon className="mx-2 absolute" icon="fa6-solid:check" />
+                )}
+                <p className="ml-8">{option.title}</p>
+              </div>
+            </MenuItem>
+          );
+        })}
+      </Menu>
+    </div>
   );
 }
 
-function CaFilter({ caListType, setCaListType }: Props) {
-  return (
-    <Menu>
-      {({ open }) => (
-        <div className="relative">
-          <Menu.Button className="flex w-16 h-10 items-center justify-center text-2xl">
-            <Icon icon="ion:filter" />
-          </Menu.Button>
-          <Transition
-            show={open}
-            as={Fragment}
-            enter="transition ease-out duration-100"
-            enterFrom="transform opacity-0 scale-95"
-            enterTo="transform opacity-100 scale-100"
-            leave="transition ease-in duration-75"
-            leaveFrom="transform opacity-100 scale-100"
-            leaveTo="transform opacity-0 scale-95"
-          >
-            <Menu.Items
-              static
-              className="rounded-lg absolute ml-2 py-2 w-36 bg-white shadow-lg z-20"
-            >
-              <MenuItem
-                caListType="All"
-                title={_("CaFilter_All")}
-                selected={caListType === "All"}
-                setCaListType={setCaListType}
-              />
-              <MenuItem
-                caListType="Main"
-                title={_("CaFilter_MainContent")}
-                selected={caListType === "Main"}
-                setCaListType={setCaListType}
-              />
-              <MenuItem
-                caListType="Other"
-                title={_("CaFilter_Other")}
-                selected={caListType === "Other"}
-                setCaListType={setCaListType}
-              />
-              <MenuItem
-                caListType="OnlineAd"
-                title={_("CaFilter_Advertisements")}
-                selected={caListType === "OnlineAd"}
-                setCaListType={setCaListType}
-              />
-            </Menu.Items>
-          </Transition>
-        </div>
-      )}
-    </Menu>
-  );
-}
 export default CaFilter;
