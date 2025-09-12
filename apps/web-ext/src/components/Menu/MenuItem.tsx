@@ -9,7 +9,17 @@ interface MenuItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export const MenuItem = forwardRef<HTMLButtonElement, MenuItemProps>(
-  ({ className, children, selected: _selected = false, active = false, value: _value, ...props }, ref) => {
+  (
+    {
+      className,
+      children,
+      selected: _selected = false,
+      active = false,
+      value: _value,
+      ...props
+    },
+    ref,
+  ) => {
     return (
       <li role="none">
         <button
@@ -23,7 +33,7 @@ export const MenuItem = forwardRef<HTMLButtonElement, MenuItemProps>(
             {
               "font-bold": active, // Active state shows bold text like original
             },
-            className
+            className,
           )}
           {...props}
         >
@@ -31,7 +41,7 @@ export const MenuItem = forwardRef<HTMLButtonElement, MenuItemProps>(
         </button>
       </li>
     );
-  }
+  },
 );
 
 MenuItem.displayName = "MenuItem";

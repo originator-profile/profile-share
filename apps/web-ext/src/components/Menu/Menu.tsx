@@ -9,7 +9,10 @@ interface MenuProps extends React.HTMLAttributes<HTMLUListElement> {
 }
 
 export const Menu = forwardRef<HTMLUListElement, MenuProps>(
-  ({ className, children, isOpen = false, hasKeyboardFocus = false, ...props }, ref) => {
+  (
+    { className, children, isOpen = false, hasKeyboardFocus = false, ...props },
+    ref,
+  ) => {
     const [shouldRender, setShouldRender] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
 
@@ -26,13 +29,13 @@ export const Menu = forwardRef<HTMLUListElement, MenuProps>(
         const timeout = setTimeout(() => {
           setShouldRender(false);
         }, 100); // Match animation duration
-        
+
         return () => clearTimeout(timeout);
       }
     }, [isOpen]);
 
     if (!shouldRender) return null;
-    
+
     return (
       <ul
         ref={ref}
@@ -45,14 +48,14 @@ export const Menu = forwardRef<HTMLUListElement, MenuProps>(
             "opacity-0 scale-95 ease-in": !isVisible,
             "ring-2 ring-blue-500": hasKeyboardFocus,
           },
-          className
+          className,
         )}
         {...props}
       >
         {children}
       </ul>
     );
-  }
+  },
 );
 
 Menu.displayName = "Menu";

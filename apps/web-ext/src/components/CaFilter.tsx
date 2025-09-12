@@ -36,8 +36,9 @@ function CaFilter({ caListType, setCaListType }: Props) {
     handleMenuKeyDown,
     handleItemMouseEnter,
   } = useMenuButton({
-    items: FILTER_OPTIONS.map(option => option.value),
-    onItemSelect: (value) => setCaListType(value as Parameters<typeof listCas>[1]),
+    items: FILTER_OPTIONS.map((option) => option.value),
+    onItemSelect: (value) =>
+      setCaListType(value as Parameters<typeof listCas>[1]),
   });
 
   return (
@@ -51,7 +52,7 @@ function CaFilter({ caListType, setCaListType }: Props) {
       >
         <Icon icon="ion:filter" />
       </MenuButton>
-      
+
       <Menu
         ref={menuRef}
         isOpen={isOpen}
