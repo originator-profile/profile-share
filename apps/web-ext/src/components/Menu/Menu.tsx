@@ -21,7 +21,7 @@ export const Menu = forwardRef<HTMLUListElement, MenuProps>(
     const setRefs = useCallback(
       (node: HTMLUListElement | null) => {
         internalRef.current = node;
-        if (typeof ref === 'function') {
+        if (typeof ref === "function") {
           ref(node);
         } else if (ref) {
           ref.current = node;
@@ -45,15 +45,15 @@ export const Menu = forwardRef<HTMLUListElement, MenuProps>(
         if (element) {
           const handleTransitionEnd = (e: TransitionEvent) => {
             // Only handle opacity transition to avoid multiple triggers
-            if (e.propertyName === 'opacity' && !isOpen) {
+            if (e.propertyName === "opacity" && !isOpen) {
               setShouldRender(false);
             }
           };
 
-          element.addEventListener('transitionend', handleTransitionEnd);
+          element.addEventListener("transitionend", handleTransitionEnd);
 
           return () => {
-            element.removeEventListener('transitionend', handleTransitionEnd);
+            element.removeEventListener("transitionend", handleTransitionEnd);
           };
         }
       }

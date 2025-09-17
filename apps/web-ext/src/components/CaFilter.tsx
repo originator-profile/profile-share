@@ -39,7 +39,9 @@ function CaFilter({ caListType, setCaListType }: Props) {
     items: FILTER_OPTIONS.map((option) => option.value),
     onItemSelect: (value) => {
       // Type guard to ensure value is valid
-      const validOption = FILTER_OPTIONS.find((option) => option.value === value);
+      const validOption = FILTER_OPTIONS.find(
+        (option) => option.value === value,
+      );
       if (validOption) {
         setCaListType(validOption.value);
       }
