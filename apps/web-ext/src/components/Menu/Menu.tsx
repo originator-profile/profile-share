@@ -39,25 +39,31 @@ export const Menu = forwardRef<HTMLUListElement, MenuProps>(
         });
       } else {
         setIsVisible(false);
+      }
+    }, [isOpen]);
 
-        // Listen for transition end instead of using setTimeout
+    // Separate effect for transition end handling to ensure cleanup
+    useEffect(() => {
+      // Only attach listener when menu is closing
+      if (!isOpen && shouldRender) {
         const element = internalRef.current;
         if (element) {
           const handleTransitionEnd = (e: TransitionEvent) => {
             // Only handle opacity transition to avoid multiple triggers
-            if (e.propertyName === "opacity" && !isOpen) {
+            if (e.propertyName === "opacity") {
               setShouldRender(false);
             }
           };
 
           element.addEventListener("transitionend", handleTransitionEnd);
 
+          // Cleanup function always runs on unmount or when dependencies change
           return () => {
             element.removeEventListener("transitionend", handleTransitionEnd);
           };
         }
       }
-    }, [isOpen]);
+    }, [isOpen, shouldRender]);
 
     if (!shouldRender) return null;
 
