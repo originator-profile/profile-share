@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 
 interface MenuProps extends React.HTMLAttributes<HTMLUListElement> {
@@ -15,6 +15,20 @@ export const Menu = forwardRef<HTMLUListElement, MenuProps>(
   ) => {
     const [shouldRender, setShouldRender] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
+    const internalRef = useRef<HTMLUListElement>(null);
+
+    // Combine refs using a callback ref
+    const setRefs = useCallback(
+      (node: HTMLUListElement | null) => {
+        internalRef.current = node;
+        if (typeof ref === 'function') {
+          ref(node);
+        } else if (ref) {
+          ref.current = node;
+        }
+      },
+      [ref],
+    );
 
     useEffect(() => {
       if (isOpen) {
@@ -25,12 +39,23 @@ export const Menu = forwardRef<HTMLUListElement, MenuProps>(
         });
       } else {
         setIsVisible(false);
-        // Wait for animation to complete before removing from DOM
-        const timeout = setTimeout(() => {
-          setShouldRender(false);
-        }, 100); // Match animation duration
 
-        return () => clearTimeout(timeout);
+        // Listen for transition end instead of using setTimeout
+        const element = internalRef.current;
+        if (element) {
+          const handleTransitionEnd = (e: TransitionEvent) => {
+            // Only handle opacity transition to avoid multiple triggers
+            if (e.propertyName === 'opacity' && !isOpen) {
+              setShouldRender(false);
+            }
+          };
+
+          element.addEventListener('transitionend', handleTransitionEnd);
+
+          return () => {
+            element.removeEventListener('transitionend', handleTransitionEnd);
+          };
+        }
       }
     }, [isOpen]);
 
@@ -38,7 +63,7 @@ export const Menu = forwardRef<HTMLUListElement, MenuProps>(
 
     return (
       <ul
-        ref={ref}
+        ref={setRefs}
         className={clsx(
           "absolute z-20 min-w-0 rounded-lg bg-white py-2 shadow-lg",
           "focus:outline-none",

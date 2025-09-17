@@ -92,14 +92,14 @@ export function useMenuButton({ onItemSelect, items }: UseMenuButtonOptions) {
           } else {
             openMenu();
             // Focus first item after menu opens
-            setTimeout(() => focusFirstItem(), 0);
+            requestAnimationFrame(() => focusFirstItem());
           }
           break;
         case "ArrowDown":
           event.preventDefault();
           if (!isOpen) {
             openMenu();
-            setTimeout(() => focusFirstItem(), 0);
+            requestAnimationFrame(() => focusFirstItem());
           } else {
             focusFirstItem();
           }
@@ -108,7 +108,7 @@ export function useMenuButton({ onItemSelect, items }: UseMenuButtonOptions) {
           event.preventDefault();
           if (!isOpen) {
             openMenu();
-            setTimeout(() => focusLastItem(), 0);
+            requestAnimationFrame(() => focusLastItem());
           } else {
             focusLastItem();
           }

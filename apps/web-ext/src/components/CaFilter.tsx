@@ -37,8 +37,13 @@ function CaFilter({ caListType, setCaListType }: Props) {
     handleItemMouseEnter,
   } = useMenuButton({
     items: FILTER_OPTIONS.map((option) => option.value),
-    onItemSelect: (value) =>
-      setCaListType(value as Parameters<typeof listCas>[1]),
+    onItemSelect: (value) => {
+      // Type guard to ensure value is valid
+      const validOption = FILTER_OPTIONS.find((option) => option.value === value);
+      if (validOption) {
+        setCaListType(validOption.value);
+      }
+    },
   });
 
   return (
