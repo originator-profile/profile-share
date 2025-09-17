@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, useEffect, useRef } from "react";
 import clsx from "clsx";
 
 interface MenuItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -20,10 +20,28 @@ export const MenuItem = forwardRef<HTMLButtonElement, MenuItemProps>(
     },
     ref,
   ) => {
+    const internalRef = useRef<HTMLButtonElement>(null);
+
+    // Combine refs
+    const setRefs = (node: HTMLButtonElement | null) => {
+      internalRef.current = node;
+      if (typeof ref === 'function') {
+        ref(node);
+      } else if (ref) {
+        ref.current = node;
+      }
+    };
+
+    // Sync active state with DOM focus
+    useEffect(() => {
+      if (active && internalRef.current) {
+        internalRef.current.focus();
+      }
+    }, [active]);
     return (
       <li role="none">
         <button
-          ref={ref}
+          ref={setRefs}
           type="button"
           role="menuitem"
           className={clsx(

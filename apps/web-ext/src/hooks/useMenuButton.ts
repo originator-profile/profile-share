@@ -27,7 +27,6 @@ export function useMenuButton({ onItemSelect, items }: UseMenuButtonOptions) {
       if (index >= 0 && index < items.length) {
         setActiveIndex(index);
         setIsKeyboardNavigation(true);
-        itemRefs.current[index]?.focus();
       }
     },
     [items.length],
@@ -54,6 +53,8 @@ export function useMenuButton({ onItemSelect, items }: UseMenuButtonOptions) {
   // Menu control
   const openMenu = useCallback(() => {
     setIsOpen(true);
+    setActiveIndex(0);
+    setIsKeyboardNavigation(true);
   }, []);
 
   const closeMenu = useCallback(() => {
@@ -91,15 +92,12 @@ export function useMenuButton({ onItemSelect, items }: UseMenuButtonOptions) {
             closeMenu();
           } else {
             openMenu();
-            // Focus first item after menu opens
-            requestAnimationFrame(() => focusFirstItem());
           }
           break;
         case "ArrowDown":
           event.preventDefault();
           if (!isOpen) {
             openMenu();
-            requestAnimationFrame(() => focusFirstItem());
           } else {
             focusFirstItem();
           }
