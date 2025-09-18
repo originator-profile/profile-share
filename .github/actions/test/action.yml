@@ -1,22 +1,7 @@
 name: test
 description: Test
-inputs:
-  BASIC_AUTH:
-    description: レジストリ API の Basic 認証
-    required: false
-    default: "true"
-  BASIC_AUTH_CREDENTIALS:
-    description: レジストリ API の Basic 認証情報 (JSON 文字列)
-    required: true
-  REGISTRY_OPS:
-    description: Originator Profile Set
-    required: true
 runs:
   using: composite
   steps:
     - run: pnpm test
       shell: bash
-      env:
-        BASIC_AUTH: ${{ inputs.BASIC_AUTH }}
-        BASIC_AUTH_CREDENTIALS: ${{ inputs.BASIC_AUTH_CREDENTIALS }}
-        REGISTRY_OPS: ${{ inputs.REGISTRY_OPS }}
