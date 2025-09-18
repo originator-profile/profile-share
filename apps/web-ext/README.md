@@ -40,7 +40,7 @@ $ pnpm dev --registry-url=https://oprexpt.originator-profile.org/ --url=https://
 
 1. プロジェクトのルートディレクトリに移動します。
 2. `pnpm dev` コマンドを実行し、ローカル環境でChrome用拡張機能をプレビューします。
-   - http://localhost:8080/app/debugger にアクセスし、ローカル環境の開発用サーバーでの動作を確認できます。
+   - http://localhost:8080/examples/cas-1.html にアクセスし、ローカル環境の開発用サーバーでの動作を確認できます。
 
 ## 環境変数
 

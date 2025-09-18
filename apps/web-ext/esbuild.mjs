@@ -25,7 +25,7 @@ const options = /** @type {const} */ ({
   url: {
     type: "string",
     short: "u",
-    default: "http://localhost:8080/app/debugger",
+    default: "http://localhost:8080/examples/cas-1.html",
     toString() {
       return `<watch_url> (default: ${this.default}, development mode only)`;
     },
