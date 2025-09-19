@@ -25,12 +25,15 @@
       "outputs": []
     },
     "lint": {
+      "dependsOn": ["build"],
       "outputs": []
     },
     "type-check": {
+      "dependsOn": ["build"],
       "outputs": []
     },
     "@originator-profile/web-ext#build": {
+      "dependsOn": ["^build"],
       "env": ["BASIC_AUTH", "BASIC_AUTH_CREDENTIALS", "REGISTRY_OPS"]
     }
   }

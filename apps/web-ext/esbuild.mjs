@@ -118,8 +118,6 @@ if (env.REGISTRY_OPS.length === 0) {
   console.warn(
     "REGISTRY_OPS is empty. Please set REGISTRY_OPS environment variable.",
   );
-
-  if (process.env.CI) process.exit(1);
 }
 
 import esbuild from "esbuild";
@@ -145,7 +143,7 @@ const buildOptions = {
   bundle: true,
   minify: args.values.mode === "production",
   sourcemap: args.values.mode === "development",
-  conditions: ["browser", "typescript"],
+  conditions: ["browser"],
   define: {
     "import.meta.env": JSON.stringify(env),
   },
