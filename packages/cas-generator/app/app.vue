@@ -1,8 +1,19 @@
 <template>
   <div class="container h-dvh flex flex-col py-4 gap-y-4">
     <div class="jumpu-card p-4 shrink-0">
-      <h2 class="font-bold text-2xl mb-2">Generate Content Attestation Set</h2>
-      <div class="flex items-center gap-x-4">
+      <div class="flex items-center justify-between gap-x-1">
+        <h2 class="font-bold text-2xl mb-2">Generate Content Attestation Set</h2>
+        <div class="flex items-center gap-x-2">
+          <template v-if="!isLoggedIn">
+            <button class="jumpu-button" @click="login">Login</button>
+          </template>
+          <template v-else>
+            <span class="text-xs text-gray-600" v-if="userEmail">{{ userEmail }}</span>
+            <button class="jumpu-text-button" @click="logout">Logout</button>
+          </template>
+        </div>
+      </div>
+      <div class="flex items-center justify-between gap-x-4">
         <div class="grow">
           <div class="text-sm flex gap-x-4">
             <div class="jumpu-card p-4">
@@ -57,7 +68,7 @@
             <button
               class="jumpu-button inline-flex items-center gap-x-2"
               @click="fetchChatStream(selectedFiles)"
-              :disabled="generating || selectedFiles.length === 0"
+              :disabled="generating || selectedFiles.length === 0 || !isLoggedIn"
             >
               <span v-if="!generating"
                 >生成を始める ({{ selectedFiles.length }}件)</span
@@ -71,6 +82,9 @@
                 <span>生成中...</span>
               </div>
             </button>
+            <div class="text-xs text-amber-600 mt-1" v-if="!isLoggedIn">
+              ログインが必要です
+            </div>
           </p>
         </div>
       </div>
@@ -208,6 +222,7 @@
 <script setup>
 import { defaultAllowedURLOriginss } from "#shared/constants";
 import { useStorage } from "@vueuse/core";
+import { useCookie } from "#app";
 const scrollSection = ref(null);
 const body = ref([]);
 const generating = ref(false);
@@ -220,6 +235,34 @@ const allowedURLOrigins = useStorage(
 const tempAllowedURLOrigins = ref([]);
 
 const { data: settingItems } = useFetch("/api/settings");
+
+const accessToken = useCookie("access_token");
+const idToken = useCookie("id_token");
+const refreshToken = useCookie("refresh_token");
+
+const isLoggedIn = computed(() => !!idToken.value);
+
+const userEmail = computed(() => {
+  try {
+    if (!idToken.value) return "";
+    const payload = JSON.parse(atob(idToken.value.split(".")[1] || ""));
+    return payload.email || "";
+  } catch (e) {
+    return "";
+  }
+});
+
+function login() {
+  navigateTo("/login", { external: true });
+}
+
+function logout() {
+  // Clear cookies by setting an immediate expiry
+  const opts = { path: "/", maxAge: -1 };
+  useCookie("access_token", opts).value = null;
+  useCookie("id_token", opts).value = null;
+  useCookie("refresh_token", opts).value = null;
+}
 
 // 選択されたファイルを取得するcomputed
 const selectedFiles = computed(() => {

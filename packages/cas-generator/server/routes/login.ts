@@ -1,5 +1,4 @@
 import * as client from "openid-client";
-import { newOauthConfig } from "../utils/oauthClient";
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event);
@@ -27,14 +26,6 @@ export default defineEventHandler(async (event) => {
   console.info("OAuth login route accessed");
 
   try {
-    const oauthConfig = newOauthConfig(
-      ISSUER,
-      AUTHORIZATION_ENDPOINT,
-      TOKEN_ENDPOINT,
-      CLIENT_ID,
-      CLIENT_SECRET,
-    );
-
     const codeVerifier = client.randomPKCECodeVerifier();
     const codeChallenge = await client.calculatePKCECodeChallenge(codeVerifier);
     const state = client.randomState();
@@ -56,18 +47,17 @@ export default defineEventHandler(async (event) => {
       path: "/",
     });
 
-    const parameters: Record<string, string> = {
-      redirect_uri: REDIRECT_URI,
-      scope: "openid",
-      code_challenge: codeChallenge,
-      code_challenge_method: "S256",
-      nonce: client.randomNonce(),
-      state: state,
-    };
+    const authUrl = new URL(AUTHORIZATION_ENDPOINT);
+    authUrl.searchParams.set("response_type", "code");
+    authUrl.searchParams.set("client_id", CLIENT_ID);
+    authUrl.searchParams.set("redirect_uri", REDIRECT_URI);
+    authUrl.searchParams.set("scope", "openid");
+    authUrl.searchParams.set("code_challenge", codeChallenge);
+    authUrl.searchParams.set("code_challenge_method", "S256");
+    authUrl.searchParams.set("state", state);
+    authUrl.searchParams.set("nonce", client.randomNonce());
 
-    const redirectTo = client.buildAuthorizationUrl(oauthConfig, parameters);
-
-    return sendRedirect(event, redirectTo.href);
+    return sendRedirect(event, authUrl.href);
   } catch (error) {
     console.error("Login error:", error);
     throw createError({

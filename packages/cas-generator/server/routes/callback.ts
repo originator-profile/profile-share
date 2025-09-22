@@ -1,6 +1,3 @@
-import * as client from "openid-client";
-import { newOauthConfig } from "../utils/oauthClient";
-
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event);
   const ISSUER = config.ISSUER;
@@ -56,43 +53,53 @@ export default defineEventHandler(async (event) => {
       }
     });
 
-    // TODO: 削除
-    console.log(
-      "token parameters:",
-      JSON.stringify(
-        {
-          ISSUER,
-          AUTHORIZATION_ENDPOINT,
-          TOKEN_ENDPOINT,
-          CLIENT_ID,
-          CLIENT_SECRET,
-          REDIRECT_URI,
-          currentUrl,
-          codeVerifier,
-          expectedState,
-        },
-        null,
-        2,
-      ),
-    );
+    const authorizationCode =
+      typeof query.code === "string" ? query.code : undefined;
+    const returnedState =
+      typeof query.state === "string" ? query.state : undefined;
 
-    const tokens = await client.authorizationCodeGrant(
-      newOauthConfig(
-        ISSUER,
-        AUTHORIZATION_ENDPOINT,
-        TOKEN_ENDPOINT,
-        CLIENT_ID,
-        CLIENT_SECRET,
-      ),
-      currentUrl,
-      {
-        pkceCodeVerifier: codeVerifier,
-        expectedState: expectedState,
+    if (!authorizationCode) {
+      console.error("authorization code not found");
+      throw createError({
+        statusCode: 403,
+        message: "認証に失敗しました",
+      });
+    }
+
+    if (returnedState !== expectedState) {
+      console.error("state mismatch", { returnedState, expectedState });
+      throw createError({
+        statusCode: 403,
+        message: "認証に失敗しました",
+      });
+    }
+
+    const form = new URLSearchParams();
+    form.set("grant_type", "authorization_code");
+    form.set("code", authorizationCode);
+    form.set("redirect_uri", REDIRECT_URI);
+    form.set("client_id", CLIENT_ID);
+    form.set("client_secret", CLIENT_SECRET);
+    form.set("code_verifier", codeVerifier);
+
+    const response = await fetch(TOKEN_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-    );
+      body: form.toString(),
+    });
 
-    // TODO: 削除
-    console.log("tokens:", tokens);
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Token endpoint error:", response.status, errorText);
+      throw createError({
+        statusCode: 502,
+        message: "トークン交換に失敗しました",
+      });
+    }
+
+    const tokens = await response.json();
 
     // 使用済みのcookieを削除
     deleteCookie(event, "pkce_code_verifier", {
@@ -102,7 +109,32 @@ export default defineEventHandler(async (event) => {
       path: "/",
     });
 
-    return tokens;
+    const expiresInSeconds = Number(tokens.expires_in || 3600);
+    setCookie(event, "access_token", tokens.access_token || "", {
+      httpOnly: false,
+      secure: false,
+      sameSite: "lax",
+      path: "/",
+      maxAge: expiresInSeconds,
+    });
+    setCookie(event, "id_token", tokens.id_token || "", {
+      httpOnly: false,
+      secure: false,
+      sameSite: "lax",
+      path: "/",
+      maxAge: expiresInSeconds,
+    });
+    if (tokens.refresh_token) {
+      setCookie(event, "refresh_token", tokens.refresh_token, {
+        httpOnly: false,
+        secure: false,
+        sameSite: "lax",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+      });
+    }
+
+    return sendRedirect(event, "/");
   } catch (error) {
     console.error("Token exchange error:", error);
     throw createError({
