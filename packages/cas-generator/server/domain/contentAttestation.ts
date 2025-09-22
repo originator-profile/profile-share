@@ -63,7 +63,7 @@ export const createDefaultContentAttestation = (
       { "@language": lang },
     ],
     type: defaultTypes,
-    issuer: "dns:oprexpt.originator-profile.org",
+    issuer: "dns:catest1.webdino.org",
     credentialSubject: override.credentialSubject,
     allowedUrl: override.allowedUrl,
     target: override.target,

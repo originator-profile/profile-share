@@ -9,6 +9,7 @@ type PostHTMLFilesParams = {
   allowedURLOrigins: string[];
   opcipName: { ja: string; en: string };
   ogpImageURL: { ja: string; en: string };
+  accessToken: string;
 };
 
 /**
@@ -23,7 +24,9 @@ export default async function postHTMLFiles({
   allowedURLOrigins,
   opcipName,
   ogpImageURL,
+  accessToken,
 }: PostHTMLFilesParams): Promise<OpSiteInfo[]> {
+  const CA_ENDPOINT =  "https://opca-api-dev.facere.biz/ca";
   const processedFiles = [...htmlFiles];
 
   for await (const [index, item] of htmlFiles.entries()) {
@@ -71,6 +74,19 @@ export default async function postHTMLFiles({
     );
 
     // ファイルを保存
+    const response = await fetch(CA_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify(caInfo),
+    });
+    console.log("CA API response:", response.json());
+    if (!response.ok) {
+      throw new Error(`CA API error: ${response.status} ${response.statusText}`);
+    }
+    console.log("CA API response:", response.json());
     const outputFilePath = `${vcSourcesPath}${item.cas}.cas.json`;
     processedFiles[index].vc_path = outputFilePath;
     fs.writeFileSync(outputFilePath, JSON.stringify(caInfo, null, 2));

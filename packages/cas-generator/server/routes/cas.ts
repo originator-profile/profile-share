@@ -76,6 +76,14 @@ export default defineEventHandler(async (event) => {
   const vcSourcesPath = VC_OUTPUT_PATH;
   const casPath = CAS_OUTPUT_PATH;
 
+  const accessToken = getCookie(event, "access_token");
+  if (!accessToken) {
+    throw createError({
+      statusCode: 401,
+      message: "アクセストークンが見つかりません。ログインしてください。",
+    });
+  }
+
   // see https://nitro.build/guide/websocket#server-sent-events-sse
   await deleteSpecificFiles(casPath, htmlFiles);
 
@@ -86,7 +94,9 @@ export default defineEventHandler(async (event) => {
     allowedURLOrigins: allowedURLOrigins,
     opcipName: opcipName,
     ogpImageURL: ogpImageURL,
+    accessToken: accessToken,
   });
+
 
   (async () => {
     for (let i = 0; i < htmlFiles.length; i++) {

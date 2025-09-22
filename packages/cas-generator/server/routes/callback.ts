@@ -109,6 +109,7 @@ export default defineEventHandler(async (event) => {
       path: "/",
     });
 
+
     const expiresInSeconds = Number(tokens.expires_in || 3600);
     setCookie(event, "access_token", tokens.access_token || "", {
       httpOnly: false,
