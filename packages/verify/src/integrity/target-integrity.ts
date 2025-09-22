@@ -1,13 +1,13 @@
 import type { Target } from "@originator-profile/model";
 import {
+  type ContentFetcher,
+  type ElementSelector,
   fetchExternalResource,
   fetchHtmlContent,
   fetchTextContent,
   fetchVisibleTextContent,
   selectByCss,
   selectByIntegrity,
-  type ContentFetcher,
-  type ElementSelector,
 } from "@originator-profile/sign";
 import { createIntegrityMetadata, IntegrityMetadata } from "websri";
 
@@ -89,12 +89,13 @@ export const TargetIntegrityAlgorithm = {
 export async function verifyIntegrity(
   content: Target,
   doc = document,
+  fetcher = fetch,
 ): Promise<IntegrityVerifyResult> {
   const { contentFetcher, elementSelector } =
     TargetIntegrityAlgorithm[content.type];
 
   const integrityVerifier = new IntegrityVerifier(
-    contentFetcher,
+    (content) => contentFetcher(content, fetcher),
     elementSelector,
   );
 
