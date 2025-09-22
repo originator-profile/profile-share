@@ -58,8 +58,8 @@ export const createDefaultContentAttestation = (
   const defaultCA: ContentAttestationModel = {
     "@context": [
       "https://www.w3.org/ns/credentials/v2",
-      "https://originator-profile.org/ns/credentials/v1",
-      "https://originator-profile.org/ns/cip/v1",
+      "https://opca-api-dev.facere.biz/ns/credentials/v1",
+      "https://opca-api-dev.facere.biz/ns/cip/v1",
       { "@language": lang },
     ],
     type: defaultTypes,
