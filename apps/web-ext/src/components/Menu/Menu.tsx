@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback } from "react";
 import clsx from "clsx";
 
 interface MenuProps extends React.HTMLAttributes<HTMLUListElement> {
@@ -6,21 +6,20 @@ interface MenuProps extends React.HTMLAttributes<HTMLUListElement> {
   "aria-labelledby"?: string;
   isOpen?: boolean;
   hasKeyboardFocus?: boolean;
+  ref?: React.Ref<HTMLUListElement>;
 }
 
-export const Menu = forwardRef<HTMLUListElement, MenuProps>(
-  (
-    { className, children, isOpen = false, hasKeyboardFocus = false, ...props },
-    ref,
-  ) => {
-    const [shouldRender, setShouldRender] = useState(false);
-    const [isVisible, setIsVisible] = useState(false);
-    const internalRef = useRef<HTMLUListElement>(null);
-
+export const Menu = ({
+  className,
+  children,
+  isOpen = false,
+  hasKeyboardFocus = false,
+  ref,
+  ...props
+}: MenuProps) => {
     // Combine refs using a callback ref
     const setRefs = useCallback(
       (node: HTMLUListElement | null) => {
-        internalRef.current = node;
         if (typeof ref === "function") {
           ref(node);
         } else if (ref) {
@@ -30,42 +29,7 @@ export const Menu = forwardRef<HTMLUListElement, MenuProps>(
       [ref],
     );
 
-    useEffect(() => {
-      if (isOpen) {
-        setShouldRender(true);
-        // Force reflow for smooth animation
-        requestAnimationFrame(() => {
-          setIsVisible(true);
-        });
-      } else {
-        setIsVisible(false);
-      }
-    }, [isOpen]);
-
-    // Separate effect for transition end handling to ensure cleanup
-    useEffect(() => {
-      // Only attach listener when menu is closing
-      if (!isOpen && shouldRender) {
-        const element = internalRef.current;
-        if (element) {
-          const handleTransitionEnd = (e: TransitionEvent) => {
-            // Only handle opacity transition to avoid multiple triggers
-            if (e.propertyName === "opacity") {
-              setShouldRender(false);
-            }
-          };
-
-          element.addEventListener("transitionend", handleTransitionEnd);
-
-          // Cleanup function always runs on unmount or when dependencies change
-          return () => {
-            element.removeEventListener("transitionend", handleTransitionEnd);
-          };
-        }
-      }
-    }, [isOpen, shouldRender]);
-
-    if (!shouldRender) return null;
+    if (!isOpen) return null;
 
     return (
       <ul
@@ -73,10 +37,10 @@ export const Menu = forwardRef<HTMLUListElement, MenuProps>(
         className={clsx(
           "absolute z-20 min-w-0 rounded-lg bg-white py-2 shadow-lg",
           "focus:outline-none",
-          "transition-all duration-100",
+          "opacity-100 scale-100",
+          "transition-all duration-100 ease-out",
+          "animate-in fade-in zoom-in-95",
           {
-            "opacity-100 scale-100 ease-out": isVisible,
-            "opacity-0 scale-95 ease-in": !isVisible,
             "ring-2 ring-blue-500": hasKeyboardFocus,
           },
           className,
@@ -86,7 +50,6 @@ export const Menu = forwardRef<HTMLUListElement, MenuProps>(
         {children}
       </ul>
     );
-  },
-);
+};
 
 Menu.displayName = "Menu";

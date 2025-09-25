@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import clsx from "clsx";
 
 interface MenuItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -6,20 +6,18 @@ interface MenuItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   selected?: boolean;
   active?: boolean;
   value: string;
+  ref?: React.Ref<HTMLButtonElement>;
 }
 
-export const MenuItem = forwardRef<HTMLButtonElement, MenuItemProps>(
-  (
-    {
-      className,
-      children,
-      selected: _selected = false,
-      active = false,
-      value: _value,
-      ...props
-    },
-    ref,
-  ) => {
+export const MenuItem = ({
+  className,
+  children,
+  selected: _selected = false,
+  active = false,
+  value: _value,
+  ref,
+  ...props
+}: MenuItemProps) => {
     const internalRef = useRef<HTMLButtonElement>(null);
 
     // Combine refs
@@ -59,7 +57,6 @@ export const MenuItem = forwardRef<HTMLButtonElement, MenuItemProps>(
         </button>
       </li>
     );
-  },
-);
+};
 
 MenuItem.displayName = "MenuItem";

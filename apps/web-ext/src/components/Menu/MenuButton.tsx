@@ -1,4 +1,3 @@
-import { forwardRef } from "react";
 import clsx from "clsx";
 
 interface MenuButtonProps
@@ -6,10 +5,10 @@ interface MenuButtonProps
   "aria-haspopup"?: "menu" | "true";
   "aria-expanded"?: boolean;
   "aria-controls"?: string;
+  ref?: React.Ref<HTMLButtonElement>;
 }
 
-export const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
-  ({ className, children, ...props }, ref) => {
+export const MenuButton = ({ className, children, ref, ...props }: MenuButtonProps) => {
     return (
       <button
         ref={ref}
@@ -24,7 +23,6 @@ export const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(
         {children}
       </button>
     );
-  },
-);
+};
 
 MenuButton.displayName = "MenuButton";
