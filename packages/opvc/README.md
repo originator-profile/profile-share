@@ -366,10 +366,7 @@ FLAG DESCRIPTIONS
     "id": "https://wmp-holder.example.jp/privacy",
     "name": "プライバシーポリシー"
     },
-    "description": {
-    "type": "PlainTextDescription",
-    "data": "この文章はこの Web メディアに関する補足情報です。"
-    }
+    "description": "この文章はこの Web メディアに関する補足情報です。"
     }
     }
 
@@ -398,7 +395,9 @@ FLAG DESCRIPTIONS
     "id": "https://media.example.com/image.png",
     "digestSRI": "sha256-Upwn7gYMuRmJlD1ZivHk876vXHzokXrwXj50VgfnMnY="
     },
-    "url": "https://media.example.com"
+    "allowedOrigin": [
+    "https://media.example.com"
+    ]
     }
     }
 ```
@@ -450,14 +449,16 @@ FLAG DESCRIPTIONS
     "issuer": "<OP ID>",
     "credentialSubject": {
     "id": "<Web サイトのオリジン (形式: https://<ホスト名>)>",
-    "url": "<Web サイトのオリジン (形式: https://<ホスト名>)>",
     "type": "WebSite",
     "name": "<Web サイトの名称>",
     "description": "<Web サイトの説明>",
     "image": {
     "id": "<サムネイル画像URL>",
     "content": "<コンテンツ (data:// 形式URL)>"
-    }
+    },
+    "allowedOrigin": [
+    "<Web サイトのオリジン (形式: https://<ホスト名>)>"
+    ]
     }
     }
 ```

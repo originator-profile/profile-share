@@ -25,6 +25,14 @@ if ( ! \is_user_logged_in() ) {
 	header( 'HTTP/1.1 404 Not Found' );
 	exit( 'Page not found.' );
 }
+
+// Check if the user is an administrator.
+if ( ! \current_user_can( 'administrator' ) ) {
+	// Fake 404 error if the user is not an administrator.
+	header( 'HTTP/1.1 404 Not Found' );
+	exit( 'Page not found.' );
+}
+
 // Check if the admin secret is set.
 $admin_secret = \get_option( 'profile_ca_server_admin_secret', null );
 if ( ! $admin_secret ) {

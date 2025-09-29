@@ -1,4 +1,4 @@
-# CA Manager
+# WordPressプラグイン (CA Manager)
 
 WordPress での記事の公開時の Content Attestation (CA) の発行に役立つプラグインです。
 
@@ -13,7 +13,11 @@ WordPress での記事の公開時の Content Attestation (CA) の発行に役�
 
 ## デモ
 
-プラグインインストール済みの試験用環境 [op.cms.am](https://op.cms.am) にて運用しています。
+プラグインインストール済みの試験用環境を用意しています。
+
+- https://op.cms.am/ (最新のメイン試験環境)
+
+デモサイトの編集権限が必要な方は開発チームに相談してください。
 
 ## プラグインのインストール
 
@@ -141,6 +145,52 @@ TextTargetIntegrity
 
 `%CONTENT%` は `apply_filters()` 適用後の WordPress 投稿内容に置換され、リクエストコンテンツ `target[0].content` プロパティとしてCAサーバーに送信されます。
 
+**[CA Presentation Type]: CASを埋め込み形式かリンク形式か指定**
+
+デフォルトは Embedded となっています。
+
+- Embedded: CAS を埋め込み形式(Embedded)にして記事を投稿します。
+
+例:
+
+```html
+<script type="application/cas+json">
+  ["eyJ..."]
+</script>
+```
+
+- External: CAS を静的ファイルとして生成し、リンク形式(External)にして記事を投稿します。
+
+CA Presentaion Type が External 時、静的ファイルを生成するディレクトリとして下記のように定義されています。
+
+```
+const PROFILE_DEFAULT_CA_EXTERNAL_DIR = 'cas';
+```
+
+ドキュメントルートが /var/www/html の場合、以下のパスに静的ファイルが配置されます。
+
+```
+/var/www/html/cas/<ポストid>_cas.json
+```
+
+例:
+
+```html
+<script
+  src="https://example.com/cas/1_cas.json"
+  type="application/cas+json"
+></script>
+```
+
+ドキュメントルート配下に cas ディレクトリが存在しない場合、 cas ディレクトリが作成されます。  
+ また、ポストidが同一の場合、静的ファイルは上書きされます。
+
+確認方法:
+
+```
+$ curl -sSf https://example.com/cas/1_cas.json
+```
+
 設定は WordPress 管理画面の「設定 > CA Manager」から行います。
 これらの設定が完了しないと Content Attestation の発行機能は正しく動作しません。
 正しく設定が反映されると、それ以降に更新した投稿と新規投稿は自動的にCAサーバーに送信されます。
@@ -192,7 +242,7 @@ HTML中にscript要素を用いてOPを埋め込むことが可能です。
 </script>
 ```
 
-詳細は「[サイトのOP対応](https://docs.originator-profile.org/studies/general-instruction/sp-setup-guide/)」または「[Linking Content Attestation Set and Originator Profile Set to A HTML Document](https://docs.originator-profile.org/rfc/link-to-html/)」をご確認ください。
+詳細は「[サイトのOP対応](https://docs.originator-profile.org/studies/general-instruction/sp-setup-guide/)」または「[Linking Content Attestation Set and Originator Profile Set to A HTML Document](https://docs.originator-profile.org/opb/link-to-html/)」をご確認ください。
 
 ## 処理の流れ
 
@@ -264,6 +314,18 @@ Content Attestation サーバーのリクエストアウト (秒) の初期値�
 検証対象要素の存在する HTML の初期値です。
 
 ## 既知の問題
+
+### パーマリンク設定の変更による影響
+
+WordPressのパーマリンク設定を変更すると、各記事のURLが変更されるため、既に発行済みのContent Attestation（CA）は`allowedUrl`の不一致により無効となります。
+
+**影響する操作**:
+
+- 設定 > パーマリンク設定
+  - 設定変更
+  - カスタム構造の変更
+
+パーマリンク設定を変更した場合、影響を受ける全ての投稿を再度更新（編集・保存）することで、新しいURLに対応したCAが再発行されます。
 
 ### プラグイン・フィルター・テーマによるHTMLの変形
 

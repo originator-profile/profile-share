@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-originator-profile",
-  "version": "0.3.0-beta.1",
+  "version": "0.3.0-beta.4",
   "private": true,
   "type": "module",
   "main": "./eslint.config.mjs",
@@ -15,7 +15,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "globals": "^16.0.0",
-    "typescript-eslint": "8.37.0"
+    "typescript-eslint": "8.38.0"
   },
   "devDependencies": {
     "@types/eslint-plugin-jsx-a11y": "^6.10.0"

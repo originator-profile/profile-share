@@ -95,13 +95,13 @@ export function generateWebsiteProfileData(
     issuer: issuer,
     credentialSubject: {
       id: "http://localhost:8080",
-      url: "http://localhost:8080",
       type: "WebSite",
       name: "SiteProfileの取得検証",
       description: "<Webサイトの説明>",
       image: {
         id: "https://media.example.com/image.png",
       },
+      allowedOrigin: ["http://localhost:8080"],
     },
   };
 }

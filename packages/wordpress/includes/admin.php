@@ -28,6 +28,7 @@ function register_settings() {
 	\register_setting( 'ca-manager', 'profile_ca_target_type', array( 'default' => PROFILE_DEFAULT_CA_TARGET_TYPE ) );
 	\register_setting( 'ca-manager', 'profile_ca_target_css_selector', array( 'default' => PROFILE_DEFAULT_CA_TARGET_CSS_SELECTOR ) );
 	\register_setting( 'ca-manager', 'profile_ca_target_html', array( 'default' => PROFILE_DEFAULT_CA_TARGET_HTML ) );
+	\register_setting( 'ca-manager', 'profile_ca_embedded_or_external', array( 'default' => 'embedded' ) );
 	\add_settings_section( 'profile_settings', '設定', '\Profile\Admin\profile_settings_section', 'ca-manager' );
 	\add_settings_field( 'profile_ca_issuer_id', 'CA issuer\'s Originator Profile ID', '\Profile\Admin\profile_ca_issuer_id_field', 'ca-manager', 'profile_settings' );
 	\add_settings_field( 'profile_ca_server_hostname', 'CAサーバーホスト名', '\Profile\Admin\profile_ca_server_hostname_field', 'ca-manager', 'profile_settings' );
@@ -35,6 +36,7 @@ function register_settings() {
 	\add_settings_field( 'profile_ca_target_type', '検証対象の種別', '\Profile\Admin\profile_ca_target_type_field', 'ca-manager', 'profile_settings' );
 	\add_settings_field( 'profile_ca_target_css_selector', '検証対象要素CSSセレクター', '\Profile\Admin\profile_ca_target_css_selector_field', 'ca-manager', 'profile_settings' );
 	\add_settings_field( 'profile_ca_target_html', '検証対象要素の存在するHTML', '\Profile\Admin\profile_ca_target_html_field', 'ca-manager', 'profile_settings' );
+	\add_settings_field( 'profile_ca_embedded_or_external', 'CA Presentation Type', '\Profile\Admin\profile_ca_embedded_or_external_field', 'ca-manager', 'profile_settings' );
 }
 
 /** 設定画面 */
@@ -55,6 +57,19 @@ function settings_page() {
 function profile_settings_section() {
 	?>
 		<p>これらの設定が完了しないと Content Attestation (CA) の発行機能は正しく動作しません。正しく設定が反映されると、それ以降に更新した投稿と新規投稿は自動的にCAサーバーに送信されます。</p>
+		<p>
+			<strong>⚠️ 重要な注意事項：</strong>
+			WordPressの
+			<a
+				href="<?php echo \esc_url( \get_admin_url( null, 'options-permalink.php' ) ); ?>"
+				target="_blank"
+			>
+				パーマリンク設定
+			</a>
+			を変更すると、各記事のURLが変更されるため、既に発行済みのCAは無効となります。
+			パーマリンク設定を運用開始後に変更することは避けてください。
+			もしパーマリンク設定を変更した場合は、全ての投稿を再度更新（編集・保存）してCAを再発行してください。
+		</p>
 	<?php
 }
 
@@ -144,6 +159,36 @@ function profile_ca_target_html_field() {
 			style="font-family: monospace;"
 			rows="6"
 		><?php echo \esc_html( \get_option( 'profile_ca_target_html' ) ); ?></textarea>
+	<?php
+}
+
+/** CA Presentation Type フィールド*/
+function profile_ca_embedded_or_external_field() {
+	?>
+	<p>
+		<label for="embedded" class="radio-item">
+		<input 
+			type="radio"
+			id="embedded"
+			name="profile_ca_embedded_or_external"
+			value="embedded"
+			title="CASを直接JSON形式で入力します"
+			<?php checked( \get_option( 'profile_ca_embedded_or_external' ), 'embedded' ); ?>
+		/>
+		Embedded (直接JSONを入力)</label>
+	</p>
+	<p>
+		<label for="external" class="radio-item">
+		<input 
+			type="radio"
+			id="external"
+			name="profile_ca_embedded_or_external"
+			value="external"
+			title="CASをURLで参照する形式で入力します 選択するとJSONファイルが定数で指定したディレクトリに生成されます"
+			<?php checked( \get_option( 'profile_ca_embedded_or_external' ), 'external' ); ?>
+		/>
+		External (URLで参照)</label>
+	</p>
 	<?php
 }
 

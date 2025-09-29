@@ -23,19 +23,13 @@ jobs:
         uses: "./.github/actions/lint"
       - name: Type Check
         uses: "./.github/actions/type-check"
+      - name: Test
+        uses: "./.github/actions/test"
       - name: Build
         id: build
         uses: "./.github/actions/build"
         with:
           BASIC_AUTH_CREDENTIALS: ${{ secrets.BASIC_AUTH_CREDENTIALS }}
           REGISTRY_OPS: ${{ secrets.REGISTRY_OPS }}
-      - name: Test
-        uses: "./.github/actions/test"
-        with:
-          BASIC_AUTH_CREDENTIALS: ${{ secrets.BASIC_AUTH_CREDENTIALS }}
-          REGISTRY_OPS: ${{ secrets.REGISTRY_OPS }}
       - name: End-to-End Test
         uses: "./.github/actions/e2e"
-        with:
-          BASIC_AUTH_CREDENTIALS: ${{ secrets.BASIC_AUTH_CREDENTIALS }}
-          REGISTRY_OPS: ${{ secrets.REGISTRY_OPS }}

@@ -1,7 +1,6 @@
 import { expect, popup, test as base } from "./fixtures";
-import path from "node:path";
-import fs from "node:fs/promises";
-import { fileURLToPath } from "node:url";
+import privateKey from "./account-key.example.priv.json" with { type: "json" };
+import publicKey from "./account-key.example.pub.json" with { type: "json" };
 import { test as siteProfileTest } from "./site-profile-fixtures";
 import { test as credntialsTest } from "./credentials-fixtures";
 import { test as staticHtmlTest } from "./static-html-fixtures";
@@ -14,20 +13,6 @@ const test = mergeTests(
   staticHtmlTest,
 ).extend({});
 
-const cwd = path.dirname(fileURLToPath(new URL(import.meta.url)));
-const privKeyPath = path.join(
-  cwd,
-  "../../registry/account-key.example.priv.json",
-);
-const privKeyBuffer = await fs.readFile(privKeyPath);
-const privateKey = JSON.parse(privKeyBuffer.toString());
-
-const pubKeyPath = path.join(
-  cwd,
-  "../../registry/account-key.example.pub.json",
-);
-const pubKeyBuffer = await fs.readFile(pubKeyPath);
-const publicKey = JSON.parse(pubKeyBuffer.toString());
 test("CAS/OPSの取得に成功するがSPの検証に失敗した場合閲覧禁止", async ({
   context,
   page,

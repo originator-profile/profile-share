@@ -92,10 +92,7 @@ const exampleWebMediaProfile = {
       id: "https://wmp-holder.example.jp/privacy",
       name: "プライバシーポリシー",
     },
-    description: {
-      type: "PlainTextDescription",
-      data: "この文章はこの Web メディアに関する補足情報です。",
-    },
+    description: "この文章はこの Web メディアに関する補足情報です。",
   },
 } satisfies WebMediaProfile;
 
@@ -119,7 +116,7 @@ const exampleWebsiteProfile = {
       id: "https://media.example.com/image.png",
       digestSRI: "sha256-Upwn7gYMuRmJlD1ZivHk876vXHzokXrwXj50VgfnMnY=",
     },
-    url: "https://media.example.com",
+    allowedOrigin: ["https://media.example.com"],
   },
 } satisfies WebsiteProfile;
 

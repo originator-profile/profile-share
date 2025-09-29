@@ -25,7 +25,7 @@ const options = /** @type {const} */ ({
   url: {
     type: "string",
     short: "u",
-    default: "http://localhost:8080/app/debugger",
+    default: "http://localhost:8080/examples/cas-1.html",
     toString() {
       return `<watch_url> (default: ${this.default}, development mode only)`;
     },
@@ -81,12 +81,9 @@ let registryOps = [];
 if (process.env.REGISTRY_OPS) {
   registryOps = JSON.parse(process.env.REGISTRY_OPS);
 } else if (args.values.mode === "development") {
-  const privKeyPath = path.join(
-    cwd,
-    "../registry/account-key.example.priv.json",
-  );
-  const commandBinaryPath = path.join(cwd, "../registry/bin/run");
-  const cpPath = path.join(cwd, "../registry/cp.example.json");
+  const privKeyPath = path.join(cwd, "e2e/account-key.example.priv.json");
+  const commandBinaryPath = path.join(cwd, "../../packages/opvc/bin/dev.ts");
+  const cpPath = path.join(cwd, "./cp.example.json");
   const signedCoreProfile = execSync(
     `${commandBinaryPath} sign -i ${privKeyPath} --input ${cpPath} --id localhost`,
   )
@@ -121,8 +118,6 @@ if (env.REGISTRY_OPS.length === 0) {
   console.warn(
     "REGISTRY_OPS is empty. Please set REGISTRY_OPS environment variable.",
   );
-
-  if (process.env.CI) process.exit(1);
 }
 
 import esbuild from "esbuild";
@@ -148,7 +143,7 @@ const buildOptions = {
   bundle: true,
   minify: args.values.mode === "production",
   sourcemap: args.values.mode === "development",
-  conditions: ["browser", "typescript"],
+  conditions: ["browser"],
   define: {
     "import.meta.env": JSON.stringify(env),
   },

@@ -4,6 +4,7 @@ export type DigestSriContent = Image;
 
 export type ContentFetcher = (
   elements: ReadonlyArray<HTMLElement>,
+  fetcher?: typeof fetch,
 ) => Promise<ReadonlyArray<Response>>;
 
 export type ElementSelector = (params: {
