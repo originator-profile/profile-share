@@ -15,3 +15,5 @@ vendor
 /apps/web-ext/screenshots
 /apps/web-ext/web-ext-artifacts*
 /public/ts
+
+.claude/settings.local.json
