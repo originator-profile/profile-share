@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import clsx from "clsx";
+import "./Menu.css";
 
 interface MenuProps extends React.HTMLAttributes<HTMLUListElement> {
   role?: "menu";
@@ -29,17 +30,14 @@ export const Menu = ({
     [ref],
   );
 
-  if (!isOpen) return null;
-
   return (
     <ul
       ref={setRefs}
+      data-open={isOpen}
       className={clsx(
+        "menu-container",
         "absolute z-20 min-w-0 rounded-lg bg-white py-2 shadow-lg",
         "focus:outline-none",
-        "opacity-100 scale-100",
-        "transition-all duration-100 ease-out",
-        "animate-in fade-in zoom-in-95",
         {
           "ring-2 ring-blue-500": hasKeyboardFocus,
         },
