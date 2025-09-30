@@ -19,14 +19,20 @@ async function globalTeardown() {
         if (backup.originalLanguages === undefined) {
           // 元々設定が存在しなかった場合は削除
           try {
-            execSync("defaults delete org.chromium.Chromium AppleLanguages 2>/dev/null");
-            console.log("✅ Chromiumの言語設定を削除しました（元の状態に復元）");
+            execSync(
+              "defaults delete org.chromium.Chromium AppleLanguages 2>/dev/null",
+            );
+            console.log(
+              "✅ Chromiumの言語設定を削除しました（元の状態に復元）",
+            );
           } catch {
             // 削除に失敗した場合は無視（既に削除されている可能性）
           }
         } else {
           // 元の設定を復元
-          execSync(`defaults write org.chromium.Chromium AppleLanguages '${backup.originalLanguages}'`);
+          execSync(
+            `defaults write org.chromium.Chromium AppleLanguages '${backup.originalLanguages}'`,
+          );
           console.log("✅ Chromiumの言語設定を復元しました");
         }
       }
@@ -39,14 +45,18 @@ async function globalTeardown() {
         if (backup.originalLanguages === undefined) {
           // 元々設定が存在しなかった場合は削除
           try {
-            execSync("defaults delete com.google.Chrome AppleLanguages 2>/dev/null");
+            execSync(
+              "defaults delete com.google.Chrome AppleLanguages 2>/dev/null",
+            );
             console.log("✅ Chromeの言語設定を削除しました（元の状態に復元）");
           } catch {
             // 削除に失敗した場合は無視
           }
         } else {
           // 元の設定を復元
-          execSync(`defaults write com.google.Chrome AppleLanguages '${backup.originalLanguages}'`);
+          execSync(
+            `defaults write com.google.Chrome AppleLanguages '${backup.originalLanguages}'`,
+          );
           console.log("✅ Chromeの言語設定を復元しました");
         }
       }
@@ -55,11 +65,12 @@ async function globalTeardown() {
       if (existsSync(tempDir)) {
         rmSync(tempDir, { recursive: true, force: true });
       }
-
     } catch (error) {
       console.error("⚠️ 言語設定の復元に失敗しました:", error);
       console.error("   手動で設定を確認してください。");
-      console.error("   確認コマンド: defaults read org.chromium.Chromium AppleLanguages");
+      console.error(
+        "   確認コマンド: defaults read org.chromium.Chromium AppleLanguages",
+      );
     }
   }
 }
