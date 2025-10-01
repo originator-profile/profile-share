@@ -195,6 +195,26 @@ $ curl -sSf https://example.com/cas/1_cas.json
 これらの設定が完了しないと Content Attestation の発行機能は正しく動作しません。
 正しく設定が反映されると、それ以降に更新した投稿と新規投稿は自動的にCAサーバーに送信されます。
 
+**ログの出力設定**
+
+デフォルトは無効となっています。
+
+有効にすると CA Manager プラグインに関するログが出力され、内容が表示されるようになります。  
+ログファイルを生成するディレクトリとして下記のように定義されています。
+
+```
+const PROFILE_DEFAULT_CA_LOG_DIR = 'ca-manager-log';
+```
+
+ドキュメントルートが /var/www/html の場合、以下のパスにログが出力されます。
+ログファイルが存在しない場合、新たに生成されます。
+
+```
+/var/www/html/ca-manager-log/ca-manager-debug.log
+```
+
+無効にするとログは出力されず、内容も表示されなくなります。
+
 ### `/.well-known/sp.json` の配置
 
 配置場所:

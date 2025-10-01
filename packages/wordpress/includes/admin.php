@@ -8,6 +8,7 @@ use const Profile\Config\PROFILE_DEFAULT_CA_SERVER_HOSTNAME;
 use const Profile\Config\PROFILE_DEFAULT_CA_TARGET_TYPE;
 use const Profile\Config\PROFILE_DEFAULT_CA_TARGET_CSS_SELECTOR;
 use const Profile\Config\PROFILE_DEFAULT_CA_TARGET_HTML;
+use const Profile\Config\PROFILE_DEFAULT_CA_LOG_DIR;
 
 /** 管理者画面の初期化 */
 function init() {
@@ -29,6 +30,7 @@ function register_settings() {
 	\register_setting( 'ca-manager', 'profile_ca_target_css_selector', array( 'default' => PROFILE_DEFAULT_CA_TARGET_CSS_SELECTOR ) );
 	\register_setting( 'ca-manager', 'profile_ca_target_html', array( 'default' => PROFILE_DEFAULT_CA_TARGET_HTML ) );
 	\register_setting( 'ca-manager', 'profile_ca_embedded_or_external', array( 'default' => 'embedded' ) );
+	\register_setting( 'ca-manager', 'profile_ca_log_option', array( 'default' => 'false' ) );
 	\add_settings_section( 'profile_settings', '設定', '\Profile\Admin\profile_settings_section', 'ca-manager' );
 	\add_settings_field( 'profile_ca_issuer_id', 'CA issuer\'s Originator Profile ID', '\Profile\Admin\profile_ca_issuer_id_field', 'ca-manager', 'profile_settings' );
 	\add_settings_field( 'profile_ca_server_hostname', 'CAサーバーホスト名', '\Profile\Admin\profile_ca_server_hostname_field', 'ca-manager', 'profile_settings' );
@@ -37,6 +39,7 @@ function register_settings() {
 	\add_settings_field( 'profile_ca_target_css_selector', '検証対象要素CSSセレクター', '\Profile\Admin\profile_ca_target_css_selector_field', 'ca-manager', 'profile_settings' );
 	\add_settings_field( 'profile_ca_target_html', '検証対象要素の存在するHTML', '\Profile\Admin\profile_ca_target_html_field', 'ca-manager', 'profile_settings' );
 	\add_settings_field( 'profile_ca_embedded_or_external', 'CA Presentation Type', '\Profile\Admin\profile_ca_embedded_or_external_field', 'ca-manager', 'profile_settings' );
+	\add_settings_field( 'profile_ca_log_option', 'ログの出力設定', '\Profile\Admin\profile_ca_log_option_field', 'ca-manager', 'profile_settings' );
 }
 
 /** 設定画面 */
@@ -188,6 +191,53 @@ function profile_ca_embedded_or_external_field() {
 			<?php checked( \get_option( 'profile_ca_embedded_or_external' ), 'external' ); ?>
 		/>
 		External (URLで参照)</label>
+	</p>
+	<?php
+}
+
+/** ログの出力設定フィールド */
+function profile_ca_log_option_field() {
+	?>
+	<p>
+		<label for="false" class="radio-item">
+		<input
+			type="radio"
+			id="false"
+			name="profile_ca_log_option"
+			value="false"
+			title="ログ出力を無効にします"
+			<?php checked( \get_option( 'profile_ca_log_option' ), 'false' ); ?>
+		/>
+		無効化</label>
+	</p>
+	<p>
+		<label for="true" class="radio-item">
+		<input
+			type="radio"
+			id="true"
+			name="profile_ca_log_option"
+			value="true"
+			title="ログ出力を有効にします"
+			<?php checked( \get_option( 'profile_ca_log_option' ), 'true' ); ?>
+		/>
+		有効化</label>
+		<?php
+		if ( \get_option( 'profile_ca_log_option' ) === 'true' ) {
+			$log_file = ABSPATH . PROFILE_DEFAULT_CA_LOG_DIR . '/ca-manager-debug.log';
+			if ( file_exists( $log_file ) ) {
+				$lines      = file( $log_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES );
+				$last_lines = array_slice( $lines, -25 );
+				$last_lines = array_reverse( $last_lines );
+				echo '<pre><textarea readonly rows="5" style="width:90%; font-family:monospace;">';
+				foreach ( $last_lines as $line ) {
+					echo esc_html( $line ) . "\n";
+				}
+				echo '</textarea></pre>';
+			} else {
+				echo '<p>ログファイルはまだ存在しません。</p>';
+			}
+		}
+		?>
 	</p>
 	<?php
 }
