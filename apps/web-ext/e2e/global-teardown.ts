@@ -9,7 +9,8 @@ interface LanguageBackup {
 
 // ブラウザの言語設定を削除
 function deleteLanguageSetting(browser: "chromium" | "chrome"): void {
-  const domain = browser === "chromium" ? "org.chromium.Chromium" : "com.google.Chrome";
+  const domain =
+    browser === "chromium" ? "org.chromium.Chromium" : "com.google.Chrome";
   const browserName = browser === "chromium" ? "Chromium" : "Chrome";
 
   try {
@@ -21,8 +22,12 @@ function deleteLanguageSetting(browser: "chromium" | "chrome"): void {
 }
 
 // ブラウザの言語設定を復元
-function restoreLanguageSetting(browser: "chromium" | "chrome", originalLanguages: string): void {
-  const domain = browser === "chromium" ? "org.chromium.Chromium" : "com.google.Chrome";
+function restoreLanguageSetting(
+  browser: "chromium" | "chrome",
+  originalLanguages: string,
+): void {
+  const domain =
+    browser === "chromium" ? "org.chromium.Chromium" : "com.google.Chrome";
   const browserName = browser === "chromium" ? "Chromium" : "Chrome";
 
   execSync(`defaults write ${domain} AppleLanguages '${originalLanguages}'`);
@@ -30,7 +35,10 @@ function restoreLanguageSetting(browser: "chromium" | "chrome", originalLanguage
 }
 
 // バックアップファイルから設定を復元
-function restoreBrowserLanguage(browser: "chromium" | "chrome", tempDir: string): void {
+function restoreBrowserLanguage(
+  browser: "chromium" | "chrome",
+  tempDir: string,
+): void {
   const backupFile = join(tempDir, `${browser}-language-backup.json`);
 
   if (!existsSync(backupFile)) {
@@ -66,7 +74,9 @@ async function globalTeardown() {
   } catch (error) {
     console.error("言語設定の復元に失敗しました:", error);
     console.error("   手動で設定を確認してください。");
-    console.error("   確認コマンド: defaults read org.chromium.Chromium AppleLanguages");
+    console.error(
+      "   確認コマンド: defaults read org.chromium.Chromium AppleLanguages",
+    );
   }
 }
 
