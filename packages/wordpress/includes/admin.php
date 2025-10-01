@@ -30,7 +30,7 @@ function register_settings() {
 	\register_setting( 'ca-manager', 'profile_ca_target_css_selector', array( 'default' => PROFILE_DEFAULT_CA_TARGET_CSS_SELECTOR ) );
 	\register_setting( 'ca-manager', 'profile_ca_target_html', array( 'default' => PROFILE_DEFAULT_CA_TARGET_HTML ) );
 	\register_setting( 'ca-manager', 'profile_ca_embedded_or_external', array( 'default' => 'embedded' ) );
-	\register_setting( 'ca-manager', 'profile_ca_log_option', array( 'default' => 'false' ) );
+	\register_setting( 'ca-manager', 'profile_ca_log_option', array( 'default' => '0' ) );
 	\add_settings_section( 'profile_settings', '設定', '\Profile\Admin\profile_settings_section', 'ca-manager' );
 	\add_settings_field( 'profile_ca_issuer_id', 'CA issuer\'s Originator Profile ID', '\Profile\Admin\profile_ca_issuer_id_field', 'ca-manager', 'profile_settings' );
 	\add_settings_field( 'profile_ca_server_hostname', 'CAサーバーホスト名', '\Profile\Admin\profile_ca_server_hostname_field', 'ca-manager', 'profile_settings' );
@@ -199,39 +199,37 @@ function profile_ca_embedded_or_external_field() {
 function profile_ca_log_option_field() {
 	?>
 	<p>
-		<label for="false" class="radio-item">
+		<label for="profile_ca_log_option_false" class="radio-item">
 		<input
 			type="radio"
-			id="false"
+			id="profile_ca_log_option_false"
 			name="profile_ca_log_option"
-			value="false"
+			value="0"
 			title="ログ出力を無効にします"
-			<?php checked( \get_option( 'profile_ca_log_option' ), 'false' ); ?>
+			<?php checked( \get_option( 'profile_ca_log_option' ), '0' ); ?>
 		/>
 		無効化</label>
 	</p>
 	<p>
-		<label for="true" class="radio-item">
+		<label for="profile_ca_log_option_true" class="radio-item">
 		<input
 			type="radio"
-			id="true"
+			id="profile_ca_log_option_true"
 			name="profile_ca_log_option"
-			value="true"
+			value="1"
 			title="ログ出力を有効にします"
-			<?php checked( \get_option( 'profile_ca_log_option' ), 'true' ); ?>
+			<?php checked( \get_option( 'profile_ca_log_option' ), '1' ); ?>
 		/>
 		有効化</label>
 		<?php
-		if ( \get_option( 'profile_ca_log_option' ) === 'true' ) {
+		if ( \get_option( 'profile_ca_log_option' ) === '1' ) {
 			$log_file = ABSPATH . PROFILE_DEFAULT_CA_LOG_DIR . '/ca-manager-debug.log';
 			if ( file_exists( $log_file ) ) {
 				$lines      = file( $log_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES );
 				$last_lines = array_slice( $lines, -25 );
 				$last_lines = array_reverse( $last_lines );
 				echo '<pre><textarea readonly rows="5" style="width:90%; font-family:monospace;">';
-				foreach ( $last_lines as $line ) {
-					echo esc_html( $line ) . "\n";
-				}
+				echo esc_textarea( implode( "\n", $last_lines ) );
 				echo '</textarea></pre>';
 			} else {
 				echo '<p>ログファイルはまだ存在しません。</p>';

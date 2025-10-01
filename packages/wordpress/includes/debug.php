@@ -12,13 +12,13 @@ use const Profile\Config\PROFILE_DEFAULT_CA_LOG_DIR;
  * @param string $message The message to log.
  */
 function debug( string $message ) {
-	$date = gmdate( 'Y-m-d\TH:i:sP' );
+	$date = gmdate( 'c' );
 	// WordPress 全体のデバッグログ
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 		\error_log( $message );
 	}
 	// プラグイン専用ログ
-	if ( \get_option( 'profile_ca_log_option' ) === 'true' ) {
+	if ( \get_option( 'profile_ca_log_option' ) === '1' ) {
 		global $wp_filesystem;
 		$dir_name = PROFILE_DEFAULT_CA_LOG_DIR;
 		$dir      = ABSPATH . "{$dir_name}/";
@@ -29,6 +29,6 @@ function debug( string $message ) {
 			}
 		}
 		$log_file = "{$dir}ca-manager-debug.log";
-		\error_log( "[Date:{$date}]: " . $message . PHP_EOL, 3, $log_file );
+		\error_log( "[Date:{$date}] " . $message . PHP_EOL, 3, $log_file );
 	}
 }
