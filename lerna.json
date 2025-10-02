@@ -5,5 +5,10 @@
     ".",
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "command": {
+    "version": {
+      "forcePublish": true
+    }
+  }
 }
