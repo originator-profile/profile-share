@@ -58,4 +58,4 @@ jobs:
       - if: github.ref == 'refs/heads/main' && github.event.inputs.release_type == 'release' && github.event.inputs.version != 'prerelease'
         name: Next Release
         run: |
-          pnpm exec lerna version --force-publish --preid=beta --yes preminor
+          pnpm exec lerna version --preid=beta --yes preminor
