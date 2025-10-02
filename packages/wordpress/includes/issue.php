@@ -37,6 +37,7 @@ function init() {
  */
 function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 	if ( 'publish' !== $new_status ) {
+		debug( "Post status is '{$new_status}', not 'publish'. Skipping CA signing." );
 		return;
 	}
 
@@ -50,6 +51,11 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 	$issuer_id    = \get_option( 'profile_ca_issuer_id' );
 	$endpoint     = "https://{$hostname}/ca";
 
+	if ( ! $admin_secret || ! $issuer_id ) {
+		debug( 'Missing required CA server configuration (admin_secret or issuer_id)' );
+		return;
+	}
+
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $hostname ) {
 		$in_docker = \file_exists( '/.dockerenv' );
 		if ( $in_docker ) {
@@ -60,6 +66,9 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 	}
 
 	$uca_list = create_uca_list( $post, $issuer_id );
+	if ( empty( $uca_list ) ) {
+		debug( "UCA list is empty for post ID: {$post->ID}" );
+	}
 	$post_cas = array();
 
 	foreach ( $uca_list as $page => $uca ) {
@@ -76,6 +85,9 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 		}
 
 		$cas = issue_ca( $uca, $endpoint, $admin_secret );
+		if ( false === $cas || empty( $cas ) ) {
+			debug( "Failed to issue CA for post ID: {$post->ID}, page: {$page}" );
+		}
 		$cas = is_array( $cas ) ? $cas : array();
 		array_push( $post_cas, $cas );
 	}
@@ -99,6 +111,7 @@ function update_attachment_integrity_metadata( array $metadata, int $attachment_
 
 	foreach ( $metadata['sizes'] as $size => $data ) {
 		if ( ! isset( $data['file'] ) ) {
+			debug( "Size '{$size}' has no file data for attachment ID: {$attachment_id}" );
 			continue;
 		}
 
@@ -145,6 +158,7 @@ function create_uca_list( \WP_Post $post, string $issuer_id ): array {
 	$postdata = \generate_postdata( $post );
 
 	if ( ! $postdata ) {
+		debug( "Failed to generate postdata for post ID: {$post->ID}" );
 		return $uca_list;
 	}
 
@@ -236,6 +250,8 @@ function external_resources_from_html( string $html, string $xpath_query ): arra
 				array_push( $resources, $element->attributes['integrity']->value );
 			}
 		}
+	} else {
+		debug( "No external resources found matching Xpath query: {$xpath_query}" );
 	}
 
 	return $resources;

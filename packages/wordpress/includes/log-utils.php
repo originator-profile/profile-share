@@ -21,6 +21,7 @@ function get_last_lines( $file, $lines = 25 ) {
 		$line = trim( $f->current() );
 		if ( '' !== $line ) {
 			array_unshift( $last_lines, $line );
+			++$last_lines_count;
 		}
 	}
 	return array_reverse( $last_lines );
