@@ -10,6 +10,9 @@ use const Profile\Config\PROFILE_DEFAULT_CA_TARGET_CSS_SELECTOR;
 use const Profile\Config\PROFILE_DEFAULT_CA_TARGET_HTML;
 use const Profile\Config\PROFILE_DEFAULT_CA_LOG_DIR;
 
+require_once __DIR__ . '/log-utils.php';
+use function Profile\Log\get_last_lines;
+
 /** 管理者画面の初期化 */
 function init() {
 	\add_action( 'admin_menu', '\Profile\Admin\add_options_page' );
@@ -225,11 +228,8 @@ function profile_ca_log_option_field() {
 		if ( \get_option( 'profile_ca_log_option' ) === '1' ) {
 			$log_file = ABSPATH . PROFILE_DEFAULT_CA_LOG_DIR . '/ca-manager-debug.log';
 			if ( file_exists( $log_file ) ) {
-				$lines      = file( $log_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES );
-				$last_lines = array_slice( $lines, -25 );
-				$last_lines = array_reverse( $last_lines );
 				echo '<pre><textarea readonly rows="5" style="width:90%; font-family:monospace;">';
-				echo esc_textarea( implode( "\n", $last_lines ) );
+				echo esc_textarea( implode( "\n", get_last_lines( $log_file, 25 ) ) );
 				echo '</textarea></pre>';
 			} else {
 				echo '<p>ログファイルはまだ存在しません。</p>';

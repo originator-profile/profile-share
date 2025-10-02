@@ -23,7 +23,7 @@ function debug( string $message ) {
 		$dir_name = PROFILE_DEFAULT_CA_LOG_DIR;
 		$dir      = ABSPATH . "{$dir_name}/";
 		if ( ! $wp_filesystem->exists( $dir ) ) {
-			if ( ! $wp_filesystem->mkdir( $dir ) ) {
+			if ( ! $wp_filesystem->mkdir( $dir, 0750 ) ) {
 				\error_log( "Failed to create directory: {$dir}" );
 				return;
 			}
