@@ -223,10 +223,9 @@ const PROFILE_DEFAULT_CA_LOG_DIR = 'ca-manager-log';
 Apache:
 
 ```.htaccess
-<Directory "/var/www/html/.well-known">
-  AllowOverride None
-  Require all granted
-</Directory>
+<FilesMatch "\.(log|txt)$">
+  Require all denied
+</FilesMatch>
 ```
 
 Apache 以外のアクセス制御を行うファイルは自動生成されませんので、適宜アクセス制御を行うようにしてください（推奨）。
