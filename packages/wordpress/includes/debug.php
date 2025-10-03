@@ -20,8 +20,12 @@ function debug( string $message ) {
 	// プラグイン専用ログ
 	if ( \get_option( 'profile_ca_log_option' ) === '1' ) {
 		global $wp_filesystem;
+		if ( ! $wp_filesystem ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			WP_Filesystem();
+		}
 		$dir_name = PROFILE_DEFAULT_CA_LOG_DIR;
-		$dir      = ABSPATH . "{$dir_name}/";
+		$dir      = trailingslashit( WP_CONTENT_DIR . '/' . $dir_name );
 		if ( ! $wp_filesystem->exists( $dir ) ) {
 			if ( ! $wp_filesystem->mkdir( $dir, 0750 ) ) {
 				\error_log( "Failed to create directory: {$dir}" );

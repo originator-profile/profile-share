@@ -226,7 +226,7 @@ function profile_ca_log_option_field() {
 		有効化</label>
 		<?php
 		if ( \get_option( 'profile_ca_log_option' ) === '1' ) {
-			$log_file = ABSPATH . PROFILE_DEFAULT_CA_LOG_DIR . '/ca-manager-debug.log';
+			$log_file = WP_CONTENT_DIR . '/' . PROFILE_DEFAULT_CA_LOG_DIR . '/ca-manager-debug.log';
 			if ( file_exists( $log_file ) ) {
 				echo '<pre><textarea readonly rows="5" style="width:90%; font-family:monospace;">';
 				echo esc_textarea( implode( "\n", get_last_lines( $log_file, 25 ) ) );

@@ -25,3 +25,6 @@ require_once __DIR__ . '/includes/issue.php';
 
 require_once __DIR__ . '/includes/post.php';
 \Profile\Post\init();
+
+require_once __DIR__ . '/includes/activator.php';
+register_activation_hook( __FILE__, 'Profile\\Activator\\ca_manager_activate' );
