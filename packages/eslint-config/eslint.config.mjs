@@ -29,6 +29,9 @@ export default tseslint.config(
       "react-hooks": fixupPluginRules(reactHooks),
     },
     rules: {
+      // @ts-expect-error 型定義側の不具合で `configs` が型に存在しないため抑制。
+      // 以下のPRの型定義が修正されれば @ts-expect-error は不要になる。
+      // https://github.com/facebook/react/pull/34700
       ...reactHooks.configs.recommended.rules,
     },
   },
