@@ -17,6 +17,18 @@ use function Profile\Log\get_last_lines;
 function init() {
 	\add_action( 'admin_menu', '\Profile\Admin\add_options_page' );
 	\add_action( 'admin_init', '\Profile\Admin\register_settings' );
+	\add_action(
+		'admin_enqueue_scripts',
+		function () {
+			$custom_css = '
+			.ca-manager-log {
+				width: 90%;
+				font-family: monospace;
+			}
+		';
+			\wp_add_inline_style( 'wp-admin', $custom_css );
+		}
+	);
 }
 
 /** 設定画面の追加 */
@@ -228,7 +240,7 @@ function profile_ca_log_option_field() {
 		if ( \get_option( 'profile_ca_log_option' ) === '1' ) {
 			$log_file = WP_CONTENT_DIR . '/' . PROFILE_DEFAULT_CA_LOG_DIR . '/ca-manager-debug.log';
 			if ( file_exists( $log_file ) ) {
-				echo '<pre><textarea readonly rows="5" style="width:90%; font-family:monospace;">';
+				echo '<pre><textarea readonly rows="5" class="ca-manager-log">';
 				echo esc_textarea( implode( "\n", get_last_lines( $log_file, 25 ) ) );
 				echo '</textarea></pre>';
 			} else {
