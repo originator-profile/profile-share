@@ -208,6 +208,65 @@ describe("fetchExternalResource()", () => {
       `<svg xmlns="http://www.w3.org/2000/svg"></svg>`,
     );
   });
+
+  it("should fetch external resources using currentSrc when available", async () => {
+    document.body.innerHTML = `\
+<img integrity="sha256-xxx" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjwvc3ZnPg==" />
+`;
+
+    const elements = selectByIntegrity({
+      integrity: "sha256-xxx",
+      document,
+    });
+
+    // Mock currentSrc property to simulate HTMLImageElement behavior
+    const element = elements[0] as HTMLImageElement;
+    Object.defineProperty(element, 'currentSrc', {
+      value: "data:text/plain,currentSrc-content",
+      configurable: true,
+    });
+
+    const [res] = await fetchExternalResource(elements);
+
+    expect(await res.text()).toBe("currentSrc-content");
+  });
+
+  it("should fallback to src when currentSrc is empty", async () => {
+    document.body.innerHTML = `\
+<img integrity="sha256-xxx" src="data:text/plain,fallback-content" />
+`;
+
+    const elements = selectByIntegrity({
+      integrity: "sha256-xxx",
+      document,
+    });
+
+    // Mock currentSrc as empty string to simulate fallback behavior
+    const element = elements[0] as HTMLImageElement;
+    Object.defineProperty(element, 'currentSrc', {
+      value: "",
+      configurable: true,
+    });
+
+    const [res] = await fetchExternalResource(elements);
+
+    expect(await res.text()).toBe("fallback-content");
+  });
+
+  it("should throw error when element has no src or currentSrc", async () => {
+    document.body.innerHTML = `\
+<div integrity="sha256-xxx"></div>
+`;
+
+    const elements = selectByIntegrity({
+      integrity: "sha256-xxx",
+      document,
+    });
+
+    await expect(fetchExternalResource(elements)).rejects.toThrow(
+      "Element has no src or currentSrc property"
+    );
+  });
 });
 
 describe("selectByCss()", () => {
