@@ -221,7 +221,7 @@ describe("fetchExternalResource()", () => {
 
     // Mock currentSrc property to simulate HTMLImageElement behavior
     const element = elements[0] as HTMLImageElement;
-    Object.defineProperty(element, 'currentSrc', {
+    Object.defineProperty(element, "currentSrc", {
       value: "data:text/plain,currentSrc-content",
       configurable: true,
     });
@@ -243,7 +243,7 @@ describe("fetchExternalResource()", () => {
 
     // Mock currentSrc as empty string to simulate fallback behavior
     const element = elements[0] as HTMLImageElement;
-    Object.defineProperty(element, 'currentSrc', {
+    Object.defineProperty(element, "currentSrc", {
       value: "",
       configurable: true,
     });
@@ -264,7 +264,7 @@ describe("fetchExternalResource()", () => {
     });
 
     await expect(fetchExternalResource(elements)).rejects.toThrow(
-      "Element has no src or currentSrc property"
+      "Element has no src or currentSrc property",
     );
   });
 });
