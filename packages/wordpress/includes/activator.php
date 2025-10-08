@@ -18,8 +18,9 @@ function ca_manager_activate() {
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		WP_Filesystem();
 	}
-	$dir_name = PROFILE_DEFAULT_CA_LOG_DIR;
-	$dir      = trailingslashit( WP_CONTENT_DIR . '/' . $dir_name );
+	$dir_name   = PROFILE_DEFAULT_CA_LOG_DIR;
+	$upload_dir = wp_upload_dir();
+	$dir        = trailingslashit( $upload_dir['basedir'] . '/' . $dir_name );
 	if ( ! $wp_filesystem->exists( $dir ) ) {
 		if ( ! $wp_filesystem->mkdir( $dir, 0750 ) ) {
 			debug( "Failed to create directory: {$dir}" );

@@ -199,7 +199,7 @@ $ curl -sSf https://example.com/cas/1_cas.json
 
 デフォルトは無効となっています。
 
-有効にすると CA Manager プラグインに関するログが出力され、内容が表示されるようになります。  
+有効にすると CA Manager プラグインに関するログが出力され、ログファイルをダウンロードすることができます。  
 ログファイルを生成するディレクトリとして下記のように定義されています。
 
 ```
@@ -210,14 +210,14 @@ const PROFILE_DEFAULT_CA_LOG_DIR = 'ca-manager-log';
 ログファイルが存在しない場合、新たに生成されます。
 
 ```
-/var/www/html/wp-content/ca-manager-log/ca-manager-debug.log
+/var/www/html/wp-content/uploads/ca-manager-log/ca-manager-debug.log
 ```
 
 また、CA Manager プラグイン有効化時、以下のパスに以下の内容でアクセス制御を行うファイルを自動生成します。
 
 ```
-/var/www/html/wp-content/ca-manager-log/.htaccess
-/var/www/html/wp-content/ca-manager-log/index.php
+/var/www/html/wp-content/uploads/ca-manager-log/.htaccess
+/var/www/html/wp-content/uploads/ca-manager-log/index.php
 ```
 
 Apache:
@@ -230,7 +230,7 @@ Apache:
 
 Apache 以外のアクセス制御を行うファイルは自動生成されませんので、適宜アクセス制御を行うようにしてください（推奨）。
 
-無効にするとログは出力されず、内容も表示されなくなります。
+無効にするとログ出力が無効になり、ログファイルが削除されます。
 
 ### `/.well-known/sp.json` の配置
 

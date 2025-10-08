@@ -10,24 +10,61 @@ use const Profile\Config\PROFILE_DEFAULT_CA_TARGET_CSS_SELECTOR;
 use const Profile\Config\PROFILE_DEFAULT_CA_TARGET_HTML;
 use const Profile\Config\PROFILE_DEFAULT_CA_LOG_DIR;
 
-require_once __DIR__ . '/log-utils.php';
-use function Profile\Log\get_last_lines;
-
 /** 管理者画面の初期化 */
 function init() {
 	\add_action( 'admin_menu', '\Profile\Admin\add_options_page' );
 	\add_action( 'admin_init', '\Profile\Admin\register_settings' );
 	\add_action(
-		'admin_enqueue_scripts',
+		'admin_post_profile_ca_download_log',
 		function () {
-			$custom_css = '
-			.ca-manager-log {
-				width: 90%;
-				font-family: monospace;
+			global $wp_filesystem;
+			if ( ! $wp_filesystem ) {
+				require_once ABSPATH . 'wp-admin/includes/file.php';
+				WP_Filesystem();
 			}
-		';
-			\wp_add_inline_style( 'wp-admin', $custom_css );
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_die( '権限がありません。' );
+			}
+			check_admin_referer( 'profile_ca_download_log' );
+			$upload_dir = wp_upload_dir();
+			$log_file   = $upload_dir['basedir'] . '/' . PROFILE_DEFAULT_CA_LOG_DIR . '/ca-manager-debug.log';
+
+			if ( ! $wp_filesystem->exists( $log_file ) ) {
+				wp_die( 'ログファイルが存在しません。' );
+			}
+
+			$contents      = $wp_filesystem->get_contents( $log_file );
+			$contents_safe = preg_replace( '/[\x00-\x08\x0B\x0C\x0E-\x1F]+/', '', $contents );
+			if ( false === $contents_safe ) {
+				wp_die( 'ログファイルを読み込めませんでした。' );
+			}
+			header( 'Content-Type: application/octet-stream' );
+			header( 'Content-Disposition: attachment; filename="ca-manager-debug.log"' );
+			header( 'Content-Length: ' . strlen( $contents_safe ) );
+			header( 'X-Content-Type-Options: nosniff' );
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $contents_safe;
+			exit;
 		}
+	);
+	\add_action(
+		'update_option_profile_ca_log_option',
+		function ( $old_value, $value ) {
+			global $wp_filesystem;
+			if ( ! $wp_filesystem ) {
+				require_once ABSPATH . 'wp-admin/includes/file.php';
+				WP_Filesystem();
+			}
+			if ( '0' === $value ) {
+				$upload_dir = wp_upload_dir();
+				$log_file   = $upload_dir['basedir'] . '/' . PROFILE_DEFAULT_CA_LOG_DIR . '/ca-manager-debug.log';
+				if ( $wp_filesystem->exists( $log_file ) ) {
+					wp_delete_file( $log_file );
+				}
+			}
+		},
+		10,
+		2
 	);
 }
 
@@ -238,11 +275,19 @@ function profile_ca_log_option_field() {
 		有効化</label>
 		<?php
 		if ( \get_option( 'profile_ca_log_option' ) === '1' ) {
-			$log_file = WP_CONTENT_DIR . '/' . PROFILE_DEFAULT_CA_LOG_DIR . '/ca-manager-debug.log';
-			if ( file_exists( $log_file ) ) {
-				echo '<pre><textarea readonly rows="5" class="ca-manager-log">';
-				echo esc_textarea( implode( "\n", get_last_lines( $log_file, 25 ) ) );
-				echo '</textarea></pre>';
+			global $wp_filesystem;
+			if ( ! $wp_filesystem ) {
+				require_once ABSPATH . 'wp-admin/includes/file.php';
+				WP_Filesystem();
+			}
+			$upload_dir = wp_upload_dir();
+			$log_file   = $upload_dir['basedir'] . '/' . PROFILE_DEFAULT_CA_LOG_DIR . '/ca-manager-debug.log';
+			if ( $wp_filesystem->exists( $log_file ) ) {
+				$url = wp_nonce_url(
+					admin_url( 'admin-post.php?action=profile_ca_download_log' ),
+					'profile_ca_download_log'
+				);
+				echo '<p><a class="button button-secondary" href="' . esc_url( $url ) . '">ログをダウンロード</a></p>';
 			} else {
 				echo '<p>ログファイルはまだ存在しません。</p>';
 			}
