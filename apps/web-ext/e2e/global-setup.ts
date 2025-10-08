@@ -10,7 +10,9 @@ function getCurrentLanguage(
   const domain =
     browser === "chromium" ? "org.chromium.Chromium" : "com.google.Chrome";
   try {
-    return execSync(`defaults read ${domain} AppleLanguages 2>/dev/null`).toString().trim();
+    return execSync(`defaults read ${domain} AppleLanguages 2>/dev/null`)
+      .toString()
+      .trim();
   } catch {
     return undefined;
   }
@@ -77,7 +79,7 @@ async function globalSetup() {
   );
 
   setupBrowserLanguage("chromium", targetLocale);
-  setupBrowserLanguage("chrome", targetLocale); 
+  setupBrowserLanguage("chrome", targetLocale);
 }
 
 export default globalSetup;
