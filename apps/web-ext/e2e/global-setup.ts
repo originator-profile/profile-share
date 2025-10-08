@@ -3,14 +3,6 @@ import { platform } from "node:os";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 
-// LC_ALL環境変数からロケールを取得（デフォルトはja_JP.UTF-8）
-function getTargetLocale(): string {
-  const lcAll = process.env.LC_ALL || "ja_JP.UTF-8";
-  // LC_ALLから言語コードを抽出（例: ja_JP.UTF-8 -> ja-JP）
-  const langCode = (lcAll.split(".")[0] || "ja_JP").replace("_", "-");
-  return langCode;
-}
-
 // 現在のブラウザ言語設定を取得
 function getCurrentLanguage(
   browser: "chromium" | "chrome",
@@ -82,29 +74,13 @@ async function globalSetup() {
 
   console.log("macOS環境を検出しました。E2Eテスト用に言語設定を調整します...");
 
-  const targetLocale = getTargetLocale();
+  const targetLocale = navigator.language;
   console.log(
     `目標ロケール: ${targetLocale} (LC_ALL=${process.env.LC_ALL || "デフォルト"})`,
   );
 
-  try {
-    // Chromiumの設定
-    setupBrowserLanguage("chromium", targetLocale);
-
-    // Chromeの設定（インストールされている場合）
-    try {
-      setupBrowserLanguage("chrome", targetLocale);
-    } catch {
-      // Chromeがインストールされていない場合は無視
-    }
-  } catch (error) {
-    console.warn("言語設定の変更に失敗しました:", error);
-    console.warn("   E2Eテストが失敗する可能性があります。");
-    console.warn(`   手動で以下のコマンドを実行してください:`);
-    console.warn(
-      `   defaults write org.chromium.Chromium AppleLanguages '("${targetLocale}")'`,
-    );
-  }
+  setupBrowserLanguage("chromium", targetLocale);
+  setupBrowserLanguage("chrome", targetLocale); 
 }
 
 export default globalSetup;
