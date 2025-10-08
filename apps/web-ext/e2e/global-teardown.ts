@@ -13,12 +13,8 @@ function deleteLanguageSetting(browser: "chromium" | "chrome"): void {
     browser === "chromium" ? "org.chromium.Chromium" : "com.google.Chrome";
   const browserName = browser === "chromium" ? "Chromium" : "Chrome";
 
-  try {
-    execSync(`defaults delete ${domain} AppleLanguages 2>/dev/null`);
-    console.log(`${browserName}の言語設定を削除しました（元の状態に復元）`);
-  } catch {
-    // 削除に失敗した場合は無視（既に削除されている可能性）
-  }
+  execSync(`defaults delete ${domain} AppleLanguages 2>/dev/null`);
+  console.log(`${browserName}の言語設定を削除しました（元の状態に復元）`);
 }
 
 // ブラウザの言語設定を復元
@@ -72,11 +68,13 @@ async function globalTeardown() {
       rmSync(tempDir, { recursive: true, force: true });
     }
   } catch (error) {
-    console.error("言語設定の復元に失敗しました:", error);
-    console.error("   手動で設定を確認してください。");
-    console.error(
-      "   確認コマンド: defaults read org.chromium.Chromium AppleLanguages",
-    );
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error(`\
+言語設定の復元に失敗しました: ${errorMessage}
+手動で設定を確認してください。
+確認コマンド: 
+  defaults read org.chromium.Chromium AppleLanguages
+`);
   }
 }
 

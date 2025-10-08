@@ -10,9 +10,7 @@ function getCurrentLanguage(
   const domain =
     browser === "chromium" ? "org.chromium.Chromium" : "com.google.Chrome";
   try {
-    return execSync(`defaults read ${domain} AppleLanguages 2>/dev/null`, {
-      encoding: "utf-8",
-    }).trim();
+    return execSync(`defaults read ${domain} AppleLanguages 2>/dev/null`).toString().trim();
   } catch {
     return undefined;
   }
@@ -37,7 +35,6 @@ function saveBackup(
   writeFileSync(
     backupFile,
     JSON.stringify({ originalLanguages: currentLanguages }),
-    "utf-8",
   );
 }
 
