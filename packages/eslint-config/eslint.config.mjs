@@ -10,7 +10,7 @@ import reactConfig from "eslint-plugin-react/configs/recommended.js";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
-export default tseslint.config(
+export default [
   {
     ignores: ["dist/", "dist-*/", "playwright-report/"],
   },
@@ -95,4 +95,4 @@ export default tseslint.config(
       "react-hooks/refs": "off",
     },
   },
-);
+];
