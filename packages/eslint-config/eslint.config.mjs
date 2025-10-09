@@ -17,24 +17,8 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   jsxA11y.flatConfigs.recommended,
+  reactHooks.configs.flat.recommended,
   reactConfig,
-  {
-    files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
-    settings: {
-      react: {
-        version: "detect",
-      },
-    },
-    plugins: {
-      "react-hooks": fixupPluginRules(reactHooks),
-    },
-    rules: {
-      // @ts-expect-error 型定義側の不具合で `configs` が型に存在しないため抑制。
-      // 以下のPRの型定義が修正されれば @ts-expect-error は不要になる。
-      // https://github.com/facebook/react/pull/34700
-      ...reactHooks.configs.recommended.rules,
-    },
-  },
   {
     files: ["**/*.{js,mjs,cjs,jsx,ts,tsx}"],
     languageOptions: {
