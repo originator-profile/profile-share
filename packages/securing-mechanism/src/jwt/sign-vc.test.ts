@@ -122,6 +122,7 @@ describe("CA", () => {
           digestSRI: "sha256-...",
         },
         genre: "Arts & Entertainment",
+        landingPageUrl: "https://ad.landingpage.example.com",
       },
       allowedOrigin: ["https://ad.example.com"],
       target: [

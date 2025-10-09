@@ -162,6 +162,7 @@ export function generateUnsignedContentAttestation(
       },
       description: "テスト広告の説明文",
       genre: "Arts & Entertainment",
+      landingPageUrl: "https://ad.landingpage.example.com",
       id: "urn:uuid:5c464165-c579-4fc9-aaff-ca4a65e79947",
     },
   };
