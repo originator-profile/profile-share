@@ -10,28 +10,15 @@ import reactConfig from "eslint-plugin-react/configs/recommended.js";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
-export default tseslint.config(
+export default [
   {
     ignores: ["dist/", "dist-*/", "playwright-report/"],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   jsxA11y.flatConfigs.recommended,
+  reactHooks.configs.flat.recommended,
   reactConfig,
-  {
-    files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
-    settings: {
-      react: {
-        version: "detect",
-      },
-    },
-    plugins: {
-      "react-hooks": fixupPluginRules(reactHooks),
-    },
-    rules: {
-      ...reactHooks.configs.recommended.rules,
-    },
-  },
   {
     files: ["**/*.{js,mjs,cjs,jsx,ts,tsx}"],
     languageOptions: {
@@ -100,4 +87,12 @@ export default tseslint.config(
       "canonical/filename-match-exported": "off",
     },
   },
-);
+  {
+    rules: {
+      // FIXME: v7.0.0 には不具合があるので無効化
+      // Bug: eslint-react-hooks false positives on refs rule
+      // https://github.com/facebook/react/issues/34775
+      "react-hooks/refs": "off",
+    },
+  },
+];

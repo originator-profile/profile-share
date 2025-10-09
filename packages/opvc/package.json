@@ -36,7 +36,7 @@
     "date-fns": "^4.1.0",
     "http-errors-enhanced": "^3.0.2",
     "jose": "^6.0.11",
-    "jsdom": "^26.1.0"
+    "jsdom": "^27.0.0"
   },
   "devDependencies": {
     "@originator-profile/tsconfig": "workspace:*",
