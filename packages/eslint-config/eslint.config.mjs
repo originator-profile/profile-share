@@ -87,4 +87,12 @@ export default tseslint.config(
       "canonical/filename-match-exported": "off",
     },
   },
+  {
+    rules: {
+      // FIXME: v7.0.0 には不具合があるので無効化
+      // Bug: eslint-react-hooks false positives on refs rule
+      // https://github.com/facebook/react/issues/34775
+      "react-hooks/refs": "off",
+    },
+  },
 );
