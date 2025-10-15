@@ -1,4 +1,3 @@
-
 import { expect, popup, test } from "../fixtures";
 
 test("English UI messages are displayed correctly", async ({ context }) => {
