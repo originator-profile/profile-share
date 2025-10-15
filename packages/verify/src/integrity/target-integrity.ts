@@ -9,7 +9,7 @@ import {
   selectByCss,
   selectByIntegrity,
 } from "@originator-profile/sign";
-import { createIntegrityMetadata, IntegrityMetadata } from "websri";
+import { createIntegrityMetadataSet, IntegrityMetadataSet } from "websri";
 
 export type IntegrityVerifyResult = {
   valid: boolean;
@@ -26,10 +26,10 @@ class IntegrityVerifier {
     content: { cssSelector?: string; integrity: string },
     document: Document,
   ): Promise<IntegrityVerifyResult> {
-    const integrity = new IntegrityMetadata(content.integrity);
-    const alg = integrity.alg;
+    const integrity = new IntegrityMetadataSet(content.integrity);
+    const alg = [...integrity].flatMap((m) => (m.alg ? [m.alg] : []));
 
-    if (!alg) return { valid: false, failedIntegrities: [] };
+    if (alg.length === 0) return { valid: false, failedIntegrities: [] };
 
     const elements = this.elementSelector({ ...content, document });
 
@@ -41,14 +41,15 @@ class IntegrityVerifier {
       responses.map(async (res) => {
         const data = await res.arrayBuffer();
 
-        return await createIntegrityMetadata(alg, data);
+        return await createIntegrityMetadataSet(alg, data);
       }),
     );
 
-    const integrities = meta
-      .filter((m) => !m.match(integrity))
+    const failedIntegrities = meta
+      .filter((m) => [...m].every((m) => !integrity.match(m)))
       .map((m) => m.toString());
-    return { valid: integrities.length === 0, failedIntegrities: integrities };
+
+    return { valid: failedIntegrities.length === 0, failedIntegrities };
   }
 }
 

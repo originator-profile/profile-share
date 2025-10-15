@@ -1,7 +1,7 @@
 import { Target } from "@originator-profile/model";
 import { createIntegrity } from "@originator-profile/sign";
 import { beforeEach, describe, expect, it } from "vitest";
-import { createIntegrityMetadata } from "websri";
+import { createIntegrityMetadata, IntegrityMetadataSet } from "websri";
 import { verifyIntegrity } from "./target-integrity";
 
 describe("verifyIntegrity()", () => {
@@ -74,12 +74,44 @@ describe("verifyIntegrity()", () => {
     document.body.innerHTML = `\
 <video controls integrity="${integrityMetadata.toString()}">
   <source src="data:text/plain,currentSrcContent" />
+  <source src="data:text/plain,otherSourceContent" />
 </video>
 `;
 
     const content: Target = {
       type: "ExternalResourceTargetIntegrity",
       integrity: integrityMetadata.toString(),
+    };
+
+    const result = await verifyIntegrity(content);
+    expect(result.valid).toBe(true);
+  });
+
+  it("should verify only currentSrc when multiple sources exist", async () => {
+    const integrityMetadataSet = new IntegrityMetadataSet(
+      await Promise.all(
+        ["videoSource1", "videoSource2", "videoSource3"].map(
+          async (sourceData) => {
+            return await createIntegrityMetadata(
+              "sha256",
+              await new Response(sourceData).arrayBuffer(),
+            );
+          },
+        ),
+      ),
+    );
+
+    document.body.innerHTML = `\
+<video controls integrity="${integrityMetadataSet.toString()}">
+  <source src="data:text/plain,videoSource1" type="video/mp4" />
+  <source src="data:text/plain,videoSource2" type="video/webm" />
+  <source src="data:text/plain,videoSource3" type="video/ogg" />
+</video>
+`;
+
+    const content: Target = {
+      type: "ExternalResourceTargetIntegrity",
+      integrity: integrityMetadataSet.toString(),
     };
 
     const result = await verifyIntegrity(content);
