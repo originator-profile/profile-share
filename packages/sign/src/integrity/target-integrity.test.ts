@@ -211,7 +211,9 @@ describe("fetchExternalResource()", () => {
 
   it("should fetch external resources using currentSrc when available", async () => {
     document.body.innerHTML = `\
-<img integrity="sha256-xxx" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjwvc3ZnPg==" />
+<video controls integrity="sha256-xxx">
+  <source src="data:text/plain,currentSrcContent" />
+</video>
 `;
 
     const elements = selectByIntegrity({
@@ -219,21 +221,14 @@ describe("fetchExternalResource()", () => {
       document,
     });
 
-    // Mock currentSrc property to simulate HTMLImageElement behavior
-    const element = elements[0] as HTMLImageElement;
-    Object.defineProperty(element, "currentSrc", {
-      value: "data:text/plain,currentSrc-content",
-      configurable: true,
-    });
-
     const [res] = await fetchExternalResource(elements);
 
-    expect(await res.text()).toBe("currentSrc-content");
+    expect(await res.text()).toBe("currentSrcContent");
   });
 
   it("should fallback to src when currentSrc is empty", async () => {
     document.body.innerHTML = `\
-<img integrity="sha256-xxx" src="data:text/plain,fallback-content" />
+<img integrity="sha256-xxx" src="data:text/plain,fallbackContent" />
 `;
 
     const elements = selectByIntegrity({
@@ -241,16 +236,9 @@ describe("fetchExternalResource()", () => {
       document,
     });
 
-    // Mock currentSrc as empty string to simulate fallback behavior
-    const element = elements[0] as HTMLImageElement;
-    Object.defineProperty(element, "currentSrc", {
-      value: "",
-      configurable: true,
-    });
-
     const [res] = await fetchExternalResource(elements);
 
-    expect(await res.text()).toBe("fallback-content");
+    expect(await res.text()).toBe("fallbackContent");
   });
 
   it("should throw error when element has no src or currentSrc", async () => {
