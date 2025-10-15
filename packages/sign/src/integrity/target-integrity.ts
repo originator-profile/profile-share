@@ -29,7 +29,13 @@ export const fetchVisibleTextContent: ContentFetcher = async (elements) => {
   return [new Response(text)];
 };
 
-/** await fetch(element.currentSrc || element.src) */
+/**
+ * Fetches external resources from elements by using their `currentSrc` or `src` property.
+ * Both HTMLMediaElement (e.g., <img>, <video>, <audio>) and HTMLImageElement support the `currentSrc` property,
+ * which represents the actual source URL currently in use after source selection (e.g., <img srcset>, <video> with multiple <source>).
+ * `currentSrc` is preferred over `src` because it reflects the final selected resource, ensuring integrity checks are performed on the actual loaded content.
+ * Falls back to `src` if `currentSrc` is not available.
+ */
 export const fetchExternalResource: ContentFetcher = async (
   elements,
   fetcher = fetch,
