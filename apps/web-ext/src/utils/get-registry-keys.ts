@@ -26,12 +26,9 @@ export function getRegistryKeys(): [
 
   // TODO: トラストアンカーとなる 各 CP issuers ごとでの JWKS の取得方法に変更し安全性を高めるべし
   // https://github.com/originator-profile/profile/issues/2148
-  return [
-    registryOps.flatMap((op) => op.core.doc.issuer),
-    LocalKeys({
-      keys: registryOps.flatMap(
-        (op) => op.core.doc.credentialSubject.jwks.keys,
-      ),
-    }),
-  ];
+  const keys = registryOps
+    .flatMap((op) => op.core.doc.credentialSubject.jwks.keys)
+    .filter((v, i, a) => a.findIndex((t) => t.kid === v.kid) === i);
+
+  return [registryOps.flatMap((op) => op.core.doc.issuer), LocalKeys({ keys })];
 }
