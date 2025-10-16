@@ -4,27 +4,32 @@ import { createEventStream } from "h3";
 import postHTMLFiles from "../utils/postHTMLFiles";
 import { opcipName, ogpImageURL } from "#shared/constants";
 import { OpSiteInfo } from "../domain/originatorProfileSite";
+import { ContentAttestationModel } from "../domain/contentAttestation";
 
 /**
  * 指定したファイルに対して、profile-registry ca:sign を実行する
  * @param path
- * @returns Promise<string>
+ * @returns Promise<string[]>
  */
-const execute = (path: string): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    exec(
-      `profile-registry ca:sign -i ${process.env.PRIVATE_KEY_PATH} --input ${path}`,
-      { timeout: 10000 },
-      (err, stdout, stderr) => {
-        if (err) {
-          console.log(stderr);
-
-          reject(err);
-        }
-        resolve(stdout);
-      },
-    );
+const execute = async (accessToken: string, caInfo: ContentAttestationModel): Promise<string[]> => {
+  const CA_ENDPOINT = "https://opca-api-dev.facere.biz/ca";
+  const response = await fetch(CA_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(caInfo),
   });
+
+  if (!response.ok) {
+    const body = await response.text();
+    console.error("CA API error:", response.status, response.statusText, body);
+    throw new Error(`CA API error: ${response.status} ${response.statusText}`);
+  }
+
+  const caJWT = await response.json() as unknown as string[];
+  return caJWT;
 };
 
 /**
@@ -87,7 +92,7 @@ export default defineEventHandler(async (event) => {
   // see https://nitro.build/guide/websocket#server-sent-events-sse
   await deleteSpecificFiles(casPath, htmlFiles);
 
-  await postHTMLFiles({
+const processedFiles = await postHTMLFiles({
     htmlFiles,
     docsPath: WEBROOT_PATH,
     vcSourcesPath: vcSourcesPath,
@@ -99,20 +104,19 @@ export default defineEventHandler(async (event) => {
 
 
   (async () => {
-    for (let i = 0; i < htmlFiles.length; i++) {
-      const item = htmlFiles[i];
-      console.log("vc_path", item.vc_path);
+    for (let i = 0; i < processedFiles.length; i++) {
+      const item = processedFiles[i];
+      console.log("item", item);
 
       try {
-        const stdout = await execute(item.vc_path);
-        // casPath にファイルを保存する
-        const outputCasFile = [stdout.toString().trim()];
+        const caJWT = await execute(accessToken, item.casInfo);
         fs.writeFileSync(
           `${casPath}${item.cas}.cas.json`,
-          JSON.stringify(outputCasFile, null, 2),
+          JSON.stringify(caJWT, null, 2),
         );
         const outputCasData = JSON.stringify({
           ...item,
+          // @ts-expect-error vcを削除すると、クライアントにの進行状況が表示されないので調査する
           vc: item.vc,
         });
         await eventStream.push(outputCasData);

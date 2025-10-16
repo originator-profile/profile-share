@@ -1,5 +1,6 @@
 import fs from "fs";
 import { OpSiteInfo } from "../domain/originatorProfileSite";
+import { ContentAttestationModel } from "../domain/contentAttestation";
 import { createDefaultContentAttestation } from "../domain/contentAttestation";
 
 type PostHTMLFilesParams = {
@@ -11,6 +12,10 @@ type PostHTMLFilesParams = {
   ogpImageURL: { ja: string; en: string };
   accessToken: string;
 };
+
+type PostHTMLFilesResult = OpSiteInfo & {
+  casInfo: ContentAttestationModel
+}
 
 /**
  * casPath　にファイルを生成するのに必要な前準備として、環境変数 vcSourcesPath にファイルを保存するための関数
@@ -24,10 +29,8 @@ export default async function postHTMLFiles({
   allowedURLOrigins,
   opcipName,
   ogpImageURL,
-  accessToken,
-}: PostHTMLFilesParams): Promise<OpSiteInfo[]> {
-  const CA_ENDPOINT =  "https://opca-api-dev.facere.biz/ca";
-  const processedFiles = [...htmlFiles];
+}: PostHTMLFilesParams): Promise<PostHTMLFilesResult[]> {
+  const processedFiles: PostHTMLFilesResult[] = [];
 
   for await (const [index, item] of htmlFiles.entries()) {
     const {
@@ -72,24 +75,14 @@ export default async function postHTMLFiles({
       },
       lang,
     );
-
-    // ファイルを保存
-    const response = await fetch(CA_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify(caInfo),
-    });
-    if (!response.ok) {
-      const body = await response.text();
-      console.error("CA API error:", response.status, response.statusText, body);
-      throw new Error(`CA API error: ${response.status} ${response.statusText}`);
-    }
     const outputFilePath = `${vcSourcesPath}${item.cas}.cas.json`;
-    processedFiles[index].vc_path = outputFilePath;
     fs.writeFileSync(outputFilePath, JSON.stringify(caInfo, null, 2));
+
+    processedFiles[index] = {
+      ...item,
+      vc_path: outputFilePath,
+      casInfo: caInfo,
+    };
   }
 
   return processedFiles;
