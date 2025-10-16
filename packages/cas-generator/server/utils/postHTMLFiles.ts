@@ -82,11 +82,11 @@ export default async function postHTMLFiles({
       },
       body: JSON.stringify(caInfo),
     });
-    console.log("CA API response:", response.json());
     if (!response.ok) {
+      const body = await response.text();
+      console.error("CA API error:", response.status, response.statusText, body);
       throw new Error(`CA API error: ${response.status} ${response.statusText}`);
     }
-    console.log("CA API response:", response.json());
     const outputFilePath = `${vcSourcesPath}${item.cas}.cas.json`;
     processedFiles[index].vc_path = outputFilePath;
     fs.writeFileSync(outputFilePath, JSON.stringify(caInfo, null, 2));
