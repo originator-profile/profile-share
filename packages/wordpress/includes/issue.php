@@ -3,6 +3,8 @@
 
 namespace Profile\Issue;
 
+use Ramsey\Uuid\Uuid;
+
 require_once __DIR__ . '/class-uca.php';
 use Profile\Uca\Uca;
 
@@ -195,10 +197,12 @@ function create_uca_list( \WP_Post $post, string $issuer_id ): array {
 			}
 		}
 
+		$uuid   = 'urn:uuid:' . Uuid::uuid5( Uuid::NAMESPACE_URL, $uri );
 		$locale = \str_replace( '_', '-', \get_locale() );
 
 		$uca = new Uca(
 			issuer: $issuer_id,
+			subject: $uuid,
 			url: $permalink,
 			locale: $locale,
 			html: $html,
