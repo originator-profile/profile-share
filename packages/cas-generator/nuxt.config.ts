@@ -10,7 +10,6 @@ export default defineNuxtConfig({
   },
   telemetry: false,
   vite: {
-    // @ts-expect-error
     plugins: [tailwindcss()],
   },
   css: ["~/assets/css/tailwind.css"],
@@ -29,6 +28,7 @@ export default defineNuxtConfig({
     CLIENT_ID: process.env.CLIENT_ID,
     CLIENT_SECRET: process.env.CLIENT_SECRET,
     REDIRECT_URI: process.env.REDIRECT_URI,
+    CA_ENDPOINT: process.env.CA_ENDPOINT,
   },
 
   // NOTE: unenv@2.0.0-rc.15 + cloudflare の組み合わせで問題あり

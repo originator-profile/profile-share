@@ -11,7 +11,7 @@ import { ContentAttestationModel } from "../domain/contentAttestation";
  * @param path
  * @returns Promise<string[]>
  */
-const createOrUpdateCA = async (
+const createOrUpdateCa = async (
   accessToken: string,
   caInfo: ContentAttestationModel,
   endpoint: string,
@@ -26,8 +26,9 @@ const createOrUpdateCA = async (
   });
 
   if (!response.ok) {
+    console.log("caInfo", caInfo);
     const body = await response.text();
-    console.error("CA API error:", response.status, response.statusText, body);
+    console.error("CA API error log:", response.status, response.statusText, body);
     throw new Error(`CA API error: ${response.status} ${response.statusText}`);
   }
 
@@ -110,10 +111,9 @@ const processedFiles = await postHTMLFiles({
   (async () => {
     for (let i = 0; i < processedFiles.length; i++) {
       const item = processedFiles[i];
-      console.log("item", item);
 
       try {
-        const caJWT = await createOrUpdateCA(accessToken, item.casInfo, CA_ENDPOINT);
+        const caJWT = await createOrUpdateCa(accessToken, item.casInfo, CA_ENDPOINT);
         fs.writeFileSync(
           `${casPath}${item.cas}.cas.json`,
           JSON.stringify(caJWT, null, 2),
