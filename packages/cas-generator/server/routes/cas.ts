@@ -7,13 +7,16 @@ import { OpSiteInfo } from "../domain/originatorProfileSite";
 import { ContentAttestationModel } from "../domain/contentAttestation";
 
 /**
- * 指定したファイルに対して、profile-registry ca:sign を実行する
+ * 指定したファイルに対して、createOrUpdateCaを実行する
  * @param path
  * @returns Promise<string[]>
  */
-const execute = async (accessToken: string, caInfo: ContentAttestationModel): Promise<string[]> => {
-  const CA_ENDPOINT = "https://opca-api-dev.facere.biz/ca";
-  const response = await fetch(CA_ENDPOINT, {
+const createOrUpdateCA = async (
+  accessToken: string,
+  caInfo: ContentAttestationModel,
+  endpoint: string,
+): Promise<string[]> => {
+  const response = await fetch(endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -69,7 +72,8 @@ export default defineEventHandler(async (event) => {
   const WEBROOT_PATH = config.WEBROOT_PATH;
   const VC_OUTPUT_PATH = config.VC_OUTPUT_PATH;
   const CAS_OUTPUT_PATH = config.CAS_OUTPUT_PATH;
-  if (!WEBROOT_PATH || !VC_OUTPUT_PATH || !CAS_OUTPUT_PATH) {
+  const CA_ENDPOINT = config.CA_ENDPOINT;
+  if (!WEBROOT_PATH || !VC_OUTPUT_PATH || !CAS_OUTPUT_PATH || !CA_ENDPOINT) {
     throw createError({
       statusCode: 500,
       message: "必要な環境変数が設定されていません",
@@ -109,7 +113,7 @@ const processedFiles = await postHTMLFiles({
       console.log("item", item);
 
       try {
-        const caJWT = await execute(accessToken, item.casInfo);
+        const caJWT = await createOrUpdateCA(accessToken, item.casInfo, CA_ENDPOINT);
         fs.writeFileSync(
           `${casPath}${item.cas}.cas.json`,
           JSON.stringify(caJWT, null, 2),
