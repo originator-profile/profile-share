@@ -27,7 +27,7 @@ class IntegrityVerifier {
     document: Document,
   ): Promise<IntegrityVerifyResult> {
     const integrity = new IntegrityMetadataSet(content.integrity);
-    const alg = [...integrity].flatMap((m) => (m.alg ? [m.alg] : []));
+    const alg = integrity.strongestHashAlgorithms.filter(Boolean);
 
     if (alg.length === 0) return { valid: false, failedIntegrities: [] };
 

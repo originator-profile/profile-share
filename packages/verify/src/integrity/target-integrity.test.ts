@@ -1,7 +1,11 @@
 import { Target } from "@originator-profile/model";
 import { createIntegrity } from "@originator-profile/sign";
 import { beforeEach, describe, expect, it } from "vitest";
-import { createIntegrityMetadata, IntegrityMetadataSet } from "websri";
+import {
+  createIntegrityMetadata,
+  createIntegrityMetadataSet,
+  IntegrityMetadataSet,
+} from "websri";
 import { verifyIntegrity } from "./target-integrity";
 
 describe("verifyIntegrity()", () => {
@@ -105,13 +109,40 @@ describe("verifyIntegrity()", () => {
 <video controls integrity="${integrityMetadataSet.toString()}">
   <source src="data:text/plain,videoSource1" type="video/mp4" />
   <source src="data:text/plain,videoSource2" type="video/webm" />
-  <source src="data:text/plain,videoSource3" type="video/ogg" />
+  <source src="data:text/追加せよplain,videoSource3" type="video/ogg" />
 </video>
 `;
 
     const content: Target = {
       type: "ExternalResourceTargetIntegrity",
       integrity: integrityMetadataSet.toString(),
+    };
+
+    const result = await verifyIntegrity(content);
+    expect(result.valid).toBe(true);
+  });
+
+  it("should verify with multiple overlapping hash algorithms", async () => {
+    const meta = await createIntegrityMetadataSet(
+      ["sha256", "sha384"],
+      await new Response("testContent").arrayBuffer(),
+    );
+    const other = await createIntegrityMetadataSet(
+      ["sha256", "sha384"],
+      await new Response("other").arrayBuffer(),
+    );
+
+    const overlappingIntegrity = `${meta.toString()} ${other.toString()}`;
+    const integritySet = new IntegrityMetadataSet(overlappingIntegrity);
+    expect(integritySet.size).toBe(4);
+
+    document.body.innerHTML = `\
+<img integrity="${overlappingIntegrity}" src="data:text/plain,testContent" />
+`;
+
+    const content: Target = {
+      type: "ExternalResourceTargetIntegrity",
+      integrity: overlappingIntegrity,
     };
 
     const result = await verifyIntegrity(content);
