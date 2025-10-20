@@ -29,7 +29,9 @@ test("画像のintegrity属性に複数のSRIハッシュが含まれる", async
   const imageBlock = editor.canvas.locator('[data-type="core/image"]');
   const fileInput = imageBlock.locator('input[type="file"]');
   await fileInput.setInputFiles(imagePath);
-  await imageBlock.locator(".components-spinner").waitFor({ state: "detached" });
+  await imageBlock
+    .locator(".components-spinner")
+    .waitFor({ state: "detached" });
 
   const page = await editor.openPreviewPage();
   await editor.publishPost();
