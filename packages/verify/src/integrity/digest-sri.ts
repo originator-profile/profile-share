@@ -2,7 +2,7 @@ import {
   createDigestSri,
   type DigestSriContent,
 } from "@originator-profile/sign";
-import { IntegrityMetadata } from "websri";
+import { IntegrityMetadataSet } from "websri";
 
 /**
  * `digestSRI` の検証
@@ -21,11 +21,12 @@ export async function verifyDigestSri(
   content: DigestSriContent,
   fetcher = fetch,
 ): Promise<boolean> {
-  const digestSri = new IntegrityMetadata(content.digestSRI);
+  const integrity = new IntegrityMetadataSet(content.digestSRI);
+  const alg = integrity.strongestHashAlgorithms.filter(Boolean);
 
-  if (!digestSri.alg) return false;
+  if (alg.length === 0) return false;
 
-  const { digestSRI } = await createDigestSri(digestSri.alg, content, fetcher);
+  const { digestSRI } = await createDigestSri(alg[0], content, fetcher);
 
-  return digestSri.match(digestSRI);
+  return integrity.match(digestSRI);
 }
