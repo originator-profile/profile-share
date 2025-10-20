@@ -109,7 +109,7 @@ describe("verifyIntegrity()", () => {
 <video controls integrity="${integrityMetadataSet.toString()}">
   <source src="data:text/plain,videoSource1" type="video/mp4" />
   <source src="data:text/plain,videoSource2" type="video/webm" />
-  <source src="data:text/追加せよplain,videoSource3" type="video/ogg" />
+  <source src="data:text/plain,videoSource3" type="video/ogg" />
 </video>
 `;
 
