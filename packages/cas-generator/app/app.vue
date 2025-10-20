@@ -2,13 +2,17 @@
   <div class="container h-dvh flex flex-col py-4 gap-y-4">
     <div class="jumpu-card p-4 shrink-0">
       <div class="flex items-center justify-between gap-x-1">
-        <h2 class="font-bold text-2xl mb-2">Generate Content Attestation Set</h2>
+        <h2 class="font-bold text-2xl mb-2">
+          Generate Content Attestation Set
+        </h2>
         <div class="flex items-center gap-x-2">
           <template v-if="!isLoggedIn">
             <button class="jumpu-button" @click="login">Login</button>
           </template>
           <template v-else>
-            <span class="text-xs text-gray-600" v-if="userEmail">{{ userEmail }}</span>
+            <span class="text-xs text-gray-600" v-if="userEmail">{{
+              userEmail
+            }}</span>
             <button class="jumpu-text-button" @click="logout">Logout</button>
           </template>
         </div>
@@ -64,28 +68,26 @@
           ></progress>
         </div>
         <div class="shrink-0">
-          <p>
-            <button
-              class="jumpu-button inline-flex items-center gap-x-2"
-              @click="fetchChatStream(selectedFiles)"
-              :disabled="generating || selectedFiles.length === 0 || !isLoggedIn"
+          <button
+            class="jumpu-button inline-flex items-center gap-x-2"
+            @click="fetchChatStream(selectedFiles)"
+            :disabled="generating || selectedFiles.length === 0 || !isLoggedIn"
+          >
+            <span v-if="!generating"
+              >生成を始める ({{ selectedFiles.length }}件)</span
             >
-              <span v-if="!generating"
-                >生成を始める ({{ selectedFiles.length }}件)</span
-              >
-              <div class="flex items-center gap-x-2" v-else>
-                <div class="jumpu-spinner w-4 h-4">
-                  <svg viewBox="25 25 50 50">
-                    <circle cx="50" cy="50" r="20"></circle>
-                  </svg>
-                </div>
-                <span>生成中...</span>
+            <div class="flex items-center gap-x-2" v-else>
+              <div class="jumpu-spinner w-4 h-4">
+                <svg viewBox="25 25 50 50">
+                  <circle cx="50" cy="50" r="20"></circle>
+                </svg>
               </div>
-            </button>
-            <div class="text-xs text-amber-600 mt-1" v-if="!isLoggedIn">
-              ログインが必要です
+              <span>生成中...</span>
             </div>
-          </p>
+          </button>
+          <div class="text-xs text-amber-600 mt-1" v-if="!isLoggedIn">
+            ログインが必要です
+          </div>
         </div>
       </div>
     </div>
