@@ -29,14 +29,27 @@ export const fetchVisibleTextContent: ContentFetcher = async (elements) => {
   return [new Response(text)];
 };
 
-/** await fetch(element.src) */
+/**
+ * Fetches external resources from elements by using their `currentSrc` or `src` property.
+ * HTMLImageElement (<img>) and HTMLMediaElement (<video>, <audio>) support the `currentSrc` property,
+ * which represents the actual source URL currently in use after source selection (e.g., <img srcset>, <video> with multiple <source>).
+ * `currentSrc` is preferred over `src` because it reflects the final selected resource, ensuring integrity checks are performed on the actual loaded content.
+ * Falls back to `src` if `currentSrc` is not available.
+ */
 export const fetchExternalResource: ContentFetcher = async (
   elements,
   fetcher = fetch,
 ) => {
   return await Promise.all(
     elements.map(async (element: unknown) => {
-      return await fetcher((element as { src: string }).src);
+      const el = element as HTMLElement & { src?: string; currentSrc?: string };
+      // HTMLMediaElement and HTMLImageElement support currentSrc property
+      // which represents the actual selected source URL
+      const src = el.currentSrc || el.src;
+      if (!src) {
+        throw new Error("Element has no src or currentSrc property");
+      }
+      return await fetcher(src);
     }),
   );
 };

@@ -208,6 +208,53 @@ describe("fetchExternalResource()", () => {
       `<svg xmlns="http://www.w3.org/2000/svg"></svg>`,
     );
   });
+
+  it("should fetch external resources using currentSrc when available", async () => {
+    document.body.innerHTML = `\
+<video controls integrity="sha256-xxx">
+  <source src="data:text/plain,currentSrcContent" />
+</video>
+`;
+
+    const elements = selectByIntegrity({
+      integrity: "sha256-xxx",
+      document,
+    });
+
+    const [res] = await fetchExternalResource(elements);
+
+    expect(await res.text()).toBe("currentSrcContent");
+  });
+
+  it("should fallback to src when currentSrc is empty", async () => {
+    document.body.innerHTML = `\
+<img integrity="sha256-xxx" src="data:text/plain,fallbackContent" />
+`;
+
+    const elements = selectByIntegrity({
+      integrity: "sha256-xxx",
+      document,
+    });
+
+    const [res] = await fetchExternalResource(elements);
+
+    expect(await res.text()).toBe("fallbackContent");
+  });
+
+  it("should throw error when element has no src or currentSrc", async () => {
+    document.body.innerHTML = `\
+<div integrity="sha256-xxx"></div>
+`;
+
+    const elements = selectByIntegrity({
+      integrity: "sha256-xxx",
+      document,
+    });
+
+    await expect(fetchExternalResource(elements)).rejects.toThrow(
+      "Element has no src or currentSrc property",
+    );
+  });
 });
 
 describe("selectByCss()", () => {
