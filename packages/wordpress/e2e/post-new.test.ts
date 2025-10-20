@@ -41,6 +41,6 @@ test("画像のintegrity属性に複数のSRIハッシュが含まれる", async
 
   expect(
     await img.getAttribute("integrity"),
-    "画像のintegrity属性に複数SRIが含まれること",
-  ).toMatch(/^(sha256-[A-Za-z0-9+/=]+ ){2,}/);
+    "画像のintegrity属性に2つ以上のSRIハッシュが含まれること",
+  ).toMatch(/^sha256-[A-Za-z0-9+/=]+\s+sha256-[A-Za-z0-9+/=]+\b/);
 });
