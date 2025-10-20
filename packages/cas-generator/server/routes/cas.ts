@@ -78,8 +78,15 @@ export default defineEventHandler(async (event) => {
   const WEBROOT_PATH = config.WEBROOT_PATH;
   const VC_OUTPUT_PATH = config.VC_OUTPUT_PATH;
   const CAS_OUTPUT_PATH = config.CAS_OUTPUT_PATH;
-  const CA_ENDPOINT = config.CA_ENDPOINT;
-  if (!WEBROOT_PATH || !VC_OUTPUT_PATH || !CAS_OUTPUT_PATH || !CA_ENDPOINT) {
+
+  const RESOURCE_SERVER_URL = config.RESOURCE_SERVER_URL;
+
+  if (
+    !WEBROOT_PATH ||
+    !VC_OUTPUT_PATH ||
+    !CAS_OUTPUT_PATH ||
+    !RESOURCE_SERVER_URL
+  ) {
     throw createError({
       statusCode: 500,
       message: "必要な環境変数が設定されていません",
@@ -120,7 +127,7 @@ export default defineEventHandler(async (event) => {
         const caJWT = await createOrUpdateCa(
           accessToken,
           item.casInfo,
-          CA_ENDPOINT,
+          RESOURCE_SERVER_URL,
         );
         fs.writeFileSync(
           `${casPath}${item.cas}.cas.json`,

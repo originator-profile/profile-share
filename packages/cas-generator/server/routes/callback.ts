@@ -1,20 +1,19 @@
+import { parseOidcConfigToken } from "../utils/oidc";
+
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event);
-  const ISSUER = config.ISSUER;
-  const AUTHORIZATION_ENDPOINT = config.AUTHORIZATION_ENDPOINT;
-  const TOKEN_ENDPOINT = config.TOKEN_ENDPOINT;
-  const CLIENT_ID = config.CLIENT_ID;
-  const CLIENT_SECRET = config.CLIENT_SECRET;
-  const REDIRECT_URI = config.REDIRECT_URI;
-
+  const OICD_TOKEN = config.OICD_TOKEN;
+  // const REDIRECT_URI = config.REDIRECT_URI;
+  const { provider, authorizeUrl, tokenUrl, clientId, clientSec, redirectUrl } =
+    parseOidcConfigToken(OICD_TOKEN);
   // 環境変数が設定されているかチェック
   if (
-    !ISSUER ||
-    !AUTHORIZATION_ENDPOINT ||
-    !TOKEN_ENDPOINT ||
-    !CLIENT_ID ||
-    !CLIENT_SECRET ||
-    !REDIRECT_URI
+    !provider ||
+    !authorizeUrl ||
+    !tokenUrl ||
+    !clientId ||
+    !clientSec ||
+    !redirectUrl
   ) {
     throw createError({
       statusCode: 500,
@@ -46,7 +45,7 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const currentUrl = new URL(REDIRECT_URI);
+    const currentUrl = new URL(redirectUrl);
     Object.entries(query).forEach(([key, value]) => {
       if (typeof value === "string") {
         currentUrl.searchParams.set(key, value);
@@ -77,12 +76,12 @@ export default defineEventHandler(async (event) => {
     const form = new URLSearchParams();
     form.set("grant_type", "authorization_code");
     form.set("code", authorizationCode);
-    form.set("redirect_uri", REDIRECT_URI);
-    form.set("client_id", CLIENT_ID);
-    form.set("client_secret", CLIENT_SECRET);
+    form.set("redirect_uri", redirectUrl);
+    form.set("client_id", clientId);
+    form.set("client_secret", clientSec);
     form.set("code_verifier", codeVerifier);
 
-    const response = await fetch(TOKEN_ENDPOINT, {
+    const response = await fetch(tokenUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",

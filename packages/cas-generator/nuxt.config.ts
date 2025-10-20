@@ -22,13 +22,8 @@ export default defineNuxtConfig({
     CAS_OUTPUT_PATH: process.env.CAS_OUTPUT_PATH,
     PRIVATE_KEY_PATH: process.env.PRIVATE_KEY_PATH,
     // 認証サーバーに必要な環境変数
-    ISSUER: process.env.ISSUER,
-    AUTHORIZATION_ENDPOINT: process.env.AUTHORIZATION_ENDPOINT,
-    TOKEN_ENDPOINT: process.env.TOKEN_ENDPOINT,
-    CLIENT_ID: process.env.CLIENT_ID,
-    CLIENT_SECRET: process.env.CLIENT_SECRET,
-    REDIRECT_URI: process.env.REDIRECT_URI,
-    CA_ENDPOINT: process.env.CA_ENDPOINT,
+    OICD_TOKEN: process.env.OICD_TOKEN,
+    RESOURCE_SERVER_URL: process.env.RESOURCE_SERVER_URL,
   },
 
   // NOTE: unenv@2.0.0-rc.15 + cloudflare の組み合わせで問題あり

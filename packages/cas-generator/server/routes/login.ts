@@ -1,22 +1,21 @@
 import * as client from "openid-client";
+import { parseOidcConfigToken } from "../utils/oidc";
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event);
-  const ISSUER = config.ISSUER;
-  const AUTHORIZATION_ENDPOINT = config.AUTHORIZATION_ENDPOINT;
-  const TOKEN_ENDPOINT = config.TOKEN_ENDPOINT;
-  const CLIENT_ID = config.CLIENT_ID;
-  const CLIENT_SECRET = config.CLIENT_SECRET;
-  const REDIRECT_URI = config.REDIRECT_URI;
+  const OICD_TOKEN = config.OICD_TOKEN;
+
+  const { provider, authorizeUrl, tokenUrl, clientId, clientSec, redirectUrl } =
+    parseOidcConfigToken(OICD_TOKEN);
 
   // 環境変数が設定されているかチェック
   if (
-    !ISSUER ||
-    !AUTHORIZATION_ENDPOINT ||
-    !TOKEN_ENDPOINT ||
-    !CLIENT_ID ||
-    !CLIENT_SECRET ||
-    !REDIRECT_URI
+    !provider ||
+    !authorizeUrl ||
+    !tokenUrl ||
+    !clientId ||
+    !clientSec ||
+    !redirectUrl
   ) {
     throw createError({
       statusCode: 500,
@@ -47,10 +46,10 @@ export default defineEventHandler(async (event) => {
       path: "/",
     });
 
-    const authUrl = new URL(AUTHORIZATION_ENDPOINT);
+    const authUrl = new URL(authorizeUrl);
     authUrl.searchParams.set("response_type", "code");
-    authUrl.searchParams.set("client_id", CLIENT_ID);
-    authUrl.searchParams.set("redirect_uri", REDIRECT_URI);
+    authUrl.searchParams.set("client_id", clientId);
+    authUrl.searchParams.set("redirect_uri", redirectUrl);
     authUrl.searchParams.set("scope", "openid");
     authUrl.searchParams.set("code_challenge", codeChallenge);
     authUrl.searchParams.set("code_challenge_method", "S256");
