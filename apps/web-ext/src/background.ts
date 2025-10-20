@@ -11,7 +11,8 @@ chrome.action.onClicked.addListener(async function (tab) {
 });
 
 chrome.runtime.onInstalled.addListener(async ({ reason }) => {
-  if (reason !== chrome.runtime.OnInstalledReason.INSTALL) return;
+  if (reason !== "install") return;
+
   const granted = await chrome.permissions.contains({
     origins: ["<all_urls>"],
   });
@@ -35,7 +36,7 @@ export {};
 // NOTE: gh-1583
 if (import.meta.env.MODE === "development") {
   chrome.runtime.onInstalled.addListener(({ reason }) => {
-    if (reason === chrome.runtime.OnInstalledReason.INSTALL) {
+    if (reason === "install") {
       void chrome.tabs.reload();
     }
   });

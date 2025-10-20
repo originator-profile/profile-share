@@ -31,6 +31,11 @@ const subject = {
       title: "ジャンル",
       type: "string",
     },
+    landingPageUrl: {
+      title: "ランディングページ URL",
+      type: "string",
+      format: "uri",
+    },
   },
   required: ["id", "type", "name", "description"],
 } as const satisfies JSONSchema;

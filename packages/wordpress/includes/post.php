@@ -25,6 +25,7 @@ function init() {
  */
 function cas_script() {
 	if ( ! \is_singular() ) {
+		debug( 'Not a singular post, skipping CAS script injection' );
 		return;
 	}
 
@@ -34,6 +35,7 @@ function cas_script() {
 	$cas     = is_array( $cas ) ? $cas[ $page - 1 ] : $cas;
 
 	if ( ! $cas ) {
+		debug( "No CAS found for post ID: {$post_id}, page: {$page}" );
 		return;
 	}
 
@@ -48,6 +50,7 @@ function cas_script() {
 			$dir_name = PROFILE_DEFAULT_CA_EXTERNAL_DIR;
 			$dir      = ABSPATH . "{$dir_name}/";
 			if ( ! $wp_filesystem->exists( $dir ) ) {
+				debug( "Directory does not exist, attempting to create: {$dir}" );
 				if ( ! $wp_filesystem->mkdir( $dir ) ) {
 					debug( "Failed to create directory: {$dir}" );
 					return;
@@ -83,6 +86,7 @@ function block_image( string $content, array $block ): string {
 	$size = $block['attrs']['sizeSlug'] ?? null;
 
 	if ( ! $id ) {
+		debug( 'Image block has no ID attribute, skipping integrity injection' );
 		return $content;
 	}
 
@@ -90,6 +94,7 @@ function block_image( string $content, array $block ): string {
 	$integrity = is_array( $integrity ) ? $integrity[ $size ] : null;
 
 	if ( ! $integrity ) {
+		debug( "No Integrity metadata found for attachment ID: {$id}, size: {$size}" );
 		return $content;
 	}
 

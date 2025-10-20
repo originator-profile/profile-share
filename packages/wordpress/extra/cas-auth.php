@@ -27,7 +27,7 @@ if ( ! \is_user_logged_in() ) {
 }
 
 // Check if the user is an administrator.
-if ( ! \current_user_can( 'administrator' ) ) {
+if ( ! \current_user_can( 'manage_options' ) ) {
 	// Fake 404 error if the user is not an administrator.
 	header( 'HTTP/1.1 404 Not Found' );
 	exit( 'Page not found.' );

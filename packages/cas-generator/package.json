@@ -11,14 +11,14 @@
   },
   "devDependencies": {
     "@jumpu-ui/tailwindcss": "2.0.0",
-    "@nuxt/icon": "1.15.0",
+    "@nuxt/icon": "2.0.0",
     "@tailwindcss/vite": "^4.1.7",
     "@vueuse/core": "^13.3.0",
     "fast-glob": "^3.3.3",
-    "jsdom": "^26.1.0",
+    "jsdom": "^27.0.0",
     "nuxt": "^4.0.0",
     "tailwindcss": "^4.1.7",
     "openid-client": "^6.6.2"
   },
-  "version": "0.3.0-beta.4"
+  "version": "0.4.0-beta.0"
 }

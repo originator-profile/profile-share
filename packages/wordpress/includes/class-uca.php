@@ -93,6 +93,10 @@ final class Uca {
 			}
 		);
 
-		return \wp_json_encode( $uca );
+		$json = \wp_json_encode( $uca );
+		if ( false === $json ) {
+			debug( 'Failed to encode UCA to JSON' );
+		}
+		return $json;
 	}
 }

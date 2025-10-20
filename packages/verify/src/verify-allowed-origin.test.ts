@@ -22,6 +22,7 @@ describe("verify-allowed-origin", () => {
           id: "https://ad.example.com/image.png",
           digestSRI: "sha256-5uQVtkoRdTFbimAz3Wz5GQcuBRLt7tDMD5JRtGFo9/M=",
         },
+        landingPageUrl: "https://ad.landingpage.example.com",
       },
       allowedOrigin: ["https://ad.example.com", "https://ad.example1.com"],
       target: [
@@ -57,6 +58,7 @@ describe("verify-allowed-origin", () => {
           id: "https://ad.example.com/image.png",
           digestSRI: "sha256-5uQVtkoRdTFbimAz3Wz5GQcuBRLt7tDMD5JRtGFo9/M=",
         },
+        landingPageUrl: "https://ad.landingpage.example.com",
       },
       allowedOrigin: "https://ad.example.com",
       target: [
@@ -93,6 +95,7 @@ describe("verify-allowed-origin", () => {
           id: "https://ad.example.com/image.png",
           digestSRI: "sha256-5uQVtkoRdTFbimAz3Wz5GQcuBRLt7tDMD5JRtGFo9/M=",
         },
+        landingPageUrl: "https://ad.landingpage.example.com",
       },
       allowedOrigin: ["https://ad.example1.com", "https://ad.example2.com"],
       target: [
@@ -129,6 +132,7 @@ describe("verify-allowed-origin", () => {
           id: "https://ad.example.com/image.png",
           digestSRI: "sha256-5uQVtkoRdTFbimAz3Wz5GQcuBRLt7tDMD5JRtGFo9/M=",
         },
+        landingPageUrl: "https://ad.landingpage.example.com",
       },
       allowedOrigin: "https://ad.example1.com",
       target: [

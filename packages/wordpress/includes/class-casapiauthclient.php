@@ -153,6 +153,7 @@ final class CasApiAuthClient extends OpenIDConnectClient {
 	protected function verifyJWTClaims( $claims, ?string $access_token = null ): bool {
 		// Verify that sub is set
 		if ( ! isset( $claims->sub ) ) {
+			debug( 'JWT claims verification failed: sub claim is missing' );
 			return false;
 		}
 
@@ -207,6 +208,8 @@ final class CasApiAuthClient extends OpenIDConnectClient {
 				$msg = 'API authentication successful';
 				debug( $msg );
 				return true;
+			} else {
+				debug( 'Authentication result did not include authorization code' );
 			}
 		} catch ( \Exception $e ) {
 			$err = $e->getMessage();

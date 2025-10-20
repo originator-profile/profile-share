@@ -26,3 +26,6 @@ EOD;
 
 /** CA Presentaion Type が External 時、静的ファイルを生成するディレクトリ */
 const PROFILE_DEFAULT_CA_EXTERNAL_DIR = 'cas';
+
+/** ログの出力設定が有効の時、ログファイルを生成するディレクトリ */
+const PROFILE_DEFAULT_CA_LOG_DIR = 'ca-manager-log';
