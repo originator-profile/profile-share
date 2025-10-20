@@ -14,8 +14,8 @@ type PostHTMLFilesParams = {
 };
 
 type PostHTMLFilesResult = OpSiteInfo & {
-  casInfo: ContentAttestationModel
-}
+  casInfo: ContentAttestationModel;
+};
 
 /**
  * casPath　にファイルを生成するのに必要な前準備として、環境変数 vcSourcesPath にファイルを保存するための関数

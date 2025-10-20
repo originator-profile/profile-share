@@ -28,11 +28,16 @@ const createOrUpdateCa = async (
   if (!response.ok) {
     console.log("caInfo", caInfo);
     const body = await response.text();
-    console.error("CA API error log:", response.status, response.statusText, body);
+    console.error(
+      "CA API error log:",
+      response.status,
+      response.statusText,
+      body,
+    );
     throw new Error(`CA API error: ${response.status} ${response.statusText}`);
   }
 
-  const caJWT = await response.json() as unknown as string[];
+  const caJWT = (await response.json()) as unknown as string[];
   return caJWT;
 };
 
@@ -97,7 +102,7 @@ export default defineEventHandler(async (event) => {
   // see https://nitro.build/guide/websocket#server-sent-events-sse
   await deleteSpecificFiles(casPath, htmlFiles);
 
-const processedFiles = await postHTMLFiles({
+  const processedFiles = await postHTMLFiles({
     htmlFiles,
     docsPath: WEBROOT_PATH,
     vcSourcesPath: vcSourcesPath,
@@ -107,13 +112,16 @@ const processedFiles = await postHTMLFiles({
     accessToken: accessToken,
   });
 
-
   (async () => {
     for (let i = 0; i < processedFiles.length; i++) {
       const item = processedFiles[i];
 
       try {
-        const caJWT = await createOrUpdateCa(accessToken, item.casInfo, CA_ENDPOINT);
+        const caJWT = await createOrUpdateCa(
+          accessToken,
+          item.casInfo,
+          CA_ENDPOINT,
+        );
         fs.writeFileSync(
           `${casPath}${item.cas}.cas.json`,
           JSON.stringify(caJWT, null, 2),
