@@ -69,7 +69,7 @@ export const selectByIntegrity: ElementSelector = (params) => {
 
 /**
  * Target Integrity の作成
- * @see {@link https://docs.originator-profile.org/rfc/target-guide/}
+ * @see {@link https://docs.originator-profile.org/opb/content-integrity-descriptor/}
  * @example
  * ```ts
  * const content = {
