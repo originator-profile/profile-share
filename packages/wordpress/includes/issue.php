@@ -27,6 +27,8 @@ use function Profile\Url\add_page_query;
 /** 投稿への署名処理の初期化 */
 function init() {
 	\add_action( 'transition_post_status', '\Profile\Issue\sign_post', 10, 3 );
+	\add_action( 'transition_post_status', '\Profile\Issue\private_post', 10, 3 );
+	\add_action( 'before_delete_post', '\Profile\Issue\delete_post', 10, 1 );
 	\add_filter( 'wp_generate_attachment_metadata', '\Profile\Issue\update_attachment_integrity_metadata', 10, 2 );
 }
 
@@ -49,22 +51,11 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 	}
 
 	$admin_secret = \get_option( 'profile_ca_server_admin_secret' );
-	$hostname     = \get_option( 'profile_ca_server_hostname', PROFILE_DEFAULT_CA_SERVER_HOSTNAME );
 	$issuer_id    = \get_option( 'profile_ca_issuer_id' );
-	$endpoint     = "https://{$hostname}/ca";
 
 	if ( ! $admin_secret || ! $issuer_id ) {
 		debug( 'Missing required CA server configuration (admin_secret or issuer_id)' );
 		return;
-	}
-
-	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $hostname ) {
-		$in_docker = \file_exists( '/.dockerenv' );
-		if ( $in_docker ) {
-			$endpoint = 'http://host.docker.internal:8080/ca';
-		} else {
-			$endpoint = 'http://localhost:8080/ca';
-		}
 	}
 
 	$uca_list = create_uca_list( $post, $issuer_id );
@@ -86,7 +77,7 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 			}
 		}
 
-		$cas = issue_ca( $uca, $endpoint, $admin_secret );
+		$cas = issue_ca( $uca, $admin_secret );
 		if ( false === $cas || empty( $cas ) ) {
 			debug( "Failed to issue CA for post ID: {$post->ID}, page: {$page}" );
 		}
@@ -95,6 +86,39 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 	}
 
 	\update_post_meta( $post->ID, '_profile_post_cas', $post_cas );
+}
+
+/**
+ * 投稿が公開状態から非公開状態になった場合
+ *
+ * @param string   $new_status New post status.
+ * @param string   $old_status Old post status.
+ * @param \WP_Post $post Post object.
+ */
+function private_post( string $new_status, string $old_status, \WP_Post $post ) {
+	if ( 'publish' === $old_status && 'publish' !== $new_status ) {
+		$admin_secret = \get_option( 'profile_ca_server_admin_secret' );
+		$res          = delete_ca( $admin_secret, $post );
+
+		if ( false === $res ) {
+			debug( "Failed to delete CA for post ID {$post->ID}" );
+		}
+	}
+}
+
+/**
+ * 投稿が削除された場合
+ *
+ * @param int $post_id Post ID.
+ */
+function delete_post( int $post_id ) {
+	$post         = \get_post( $post_id );
+	$admin_secret = \get_option( 'profile_ca_server_admin_secret' );
+	$res          = delete_ca( $admin_secret, $post );
+
+	if ( false === $res ) {
+		debug( "Failed to delete CA for post ID {$post_id}" );
+	}
 }
 
 /**
@@ -265,19 +289,66 @@ function external_resources_from_html( string $html, string $xpath_query ): arra
  * Content Attestation の発行
  *
  * @param Uca    $uca 未署名 Content Attestation オブジェクト
- * @param string $endpoint Content Attestation サーバー CA 登録・更新エンドポイント
  * @param string $admin_secret Content Attestation サーバー認証情報
  * @return mixed 成功した場合は Content Attestation Set、失敗した場合は false
  */
-function issue_ca( Uca $uca, string $endpoint, string $admin_secret ): mixed {
+function issue_ca( Uca $uca, string $admin_secret ): mixed {
+	$hostname = \get_option( 'profile_ca_server_hostname', PROFILE_DEFAULT_CA_SERVER_HOSTNAME );
+	$endpoint = "https://{$hostname}/ca";
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $hostname ) {
+		$in_docker = \file_exists( '/.dockerenv' );
+		if ( $in_docker ) {
+			$endpoint = 'http://host.docker.internal:8080/ca';
+		} else {
+			$endpoint = 'http://localhost:8080/ca';
+		}
+	}
+	return request_ca( $endpoint, $admin_secret, 'POST', $uca->to_json() );
+}
+
+/**
+ * Content Attestation の削除
+ *
+ * @param string   $admin_secret Content Attestation サーバー認証情報
+ * @param \WP_Post $post 投稿オブジェクト
+ * @return mixed 成功した場合は null、失敗した場合は false
+ */
+function delete_ca( string $admin_secret, \WP_Post $post ): mixed {
+	$hostname = \get_option( 'profile_ca_server_hostname', PROFILE_DEFAULT_CA_SERVER_HOSTNAME );
+	$uri      = $post->guid;
+	$uuid     = 'urn:uuid:' . Uuid::uuid5( Uuid::NAMESPACE_URL, $uri );
+	$endpoint = "https://{$hostname}/ca/{$uuid}";
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $hostname ) {
+		$in_docker = \file_exists( '/.dockerenv' );
+		if ( $in_docker ) {
+			$endpoint = "http://host.docker.internal:8080/ca/{$uuid}";
+		} else {
+			$endpoint = "http://localhost:8080/ca/{$uuid}";
+		}
+	}
+	return request_ca( $endpoint, $admin_secret, 'DELETE' );
+}
+
+/**
+ * Content Attestation サーバーへのリクエスト
+ *
+ * @param string $endpoint Content Attestation サーバー CA 登録・更新・削除エンドポイント
+ * @param string $admin_secret Content Attestation サーバー認証情報
+ * @param string $method Content Attestation サーバーへのリクエストメソッド
+ * @param string $body Content Attestation サーバーへのリクエストボディ
+ * @return mixed 成功した場合は Content Attestation Set、失敗した場合は false
+ */
+function request_ca( string $endpoint, string $admin_secret, string $method = 'POST', ?string $body = null ): mixed {
 	$args = array(
-		'method'  => 'POST',
+		'method'  => $method,
 		'timeout' => PROFILE_DEFAULT_CA_SERVER_REQUEST_TIMEOUT,
-		'headers' => array(
-			'content-type' => 'application/json',
-		),
-		'body'    => $uca->to_json(),
+		'headers' => array(),
 	);
+
+	if ( null !== $body ) {
+		$args['headers']['content-type'] = 'application/json';
+		$args['body']                    = $body;
+	}
 
 	$secret_arr = explode( ':', $admin_secret );
 	$username   = $secret_arr[0] ?? '';
@@ -303,7 +374,7 @@ function issue_ca( Uca $uca, string $endpoint, string $admin_secret ): mixed {
 		return false;
 	}
 
-	if ( 200 !== $res['response']['code'] ) {
+	if ( 200 !== $res['response']['code'] && 204 !== $res['response']['code'] ) {
 		debug( 'HTTP error: ' . $res['response']['code'] );
 		return false;
 	}
