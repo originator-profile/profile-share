@@ -27,7 +27,7 @@ use function Profile\Url\add_page_query;
 /** 投稿への署名処理の初期化 */
 function init() {
 	\add_action( 'transition_post_status', '\Profile\Issue\sign_post', 10, 3 );
-	\add_action( 'transition_post_status', '\Profile\Issue\private_post', 10, 3 );
+	\add_action( 'transition_post_status', '\Profile\Issue\private_post', 20, 3 );
 	\add_action( 'before_delete_post', '\Profile\Issue\delete_post', 10, 1 );
 	\add_filter( 'wp_generate_attachment_metadata', '\Profile\Issue\update_attachment_integrity_metadata', 10, 2 );
 }
@@ -98,9 +98,13 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 function private_post( string $new_status, string $old_status, \WP_Post $post ) {
 	if ( 'publish' === $old_status && 'publish' !== $new_status ) {
 		$admin_secret = \get_option( 'profile_ca_server_admin_secret' );
-		$res          = delete_ca( $admin_secret, $post );
+		if ( ! $admin_secret ) {
+			debug( 'Missing CA server admin secret for deletion' );
+			return;
+		}
 
-		if ( false === $res ) {
+		$res = delete_ca( $admin_secret, $post );
+		if ( ! $res ) {
 			debug( "Failed to delete CA for post ID {$post->ID}" );
 		}
 	}
@@ -112,11 +116,20 @@ function private_post( string $new_status, string $old_status, \WP_Post $post ) 
  * @param int $post_id Post ID.
  */
 function delete_post( int $post_id ) {
-	$post         = \get_post( $post_id );
-	$admin_secret = \get_option( 'profile_ca_server_admin_secret' );
-	$res          = delete_ca( $admin_secret, $post );
+	$post = \get_post( $post_id );
+	if ( ! $post ) {
+		debug( "Post not found for ID: {$post_id}" );
+		return;
+	}
 
-	if ( false === $res ) {
+	$admin_secret = \get_option( 'profile_ca_server_admin_secret' );
+	if ( ! $admin_secret ) {
+		debug( 'Missing CA server admin secret for deletion' );
+		return;
+	}
+	$res = delete_ca( $admin_secret, $post );
+
+	if ( ! $res ) {
 		debug( "Failed to delete CA for post ID {$post_id}" );
 	}
 }
