@@ -39,7 +39,7 @@ function cas_script() {
 		return;
 	}
 
-	$embedded_or_external = \get_option( 'profile_ca_embedded_or_external' );
+	$embedded_or_external = \get_option( 'profile_ca_embedded_or_external', 'embedded' );
 
 	switch ( $embedded_or_external ) {
 		case 'embedded':
