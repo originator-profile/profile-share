@@ -36,6 +36,8 @@ function init() {
  * @param \WP_Post $post Post object.
  */
 function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
+	debug( "Post status is '{$new_status}'" );
+
 	if ( 'publish' !== $new_status ) {
 		debug( "Post status is '{$new_status}', not 'publish'. Skipping CA signing." );
 		return;
@@ -93,6 +95,7 @@ function sign_post( string $new_status, string $old_status, \WP_Post $post ) {
 	}
 
 	\update_post_meta( $post->ID, '_profile_post_cas', $post_cas );
+	debug( "Successfully issued CA for post ID: {$post->ID}" );
 }
 
 /**
