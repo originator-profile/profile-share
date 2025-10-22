@@ -174,7 +174,7 @@ function profile_ca_embedded_or_external_field() {
 			id="embedded"
 			name="profile_ca_embedded_or_external"
 			value="embedded"
-			title="CASをHTML内にJSONを埋め込みます"
+			title="CASをHTML内に埋め込みます"
 			<?php checked( $format, 'embedded' ); ?>
 		/>
 		Embedded (HTML内にJSONを埋め込む)</label>
