@@ -164,6 +164,8 @@ function profile_ca_target_html_field() {
 
 /** CA Presentation Type フィールド*/
 function profile_ca_embedded_or_external_field() {
+	$format = \get_option( 'profile_ca_embedded_or_external', 'embedded' );
+
 	?>
 	<p>
 		<label for="embedded" class="radio-item">
@@ -173,7 +175,7 @@ function profile_ca_embedded_or_external_field() {
 			name="profile_ca_embedded_or_external"
 			value="embedded"
 			title="CASをHTML内にJSONを埋め込みます"
-			<?php checked( \get_option( 'profile_ca_embedded_or_external' ), 'embedded' ); ?>
+			<?php checked( $format, 'embedded' ); ?>
 		/>
 		Embedded (HTML内にJSONを埋め込む)</label>
 	</p>
@@ -185,7 +187,7 @@ function profile_ca_embedded_or_external_field() {
 			name="profile_ca_embedded_or_external"
 			value="external"
 			title="CASをURLで参照します 選択するとJSONファイルが定数で指定したディレクトリに生成されます"
-			<?php checked( \get_option( 'profile_ca_embedded_or_external' ), 'external' ); ?>
+			<?php checked( $format, 'external' ); ?>
 		/>
 		External (URLで参照)</label>
 	</p>
