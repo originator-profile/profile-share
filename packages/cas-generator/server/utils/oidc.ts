@@ -10,7 +10,6 @@ type OidcConfig = {
   jwksUri: string;
 };
 
-// add jsdoc
 /**
  * OIDC config tokenをパースして、OidcConfigを返す
  * @param input OIDC:Base64の文字列
