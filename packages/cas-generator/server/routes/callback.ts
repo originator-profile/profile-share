@@ -129,15 +129,14 @@ export default defineEventHandler(async (event) => {
     const expiresInSeconds = Number(tokens.expires_in || 3600);
     setCookie(event, "access_token", tokens.access_token || "", {
       httpOnly: true,
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
       maxAge: expiresInSeconds,
     });
     setCookie(event, "id_token", tokens.id_token || "", {
-      // ローカル環境のクライアントサイドで使用するため、httpOnlyをfalseに設定
-      httpOnly: false,
-      secure: false,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
       maxAge: expiresInSeconds,
@@ -145,7 +144,7 @@ export default defineEventHandler(async (event) => {
     if (tokens.refresh_token) {
       setCookie(event, "refresh_token", tokens.refresh_token, {
         httpOnly: true,
-        secure: false,
+        secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         path: "/",
         maxAge: 60 * 60 * 24 * 30, // 30 days

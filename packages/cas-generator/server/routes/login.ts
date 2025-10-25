@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
     // codeVerifierとstateをcookieに保存
     setCookie(event, "pkce_code_verifier", codeVerifier, {
       httpOnly: true,
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 600,
       path: "/",
@@ -41,14 +41,15 @@ export default defineEventHandler(async (event) => {
     const nonce = client.randomNonce();
     setCookie(event, "oauth_nonce", nonce, {
       httpOnly: true,
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
+      path: "/",
       maxAge: 600,
     });
 
     setCookie(event, "oauth_state", state, {
       httpOnly: true,
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 600,
       path: "/",

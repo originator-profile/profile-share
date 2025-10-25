@@ -224,7 +224,6 @@
 <script setup>
 import { defaultAllowedURLOriginss } from "#shared/constants";
 import { useStorage } from "@vueuse/core";
-import { useCookie } from "#app";
 const scrollSection = ref(null);
 const body = ref([]);
 const generating = ref(false);
@@ -237,31 +236,30 @@ const allowedURLOrigins = useStorage(
 const tempAllowedURLOrigins = ref([]);
 
 const { data: settingItems } = useFetch("/api/settings");
+const { data: session, refresh: refreshSession } = useFetch(
+  "/api/auth/session",
+  {
+    credentials: "include",
+  },
+);
 
-const idToken = useCookie("id_token");
+const isLoggedIn = computed(() => session.value?.isLoggedIn ?? false);
 
-const isLoggedIn = computed(() => !!idToken.value);
-
-const userEmail = computed(() => {
-  try {
-    if (!idToken.value) return "";
-    const payload = JSON.parse(atob(idToken.value.split(".")[1] || ""));
-    return payload.email || "";
-  } catch (e) {
-    return "";
-  }
-});
+const userEmail = computed(() => session.value?.email || "");
 
 function login() {
   navigateTo("/login", { external: true });
 }
 
-function logout() {
-  // Clear cookies by setting an immediate expiry
-  const opts = { path: "/", maxAge: -1 };
-  useCookie("access_token", opts).value = null;
-  useCookie("id_token", opts).value = null;
-  useCookie("refresh_token", opts).value = null;
+async function logout() {
+  try {
+    await fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+  } finally {
+    await refreshSession();
+  }
 }
 
 // 選択されたファイルを取得するcomputed
@@ -307,6 +305,7 @@ async function fetchChatStream(prompt, callback) {
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify({
       htmlFiles: prompt,
       allowedURLOrigins: allowedURLOrigins.value,
