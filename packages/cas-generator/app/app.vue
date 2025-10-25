@@ -238,9 +238,7 @@ const tempAllowedURLOrigins = ref([]);
 
 const { data: settingItems } = useFetch("/api/settings");
 
-const accessToken = useCookie("access_token");
 const idToken = useCookie("id_token");
-const refreshToken = useCookie("refresh_token");
 
 const isLoggedIn = computed(() => !!idToken.value);
 

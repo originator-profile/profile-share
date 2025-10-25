@@ -38,6 +38,14 @@ export default defineEventHandler(async (event) => {
       path: "/",
     });
 
+    const nonce = client.randomNonce();
+    setCookie(event, "oauth_nonce", nonce, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 600,
+    });
+
     setCookie(event, "oauth_state", state, {
       httpOnly: true,
       secure: false,
@@ -54,7 +62,7 @@ export default defineEventHandler(async (event) => {
     authUrl.searchParams.set("code_challenge", codeChallenge);
     authUrl.searchParams.set("code_challenge_method", "S256");
     authUrl.searchParams.set("state", state);
-    authUrl.searchParams.set("nonce", client.randomNonce());
+    authUrl.searchParams.set("nonce", nonce);
 
     return sendRedirect(event, authUrl.href);
   } catch (error) {

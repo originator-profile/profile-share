@@ -3,7 +3,6 @@ import { parseOidcConfigToken } from "../utils/oidc";
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event);
   const OICD_TOKEN = config.OICD_TOKEN;
-  // const REDIRECT_URI = config.REDIRECT_URI;
   const { provider, authorizeUrl, tokenUrl, clientId, clientSec, redirectUrl } =
     parseOidcConfigToken(OICD_TOKEN);
   // 環境変数が設定されているかチェック
@@ -27,6 +26,7 @@ export default defineEventHandler(async (event) => {
 
   const codeVerifier = getCookie(event, "pkce_code_verifier");
   const expectedState = getCookie(event, "oauth_state");
+  const nonce = getCookie(event, "oauth_nonce");
 
   if (!codeVerifier) {
     console.error("codeVerifier not found");
@@ -38,6 +38,14 @@ export default defineEventHandler(async (event) => {
 
   if (!expectedState) {
     console.error("expectedState not found");
+    throw createError({
+      statusCode: 403,
+      message: "認証に失敗しました",
+    });
+  }
+
+  if (!nonce) {
+    console.error("nonce not found");
     throw createError({
       statusCode: 403,
       message: "認証に失敗しました",
@@ -100,6 +108,13 @@ export default defineEventHandler(async (event) => {
 
     const tokens = await response.json();
 
+    if (!tokens?.id_token) {
+      console.error("id_token not returned in token response");
+      throw createError({
+        statusCode: 502,
+        message: "トークン交換に失敗しました",
+      });
+    }
     // 使用済みのcookieを削除
     deleteCookie(event, "pkce_code_verifier", {
       path: "/",
@@ -107,16 +122,20 @@ export default defineEventHandler(async (event) => {
     deleteCookie(event, "oauth_state", {
       path: "/",
     });
+    deleteCookie(event, "oauth_nonce", {
+      path: "/",
+    });
 
     const expiresInSeconds = Number(tokens.expires_in || 3600);
     setCookie(event, "access_token", tokens.access_token || "", {
-      httpOnly: false,
+      httpOnly: true,
       secure: false,
       sameSite: "lax",
       path: "/",
       maxAge: expiresInSeconds,
     });
     setCookie(event, "id_token", tokens.id_token || "", {
+      // ローカル環境のクライアントサイドで使用するため、httpOnlyをfalseに設定
       httpOnly: false,
       secure: false,
       sameSite: "lax",
@@ -125,7 +144,7 @@ export default defineEventHandler(async (event) => {
     });
     if (tokens.refresh_token) {
       setCookie(event, "refresh_token", tokens.refresh_token, {
-        httpOnly: false,
+        httpOnly: true,
         secure: false,
         sameSite: "lax",
         path: "/",
