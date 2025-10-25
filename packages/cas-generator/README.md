@@ -46,6 +46,7 @@ pnpm dev
 ```
 
 ## CAサーバーとの連携
+
 `.env.example` を参考に環境変数を設定してください。
 
 - OICD_TOKEN
@@ -64,6 +65,7 @@ CAサーバーのAPIアカウントとパスワードを入力してログイン
 ## CASを生成するファイルを選択
 
 `.env.example` を参考に環境変数を設定してください。
+
 - WEBROOT_PATH: サイトのルートパスを指定します。
 - VC_OUTPUT_PATH:vc-sourcesファイルを生成するパスを指定します。
 - CAS_OUTPUT_PATH: casファイルを生成するパスを指定します。
