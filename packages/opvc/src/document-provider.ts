@@ -5,12 +5,6 @@ export async function documentProvider({
   type,
   content = "",
 }: RawTarget): Promise<Document> {
-  if (type === "ExternalResourceTargetIntegrity") {
-    throw new Error(
-      "ExternalResourceTargetIntegrity are not supported in this context.",
-    );
-  }
-
   if (Array.isArray(content) && content.length > 1) {
     throw new Error("Multiple contents are not supported in this context.");
   }
@@ -23,6 +17,10 @@ export async function documentProvider({
     url = content;
   } else {
     html = content;
+  }
+
+  if (url && type !== "ExternalResourceTargetIntegrity") {
+    html = await fetch(url).then((res) => res.text());
   }
 
   const dom = new JSDOM(html, {
