@@ -54,7 +54,7 @@ pnpm dev
 OICD:で始まる以下の型定義の情報を含むtoken(base64)の文字列を設定してください。
 cas-generator/server/utils/oidc.ts
 
-- RESOURCE_SERVER_URL
+- CA_SERVER_URL
 
 リソースサーバーのエンドポイントのURLを設定してください。
 /caのエンドポイントです。
@@ -69,7 +69,6 @@ CAサーバーのAPIアカウントとパスワードを入力してログイン
 - WEBROOT_PATH: サイトのルートパスを指定します。
 - VC_OUTPUT_PATH:vc-sourcesファイルを生成するパスを指定します。
 - CAS_OUTPUT_PATH: casファイルを生成するパスを指定します。
-- PRIVATE_KEY_PATH: registryのprivate keyを指定します。
 
 各コンテンツの左に配置されているチェックボックスを選択して、必要なコンテンツのみ選択することができます。
 すべてのCASを生成したい場合は、一番上のチェックボックスを選択してすべてを選択してください。

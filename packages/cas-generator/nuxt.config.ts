@@ -20,10 +20,10 @@ export default defineNuxtConfig({
     WEBROOT_PATH: process.env.WEBROOT_PATH,
     VC_OUTPUT_PATH: process.env.VC_OUTPUT_PATH,
     CAS_OUTPUT_PATH: process.env.CAS_OUTPUT_PATH,
-    PRIVATE_KEY_PATH: process.env.PRIVATE_KEY_PATH,
     // 認証サーバーに必要な環境変数
     OICD_TOKEN: process.env.OICD_TOKEN,
-    RESOURCE_SERVER_URL: process.env.RESOURCE_SERVER_URL,
+    CA_SERVER_URL:
+      process.env.CA_SERVER_URL ?? "https://opca-api.facere.biz/ca",
   },
 
   // NOTE: unenv@2.0.0-rc.15 + cloudflare の組み合わせで問題あり
