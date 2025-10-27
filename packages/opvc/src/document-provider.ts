@@ -13,14 +13,17 @@ export async function documentProvider({
   let url: string | undefined;
   let html: string = "";
 
-  if (URL.canParse(content)) {
-    url = content;
+  if (type === "ExternalResourceTargetIntegrity") {
+    url = URL.canParse(content) ? content : undefined;
+    html = "";
   } else {
-    html = content;
-  }
-
-  if (url && type !== "ExternalResourceTargetIntegrity") {
-    html = await fetch(url).then((res) => res.text());
+    if (URL.canParse(content)) {
+      url = content;
+      html = await fetch(url).then((res) => res.text());
+    } else {
+      url = undefined;
+      html = content;
+    }
   }
 
   const dom = new JSDOM(html, {
