@@ -78,14 +78,15 @@ export default defineEventHandler(async (event) => {
   const WEBROOT_PATH = config.WEBROOT_PATH;
   const VC_OUTPUT_PATH = config.VC_OUTPUT_PATH;
   const CAS_OUTPUT_PATH = config.CAS_OUTPUT_PATH;
-
-  const RESOURCE_SERVER_URL = config.RESOURCE_SERVER_URL;
+  const CA_SERVER_URL = config.CA_SERVER_URL;
+  const ISSUER = config.ISSUER;
 
   if (
     !WEBROOT_PATH ||
     !VC_OUTPUT_PATH ||
     !CAS_OUTPUT_PATH ||
-    !RESOURCE_SERVER_URL
+    !CA_SERVER_URL ||
+    !ISSUER
   ) {
     throw createError({
       statusCode: 500,
@@ -117,6 +118,7 @@ export default defineEventHandler(async (event) => {
     opcipName: opcipName,
     ogpImageURL: ogpImageURL,
     accessToken: accessToken,
+    issuer: ISSUER,
   });
 
   (async () => {
@@ -127,7 +129,7 @@ export default defineEventHandler(async (event) => {
         const caJWT = await createOrUpdateCa(
           accessToken,
           item.casInfo,
-          RESOURCE_SERVER_URL,
+          CA_SERVER_URL,
         );
         fs.writeFileSync(
           `${casPath}${item.cas}.cas.json`,

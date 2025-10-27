@@ -62,6 +62,10 @@ cas-generator/server/utils/oidc.ts
 環境変数を設定後、管理画面のloginをクリックして、認証をします。
 CAサーバーのAPIアカウントとパスワードを入力してログインしてください。
 
+- ISSUER
+
+OPレジストリのOP-IDを入力してください。CAのissuerの値になります。
+
 ## CASを生成するファイルを選択
 
 `.env.example` を参考に環境変数を設定してください。

@@ -11,6 +11,7 @@ type PostHTMLFilesParams = {
   opcipName: { ja: string; en: string };
   ogpImageURL: { ja: string; en: string };
   accessToken: string;
+  issuer: string;
 };
 
 type PostHTMLFilesResult = OpSiteInfo & {
@@ -29,6 +30,7 @@ export default async function postHTMLFiles({
   allowedURLOrigins,
   opcipName,
   ogpImageURL,
+  issuer,
 }: PostHTMLFilesParams): Promise<PostHTMLFilesResult[]> {
   const processedFiles: PostHTMLFilesResult[] = [];
 
@@ -72,6 +74,7 @@ export default async function postHTMLFiles({
         },
         allowedUrl: allowedUrl,
         target: [primaryTarget, ...imageHashes],
+        issuer: issuer,
       },
       lang,
     );

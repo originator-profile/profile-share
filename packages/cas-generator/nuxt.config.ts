@@ -24,6 +24,7 @@ export default defineNuxtConfig({
     OICD_TOKEN: process.env.OICD_TOKEN,
     CA_SERVER_URL:
       process.env.CA_SERVER_URL ?? "https://opca-api.facere.biz/ca",
+    ISSUER: process.env.ISSUER,
   },
 
   // NOTE: unenv@2.0.0-rc.15 + cloudflare の組み合わせで問題あり
