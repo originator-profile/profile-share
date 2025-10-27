@@ -15,8 +15,19 @@ export const RawTarget = {
       ],
     },
     content: {
-      type: "string",
-      description: "コンテンツ本体 (text/html or URL)",
+      oneOf: [
+        {
+          type: "array",
+          items: {
+            type: "string",
+            description: "コンテンツ本体 (text/html or URL)",
+          },
+        },
+        {
+          type: "string",
+          description: "コンテンツ本体 (text/html or URL)",
+        },
+      ],
     },
     cssSelector: {
       type: "string",

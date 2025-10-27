@@ -107,7 +107,9 @@ FLAG DESCRIPTIONS
     "headline": "<Webページのタイトル>",
     "image": {
     "id": "<サムネイル画像URL>",
-    "content": "<コンテンツ (data:// 形式URL)>"
+    "content": [
+    "<コンテンツ (data:// 形式URL)>"
+    ]
     },
     "description": "<Webページの説明>",
     "author": [
@@ -124,7 +126,9 @@ FLAG DESCRIPTIONS
     "target": [
     {
     "type": "<Target Integrityの種別>",
-    "content": "<コンテンツ本体 (text/html or URL)>",
+    "content": [
+    "<コンテンツ本体 (text/html or URL)>"
+    ],
     "cssSelector": "<CSS セレクター (optional)>"
     }
     ]
@@ -187,7 +191,9 @@ FLAG DESCRIPTIONS
     "description": "<コンテンツの説明>",
     "image": {
     "id": "<サムネイル画像URL>",
-    "content": "<コンテンツ (data:// 形式URL)>"
+    "content": [
+    "<コンテンツ (data:// 形式URL)>"
+    ]
     },
     "datePublished": "<公開日時>",
     "dateModified": "<最終更新日時>",
@@ -203,7 +209,9 @@ FLAG DESCRIPTIONS
     "target": [
     {
     "type": "<Target Integrityの種別>",
-    "content": "<コンテンツ本体 (text/html or URL)>",
+    "content": [
+    "<コンテンツ本体 (text/html or URL)>"
+    ],
     "cssSelector": "<CSS セレクター (optional)>"
     }
     ]
@@ -454,7 +462,9 @@ FLAG DESCRIPTIONS
     "description": "<Web サイトの説明>",
     "image": {
     "id": "<サムネイル画像URL>",
-    "content": "<コンテンツ (data:// 形式URL)>"
+    "content": [
+    "<コンテンツ (data:// 形式URL)>"
+    ]
     },
     "allowedOrigin": [
     "<Web サイトのオリジン (形式: https://<ホスト名>)>"
