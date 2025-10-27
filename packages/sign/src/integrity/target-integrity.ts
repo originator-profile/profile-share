@@ -1,5 +1,9 @@
 import type { RawTarget, Target } from "@originator-profile/model";
-import { createIntegrityMetadata, type HashAlgorithm } from "websri";
+import {
+  createIntegrityMetadata,
+  supportedHashAlgorithms,
+  type HashAlgorithm,
+} from "websri";
 import type { ContentFetcher, ElementSelector } from "./types";
 
 /** element.outerHTML and join("") */
@@ -69,8 +73,12 @@ export const selectByIntegrity: ElementSelector = (params) => {
 
 /**
  * Target Integrity の作成
+ *
+ * `ExternalResourceTargetIntegrity` で複数のコンテンツが指定された場合、それぞれのハッシュ値がスペース区切りで結合されます。
+ *
  * @see {@link https://docs.originator-profile.org/opb/content-integrity-descriptor/}
  * @example
+ * 基本的な使用例
  * ```ts
  * const content = {
  *   type: "HtmlTargetIntegrity", // or ***TargetIntegrity
@@ -79,6 +87,18 @@ export const selectByIntegrity: ElementSelector = (params) => {
  *
  * const { integrity } = await createIntegrity("sha256", content);
  * console.log(integrity); // sha256-...
+ * ```
+ *
+ * @example
+ * ExternalResourceTargetIntegrity で複数コンテンツ
+ * ```ts
+ * const content = {
+ *   type: "ExternalResourceTargetIntegrity",
+ *   content: ["<コンテンツURL1>", "<コンテンツURL2>"],
+ * };
+ *
+ * const { integrity } = await createIntegrity("sha256", content);
+ * console.log(integrity); // sha256-... sha256-...
  * ```
  */
 export async function createIntegrity(
@@ -97,19 +117,25 @@ export async function createIntegrity(
     return null;
   }
 
+  if (!(alg in supportedHashAlgorithms)) {
+    return null;
+  }
+
   if (target.type === "ExternalResourceTargetIntegrity") {
-    const res = URL.canParse(content)
-      ? await fetch(content)
-      : new Response(content);
+    const meta = await Promise.all(
+      [content].flat().map(async (content) => {
+        const res = URL.canParse(content)
+          ? await fetch(content)
+          : new Response(content);
 
-    const data = await res.arrayBuffer();
-    const meta = await createIntegrityMetadata(alg, data);
-
-    if (!meta.alg) return null;
+        const data = await res.arrayBuffer();
+        return await createIntegrityMetadata(alg, data);
+      }),
+    );
 
     return {
       ...target,
-      integrity: meta.toString(),
+      integrity: meta.join(" "),
     } as Target;
   }
 
@@ -138,8 +164,6 @@ export async function createIntegrity(
 
   const data = await res.arrayBuffer();
   const meta = await createIntegrityMetadata(alg, data);
-
-  if (!meta.alg) return null;
 
   return {
     ...target,

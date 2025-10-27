@@ -38,3 +38,43 @@ test("Fetch failure", async () => {
     createDigestSri("sha256", resource, failure),
   ).rejects.toThrowError();
 });
+
+test("Multiple content URLs - hashes are joined with space", async () => {
+  const resourceWithMultipleContent = {
+    id: "https://example.org/foo/bar",
+    content: ["https://example.org/content1", "https://example.org/content2"],
+  };
+
+  async function multiFetcher(input: RequestInfo | URL): Promise<Response> {
+    const url =
+      typeof input === "string"
+        ? input
+        : input instanceof URL
+          ? input.href
+          : input.url;
+
+    if (url.endsWith("/content1")) return new Response("Content 1");
+    if (url.endsWith("/content2")) return new Response("Content 2");
+    return new Response("Default");
+  }
+
+  const meta1 = await createIntegrityMetadata(
+    "sha256",
+    await new Response("Content 1").arrayBuffer(),
+  );
+  const meta2 = await createIntegrityMetadata(
+    "sha256",
+    await new Response("Content 2").arrayBuffer(),
+  );
+
+  const result = await createDigestSri(
+    "sha256",
+    resourceWithMultipleContent,
+    multiFetcher,
+  );
+
+  expect(result).toEqual({
+    id: "https://example.org/foo/bar",
+    digestSRI: `${meta1.toString()} ${meta2.toString()}`,
+  } satisfies DigestSriContent);
+});
