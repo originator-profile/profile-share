@@ -15,6 +15,7 @@ export const AllowedOrigin = {
     },
   ],
   description:
+    "@deprecated allowedOrigin は非推奨です。代わりに allowedUrl を使用してください。2026年9月までサポートされます。\n\n" +
     "Content Attestation によって表明される情報の対象となる [origin](https://www.rfc-editor.org/rfc/rfc6454#section-7)",
 } as const satisfies JSONSchema;
 

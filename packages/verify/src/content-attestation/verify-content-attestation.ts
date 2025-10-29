@@ -29,6 +29,15 @@ async function checkUrlAndOrigin<T extends ContentAttestation>(
   if (result.doc.allowedUrl && result.doc.allowedOrigin) {
     return new CaInvalid("allowedUrl and allowedOrigin are exclusive", result);
   }
+
+  if (result.doc.allowedOrigin) {
+    console.warn(
+      "[OP Warning] allowedOrigin is deprecated and will be removed after September 2026. " +
+        "Please use allowedUrl instead. " +
+        "See: https://docs.originator-profile.org/",
+    );
+  }
+
   if (
     result.doc.allowedUrl &&
     !(await verifyAllowedUrl(url.toString(), result.doc.allowedUrl))
