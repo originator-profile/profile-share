@@ -1,8 +1,10 @@
 // vite.config.ts
 import { defineConfig } from "vite";
 import path from "path";
+import { imagetools } from "vite-imagetools";
 
 export default defineConfig({
+  plugins: [imagetools()],
   base: "./",
   build: {
     rollupOptions: {

@@ -12,6 +12,7 @@
     "@types/accept-language-parser": "^1.5.8",
     "prettier": "^3.5.3",
     "vite": "^7.0.0",
+    "vite-imagetools": "^9.0.0",
     "wrangler": "^4.22.0"
   },
   "dependencies": {
