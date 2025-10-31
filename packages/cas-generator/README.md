@@ -18,7 +18,7 @@
 
 ## Profile Registry CLI の導入
 
-お手元の環境での作業を前提としています。[registry のリポジトリ](https://github.com/originator-profile/profile-share/tree/main/apps/registry)をご覧ください。
+お手元の環境での作業を前提としています。[registry のリポジトリ](https://github.com/originator-profile/ca-server/tree/main/apps/registry)をご覧ください。
 
 ## ファイルパスの指定
 
