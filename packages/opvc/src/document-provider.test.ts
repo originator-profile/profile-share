@@ -32,4 +32,40 @@ await describe("documentProvider()", async () => {
 
     assert.equal(document.querySelector("body>*")?.textContent, "test\n");
   });
+
+  await test("ExternalResourceTargetIntegrity の場合コンテンツを持たない DOM が得られる - content が URL のケース", async () => {
+    const document = await documentProvider({
+      type: "ExternalResourceTargetIntegrity",
+      content: "data:text/html,<body>test</body>",
+    });
+
+    assert.equal(
+      document.documentElement.outerHTML,
+      "<html><head></head><body></body></html>",
+    );
+  });
+
+  await test("ExternalResourceTargetIntegrity の場合コンテンツを持たない DOM が得られる - content が URL 以外のケース", async () => {
+    const document = await documentProvider({
+      type: "ExternalResourceTargetIntegrity",
+      content: "<body>test</body>",
+    });
+
+    assert.equal(
+      document.documentElement.outerHTML,
+      "<html><head></head><body></body></html>",
+    );
+  });
+
+  await test("ExternalResourceTargetIntegrity 以外の場合 fetch() で取得した DOM が得られる", async () => {
+    const document = await documentProvider({
+      type: "HtmlTargetIntegrity",
+      content: "data:text/html,<body>test</body>",
+    });
+
+    assert.equal(
+      document.documentElement.outerHTML,
+      "<html><head></head><body>test</body></html>",
+    );
+  });
 });
