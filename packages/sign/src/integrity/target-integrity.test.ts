@@ -95,6 +95,29 @@ describe("createIntegrity()", () => {
       }),
     ).toBe(null);
   });
+
+  it("should return valid integrity for ExternalResourceTargetIntegrity with multiple content URLs", async () => {
+    const content = ["data:text/plain,content1", "data:text/plain,content2"];
+
+    const meta1 = await createIntegrityMetadata(
+      "sha256",
+      await fetch(content[0]).then((res) => res.arrayBuffer()),
+    );
+    const meta2 = await createIntegrityMetadata(
+      "sha256",
+      await fetch(content[1]).then((res) => res.arrayBuffer()),
+    );
+
+    expect(
+      await createIntegrity("sha256", {
+        type: "ExternalResourceTargetIntegrity",
+        content,
+      }),
+    ).toEqual({
+      type: "ExternalResourceTargetIntegrity",
+      integrity: `${meta1.toString()} ${meta2.toString()}`,
+    });
+  });
 });
 
 describe("fetchHtmlContent()", () => {
@@ -206,6 +229,53 @@ describe("fetchExternalResource()", () => {
 
     expect(await res.text()).toBe(
       `<svg xmlns="http://www.w3.org/2000/svg"></svg>`,
+    );
+  });
+
+  it("should fetch external resources using currentSrc when available", async () => {
+    document.body.innerHTML = `\
+<video controls integrity="sha256-xxx">
+  <source src="data:text/plain,currentSrcContent" />
+</video>
+`;
+
+    const elements = selectByIntegrity({
+      integrity: "sha256-xxx",
+      document,
+    });
+
+    const [res] = await fetchExternalResource(elements);
+
+    expect(await res.text()).toBe("currentSrcContent");
+  });
+
+  it("should fallback to src when currentSrc is empty", async () => {
+    document.body.innerHTML = `\
+<img integrity="sha256-xxx" src="data:text/plain,fallbackContent" />
+`;
+
+    const elements = selectByIntegrity({
+      integrity: "sha256-xxx",
+      document,
+    });
+
+    const [res] = await fetchExternalResource(elements);
+
+    expect(await res.text()).toBe("fallbackContent");
+  });
+
+  it("should throw error when element has no src or currentSrc", async () => {
+    document.body.innerHTML = `\
+<div integrity="sha256-xxx"></div>
+`;
+
+    const elements = selectByIntegrity({
+      integrity: "sha256-xxx",
+      document,
+    });
+
+    await expect(fetchExternalResource(elements)).rejects.toThrow(
+      "Element has no src or currentSrc property",
     );
   });
 });

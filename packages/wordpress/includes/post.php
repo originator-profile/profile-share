@@ -39,7 +39,7 @@ function cas_script() {
 		return;
 	}
 
-	$embedded_or_external = \get_option( 'profile_ca_embedded_or_external' );
+	$embedded_or_external = \get_option( 'profile_ca_embedded_or_external', 'embedded' );
 
 	switch ( $embedded_or_external ) {
 		case 'embedded':
@@ -82,8 +82,7 @@ function cas_script() {
  * @return string ブロックコンテンツ
  */
 function block_image( string $content, array $block ): string {
-	$id   = $block['attrs']['id'] ?? null;
-	$size = $block['attrs']['sizeSlug'] ?? null;
+	$id = $block['attrs']['id'] ?? null;
 
 	if ( ! $id ) {
 		debug( 'Image block has no ID attribute, skipping integrity injection' );
@@ -91,10 +90,10 @@ function block_image( string $content, array $block ): string {
 	}
 
 	$integrity = \get_post_meta( $id, '_profile_attachment_integrity', true );
-	$integrity = is_array( $integrity ) ? $integrity[ $size ] : null;
+	$integrity = \is_array( $integrity ) ? \implode( ' ', $integrity ) : null;
 
 	if ( ! $integrity ) {
-		debug( "No Integrity metadata found for attachment ID: {$id}, size: {$size}" );
+		debug( "No Integrity metadata found for attachment ID: {$id}" );
 		return $content;
 	}
 

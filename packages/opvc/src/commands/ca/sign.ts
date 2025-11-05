@@ -24,7 +24,7 @@ const exampleArticleContentAttestation = {
     headline: "<Webページのタイトル>",
     image: {
       id: "<サムネイル画像URL>",
-      content: "<コンテンツ (data:// 形式URL)>",
+      content: ["<コンテンツ (data:// 形式URL)>"],
     },
     description: "<Webページの説明>",
     author: ["山田花子"],
@@ -37,7 +37,7 @@ const exampleArticleContentAttestation = {
   target: [
     {
       type: "<Target Integrityの種別>" as RawTarget["type"],
-      content: "<コンテンツ本体 (text/html or URL)>",
+      content: ["<コンテンツ本体 (text/html or URL)>"],
       cssSelector: "<CSS セレクター (optional)>",
     },
   ],

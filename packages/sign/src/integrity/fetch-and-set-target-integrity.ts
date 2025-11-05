@@ -11,7 +11,7 @@ export class IntegrityCalculationError extends Error {}
  * target[].integrity を省略した場合、type に準じて content から integrity を計算します。
  * 一方、target[].integrity が含まれる場合、その値をそのまま使用します。
  * なお、いずれも target[].content プロパティが削除される点にご注意ください。
- * @see {@link https://docs.originator-profile.org/rfc/target-guide/}
+ * @see {@link https://docs.originator-profile.org/opb/content-integrity-descriptor/}
  * @throws {IntegrityCalculationError} Integrityの計算に失敗 (例: 検証対象が存在しない)
  * @example
  * ```ts

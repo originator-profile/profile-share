@@ -22,7 +22,7 @@ const exampleWebsiteProfile = {
     description: "<Web サイトの説明>",
     image: {
       id: "<サムネイル画像URL>",
-      content: "<コンテンツ (data:// 形式URL)>",
+      content: ["<コンテンツ (data:// 形式URL)>"],
     },
     allowedOrigin: ["<Web サイトのオリジン (形式: https://<ホスト名>)>"],
   },

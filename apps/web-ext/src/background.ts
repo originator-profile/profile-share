@@ -20,7 +20,7 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
   if (!granted) {
     // 権限が足らない場合は初期設定の説明を開く (Firefoxのみ)
     await chrome.tabs.create({
-      url: "https://docs.originator-profile.org/web-ext/experimental-use/#setup-in-firefox",
+      url: "https://cip.docs.originator-profile.org/web-ext/experimental-use/#setup-in-firefox",
     });
 
     // NOTE: "<all_urls>" 権限求められないようなのでコメントアウト
