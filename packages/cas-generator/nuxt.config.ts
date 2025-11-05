@@ -21,7 +21,7 @@ export default defineNuxtConfig({
     VC_OUTPUT_PATH: process.env.VC_OUTPUT_PATH,
     CAS_OUTPUT_PATH: process.env.CAS_OUTPUT_PATH,
     // 認証サーバーに必要な環境変数
-    OICD_TOKEN: process.env.OICD_TOKEN,
+    OIDC_TOKEN: process.env.OIDC_TOKEN,
     CA_SERVER_URL:
       process.env.CA_SERVER_URL ?? "https://opca-api.facere.biz/ca",
     ISSUER: process.env.ISSUER,

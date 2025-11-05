@@ -1,13 +1,11 @@
 type OidcConfig = {
   authType: "oidc";
   provider: string;
-  providerUrl: string;
   clientId: string;
   clientSec: string;
   authorizeUrl: string;
   tokenUrl: string;
   redirectUrl: string;
-  jwksUri: string;
 };
 
 /**

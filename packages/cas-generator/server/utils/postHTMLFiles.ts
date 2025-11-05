@@ -10,7 +10,6 @@ type PostHTMLFilesParams = {
   allowedURLOrigins: string[];
   opcipName: { ja: string; en: string };
   ogpImageURL: { ja: string; en: string };
-  accessToken: string;
   issuer: string;
 };
 

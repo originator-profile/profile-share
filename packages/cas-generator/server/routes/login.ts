@@ -3,10 +3,10 @@ import { parseOidcConfigToken } from "../utils/oidc";
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event);
-  const OICD_TOKEN = config.OICD_TOKEN;
+  const OIDC_TOKEN = config.OIDC_TOKEN;
 
   const { provider, authorizeUrl, tokenUrl, clientId, clientSec, redirectUrl } =
-    parseOidcConfigToken(OICD_TOKEN);
+    parseOidcConfigToken(OIDC_TOKEN);
 
   // 環境変数が設定されているかチェック
   if (

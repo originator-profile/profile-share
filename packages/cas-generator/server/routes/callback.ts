@@ -2,9 +2,9 @@ import { parseOidcConfigToken } from "../utils/oidc";
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event);
-  const OICD_TOKEN = config.OICD_TOKEN;
+  const OIDC_TOKEN = config.OIDC_TOKEN;
   const { provider, authorizeUrl, tokenUrl, clientId, clientSec, redirectUrl } =
-    parseOidcConfigToken(OICD_TOKEN);
+    parseOidcConfigToken(OIDC_TOKEN);
   // 環境変数が設定されているかチェック
   if (
     !provider ||
@@ -53,13 +53,6 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const currentUrl = new URL(redirectUrl);
-    Object.entries(query).forEach(([key, value]) => {
-      if (typeof value === "string") {
-        currentUrl.searchParams.set(key, value);
-      }
-    });
-
     const authorizationCode =
       typeof query.code === "string" ? query.code : undefined;
     const returnedState =

@@ -49,9 +49,9 @@ pnpm dev
 
 `.env.example` を参考に環境変数を設定してください。
 
-- OICD_TOKEN
+- OIDC_TOKEN
 
-OICD:で始まる以下の型定義の情報を含むtoken(base64)の文字列を設定してください。
+OIDC:で始まる以下の型定義の情報を含むtoken(base64)の文字列を設定してください。
 cas-generator/server/utils/oidc.ts
 
 - CA_SERVER_URL

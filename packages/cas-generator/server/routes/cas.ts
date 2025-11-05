@@ -117,7 +117,6 @@ export default defineEventHandler(async (event) => {
     allowedURLOrigins: allowedURLOrigins,
     opcipName: opcipName,
     ogpImageURL: ogpImageURL,
-    accessToken: accessToken,
     issuer: ISSUER,
   });
 
@@ -137,7 +136,7 @@ export default defineEventHandler(async (event) => {
         );
         const outputCasData = JSON.stringify({
           ...item,
-          // @ts-expect-error vcを削除すると、クライアントにの進行状況が表示されないので調査する
+          // @ts-expect-error vcを削除すると、クライアント側の進行状況が表示されない
           vc: item.vc,
         });
         await eventStream.push(outputCasData);
