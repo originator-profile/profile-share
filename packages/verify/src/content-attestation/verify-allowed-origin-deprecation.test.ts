@@ -62,7 +62,7 @@ describe("allowedOrigin deprecation 警告", async () => {
     // console.warn が1回呼ばれ、適切な警告メッセージが表示されることを確認
     expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      "[OP Warning] allowedOrigin is deprecated and will be removed after September 2026. " +
+      "[OP Warning] allowedOrigin is deprecated in Content Attestation and will be removed after September 2026. " +
         "Please use allowedUrl instead. " +
         "See: https://docs.originator-profile.org/",
     );

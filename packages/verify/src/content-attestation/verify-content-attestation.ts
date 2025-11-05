@@ -32,7 +32,7 @@ async function checkUrlAndOrigin<T extends ContentAttestation>(
 
   if (result.doc.allowedOrigin) {
     console.warn(
-      "[OP Warning] allowedOrigin is deprecated and will be removed after September 2026. " +
+      "[OP Warning] allowedOrigin is deprecated in Content Attestation and will be removed after September 2026. " +
         "Please use allowedUrl instead. " +
         "See: https://docs.originator-profile.org/",
     );
