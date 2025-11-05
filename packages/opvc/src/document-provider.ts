@@ -7,7 +7,7 @@ export async function documentProvider({
 }: RawTarget): Promise<Document> {
   if (type === "ExternalResourceTargetIntegrity") {
     throw new Error(
-      "ExternalResourceTargetIntegrity are not supported in this context.",
+      "ExternalResourceTargetIntegrity is not supported in this context.",
     );
   }
 
