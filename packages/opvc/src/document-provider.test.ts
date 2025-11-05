@@ -56,7 +56,7 @@ await describe("documentProvider()", async () => {
       {
         name: "Error",
         message:
-          "ExternalResourceTargetIntegrity are not supported in this context.",
+          "ExternalResourceTargetIntegrity is not supported in this context.",
       },
     );
   });
