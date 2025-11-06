@@ -348,7 +348,7 @@ function delete_ca( string $admin_secret, \WP_Post $post ): mixed {
  * @param string $endpoint Content Attestation サーバー CA 登録・更新・削除エンドポイント
  * @param string $admin_secret Content Attestation サーバー認証情報
  * @param string $method Content Attestation サーバーへのリクエストメソッド
- * @param string $body Content Attestation サーバーへのリクエストボディ
+ * @param ?string $body (optional) Content Attestation サーバーへのリクエストボディ
  * @return mixed 成功した場合は Content Attestation Set、失敗した場合は false
  */
 function request_ca( string $endpoint, string $admin_secret, string $method = 'POST', ?string $body = null ): mixed {
