@@ -1,7 +1,7 @@
 {
   "name": "@originator-profile/web-ext",
   "description": "Profile Web Extension",
-  "version": "0.4.0-beta.0",
+  "version": "0.4.0-beta.1",
   "private": true,
   "type": "module",
   "bugs": {
@@ -32,13 +32,13 @@
     "chokidar": "^4.0.3",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
-    "dotenv-cli": "^10.0.0",
+    "dotenv-cli": "^11.0.0",
     "esbuild": "^0.25.3",
     "esbuild-copy-static-files": "^0.1.0",
     "eslint": "^9.25.1",
     "eslint-config-originator-profile": "workspace:*",
     "globals": "^16.0.0",
-    "happy-dom": "^19.0.0",
+    "happy-dom": "^20.0.0",
     "just-flush": "^2.3.0",
     "npm-run-all2": "8.0.4",
     "playwright": "^1.52.0",
@@ -53,8 +53,8 @@
     "typed-url-params": "^1.0.1",
     "typescript": "^5.8.3",
     "vite": "^7.0.4",
-    "vitest": "^3.1.2",
-    "web-ext": "^8.8.0"
+    "vitest": "^4.0.0",
+    "web-ext": "^9.0.0"
   },
   "homepage": "https://docs.originator-profile.org/",
   "keywords": [
@@ -71,7 +71,9 @@
     "dev:vite": "vite",
     "dev:firefox": "dotenv -e ./.env.development.auth node esbuild.mjs -- --mode=development -t firefox-desktop",
     "lint": "eslint --fix .",
-    "e2e": "LC_ALL=ja_JP.UTF-8 dotenv -e ./.env.development playwright test",
+    "e2e": "run-s e2e:en e2e:ja",
+    "e2e:ja": "LC_ALL=ja_JP.UTF-8 playwright test --project=ja",
+    "e2e:en": "LC_ALL=en_US.UTF-8 playwright test --project=en",
     "test": "vitest run",
     "type-check": "tsc --noEmit"
   }

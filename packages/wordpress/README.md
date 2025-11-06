@@ -31,7 +31,7 @@ WordPress での記事の公開時の Content Attestation (CA) の発行に役�
 4. プラグインの設定:
    WordPress 管理者画面の「設定 > CA Manager」にアクセスし、以下の必要項目を入力 (後述)
 5. `/.well-known/sp.json` の配置:
-   詳細は「[サイトのOP対応](https://docs.originator-profile.org/studies/general-instruction/sp-setup-guide/)」を参照
+   詳細は「[サイトのOP対応](https://cip.docs.originator-profile.org/studies/general-instruction/sp-setup-guide/)」を参照
 
 ### プラグインの設定
 
@@ -182,8 +182,8 @@ const PROFILE_DEFAULT_CA_EXTERNAL_DIR = 'cas';
 ></script>
 ```
 
-ドキュメントルート配下に cas ディレクトリが存在しない場合、 cas ディレクトリが作成されます。  
- また、ポストidが同一の場合、静的ファイルは上書きされます。
+ドキュメントルート配下に cas ディレクトリが存在しない場合、 cas ディレクトリが作成されます。
+また、ポストidが同一の場合、静的ファイルは上書きされます。
 
 確認方法:
 
@@ -199,7 +199,7 @@ $ curl -sSf https://example.com/cas/1_cas.json
 
 デフォルトは無効となっています。
 
-有効にすると CA Manager プラグインに関するログが出力され、ログファイルをダウンロードすることができます。  
+有効にすると CA Manager プラグインに関するログが出力され、ログファイルをダウンロードすることができます。
 ログファイルを生成するディレクトリとして下記のように定義されています。
 
 ```
@@ -279,7 +279,7 @@ HTML中にscript要素を用いてOPを埋め込むことが可能です。
 </script>
 ```
 
-詳細は「[サイトのOP対応](https://docs.originator-profile.org/studies/general-instruction/sp-setup-guide/)」または「[Linking Content Attestation Set and Originator Profile Set to A HTML Document](https://docs.originator-profile.org/opb/link-to-html/)」をご確認ください。
+詳細は「[サイトのOP対応](https://cip.docs.originator-profile.org/studies/general-instruction/sp-setup-guide/)」または「[Linking Content Attestation Set and Originator Profile Set to A HTML Document](https://docs.originator-profile.org/opb/link-to-html/)」をご確認ください。
 
 ## 処理の流れ
 

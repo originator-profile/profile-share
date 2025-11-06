@@ -18,6 +18,18 @@ const { integrity } = await createIntegrity("sha256", content);
 console.log(integrity); // sha256-...
 ```
 
+`ExternalResourceTargetIntegrity` で複数のコンテンツが指定された場合、それぞれのハッシュ値がスペース区切りで結合されます。
+
+```ts
+const content = {
+  type: "ExternalResourceTargetIntegrity",
+  content: ["<コンテンツURL1>", "<コンテンツURL2>"],
+};
+
+const { integrity } = await createIntegrity("sha256", content);
+console.log(integrity); // sha256-... sha256-...
+```
+
 ## createDigestSri
 
 `digestSRI` の作成
@@ -29,6 +41,18 @@ const resource = {
 
 const { digestSRI } = await createDigestSri("sha256", resource);
 console.log(digestSRI); // sha256-...
+```
+
+複数のコンテンツが指定された場合、それぞれのハッシュ値がスペース区切りで結合されます。
+
+```ts
+const resource = {
+  id: "<URL>",
+  content: ["<コンテンツURL1>", "<コンテンツURL2>"],
+};
+
+const { digestSRI } = await createDigestSri("sha256", resource);
+console.log(digestSRI); // sha256-... sha256-...
 ```
 
 ## fetchAndSetTargetIntegrity

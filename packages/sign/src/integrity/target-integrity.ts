@@ -1,5 +1,9 @@
 import type { RawTarget, Target } from "@originator-profile/model";
-import { createIntegrityMetadata, type HashAlgorithm } from "websri";
+import {
+  createIntegrityMetadata,
+  supportedHashAlgorithms,
+  type HashAlgorithm,
+} from "websri";
 import type { ContentFetcher, ElementSelector } from "./types";
 
 /** element.outerHTML and join("") */
@@ -29,14 +33,27 @@ export const fetchVisibleTextContent: ContentFetcher = async (elements) => {
   return [new Response(text)];
 };
 
-/** await fetch(element.src) */
+/**
+ * Fetches external resources from elements by using their `currentSrc` or `src` property.
+ * HTMLImageElement (<img>) and HTMLMediaElement (<video>, <audio>) support the `currentSrc` property,
+ * which represents the actual source URL currently in use after source selection (e.g., <img srcset>, <video> with multiple <source>).
+ * `currentSrc` is preferred over `src` because it reflects the final selected resource, ensuring integrity checks are performed on the actual loaded content.
+ * Falls back to `src` if `currentSrc` is not available.
+ */
 export const fetchExternalResource: ContentFetcher = async (
   elements,
   fetcher = fetch,
 ) => {
   return await Promise.all(
     elements.map(async (element: unknown) => {
-      return await fetcher((element as { src: string }).src);
+      const el = element as HTMLElement & { src?: string; currentSrc?: string };
+      // HTMLMediaElement and HTMLImageElement support currentSrc property
+      // which represents the actual selected source URL
+      const src = el.currentSrc || el.src;
+      if (!src) {
+        throw new Error("Element has no src or currentSrc property");
+      }
+      return await fetcher(src);
     }),
   );
 };
@@ -56,8 +73,12 @@ export const selectByIntegrity: ElementSelector = (params) => {
 
 /**
  * Target Integrity の作成
- * @see {@link https://docs.originator-profile.org/rfc/target-guide/}
+ *
+ * `ExternalResourceTargetIntegrity` で複数のコンテンツが指定された場合、それぞれのハッシュ値がスペース区切りで結合されます。
+ *
+ * @see {@link https://docs.originator-profile.org/opb/content-integrity-descriptor/}
  * @example
+ * 基本的な使用例
  * ```ts
  * const content = {
  *   type: "HtmlTargetIntegrity", // or ***TargetIntegrity
@@ -66,6 +87,18 @@ export const selectByIntegrity: ElementSelector = (params) => {
  *
  * const { integrity } = await createIntegrity("sha256", content);
  * console.log(integrity); // sha256-...
+ * ```
+ *
+ * @example
+ * ExternalResourceTargetIntegrity で複数コンテンツ
+ * ```ts
+ * const content = {
+ *   type: "ExternalResourceTargetIntegrity",
+ *   content: ["<コンテンツURL1>", "<コンテンツURL2>"],
+ * };
+ *
+ * const { integrity } = await createIntegrity("sha256", content);
+ * console.log(integrity); // sha256-... sha256-...
  * ```
  */
 export async function createIntegrity(
@@ -84,19 +117,25 @@ export async function createIntegrity(
     return null;
   }
 
+  if (!(alg in supportedHashAlgorithms)) {
+    return null;
+  }
+
   if (target.type === "ExternalResourceTargetIntegrity") {
-    const res = URL.canParse(content)
-      ? await fetch(content)
-      : new Response(content);
+    const meta = await Promise.all(
+      [content].flat().map(async (content) => {
+        const res = URL.canParse(content)
+          ? await fetch(content)
+          : new Response(content);
 
-    const data = await res.arrayBuffer();
-    const meta = await createIntegrityMetadata(alg, data);
-
-    if (!meta.alg) return null;
+        const data = await res.arrayBuffer();
+        return await createIntegrityMetadata(alg, data);
+      }),
+    );
 
     return {
       ...target,
-      integrity: meta.toString(),
+      integrity: meta.join(" "),
     } as Target;
   }
 
@@ -125,8 +164,6 @@ export async function createIntegrity(
 
   const data = await res.arrayBuffer();
   const meta = await createIntegrityMetadata(alg, data);
-
-  if (!meta.alg) return null;
 
   return {
     ...target,

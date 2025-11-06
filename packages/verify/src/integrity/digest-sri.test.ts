@@ -51,3 +51,57 @@ test("Fetch failure", async () => {
 
   await expect(verifyDigestSri(content, failure)).rejects.toThrowError();
 });
+
+test("Multiple hash algorithms - verify with strongest", async () => {
+  const sha384Metadata = await createIntegrityMetadata(
+    "sha384",
+    await new Response("Hello, World!").arrayBuffer(),
+  );
+  const sha256Metadata = await createIntegrityMetadata(
+    "sha256",
+    await new Response("Hello, World!").arrayBuffer(),
+  );
+
+  const multiAlgContent: DigestSriContent = {
+    id: "https://example.org/foo/bar",
+    digestSRI: `${sha256Metadata.toString()} ${sha384Metadata.toString()}`,
+  };
+
+  expect(await verifyDigestSri(multiAlgContent, fetcher)).toBe(true);
+});
+
+test("Multiple hash algorithms - one mismatch", async () => {
+  const sha384Metadata = await createIntegrityMetadata(
+    "sha384",
+    await new Response("Hello, World!").arrayBuffer(),
+  );
+  const wrongSha256 = await createIntegrityMetadata(
+    "sha256",
+    await new Response("wrong content").arrayBuffer(),
+  );
+
+  const multiAlgContent: DigestSriContent = {
+    id: "https://example.org/foo/bar",
+    digestSRI: `${wrongSha256.toString()} ${sha384Metadata.toString()}`,
+  };
+
+  expect(await verifyDigestSri(multiAlgContent, fetcher)).toBe(true);
+});
+
+test("Empty algorithm list", async () => {
+  const emptyAlgContent: DigestSriContent = {
+    id: "https://example.org/foo/bar",
+    digestSRI: "",
+  };
+
+  expect(await verifyDigestSri(emptyAlgContent, fetcher)).toBe(false);
+});
+
+test("Invalid integrity metadata format", async () => {
+  const invalidContent: DigestSriContent = {
+    id: "https://example.org/foo/bar",
+    digestSRI: "invalid-format-without-dash",
+  };
+
+  expect(await verifyDigestSri(invalidContent, fetcher)).toBe(false);
+});
