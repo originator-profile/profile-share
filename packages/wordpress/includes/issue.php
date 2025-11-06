@@ -309,6 +309,34 @@ function external_resources_from_html( string $html, string $xpath_query ): arra
 }
 
 /**
+ * Content Attestation サーバーのベース URL を返す
+ *
+ * @return string ベース URL
+ */
+function build_ca_base_endpoint(): string {
+	$hostname = \get_option( 'profile_ca_server_hostname', PROFILE_DEFAULT_CA_SERVER_HOSTNAME );
+	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $hostname ) {
+		$in_docker = \file_exists( '/.dockerenv' );
+		if ( $in_docker ) {
+			return 'http://host.docker.internal:8080';
+		} else {
+			return 'http://localhost:8080';
+		}
+	}
+	return "https://{$hostname}";
+}
+
+/**
+ * エンドポイントの構築
+ *
+ * @param string $path Content Attestation の発行または削除のエンドポイントの共通でない部分のパス
+ * @return string エンドポイント
+ */
+function build_ca_endpoint( string $path ): string {
+	return build_ca_base_endpoint() . $path;
+}
+
+/**
  * Content Attestation の発行
  *
  * @param Uca    $uca 未署名 Content Attestation オブジェクト
@@ -316,16 +344,7 @@ function external_resources_from_html( string $html, string $xpath_query ): arra
  * @return mixed 成功した場合は Content Attestation Set、失敗した場合は false
  */
 function issue_ca( Uca $uca, string $admin_secret ): mixed {
-	$hostname = \get_option( 'profile_ca_server_hostname', PROFILE_DEFAULT_CA_SERVER_HOSTNAME );
-	$endpoint = "https://{$hostname}/ca";
-	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $hostname ) {
-		$in_docker = \file_exists( '/.dockerenv' );
-		if ( $in_docker ) {
-			$endpoint = 'http://host.docker.internal:8080/ca';
-		} else {
-			$endpoint = 'http://localhost:8080/ca';
-		}
-	}
+	$endpoint = build_ca_endpoint( '/ca' );
 	return request_ca( $endpoint, $admin_secret, 'POST', $uca->to_json() );
 }
 
@@ -337,18 +356,9 @@ function issue_ca( Uca $uca, string $admin_secret ): mixed {
  * @return mixed 成功した場合は null、失敗した場合は false
  */
 function delete_ca( string $admin_secret, \WP_Post $post ): mixed {
-	$hostname = \get_option( 'profile_ca_server_hostname', PROFILE_DEFAULT_CA_SERVER_HOSTNAME );
 	$uri      = $post->guid;
 	$uuid     = generate_post_uuid( $uri );
-	$endpoint = "https://{$hostname}/ca/{$uuid}";
-	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $hostname ) {
-		$in_docker = \file_exists( '/.dockerenv' );
-		if ( $in_docker ) {
-			$endpoint = "http://host.docker.internal:8080/ca/{$uuid}";
-		} else {
-			$endpoint = "http://localhost:8080/ca/{$uuid}";
-		}
-	}
+	$endpoint = build_ca_endpoint( "/ca/{$uuid}" );
 	return request_ca( $endpoint, $admin_secret, 'DELETE' );
 }
 
