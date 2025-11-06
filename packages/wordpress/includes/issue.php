@@ -178,6 +178,16 @@ function create_integrity( string $file ): string {
 }
 
 /**
+ * Uuid の生成
+ *
+ * @param string $uri Uniform Resource Identifier
+ */
+function generate_post_uuid( string $uri ): string {
+	return 'urn:uuid:' . Uuid::uuid5( Uuid::NAMESPACE_URL, $uri );
+}
+
+
+/**
  * 未署名 Content Attestation の一覧の作成
  *
  * @param \WP_Post $post Post object.
@@ -234,7 +244,7 @@ function create_uca_list( \WP_Post $post, string $issuer_id ): array {
 			}
 		}
 
-		$uuid   = 'urn:uuid:' . Uuid::uuid5( Uuid::NAMESPACE_URL, $uri );
+		$uuid   = generate_post_uuid( $uri );
 		$locale = \str_replace( '_', '-', \get_locale() );
 
 		$uca = new Uca(
@@ -329,7 +339,7 @@ function issue_ca( Uca $uca, string $admin_secret ): mixed {
 function delete_ca( string $admin_secret, \WP_Post $post ): mixed {
 	$hostname = \get_option( 'profile_ca_server_hostname', PROFILE_DEFAULT_CA_SERVER_HOSTNAME );
 	$uri      = $post->guid;
-	$uuid     = 'urn:uuid:' . Uuid::uuid5( Uuid::NAMESPACE_URL, $uri );
+	$uuid     = generate_post_uuid( $uri );
 	$endpoint = "https://{$hostname}/ca/{$uuid}";
 	if ( defined( 'WP_DEBUG' ) && WP_DEBUG && 'localhost' === $hostname ) {
 		$in_docker = \file_exists( '/.dockerenv' );
@@ -345,9 +355,9 @@ function delete_ca( string $admin_secret, \WP_Post $post ): mixed {
 /**
  * Content Attestation サーバーへのリクエスト
  *
- * @param string $endpoint Content Attestation サーバー CA 登録・更新・削除エンドポイント
- * @param string $admin_secret Content Attestation サーバー認証情報
- * @param string $method Content Attestation サーバーへのリクエストメソッド
+ * @param string  $endpoint Content Attestation サーバー CA 登録・更新・削除エンドポイント
+ * @param string  $admin_secret Content Attestation サーバー認証情報
+ * @param string  $method Content Attestation サーバーへのリクエストメソッド
  * @param ?string $body (optional) Content Attestation サーバーへのリクエストボディ
  * @return mixed 成功した場合は Content Attestation Set、失敗した場合は false
  */
