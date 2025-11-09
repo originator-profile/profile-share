@@ -40,4 +40,3 @@ https://docs.originator-profile.org/contributing/
 
 If you wish to participate or contribute as a developer, please review “How to Participate and Contribute” and create proposals or Pull Requests on this GitHub repository. For other general questions or inquiries, please use the following form:  
 https://originator-profile.org/en-US/contact/
-
