@@ -38,5 +38,5 @@ https://docs.originator-profile.org/contributing/
 
 ## お問い合わせ
 
-開発者として参加・貢献いただける場合は「参加・貢献するには」を確認の上で、本 Github 上で提案や Pull Request を作成してください。それ以外の一般的なご質問やお問い合わせについては次のフォームをご利用ください。  
+開発者として参加・貢献いただける場合は「参加・貢献するには」を確認の上で、本 GitHub 上で提案や Pull Request を作成してください。それ以外の一般的なご質問やお問い合わせについては次のフォームをご利用ください。  
 https://originator-profile.org/ja-JP/contact/
