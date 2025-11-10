@@ -26,14 +26,6 @@ const createOrUpdateCa = async (
   });
 
   if (!response.ok) {
-    console.log("caInfo", caInfo);
-    const body = await response.text();
-    console.error(
-      "CA API error log:",
-      response.status,
-      response.statusText,
-      body,
-    );
     throw new Error(`CA API error: ${response.status} ${response.statusText}`);
   }
 
