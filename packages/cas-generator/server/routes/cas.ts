@@ -4,33 +4,27 @@ import { createEventStream } from "h3";
 import postHTMLFiles from "../utils/postHTMLFiles";
 import { opcipName, ogpImageURL } from "#shared/constants";
 import { OpSiteInfo } from "../domain/originatorProfileSite";
-import { ContentAttestationModel } from "../domain/contentAttestation";
 
 /**
- * 指定したファイルに対して、createOrUpdateCaを実行する
+ * 指定したファイルに対して、profile-registry ca:sign を実行する
  * @param path
- * @returns Promise<string[]>
+ * @returns Promise<string>
  */
-const createOrUpdateCa = async (
-  accessToken: string,
-  caInfo: ContentAttestationModel,
-  endpoint: string,
-): Promise<string[]> => {
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify(caInfo),
+const execute = (path: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    exec(
+      `profile-registry ca:sign -i ${process.env.PRIVATE_KEY_PATH} --input ${path}`,
+      { timeout: 10000 },
+      (err, stdout, stderr) => {
+        if (err) {
+          console.log(stderr);
+
+          reject(err);
+        }
+        resolve(stdout);
+      },
+    );
   });
-
-  if (!response.ok) {
-    throw new Error(`CA API error: ${response.status} ${response.statusText}`);
-  }
-
-  const caJWT = (await response.json()) as unknown as string[];
-  return caJWT;
 };
 
 /**
@@ -70,16 +64,7 @@ export default defineEventHandler(async (event) => {
   const WEBROOT_PATH = config.WEBROOT_PATH;
   const VC_OUTPUT_PATH = config.VC_OUTPUT_PATH;
   const CAS_OUTPUT_PATH = config.CAS_OUTPUT_PATH;
-  const CA_SERVER_URL = config.CA_SERVER_URL;
-  const ISSUER = config.ISSUER;
-
-  if (
-    !WEBROOT_PATH ||
-    !VC_OUTPUT_PATH ||
-    !CAS_OUTPUT_PATH ||
-    !CA_SERVER_URL ||
-    !ISSUER
-  ) {
+  if (!WEBROOT_PATH || !VC_OUTPUT_PATH || !CAS_OUTPUT_PATH) {
     throw createError({
       statusCode: 500,
       message: "必要な環境変数が設定されていません",
@@ -91,44 +76,33 @@ export default defineEventHandler(async (event) => {
   const vcSourcesPath = VC_OUTPUT_PATH;
   const casPath = CAS_OUTPUT_PATH;
 
-  const accessToken = getCookie(event, "access_token");
-  if (!accessToken) {
-    throw createError({
-      statusCode: 401,
-      message: "アクセストークンが見つかりません。ログインしてください。",
-    });
-  }
-
   // see https://nitro.build/guide/websocket#server-sent-events-sse
   await deleteSpecificFiles(casPath, htmlFiles);
 
-  const processedFiles = await postHTMLFiles({
+  await postHTMLFiles({
     htmlFiles,
     docsPath: WEBROOT_PATH,
     vcSourcesPath: vcSourcesPath,
     allowedURLOrigins: allowedURLOrigins,
     opcipName: opcipName,
     ogpImageURL: ogpImageURL,
-    issuer: ISSUER,
   });
 
   (async () => {
-    for (let i = 0; i < processedFiles.length; i++) {
-      const item = processedFiles[i];
+    for (let i = 0; i < htmlFiles.length; i++) {
+      const item = htmlFiles[i];
+      console.log("vc_path", item.vc_path);
 
       try {
-        const caJWT = await createOrUpdateCa(
-          accessToken,
-          item.casInfo,
-          CA_SERVER_URL,
-        );
+        const stdout = await execute(item.vc_path);
+        // casPath にファイルを保存する
+        const outputCasFile = [stdout.toString().trim()];
         fs.writeFileSync(
           `${casPath}${item.cas}.cas.json`,
-          JSON.stringify(caJWT, null, 2),
+          JSON.stringify(outputCasFile, null, 2),
         );
         const outputCasData = JSON.stringify({
           ...item,
-          // @ts-expect-error vcを削除すると、クライアント側の進行状況が表示されない
           vc: item.vc,
         });
         await eventStream.push(outputCasData);

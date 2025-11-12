@@ -1,6 +1,5 @@
 import fs from "fs";
 import { OpSiteInfo } from "../domain/originatorProfileSite";
-import { ContentAttestationModel } from "../domain/contentAttestation";
 import { createDefaultContentAttestation } from "../domain/contentAttestation";
 
 type PostHTMLFilesParams = {
@@ -10,11 +9,6 @@ type PostHTMLFilesParams = {
   allowedURLOrigins: string[];
   opcipName: { ja: string; en: string };
   ogpImageURL: { ja: string; en: string };
-  issuer: string;
-};
-
-type PostHTMLFilesResult = OpSiteInfo & {
-  casInfo: ContentAttestationModel;
 };
 
 /**
@@ -29,9 +23,8 @@ export default async function postHTMLFiles({
   allowedURLOrigins,
   opcipName,
   ogpImageURL,
-  issuer,
-}: PostHTMLFilesParams): Promise<PostHTMLFilesResult[]> {
-  const processedFiles: PostHTMLFilesResult[] = [];
+}: PostHTMLFilesParams): Promise<OpSiteInfo[]> {
+  const processedFiles = [...htmlFiles];
 
   for await (const [index, item] of htmlFiles.entries()) {
     const {
@@ -73,18 +66,14 @@ export default async function postHTMLFiles({
         },
         allowedUrl: allowedUrl,
         target: [primaryTarget, ...imageHashes],
-        issuer: issuer,
       },
       lang,
     );
-    const outputFilePath = `${vcSourcesPath}${item.cas}.cas.json`;
-    fs.writeFileSync(outputFilePath, JSON.stringify(caInfo, null, 2));
 
-    processedFiles[index] = {
-      ...item,
-      vc_path: outputFilePath,
-      casInfo: caInfo,
-    };
+    // ファイルを保存
+    const outputFilePath = `${vcSourcesPath}${item.cas}.cas.json`;
+    processedFiles[index].vc_path = outputFilePath;
+    fs.writeFileSync(outputFilePath, JSON.stringify(caInfo, null, 2));
   }
 
   return processedFiles;
