@@ -51,7 +51,7 @@ const defaultTypes = ["VerifiableCredential", "ContentAttestation"];
 export const createDefaultContentAttestation = (
   override: Pick<
     ContentAttestationModel,
-    "credentialSubject" | "allowedUrl" | "target" | "issuer"
+    "credentialSubject" | "allowedUrl" | "target"
   >,
   lang: Lang,
 ): ContentAttestationModel => {
@@ -63,7 +63,7 @@ export const createDefaultContentAttestation = (
       { "@language": lang },
     ],
     type: defaultTypes,
-    issuer: override.issuer,
+    issuer: "dns:oprexpt.originator-profile.org",
     credentialSubject: override.credentialSubject,
     allowedUrl: override.allowedUrl,
     target: override.target,
