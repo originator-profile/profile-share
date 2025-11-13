@@ -39,11 +39,11 @@ export type MappedKeys = ReturnType<typeof getMappedKeys>;
 export function getTupledKeys(ops: DecodedOps): [opId: OpId | OpId[], Jwks] {
   const keyMap = getMappedKeys(ops);
   const kidSet = new Set<string>();
-  const opId = Object.keys(keyMap).flat();
+  const opId = Object.keys(keyMap);
   const keys = Object.values(keyMap)
     .flatMap((jwks) => jwks.keys)
     .filter(({ kid }) => !kidSet.has(kid) && kidSet.add(kid));
-  return [opId, { keys }];
+  return [opId.length === 1 ? opId[0] : opId, { keys }];
 }
 
 export type TupledKeys = ReturnType<typeof getTupledKeys>;
