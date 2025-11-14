@@ -13,25 +13,25 @@ import {
   VcValidator,
   VerifiedJwtVc,
 } from "@originator-profile/securing-mechanism";
+import { getMappedKeys, type MappedKeys } from "../keys";
 import { decodeOps } from "./decode-ops";
 import {
   CoreProfileNotFound,
+  OpVerifyFailed,
   OpsInvalid,
   OpsVerifyFailed,
-  OpVerifyFailed,
 } from "./errors";
 import {
   Certificate,
-  OpsVerificationResult,
   OpVerificationResult,
+  OpsVerificationResult,
   VerifiedOp,
   VerifiedOps,
 } from "./types";
-import { getMappedKeys, type MappedKeys } from "../keys";
 
 /** OP (CP を除く) 署名検証者 */
 function OpVerifier<T extends OpVc>(
-  paOrWmpIssuerKeys: ReturnType<typeof getMappedKeys>,
+  paOrWmpIssuerKeys: MappedKeys,
   vc: UnverifiedJwtVc<T>,
   validator?: VcValidator<VerifiedJwtVc<T>>,
 ): JwtVcVerifier<T> | (() => Promise<CoreProfileNotFound<T>>) {

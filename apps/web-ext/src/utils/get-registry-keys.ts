@@ -4,6 +4,8 @@ import {
   OpsInvalid,
   decodeOps,
   getTupledKeys,
+  type OpsDecodingResult,
+  type TupledKeys,
 } from "@originator-profile/verify";
 
 const REGISTRY_OPS: OriginatorProfileSet = import.meta.env.REGISTRY_OPS;
@@ -11,7 +13,7 @@ const REGISTRY_OPS: OriginatorProfileSet = import.meta.env.REGISTRY_OPS;
  * OP レジストリの OPS を取得する
  * @returns レジストリのOPS復号結果
  */
-function getRegistryOps(): ReturnType<typeof decodeOps> {
+function getRegistryOps(): OpsDecodingResult {
   return decodeOps(REGISTRY_OPS);
 }
 
@@ -19,7 +21,7 @@ function getRegistryOps(): ReturnType<typeof decodeOps> {
  * OP レジストリの JWKS を取得する
  * @returns レジストリの Issuer, JWKS のタプル
  */
-export function getRegistryKeys(): [issuer: string | string[], Keys] {
+export function getRegistryKeys(): [TupledKeys[0], Keys] {
   const registryOps = getRegistryOps();
   if (registryOps instanceof OpsInvalid) {
     throw registryOps;
