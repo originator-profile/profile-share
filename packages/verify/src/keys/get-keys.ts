@@ -1,3 +1,4 @@
+import { LocalKeys, type Keys } from "@originator-profile/cryptography";
 import { Jwks } from "@originator-profile/model";
 import { DecodedOps } from "../originator-profile-set";
 
@@ -28,7 +29,7 @@ export type MappedKeys = ReturnType<typeof getMappedKeys>;
 
 /**
  * OPS から鍵を取得する
- * @returns OP ID, JWKS のタプル
+ * @returns OP ID, Keys のタプル
  * @remarks
  *
  * この実装は複数のissuerと鍵束を一つの組にするので、
@@ -36,14 +37,14 @@ export type MappedKeys = ReturnType<typeof getMappedKeys>;
  *
  * @see https://github.com/originator-profile/originator-profile/issues/90
  */
-export function getTupledKeys(ops: DecodedOps): [opId: OpId | OpId[], Jwks] {
+export function getTupledKeys(ops: DecodedOps): [opId: OpId | OpId[], Keys] {
   const keyMap = getMappedKeys(ops);
   const kidSet = new Set<string>();
   const opId = Object.keys(keyMap);
   const keys = Object.values(keyMap)
     .flatMap((jwks) => jwks.keys)
     .filter(({ kid }) => !kidSet.has(kid) && kidSet.add(kid));
-  return [opId.length === 1 ? opId[0] : opId, { keys }];
+  return [opId.length === 1 ? opId[0] : opId, LocalKeys({ keys })];
 }
 
 export type TupledKeys = ReturnType<typeof getTupledKeys>;

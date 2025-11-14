@@ -1,9 +1,13 @@
 import { generateKey } from "@originator-profile/cryptography";
-import { CoreProfile } from "@originator-profile/model";
+import { CoreProfile, OpVc } from "@originator-profile/model";
+import {
+  JwtVcVerifier,
+  signJwtVc,
+} from "@originator-profile/securing-mechanism";
+import { describe, expect, test } from "vitest";
+import { cp, patch, wmp } from "../helper";
 import { DecodedOps } from "../originator-profile-set";
 import { getMappedKeys, getTupledKeys } from "./get-keys";
-import { patch, cp, wmp } from "../helper";
-import { describe, expect, test } from "vitest";
 
 const opId = {
   some: "dns:some.example.org" as const,
@@ -70,8 +74,20 @@ describe("get-keys", async () => {
     expect(result[opId.another].keys[0]).toEqual(another.publicKey);
   });
 
-  test("getTupledKeys()はOP IDと鍵のタプルが得られる", () => {
-    const [opIds, jwks] = getTupledKeys(ops);
+  test("getTupledKeys()はOP IDと鍵のタプルが得られる", async () => {
+    const [opIds, keys] = getTupledKeys(ops);
+    const vc: OpVc = {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://originator-profile.org/ns/credentials/v1",
+      ],
+      type: ["VerifiableCredential"],
+      issuer: opId.some,
+      credentialSubject: { id: "urn:example:some-vc" },
+    };
+    const issuedAt = new Date();
+    const expiredAt = new Date(issuedAt);
+    expiredAt.setFullYear(expiredAt.getFullYear() + 1);
 
     // OP IDが配列で返されること
     expect(Array.isArray(opIds)).toBe(true);
@@ -79,10 +95,19 @@ describe("get-keys", async () => {
     expect(opIds).toContain(opId.some);
     expect(opIds).toContain(opId.another);
 
-    // すべての鍵が含まれていること
-    expect(jwks.keys).toHaveLength(2);
-    expect(jwks.keys).toContainEqual(some.publicKey);
-    expect(jwks.keys).toContainEqual(another.publicKey);
+    // Keys が検証用関数として機能することを確認
+    expect(typeof keys).toBe("function");
+
+    // 実際にJWTを作成して検証できることを確認
+    const jwt = await signJwtVc(vc, some.privateKey, {
+      issuedAt,
+      expiredAt,
+    });
+    const verify = JwtVcVerifier(keys, opId.some);
+    const result = await verify(jwt);
+    expect(result).not.toBeInstanceOf(Error);
+    // @ts-expect-error assert
+    expect(result.doc).toStrictEqual(vc);
   });
 
   test("getMappedKeys()は同じOP IDの鍵を重複排除する", async () => {
@@ -128,9 +153,10 @@ describe("get-keys", async () => {
     expect(Object.keys(result)).toHaveLength(0);
   });
 
-  test("getTupledKeys()は空のOPSに対して空の配列と空のJWKSを返す", () => {
-    const [opIds, jwks] = getTupledKeys([]);
+  test("getTupledKeys()は空のOPSに対して空の配列とKeysを返す", () => {
+    const [opIds, keys] = getTupledKeys([]);
     expect(opIds).toHaveLength(0);
-    expect(jwks.keys).toHaveLength(0);
+    // Keys が検証用関数として返されること
+    expect(typeof keys).toBe("function");
   });
 });

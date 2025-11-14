@@ -1,4 +1,3 @@
-import { Keys, LocalKeys } from "@originator-profile/cryptography";
 import { OriginatorProfileSet } from "@originator-profile/model";
 import {
   OpsInvalid,
@@ -21,13 +20,11 @@ function getRegistryOps(): OpsDecodingResult {
  * OP レジストリの JWKS を取得する
  * @returns レジストリの Issuer, JWKS のタプル
  */
-export function getRegistryKeys(): [TupledKeys[0], Keys] {
+export function getRegistryKeys(): TupledKeys {
   const registryOps = getRegistryOps();
   if (registryOps instanceof OpsInvalid) {
     throw registryOps;
   }
 
-  const [issuer, jwks] = getTupledKeys(registryOps);
-
-  return [issuer, LocalKeys(jwks)];
+  return getTupledKeys(registryOps);
 }
