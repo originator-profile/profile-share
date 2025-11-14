@@ -74,7 +74,7 @@ test("OPとCAの署名がその発行者のOPで配布される検証鍵を使�
   const ext = await popup(context);
   await expect(ext?.getByTestId("p-elm-prohibition-message")).toBeVisible();
 });
-test("CASのissuerが適切でない場合閲覧禁止", async ({
+test("CAのissuerが適切でない場合閲覧禁止", async ({
   context,
   page,
   missingSiteProfile: _missingSiteProfile,
