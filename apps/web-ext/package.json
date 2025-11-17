@@ -72,8 +72,11 @@
     "dev:firefox": "dotenv -e ./.env.development.auth node esbuild.mjs -- --mode=development -t firefox-desktop",
     "lint": "eslint --fix .",
     "e2e": "run-s e2e:en e2e:ja",
+    "e2e:update": "run-s e2e:en:update e2e:ja:update",
     "e2e:ja": "LC_ALL=ja_JP.UTF-8 playwright test --project=ja",
+    "e2e:ja:update": "LC_ALL=ja_JP.UTF-8 playwright test --project=ja --update-snapshots",
     "e2e:en": "LC_ALL=en_US.UTF-8 playwright test --project=en",
+    "e2e:en:update": "LC_ALL=en_US.UTF-8 playwright test --project=en --update-snapshots",
     "test": "vitest run",
     "type-check": "tsc --noEmit"
   }
