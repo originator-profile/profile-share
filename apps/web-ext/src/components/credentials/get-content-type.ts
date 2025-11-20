@@ -6,5 +6,7 @@ export const getContentType = (ca: SupportedVerifiedCa): string => {
     return "ContentType_Article";
   if (ca.attestation.doc.credentialSubject.type === "OnlineAd")
     return "ContentType_Advertisement";
+  if (ca.attestation.doc.credentialSubject.type === "Advertorial")
+    return "ContentType_Advertorial";
   return "ContentType_Unknown";
 };

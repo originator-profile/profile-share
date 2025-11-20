@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { AdvertisementCA, ArticleCA } from "@originator-profile/model";
+import { AdvertisementCA, AdvertorialCA, ArticleCA } from "@originator-profile/model";
 import {
   ArticleTable,
   Description,
@@ -123,7 +123,7 @@ export function Credentials(props: CredentialsProps) {
               />
               <div>
                 <p className="text-sm text-gray-900 font-bold">
-                  {ca.credentialSubject.type === "Article"
+                  {ca.credentialSubject.type === "Article" || ca.credentialSubject.type === "Advertorial"
                     ? ca.credentialSubject.headline
                     : ca.credentialSubject.name}
                 </p>
@@ -131,6 +131,9 @@ export function Credentials(props: CredentialsProps) {
             </div>
             {ca.credentialSubject.type === "Article" && (
               <ArticleTable className="mb-1 w-full" article={ca as ArticleCA} />
+            )}
+            {ca.credentialSubject.type === "Advertorial" && (
+              <ArticleTable className="mb-1 w-full" article={ca as AdvertorialCA} />
             )}
             {ca.credentialSubject.description && (
               <Description description={ca.credentialSubject.description} />
