@@ -27,7 +27,7 @@ function App() {
 
   return (
     <Routes>
-      <Route path={paths.root}>
+      <Route path="/">
         <Route index element={<Navigate to="/tab" replace />} />
         <Route path={paths.base}>
           <Route index element={<Base />} />

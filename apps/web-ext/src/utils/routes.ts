@@ -51,7 +51,6 @@ function getPublParams(ca: ContentAttestation) {
 }
 
 export const paths = {
-  root: "/",
   base: "tab/:tabId",
   org: "org/:contentType/:orgIssuer/:orgSubject",
   publ: "publ/:issuer/:subject",
@@ -60,7 +59,7 @@ export const paths = {
 } as const;
 
 export const routes = {
-  base: route(`${paths.root}${paths.base}`),
+  base: route(`/${paths.base}`),
   org: urlParamsRoute(paths.org, getOrgParams),
   publ: urlParamsRoute(paths.publ, getPublParams),
   site: route(paths.site),
