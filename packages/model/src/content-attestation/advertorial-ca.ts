@@ -19,11 +19,11 @@ const subject = {
     },
     headline: {
       type: "string",
-      description: "コンテンツのタイトル。",
+      description: "記事広告のタイトル。",
     },
     description: {
       type: "string",
-      description: "コンテンツの説明（プレーンテキスト）。",
+      description: "記事広告の説明（文字列）。",
     },
     image: Image,
     datePublished: {
