@@ -1,5 +1,10 @@
 import { ProfilePair } from "@originator-profile/verify";
-import { IframeInfo, IframePositionMessage, IframeTree, SafeProfilePair } from "./types";
+import {
+  IframeInfo,
+  IframePositionMessage,
+  IframeTree,
+  SafeProfilePair,
+} from "./types";
 
 /**
  * chrome.scripting APIを使用してiframeの位置を特定する
@@ -16,11 +21,13 @@ export class IframeDetector {
    * すべてのフレームの情報を収集
    */
   async detectAllIframes(): Promise<IframeInfo[]> {
-    const frames = await chrome.webNavigation.getAllFrames({ tabId: this.tabId });
+    const frames = await chrome.webNavigation.getAllFrames({
+      tabId: this.tabId,
+    });
     if (!frames) return [];
 
     // フレームの親子関係を構築
-    const frameMap = new Map(frames.map(f => [f.frameId, f]));
+    const frameMap = new Map(frames.map((f) => [f.frameId, f]));
 
     // 各フレームの深さを計算
     const getDepth = (frameId: number): number => {
@@ -52,7 +59,7 @@ export class IframeDetector {
           frame.parentFrameId,
           frame.url,
           getDepth(frame.frameId),
-          getPath(frame.frameId)
+          getPath(frame.frameId),
         );
         if (info) {
           iframeInfos.push(info);
@@ -74,14 +81,14 @@ export class IframeDetector {
     parentFrameId: number,
     url: string,
     depth: number,
-    path: number[]
+    path: number[],
   ): Promise<IframeInfo | null> {
     try {
       // フレーム内でスクリプトを実行して情報を収集
       const [result] = await chrome.scripting.executeScript({
         target: { tabId: this.tabId, frameIds: [frameId] },
         func: this.collectFrameInfo,
-        args: [frameId]
+        args: [frameId],
       });
 
       if (!result || !result.result) return null;
@@ -96,7 +103,7 @@ export class IframeDetector {
         origin,
         url,
         depth,
-        path
+        path,
       };
     } catch (error) {
       console.error(`Error collecting frame info for ${frameId}:`, error);
@@ -124,10 +131,13 @@ export class IframeDetector {
         rect = new DOMRect(0, 0, window.innerWidth, window.innerHeight);
 
         // TODO: 親フレームとの通信を実装
-        window.parent.postMessage({
-          type: "iframe-position-request",
-          frameId
-        } as IframePositionMessage, "*");
+        window.parent.postMessage(
+          {
+            type: "iframe-position-request",
+            frameId,
+          } as IframePositionMessage,
+          "*",
+        );
       }
 
       // プロファイルペアを収集
@@ -141,7 +151,7 @@ export class IframeDetector {
       return {
         rect,
         profilePairs,
-        origin: window.origin
+        origin: window.origin,
       };
     } catch (error) {
       console.error("Error in collectFrameInfo:", error);
@@ -157,7 +167,7 @@ export class IframeDetector {
     await chrome.scripting.executeScript({
       target: { tabId: this.tabId, frameIds: [0] }, // メインフレーム
       func: this.identifyIframePositions,
-      args: [Array.from(this.frameInfoMap.values())]
+      args: [Array.from(this.frameInfoMap.values())],
     });
   }
 
@@ -174,19 +184,22 @@ export class IframeDetector {
 
         // postMessageでiframe内に位置情報を送信
         if (iframe.contentWindow) {
-          iframe.contentWindow.postMessage({
-            type: "iframe-position-response",
-            rect: {
-              x: rect.x + window.scrollX,
-              y: rect.y + window.scrollY,
-              width: rect.width,
-              height: rect.height,
-              top: rect.top + window.scrollY,
-              right: rect.right + window.scrollX,
-              bottom: rect.bottom + window.scrollY,
-              left: rect.left + window.scrollX
-            }
-          } as IframePositionMessage, "*");
+          iframe.contentWindow.postMessage(
+            {
+              type: "iframe-position-response",
+              rect: {
+                x: rect.x + window.scrollX,
+                y: rect.y + window.scrollY,
+                width: rect.width,
+                height: rect.height,
+                top: rect.top + window.scrollY,
+                right: rect.right + window.scrollX,
+                bottom: rect.bottom + window.scrollY,
+                left: rect.left + window.scrollX,
+              },
+            } as IframePositionMessage,
+            "*",
+          );
         }
       } catch (error) {
         console.error("Error identifying iframe position:", error);
@@ -198,19 +211,19 @@ export class IframeDetector {
    * フレーム情報をツリー構造に変換
    */
   buildFrameTree(iframes: IframeInfo[]): IframeTree | null {
-    const frameMap = new Map(iframes.map(f => [f.frameId, f]));
-    const rootFrames = iframes.filter(f => f.parentFrameId === -1);
+    const frameMap = new Map(iframes.map((f) => [f.frameId, f]));
+    const rootFrames = iframes.filter((f) => f.parentFrameId === -1);
 
     if (rootFrames.length === 0) return null;
 
     const buildTree = (frameInfo: IframeInfo): IframeTree => {
       const children = iframes
-        .filter(f => f.parentFrameId === frameInfo.frameId)
-        .map(child => buildTree(child));
+        .filter((f) => f.parentFrameId === frameInfo.frameId)
+        .map((child) => buildTree(child));
 
       return {
         info: frameInfo,
-        children
+        children,
       };
     };
 

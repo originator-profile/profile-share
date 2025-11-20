@@ -40,7 +40,7 @@ export class IframeTracker {
       // 監視を開始
       this.observer.observe(document.body, {
         childList: true,
-        subtree: true
+        subtree: true,
       });
 
       // 既存のiframeを追跡
@@ -48,8 +48,8 @@ export class IframeTracker {
     };
 
     // DOMContentLoadedで監視を開始
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', startObserving);
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", startObserving);
     } else {
       // すでに読み込まれている場合はすぐに開始
       startObserving();
@@ -146,7 +146,7 @@ export class IframeTracker {
         rect.x + window.scrollX,
         rect.y + window.scrollY,
         rect.width,
-        rect.height
+        rect.height,
       );
       positions.set(frameId, absoluteRect);
     });
@@ -166,7 +166,7 @@ export class IframeTracker {
       rect.x + window.scrollX,
       rect.y + window.scrollY,
       rect.width,
-      rect.height
+      rect.height,
     );
   }
 

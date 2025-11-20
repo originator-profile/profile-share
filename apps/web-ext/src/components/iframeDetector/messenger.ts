@@ -1,5 +1,10 @@
 import { ProfilePair } from "@originator-profile/verify";
-import { IframeInfo, IframePositionMessage, IframeSyncMessage, SafeProfilePair } from "./types";
+import {
+  IframeInfo,
+  IframePositionMessage,
+  IframeSyncMessage,
+  SafeProfilePair,
+} from "./types";
 
 /**
  * iframe間の通信を管理するクラス
@@ -62,10 +67,13 @@ export class IframeMessenger {
         }
       });
 
-      window.parent.postMessage({
-        type: "iframe-position-request",
-        frameId
-      } as IframePositionMessage, "*");
+      window.parent.postMessage(
+        {
+          type: "iframe-position-request",
+          frameId,
+        } as IframePositionMessage,
+        "*",
+      );
     });
   }
 
@@ -73,11 +81,14 @@ export class IframeMessenger {
    * iframe位置情報の応答を送信
    */
   respondPosition(targetWindow: Window, frameId: number, rect: DOMRect): void {
-    targetWindow.postMessage({
-      type: "iframe-position-response",
-      frameId,
-      rect
-    } as IframePositionMessage, "*");
+    targetWindow.postMessage(
+      {
+        type: "iframe-position-response",
+        frameId,
+        rect,
+      } as IframePositionMessage,
+      "*",
+    );
   }
 
   /**
@@ -87,7 +98,7 @@ export class IframeMessenger {
     // すべてのフレームに情報を配信
     const message: IframeSyncMessage = {
       type: "iframe-sync",
-      iframes
+      iframes,
     };
 
     // トップレベルウィンドウに送信
@@ -138,15 +149,18 @@ export class IframeMessenger {
 
     const updatedInfo: IframeInfo = {
       ...this.frameInfo,
-      profilePairs
+      profilePairs,
     };
 
     // 親ウィンドウに通知
     if (window.parent && window.parent !== window) {
-      window.parent.postMessage({
-        type: "profile-update",
-        frameInfo: updatedInfo
-      }, "*");
+      window.parent.postMessage(
+        {
+          type: "profile-update",
+          frameInfo: updatedInfo,
+        },
+        "*",
+      );
     }
   }
 
