@@ -6,16 +6,19 @@ import Credentials from "./pages/Credentials";
 import Org from "./pages/Org";
 import Prohibition from "./pages/Prohibition";
 import SiteProfile from "./pages/SiteProfile";
-import { buildPublUrl, routes } from "./utils/routes";
+import { buildPublUrl, paths } from "./utils/routes";
 
 function App() {
   useEffect(() => {
-    const cleanup = overlayExtensionMessenger.onMessage("select", ({ sender, data }) => {
-      document.location.hash = buildPublUrl(
-        sender.tab.id,
-        data.activeCa.attestation.doc,
-      );
-    });
+    const cleanup = overlayExtensionMessenger.onMessage(
+      "select",
+      ({ sender, data }) => {
+        document.location.hash = buildPublUrl(
+          sender.tab.id,
+          data.activeCa.attestation.doc,
+        );
+      },
+    );
 
     return () => {
       cleanup();
@@ -24,24 +27,27 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/">
+      <Route path={paths.root}>
         <Route index element={<Navigate to="/tab" replace />} />
-        <Route path="tab/:tabId">
+        <Route path={paths.base}>
           <Route index element={<Base />} />
-          <Route path="site">
+          <Route path={paths.site}>
             <Route index element={<SiteProfile />} />
-            <Route path="org/:contentType/:orgIssuer/:orgSubject" element={<Org back="../.." />} />
+            <Route path={paths.org} element={<Org back="../.." />} />
           </Route>
-          <Route path="publ/:issuer/:subject">
-            <Route index element={
-              <div className="flex flex-col">
-                <SiteProfile />
-                <Credentials />
-              </div>
-            } />
-            <Route path="org/:contentType/:orgIssuer/:orgSubject" element={<Org back="../.." />} />
+          <Route path={paths.publ}>
+            <Route
+              index
+              element={
+                <div className="flex flex-col">
+                  <SiteProfile />
+                  <Credentials />
+                </div>
+              }
+            />
+            <Route path={paths.org} element={<Org back="../.." />} />
           </Route>
-          <Route path="prohibition" element={<Prohibition />} />
+          <Route path={paths.prohibition} element={<Prohibition />} />
         </Route>
       </Route>
     </Routes>
