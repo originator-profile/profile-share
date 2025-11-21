@@ -23,7 +23,9 @@ export function listCas<T extends ContentAttestation>(
     case "Other": {
       filtered = cas.filter(
         (ca) =>
-          !ca.main && (ca.attestation.doc.credentialSubject.type === "Article" || ca.attestation.doc.credentialSubject.type === "Advertorial"),
+          !ca.main &&
+          (ca.attestation.doc.credentialSubject.type === "Article" ||
+            ca.attestation.doc.credentialSubject.type === "Advertorial"),
       );
       break;
     }

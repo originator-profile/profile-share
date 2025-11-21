@@ -131,7 +131,8 @@ function ContentAttestationErrorDetails({
     content = (
       <DisplayCancel
         label={`CA ${index} ${
-          (ca.credentialSubject.type === "Article"
+          (ca.credentialSubject.type === "Article" ||
+          ca.credentialSubject.type === "Advertorial"
             ? ca.credentialSubject.headline
             : ca.credentialSubject.name) ?? "Unrecognized Content Name"
         }`}
@@ -185,7 +186,8 @@ function ContentAttestationCheckList({
           return (
             <DisplayCheck
               label={`CA ${index} ${
-                (ca.credentialSubject.type === "Article"
+                (ca.credentialSubject.type === "Article" ||
+                ca.credentialSubject.type === "Advertorial"
                   ? ca.credentialSubject.headline
                   : ca.credentialSubject.name) ?? "Unrecognized Content Name"
               }`}
