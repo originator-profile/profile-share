@@ -23,7 +23,7 @@ const subject = {
     },
     description: {
       type: "string",
-      description: "コンテンツの説明（プレーンテキスト）。",
+      description: "コンテンツの説明（文字列）。",
     },
     image: Image,
     datePublished: {

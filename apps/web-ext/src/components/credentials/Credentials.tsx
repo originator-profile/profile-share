@@ -134,13 +134,11 @@ export function Credentials(props: CredentialsProps) {
                 </p>
               </div>
             </div>
-            {ca.credentialSubject.type === "Article" && (
-              <ArticleTable className="mb-1 w-full" article={ca as ArticleCA} />
-            )}
-            {ca.credentialSubject.type === "Advertorial" && (
+            {(ca.credentialSubject.type === "Article" ||
+              ca.credentialSubject.type === "Advertorial") && (
               <ArticleTable
                 className="mb-1 w-full"
-                article={ca as AdvertorialCA}
+                article={ca as ArticleCA | AdvertorialCA}
               />
             )}
             {ca.credentialSubject.description && (
